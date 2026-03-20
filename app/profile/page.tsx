@@ -14,13 +14,14 @@ export default async function ProfilePage() {
   }
 
   return (
-    <main className="container" style={{ position: 'relative' }}>
-      <Link href="/" className="back-button" title="Retour à l'accueil">
-        <ArrowLeft size={24} />
-      </Link>
-      
+    <main className="container">
       <div className="premium-card" style={{ padding: '3rem', maxWidth: '600px', margin: '2rem auto' }}>
-        <h1 style={{ marginBottom: '2rem', fontSize: '2rem' }}>Mon Compte</h1>
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+          <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
+            <ArrowLeft size={24} />
+          </Link>
+          <h1 style={{ margin: 0, fontSize: '2rem' }}>Mon Compte</h1>
+        </div>
         <ProfileForm user={session.user} />
       </div>
     </main>

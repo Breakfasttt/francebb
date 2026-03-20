@@ -42,6 +42,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   tournaments   Tournament[]
+  role          String    @default("COACH") // ADMIN, RC_NAF, CONSEIL_ORGA, MODERATOR, MODERATOR_BROCANTE, MODERATOR_VESTIAIRES, MODERATOR_TRADUCTEUR, ORGA, COACH
+  topics        Topic[]
+  posts         Post[]
 }
  
 model VerificationToken {
@@ -53,11 +56,78 @@ model VerificationToken {
 }
 
 model Tournament {
+  id                  String   @id @default(cuid())
+  name                String
+  date                DateTime
+  location            String
+  ville               String?
+  departement         String?
+  region              String?
+  description         String?
+  
+  maxParticipants     Int?
+  currentParticipants Int      @default(0)
+  preRegistered       Int      @default(0)
+  
+  days                String?  @default("1")
+  totalMatches        Int?
+  price               Float?
+  
+  structure           String?  // e.g., "Resurrection", "Evolutif"
+  lodgingAtVenue      Boolean  @default(false)
+  ruleset             String?  // e.g., "Eurobowl", "NAF"
+  mealsIncluded       Boolean  @default(false)
+  fridayArrival       Boolean  @default(false)
+  gameEdition         String?  // e.g., "BB20", "BB3", "BB7"
+
+  organizerId         String
+  organizer           User     @relation(fields: [organizerId], references: [id])
+}
+
+model Category {
   id          String   @id @default(cuid())
   name        String
-  date        DateTime
-  location    String
   description String?
-  organizerId String
-  organizer   User     @relation(fields: [organizerId], references: [id])
+  order       Int      @default(0)
+  forums      Forum[]
+}
+
+model Forum {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  order       Int      @default(0)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  topics      Topic[]
+}
+
+model Topic {
+  id        String   @id @default(cuid())
+  title     String
+  isLocked  Boolean  @default(false)
+  isSticky  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  forumId   String
+  forum     Forum    @relation(fields: [forumId], references: [id])
+  
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  
+  posts     Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
 }

@@ -1,0 +1,129 @@
+.forum-container {
+  padding-bottom: 5rem;
+}
+
+.forum-category {
+  margin-bottom: 2.5rem;
+}
+
+.category-header {
+  background: linear-gradient(90deg, var(--primary), transparent);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 4px solid white;
+}
+
+.category-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.category-header {
+  background: linear-gradient(90deg, var(--primary), transparent);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-left: 4px solid white;
+  color: white;
+}
+
+.forums-list {
+  background: rgba(26, 26, 32, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.forum-item {
+  display: grid;
+  grid-template-columns: 1fr 120px 200px;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.forum-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 12px 12px;
+}
+
+.forum-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.forum-info h3 {
+  margin: 0 0 0.3rem 0;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.forum-item.has-new h3 {
+  color: #ffd700; /* Gold/Yellow for new content */
+}
+
+.forum-info p {
+  margin: 0;
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+.forum-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.stat-val {
+  color: #eee;
+  font-weight: 600;
+}
+
+.forum-last-post {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #bbb;
+  border-left: 1px solid rgba(255,255,255,0.05);
+  padding-left: 1.5rem;
+}
+
+.last-post-title {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.last-post-meta {
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 768px) {
+  .forum-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .forum-stats, .forum-last-post {
+    display: none;
+  }
+}

@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <main className="container">
       <section className="hero">
-        <h1>Blood Bowl France</h1>
+        <h1>France Blood Bowl</h1>
         <p>L'arène centrale des coachs français. Tournois, rencontres et partage.</p>
         
         <div className="action-buttons">

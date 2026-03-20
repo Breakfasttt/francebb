@@ -24,6 +24,13 @@ async function test() {
   const fetched = await prisma.user.findUnique({ where: { id: userId } });
   console.log("Vérification findUnique:", fetched?.name);
 
+  console.log("--- Test Tournaments ---");
+  const tournaments = await prisma.tournament.findMany();
+  console.log("Tournois trouvés:", tournaments.length);
+  tournaments.forEach(t => {
+    console.log(`- ${t.name} (Jours: ${t.days}, Type: typeof ${typeof t.days})`);
+  });
+
   await prisma.$disconnect();
 }
 
