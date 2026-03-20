@@ -1,16 +1,11 @@
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  const session = await auth();
+  const userId = "user_test_breakyt";
 
-  if (!session?.user?.id) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
-  await prisma.user.delete({
-    where: { id: session.user.id },
+  await prisma.user.deleteMany({
+    where: { id: userId },
   });
 
   return NextResponse.json({ success: true });

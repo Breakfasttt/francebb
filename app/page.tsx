@@ -1,28 +1,58 @@
-export default function Home() {
+import { prisma } from "@/lib/prisma";
+import Link from "next/link";
+import { Trophy, MessageSquare, MapPin, Calendar } from "lucide-react";
+
+export default async function Home() {
+  const nextTournaments = await prisma.tournament.findMany({
+    where: {
+      date: { gte: new Date() }
+    },
+    orderBy: {
+      date: 'asc'
+    },
+    take: 3
+  });
+
   return (
     <main className="container">
       <section className="hero">
-        <h1>Les Tournois de Blood Bowl en France</h1>
-        <p>Retrouvez tous les prochains tournois près de chez vous.</p>
+        <h1>Blood Bowl France</h1>
+        <p>L'arène centrale des coachs français. Tournois, rencontres et partage.</p>
+        
+        <div className="action-buttons">
+          <Link href="/tournaments" className="action-card">
+            <Trophy size={32} style={{ marginBottom: '0.8rem', color: 'var(--accent)' }} />
+            <div>Tournois</div>
+          </Link>
+          <Link href="/forum" className="action-card">
+            <MessageSquare size={32} style={{ marginBottom: '0.8rem', color: 'var(--accent)' }} />
+            <div>Forum</div>
+          </Link>
+        </div>
       </section>
 
-      <div className="grid">
-        <div className="premium-card" style={{ padding: '2rem' }}>
-          <div className="tournament-badge">PROCHAINEMENT</div>
-          <h2 style={{ marginTop: '1rem' }}>Bowl des Neiges</h2>
-          <p style={{ color: '#888', margin: '0.5rem 0' }}>Lieu: Lyon, France</p>
-          <p style={{ color: '#888', margin: '0.5rem 0' }}>Date: 12 Janvier 2027</p>
-          <p>Un tournoi épique au coeur des Alpes.</p>
+      <section>
+        <h2 className="section-title">Prochains Événements</h2>
+        <div className="grid">
+          {nextTournaments.length > 0 ? (
+            nextTournaments.map((t: any) => (
+              <div key={t.id} className="premium-card hover-effect" style={{ padding: '1.2rem' }}>
+                <div className="tournament-badge">À VENIR</div>
+                <h3 style={{ marginTop: '0.8rem', fontSize: '1.2rem' }}>{t.name}</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
+                  <MapPin size={14} /> {t.location}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
+                  <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
+                </div>
+                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{t.description}</p>
+              </div>
+            ))
+          ) : (
+            <p style={{ color: '#888' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>
+          )}
         </div>
-
-        <div className="premium-card" style={{ padding: '2rem' }}>
-          <div className="tournament-badge" style={{ background: '#333' }}>PASSÉ</div>
-          <h2 style={{ marginTop: '1rem' }}>Lutèce Bowl</h2>
-          <p style={{ color: '#888', margin: '0.5rem 0' }}>Lieu: Paris, France</p>
-          <p style={{ color: '#888', margin: '0.5rem 0' }}>Date: 15 Juin 2026</p>
-          <p>Le plus grand tournoi de France.</p>
-        </div>
-      </div>
+      </section>
     </main>
   );
 }

@@ -20,7 +20,7 @@ export function SignInButton() {
           )}
           <span>{session.user?.name || "Joueur"}</span>
         </a>
-        <button onClick={() => signOut()} className="btn-primary" style={{ background: '#333' }}>
+        <button onClick={() => alert("Mode Simulation : Déconnexion désactivée")} className="btn-primary" style={{ background: '#333' }}>
           Déconnexion
         </button>
       </div>
@@ -28,8 +28,8 @@ export function SignInButton() {
   }
 
   return (
-    <button onClick={() => signIn()} className="btn-primary">
-      Connexion
+    <button className="btn-primary">
+      Connecté (Simulé)
     </button>
   );
 }

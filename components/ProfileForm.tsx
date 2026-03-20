@@ -3,12 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import Toast from "@/components/Toast";
+import Modal from "@/components/Modal";
 
 export default function ProfileForm({ user }: { user: any }) {
   const [name, setName] = useState(user.name || "");
   const [image, setImage] = useState(user.image || "");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const router = useRouter();
 
   const handleUpdate = async (e: React.FormEvent) => {
@@ -21,34 +27,33 @@ export default function ProfileForm({ user }: { user: any }) {
         headers: { "Content-Type": "application/json" },
       });
       if (res.ok) {
-        alert("Profil mis à jour avec succès !");
-        router.refresh();
+        setToast({ message: "Profil mis à jour avec succès !", type: "success" });
+        setTimeout(() => window.location.reload(), 1500); // Give time for toast
       } else {
-        alert("Erreur lors de la mise à jour.");
+        setToast({ message: "Erreur lors de la mise à jour.", type: "error" });
       }
     } catch (error) {
-      alert("Une erreur est survenue.");
+      setToast({ message: "Une erreur est survenue.", type: "error" });
     } finally {
       setIsUpdating(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
-      setIsDeleting(true);
-      try {
-        const res = await fetch("/api/user/delete", { method: "POST" });
-        if (res.ok) {
-          alert("Compte supprimé.");
-          signOut({ callbackUrl: "/" });
-        } else {
-          alert("Erreur lors de la suppression.");
-          setIsDeleting(false);
-        }
-      } catch (error) {
-        alert("Une erreur est survenue.");
+  const handleDeleteConfirm = async () => {
+    setIsModalOpen(false);
+    setIsDeleting(true);
+    try {
+      const res = await fetch("/api/user/delete", { method: "POST" });
+      if (res.ok) {
+        setToast({ message: "Compte supprimé avec succès.", type: "success" });
+        setTimeout(() => signOut({ callbackUrl: "/" }), 1500);
+      } else {
+        setToast({ message: "Erreur lors de la suppression.", type: "error" });
         setIsDeleting(false);
       }
+    } catch (error) {
+      setToast({ message: "Une erreur est survenue.", type: "error" });
+      setIsDeleting(false);
     }
   };
 
@@ -101,7 +106,7 @@ export default function ProfileForm({ user }: { user: any }) {
           La suppression de votre compte effacera toutes vos données et vos préférences de manière permanente.
         </p>
         <button
-          onClick={handleDelete}
+          onClick={() => setIsModalOpen(true)}
           className="btn-primary"
           style={{ background: '#440000', color: '#ff4444', border: '1px solid #ff4444' }}
           disabled={isDeleting}
@@ -109,6 +114,22 @@ export default function ProfileForm({ user }: { user: any }) {
           {isDeleting ? "Suppression..." : "Supprimer mon compte"}
         </button>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title="Supprimer le compte"
+        message="Êtes-vous sûr de vouloir supprimer votre compte ? Toutes vos données seront effacées de manière permanente."
+      />
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
