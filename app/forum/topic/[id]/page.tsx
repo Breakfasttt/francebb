@@ -11,39 +11,54 @@ import PostActions from "@/components/forum/PostActions";
 import QuickReply from "@/components/forum/QuickReply";
 import { getQuoteStatusMap } from "@/app/forum/actions";
 import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
+import SharePostButton from "@/components/forum/SharePostButton";
 import "../../forum.css";
 
 export const dynamic = "force-dynamic";
 
-export default async function TopicPage({ params }: { params: Promise<{ id: string }> }) {
+const POSTS_PER_PAGE = 20;
+
+export default async function TopicPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ page?: string }> }) {
   const { id } = await params;
+  const { page: pageStr } = await searchParams;
+  const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
+  const skip = (currentPage - 1) * POSTS_PER_PAGE;
+
   const session = await auth();
   const currentUserId = session?.user?.id;
   const isUserModerator = isModerator(session?.user?.role);
 
-  const topic = await prisma.topic.findUnique({
-    where: { id },
-    include: {
-      forum: {
-        include: { 
-          category: true,
-          parentForum: {
-            include: { category: true }
+  const [topic, totalPostCount] = await Promise.all([
+    prisma.topic.findUnique({
+      where: { id },
+      include: {
+        forum: {
+          include: { 
+            category: true,
+            parentForum: {
+              include: { category: true }
+            }
+          }
+        },
+        author: true,
+        posts: {
+          orderBy: { createdAt: "asc" },
+          skip,
+          take: POSTS_PER_PAGE,
+          include: {
+            author: true,
+            moderator: true
           }
         }
-      },
-      author: true,
-      posts: {
-        orderBy: { createdAt: "asc" },
-        include: {
-          author: true,
-          moderator: true
-        }
       }
-    }
-  });
+    }),
+    prisma.post.count({ where: { topicId: id } })
+  ]);
 
   if (!topic) notFound();
+
+  const totalPages = Math.max(1, Math.ceil(totalPostCount / POSTS_PER_PAGE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
 
   const postContents = topic.posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
@@ -78,7 +93,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {topic.posts.map((post, index) => (
-          <div key={post.id} id={`post-${post.id}`} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden' }}>
+          <div key={post.id} id={`post-${post.id}`} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden', scrollMarginTop: '100px' }}>
             {/* Sidebar Auteur */}
             <div style={{
               background: 'rgba(255,255,255,0.03)',
@@ -126,7 +141,10 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
                     <span style={{ color: '#555' }}>• modifié le : {new Date(post.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                   )}
                 </div>
-                <span>#{index + 1}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span>#{skip + index + 1}</span>
+                    <SharePostButton postId={post.id} topicId={id} page={safeCurrentPage} />
+                  </div>
               </div>
 
               {/* Message Content - Visibility & Deletion Logic */}
@@ -207,7 +225,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
 
       <QuickReply topicId={id} />
       </div>
-      <TopicSidebar topicId={id} />
+      <TopicSidebar topicId={id} currentPage={safeCurrentPage} totalPages={totalPages} />
     </div>
   </main>
   );
