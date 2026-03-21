@@ -1,6 +1,6 @@
 import { getUnreadMessagesCount, getRecentPosts, getRandomPostUrl, getUnreadTopicsCount } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell, Search } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -46,6 +46,14 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
               </Link>
             </div>
           )}
+
+          {/* Recherche Avancée */}
+          <div className="sidebar-widget search-widget">
+            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button" style={{ background: 'rgba(255,255,255,0.05)', color: '#ccc', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <Search size={18} />
+              <span>Recherche avancée</span>
+            </Link>
+          </div>
 
           {/* Posts Non Lus */}
           {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
