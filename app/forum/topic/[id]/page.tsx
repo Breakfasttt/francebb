@@ -1,18 +1,24 @@
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, MessageSquare, User } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
-import "../../forum.css";
+import { ArrowLeft, User } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
+import { auth } from "@/auth";
+import { isModerator } from "@/lib/roles";
+import MarkAsRead from "@/components/forum/MarkAsRead";
+import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
+import TopicSidebar from "@/components/forum/TopicSidebar";
+import PostActions from "@/components/forum/PostActions";
+import QuickReply from "@/components/forum/QuickReply";
+import "../../forum.css";
 
 export const dynamic = "force-dynamic";
 
-import MarkAsRead from "@/components/forum/MarkAsRead";
-import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
-
 export default async function TopicPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const session = await auth();
+  const currentUserId = session?.user?.id;
+  const isUserModerator = isModerator(session?.user?.role);
+
   const topic = await prisma.topic.findUnique({
     where: { id },
     include: {
@@ -27,7 +33,8 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
       posts: {
         orderBy: { createdAt: "asc" },
         include: {
-          author: true
+          author: true,
+          moderator: true
         }
       }
     }
@@ -53,7 +60,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {topic.posts.map((post, index) => (
-          <div key={post.id} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden' }}>
+          <div key={post.id} id={`post-${post.id}`} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden' }}>
             {/* Sidebar Auteur */}
             <div style={{
               background: 'rgba(255,255,255,0.03)',
@@ -98,51 +105,67 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
                 <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                 <span>#{index + 1}</span>
               </div>
-              <div 
-                style={{ color: '#ddd', lineHeight: '1.6', fontSize: '1.1rem', flex: 1, wordBreak: 'break-word' }}
-                dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
+
+              {/* Moderation Notice */}
+              {post.isModerated && (
+                <div style={{ 
+                  background: 'rgba(194, 29, 29, 0.1)', 
+                  border: '1px solid rgba(194, 29, 29, 0.3)', 
+                  borderRadius: '8px', 
+                  padding: '1rem', 
+                  marginBottom: '1.5rem',
+                  color: '#ff8888',
+                  fontSize: '0.95rem',
+                  fontStyle: 'italic'
+                }}>
+                  Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
+                </div>
+              )}
+
+              {/* Message Content - Visibility Logic */}
+              {(!post.isModerated || isUserModerator || currentUserId === post.authorId) ? (
+                <div style={{ position: 'relative' }}>
+                  {post.isModerated && (
+                    <div style={{ fontSize: '0.7rem', color: 'var(--primary)', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 700 }}>
+                      [Contenu original visible par vous seul et les modérateurs]
+                    </div>
+                  )}
+                  <div 
+                    style={{ 
+                      color: post.isModerated ? '#888' : '#ddd', 
+                      lineHeight: '1.6', 
+                      fontSize: '1.1rem', 
+                      flex: 1, 
+                      wordBreak: 'break-word',
+                      opacity: post.isModerated ? 0.6 : 1
+                    }}
+                    dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
+                  />
+                </div>
+              ) : (
+                <div style={{ color: '#666', fontStyle: 'italic', padding: '1rem 0' }}>
+                  Le contenu de ce message a été masqué par la modération.
+                </div>
+              )}
+              
+              <PostActions 
+                postId={post.id}
+                authorId={post.authorId}
+                authorName={post.author.name || ""}
+                content={post.content}
+                currentUserId={currentUserId}
+                isModerator={isUserModerator}
+                topicId={id}
+                isModerated={post.isModerated}
               />
-              <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-                <button className="reset-btn" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Citer</button>
-              </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="quick-reply" style={{ marginTop: '3rem' }}>
-        <div className="premium-card" style={{ padding: '2rem' }}>
-          <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
-            <MessageSquare size={20} className="text-secondary" />
-            Réponse rapide
-          </h3>
-          <textarea
-            placeholder="Écrivez votre message ici..."
-            style={{
-              width: '100%',
-              minHeight: '150px',
-              background: 'rgba(0,0,0,0.2)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '8px',
-              padding: '1rem',
-              color: 'white',
-              fontSize: '1rem',
-              outline: 'none',
-              marginBottom: '1.5rem'
-            }}
-          />
-          <button className="reset-btn" style={{ background: 'var(--primary)', color: 'white', border: 'none', width: '100%' }}>
-            Envoyer ma réponse
-          </button>
-        </div>
+      <QuickReply topicId={id} />
       </div>
-      </div>
-      <ForumSidebar 
-        forumId={topic.forumId} 
-        forumName={topic.forum.name} 
-        categoryId={topic.forum.categoryId || topic.forum.parentForum?.categoryId || undefined} 
-        parentForumId={topic.forumId} 
-      />
+      <TopicSidebar topicId={id} />
     </div>
   </main>
   );

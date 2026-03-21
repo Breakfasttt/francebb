@@ -1877,6 +1877,7 @@ export namespace Prisma {
     topicViews: number
     mentionsMade: number
     mentionsReceived: number
+    moderatedPosts: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1890,6 +1891,7 @@ export namespace Prisma {
     topicViews?: boolean | UserCountOutputTypeCountTopicViewsArgs
     mentionsMade?: boolean | UserCountOutputTypeCountMentionsMadeArgs
     mentionsReceived?: boolean | UserCountOutputTypeCountMentionsReceivedArgs
+    moderatedPosts?: boolean | UserCountOutputTypeCountModeratedPostsArgs
   }
 
   // Custom InputTypes
@@ -1971,6 +1973,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMentionsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MentionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountModeratedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
   }
 
 
@@ -4536,6 +4545,7 @@ export namespace Prisma {
     topicViews?: boolean | User$topicViewsArgs<ExtArgs>
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
+    moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4578,6 +4588,7 @@ export namespace Prisma {
     topicViews?: boolean | User$topicViewsArgs<ExtArgs>
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
+    moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4596,6 +4607,7 @@ export namespace Prisma {
       topicViews: Prisma.$TopicViewPayload<ExtArgs>[]
       mentionsMade: Prisma.$MentionPayload<ExtArgs>[]
       mentionsReceived: Prisma.$MentionPayload<ExtArgs>[]
+      moderatedPosts: Prisma.$PostPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5008,6 +5020,7 @@ export namespace Prisma {
     topicViews<T extends User$topicViewsArgs<ExtArgs> = {}>(args?: Subset<T, User$topicViewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentionsMade<T extends User$mentionsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentionsReceived<T extends User$mentionsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderatedPosts<T extends User$moderatedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5671,6 +5684,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * User.moderatedPosts
+   */
+  export type User$moderatedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
   }
 
   /**
@@ -11472,6 +11509,9 @@ export namespace Prisma {
     updatedAt: Date | null
     topicId: string | null
     authorId: string | null
+    isModerated: boolean | null
+    moderationReason: string | null
+    moderatedBy: string | null
   }
 
   export type PostMaxAggregateOutputType = {
@@ -11481,6 +11521,9 @@ export namespace Prisma {
     updatedAt: Date | null
     topicId: string | null
     authorId: string | null
+    isModerated: boolean | null
+    moderationReason: string | null
+    moderatedBy: string | null
   }
 
   export type PostCountAggregateOutputType = {
@@ -11490,6 +11533,9 @@ export namespace Prisma {
     updatedAt: number
     topicId: number
     authorId: number
+    isModerated: number
+    moderationReason: number
+    moderatedBy: number
     _all: number
   }
 
@@ -11501,6 +11547,9 @@ export namespace Prisma {
     updatedAt?: true
     topicId?: true
     authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
   }
 
   export type PostMaxAggregateInputType = {
@@ -11510,6 +11559,9 @@ export namespace Prisma {
     updatedAt?: true
     topicId?: true
     authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
   }
 
   export type PostCountAggregateInputType = {
@@ -11519,6 +11571,9 @@ export namespace Prisma {
     updatedAt?: true
     topicId?: true
     authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
     _all?: true
   }
 
@@ -11601,6 +11656,9 @@ export namespace Prisma {
     updatedAt: Date
     topicId: string
     authorId: string
+    isModerated: boolean
+    moderationReason: string | null
+    moderatedBy: string | null
     _count: PostCountAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
@@ -11627,9 +11685,13 @@ export namespace Prisma {
     updatedAt?: boolean
     topicId?: boolean
     authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -11640,8 +11702,12 @@ export namespace Prisma {
     updatedAt?: boolean
     topicId?: boolean
     authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11651,8 +11717,12 @@ export namespace Prisma {
     updatedAt?: boolean
     topicId?: boolean
     authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectScalar = {
@@ -11662,22 +11732,28 @@ export namespace Prisma {
     updatedAt?: boolean
     topicId?: boolean
     authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
   }
   export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Post$moderatorArgs<ExtArgs>
   }
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11686,6 +11762,7 @@ export namespace Prisma {
       topic: Prisma.$TopicPayload<ExtArgs>
       author: Prisma.$UserPayload<ExtArgs>
       mentions: Prisma.$MentionPayload<ExtArgs>[]
+      moderator: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11694,6 +11771,9 @@ export namespace Prisma {
       updatedAt: Date
       topicId: string
       authorId: string
+      isModerated: boolean
+      moderationReason: string | null
+      moderatedBy: string | null
     }, ExtArgs["result"]["post"]>
     composites: {}
   }
@@ -12091,6 +12171,7 @@ export namespace Prisma {
     topic<T extends TopicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TopicDefaultArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     mentions<T extends Post$mentionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$mentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderator<T extends Post$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, Post$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12126,6 +12207,9 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
     readonly topicId: FieldRef<"Post", 'String'>
     readonly authorId: FieldRef<"Post", 'String'>
+    readonly isModerated: FieldRef<"Post", 'Boolean'>
+    readonly moderationReason: FieldRef<"Post", 'String'>
+    readonly moderatedBy: FieldRef<"Post", 'String'>
   }
     
 
@@ -12546,6 +12630,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * Post.moderator
+   */
+  export type Post$moderatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -15924,7 +16027,10 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     topicId: 'topicId',
-    authorId: 'authorId'
+    authorId: 'authorId',
+    isModerated: 'isModerated',
+    moderationReason: 'moderationReason',
+    moderatedBy: 'moderatedBy'
   };
 
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
@@ -16186,6 +16292,7 @@ export namespace Prisma {
     topicViews?: TopicViewListRelationFilter
     mentionsMade?: MentionListRelationFilter
     mentionsReceived?: MentionListRelationFilter
+    moderatedPosts?: PostListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -16205,6 +16312,7 @@ export namespace Prisma {
     topicViews?: TopicViewOrderByRelationAggregateInput
     mentionsMade?: MentionOrderByRelationAggregateInput
     mentionsReceived?: MentionOrderByRelationAggregateInput
+    moderatedPosts?: PostOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -16227,6 +16335,7 @@ export namespace Prisma {
     topicViews?: TopicViewListRelationFilter
     mentionsMade?: MentionListRelationFilter
     mentionsReceived?: MentionListRelationFilter
+    moderatedPosts?: PostListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -16645,9 +16754,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     topicId?: StringFilter<"Post"> | string
     authorId?: StringFilter<"Post"> | string
+    isModerated?: BoolFilter<"Post"> | boolean
+    moderationReason?: StringNullableFilter<"Post"> | string | null
+    moderatedBy?: StringNullableFilter<"Post"> | string | null
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     mentions?: MentionListRelationFilter
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type PostOrderByWithRelationInput = {
@@ -16657,9 +16770,13 @@ export namespace Prisma {
     updatedAt?: SortOrder
     topicId?: SortOrder
     authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
     topic?: TopicOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
     mentions?: MentionOrderByRelationAggregateInput
+    moderator?: UserOrderByWithRelationInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -16672,9 +16789,13 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     topicId?: StringFilter<"Post"> | string
     authorId?: StringFilter<"Post"> | string
+    isModerated?: BoolFilter<"Post"> | boolean
+    moderationReason?: StringNullableFilter<"Post"> | string | null
+    moderatedBy?: StringNullableFilter<"Post"> | string | null
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     mentions?: MentionListRelationFilter
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -16684,6 +16805,9 @@ export namespace Prisma {
     updatedAt?: SortOrder
     topicId?: SortOrder
     authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
     _count?: PostCountOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
     _min?: PostMinOrderByAggregateInput
@@ -16699,6 +16823,9 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     topicId?: StringWithAggregatesFilter<"Post"> | string
     authorId?: StringWithAggregatesFilter<"Post"> | string
+    isModerated?: BoolWithAggregatesFilter<"Post"> | boolean
+    moderationReason?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    moderatedBy?: StringNullableWithAggregatesFilter<"Post"> | string | null
   }
 
   export type PmWhereInput = {
@@ -17054,6 +17181,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17073,6 +17201,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUpdateInput = {
@@ -17092,6 +17221,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17111,6 +17241,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -17559,9 +17690,12 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
     topic: TopicCreateNestedOneWithoutPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -17571,6 +17705,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     topicId: string
     authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -17579,9 +17716,12 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -17591,6 +17731,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -17601,6 +17744,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     topicId: string
     authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
   }
 
   export type PostUpdateManyMutationInput = {
@@ -17608,6 +17754,8 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostUncheckedUpdateManyInput = {
@@ -17617,6 +17765,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PmCreateInput = {
@@ -18427,6 +18578,11 @@ export namespace Prisma {
     isNot?: TopicWhereInput
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     content?: SortOrder
@@ -18434,6 +18590,9 @@ export namespace Prisma {
     updatedAt?: SortOrder
     topicId?: SortOrder
     authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type PostMaxOrderByAggregateInput = {
@@ -18443,6 +18602,9 @@ export namespace Prisma {
     updatedAt?: SortOrder
     topicId?: SortOrder
     authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type PostMinOrderByAggregateInput = {
@@ -18452,6 +18614,9 @@ export namespace Prisma {
     updatedAt?: SortOrder
     topicId?: SortOrder
     authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
   }
 
   export type PmCountOrderByAggregateInput = {
@@ -18662,6 +18827,13 @@ export namespace Prisma {
     connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
   }
 
+  export type PostCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput> | PostCreateWithoutModeratorInput[] | PostUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutModeratorInput | PostCreateOrConnectWithoutModeratorInput[]
+    createMany?: PostCreateManyModeratorInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -18730,6 +18902,13 @@ export namespace Prisma {
     connectOrCreate?: MentionCreateOrConnectWithoutMentionedUserInput | MentionCreateOrConnectWithoutMentionedUserInput[]
     createMany?: MentionCreateManyMentionedUserInputEnvelope
     connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
+  export type PostUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput> | PostCreateWithoutModeratorInput[] | PostUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutModeratorInput | PostCreateOrConnectWithoutModeratorInput[]
+    createMany?: PostCreateManyModeratorInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -18876,6 +19055,20 @@ export namespace Prisma {
     deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
   }
 
+  export type PostUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput> | PostCreateWithoutModeratorInput[] | PostUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutModeratorInput | PostCreateOrConnectWithoutModeratorInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutModeratorInput | PostUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: PostCreateManyModeratorInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutModeratorInput | PostUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutModeratorInput | PostUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -19014,6 +19207,20 @@ export namespace Prisma {
     update?: MentionUpdateWithWhereUniqueWithoutMentionedUserInput | MentionUpdateWithWhereUniqueWithoutMentionedUserInput[]
     updateMany?: MentionUpdateManyWithWhereWithoutMentionedUserInput | MentionUpdateManyWithWhereWithoutMentionedUserInput[]
     deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput> | PostCreateWithoutModeratorInput[] | PostUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutModeratorInput | PostCreateOrConnectWithoutModeratorInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutModeratorInput | PostUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: PostCreateManyModeratorInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutModeratorInput | PostUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutModeratorInput | PostUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTournamentsInput = {
@@ -19339,6 +19546,12 @@ export namespace Prisma {
     connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
   }
 
+  export type UserCreateNestedOneWithoutModeratedPostsInput = {
+    create?: XOR<UserCreateWithoutModeratedPostsInput, UserUncheckedCreateWithoutModeratedPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratedPostsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type MentionUncheckedCreateNestedManyWithoutPostInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
@@ -19374,6 +19587,16 @@ export namespace Prisma {
     update?: MentionUpdateWithWhereUniqueWithoutPostInput | MentionUpdateWithWhereUniqueWithoutPostInput[]
     updateMany?: MentionUpdateManyWithWhereWithoutPostInput | MentionUpdateManyWithWhereWithoutPostInput[]
     deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutModeratedPostsNestedInput = {
+    create?: XOR<UserCreateWithoutModeratedPostsInput, UserUncheckedCreateWithoutModeratedPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratedPostsInput
+    upsert?: UserUpsertWithoutModeratedPostsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModeratedPostsInput, UserUpdateWithoutModeratedPostsInput>, UserUncheckedUpdateWithoutModeratedPostsInput>
   }
 
   export type MentionUncheckedUpdateManyWithoutPostNestedInput = {
@@ -19721,6 +19944,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -19739,6 +19963,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -19773,6 +19998,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -19791,6 +20017,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -19809,6 +20036,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -19827,6 +20055,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -19861,6 +20090,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -19879,6 +20109,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -20032,8 +20263,11 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
     topic: TopicCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
@@ -20042,6 +20276,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     topicId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -20175,6 +20412,39 @@ export namespace Prisma {
 
   export type MentionCreateManyMentionedUserInputEnvelope = {
     data: MentionCreateManyMentionedUserInput | MentionCreateManyMentionedUserInput[]
+  }
+
+  export type PostCreateWithoutModeratorInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    topic: TopicCreateNestedOneWithoutPostsInput
+    author: UserCreateNestedOneWithoutPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutModeratorInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type PostCreateManyModeratorInputEnvelope = {
+    data: PostCreateManyModeratorInput | PostCreateManyModeratorInput[]
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -20336,6 +20606,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     topicId?: StringFilter<"Post"> | string
     authorId?: StringFilter<"Post"> | string
+    isModerated?: BoolFilter<"Post"> | boolean
+    moderationReason?: StringNullableFilter<"Post"> | string | null
+    moderatedBy?: StringNullableFilter<"Post"> | string | null
   }
 
   export type PmUpsertWithWhereUniqueWithoutSenderInput = {
@@ -20452,6 +20725,22 @@ export namespace Prisma {
     data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyWithoutMentionedUserInput>
   }
 
+  export type PostUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutModeratorInput, PostUncheckedUpdateWithoutModeratorInput>
+    create: XOR<PostCreateWithoutModeratorInput, PostUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutModeratorInput, PostUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutModeratorInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutModeratorInput>
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -20468,6 +20757,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -20486,6 +20776,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -20520,6 +20811,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -20538,6 +20830,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -20832,6 +21125,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -20850,6 +21144,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -20862,8 +21157,11 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
     author: UserCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
   }
 
   export type PostUncheckedCreateWithoutTopicInput = {
@@ -20872,6 +21170,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -20961,6 +21262,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -20979,6 +21281,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -21058,6 +21361,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -21076,6 +21380,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -21106,6 +21411,49 @@ export namespace Prisma {
 
   export type MentionCreateManyPostInputEnvelope = {
     data: MentionCreateManyPostInput | MentionCreateManyPostInput[]
+  }
+
+  export type UserCreateWithoutModeratedPostsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+  }
+
+  export type UserUncheckedCreateWithoutModeratedPostsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+  }
+
+  export type UserCreateOrConnectWithoutModeratedPostsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutModeratedPostsInput, UserUncheckedCreateWithoutModeratedPostsInput>
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -21170,6 +21518,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -21188,6 +21537,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -21206,6 +21556,55 @@ export namespace Prisma {
     data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyWithoutPostInput>
   }
 
+  export type UserUpsertWithoutModeratedPostsInput = {
+    update: XOR<UserUpdateWithoutModeratedPostsInput, UserUncheckedUpdateWithoutModeratedPostsInput>
+    create: XOR<UserCreateWithoutModeratedPostsInput, UserUncheckedCreateWithoutModeratedPostsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutModeratedPostsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutModeratedPostsInput, UserUncheckedUpdateWithoutModeratedPostsInput>
+  }
+
+  export type UserUpdateWithoutModeratedPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutModeratedPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+  }
+
   export type UserCreateWithoutSentMessagesInput = {
     id?: string
     name?: string | null
@@ -21222,6 +21621,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -21240,6 +21640,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -21263,6 +21664,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -21281,6 +21683,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -21315,6 +21718,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -21333,6 +21737,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -21362,6 +21767,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -21380,6 +21786,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -21398,6 +21805,7 @@ export namespace Prisma {
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -21416,6 +21824,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -21479,6 +21888,7 @@ export namespace Prisma {
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -21497,6 +21907,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -21539,8 +21950,11 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
     topic: TopicCreateNestedOneWithoutPostsInput
     author: UserCreateNestedOneWithoutPostsInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
   }
 
   export type PostUncheckedCreateWithoutMentionsInput = {
@@ -21550,6 +21964,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     topicId: string
     authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
   }
 
   export type PostCreateOrConnectWithoutMentionsInput = {
@@ -21573,6 +21990,7 @@ export namespace Prisma {
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -21591,6 +22009,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -21614,6 +22033,7 @@ export namespace Prisma {
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -21632,6 +22052,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -21655,8 +22076,11 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
   }
 
   export type PostUncheckedUpdateWithoutMentionsInput = {
@@ -21666,6 +22090,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -21695,6 +22122,7 @@ export namespace Prisma {
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -21713,6 +22141,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -21742,6 +22171,7 @@ export namespace Prisma {
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -21760,6 +22190,7 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -21821,6 +22252,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     topicId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
   }
 
   export type PmCreateManySenderInput = {
@@ -21860,6 +22294,17 @@ export namespace Prisma {
     postId: string
     mentionerId: string
     readAt?: Date | string | null
+  }
+
+  export type PostCreateManyModeratorInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -22030,8 +22475,11 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAuthorInput = {
@@ -22040,6 +22488,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -22049,6 +22500,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PmUpdateWithoutSenderInput = {
@@ -22166,6 +22620,41 @@ export namespace Prisma {
     postId?: StringFieldUpdateOperationsInput | string
     mentionerId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PostUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -22290,6 +22779,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
   }
 
   export type TopicViewCreateManyTopicInput = {
@@ -22302,8 +22794,11 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
   }
 
   export type PostUncheckedUpdateWithoutTopicInput = {
@@ -22312,6 +22807,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -22321,6 +22819,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicViewUpdateWithoutTopicInput = {

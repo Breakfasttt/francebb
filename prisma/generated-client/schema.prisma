@@ -52,6 +52,7 @@ model User {
   topicViews       TopicView[]
   mentionsMade     Mention[]   @relation("MentionsMade")
   mentionsReceived Mention[]   @relation("MentionsReceived")
+  moderatedPosts   Post[]      @relation("ModeratedPosts")
 }
 
 model VerificationToken {
@@ -145,6 +146,11 @@ model Post {
   authorId String
   author   User      @relation(fields: [authorId], references: [id])
   mentions Mention[]
+
+  isModerated      Boolean @default(false)
+  moderationReason String?
+  moderatedBy      String?
+  moderator        User?   @relation("ModeratedPosts", fields: [moderatedBy], references: [id])
 }
 
 model Pm {

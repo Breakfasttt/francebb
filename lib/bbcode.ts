@@ -72,6 +72,17 @@ export function parseBBCode(text: string): string {
   // @Mentions — [mention=UserID]Username[/mention]
   html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
 
+  // Quotes — [quote=UserID|PostID]content[/quote]
+  html = html.replace(/\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\](.*?)\[\/quote\]/gi, (match, userId, postId, content) => {
+    return `<div class="bb-quote" style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.03); padding: 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0; font-style: italic;">
+      <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-style: normal;">
+        <span>Par <a href="/profile?id=${userId}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 700;">@${userId}</a></span>
+        ${postId ? `<a href="#post-${postId}" style="color: #666; font-size: 0.75rem;">Voir le message</a>` : ""}
+      </div>
+      <div>${content}</div>
+    </div>`;
+  });
+
   // 4. Replace Images
   html = html.replace(
     /\[img\](.*?)\[\/img\]/gi,

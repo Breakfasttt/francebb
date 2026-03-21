@@ -117,6 +117,18 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     };
   }, [isPreview, activeTool]);
 
+  // Listen for external insert requests (e.g. from Quote button)
+  useEffect(() => {
+    const handleRemoteInsert = (e: any) => {
+      const textToInsert = e.detail;
+      if (textToInsert) {
+        insertTag(textToInsert, "");
+      }
+    };
+    window.addEventListener('bbcode-insert-text', handleRemoteInsert);
+    return () => window.removeEventListener('bbcode-insert-text', handleRemoteInsert);
+  }, [content]);
+
   const insertTag = (startTag: string, endTag: string = "") => {
     if (!textareaRef.current) return;
     const textarea = textareaRef.current;

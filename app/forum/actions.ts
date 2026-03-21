@@ -265,3 +265,153 @@ export async function createTopic(formData: FormData) {
 
   redirect(`/forum/topic/${topic.id}`);
 }
+
+export async function createPost(topicId: string, content: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Vous devez être connecté pour répondre.");
+  }
+
+  const post = await prisma.post.create({
+    data: {
+      content,
+      topicId,
+      authorId: session.user.id,
+    }
+  });
+
+  // Update topic timestamp to show it and bubble it up
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { updatedAt: new Date() }
+  });
+
+  revalidatePath(`/forum/topic/${topicId}`);
+  return post;
+}
+
+export async function updatePost(postId: string, content: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Vous devez être connecté pour modifier un message.");
+  }
+
+  const existingPost = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { authorId: true, topicId: true }
+  });
+
+  if (!existingPost) throw new Error("Message introuvable.");
+  if (existingPost.authorId !== session.user.id && !isModerator(session.user.role)) {
+    throw new Error("Vous n'avez pas l'autorisation de modifier ce message.");
+  }
+
+  await prisma.post.update({
+    where: { id: postId },
+    data: { content, updatedAt: new Date() }
+  });
+
+  revalidatePath(`/forum/topic/${existingPost.topicId}`);
+  redirect(`/forum/topic/${existingPost.topicId}`);
+}
+
+export async function getPostById(postId: string) {
+  return await prisma.post.findUnique({
+    where: { id: postId },
+    include: { author: true, topic: true }
+  });
+}
+
+export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
+  return await prisma.post.findMany({
+    where: { topicId },
+    take: limit,
+    orderBy: { createdAt: "desc" },
+    include: { author: true }
+  });
+}
+
+export async function moderatePost(postId: string, reason: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent modérer des messages.");
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId }
+  });
+
+  if (!post) {
+    throw new Error("Message introuvable.");
+  }
+
+  await prisma.post.update({
+    where: { id: postId },
+    data: { 
+      isModerated: true,
+      moderationReason: reason,
+      moderatedBy: session.user.id,
+      updatedAt: new Date()
+    }
+  });
+
+  revalidatePath(`/forum/topic/${post.topicId}`);
+}
+
+export async function unmoderatePost(postId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent annuler une modération.");
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId }
+  });
+
+  if (!post) throw new Error("Message introuvable.");
+
+  await prisma.post.update({
+    where: { id: postId },
+    data: { 
+      isModerated: false,
+      moderationReason: null,
+      moderatedBy: null,
+      updatedAt: new Date()
+    }
+  });
+
+  revalidatePath(`/forum/topic/${post.topicId}`);
+}
+
+export async function deletePost(postId: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Vous devez être connecté.");
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    include: { topic: { include: { posts: true } } }
+  });
+
+  if (!post) throw new Error("Message introuvable.");
+
+  // Check if it's the author
+  // NOTE: User said ONLY the creator can delete it. 
+  // Modérateurs can moderate but not delete (based on requirement 6).
+  if (post.authorId !== session.user.id) {
+    throw new Error("Seul l'auteur peut supprimer son message.");
+  }
+
+  // If it's the first post of the topic, we shouldn't allow deleting it (delete topic instead?)
+  // For now, let's keep it simple or check if it's the only post.
+  if (post.topic.posts[0].id === postId) {
+    throw new Error("Impossible de supprimer le premier message du sujet. Supprimez le sujet entier à la place.");
+  }
+
+  await prisma.post.delete({
+    where: { id: postId }
+  });
+
+  revalidatePath(`/forum/topic/${post.topicId}`);
+}
