@@ -62,8 +62,9 @@ export default function SearchForm({
 
   return (
     <form onSubmit={handleSubmit} className="forum-board" style={{
+      maxWidth: "1000px",
+      margin: "0 auto 2rem auto",
       padding: "1.5rem",
-      marginBottom: "2rem",
       display: "flex",
       flexDirection: "column",
       gap: "1.2rem",
@@ -78,8 +79,15 @@ export default function SearchForm({
           placeholder="Mots-clés à rechercher..." 
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          className="bb-input"
-          style={{ width: "100%", paddingLeft: "2.5rem", fontSize: "1.1rem" }}
+          style={{ 
+            width: "100%", 
+            padding: "0.8rem 1rem 0.8rem 2.5rem", 
+            fontSize: "1.1rem",
+            background: "rgba(255,255,255,0.03)", 
+            border: "1px solid rgba(255,255,255,0.1)", 
+            color: "#eee", 
+            borderRadius: "8px" 
+          }}
           autoFocus
         />
         <Search size={20} style={{ position: "absolute", left: "0.8rem", top: "50%", transform: "translateY(-50%)", color: "#888" }} />
@@ -98,7 +106,14 @@ export default function SearchForm({
             placeholder="Pseudo ex: Admin..." 
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            className="bb-input"
+            style={{ 
+              width: "100%",
+              padding: "0.6rem 1rem",
+              background: "rgba(255,255,255,0.03)", 
+              border: "1px solid rgba(255,255,255,0.1)", 
+              color: "#eee", 
+              borderRadius: "8px" 
+            }}
           />
         </div>
 
@@ -110,7 +125,14 @@ export default function SearchForm({
           <select 
             value={forumId} 
             onChange={(e) => setForumId(e.target.value)}
-            className="bb-input bb-select"
+            style={{ 
+              width: "100%",
+              padding: "0.6rem 1rem",
+              background: "rgba(255,255,255,0.03)", 
+              border: "1px solid rgba(255,255,255,0.1)", 
+              color: "#eee", 
+              borderRadius: "8px" 
+            }}
           >
             <option value="">Tous les forums</option>
             {forums.map(f => (
@@ -129,7 +151,14 @@ export default function SearchForm({
           <select 
             value={date} 
             onChange={(e) => setDate(e.target.value)}
-            className="bb-input bb-select"
+            style={{ 
+              width: "100%",
+              padding: "0.6rem 1rem",
+              background: "rgba(255,255,255,0.03)", 
+              border: "1px solid rgba(255,255,255,0.1)", 
+              color: "#eee", 
+              borderRadius: "8px" 
+            }}
           >
             <option value="all">Toutes les dates</option>
             <option value="7d">Depuis 7 jours</option>
@@ -146,7 +175,14 @@ export default function SearchForm({
           <select 
             value={sortBy} 
             onChange={(e) => setSortBy(e.target.value)}
-            className="bb-input bb-select"
+            style={{ 
+              width: "100%",
+              padding: "0.6rem 1rem",
+              background: "rgba(255,255,255,0.03)", 
+              border: "1px solid rgba(255,255,255,0.1)", 
+              color: "#eee", 
+              borderRadius: "8px" 
+            }}
           >
             <option value="desc">Plus récents d'abord</option>
             <option value="asc">Plus anciens d'abord</option>
@@ -155,8 +191,19 @@ export default function SearchForm({
 
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "0.5rem" }}>
-        <button type="submit" disabled={isPending} className="bb-button primary" style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.6rem 1.5rem", opacity: isPending ? 0.7 : 1 }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
+        <button type="submit" disabled={isPending} className="widget-button" style={{ 
+          background: "var(--primary)",
+          display: "flex", 
+          alignItems: "center", 
+          justifyContent: "center",
+          gap: "0.5rem", 
+          padding: "0.8rem 2.5rem", 
+          fontSize: "1.05rem",
+          opacity: isPending ? 0.7 : 1,
+          width: "auto",
+          minWidth: "300px"
+        }}>
           {isPending ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
           {isPending ? "Recherche en cours..." : "Lancer la recherche"}
         </button>

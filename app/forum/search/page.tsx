@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import SearchForm, { ForumOption } from "@/components/forum/SearchForm";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Eye } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -147,7 +147,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="forum-container fade-in">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: "1000px", margin: "0 auto 3rem auto" }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -167,7 +167,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       />
 
       {hasPerformedSearch && (
-        <div className="search-results-section">
+        <div className="search-results-section" style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <h2>Résultats pour votre recherche ({totalMatches} trouvé{totalMatches > 1 ? 's' : ''})</h2>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
@@ -194,13 +194,23 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                           Sujet: {post.topic.title}
                         </Link>
                       </h3>
-                      <div style={{ fontSize: "0.85rem", color: "#aaa", marginTop: "0.3rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <div style={{ fontSize: "0.85rem", color: "#aaa", marginTop: "0.4rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
                         <span>Dans <strong style={{color:"#ccc"}}>{post.topic.forum.name}</strong></span>
                         <span>•</span>
                         <span>Par <strong style={{color:"var(--primary)"}}>{post.author.name}</strong></span>
                         <span>•</span>
                         <span title={new Date(post.createdAt).toLocaleString("fr-FR")}>
-                          Il y a {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: fr })}
+                          Message posté il y a {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: fr })}
+                        </span>
+                        
+                        <span style={{ margin: "0 0.5rem", width: "1px", height: "12px", background: "rgba(255,255,255,0.2)" }}></span>
+                        
+                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "#bbb" }} title="Vues du sujet">
+                          <Eye size={14} /> {post.topic.views || 0}
+                        </span>
+                        <span>•</span>
+                        <span title={new Date(post.topic.updatedAt).toLocaleString("fr-FR")} style={{ color: "#bbb" }}>
+                          Dernier msg: {new Date(post.topic.updatedAt).toLocaleDateString("fr-FR")} à {new Date(post.topic.updatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
                     </div>
