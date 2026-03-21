@@ -20,7 +20,8 @@ export const auth = async () => {
         id: userId,
         name: "Breakyt",
         email: "breakyt@bbfrance.fr",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Breakyt"
+        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Breakyt",
+        role: "ADMIN"
       },
       expires: "2030-01-01T00:00:00.000Z"
     };

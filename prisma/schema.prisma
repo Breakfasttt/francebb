@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated-client"
 }
 
 datasource db {
@@ -45,6 +46,10 @@ model User {
   role          String    @default("COACH") // ADMIN, RC_NAF, CONSEIL_ORGA, MODERATOR, MODERATOR_BROCANTE, MODERATOR_VESTIAIRES, MODERATOR_TRADUCTEUR, ORGA, COACH
   topics        Topic[]
   posts         Post[]
+
+  sentMessages     Pm[] @relation("SentMessages")
+  receivedMessages Pm[] @relation("ReceivedMessages")
+  topicViews       TopicView[]
 }
  
 model VerificationToken {
@@ -97,8 +102,14 @@ model Forum {
   name        String
   description String?
   order       Int      @default(0)
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
+  
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  
+  parentForumId String?
+  parentForum   Forum?   @relation("SubForums", fields: [parentForumId], references: [id])
+  subForums     Forum[]  @relation("SubForums")
+  
   topics      Topic[]
 }
 
@@ -117,6 +128,7 @@ model Topic {
   author    User     @relation(fields: [authorId], references: [id])
   
   posts     Post[]
+  topicViews TopicView[]
 }
 
 model Post {
@@ -130,4 +142,25 @@ model Post {
   
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
+}
+
+model Pm {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  subject     String
+  content     String
+  createdAt   DateTime @default(now())
+  readAt      DateTime?
+}
+
+model TopicView {
+  userId       String
+  topicId      String
+  lastViewedAt DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id])
+  topic        Topic    @relation(fields: [topicId], references: [id])
+  @@id([userId, topicId])
 }

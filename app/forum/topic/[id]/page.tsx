@@ -1,10 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { ArrowLeft, MessageSquare, User } from "lucide-react";
 import Link from "next/link";
-import { ArrowLeft, User, Calendar, MessageSquare } from "lucide-react";
-import "../../forum.css";
+import { notFound } from "next/navigation";
+
 
 export const dynamic = "force-dynamic";
+
+import MarkAsRead from "@/components/forum/MarkAsRead";
 
 export default async function TopicPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -25,7 +27,8 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   if (!topic) notFound();
 
   return (
-    <main className="container forum-container">
+    <>
+      <MarkAsRead topicId={id} />
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
@@ -42,8 +45,8 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
         {topic.posts.map((post, index) => (
           <div key={post.id} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden' }}>
             {/* Sidebar Auteur */}
-            <div style={{ 
-              background: 'rgba(255,255,255,0.03)', 
+            <div style={{
+              background: 'rgba(255,255,255,0.03)',
               borderRight: '1px solid var(--glass-border)',
               padding: '2rem 1rem',
               display: 'flex',
@@ -60,13 +63,13 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
                     <User size={40} color="#888" />
                   </div>
                 )}
-                <div style={{ 
-                  position: 'absolute', 
-                  bottom: '-5px', 
-                  right: '-5px', 
-                  background: 'var(--primary)', 
-                  width: '20px', 
-                  height: '20px', 
+                <div style={{
+                  position: 'absolute',
+                  bottom: '-5px',
+                  right: '-5px',
+                  background: 'var(--primary)',
+                  width: '20px',
+                  height: '20px',
                   borderRadius: '50%',
                   border: '2px solid #1a1a20'
                 }}></div>
@@ -74,7 +77,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
               <div>
                 <div style={{ fontWeight: 700, color: 'white', fontSize: '1.1rem' }}>{post.author.name}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent)', textTransform: 'uppercase', marginTop: '0.2rem', fontWeight: 600 }}>
-                   {post.author.role}
+                  {post.author.role}
                 </div>
               </div>
             </div>
@@ -102,15 +105,15 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
             <MessageSquare size={20} className="text-secondary" />
             Réponse rapide
           </h3>
-          <textarea 
+          <textarea
             placeholder="Écrivez votre message ici..."
-            style={{ 
-              width: '100%', 
-              minHeight: '150px', 
-              background: 'rgba(0,0,0,0.2)', 
-              border: '1px solid var(--glass-border)', 
-              borderRadius: '8px', 
-              padding: '1rem', 
+            style={{
+              width: '100%',
+              minHeight: '150px',
+              background: 'rgba(0,0,0,0.2)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '8px',
+              padding: '1rem',
               color: 'white',
               fontSize: '1rem',
               outline: 'none',
@@ -122,6 +125,6 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
           </button>
         </div>
       </div>
-    </main>
+    </>
   );
 }

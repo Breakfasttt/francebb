@@ -1,5 +1,14 @@
 .forum-container {
   padding-bottom: 5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.forum-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2.5rem;
+  align-items: flex-start;
 }
 
 .forum-category {
@@ -22,7 +31,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .category-header {
@@ -48,7 +57,7 @@
   display: grid;
   grid-template-columns: 1fr 120px 200px;
   padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.2s ease;
   text-decoration: none;
   color: inherit;
@@ -60,7 +69,7 @@
 }
 
 .forum-item:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .forum-info h3 {
@@ -70,7 +79,8 @@
 }
 
 .forum-item.has-new h3 {
-  color: #ffd700; /* Gold/Yellow for new content */
+  color: #ffd700;
+  /* Gold/Yellow for new content */
 }
 
 .forum-info p {
@@ -99,7 +109,7 @@
   justify-content: center;
   font-size: 0.85rem;
   color: #bbb;
-  border-left: 1px solid rgba(255,255,255,0.05);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
   padding-left: 1.5rem;
 }
 
@@ -118,12 +128,166 @@
   margin-top: 0.2rem;
 }
 
+@media (max-width: 1024px) {
+  .forum-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .forum-sidebar {
+    position: static;
+    margin-top: 2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .forum-item {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  .forum-stats, .forum-last-post {
+
+  .forum-stats,
+  .forum-last-post {
     display: none;
+  }
+}
+
+/* Sidebar Styling */
+.forum-sidebar {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-widget-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.sidebar-widget {
+  background: rgba(26, 26, 32, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-widget h3 {
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  color: #eee;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.widget-link {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: #eee;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.widget-link:hover {
+  color: var(--secondary);
+}
+
+.widget-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.widget-button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: #eee;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.recent-posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.recent-post-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem;
+  border-radius: 6px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+}
+
+.recent-post-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.recent-post-topic {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recent-post-meta {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.message-widget {
+  border: 1px solid var(--secondary);
+  background: rgba(var(--secondary-rgb), 0.1);
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+@keyframes pulse-subtle {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.15);
   }
 }

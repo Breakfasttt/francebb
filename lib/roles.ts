@@ -57,3 +57,8 @@ export function getAllowedRolesToAssign(userRole: UserRole): UserRole[] {
     role => ROLE_POWER[role] < ROLE_POWER[userRole]
   );
 }
+
+export function isModerator(role: string | null | undefined): boolean {
+  if (!role) return false;
+  return ROLE_POWER[role as UserRole] >= ROLE_POWER.MODERATOR;
+}
