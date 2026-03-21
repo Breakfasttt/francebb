@@ -230,6 +230,15 @@ exports.Prisma.TopicViewScalarFieldEnum = {
   lastViewedAt: 'lastViewedAt'
 };
 
+exports.Prisma.MentionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  postId: 'postId',
+  mentionerId: 'mentionerId',
+  mentionedUserId: 'mentionedUserId',
+  readAt: 'readAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -252,7 +261,8 @@ exports.Prisma.ModelName = {
   Topic: 'Topic',
   Post: 'Post',
   Pm: 'Pm',
-  TopicView: 'TopicView'
+  TopicView: 'TopicView',
+  Mention: 'Mention'
 };
 
 /**

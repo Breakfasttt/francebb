@@ -3,7 +3,7 @@
 import Toast from "@/components/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, Eye, EyeOff, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, Youtube } from "lucide-react";
+import { Bold, Eye, EyeOff, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "./SmileyGrid";
 
@@ -21,13 +21,16 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention' | null>(null);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
   const [topicQuery, setTopicQuery] = useState("");
   const [topicResults, setTopicResults] = useState<{id: string; title: string; forumName: string}[]>([]);
   const [isSearchingTopics, setIsSearchingTopics] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<{id: string; title: string; forumName: string} | null>(null);
+  const [mentionQuery, setMentionQuery] = useState("");
+  const [mentionResults, setMentionResults] = useState<{id: string; name: string; image: string | null}[]>([]);
+  const [isSearchingMentions, setIsSearchingMentions] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -63,6 +66,56 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }, 350);
     return () => clearTimeout(timer);
   }, [topicQuery]);
+
+  // User search (mentions) with debounce
+  useEffect(() => {
+    if (mentionQuery.trim().length < 2) {
+      setMentionResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      setIsSearchingMentions(true);
+      try {
+        const res = await fetch(`/api/users/search?q=${encodeURIComponent(mentionQuery)}`);
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setMentionResults(data);
+        }
+      } catch {
+        setMentionResults([]);
+      } finally {
+        setIsSearchingMentions(false);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [mentionQuery]);
+
+  // Keyboard listener for "@" and "Esc"
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Trigger mention tool on "@"
+      if (e.key === "@" && !isPreview && activeTool !== 'mention') {
+        const textarea = textareaRef.current;
+        if (textarea && document.activeElement === textarea) {
+          e.preventDefault();
+          setActiveTool('mention');
+          setMentionQuery("");
+          setMentionResults([]);
+        }
+      }
+      
+      // Close active tool on "Escape"
+      if (e.key === "Escape" && activeTool) {
+        setActiveTool(null);
+        textareaRef.current?.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isPreview, activeTool]);
 
   const insertTag = (startTag: string, endTag: string = "") => {
     if (!textareaRef.current) return;
@@ -173,6 +226,40 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }, 0);
   };
 
+  const submitMention = (id: string, username: string) => {
+    if (!textareaRef.current) return;
+    const textarea = textareaRef.current;
+    
+    // Check if we just typed "@" or if we want to replace it
+    const tag = `[mention=${id}]${username}[/mention]`;
+    
+    if (typeof textarea.selectionStart === "undefined") {
+      setContent(content + tag);
+      setMentionQuery(""); setMentionResults([]); setActiveTool(null);
+      return;
+    }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = content.substring(0, start);
+    const after = content.substring(end);
+
+    // If the last character was "@", remove it
+    let finalBefore = before;
+    if (before.endsWith("@")) {
+      finalBefore = before.slice(0, -1);
+    }
+
+    setContent(finalBefore + tag + " " + after);
+    setMentionQuery(""); setMentionResults([]); setActiveTool(null);
+
+    setTimeout(() => {
+      textarea.focus();
+      const newPos = finalBefore.length + tag.length + 1;
+      textarea.setSelectionRange(newPos, newPos);
+    }, 0);
+  };
+
   const submitYoutube = () => {
     if (toolInputUrl) {
       insertTag(`[youtube]${toolInputUrl}[/youtube]`, "");
@@ -189,7 +276,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
@@ -199,6 +286,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       setTopicQuery("");
       setTopicResults([]);
       setSelectedTopic(null);
+      setMentionQuery("");
+      setMentionResults([]);
 
       if ((tool === 'link' || tool === 'topic') && textareaRef.current) {
         const textarea = textareaRef.current;
@@ -316,6 +405,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             <Youtube size={16} />
           </button>
 
+          <button type="button" onClick={() => toggleTool('mention')} className={`toolbar-btn ${activeTool === 'mention' ? 'active-tool' : ''}`} title="Taguer un membre (@)">
+            <UserIcon size={16} />
+          </button>
+
           <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
 
           <button type="button" onClick={() => toggleTool('smileys')} className={`toolbar-btn ${activeTool === 'smileys' ? 'active-tool' : ''}`} title="Insérer un smiley">
@@ -429,6 +522,51 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 autoFocus
               />
               <button type="button" onClick={submitYoutube} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+            </div>
+          )}
+          {activeTool === 'mention' && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <div style={{ position: "relative" }}>
+                <input
+                  type="text"
+                  placeholder="Rechercher un membre par son nom..."
+                  value={mentionQuery}
+                  onChange={(e) => setMentionQuery(e.target.value)}
+                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                  autoFocus
+                />
+                {isSearchingMentions && (
+                  <span style={{ position: "absolute", right: "0.6rem", top: "50%", transform: "translateY(-50%)" }}>
+                    <Loader2 size={14} className="animate-spin" color="#aaa" />
+                  </span>
+                )}
+              </div>
+              {mentionResults.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0", maxHeight: "170px", overflowY: "auto", background: "rgba(0,0,0,0.5)", borderRadius: "6px", border: "1px solid var(--glass-border)" }}>
+                  {mentionResults.map((user) => (
+                    <button
+                      key={user.id}
+                      type="button"
+                      onClick={() => submitMention(user.id, user.name || "Anonyme")}
+                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: "transparent", border: "none", borderBottom: "1px solid rgba(255,255,255,0.05)", color: "white", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.8rem" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >
+                      {user.image ? (
+                        <img src={user.image} alt="" style={{ width: "24px", height: "24px", borderRadius: "50%" }} />
+                      ) : (
+                        <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <UserIcon size={14} />
+                        </div>
+                      )}
+                      <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{user.name}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {mentionQuery.trim().length >= 2 && mentionResults.length === 0 && !isSearchingMentions && (
+                <div style={{ padding: "0.5rem", color: "#aaa", fontSize: "0.88rem", textAlign: "center" }}>Aucun membre trouvé.</div>
+              )}
             </div>
           )}
           {activeTool === 'image' && (

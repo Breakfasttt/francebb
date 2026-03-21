@@ -68,6 +68,11 @@ export type Pm = $Result.DefaultSelection<Prisma.$PmPayload>
  * 
  */
 export type TopicView = $Result.DefaultSelection<Prisma.$TopicViewPayload>
+/**
+ * Model Mention
+ * 
+ */
+export type Mention = $Result.DefaultSelection<Prisma.$MentionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -299,6 +304,16 @@ export class PrismaClient<
     * ```
     */
   get topicView(): Prisma.TopicViewDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mention`: Exposes CRUD operations for the **Mention** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mentions
+    * const mentions = await prisma.mention.findMany()
+    * ```
+    */
+  get mention(): Prisma.MentionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -743,7 +758,8 @@ export namespace Prisma {
     Topic: 'Topic',
     Post: 'Post',
     Pm: 'Pm',
-    TopicView: 'TopicView'
+    TopicView: 'TopicView',
+    Mention: 'Mention'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -759,7 +775,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "pm" | "topicView"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "pm" | "topicView" | "mention"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1577,6 +1593,80 @@ export namespace Prisma {
           }
         }
       }
+      Mention: {
+        payload: Prisma.$MentionPayload<ExtArgs>
+        fields: Prisma.MentionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MentionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MentionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          findFirst: {
+            args: Prisma.MentionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MentionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          findMany: {
+            args: Prisma.MentionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>[]
+          }
+          create: {
+            args: Prisma.MentionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          createMany: {
+            args: Prisma.MentionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MentionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>[]
+          }
+          delete: {
+            args: Prisma.MentionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          update: {
+            args: Prisma.MentionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          deleteMany: {
+            args: Prisma.MentionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MentionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MentionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>[]
+          }
+          upsert: {
+            args: Prisma.MentionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MentionPayload>
+          }
+          aggregate: {
+            args: Prisma.MentionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMention>
+          }
+          groupBy: {
+            args: Prisma.MentionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MentionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MentionCountArgs<ExtArgs>
+            result: $Utils.Optional<MentionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1696,6 +1786,7 @@ export namespace Prisma {
     post?: PostOmit
     pm?: PmOmit
     topicView?: TopicViewOmit
+    mention?: MentionOmit
   }
 
   /* Types for Logging */
@@ -1784,6 +1875,8 @@ export namespace Prisma {
     sentMessages: number
     receivedMessages: number
     topicViews: number
+    mentionsMade: number
+    mentionsReceived: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1795,6 +1888,8 @@ export namespace Prisma {
     sentMessages?: boolean | UserCountOutputTypeCountSentMessagesArgs
     receivedMessages?: boolean | UserCountOutputTypeCountReceivedMessagesArgs
     topicViews?: boolean | UserCountOutputTypeCountTopicViewsArgs
+    mentionsMade?: boolean | UserCountOutputTypeCountMentionsMadeArgs
+    mentionsReceived?: boolean | UserCountOutputTypeCountMentionsReceivedArgs
   }
 
   // Custom InputTypes
@@ -1862,6 +1957,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTopicViewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TopicViewWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMentionsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MentionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMentionsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MentionWhereInput
   }
 
 
@@ -1973,6 +2082,37 @@ export namespace Prisma {
    */
   export type TopicCountOutputTypeCountTopicViewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TopicViewWhereInput
+  }
+
+
+  /**
+   * Count Type PostCountOutputType
+   */
+
+  export type PostCountOutputType = {
+    mentions: number
+  }
+
+  export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mentions?: boolean | PostCountOutputTypeCountMentionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostCountOutputType
+     */
+    select?: PostCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountMentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MentionWhereInput
   }
 
 
@@ -4394,6 +4534,8 @@ export namespace Prisma {
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     topicViews?: boolean | User$topicViewsArgs<ExtArgs>
+    mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
+    mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4434,6 +4576,8 @@ export namespace Prisma {
     sentMessages?: boolean | User$sentMessagesArgs<ExtArgs>
     receivedMessages?: boolean | User$receivedMessagesArgs<ExtArgs>
     topicViews?: boolean | User$topicViewsArgs<ExtArgs>
+    mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
+    mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4450,6 +4594,8 @@ export namespace Prisma {
       sentMessages: Prisma.$PmPayload<ExtArgs>[]
       receivedMessages: Prisma.$PmPayload<ExtArgs>[]
       topicViews: Prisma.$TopicViewPayload<ExtArgs>[]
+      mentionsMade: Prisma.$MentionPayload<ExtArgs>[]
+      mentionsReceived: Prisma.$MentionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4860,6 +5006,8 @@ export namespace Prisma {
     sentMessages<T extends User$sentMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$sentMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedMessages<T extends User$receivedMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PmPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     topicViews<T extends User$topicViewsArgs<ExtArgs> = {}>(args?: Subset<T, User$topicViewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mentionsMade<T extends User$mentionsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mentionsReceived<T extends User$mentionsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5475,6 +5623,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TopicViewScalarFieldEnum | TopicViewScalarFieldEnum[]
+  }
+
+  /**
+   * User.mentionsMade
+   */
+  export type User$mentionsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    where?: MentionWhereInput
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    cursor?: MentionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * User.mentionsReceived
+   */
+  export type User$mentionsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    where?: MentionWhereInput
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    cursor?: MentionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
   }
 
   /**
@@ -11433,6 +11629,8 @@ export namespace Prisma {
     authorId?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    mentions?: boolean | Post$mentionsArgs<ExtArgs>
+    _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11470,6 +11668,8 @@ export namespace Prisma {
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    mentions?: boolean | Post$mentionsArgs<ExtArgs>
+    _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -11485,6 +11685,7 @@ export namespace Prisma {
     objects: {
       topic: Prisma.$TopicPayload<ExtArgs>
       author: Prisma.$UserPayload<ExtArgs>
+      mentions: Prisma.$MentionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11889,6 +12090,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     topic<T extends TopicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TopicDefaultArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    mentions<T extends Post$mentionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$mentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12320,6 +12522,30 @@ export namespace Prisma {
      * Limit how many Posts to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Post.mentions
+   */
+  export type Post$mentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    where?: MentionWhereInput
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    cursor?: MentionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
   }
 
   /**
@@ -14480,6 +14706,1096 @@ export namespace Prisma {
 
 
   /**
+   * Model Mention
+   */
+
+  export type AggregateMention = {
+    _count: MentionCountAggregateOutputType | null
+    _min: MentionMinAggregateOutputType | null
+    _max: MentionMaxAggregateOutputType | null
+  }
+
+  export type MentionMinAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    postId: string | null
+    mentionerId: string | null
+    mentionedUserId: string | null
+    readAt: Date | null
+  }
+
+  export type MentionMaxAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    postId: string | null
+    mentionerId: string | null
+    mentionedUserId: string | null
+    readAt: Date | null
+  }
+
+  export type MentionCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    postId: number
+    mentionerId: number
+    mentionedUserId: number
+    readAt: number
+    _all: number
+  }
+
+
+  export type MentionMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    postId?: true
+    mentionerId?: true
+    mentionedUserId?: true
+    readAt?: true
+  }
+
+  export type MentionMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    postId?: true
+    mentionerId?: true
+    mentionedUserId?: true
+    readAt?: true
+  }
+
+  export type MentionCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    postId?: true
+    mentionerId?: true
+    mentionedUserId?: true
+    readAt?: true
+    _all?: true
+  }
+
+  export type MentionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Mention to aggregate.
+     */
+    where?: MentionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mentions to fetch.
+     */
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MentionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mentions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mentions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Mentions
+    **/
+    _count?: true | MentionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MentionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MentionMaxAggregateInputType
+  }
+
+  export type GetMentionAggregateType<T extends MentionAggregateArgs> = {
+        [P in keyof T & keyof AggregateMention]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMention[P]>
+      : GetScalarType<T[P], AggregateMention[P]>
+  }
+
+
+
+
+  export type MentionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MentionWhereInput
+    orderBy?: MentionOrderByWithAggregationInput | MentionOrderByWithAggregationInput[]
+    by: MentionScalarFieldEnum[] | MentionScalarFieldEnum
+    having?: MentionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MentionCountAggregateInputType | true
+    _min?: MentionMinAggregateInputType
+    _max?: MentionMaxAggregateInputType
+  }
+
+  export type MentionGroupByOutputType = {
+    id: string
+    createdAt: Date
+    postId: string
+    mentionerId: string
+    mentionedUserId: string
+    readAt: Date | null
+    _count: MentionCountAggregateOutputType | null
+    _min: MentionMinAggregateOutputType | null
+    _max: MentionMaxAggregateOutputType | null
+  }
+
+  type GetMentionGroupByPayload<T extends MentionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MentionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MentionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MentionGroupByOutputType[P]>
+            : GetScalarType<T[P], MentionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MentionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    mentionerId?: boolean
+    mentionedUserId?: boolean
+    readAt?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mention"]>
+
+  export type MentionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    mentionerId?: boolean
+    mentionedUserId?: boolean
+    readAt?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mention"]>
+
+  export type MentionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    mentionerId?: boolean
+    mentionedUserId?: boolean
+    readAt?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mention"]>
+
+  export type MentionSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    mentionerId?: boolean
+    mentionedUserId?: boolean
+    readAt?: boolean
+  }
+
+  export type MentionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "postId" | "mentionerId" | "mentionedUserId" | "readAt", ExtArgs["result"]["mention"]>
+  export type MentionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MentionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MentionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    mentioner?: boolean | UserDefaultArgs<ExtArgs>
+    mentionedUser?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MentionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Mention"
+    objects: {
+      post: Prisma.$PostPayload<ExtArgs>
+      mentioner: Prisma.$UserPayload<ExtArgs>
+      mentionedUser: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      createdAt: Date
+      postId: string
+      mentionerId: string
+      mentionedUserId: string
+      readAt: Date | null
+    }, ExtArgs["result"]["mention"]>
+    composites: {}
+  }
+
+  type MentionGetPayload<S extends boolean | null | undefined | MentionDefaultArgs> = $Result.GetResult<Prisma.$MentionPayload, S>
+
+  type MentionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MentionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MentionCountAggregateInputType | true
+    }
+
+  export interface MentionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Mention'], meta: { name: 'Mention' } }
+    /**
+     * Find zero or one Mention that matches the filter.
+     * @param {MentionFindUniqueArgs} args - Arguments to find a Mention
+     * @example
+     * // Get one Mention
+     * const mention = await prisma.mention.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MentionFindUniqueArgs>(args: SelectSubset<T, MentionFindUniqueArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Mention that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MentionFindUniqueOrThrowArgs} args - Arguments to find a Mention
+     * @example
+     * // Get one Mention
+     * const mention = await prisma.mention.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MentionFindUniqueOrThrowArgs>(args: SelectSubset<T, MentionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mention that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionFindFirstArgs} args - Arguments to find a Mention
+     * @example
+     * // Get one Mention
+     * const mention = await prisma.mention.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MentionFindFirstArgs>(args?: SelectSubset<T, MentionFindFirstArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mention that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionFindFirstOrThrowArgs} args - Arguments to find a Mention
+     * @example
+     * // Get one Mention
+     * const mention = await prisma.mention.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MentionFindFirstOrThrowArgs>(args?: SelectSubset<T, MentionFindFirstOrThrowArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Mentions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mentions
+     * const mentions = await prisma.mention.findMany()
+     * 
+     * // Get first 10 Mentions
+     * const mentions = await prisma.mention.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mentionWithIdOnly = await prisma.mention.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MentionFindManyArgs>(args?: SelectSubset<T, MentionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Mention.
+     * @param {MentionCreateArgs} args - Arguments to create a Mention.
+     * @example
+     * // Create one Mention
+     * const Mention = await prisma.mention.create({
+     *   data: {
+     *     // ... data to create a Mention
+     *   }
+     * })
+     * 
+     */
+    create<T extends MentionCreateArgs>(args: SelectSubset<T, MentionCreateArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Mentions.
+     * @param {MentionCreateManyArgs} args - Arguments to create many Mentions.
+     * @example
+     * // Create many Mentions
+     * const mention = await prisma.mention.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MentionCreateManyArgs>(args?: SelectSubset<T, MentionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Mentions and returns the data saved in the database.
+     * @param {MentionCreateManyAndReturnArgs} args - Arguments to create many Mentions.
+     * @example
+     * // Create many Mentions
+     * const mention = await prisma.mention.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Mentions and only return the `id`
+     * const mentionWithIdOnly = await prisma.mention.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MentionCreateManyAndReturnArgs>(args?: SelectSubset<T, MentionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Mention.
+     * @param {MentionDeleteArgs} args - Arguments to delete one Mention.
+     * @example
+     * // Delete one Mention
+     * const Mention = await prisma.mention.delete({
+     *   where: {
+     *     // ... filter to delete one Mention
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MentionDeleteArgs>(args: SelectSubset<T, MentionDeleteArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Mention.
+     * @param {MentionUpdateArgs} args - Arguments to update one Mention.
+     * @example
+     * // Update one Mention
+     * const mention = await prisma.mention.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MentionUpdateArgs>(args: SelectSubset<T, MentionUpdateArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Mentions.
+     * @param {MentionDeleteManyArgs} args - Arguments to filter Mentions to delete.
+     * @example
+     * // Delete a few Mentions
+     * const { count } = await prisma.mention.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MentionDeleteManyArgs>(args?: SelectSubset<T, MentionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mentions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mentions
+     * const mention = await prisma.mention.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MentionUpdateManyArgs>(args: SelectSubset<T, MentionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mentions and returns the data updated in the database.
+     * @param {MentionUpdateManyAndReturnArgs} args - Arguments to update many Mentions.
+     * @example
+     * // Update many Mentions
+     * const mention = await prisma.mention.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Mentions and only return the `id`
+     * const mentionWithIdOnly = await prisma.mention.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MentionUpdateManyAndReturnArgs>(args: SelectSubset<T, MentionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Mention.
+     * @param {MentionUpsertArgs} args - Arguments to update or create a Mention.
+     * @example
+     * // Update or create a Mention
+     * const mention = await prisma.mention.upsert({
+     *   create: {
+     *     // ... data to create a Mention
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mention we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MentionUpsertArgs>(args: SelectSubset<T, MentionUpsertArgs<ExtArgs>>): Prisma__MentionClient<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Mentions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionCountArgs} args - Arguments to filter Mentions to count.
+     * @example
+     * // Count the number of Mentions
+     * const count = await prisma.mention.count({
+     *   where: {
+     *     // ... the filter for the Mentions we want to count
+     *   }
+     * })
+    **/
+    count<T extends MentionCountArgs>(
+      args?: Subset<T, MentionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MentionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mention.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MentionAggregateArgs>(args: Subset<T, MentionAggregateArgs>): Prisma.PrismaPromise<GetMentionAggregateType<T>>
+
+    /**
+     * Group by Mention.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MentionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MentionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MentionGroupByArgs['orderBy'] }
+        : { orderBy?: MentionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MentionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMentionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Mention model
+   */
+  readonly fields: MentionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Mention.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MentionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    post<T extends PostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PostDefaultArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    mentioner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    mentionedUser<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Mention model
+   */
+  interface MentionFieldRefs {
+    readonly id: FieldRef<"Mention", 'String'>
+    readonly createdAt: FieldRef<"Mention", 'DateTime'>
+    readonly postId: FieldRef<"Mention", 'String'>
+    readonly mentionerId: FieldRef<"Mention", 'String'>
+    readonly mentionedUserId: FieldRef<"Mention", 'String'>
+    readonly readAt: FieldRef<"Mention", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Mention findUnique
+   */
+  export type MentionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter, which Mention to fetch.
+     */
+    where: MentionWhereUniqueInput
+  }
+
+  /**
+   * Mention findUniqueOrThrow
+   */
+  export type MentionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter, which Mention to fetch.
+     */
+    where: MentionWhereUniqueInput
+  }
+
+  /**
+   * Mention findFirst
+   */
+  export type MentionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter, which Mention to fetch.
+     */
+    where?: MentionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mentions to fetch.
+     */
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Mentions.
+     */
+    cursor?: MentionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mentions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mentions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Mentions.
+     */
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * Mention findFirstOrThrow
+   */
+  export type MentionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter, which Mention to fetch.
+     */
+    where?: MentionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mentions to fetch.
+     */
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Mentions.
+     */
+    cursor?: MentionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mentions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mentions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Mentions.
+     */
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * Mention findMany
+   */
+  export type MentionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter, which Mentions to fetch.
+     */
+    where?: MentionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Mentions to fetch.
+     */
+    orderBy?: MentionOrderByWithRelationInput | MentionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Mentions.
+     */
+    cursor?: MentionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Mentions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Mentions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Mentions.
+     */
+    distinct?: MentionScalarFieldEnum | MentionScalarFieldEnum[]
+  }
+
+  /**
+   * Mention create
+   */
+  export type MentionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Mention.
+     */
+    data: XOR<MentionCreateInput, MentionUncheckedCreateInput>
+  }
+
+  /**
+   * Mention createMany
+   */
+  export type MentionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Mentions.
+     */
+    data: MentionCreateManyInput | MentionCreateManyInput[]
+  }
+
+  /**
+   * Mention createManyAndReturn
+   */
+  export type MentionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Mentions.
+     */
+    data: MentionCreateManyInput | MentionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Mention update
+   */
+  export type MentionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Mention.
+     */
+    data: XOR<MentionUpdateInput, MentionUncheckedUpdateInput>
+    /**
+     * Choose, which Mention to update.
+     */
+    where: MentionWhereUniqueInput
+  }
+
+  /**
+   * Mention updateMany
+   */
+  export type MentionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Mentions.
+     */
+    data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyInput>
+    /**
+     * Filter which Mentions to update
+     */
+    where?: MentionWhereInput
+    /**
+     * Limit how many Mentions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Mention updateManyAndReturn
+   */
+  export type MentionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * The data used to update Mentions.
+     */
+    data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyInput>
+    /**
+     * Filter which Mentions to update
+     */
+    where?: MentionWhereInput
+    /**
+     * Limit how many Mentions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Mention upsert
+   */
+  export type MentionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Mention to update in case it exists.
+     */
+    where: MentionWhereUniqueInput
+    /**
+     * In case the Mention found by the `where` argument doesn't exist, create a new Mention with this data.
+     */
+    create: XOR<MentionCreateInput, MentionUncheckedCreateInput>
+    /**
+     * In case the Mention was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MentionUpdateInput, MentionUncheckedUpdateInput>
+  }
+
+  /**
+   * Mention delete
+   */
+  export type MentionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+    /**
+     * Filter which Mention to delete.
+     */
+    where: MentionWhereUniqueInput
+  }
+
+  /**
+   * Mention deleteMany
+   */
+  export type MentionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Mentions to delete
+     */
+    where?: MentionWhereInput
+    /**
+     * Limit how many Mentions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Mention without action
+   */
+  export type MentionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mention
+     */
+    select?: MentionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mention
+     */
+    omit?: MentionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MentionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14634,6 +15950,18 @@ export namespace Prisma {
   };
 
   export type TopicViewScalarFieldEnum = (typeof TopicViewScalarFieldEnum)[keyof typeof TopicViewScalarFieldEnum]
+
+
+  export const MentionScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    postId: 'postId',
+    mentionerId: 'mentionerId',
+    mentionedUserId: 'mentionedUserId',
+    readAt: 'readAt'
+  };
+
+  export type MentionScalarFieldEnum = (typeof MentionScalarFieldEnum)[keyof typeof MentionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -14856,6 +16184,8 @@ export namespace Prisma {
     sentMessages?: PmListRelationFilter
     receivedMessages?: PmListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    mentionsMade?: MentionListRelationFilter
+    mentionsReceived?: MentionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -14873,6 +16203,8 @@ export namespace Prisma {
     sentMessages?: PmOrderByRelationAggregateInput
     receivedMessages?: PmOrderByRelationAggregateInput
     topicViews?: TopicViewOrderByRelationAggregateInput
+    mentionsMade?: MentionOrderByRelationAggregateInput
+    mentionsReceived?: MentionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -14893,6 +16225,8 @@ export namespace Prisma {
     sentMessages?: PmListRelationFilter
     receivedMessages?: PmListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    mentionsMade?: MentionListRelationFilter
+    mentionsReceived?: MentionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -15313,6 +16647,7 @@ export namespace Prisma {
     authorId?: StringFilter<"Post"> | string
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mentions?: MentionListRelationFilter
   }
 
   export type PostOrderByWithRelationInput = {
@@ -15324,6 +16659,7 @@ export namespace Prisma {
     authorId?: SortOrder
     topic?: TopicOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
+    mentions?: MentionOrderByRelationAggregateInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -15338,6 +16674,7 @@ export namespace Prisma {
     authorId?: StringFilter<"Post"> | string
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mentions?: MentionListRelationFilter
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -15479,6 +16816,73 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"TopicView"> | string
     topicId?: StringWithAggregatesFilter<"TopicView"> | string
     lastViewedAt?: DateTimeWithAggregatesFilter<"TopicView"> | Date | string
+  }
+
+  export type MentionWhereInput = {
+    AND?: MentionWhereInput | MentionWhereInput[]
+    OR?: MentionWhereInput[]
+    NOT?: MentionWhereInput | MentionWhereInput[]
+    id?: StringFilter<"Mention"> | string
+    createdAt?: DateTimeFilter<"Mention"> | Date | string
+    postId?: StringFilter<"Mention"> | string
+    mentionerId?: StringFilter<"Mention"> | string
+    mentionedUserId?: StringFilter<"Mention"> | string
+    readAt?: DateTimeNullableFilter<"Mention"> | Date | string | null
+    post?: XOR<PostScalarRelationFilter, PostWhereInput>
+    mentioner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mentionedUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type MentionOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    mentionerId?: SortOrder
+    mentionedUserId?: SortOrder
+    readAt?: SortOrderInput | SortOrder
+    post?: PostOrderByWithRelationInput
+    mentioner?: UserOrderByWithRelationInput
+    mentionedUser?: UserOrderByWithRelationInput
+  }
+
+  export type MentionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    postId_mentionedUserId?: MentionPostIdMentionedUserIdCompoundUniqueInput
+    AND?: MentionWhereInput | MentionWhereInput[]
+    OR?: MentionWhereInput[]
+    NOT?: MentionWhereInput | MentionWhereInput[]
+    createdAt?: DateTimeFilter<"Mention"> | Date | string
+    postId?: StringFilter<"Mention"> | string
+    mentionerId?: StringFilter<"Mention"> | string
+    mentionedUserId?: StringFilter<"Mention"> | string
+    readAt?: DateTimeNullableFilter<"Mention"> | Date | string | null
+    post?: XOR<PostScalarRelationFilter, PostWhereInput>
+    mentioner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    mentionedUser?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "postId_mentionedUserId">
+
+  export type MentionOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    mentionerId?: SortOrder
+    mentionedUserId?: SortOrder
+    readAt?: SortOrderInput | SortOrder
+    _count?: MentionCountOrderByAggregateInput
+    _max?: MentionMaxOrderByAggregateInput
+    _min?: MentionMinOrderByAggregateInput
+  }
+
+  export type MentionScalarWhereWithAggregatesInput = {
+    AND?: MentionScalarWhereWithAggregatesInput | MentionScalarWhereWithAggregatesInput[]
+    OR?: MentionScalarWhereWithAggregatesInput[]
+    NOT?: MentionScalarWhereWithAggregatesInput | MentionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Mention"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Mention"> | Date | string
+    postId?: StringWithAggregatesFilter<"Mention"> | string
+    mentionerId?: StringWithAggregatesFilter<"Mention"> | string
+    mentionedUserId?: StringWithAggregatesFilter<"Mention"> | string
+    readAt?: DateTimeNullableWithAggregatesFilter<"Mention"> | Date | string | null
   }
 
   export type AccountCreateInput = {
@@ -15648,6 +17052,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -15665,6 +17071,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUpdateInput = {
@@ -15682,6 +17090,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -15699,6 +17109,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -16149,6 +17561,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     topic: TopicCreateNestedOneWithoutPostsInput
     author: UserCreateNestedOneWithoutPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -16158,6 +17571,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     topicId: string
     authorId: string
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostUpdateInput = {
@@ -16167,6 +17581,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -16176,6 +17591,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostCreateManyInput = {
@@ -16309,6 +17725,66 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MentionCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    readAt?: Date | string | null
+    post: PostCreateNestedOneWithoutMentionsInput
+    mentioner: UserCreateNestedOneWithoutMentionsMadeInput
+    mentionedUser: UserCreateNestedOneWithoutMentionsReceivedInput
+  }
+
+  export type MentionUncheckedCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionerId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    post?: PostUpdateOneRequiredWithoutMentionsNestedInput
+    mentioner?: UserUpdateOneRequiredWithoutMentionsMadeNestedInput
+    mentionedUser?: UserUpdateOneRequiredWithoutMentionsReceivedNestedInput
+  }
+
+  export type MentionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionCreateManyInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionerId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -16567,6 +18043,12 @@ export namespace Prisma {
     none?: TopicViewWhereInput
   }
 
+  export type MentionListRelationFilter = {
+    every?: MentionWhereInput
+    some?: MentionWhereInput
+    none?: MentionWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -16592,6 +18074,10 @@ export namespace Prisma {
   }
 
   export type TopicViewOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MentionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17021,6 +18507,43 @@ export namespace Prisma {
     lastViewedAt?: SortOrder
   }
 
+  export type PostScalarRelationFilter = {
+    is?: PostWhereInput
+    isNot?: PostWhereInput
+  }
+
+  export type MentionPostIdMentionedUserIdCompoundUniqueInput = {
+    postId: string
+    mentionedUserId: string
+  }
+
+  export type MentionCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    mentionerId?: SortOrder
+    mentionedUserId?: SortOrder
+    readAt?: SortOrder
+  }
+
+  export type MentionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    mentionerId?: SortOrder
+    mentionedUserId?: SortOrder
+    readAt?: SortOrder
+  }
+
+  export type MentionMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    mentionerId?: SortOrder
+    mentionedUserId?: SortOrder
+    readAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -17125,6 +18648,20 @@ export namespace Prisma {
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
   }
 
+  export type MentionCreateNestedManyWithoutMentionerInput = {
+    create?: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput> | MentionCreateWithoutMentionerInput[] | MentionUncheckedCreateWithoutMentionerInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionerInput | MentionCreateOrConnectWithoutMentionerInput[]
+    createMany?: MentionCreateManyMentionerInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
+  export type MentionCreateNestedManyWithoutMentionedUserInput = {
+    create?: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput> | MentionCreateWithoutMentionedUserInput[] | MentionUncheckedCreateWithoutMentionedUserInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionedUserInput | MentionCreateOrConnectWithoutMentionedUserInput[]
+    createMany?: MentionCreateManyMentionedUserInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -17179,6 +18716,20 @@ export namespace Prisma {
     connectOrCreate?: TopicViewCreateOrConnectWithoutUserInput | TopicViewCreateOrConnectWithoutUserInput[]
     createMany?: TopicViewCreateManyUserInputEnvelope
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
+  }
+
+  export type MentionUncheckedCreateNestedManyWithoutMentionerInput = {
+    create?: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput> | MentionCreateWithoutMentionerInput[] | MentionUncheckedCreateWithoutMentionerInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionerInput | MentionCreateOrConnectWithoutMentionerInput[]
+    createMany?: MentionCreateManyMentionerInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
+  export type MentionUncheckedCreateNestedManyWithoutMentionedUserInput = {
+    create?: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput> | MentionCreateWithoutMentionedUserInput[] | MentionUncheckedCreateWithoutMentionedUserInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionedUserInput | MentionCreateOrConnectWithoutMentionedUserInput[]
+    createMany?: MentionCreateManyMentionedUserInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -17297,6 +18848,34 @@ export namespace Prisma {
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
   }
 
+  export type MentionUpdateManyWithoutMentionerNestedInput = {
+    create?: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput> | MentionCreateWithoutMentionerInput[] | MentionUncheckedCreateWithoutMentionerInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionerInput | MentionCreateOrConnectWithoutMentionerInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutMentionerInput | MentionUpsertWithWhereUniqueWithoutMentionerInput[]
+    createMany?: MentionCreateManyMentionerInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutMentionerInput | MentionUpdateWithWhereUniqueWithoutMentionerInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutMentionerInput | MentionUpdateManyWithWhereWithoutMentionerInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type MentionUpdateManyWithoutMentionedUserNestedInput = {
+    create?: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput> | MentionCreateWithoutMentionedUserInput[] | MentionUncheckedCreateWithoutMentionedUserInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionedUserInput | MentionCreateOrConnectWithoutMentionedUserInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutMentionedUserInput | MentionUpsertWithWhereUniqueWithoutMentionedUserInput[]
+    createMany?: MentionCreateManyMentionedUserInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutMentionedUserInput | MentionUpdateWithWhereUniqueWithoutMentionedUserInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutMentionedUserInput | MentionUpdateManyWithWhereWithoutMentionedUserInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -17407,6 +18986,34 @@ export namespace Prisma {
     update?: TopicViewUpdateWithWhereUniqueWithoutUserInput | TopicViewUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TopicViewUpdateManyWithWhereWithoutUserInput | TopicViewUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
+  }
+
+  export type MentionUncheckedUpdateManyWithoutMentionerNestedInput = {
+    create?: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput> | MentionCreateWithoutMentionerInput[] | MentionUncheckedCreateWithoutMentionerInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionerInput | MentionCreateOrConnectWithoutMentionerInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutMentionerInput | MentionUpsertWithWhereUniqueWithoutMentionerInput[]
+    createMany?: MentionCreateManyMentionerInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutMentionerInput | MentionUpdateWithWhereUniqueWithoutMentionerInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutMentionerInput | MentionUpdateManyWithWhereWithoutMentionerInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type MentionUncheckedUpdateManyWithoutMentionedUserNestedInput = {
+    create?: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput> | MentionCreateWithoutMentionedUserInput[] | MentionUncheckedCreateWithoutMentionedUserInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutMentionedUserInput | MentionCreateOrConnectWithoutMentionedUserInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutMentionedUserInput | MentionUpsertWithWhereUniqueWithoutMentionedUserInput[]
+    createMany?: MentionCreateManyMentionedUserInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutMentionedUserInput | MentionUpdateWithWhereUniqueWithoutMentionedUserInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutMentionedUserInput | MentionUpdateManyWithWhereWithoutMentionedUserInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTournamentsInput = {
@@ -17725,6 +19332,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type MentionCreateNestedManyWithoutPostInput = {
+    create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
+    createMany?: MentionCreateManyPostInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
+  export type MentionUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
+    createMany?: MentionCreateManyPostInputEnvelope
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
   export type TopicUpdateOneRequiredWithoutPostsNestedInput = {
     create?: XOR<TopicCreateWithoutPostsInput, TopicUncheckedCreateWithoutPostsInput>
     connectOrCreate?: TopicCreateOrConnectWithoutPostsInput
@@ -17739,6 +19360,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPostsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type MentionUpdateManyWithoutPostNestedInput = {
+    create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutPostInput | MentionUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: MentionCreateManyPostInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutPostInput | MentionUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutPostInput | MentionUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type MentionUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
+    upsert?: MentionUpsertWithWhereUniqueWithoutPostInput | MentionUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: MentionCreateManyPostInputEnvelope
+    set?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    disconnect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    delete?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+    update?: MentionUpdateWithWhereUniqueWithoutPostInput | MentionUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: MentionUpdateManyWithWhereWithoutPostInput | MentionUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSentMessagesInput = {
@@ -17795,6 +19444,48 @@ export namespace Prisma {
     upsert?: TopicUpsertWithoutTopicViewsInput
     connect?: TopicWhereUniqueInput
     update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutTopicViewsInput, TopicUpdateWithoutTopicViewsInput>, TopicUncheckedUpdateWithoutTopicViewsInput>
+  }
+
+  export type PostCreateNestedOneWithoutMentionsInput = {
+    create?: XOR<PostCreateWithoutMentionsInput, PostUncheckedCreateWithoutMentionsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutMentionsInput
+    connect?: PostWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMentionsMadeInput = {
+    create?: XOR<UserCreateWithoutMentionsMadeInput, UserUncheckedCreateWithoutMentionsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMentionsMadeInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMentionsReceivedInput = {
+    create?: XOR<UserCreateWithoutMentionsReceivedInput, UserUncheckedCreateWithoutMentionsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMentionsReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PostUpdateOneRequiredWithoutMentionsNestedInput = {
+    create?: XOR<PostCreateWithoutMentionsInput, PostUncheckedCreateWithoutMentionsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutMentionsInput
+    upsert?: PostUpsertWithoutMentionsInput
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutMentionsInput, PostUpdateWithoutMentionsInput>, PostUncheckedUpdateWithoutMentionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMentionsMadeNestedInput = {
+    create?: XOR<UserCreateWithoutMentionsMadeInput, UserUncheckedCreateWithoutMentionsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMentionsMadeInput
+    upsert?: UserUpsertWithoutMentionsMadeInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMentionsMadeInput, UserUpdateWithoutMentionsMadeInput>, UserUncheckedUpdateWithoutMentionsMadeInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMentionsReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutMentionsReceivedInput, UserUncheckedCreateWithoutMentionsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMentionsReceivedInput
+    upsert?: UserUpsertWithoutMentionsReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMentionsReceivedInput, UserUpdateWithoutMentionsReceivedInput>, UserUncheckedUpdateWithoutMentionsReceivedInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -18028,6 +19719,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -18044,6 +19737,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -18076,6 +19771,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -18092,6 +19789,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -18108,6 +19807,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -18124,6 +19825,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -18156,6 +19859,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -18172,6 +19877,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -18326,6 +20033,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     topic: TopicCreateNestedOneWithoutPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
@@ -18334,6 +20042,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     topicId: string
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAuthorInput = {
@@ -18416,6 +20125,56 @@ export namespace Prisma {
 
   export type TopicViewCreateManyUserInputEnvelope = {
     data: TopicViewCreateManyUserInput | TopicViewCreateManyUserInput[]
+  }
+
+  export type MentionCreateWithoutMentionerInput = {
+    id?: string
+    createdAt?: Date | string
+    readAt?: Date | string | null
+    post: PostCreateNestedOneWithoutMentionsInput
+    mentionedUser: UserCreateNestedOneWithoutMentionsReceivedInput
+  }
+
+  export type MentionUncheckedCreateWithoutMentionerInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionCreateOrConnectWithoutMentionerInput = {
+    where: MentionWhereUniqueInput
+    create: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput>
+  }
+
+  export type MentionCreateManyMentionerInputEnvelope = {
+    data: MentionCreateManyMentionerInput | MentionCreateManyMentionerInput[]
+  }
+
+  export type MentionCreateWithoutMentionedUserInput = {
+    id?: string
+    createdAt?: Date | string
+    readAt?: Date | string | null
+    post: PostCreateNestedOneWithoutMentionsInput
+    mentioner: UserCreateNestedOneWithoutMentionsMadeInput
+  }
+
+  export type MentionUncheckedCreateWithoutMentionedUserInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionerId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionCreateOrConnectWithoutMentionedUserInput = {
+    where: MentionWhereUniqueInput
+    create: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput>
+  }
+
+  export type MentionCreateManyMentionedUserInputEnvelope = {
+    data: MentionCreateManyMentionedUserInput | MentionCreateManyMentionedUserInput[]
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -18649,6 +20408,50 @@ export namespace Prisma {
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
   }
 
+  export type MentionUpsertWithWhereUniqueWithoutMentionerInput = {
+    where: MentionWhereUniqueInput
+    update: XOR<MentionUpdateWithoutMentionerInput, MentionUncheckedUpdateWithoutMentionerInput>
+    create: XOR<MentionCreateWithoutMentionerInput, MentionUncheckedCreateWithoutMentionerInput>
+  }
+
+  export type MentionUpdateWithWhereUniqueWithoutMentionerInput = {
+    where: MentionWhereUniqueInput
+    data: XOR<MentionUpdateWithoutMentionerInput, MentionUncheckedUpdateWithoutMentionerInput>
+  }
+
+  export type MentionUpdateManyWithWhereWithoutMentionerInput = {
+    where: MentionScalarWhereInput
+    data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyWithoutMentionerInput>
+  }
+
+  export type MentionScalarWhereInput = {
+    AND?: MentionScalarWhereInput | MentionScalarWhereInput[]
+    OR?: MentionScalarWhereInput[]
+    NOT?: MentionScalarWhereInput | MentionScalarWhereInput[]
+    id?: StringFilter<"Mention"> | string
+    createdAt?: DateTimeFilter<"Mention"> | Date | string
+    postId?: StringFilter<"Mention"> | string
+    mentionerId?: StringFilter<"Mention"> | string
+    mentionedUserId?: StringFilter<"Mention"> | string
+    readAt?: DateTimeNullableFilter<"Mention"> | Date | string | null
+  }
+
+  export type MentionUpsertWithWhereUniqueWithoutMentionedUserInput = {
+    where: MentionWhereUniqueInput
+    update: XOR<MentionUpdateWithoutMentionedUserInput, MentionUncheckedUpdateWithoutMentionedUserInput>
+    create: XOR<MentionCreateWithoutMentionedUserInput, MentionUncheckedCreateWithoutMentionedUserInput>
+  }
+
+  export type MentionUpdateWithWhereUniqueWithoutMentionedUserInput = {
+    where: MentionWhereUniqueInput
+    data: XOR<MentionUpdateWithoutMentionedUserInput, MentionUncheckedUpdateWithoutMentionedUserInput>
+  }
+
+  export type MentionUpdateManyWithWhereWithoutMentionedUserInput = {
+    where: MentionScalarWhereInput
+    data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyWithoutMentionedUserInput>
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -18663,6 +20466,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -18679,6 +20484,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -18711,6 +20518,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -18727,6 +20536,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -19019,6 +20830,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -19035,6 +20848,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -19048,6 +20863,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     author: UserCreateNestedOneWithoutPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutTopicInput = {
@@ -19056,6 +20872,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutTopicInput = {
@@ -19142,6 +20959,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -19158,6 +20977,8 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -19235,6 +21056,8 @@ export namespace Prisma {
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -19251,11 +21074,38 @@ export namespace Prisma {
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
+  }
+
+  export type MentionCreateWithoutPostInput = {
+    id?: string
+    createdAt?: Date | string
+    readAt?: Date | string | null
+    mentioner: UserCreateNestedOneWithoutMentionsMadeInput
+    mentionedUser: UserCreateNestedOneWithoutMentionsReceivedInput
+  }
+
+  export type MentionUncheckedCreateWithoutPostInput = {
+    id?: string
+    createdAt?: Date | string
+    mentionerId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionCreateOrConnectWithoutPostInput = {
+    where: MentionWhereUniqueInput
+    create: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput>
+  }
+
+  export type MentionCreateManyPostInputEnvelope = {
+    data: MentionCreateManyPostInput | MentionCreateManyPostInput[]
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -19318,6 +21168,8 @@ export namespace Prisma {
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -19334,6 +21186,24 @@ export namespace Prisma {
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+  }
+
+  export type MentionUpsertWithWhereUniqueWithoutPostInput = {
+    where: MentionWhereUniqueInput
+    update: XOR<MentionUpdateWithoutPostInput, MentionUncheckedUpdateWithoutPostInput>
+    create: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput>
+  }
+
+  export type MentionUpdateWithWhereUniqueWithoutPostInput = {
+    where: MentionWhereUniqueInput
+    data: XOR<MentionUpdateWithoutPostInput, MentionUncheckedUpdateWithoutPostInput>
+  }
+
+  export type MentionUpdateManyWithWhereWithoutPostInput = {
+    where: MentionScalarWhereInput
+    data: XOR<MentionUpdateManyMutationInput, MentionUncheckedUpdateManyWithoutPostInput>
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -19350,6 +21220,8 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -19366,6 +21238,8 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -19387,6 +21261,8 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -19403,6 +21279,8 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -19435,6 +21313,8 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -19451,6 +21331,8 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -19478,6 +21360,8 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -19494,6 +21378,8 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -19510,6 +21396,8 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     sentMessages?: PmCreateNestedManyWithoutSenderInput
     receivedMessages?: PmCreateNestedManyWithoutReceiverInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -19526,6 +21414,8 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
     receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -19587,6 +21477,8 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     sentMessages?: PmUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -19603,6 +21495,8 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -19638,6 +21532,234 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
+  export type PostCreateWithoutMentionsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topic: TopicCreateNestedOneWithoutPostsInput
+    author: UserCreateNestedOneWithoutPostsInput
+  }
+
+  export type PostUncheckedCreateWithoutMentionsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+  }
+
+  export type PostCreateOrConnectWithoutMentionsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutMentionsInput, PostUncheckedCreateWithoutMentionsInput>
+  }
+
+  export type UserCreateWithoutMentionsMadeInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMentionsMadeInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMentionsMadeInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMentionsMadeInput, UserUncheckedCreateWithoutMentionsMadeInput>
+  }
+
+  export type UserCreateWithoutMentionsReceivedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+  }
+
+  export type UserUncheckedCreateWithoutMentionsReceivedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+  }
+
+  export type UserCreateOrConnectWithoutMentionsReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMentionsReceivedInput, UserUncheckedCreateWithoutMentionsReceivedInput>
+  }
+
+  export type PostUpsertWithoutMentionsInput = {
+    update: XOR<PostUpdateWithoutMentionsInput, PostUncheckedUpdateWithoutMentionsInput>
+    create: XOR<PostCreateWithoutMentionsInput, PostUncheckedCreateWithoutMentionsInput>
+    where?: PostWhereInput
+  }
+
+  export type PostUpdateToOneWithWhereWithoutMentionsInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutMentionsInput, PostUncheckedUpdateWithoutMentionsInput>
+  }
+
+  export type PostUpdateWithoutMentionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutMentionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserUpsertWithoutMentionsMadeInput = {
+    update: XOR<UserUpdateWithoutMentionsMadeInput, UserUncheckedUpdateWithoutMentionsMadeInput>
+    create: XOR<UserCreateWithoutMentionsMadeInput, UserUncheckedCreateWithoutMentionsMadeInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMentionsMadeInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMentionsMadeInput, UserUncheckedUpdateWithoutMentionsMadeInput>
+  }
+
+  export type UserUpdateWithoutMentionsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMentionsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+  }
+
+  export type UserUpsertWithoutMentionsReceivedInput = {
+    update: XOR<UserUpdateWithoutMentionsReceivedInput, UserUncheckedUpdateWithoutMentionsReceivedInput>
+    create: XOR<UserCreateWithoutMentionsReceivedInput, UserUncheckedCreateWithoutMentionsReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMentionsReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMentionsReceivedInput, UserUncheckedUpdateWithoutMentionsReceivedInput>
+  }
+
+  export type UserUpdateWithoutMentionsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -19722,6 +21844,22 @@ export namespace Prisma {
   export type TopicViewCreateManyUserInput = {
     topicId: string
     lastViewedAt?: Date | string
+  }
+
+  export type MentionCreateManyMentionerInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionCreateManyMentionedUserInput = {
+    id?: string
+    createdAt?: Date | string
+    postId: string
+    mentionerId: string
+    readAt?: Date | string | null
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -19893,6 +22031,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAuthorInput = {
@@ -19901,6 +22040,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topicId?: StringFieldUpdateOperationsInput | string
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutAuthorInput = {
@@ -19978,6 +22118,54 @@ export namespace Prisma {
   export type TopicViewUncheckedUpdateManyWithoutUserInput = {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MentionUpdateWithoutMentionerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    post?: PostUpdateOneRequiredWithoutMentionsNestedInput
+    mentionedUser?: UserUpdateOneRequiredWithoutMentionsReceivedNestedInput
+  }
+
+  export type MentionUncheckedUpdateWithoutMentionerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionUncheckedUpdateManyWithoutMentionerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionUpdateWithoutMentionedUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    post?: PostUpdateOneRequiredWithoutMentionsNestedInput
+    mentioner?: UserUpdateOneRequiredWithoutMentionsMadeNestedInput
+  }
+
+  export type MentionUncheckedUpdateWithoutMentionedUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionUncheckedUpdateManyWithoutMentionedUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -20115,6 +22303,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutTopicInput = {
@@ -20123,6 +22312,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutTopicInput = {
@@ -20146,6 +22336,38 @@ export namespace Prisma {
   export type TopicViewUncheckedUpdateManyWithoutTopicInput = {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MentionCreateManyPostInput = {
+    id?: string
+    createdAt?: Date | string
+    mentionerId: string
+    mentionedUserId: string
+    readAt?: Date | string | null
+  }
+
+  export type MentionUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mentioner?: UserUpdateOneRequiredWithoutMentionsMadeNestedInput
+    mentionedUser?: UserUpdateOneRequiredWithoutMentionsReceivedNestedInput
+  }
+
+  export type MentionUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MentionUncheckedUpdateManyWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mentionerId?: StringFieldUpdateOperationsInput | string
+    mentionedUserId?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 

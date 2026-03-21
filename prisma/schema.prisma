@@ -50,6 +50,8 @@ model User {
   sentMessages     Pm[] @relation("SentMessages")
   receivedMessages Pm[] @relation("ReceivedMessages")
   topicViews       TopicView[]
+  mentionsMade     Mention[] @relation("MentionsMade")
+  mentionsReceived Mention[] @relation("MentionsReceived")
 }
  
 model VerificationToken {
@@ -142,6 +144,7 @@ model Post {
   
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
+  mentions  Mention[]
 }
 
 model Pm {
@@ -163,4 +166,19 @@ model TopicView {
   user         User     @relation(fields: [userId], references: [id])
   topic        Topic    @relation(fields: [topicId], references: [id])
   @@id([userId, topicId])
+}
+
+model Mention {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  postId          String
+  post            Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  mentionerId     String
+  mentioner       User     @relation("MentionsMade", fields: [mentionerId], references: [id])
+  mentionedUserId String
+  mentionedUser   User     @relation("MentionsReceived", fields: [mentionedUserId], references: [id])
+  readAt          DateTime?
+
+  @@unique([postId, mentionedUserId])
+  @@index([mentionedUserId])
 }
