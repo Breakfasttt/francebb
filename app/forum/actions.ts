@@ -220,3 +220,48 @@ export async function deleteForum(forumId: string) {
 
   redirect("/forum");
 }
+
+export async function createTopic(formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Vous devez être connecté pour créer un sujet.");
+  }
+
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+  const forumId = formData.get("forumId") as string;
+  const isSticky = formData.get("isSticky") === "on";
+  const isLocked = formData.get("isLocked") === "on";
+
+  if (!title || !content || !forumId) {
+    throw new Error("Titre, contenu et forum sont obligatoires.");
+  }
+
+  // Create the topic AND the first post in a transaction
+  const topic = await prisma.$transaction(async (tx) => {
+    const newTopic = await tx.topic.create({
+      data: {
+        title,
+        forumId,
+        authorId: session.user.id,
+        isSticky: isSticky && isModerator(session.user.role),
+        isLocked: isLocked && isModerator(session.user.role),
+      }
+    });
+
+    await tx.post.create({
+      data: {
+        content,
+        topicId: newTopic.id,
+        authorId: session.user.id,
+      }
+    });
+
+    return newTopic;
+  });
+
+  revalidatePath(`/forum/${forumId}`);
+  revalidatePath("/forum/unread");
+  
+  redirect(`/forum/topic/${topic.id}`);
+}

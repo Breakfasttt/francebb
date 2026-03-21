@@ -79,11 +79,6 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
        <div className="forum-layout">
          <div className="forum-main-content">
 
-      <div className="forum-actions" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <button className="reset-btn" style={{ background: 'var(--primary)', color: 'white', border: 'none' }}>
-          Nouveau Sujet
-        </button>
-      </div>
 
       {forum.subForums.length > 0 && (
         <div className="sub-forums-section" style={{ marginBottom: '3rem' }}>

@@ -33,6 +33,16 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
           </div>
         )}
 
+        {/* Nouveau Sujet */}
+        {forumId && (
+          <div className="sidebar-widget new-topic-widget">
+            <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--primary)' }}>
+              <PlusCircle size={18} />
+              <span>Nouveau Sujet</span>
+            </Link>
+          </div>
+        )}
+
         {/* Posts Non Lus */}
         <div className="sidebar-widget unread-widget">
           <Link href="/forum/unread" className="widget-button">
