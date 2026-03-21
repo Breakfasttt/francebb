@@ -19,6 +19,8 @@
 body {
   background: var(--background);
   background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
+  background-attachment: fixed;
+  background-size: cover;
   color: var(--foreground);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;

@@ -268,12 +268,17 @@
 }
 
 .recent-post-topic {
-  color: var(--accent);
+  color: white;
   font-weight: 600;
   font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.recent-post-item.has-new .recent-post-topic {
+  color: var(--accent);
 }
 
 .recent-post-meta {

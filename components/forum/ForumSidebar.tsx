@@ -1,12 +1,14 @@
 import { getUnreadMessagesCount, getRecentPosts, getRandomPostUrl, getUnreadTopicsCount } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "./DeleteForumButton";
 import MarkAllAsReadButton from "./MarkAllAsReadButton";
+
+const POSTS_PER_PAGE = 20;
 
 export default async function ForumSidebar({ forumId, forumName, categoryId, parentForumId }: { forumId?: string; forumName?: string; categoryId?: string; parentForumId?: string }) {
   const unreadMessages = await getUnreadMessagesCount();
@@ -64,14 +66,26 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
                 Dernières activités
               </h3>
               <div className="recent-posts-list">
-                {recentPosts.map((post) => (
-                  <Link key={post.id} href={`/forum/topic/${post.topic.id}`} className="recent-post-item">
-                    <span className="recent-post-topic">{post.topic.title}</span>
-                    <span className="recent-post-meta">
-                      Par <strong>{post.author.name}</strong> • {new Date(post.createdAt).toLocaleDateString("fr-FR")}
-                    </span>
-                  </Link>
-                ))}
+                {recentPosts.map((post) => {
+                  const page = Math.ceil(post.topic._count.posts / POSTS_PER_PAGE);
+                  const postUrl = `/forum/topic/${post.topic.id}?page=${page}#post-${post.id}`;
+                  
+                  return (
+                    <Link 
+                      key={post.id} 
+                      href={postUrl} 
+                      className={`recent-post-item ${!post.isRead ? 'has-new' : ''}`}
+                    >
+                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        {post.topic.title}
+                        {!post.isRead && <Bell size={12} fill="var(--accent)" color="var(--accent)" className="animate-pulse-subtle" />}
+                      </span>
+                      <span className="recent-post-meta">
+                        Par <strong>{post.author.name}</strong> • {new Date(post.createdAt).toLocaleDateString("fr-FR")}
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

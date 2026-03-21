@@ -19,16 +19,33 @@ export async function getUnreadMessagesCount() {
 }
 
 export async function getRecentPosts(limit: number = 3) {
-  return await prisma.post.findMany({
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const posts = await prisma.post.findMany({
     take: limit,
     orderBy: {
       createdAt: "desc"
     },
     include: {
-      topic: true,
+      topic: {
+        include: {
+          _count: {
+            select: { posts: true }
+          },
+          topicViews: {
+            where: { userId: userId || "" }
+          }
+        }
+      },
       author: true
     }
   });
+
+  return posts.map(post => ({
+    ...post,
+    isRead: post.topic.topicViews[0] ? post.topic.updatedAt <= post.topic.topicViews[0].lastViewedAt : false
+  }));
 }
 
 export async function getRandomPostUrl() {
