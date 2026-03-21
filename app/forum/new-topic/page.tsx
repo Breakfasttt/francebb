@@ -42,49 +42,63 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
         </div>
       </header>
  
-      <div style={{ maxWidth: '800px', margin: '0 auto', background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
-        <form action={createTopic} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <input type="hidden" name="forumId" value={forumId} />
-          
-          <div className="form-group">
-            <label htmlFor="title" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Titre du sujet</label>
-            <TitleInputWithSmiley />
-          </div>
+      <form action={createTopic}>
+        <input type="hidden" name="forumId" value={forumId} />
+        
+        <div className="forum-layout">
+          <div className="forum-main-content">
+            <div style={{ background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div className="form-group">
+                <label htmlFor="title" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Titre du sujet</label>
+                <TitleInputWithSmiley />
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="content" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Message</label>
-            <BBCodeEditor
-              id="content"
-              name="content"
-              placeholder="Tapez votre message ici... Utilisez les boutons ou les balises BBCode."
-              rows={12}
-            />
-          </div>
-
-          {userCanStick && (
-            <div className="form-group" style={{ display: 'flex', gap: '1.5rem', padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                <input type="checkbox" name="isSticky" value="true" />
-                <span>Épingler le sujet (Post-it)</span>
-              </label>
-              
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                <input type="checkbox" name="isLocked" value="true" />
-                <span>Verrouiller le sujet</span>
-              </label>
+              <div className="form-group">
+                <label htmlFor="content" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Message</label>
+                <BBCodeEditor
+                  id="content"
+                  name="content"
+                  placeholder="Tapez votre message ici... Utilisez les boutons ou les balises BBCode."
+                  rows={10}
+                />
+              </div>
             </div>
-          )}
-
-          <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-            <Link href={`/forum/${forumId}`} className="widget-button secondary-btn" style={{ width: 'auto' }}>
-              Annuler
-            </Link>
-            <button type="submit" className="widget-button" style={{ width: 'auto', background: 'var(--primary)', padding: '0.8rem 2rem', fontSize: '1.1rem' }}>
-              Créer le sujet
-            </button>
           </div>
-        </form>
-      </div>
+
+          <aside className="forum-sidebar">
+            <div className="sidebar-sticky-inner">
+              <div className="forum-widget" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem', margin: 0 }}>
+                  <MessageSquarePlus size={16} /> Publication
+                </h3>
+
+                {userCanStick && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
+                      <input type="checkbox" name="isSticky" value="true" style={{ width: '16px', height: '16px' }} />
+                      <span>Épingler (Post-it)</span>
+                    </label>
+                    
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
+                      <input type="checkbox" name="isLocked" value="true" style={{ width: '16px', height: '16px' }} />
+                      <span>Verrouiller le sujet</span>
+                    </label>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.5rem' }}>
+                  <button type="submit" className="widget-button" style={{ width: '100%', background: 'var(--primary)', padding: '0.8rem', fontSize: '1.1rem', justifyContent: 'center' }}>
+                    Créer le sujet
+                  </button>
+                  <Link href={`/forum/${forumId}`} className="widget-button secondary-btn" style={{ width: '100%', justifyContent: 'center' }}>
+                    Annuler
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </form>
    </main>
   );
 }

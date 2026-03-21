@@ -48,6 +48,9 @@ export function parseBBCode(text: string): string {
   while (/\[s\]((?:(?!\[s\]).)*?)\[\/s\]/i.test(html)) {
     html = html.replace(/\[s\]((?:(?!\[s\]).)*?)\[\/s\]/i, "<s>$1</s>");
   }
+  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
+    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
+  }
   while (/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i.test(html)) {
     html = html.replace(
       /\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i,
@@ -128,6 +131,9 @@ export function parseInlineBBCode(text: string): string {
   }
   while (/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i.test(html)) {
     html = html.replace(/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i, "<s>$1</s>");
+  }
+  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
+    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
   }
 
   // Strip block/media tags completely so user sees just the raw text or nothing

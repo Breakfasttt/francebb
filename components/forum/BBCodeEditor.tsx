@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bold, Italic, Underline, Link as LinkIcon, Image as ImageIcon, Youtube, Eye, PenLine, Loader2, Smile } from "lucide-react";
+import { Bold, Italic, Underline, Link as LinkIcon, Image as ImageIcon, Youtube, Eye, EyeOff, PenLine, Loader2, Smile, Palette } from "lucide-react";
 import SmileyGrid from "./SmileyGrid";
 import { parseBBCode } from "@/lib/bbcode";
 import Toast from "@/components/Toast";
@@ -21,7 +21,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | null>(null);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -100,7 +100,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
@@ -186,6 +186,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             <Underline size={16} />
           </button>
           
+          <button type="button" onClick={() => toggleTool('color')} className={`toolbar-btn ${activeTool === 'color' ? 'active-tool' : ''}`} title="Couleur du texte">
+            <Palette size={16} />
+          </button>
+          
           <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
           
           <button type="button" onClick={() => toggleTool('link')} className={`toolbar-btn ${activeTool === 'link' ? 'active-tool' : ''}`} title="Ajouter un lien">
@@ -220,7 +224,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             style={{ padding: "0.4rem 0.8rem", height: "auto", fontSize: "0.85rem" }}
           >
             {isPreview ? (
-              <><PenLine size={16} /> Éditer</>
+              <><EyeOff size={16} /> Fermer l'aperçu</>
             ) : (
               <><Eye size={16} /> Aperçu</>
             )}
@@ -285,6 +289,43 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 {isUploading ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
                 {isUploading ? "Upload en cours..." : "Uploader depuis mon ordinateur (Imgur)"}
               </button>
+            </div>
+          )}
+          {activeTool === 'color' && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              {[
+                { name: "Rouge", hex: "#ef4444" },
+                { name: "Orange", hex: "#f97316" },
+                { name: "Jaune", hex: "#eab308" },
+                { name: "Vert", hex: "#22c55e" },
+                { name: "Cyan", hex: "#06b6d4" },
+                { name: "Bleu", hex: "#3b82f6" },
+                { name: "Violet", hex: "#a855f7" },
+                { name: "Rose", hex: "#ec4899" },
+                { name: "Gris", hex: "#9ca3af" },
+                { name: "Blanc", hex: "#ffffff" }
+              ].map(color => (
+                <button
+                  key={color.hex}
+                  type="button"
+                  title={color.name}
+                  onClick={() => {
+                    insertTag(`[color=${color.hex}]`, "[/color]");
+                    setActiveTool(null);
+                  }}
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    background: color.hex,
+                    border: "2px solid rgba(255,255,255,0.1)",
+                    cursor: "pointer",
+                    transition: "transform 0.2s"
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                />
+              ))}
             </div>
           )}
           {activeTool === 'smileys' && (
