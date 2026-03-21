@@ -202,8 +202,7 @@ exports.Prisma.TopicScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   forumId: 'forumId',
-  authorId: 'authorId',
-  isDeleted: 'isDeleted'
+  authorId: 'authorId'
 };
 
 exports.Prisma.PostScalarFieldEnum = {

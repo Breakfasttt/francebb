@@ -6,14 +6,14 @@ import { NextResponse } from "next/server";
 export const auth = async () => {
   noStore();
   const userId = "user_test_breakyt";
-  
+
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId }
     });
 
     const now = new Date().toLocaleTimeString();
-    console.log(`[AUTH @ ${now}] Session demandée pour ${userId}. Trouvé en base : ${user?.name || "aucun (par défaut)"}`);
+    //console.log(`[AUTH @ ${now}] Session demandée pour ${userId}. Trouvé en base : ${user?.name || "aucun (par défaut)"}`);
 
     return {
       user: user || {
