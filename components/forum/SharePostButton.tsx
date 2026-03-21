@@ -11,6 +11,7 @@ interface SharePostButtonProps {
 
 export default function SharePostButton({ postId, topicId, page }: SharePostButtonProps) {
   const [copied, setCopied] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   async function handleShare() {
     const url = `${window.location.origin}/forum/topic/${topicId}?page=${page}#post-${postId}`;
@@ -23,7 +24,9 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
     <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
       <button
         onClick={handleShare}
-        title="Copier le lien du message"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        className="share-post-btn"
         style={{
           background: 'none',
           border: 'none',
@@ -34,16 +37,38 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
           justifyContent: 'center',
           padding: '2px 4px',
           borderRadius: '4px',
-          transition: 'color 0.2s',
+          transition: 'all 0.2s ease',
         }}
       >
         {copied ? <Check size={13} /> : <Share2 size={13} />}
       </button>
 
+      {showTooltip && !copied && (
+        <div style={{
+          position: 'absolute',
+          bottom: '125%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(0,0,0,0.85)',
+          color: 'white',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          fontSize: '0.7rem',
+          whiteSpace: 'nowrap',
+          zIndex: 100,
+          pointerEvents: 'none',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          animation: 'fadeInUp 0.2s ease-out'
+        }}>
+          Partager ce post
+        </div>
+      )}
+
       {copied && (
         <div style={{
           position: 'absolute',
-          bottom: '120%',
+          bottom: '125%',
           left: '50%',
           transform: 'translateX(-50%)',
           background: '#22c55e',
@@ -61,6 +86,13 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
           Lien copié !
         </div>
       )}
+
+      <style jsx>{`
+        .share-post-btn:hover {
+          color: ${copied ? '#22c55e' : 'var(--accent)'} !important;
+          background: rgba(255,255,255,0.05) !important;
+        }
+      `}</style>
     </div>
   );
 }

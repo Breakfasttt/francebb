@@ -13792,18 +13792,21 @@ export namespace Prisma {
     userId: string | null
     topicId: string | null
     lastViewedAt: Date | null
+    lastPostId: string | null
   }
 
   export type TopicViewMaxAggregateOutputType = {
     userId: string | null
     topicId: string | null
     lastViewedAt: Date | null
+    lastPostId: string | null
   }
 
   export type TopicViewCountAggregateOutputType = {
     userId: number
     topicId: number
     lastViewedAt: number
+    lastPostId: number
     _all: number
   }
 
@@ -13812,18 +13815,21 @@ export namespace Prisma {
     userId?: true
     topicId?: true
     lastViewedAt?: true
+    lastPostId?: true
   }
 
   export type TopicViewMaxAggregateInputType = {
     userId?: true
     topicId?: true
     lastViewedAt?: true
+    lastPostId?: true
   }
 
   export type TopicViewCountAggregateInputType = {
     userId?: true
     topicId?: true
     lastViewedAt?: true
+    lastPostId?: true
     _all?: true
   }
 
@@ -13903,6 +13909,7 @@ export namespace Prisma {
     userId: string
     topicId: string
     lastViewedAt: Date
+    lastPostId: string | null
     _count: TopicViewCountAggregateOutputType | null
     _min: TopicViewMinAggregateOutputType | null
     _max: TopicViewMaxAggregateOutputType | null
@@ -13926,6 +13933,7 @@ export namespace Prisma {
     userId?: boolean
     topicId?: boolean
     lastViewedAt?: boolean
+    lastPostId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -13934,6 +13942,7 @@ export namespace Prisma {
     userId?: boolean
     topicId?: boolean
     lastViewedAt?: boolean
+    lastPostId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -13942,6 +13951,7 @@ export namespace Prisma {
     userId?: boolean
     topicId?: boolean
     lastViewedAt?: boolean
+    lastPostId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -13950,9 +13960,10 @@ export namespace Prisma {
     userId?: boolean
     topicId?: boolean
     lastViewedAt?: boolean
+    lastPostId?: boolean
   }
 
-  export type TopicViewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "topicId" | "lastViewedAt", ExtArgs["result"]["topicView"]>
+  export type TopicViewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "topicId" | "lastViewedAt" | "lastPostId", ExtArgs["result"]["topicView"]>
   export type TopicViewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -13976,6 +13987,7 @@ export namespace Prisma {
       userId: string
       topicId: string
       lastViewedAt: Date
+      lastPostId: string | null
     }, ExtArgs["result"]["topicView"]>
     composites: {}
   }
@@ -14404,6 +14416,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"TopicView", 'String'>
     readonly topicId: FieldRef<"TopicView", 'String'>
     readonly lastViewedAt: FieldRef<"TopicView", 'DateTime'>
+    readonly lastPostId: FieldRef<"TopicView", 'String'>
   }
     
 
@@ -16066,7 +16079,8 @@ export namespace Prisma {
   export const TopicViewScalarFieldEnum: {
     userId: 'userId',
     topicId: 'topicId',
-    lastViewedAt: 'lastViewedAt'
+    lastViewedAt: 'lastViewedAt',
+    lastPostId: 'lastPostId'
   };
 
   export type TopicViewScalarFieldEnum = (typeof TopicViewScalarFieldEnum)[keyof typeof TopicViewScalarFieldEnum]
@@ -16922,6 +16936,7 @@ export namespace Prisma {
     userId?: StringFilter<"TopicView"> | string
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
+    lastPostId?: StringNullableFilter<"TopicView"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
   }
@@ -16930,6 +16945,7 @@ export namespace Prisma {
     userId?: SortOrder
     topicId?: SortOrder
     lastViewedAt?: SortOrder
+    lastPostId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
   }
@@ -16942,6 +16958,7 @@ export namespace Prisma {
     userId?: StringFilter<"TopicView"> | string
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
+    lastPostId?: StringNullableFilter<"TopicView"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
   }, "userId_topicId">
@@ -16950,6 +16967,7 @@ export namespace Prisma {
     userId?: SortOrder
     topicId?: SortOrder
     lastViewedAt?: SortOrder
+    lastPostId?: SortOrderInput | SortOrder
     _count?: TopicViewCountOrderByAggregateInput
     _max?: TopicViewMaxOrderByAggregateInput
     _min?: TopicViewMinOrderByAggregateInput
@@ -16962,6 +16980,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"TopicView"> | string
     topicId?: StringWithAggregatesFilter<"TopicView"> | string
     lastViewedAt?: DateTimeWithAggregatesFilter<"TopicView"> | Date | string
+    lastPostId?: StringNullableWithAggregatesFilter<"TopicView"> | string | null
   }
 
   export type MentionWhereInput = {
@@ -17866,6 +17885,7 @@ export namespace Prisma {
 
   export type TopicViewCreateInput = {
     lastViewedAt?: Date | string
+    lastPostId?: string | null
     user: UserCreateNestedOneWithoutTopicViewsInput
     topic: TopicCreateNestedOneWithoutTopicViewsInput
   }
@@ -17874,10 +17894,12 @@ export namespace Prisma {
     userId: string
     topicId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type TopicViewUpdateInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutTopicViewsNestedInput
     topic?: TopicUpdateOneRequiredWithoutTopicViewsNestedInput
   }
@@ -17886,22 +17908,26 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicViewCreateManyInput = {
     userId: string
     topicId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type TopicViewUpdateManyMutationInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicViewUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MentionCreateInput = {
@@ -18687,18 +18713,21 @@ export namespace Prisma {
     userId?: SortOrder
     topicId?: SortOrder
     lastViewedAt?: SortOrder
+    lastPostId?: SortOrder
   }
 
   export type TopicViewMaxOrderByAggregateInput = {
     userId?: SortOrder
     topicId?: SortOrder
     lastViewedAt?: SortOrder
+    lastPostId?: SortOrder
   }
 
   export type TopicViewMinOrderByAggregateInput = {
     userId?: SortOrder
     topicId?: SortOrder
     lastViewedAt?: SortOrder
+    lastPostId?: SortOrder
   }
 
   export type PostScalarRelationFilter = {
@@ -20378,12 +20407,14 @@ export namespace Prisma {
 
   export type TopicViewCreateWithoutUserInput = {
     lastViewedAt?: Date | string
+    lastPostId?: string | null
     topic: TopicCreateNestedOneWithoutTopicViewsInput
   }
 
   export type TopicViewUncheckedCreateWithoutUserInput = {
     topicId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type TopicViewCreateOrConnectWithoutUserInput = {
@@ -20713,6 +20744,7 @@ export namespace Prisma {
     userId?: StringFilter<"TopicView"> | string
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
+    lastPostId?: StringNullableFilter<"TopicView"> | string | null
   }
 
   export type MentionUpsertWithWhereUniqueWithoutMentionerInput = {
@@ -21223,12 +21255,14 @@ export namespace Prisma {
 
   export type TopicViewCreateWithoutTopicInput = {
     lastViewedAt?: Date | string
+    lastPostId?: string | null
     user: UserCreateNestedOneWithoutTopicViewsInput
   }
 
   export type TopicViewUncheckedCreateWithoutTopicInput = {
     userId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type TopicViewCreateOrConnectWithoutTopicInput = {
@@ -22319,6 +22353,7 @@ export namespace Prisma {
   export type TopicViewCreateManyUserInput = {
     topicId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type MentionCreateManyMentionerInput = {
@@ -22606,17 +22641,20 @@ export namespace Prisma {
 
   export type TopicViewUpdateWithoutUserInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUpdateOneRequiredWithoutTopicViewsNestedInput
   }
 
   export type TopicViewUncheckedUpdateWithoutUserInput = {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicViewUncheckedUpdateManyWithoutUserInput = {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MentionUpdateWithoutMentionerInput = {
@@ -22836,6 +22874,7 @@ export namespace Prisma {
   export type TopicViewCreateManyTopicInput = {
     userId: string
     lastViewedAt?: Date | string
+    lastPostId?: string | null
   }
 
   export type PostUpdateWithoutTopicInput = {
@@ -22878,17 +22917,20 @@ export namespace Prisma {
 
   export type TopicViewUpdateWithoutTopicInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutTopicViewsNestedInput
   }
 
   export type TopicViewUncheckedUpdateWithoutTopicInput = {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicViewUncheckedUpdateManyWithoutTopicInput = {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MentionCreateManyPostInput = {

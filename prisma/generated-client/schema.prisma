@@ -171,8 +171,10 @@ model TopicView {
   userId       String
   topicId      String
   lastViewedAt DateTime @default(now())
-  user         User     @relation(fields: [userId], references: [id])
-  topic        Topic    @relation(fields: [topicId], references: [id])
+  lastPostId   String? // ID of the last post read in this topic
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
 
   @@id([userId, topicId])
 }

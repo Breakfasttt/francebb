@@ -10,6 +10,7 @@ import TopicSidebar from "@/components/forum/TopicSidebar";
 import PostActions from "@/components/forum/PostActions";
 import QuickReply from "@/components/forum/QuickReply";
 import { getQuoteStatusMap } from "@/app/forum/actions";
+import MarkUnreadAction from "@/components/forum/MarkUnreadAction";
 import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import SharePostButton from "@/components/forum/SharePostButton";
 import "../../forum.css";
@@ -31,15 +32,23 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       where: { userId_topicId: { userId: currentUserId, topicId: id } }
     });
 
-    if (topicView) {
-      const firstUnread = await prisma.post.findFirst({
-        where: {
-          topicId: id,
-          createdAt: { gt: topicView.lastViewedAt }
-        },
-        orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
-        select: { id: true, createdAt: true }
-      });
+    const viewDate = topicView ? topicView.lastViewedAt : new Date(0);
+    const lastPostId = topicView ? topicView.lastPostId : "";
+
+    const firstUnread = await prisma.post.findFirst({
+      where: {
+        topicId: id,
+        OR: [
+          { createdAt: { gt: viewDate } },
+          { 
+            createdAt: viewDate,
+            id: { gt: lastPostId || "" }
+          }
+        ]
+      },
+      orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+      select: { id: true, createdAt: true }
+    });
 
       if (firstUnread) {
         // Count posts BEFORE this one using the same deterministic order
@@ -58,7 +67,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         const targetPage = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
         redirect(`/forum/topic/${id}?page=${targetPage}#post-${firstUnread.id}`);
       }
-    }
   }
 
   const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
@@ -190,6 +198,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                     <span>#{skip + index + 1}</span>
+                    {currentUserId && <MarkUnreadAction topicId={id} postId={post.id} />}
                     <SharePostButton postId={post.id} topicId={id} page={safeCurrentPage} />
                   </div>
               </div>

@@ -65,6 +65,12 @@ export async function markTopicAsRead(topicId: string) {
   const session = await auth();
   if (!session?.user?.id) return;
 
+  // Find the latest post to store its ID and timestamp
+  const latestPost = await prisma.post.findFirst({
+    where: { topicId },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }]
+  });
+
   await prisma.topicView.upsert({
     where: {
       userId_topicId: {
@@ -73,28 +79,67 @@ export async function markTopicAsRead(topicId: string) {
       }
     },
     update: {
-      lastViewedAt: new Date()
+      lastViewedAt: new Date(),
+      lastPostId: latestPost?.id || null
     },
     create: {
       userId: session.user.id,
       topicId: topicId,
-      lastViewedAt: new Date()
+      lastViewedAt: new Date(),
+      lastPostId: latestPost?.id || null
     }
   });
 
   revalidatePath(`/forum/topic/${topicId}`);
 }
 
-export async function markTopicAsUnread(topicId: string) {
+export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
   const session = await auth();
   if (!session?.user?.id) return;
 
-  await prisma.topicView.deleteMany({
-    where: {
-      userId: session.user.id,
-      topicId: topicId
-    }
+  const currentPost = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { createdAt: true, id: true }
   });
+
+  if (!currentPost) return;
+
+  // To mark from this post as unread, we need to set the "last read" pointer
+  // to the post immediately preceding it.
+  const previousPost = await prisma.post.findFirst({
+    where: {
+      topicId,
+      OR: [
+        { createdAt: { lt: currentPost.createdAt } },
+        { 
+          createdAt: currentPost.createdAt,
+          id: { lt: currentPost.id }
+        }
+      ]
+    },
+    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }]
+  });
+
+  if (previousPost) {
+    await prisma.topicView.upsert({
+      where: { userId_topicId: { userId: session.user.id, topicId } },
+      update: { 
+        lastViewedAt: previousPost.createdAt, 
+        lastPostId: previousPost.id 
+      },
+      create: { 
+        userId: session.user.id, 
+        topicId, 
+        lastViewedAt: previousPost.createdAt, 
+        lastPostId: previousPost.id 
+      }
+    });
+  } else {
+    // No preceding post -> marking from the very first post as unread
+    await prisma.topicView.deleteMany({
+      where: { userId: session.user.id, topicId }
+    });
+  }
 
   revalidatePath(`/forum/topic/${topicId}`);
   revalidatePath("/forum/unread");

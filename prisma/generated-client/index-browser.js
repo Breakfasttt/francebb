@@ -231,7 +231,8 @@ exports.Prisma.PmScalarFieldEnum = {
 exports.Prisma.TopicViewScalarFieldEnum = {
   userId: 'userId',
   topicId: 'topicId',
-  lastViewedAt: 'lastViewedAt'
+  lastViewedAt: 'lastViewedAt',
+  lastPostId: 'lastPostId'
 };
 
 exports.Prisma.MentionScalarFieldEnum = {
