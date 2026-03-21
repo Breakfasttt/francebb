@@ -24,6 +24,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | null>(null);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
+  const [topicQuery, setTopicQuery] = useState("");
+  const [topicResults, setTopicResults] = useState<{id: string; title: string; forumName: string}[]>([]);
+  const [isSearchingTopics, setIsSearchingTopics] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState<{id: string; title: string; forumName: string} | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +42,27 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   useEffect(() => {
     setContent(defaultValue);
   }, [defaultValue]);
+
+  // Topic search with debounce
+  useEffect(() => {
+    if (topicQuery.trim().length < 2) {
+      setTopicResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      setIsSearchingTopics(true);
+      try {
+        const res = await fetch(`/api/forum/topics/search?q=${encodeURIComponent(topicQuery)}`);
+        const data = await res.json();
+        setTopicResults(data);
+      } catch {
+        setTopicResults([]);
+      } finally {
+        setIsSearchingTopics(false);
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [topicQuery]);
 
   const insertTag = (startTag: string, endTag: string = "") => {
     if (!textareaRef.current) return;
@@ -118,44 +143,34 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   };
 
   const submitTopic = () => {
-    if (toolInputUrl) {
-      if (!textareaRef.current) return;
-      const textarea = textareaRef.current;
+    if (!selectedTopic || !textareaRef.current) return;
+    const textarea = textareaRef.current;
+    const topicId = selectedTopic.id;
+    const defaultTitle = selectedTopic.title;
 
-      const topicId = toolInputUrl.match(/\/topic\/([a-zA-Z0-9_-]+)/)?.[1] || toolInputUrl.trim();
+    const label = toolInputText.trim() !== "" ? toolInputText : defaultTitle;
 
-      if (typeof textarea.selectionStart === "undefined") {
-        const label = toolInputText.trim() !== "" ? toolInputText : `Sujet #${topicId.substring(0, 6)}`;
-        const newContent = content + `[topic=${topicId}]${label}[/topic]`;
-        setContent(newContent);
-        setToolInputUrl("");
-        setToolInputText("");
-        setActiveTool(null);
-        return;
-      }
-
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = content;
-
-      const before = text.substring(0, start);
-      const selected = text.substring(start, end);
-      const after = text.substring(end, text.length);
-
-      const label = toolInputText.trim() !== "" ? toolInputText : (selected || `Sujet #${topicId.substring(0, 6)}`);
-      const newContent = before + `[topic=${topicId}]${label}[/topic]` + after;
-      setContent(newContent);
-
-      setToolInputUrl("");
-      setToolInputText("");
-      setActiveTool(null);
-
-      setTimeout(() => {
-        textarea.focus();
-        const newCursorPos = before.length + `[topic=${topicId}]${label}[/topic]`.length;
-        textarea.setSelectionRange(newCursorPos, newCursorPos);
-      }, 0);
+    if (typeof textarea.selectionStart === "undefined") {
+      setContent(content + `[topic=${topicId}]${label}[/topic]`);
+      setToolInputText(""); setTopicQuery(""); setTopicResults([]); setSelectedTopic(null); setActiveTool(null);
+      return;
     }
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = content.substring(0, start);
+    const selected = content.substring(start, end);
+    const after = content.substring(end);
+    const finalLabel = toolInputText.trim() !== "" ? toolInputText : (selected || defaultTitle);
+    const tag = `[topic=${topicId}]${finalLabel}[/topic]`;
+
+    setContent(before + tag + after);
+    setToolInputText(""); setTopicQuery(""); setTopicResults([]); setSelectedTopic(null); setActiveTool(null);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(before.length + tag.length, before.length + tag.length);
+    }, 0);
   };
 
   const submitYoutube = () => {
@@ -181,6 +196,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       setActiveTool(tool);
       setToolInputUrl(""); // reset input when opening a new tool
       setToolInputText("");
+      setTopicQuery("");
+      setTopicResults([]);
+      setSelectedTopic(null);
 
       if ((tool === 'link' || tool === 'topic') && textareaRef.current) {
         const textarea = textareaRef.current;
@@ -345,23 +363,59 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             </div>
           )}
           {activeTool === 'topic' && (
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input
-                type="text"
-                placeholder="URL compléte ou ID du sujet..."
-                value={toolInputUrl}
-                onChange={(e) => setToolInputUrl(e.target.value)}
-                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
-                autoFocus
-              />
-              <input
-                type="text"
-                placeholder="Texte du lien (optionnel)"
-                value={toolInputText}
-                onChange={(e) => setToolInputText(e.target.value)}
-                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
-              />
-              <button type="button" onClick={submitTopic} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Lier le sujet</button>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <div style={{ position: "relative" }}>
+                <input
+                  type="text"
+                  placeholder="Rechercher un sujet du forum..."
+                  value={topicQuery}
+                  onChange={(e) => setTopicQuery(e.target.value)}
+                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                  autoFocus
+                />
+                {isSearchingTopics && (
+                  <span style={{ position: "absolute", right: "0.6rem", top: "50%", transform: "translateY(-50%)" }}>
+                    <Loader2 size={14} className="animate-spin" color="#aaa" />
+                  </span>
+                )}
+              </div>
+              {topicResults.length > 0 && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0", maxHeight: "170px", overflowY: "auto", background: "rgba(0,0,0,0.5)", borderRadius: "6px", border: "1px solid var(--glass-border)" }}>
+                  {topicResults.map((topic) => (
+                    <button
+                      key={topic.id}
+                      type="button"
+                      onClick={() => { setSelectedTopic(topic); setTopicResults([]); setTopicQuery(""); }}
+                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: selectedTopic?.id === topic.id ? "rgba(var(--primary-rgb,100,200,255),0.15)" : "transparent", border: "none", borderBottom: "1px solid rgba(255,255,255,0.05)", color: "white", cursor: "pointer" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >
+                      <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{topic.title}</div>
+                      <div style={{ fontSize: "0.78rem", color: "#aaa" }}>📂 {topic.forumName}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
+              {topicQuery.trim().length >= 2 && topicResults.length === 0 && !isSearchingTopics && !selectedTopic && (
+                <div style={{ padding: "0.5rem", color: "#aaa", fontSize: "0.88rem", textAlign: "center" }}>Aucun sujet trouvé.</div>
+              )}
+              {selectedTopic && (
+                <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem 0.8rem", background: "rgba(255,255,255,0.04)", borderRadius: "6px", border: "1px solid var(--glass-border)" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: "0.88rem" }}>📌 {selectedTopic.title}</div>
+                    <div style={{ fontSize: "0.75rem", color: "#aaa" }}>📂 {selectedTopic.forumName}</div>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Texte affiché (défaut = titre)"
+                    value={toolInputText}
+                    onChange={(e) => setToolInputText(e.target.value)}
+                    style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white", fontSize: "0.88rem" }}
+                  />
+                  <button type="button" onClick={submitTopic} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.2rem", flexShrink: 0 }}>Insérer</button>
+                  <button type="button" onClick={() => setSelectedTopic(null)} style={{ background: "none", border: "none", color: "#aaa", cursor: "pointer", fontSize: "1.1rem", padding: "0 0.2rem" }} title="Désélectionner">✕</button>
+                </div>
+              )}
             </div>
           )}
           {activeTool === 'youtube' && (
