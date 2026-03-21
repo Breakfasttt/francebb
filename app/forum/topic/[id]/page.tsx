@@ -73,7 +73,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
  
       <ForumBreadcrumbs items={breadcrumbs} />
 
-       <div className="forum-layout" style={{ display: 'block' }}>
+       <div className="forum-layout">
          <div className="forum-main-content">
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
