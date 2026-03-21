@@ -3,7 +3,7 @@
 import Toast from "@/components/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, Eye, EyeOff, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube } from "lucide-react";
+import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, LayoutList, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "./SmileyGrid";
 
@@ -21,7 +21,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention' | 'spoiler' | 'accordion' | null>(null);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
   const [topicQuery, setTopicQuery] = useState("");
@@ -288,7 +288,22 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention') => {
+  const submitSpoiler = () => {
+    const startTag = toolInputText.trim() !== "" ? `[spoiler=${toolInputText}]` : "[spoiler]";
+    insertTag(startTag, "[/spoiler]");
+    setToolInputText("");
+    setActiveTool(null);
+  };
+
+  const submitAccordion = () => {
+    if (toolInputText.trim() !== "") {
+      insertTag(`[accordion=${toolInputText}]`, "[/accordion]");
+      setToolInputText("");
+      setActiveTool(null);
+    }
+  };
+
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | 'mention' | 'spoiler' | 'accordion') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
@@ -301,7 +316,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       setMentionQuery("");
       setMentionResults([]);
 
-      if ((tool === 'link' || tool === 'topic') && textareaRef.current) {
+      if ((tool === 'link' || tool === 'topic' || tool === 'spoiler' || tool === 'accordion') && textareaRef.current) {
         const textarea = textareaRef.current;
         if (typeof textarea.selectionStart !== "undefined") {
           const selected = content.substring(textarea.selectionStart, textarea.selectionEnd);
@@ -419,6 +434,16 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
           <button type="button" onClick={() => toggleTool('mention')} className={`toolbar-btn ${activeTool === 'mention' ? 'active-tool' : ''}`} title="Taguer un membre (@)">
             <UserIcon size={16} />
+          </button>
+
+          <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
+
+          <button type="button" onClick={() => toggleTool('spoiler')} className={`toolbar-btn ${activeTool === 'spoiler' ? 'active-tool' : ''}`} title="Spoiler">
+            <Ghost size={16} />
+          </button>
+
+          <button type="button" onClick={() => toggleTool('accordion')} className={`toolbar-btn ${activeTool === 'accordion' ? 'active-tool' : ''}`} title="Accordéon (Détails)">
+            <ChevronDown size={16} />
           </button>
 
           <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
@@ -646,6 +671,32 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                   onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 />
               ))}
+            </div>
+          )}
+          {activeTool === 'spoiler' && (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <input
+                type="text"
+                placeholder="Titre du spoiler (optionnel)..."
+                value={toolInputText}
+                onChange={(e) => setToolInputText(e.target.value)}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                autoFocus
+              />
+              <button type="button" onClick={submitSpoiler} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+            </div>
+          )}
+          {activeTool === 'accordion' && (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <input
+                type="text"
+                placeholder="Titre de la section accordéon..."
+                value={toolInputText}
+                onChange={(e) => setToolInputText(e.target.value)}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                autoFocus
+              />
+              <button type="button" onClick={submitAccordion} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
             </div>
           )}
           {activeTool === 'smileys' && (

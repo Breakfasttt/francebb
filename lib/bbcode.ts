@@ -58,6 +58,22 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     );
   }
 
+  // Spoilers
+  while (/\[spoiler\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i.test(html)) {
+    html = html.replace(/\[spoiler\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i, 
+      '<details class="bb-spoiler"><summary>Spoiler (cliquez pour afficher)</summary><div class="bb-spoiler-content">$1</div></details>');
+  }
+  while (/\[spoiler=(.*?)\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i.test(html)) {
+    html = html.replace(/\[spoiler=(.*?)\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i, 
+      '<details class="bb-spoiler"><summary>Spoiler: $1</summary><div class="bb-spoiler-content">$2</div></details>');
+  }
+
+  // Accordions
+  while (/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i.test(html)) {
+    html = html.replace(/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i, 
+      '<details class="bb-accordion"><summary>$1</summary><section class="bb-accordion-content">$2</section></details>');
+  }
+
   // 3. Replace Links
   // [url=https://example.com]text[/url]
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$2</a>");
@@ -173,6 +189,9 @@ export function parseInlineBBCode(text: string): string {
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2"); // Keep just the text and an icon
   html = html.replace(/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/gi, "« $1 »");
+  html = html.replace(/\[spoiler\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler");
+  html = html.replace(/\[spoiler=(.*?)\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler: $1");
+  html = html.replace(/\[accordion=(.*?)\](.*?)\[\/accordion\]/gi, "📋 Accordion: $1");
 
   // 3. Replace Smileys
   Object.entries(smileysMap).forEach(([textFace, emoji]) => {

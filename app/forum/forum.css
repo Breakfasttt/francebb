@@ -332,3 +332,79 @@
 .forum-post-card {
   scroll-margin-top: 110px;
 }
+
+/* BBCode Spoiler & Accordion Styles */
+.bb-spoiler, .bb-accordion {
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bb-spoiler summary, .bb-accordion summary {
+  padding: 1rem 1.4rem;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 700;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+  user-select: none;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.bb-spoiler summary::-webkit-details-marker,
+.bb-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.bb-spoiler summary::before, .bb-accordion summary::before {
+  content: "→";
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--primary);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bb-spoiler[open] summary::before, .bb-accordion[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.bb-spoiler summary:hover, .bb-accordion summary:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.bb-spoiler-content, .bb-accordion-content {
+  padding: 1.5rem;
+  color: #ddd;
+  line-height: 1.7;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.1);
+  animation: slideDownIn 0.3s ease-out;
+}
+
+@keyframes slideDownIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Specific styling for Spoiler */
+.bb-spoiler {
+  border-left: 4px solid #666;
+}
+
+.bb-spoiler summary {
+  color: #aaa;
+}
+
+/* Specific styling for Accordion */
+.bb-accordion {
+  border-left: 4px solid var(--primary);
+}
