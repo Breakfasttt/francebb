@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import ForumCategory from "@/components/forum/ForumCategory";
+import DeletionToast from "@/components/forum/DeletionToast";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +65,7 @@ export default async function ForumPage() {
 
       <div className="forum-layout">
         <div className="forum-main-content">
+          <DeletionToast />
           {categories.map((category) => {
             // Check if category has any unread topics (including sub-forums)
             const categoryHasNew = category.forums.some(forum => {

@@ -14,7 +14,8 @@ import {
   Move,
   Type,
   ChevronsDown,
-  Mail
+  Mail,
+  Check
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -131,9 +132,13 @@ export default function TopicSidebar({
   const handleDeleteTopic = () => {
     startTransition(async () => {
       try {
-        await deleteTopicPermanent(topicId);
+        await deleteTopicPermanent(topicId, topicTitle);
       } catch (error) {
-        alert(error instanceof Error ? error.message : "Erreur lors de la suppression");
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        // Ignore Next.js redirect errors as they are handled by the framework
+        if (errorMessage.includes("NEXT_REDIRECT")) return;
+
+        alert(errorMessage);
         setShowDeleteModal(false);
       }
     });
@@ -303,12 +308,27 @@ export default function TopicSidebar({
         </div>
       </div>
 
-      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Supprimer le sujet">
+      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet">
         <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <p style={{ marginBottom: '1.5rem', color: '#ddd' }}>Action irréversible.</p>
+          <p style={{ marginBottom: '1rem', color: 'white', fontSize: '1.1rem' }}>
+            Supprimer le sujet : <br/>
+            <strong style={{ color: 'var(--primary)' }}>{topicTitle}</strong> ?
+          </p>
+          <div style={{ 
+            background: 'rgba(224, 68, 68, 0.1)', 
+            border: '1px solid rgba(224, 68, 68, 0.2)', 
+            padding: '1rem', 
+            borderRadius: '8px', 
+            marginBottom: '1.5rem' 
+          }}>
+            <p style={{ margin: 0, color: '#ff6666', fontSize: '0.9rem' }}>
+              <strong>Attention :</strong> Tous les messages seront définitivement supprimés.<br/>
+              L'action est irréversible.
+            </p>
+          </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
             <button onClick={() => setShowDeleteModal(false)} className="widget-button secondary-btn">Annuler</button>
-            <button onClick={handleDeleteTopic} disabled={isPending} className="widget-button" style={{ background: '#e04444' }}>Confirmer</button>
+            <button onClick={handleDeleteTopic} disabled={isPending} className="widget-button" style={{ background: '#e04444' }}>Confirmer la suppression</button>
           </div>
         </div>
       </Modal>

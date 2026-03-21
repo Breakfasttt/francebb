@@ -584,7 +584,7 @@ export async function togglePinTopic(topicId: string) {
   revalidatePath(`/forum/topic/${topicId}`);
 }
 
-export async function deleteTopicPermanent(topicId: string) {
+export async function deleteTopicPermanent(topicId: string, topicTitle: string) {
   const session = await auth();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent supprimer des sujets.");
@@ -596,7 +596,6 @@ export async function deleteTopicPermanent(topicId: string) {
 
   if (!topic) throw new Error("Sujet introuvable.");
 
-  // Manual cleanup since cascade might not be set
   await prisma.$transaction([
     prisma.topicView.deleteMany({ where: { topicId } }),
     prisma.post.deleteMany({ where: { topicId } }),
@@ -604,7 +603,7 @@ export async function deleteTopicPermanent(topicId: string) {
   ]);
 
   revalidatePath(`/forum/${topic.forumId}`);
-  redirect(`/forum/${topic.forumId}`);
+  redirect(`/forum?deletedTopic=${encodeURIComponent(topicTitle)}`);
 }
 
 export async function moveTopic(topicId: string, newForumId: string) {
