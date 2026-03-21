@@ -13,6 +13,7 @@ import { getQuoteStatusMap } from "@/app/forum/actions";
 import MarkUnreadAction from "@/components/forum/MarkUnreadAction";
 import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import SharePostButton from "@/components/forum/SharePostButton";
+import PostReactions from "@/components/forum/PostReactions";
 import "../../forum.css";
 
 export const dynamic = "force-dynamic";
@@ -93,7 +94,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           take: POSTS_PER_PAGE,
           include: {
             author: true,
-            moderator: true
+            moderator: true,
+            reactions: true
           }
         }
       }
@@ -269,6 +271,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                     authorId={post.authorId}
                     authorName={post.author.name || ""}
                     content={post.content}
+                    initialReactions={post.reactions}
                     currentUserId={currentUserId}
                     isModerator={isUserModerator}
                     topicId={id}

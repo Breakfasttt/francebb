@@ -245,6 +245,14 @@ exports.Prisma.MentionScalarFieldEnum = {
   readAt: 'readAt'
 };
 
+exports.Prisma.PostReactionScalarFieldEnum = {
+  id: 'id',
+  emoji: 'emoji',
+  createdAt: 'createdAt',
+  postId: 'postId',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -268,7 +276,8 @@ exports.Prisma.ModelName = {
   Post: 'Post',
   Pm: 'Pm',
   TopicView: 'TopicView',
-  Mention: 'Mention'
+  Mention: 'Mention',
+  PostReaction: 'PostReaction'
 };
 
 /**

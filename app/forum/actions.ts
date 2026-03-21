@@ -656,3 +656,45 @@ export async function updateTopicTitle(topicId: string, title: string) {
 
   revalidatePath(`/forum/topic/${topicId}`);
 }
+
+export async function togglePostReaction(postId: string, emoji: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Vous devez être connecté.");
+
+  const userId = session.user.id;
+
+  const existing = await prisma.postReaction.findFirst({
+    where: {
+      postId,
+      userId
+    }
+  });
+
+  if (existing) {
+    if (existing.emoji === emoji) {
+      await prisma.postReaction.delete({ where: { id: existing.id } });
+    } else {
+      await prisma.postReaction.update({
+        where: { id: existing.id },
+        data: { emoji }
+      });
+    }
+  } else {
+    await prisma.postReaction.create({
+      data: {
+        postId,
+        userId,
+        emoji
+      }
+    });
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: { topicId: true }
+  });
+
+  if (post) {
+    revalidatePath(`/forum/topic/${post.topicId}`);
+  }
+}

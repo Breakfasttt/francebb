@@ -73,6 +73,11 @@ export type TopicView = $Result.DefaultSelection<Prisma.$TopicViewPayload>
  * 
  */
 export type Mention = $Result.DefaultSelection<Prisma.$MentionPayload>
+/**
+ * Model PostReaction
+ * 
+ */
+export type PostReaction = $Result.DefaultSelection<Prisma.$PostReactionPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -314,6 +319,16 @@ export class PrismaClient<
     * ```
     */
   get mention(): Prisma.MentionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.postReaction`: Exposes CRUD operations for the **PostReaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PostReactions
+    * const postReactions = await prisma.postReaction.findMany()
+    * ```
+    */
+  get postReaction(): Prisma.PostReactionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -759,7 +774,8 @@ export namespace Prisma {
     Post: 'Post',
     Pm: 'Pm',
     TopicView: 'TopicView',
-    Mention: 'Mention'
+    Mention: 'Mention',
+    PostReaction: 'PostReaction'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -775,7 +791,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "pm" | "topicView" | "mention"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "pm" | "topicView" | "mention" | "postReaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1667,6 +1683,80 @@ export namespace Prisma {
           }
         }
       }
+      PostReaction: {
+        payload: Prisma.$PostReactionPayload<ExtArgs>
+        fields: Prisma.PostReactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PostReactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PostReactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          findFirst: {
+            args: Prisma.PostReactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PostReactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          findMany: {
+            args: Prisma.PostReactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>[]
+          }
+          create: {
+            args: Prisma.PostReactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          createMany: {
+            args: Prisma.PostReactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PostReactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>[]
+          }
+          delete: {
+            args: Prisma.PostReactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          update: {
+            args: Prisma.PostReactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.PostReactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PostReactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PostReactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.PostReactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PostReactionPayload>
+          }
+          aggregate: {
+            args: Prisma.PostReactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePostReaction>
+          }
+          groupBy: {
+            args: Prisma.PostReactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PostReactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PostReactionCountArgs<ExtArgs>
+            result: $Utils.Optional<PostReactionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1787,6 +1877,7 @@ export namespace Prisma {
     pm?: PmOmit
     topicView?: TopicViewOmit
     mention?: MentionOmit
+    postReaction?: PostReactionOmit
   }
 
   /* Types for Logging */
@@ -1878,6 +1969,7 @@ export namespace Prisma {
     mentionsMade: number
     mentionsReceived: number
     moderatedPosts: number
+    postReactions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1892,6 +1984,7 @@ export namespace Prisma {
     mentionsMade?: boolean | UserCountOutputTypeCountMentionsMadeArgs
     mentionsReceived?: boolean | UserCountOutputTypeCountMentionsReceivedArgs
     moderatedPosts?: boolean | UserCountOutputTypeCountModeratedPostsArgs
+    postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
   }
 
   // Custom InputTypes
@@ -1980,6 +2073,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountModeratedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPostReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostReactionWhereInput
   }
 
 
@@ -2100,10 +2200,12 @@ export namespace Prisma {
 
   export type PostCountOutputType = {
     mentions: number
+    reactions: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     mentions?: boolean | PostCountOutputTypeCountMentionsArgs
+    reactions?: boolean | PostCountOutputTypeCountReactionsArgs
   }
 
   // Custom InputTypes
@@ -2122,6 +2224,13 @@ export namespace Prisma {
    */
   export type PostCountOutputTypeCountMentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MentionWhereInput
+  }
+
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostReactionWhereInput
   }
 
 
@@ -4546,6 +4655,7 @@ export namespace Prisma {
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
+    postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4589,6 +4699,7 @@ export namespace Prisma {
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
+    postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4608,6 +4719,7 @@ export namespace Prisma {
       mentionsMade: Prisma.$MentionPayload<ExtArgs>[]
       mentionsReceived: Prisma.$MentionPayload<ExtArgs>[]
       moderatedPosts: Prisma.$PostPayload<ExtArgs>[]
+      postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5021,6 +5133,7 @@ export namespace Prisma {
     mentionsMade<T extends User$mentionsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentionsReceived<T extends User$mentionsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     moderatedPosts<T extends User$moderatedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5708,6 +5821,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * User.postReactions
+   */
+  export type User$postReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    where?: PostReactionWhereInput
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    cursor?: PostReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
   }
 
   /**
@@ -11747,6 +11884,7 @@ export namespace Prisma {
     author?: boolean | UserDefaultArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
+    reactions?: boolean | Post$reactionsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -11801,6 +11939,7 @@ export namespace Prisma {
     author?: boolean | UserDefaultArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
+    reactions?: boolean | Post$reactionsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11821,6 +11960,7 @@ export namespace Prisma {
       author: Prisma.$UserPayload<ExtArgs>
       mentions: Prisma.$MentionPayload<ExtArgs>[]
       moderator: Prisma.$UserPayload<ExtArgs> | null
+      reactions: Prisma.$PostReactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -12231,6 +12371,7 @@ export namespace Prisma {
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     mentions<T extends Post$mentionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$mentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     moderator<T extends Post$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, Post$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    reactions<T extends Post$reactionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12709,6 +12850,30 @@ export namespace Prisma {
      */
     include?: UserInclude<ExtArgs> | null
     where?: UserWhereInput
+  }
+
+  /**
+   * Post.reactions
+   */
+  export type Post$reactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    where?: PostReactionWhereInput
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    cursor?: PostReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
   }
 
   /**
@@ -15972,6 +16137,1075 @@ export namespace Prisma {
 
 
   /**
+   * Model PostReaction
+   */
+
+  export type AggregatePostReaction = {
+    _count: PostReactionCountAggregateOutputType | null
+    _min: PostReactionMinAggregateOutputType | null
+    _max: PostReactionMaxAggregateOutputType | null
+  }
+
+  export type PostReactionMinAggregateOutputType = {
+    id: string | null
+    emoji: string | null
+    createdAt: Date | null
+    postId: string | null
+    userId: string | null
+  }
+
+  export type PostReactionMaxAggregateOutputType = {
+    id: string | null
+    emoji: string | null
+    createdAt: Date | null
+    postId: string | null
+    userId: string | null
+  }
+
+  export type PostReactionCountAggregateOutputType = {
+    id: number
+    emoji: number
+    createdAt: number
+    postId: number
+    userId: number
+    _all: number
+  }
+
+
+  export type PostReactionMinAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    postId?: true
+    userId?: true
+  }
+
+  export type PostReactionMaxAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    postId?: true
+    userId?: true
+  }
+
+  export type PostReactionCountAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    postId?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type PostReactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PostReaction to aggregate.
+     */
+    where?: PostReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostReactions to fetch.
+     */
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PostReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PostReactions
+    **/
+    _count?: true | PostReactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PostReactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PostReactionMaxAggregateInputType
+  }
+
+  export type GetPostReactionAggregateType<T extends PostReactionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePostReaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePostReaction[P]>
+      : GetScalarType<T[P], AggregatePostReaction[P]>
+  }
+
+
+
+
+  export type PostReactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostReactionWhereInput
+    orderBy?: PostReactionOrderByWithAggregationInput | PostReactionOrderByWithAggregationInput[]
+    by: PostReactionScalarFieldEnum[] | PostReactionScalarFieldEnum
+    having?: PostReactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PostReactionCountAggregateInputType | true
+    _min?: PostReactionMinAggregateInputType
+    _max?: PostReactionMaxAggregateInputType
+  }
+
+  export type PostReactionGroupByOutputType = {
+    id: string
+    emoji: string
+    createdAt: Date
+    postId: string
+    userId: string
+    _count: PostReactionCountAggregateOutputType | null
+    _min: PostReactionMinAggregateOutputType | null
+    _max: PostReactionMaxAggregateOutputType | null
+  }
+
+  type GetPostReactionGroupByPayload<T extends PostReactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PostReactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PostReactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PostReactionGroupByOutputType[P]>
+            : GetScalarType<T[P], PostReactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PostReactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    userId?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postReaction"]>
+
+  export type PostReactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    userId?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postReaction"]>
+
+  export type PostReactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    userId?: boolean
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["postReaction"]>
+
+  export type PostReactionSelectScalar = {
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    postId?: boolean
+    userId?: boolean
+  }
+
+  export type PostReactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emoji" | "createdAt" | "postId" | "userId", ExtArgs["result"]["postReaction"]>
+  export type PostReactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PostReactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PostReactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    post?: boolean | PostDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PostReactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PostReaction"
+    objects: {
+      post: Prisma.$PostPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      emoji: string
+      createdAt: Date
+      postId: string
+      userId: string
+    }, ExtArgs["result"]["postReaction"]>
+    composites: {}
+  }
+
+  type PostReactionGetPayload<S extends boolean | null | undefined | PostReactionDefaultArgs> = $Result.GetResult<Prisma.$PostReactionPayload, S>
+
+  type PostReactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PostReactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PostReactionCountAggregateInputType | true
+    }
+
+  export interface PostReactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PostReaction'], meta: { name: 'PostReaction' } }
+    /**
+     * Find zero or one PostReaction that matches the filter.
+     * @param {PostReactionFindUniqueArgs} args - Arguments to find a PostReaction
+     * @example
+     * // Get one PostReaction
+     * const postReaction = await prisma.postReaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PostReactionFindUniqueArgs>(args: SelectSubset<T, PostReactionFindUniqueArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PostReaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PostReactionFindUniqueOrThrowArgs} args - Arguments to find a PostReaction
+     * @example
+     * // Get one PostReaction
+     * const postReaction = await prisma.postReaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PostReactionFindUniqueOrThrowArgs>(args: SelectSubset<T, PostReactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PostReaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionFindFirstArgs} args - Arguments to find a PostReaction
+     * @example
+     * // Get one PostReaction
+     * const postReaction = await prisma.postReaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PostReactionFindFirstArgs>(args?: SelectSubset<T, PostReactionFindFirstArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PostReaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionFindFirstOrThrowArgs} args - Arguments to find a PostReaction
+     * @example
+     * // Get one PostReaction
+     * const postReaction = await prisma.postReaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PostReactionFindFirstOrThrowArgs>(args?: SelectSubset<T, PostReactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PostReactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PostReactions
+     * const postReactions = await prisma.postReaction.findMany()
+     * 
+     * // Get first 10 PostReactions
+     * const postReactions = await prisma.postReaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const postReactionWithIdOnly = await prisma.postReaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PostReactionFindManyArgs>(args?: SelectSubset<T, PostReactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PostReaction.
+     * @param {PostReactionCreateArgs} args - Arguments to create a PostReaction.
+     * @example
+     * // Create one PostReaction
+     * const PostReaction = await prisma.postReaction.create({
+     *   data: {
+     *     // ... data to create a PostReaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends PostReactionCreateArgs>(args: SelectSubset<T, PostReactionCreateArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PostReactions.
+     * @param {PostReactionCreateManyArgs} args - Arguments to create many PostReactions.
+     * @example
+     * // Create many PostReactions
+     * const postReaction = await prisma.postReaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PostReactionCreateManyArgs>(args?: SelectSubset<T, PostReactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PostReactions and returns the data saved in the database.
+     * @param {PostReactionCreateManyAndReturnArgs} args - Arguments to create many PostReactions.
+     * @example
+     * // Create many PostReactions
+     * const postReaction = await prisma.postReaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PostReactions and only return the `id`
+     * const postReactionWithIdOnly = await prisma.postReaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PostReactionCreateManyAndReturnArgs>(args?: SelectSubset<T, PostReactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PostReaction.
+     * @param {PostReactionDeleteArgs} args - Arguments to delete one PostReaction.
+     * @example
+     * // Delete one PostReaction
+     * const PostReaction = await prisma.postReaction.delete({
+     *   where: {
+     *     // ... filter to delete one PostReaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PostReactionDeleteArgs>(args: SelectSubset<T, PostReactionDeleteArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PostReaction.
+     * @param {PostReactionUpdateArgs} args - Arguments to update one PostReaction.
+     * @example
+     * // Update one PostReaction
+     * const postReaction = await prisma.postReaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PostReactionUpdateArgs>(args: SelectSubset<T, PostReactionUpdateArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PostReactions.
+     * @param {PostReactionDeleteManyArgs} args - Arguments to filter PostReactions to delete.
+     * @example
+     * // Delete a few PostReactions
+     * const { count } = await prisma.postReaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PostReactionDeleteManyArgs>(args?: SelectSubset<T, PostReactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PostReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PostReactions
+     * const postReaction = await prisma.postReaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PostReactionUpdateManyArgs>(args: SelectSubset<T, PostReactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PostReactions and returns the data updated in the database.
+     * @param {PostReactionUpdateManyAndReturnArgs} args - Arguments to update many PostReactions.
+     * @example
+     * // Update many PostReactions
+     * const postReaction = await prisma.postReaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PostReactions and only return the `id`
+     * const postReactionWithIdOnly = await prisma.postReaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PostReactionUpdateManyAndReturnArgs>(args: SelectSubset<T, PostReactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PostReaction.
+     * @param {PostReactionUpsertArgs} args - Arguments to update or create a PostReaction.
+     * @example
+     * // Update or create a PostReaction
+     * const postReaction = await prisma.postReaction.upsert({
+     *   create: {
+     *     // ... data to create a PostReaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PostReaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PostReactionUpsertArgs>(args: SelectSubset<T, PostReactionUpsertArgs<ExtArgs>>): Prisma__PostReactionClient<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PostReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionCountArgs} args - Arguments to filter PostReactions to count.
+     * @example
+     * // Count the number of PostReactions
+     * const count = await prisma.postReaction.count({
+     *   where: {
+     *     // ... the filter for the PostReactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PostReactionCountArgs>(
+      args?: Subset<T, PostReactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PostReactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PostReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PostReactionAggregateArgs>(args: Subset<T, PostReactionAggregateArgs>): Prisma.PrismaPromise<GetPostReactionAggregateType<T>>
+
+    /**
+     * Group by PostReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PostReactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PostReactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PostReactionGroupByArgs['orderBy'] }
+        : { orderBy?: PostReactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PostReactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPostReactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PostReaction model
+   */
+  readonly fields: PostReactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PostReaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PostReactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    post<T extends PostDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PostDefaultArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PostReaction model
+   */
+  interface PostReactionFieldRefs {
+    readonly id: FieldRef<"PostReaction", 'String'>
+    readonly emoji: FieldRef<"PostReaction", 'String'>
+    readonly createdAt: FieldRef<"PostReaction", 'DateTime'>
+    readonly postId: FieldRef<"PostReaction", 'String'>
+    readonly userId: FieldRef<"PostReaction", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PostReaction findUnique
+   */
+  export type PostReactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which PostReaction to fetch.
+     */
+    where: PostReactionWhereUniqueInput
+  }
+
+  /**
+   * PostReaction findUniqueOrThrow
+   */
+  export type PostReactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which PostReaction to fetch.
+     */
+    where: PostReactionWhereUniqueInput
+  }
+
+  /**
+   * PostReaction findFirst
+   */
+  export type PostReactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which PostReaction to fetch.
+     */
+    where?: PostReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostReactions to fetch.
+     */
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PostReactions.
+     */
+    cursor?: PostReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PostReactions.
+     */
+    distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
+  }
+
+  /**
+   * PostReaction findFirstOrThrow
+   */
+  export type PostReactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which PostReaction to fetch.
+     */
+    where?: PostReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostReactions to fetch.
+     */
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PostReactions.
+     */
+    cursor?: PostReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PostReactions.
+     */
+    distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
+  }
+
+  /**
+   * PostReaction findMany
+   */
+  export type PostReactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which PostReactions to fetch.
+     */
+    where?: PostReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PostReactions to fetch.
+     */
+    orderBy?: PostReactionOrderByWithRelationInput | PostReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PostReactions.
+     */
+    cursor?: PostReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PostReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PostReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PostReactions.
+     */
+    distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
+  }
+
+  /**
+   * PostReaction create
+   */
+  export type PostReactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PostReaction.
+     */
+    data: XOR<PostReactionCreateInput, PostReactionUncheckedCreateInput>
+  }
+
+  /**
+   * PostReaction createMany
+   */
+  export type PostReactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PostReactions.
+     */
+    data: PostReactionCreateManyInput | PostReactionCreateManyInput[]
+  }
+
+  /**
+   * PostReaction createManyAndReturn
+   */
+  export type PostReactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many PostReactions.
+     */
+    data: PostReactionCreateManyInput | PostReactionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PostReaction update
+   */
+  export type PostReactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PostReaction.
+     */
+    data: XOR<PostReactionUpdateInput, PostReactionUncheckedUpdateInput>
+    /**
+     * Choose, which PostReaction to update.
+     */
+    where: PostReactionWhereUniqueInput
+  }
+
+  /**
+   * PostReaction updateMany
+   */
+  export type PostReactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PostReactions.
+     */
+    data: XOR<PostReactionUpdateManyMutationInput, PostReactionUncheckedUpdateManyInput>
+    /**
+     * Filter which PostReactions to update
+     */
+    where?: PostReactionWhereInput
+    /**
+     * Limit how many PostReactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PostReaction updateManyAndReturn
+   */
+  export type PostReactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * The data used to update PostReactions.
+     */
+    data: XOR<PostReactionUpdateManyMutationInput, PostReactionUncheckedUpdateManyInput>
+    /**
+     * Filter which PostReactions to update
+     */
+    where?: PostReactionWhereInput
+    /**
+     * Limit how many PostReactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PostReaction upsert
+   */
+  export type PostReactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PostReaction to update in case it exists.
+     */
+    where: PostReactionWhereUniqueInput
+    /**
+     * In case the PostReaction found by the `where` argument doesn't exist, create a new PostReaction with this data.
+     */
+    create: XOR<PostReactionCreateInput, PostReactionUncheckedCreateInput>
+    /**
+     * In case the PostReaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PostReactionUpdateInput, PostReactionUncheckedUpdateInput>
+  }
+
+  /**
+   * PostReaction delete
+   */
+  export type PostReactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+    /**
+     * Filter which PostReaction to delete.
+     */
+    where: PostReactionWhereUniqueInput
+  }
+
+  /**
+   * PostReaction deleteMany
+   */
+  export type PostReactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PostReactions to delete
+     */
+    where?: PostReactionWhereInput
+    /**
+     * Limit how many PostReactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PostReaction without action
+   */
+  export type PostReactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PostReaction
+     */
+    select?: PostReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PostReaction
+     */
+    omit?: PostReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostReactionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16144,6 +17378,17 @@ export namespace Prisma {
   };
 
   export type MentionScalarFieldEnum = (typeof MentionScalarFieldEnum)[keyof typeof MentionScalarFieldEnum]
+
+
+  export const PostReactionScalarFieldEnum: {
+    id: 'id',
+    emoji: 'emoji',
+    createdAt: 'createdAt',
+    postId: 'postId',
+    userId: 'userId'
+  };
+
+  export type PostReactionScalarFieldEnum = (typeof PostReactionScalarFieldEnum)[keyof typeof PostReactionScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -16369,6 +17614,7 @@ export namespace Prisma {
     mentionsMade?: MentionListRelationFilter
     mentionsReceived?: MentionListRelationFilter
     moderatedPosts?: PostListRelationFilter
+    postReactions?: PostReactionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -16389,6 +17635,7 @@ export namespace Prisma {
     mentionsMade?: MentionOrderByRelationAggregateInput
     mentionsReceived?: MentionOrderByRelationAggregateInput
     moderatedPosts?: PostOrderByRelationAggregateInput
+    postReactions?: PostReactionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -16412,6 +17659,7 @@ export namespace Prisma {
     mentionsMade?: MentionListRelationFilter
     mentionsReceived?: MentionListRelationFilter
     moderatedPosts?: PostListRelationFilter
+    postReactions?: PostReactionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -16845,6 +18093,7 @@ export namespace Prisma {
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     mentions?: MentionListRelationFilter
     moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    reactions?: PostReactionListRelationFilter
   }
 
   export type PostOrderByWithRelationInput = {
@@ -16862,6 +18111,7 @@ export namespace Prisma {
     author?: UserOrderByWithRelationInput
     mentions?: MentionOrderByRelationAggregateInput
     moderator?: UserOrderByWithRelationInput
+    reactions?: PostReactionOrderByRelationAggregateInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -16882,6 +18132,7 @@ export namespace Prisma {
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     mentions?: MentionListRelationFilter
     moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    reactions?: PostReactionListRelationFilter
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -17105,6 +18356,65 @@ export namespace Prisma {
     readAt?: DateTimeNullableWithAggregatesFilter<"Mention"> | Date | string | null
   }
 
+  export type PostReactionWhereInput = {
+    AND?: PostReactionWhereInput | PostReactionWhereInput[]
+    OR?: PostReactionWhereInput[]
+    NOT?: PostReactionWhereInput | PostReactionWhereInput[]
+    id?: StringFilter<"PostReaction"> | string
+    emoji?: StringFilter<"PostReaction"> | string
+    createdAt?: DateTimeFilter<"PostReaction"> | Date | string
+    postId?: StringFilter<"PostReaction"> | string
+    userId?: StringFilter<"PostReaction"> | string
+    post?: XOR<PostScalarRelationFilter, PostWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PostReactionOrderByWithRelationInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    userId?: SortOrder
+    post?: PostOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PostReactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    postId_userId_emoji?: PostReactionPostIdUserIdEmojiCompoundUniqueInput
+    AND?: PostReactionWhereInput | PostReactionWhereInput[]
+    OR?: PostReactionWhereInput[]
+    NOT?: PostReactionWhereInput | PostReactionWhereInput[]
+    emoji?: StringFilter<"PostReaction"> | string
+    createdAt?: DateTimeFilter<"PostReaction"> | Date | string
+    postId?: StringFilter<"PostReaction"> | string
+    userId?: StringFilter<"PostReaction"> | string
+    post?: XOR<PostScalarRelationFilter, PostWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "postId_userId_emoji">
+
+  export type PostReactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    userId?: SortOrder
+    _count?: PostReactionCountOrderByAggregateInput
+    _max?: PostReactionMaxOrderByAggregateInput
+    _min?: PostReactionMinOrderByAggregateInput
+  }
+
+  export type PostReactionScalarWhereWithAggregatesInput = {
+    AND?: PostReactionScalarWhereWithAggregatesInput | PostReactionScalarWhereWithAggregatesInput[]
+    OR?: PostReactionScalarWhereWithAggregatesInput[]
+    NOT?: PostReactionScalarWhereWithAggregatesInput | PostReactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PostReaction"> | string
+    emoji?: StringWithAggregatesFilter<"PostReaction"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PostReaction"> | Date | string
+    postId?: StringWithAggregatesFilter<"PostReaction"> | string
+    userId?: StringWithAggregatesFilter<"PostReaction"> | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -17275,6 +18585,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17295,6 +18606,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -17315,6 +18627,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -17335,6 +18648,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -17797,6 +19111,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -17811,6 +19126,7 @@ export namespace Prisma {
     moderatedBy?: string | null
     isDeleted?: boolean
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostUpdateInput = {
@@ -17825,6 +19141,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -17839,6 +19156,7 @@ export namespace Prisma {
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostCreateManyInput = {
@@ -18050,6 +19368,60 @@ export namespace Prisma {
     mentionerId?: StringFieldUpdateOperationsInput | string
     mentionedUserId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PostReactionCreateInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    post: PostCreateNestedOneWithoutReactionsInput
+    user: UserCreateNestedOneWithoutPostReactionsInput
+  }
+
+  export type PostReactionUncheckedCreateInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    postId: string
+    userId: string
+  }
+
+  export type PostReactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneRequiredWithoutReactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutPostReactionsNestedInput
+  }
+
+  export type PostReactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostReactionCreateManyInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    postId: string
+    userId: string
+  }
+
+  export type PostReactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PostReactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -18314,6 +19686,12 @@ export namespace Prisma {
     none?: MentionWhereInput
   }
 
+  export type PostReactionListRelationFilter = {
+    every?: PostReactionWhereInput
+    some?: PostReactionWhereInput
+    none?: PostReactionWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -18343,6 +19721,10 @@ export namespace Prisma {
   }
 
   export type MentionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PostReactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -18840,6 +20222,36 @@ export namespace Prisma {
     readAt?: SortOrder
   }
 
+  export type PostReactionPostIdUserIdEmojiCompoundUniqueInput = {
+    postId: string
+    userId: string
+    emoji: string
+  }
+
+  export type PostReactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type PostReactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type PostReactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    postId?: SortOrder
+    userId?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -18965,6 +20377,13 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type PostReactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput> | PostReactionCreateWithoutUserInput[] | PostReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutUserInput | PostReactionCreateOrConnectWithoutUserInput[]
+    createMany?: PostReactionCreateManyUserInputEnvelope
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -19040,6 +20459,13 @@ export namespace Prisma {
     connectOrCreate?: PostCreateOrConnectWithoutModeratorInput | PostCreateOrConnectWithoutModeratorInput[]
     createMany?: PostCreateManyModeratorInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type PostReactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput> | PostReactionCreateWithoutUserInput[] | PostReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutUserInput | PostReactionCreateOrConnectWithoutUserInput[]
+    createMany?: PostReactionCreateManyUserInputEnvelope
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -19200,6 +20626,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type PostReactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput> | PostReactionCreateWithoutUserInput[] | PostReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutUserInput | PostReactionCreateOrConnectWithoutUserInput[]
+    upsert?: PostReactionUpsertWithWhereUniqueWithoutUserInput | PostReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PostReactionCreateManyUserInputEnvelope
+    set?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    disconnect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    delete?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    update?: PostReactionUpdateWithWhereUniqueWithoutUserInput | PostReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PostReactionUpdateManyWithWhereWithoutUserInput | PostReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -19352,6 +20792,20 @@ export namespace Prisma {
     update?: PostUpdateWithWhereUniqueWithoutModeratorInput | PostUpdateWithWhereUniqueWithoutModeratorInput[]
     updateMany?: PostUpdateManyWithWhereWithoutModeratorInput | PostUpdateManyWithWhereWithoutModeratorInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type PostReactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput> | PostReactionCreateWithoutUserInput[] | PostReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutUserInput | PostReactionCreateOrConnectWithoutUserInput[]
+    upsert?: PostReactionUpsertWithWhereUniqueWithoutUserInput | PostReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PostReactionCreateManyUserInputEnvelope
+    set?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    disconnect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    delete?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    update?: PostReactionUpdateWithWhereUniqueWithoutUserInput | PostReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PostReactionUpdateManyWithWhereWithoutUserInput | PostReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTournamentsInput = {
@@ -19683,11 +21137,25 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type PostReactionCreateNestedManyWithoutPostInput = {
+    create?: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput> | PostReactionCreateWithoutPostInput[] | PostReactionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutPostInput | PostReactionCreateOrConnectWithoutPostInput[]
+    createMany?: PostReactionCreateManyPostInputEnvelope
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+  }
+
   export type MentionUncheckedCreateNestedManyWithoutPostInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
     createMany?: MentionCreateManyPostInputEnvelope
     connect?: MentionWhereUniqueInput | MentionWhereUniqueInput[]
+  }
+
+  export type PostReactionUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput> | PostReactionCreateWithoutPostInput[] | PostReactionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutPostInput | PostReactionCreateOrConnectWithoutPostInput[]
+    createMany?: PostReactionCreateManyPostInputEnvelope
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
   }
 
   export type TopicUpdateOneRequiredWithoutPostsNestedInput = {
@@ -19730,6 +21198,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModeratedPostsInput, UserUpdateWithoutModeratedPostsInput>, UserUncheckedUpdateWithoutModeratedPostsInput>
   }
 
+  export type PostReactionUpdateManyWithoutPostNestedInput = {
+    create?: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput> | PostReactionCreateWithoutPostInput[] | PostReactionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutPostInput | PostReactionCreateOrConnectWithoutPostInput[]
+    upsert?: PostReactionUpsertWithWhereUniqueWithoutPostInput | PostReactionUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: PostReactionCreateManyPostInputEnvelope
+    set?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    disconnect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    delete?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    update?: PostReactionUpdateWithWhereUniqueWithoutPostInput | PostReactionUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: PostReactionUpdateManyWithWhereWithoutPostInput | PostReactionUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
+  }
+
   export type MentionUncheckedUpdateManyWithoutPostNestedInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
@@ -19742,6 +21224,20 @@ export namespace Prisma {
     update?: MentionUpdateWithWhereUniqueWithoutPostInput | MentionUpdateWithWhereUniqueWithoutPostInput[]
     updateMany?: MentionUpdateManyWithWhereWithoutPostInput | MentionUpdateManyWithWhereWithoutPostInput[]
     deleteMany?: MentionScalarWhereInput | MentionScalarWhereInput[]
+  }
+
+  export type PostReactionUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput> | PostReactionCreateWithoutPostInput[] | PostReactionUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: PostReactionCreateOrConnectWithoutPostInput | PostReactionCreateOrConnectWithoutPostInput[]
+    upsert?: PostReactionUpsertWithWhereUniqueWithoutPostInput | PostReactionUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: PostReactionCreateManyPostInputEnvelope
+    set?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    disconnect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    delete?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+    update?: PostReactionUpdateWithWhereUniqueWithoutPostInput | PostReactionUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: PostReactionUpdateManyWithWhereWithoutPostInput | PostReactionUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSentMessagesInput = {
@@ -19840,6 +21336,34 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutMentionsReceivedInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMentionsReceivedInput, UserUpdateWithoutMentionsReceivedInput>, UserUncheckedUpdateWithoutMentionsReceivedInput>
+  }
+
+  export type PostCreateNestedOneWithoutReactionsInput = {
+    create?: XOR<PostCreateWithoutReactionsInput, PostUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutReactionsInput
+    connect?: PostWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPostReactionsInput = {
+    create?: XOR<UserCreateWithoutPostReactionsInput, UserUncheckedCreateWithoutPostReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPostReactionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PostUpdateOneRequiredWithoutReactionsNestedInput = {
+    create?: XOR<PostCreateWithoutReactionsInput, PostUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutReactionsInput
+    upsert?: PostUpsertWithoutReactionsInput
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutReactionsInput, PostUpdateWithoutReactionsInput>, PostUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPostReactionsNestedInput = {
+    create?: XOR<UserCreateWithoutPostReactionsInput, UserUncheckedCreateWithoutPostReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPostReactionsInput
+    upsert?: UserUpsertWithoutPostReactionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostReactionsInput, UserUpdateWithoutPostReactionsInput>, UserUncheckedUpdateWithoutPostReactionsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -20076,6 +21600,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -20095,6 +21620,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -20130,6 +21656,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -20149,6 +21676,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -20168,6 +21696,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -20187,6 +21716,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -20222,6 +21752,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -20241,6 +21772,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -20402,6 +21934,7 @@ export namespace Prisma {
     topic: TopicCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
@@ -20415,6 +21948,7 @@ export namespace Prisma {
     moderatedBy?: string | null
     isDeleted?: boolean
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAuthorInput = {
@@ -20562,6 +22096,7 @@ export namespace Prisma {
     topic: TopicCreateNestedOneWithoutPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutModeratorInput = {
@@ -20575,6 +22110,7 @@ export namespace Prisma {
     moderationReason?: string | null
     isDeleted?: boolean
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutModeratorInput = {
@@ -20584,6 +22120,29 @@ export namespace Prisma {
 
   export type PostCreateManyModeratorInputEnvelope = {
     data: PostCreateManyModeratorInput | PostCreateManyModeratorInput[]
+  }
+
+  export type PostReactionCreateWithoutUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    post: PostCreateNestedOneWithoutReactionsInput
+  }
+
+  export type PostReactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    postId: string
+  }
+
+  export type PostReactionCreateOrConnectWithoutUserInput = {
+    where: PostReactionWhereUniqueInput
+    create: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PostReactionCreateManyUserInputEnvelope = {
+    data: PostReactionCreateManyUserInput | PostReactionCreateManyUserInput[]
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -20883,6 +22442,33 @@ export namespace Prisma {
     data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutModeratorInput>
   }
 
+  export type PostReactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: PostReactionWhereUniqueInput
+    update: XOR<PostReactionUpdateWithoutUserInput, PostReactionUncheckedUpdateWithoutUserInput>
+    create: XOR<PostReactionCreateWithoutUserInput, PostReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type PostReactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: PostReactionWhereUniqueInput
+    data: XOR<PostReactionUpdateWithoutUserInput, PostReactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PostReactionUpdateManyWithWhereWithoutUserInput = {
+    where: PostReactionScalarWhereInput
+    data: XOR<PostReactionUpdateManyMutationInput, PostReactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PostReactionScalarWhereInput = {
+    AND?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
+    OR?: PostReactionScalarWhereInput[]
+    NOT?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
+    id?: StringFilter<"PostReaction"> | string
+    emoji?: StringFilter<"PostReaction"> | string
+    createdAt?: DateTimeFilter<"PostReaction"> | Date | string
+    postId?: StringFilter<"PostReaction"> | string
+    userId?: StringFilter<"PostReaction"> | string
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -20900,6 +22486,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -20919,6 +22506,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -20954,6 +22542,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -20973,6 +22562,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -21270,6 +22860,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -21289,6 +22880,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -21307,6 +22899,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutTopicInput = {
@@ -21320,6 +22913,7 @@ export namespace Prisma {
     moderatedBy?: string | null
     isDeleted?: boolean
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutTopicInput = {
@@ -21411,6 +23005,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -21430,6 +23025,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -21512,6 +23108,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -21531,6 +23128,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -21580,6 +23178,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -21599,11 +23198,35 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutModeratedPostsInput, UserUncheckedCreateWithoutModeratedPostsInput>
+  }
+
+  export type PostReactionCreateWithoutPostInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPostReactionsInput
+  }
+
+  export type PostReactionUncheckedCreateWithoutPostInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type PostReactionCreateOrConnectWithoutPostInput = {
+    where: PostReactionWhereUniqueInput
+    create: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput>
+  }
+
+  export type PostReactionCreateManyPostInputEnvelope = {
+    data: PostReactionCreateManyPostInput | PostReactionCreateManyPostInput[]
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -21671,6 +23294,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -21690,6 +23314,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -21736,6 +23361,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -21755,6 +23381,23 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
+    where: PostReactionWhereUniqueInput
+    update: XOR<PostReactionUpdateWithoutPostInput, PostReactionUncheckedUpdateWithoutPostInput>
+    create: XOR<PostReactionCreateWithoutPostInput, PostReactionUncheckedCreateWithoutPostInput>
+  }
+
+  export type PostReactionUpdateWithWhereUniqueWithoutPostInput = {
+    where: PostReactionWhereUniqueInput
+    data: XOR<PostReactionUpdateWithoutPostInput, PostReactionUncheckedUpdateWithoutPostInput>
+  }
+
+  export type PostReactionUpdateManyWithWhereWithoutPostInput = {
+    where: PostReactionScalarWhereInput
+    data: XOR<PostReactionUpdateManyMutationInput, PostReactionUncheckedUpdateManyWithoutPostInput>
   }
 
   export type UserCreateWithoutSentMessagesInput = {
@@ -21774,6 +23417,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentMessagesInput = {
@@ -21793,6 +23437,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentMessagesInput = {
@@ -21817,6 +23462,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedMessagesInput = {
@@ -21836,6 +23482,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedMessagesInput = {
@@ -21871,6 +23518,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentMessagesInput = {
@@ -21890,6 +23538,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedMessagesInput = {
@@ -21920,6 +23569,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedMessagesInput = {
@@ -21939,6 +23589,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -21958,6 +23609,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -21977,6 +23629,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -22043,6 +23696,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -22062,6 +23716,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -22112,6 +23767,7 @@ export namespace Prisma {
     topic: TopicCreateNestedOneWithoutPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutMentionsInput = {
@@ -22125,6 +23781,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutMentionsInput = {
@@ -22149,6 +23806,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -22168,6 +23826,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -22192,6 +23851,7 @@ export namespace Prisma {
     topicViews?: TopicViewCreateNestedManyWithoutUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -22211,6 +23871,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -22240,6 +23901,7 @@ export namespace Prisma {
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutMentionsInput = {
@@ -22253,6 +23915,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -22283,6 +23946,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -22302,6 +23966,7 @@ export namespace Prisma {
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -22332,6 +23997,7 @@ export namespace Prisma {
     topicViews?: TopicViewUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -22350,6 +24016,175 @@ export namespace Prisma {
     receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PostCreateWithoutReactionsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    isDeleted?: boolean
+    topic: TopicCreateNestedOneWithoutPostsInput
+    author: UserCreateNestedOneWithoutPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+  }
+
+  export type PostUncheckedCreateWithoutReactionsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    isDeleted?: boolean
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutReactionsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutReactionsInput, PostUncheckedCreateWithoutReactionsInput>
+  }
+
+  export type UserCreateWithoutPostReactionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutPostReactionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    sentMessages?: PmUncheckedCreateNestedManyWithoutSenderInput
+    receivedMessages?: PmUncheckedCreateNestedManyWithoutReceiverInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutPostReactionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPostReactionsInput, UserUncheckedCreateWithoutPostReactionsInput>
+  }
+
+  export type PostUpsertWithoutReactionsInput = {
+    update: XOR<PostUpdateWithoutReactionsInput, PostUncheckedUpdateWithoutReactionsInput>
+    create: XOR<PostCreateWithoutReactionsInput, PostUncheckedCreateWithoutReactionsInput>
+    where?: PostWhereInput
+  }
+
+  export type PostUpdateToOneWithWhereWithoutReactionsInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutReactionsInput, PostUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type PostUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type UserUpsertWithoutPostReactionsInput = {
+    update: XOR<UserUpdateWithoutPostReactionsInput, UserUncheckedUpdateWithoutPostReactionsInput>
+    create: XOR<UserCreateWithoutPostReactionsInput, UserUncheckedCreateWithoutPostReactionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPostReactionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPostReactionsInput, UserUncheckedUpdateWithoutPostReactionsInput>
+  }
+
+  export type UserUpdateWithoutPostReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPostReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    sentMessages?: PmUncheckedUpdateManyWithoutSenderNestedInput
+    receivedMessages?: PmUncheckedUpdateManyWithoutReceiverNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
@@ -22469,6 +24304,13 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+  }
+
+  export type PostReactionCreateManyUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    postId: string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -22648,6 +24490,7 @@ export namespace Prisma {
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAuthorInput = {
@@ -22661,6 +24504,7 @@ export namespace Prisma {
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutAuthorInput = {
@@ -22806,6 +24650,7 @@ export namespace Prisma {
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutModeratorInput = {
@@ -22819,6 +24664,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutModeratorInput = {
@@ -22831,6 +24677,27 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type PostReactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    post?: PostUpdateOneRequiredWithoutReactionsNestedInput
+  }
+
+  export type PostReactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostReactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    postId?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -22982,6 +24849,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutTopicInput = {
@@ -22995,6 +24863,7 @@ export namespace Prisma {
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutTopicInput = {
@@ -23035,6 +24904,13 @@ export namespace Prisma {
     readAt?: Date | string | null
   }
 
+  export type PostReactionCreateManyPostInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    userId: string
+  }
+
   export type MentionUpdateWithoutPostInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23057,6 +24933,27 @@ export namespace Prisma {
     mentionerId?: StringFieldUpdateOperationsInput | string
     mentionedUserId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PostReactionUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPostReactionsNestedInput
+  }
+
+  export type PostReactionUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PostReactionUncheckedUpdateManyWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 
