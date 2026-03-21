@@ -46,18 +46,14 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
           )}
 
           {/* Posts Non Lus */}
-          {!forumId && !categoryId && !parentForumId && (
-            <>
-              <div className="sidebar-widget unread-widget">
-                <Link href="/forum/unread" className="widget-button">
-                  <MessageSquare size={18} />
-                  <span>Voir les posts non lus ({unreadTopics})</span>
-                </Link>
-              </div>
-              <div className="sidebar-widget mark-all-read-widget">
-                <MarkAllAsReadButton />
-              </div>
-            </>
+          {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
+            <div className="sidebar-widget unread-widget" style={{ display: 'flex', gap: '4px' }}>
+              <Link href="/forum/unread" className="widget-button" style={{ flex: 1 }}>
+                <MessageSquare size={18} />
+                <span>Posts non lus ({unreadTopics})</span>
+              </Link>
+              <MarkAllAsReadButton />
+            </div>
           )}
 
           {/* Recent Posts - Only on main forum to save space */}
