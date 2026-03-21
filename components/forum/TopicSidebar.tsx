@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { MessageSquare, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface TopicSidebarProps {
   topicId: string;
@@ -17,12 +17,21 @@ export default function TopicSidebar({ topicId, currentPage, totalPages }: Topic
   const [inputPage, setInputPage] = useState(String(currentPage));
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Synchronize state when the prop changes (e.g. navigation)
+  useEffect(() => {
+    setInputPage(String(currentPage));
+  }, [currentPage]);
+
   const getPageHref = (page: number) => `${pathname}?page=${page}`;
 
   function handlePageKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter') {
-      const p = Math.min(totalPages, Math.max(1, parseInt(inputPage, 10) || currentPage));
-      router.push(getPageHref(p));
+      const p = parseInt(inputPage, 10);
+      if (!isNaN(p) && p >= 1 && p <= totalPages) {
+        router.push(getPageHref(p));
+      } else {
+        setInputPage(String(currentPage)); // Re-sync if invalid
+      }
       inputRef.current?.blur();
     }
     if (e.key === 'Escape') {
