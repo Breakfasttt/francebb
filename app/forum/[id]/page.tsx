@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, Bell, Pin, Folder, FileText } from "lucide-react";
+import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
@@ -10,17 +10,25 @@ import "../forum.css";
 
 export const dynamic = "force-dynamic";
 
-export default async function ForumDetailPage({ params }: { params: Promise<{ id: string }> }) {
+const TOPICS_PER_PAGE = 30;
+const MAX_SUBFORUMS = 10;
+
+export default async function ForumDetailPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ page?: string }> }) {
   const session = await auth();
   const userId = session?.user?.id;
   const { id } = await params;
+  const { page: pageStr } = await searchParams;
+  const currentPage = Math.max(1, parseInt(pageStr || "1", 10));
+  const skip = (currentPage - 1) * TOPICS_PER_PAGE;
 
+  // Fetch forum meta + sub-forums (always all, capped at 10 in display)
   const forum = await prisma.forum.findUnique({
     where: { id },
     include: {
       category: true,
       subForums: {
         orderBy: { order: "asc" },
+        take: MAX_SUBFORUMS,
         include: {
           _count: { select: { topics: true } },
           topics: {
@@ -38,27 +46,36 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
       parentForum: {
         include: { category: true }
       },
-      topics: {
-        orderBy: [
-          { isSticky: "desc" },
-          { updatedAt: "desc" }
-        ],
-        include: {
-          author: true,
-          _count: {
-            select: { posts: true }
-          },
-          topicViews: {
-            where: { userId: userId || "" }
-          }
-        }
-      }
     }
   });
 
   if (!forum) notFound();
 
-  const forumHasNew = forum.topics.some(topic => {
+  // Count total topics for pagination
+  const totalTopics = await prisma.topic.count({ where: { forumId: id } });
+  const totalPages = Math.max(1, Math.ceil(totalTopics / TOPICS_PER_PAGE));
+
+  // Fetch paginated topics
+  const topics = await prisma.topic.findMany({
+    where: { forumId: id },
+    orderBy: [
+      { isSticky: "desc" },
+      { updatedAt: "desc" }
+    ],
+    skip,
+    take: TOPICS_PER_PAGE,
+    include: {
+      author: true,
+      _count: {
+        select: { posts: true }
+      },
+      topicViews: {
+        where: { userId: userId || "" }
+      }
+    }
+  });
+
+  const forumHasNew = topics.some(topic => {
     const view = topic.topicViews[0];
     return !view || topic.updatedAt > view.lastViewedAt;
   });
@@ -91,7 +108,6 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
 
        <div className="forum-layout">
          <div className="forum-main-content">
-
 
       {forum.subForums.length > 0 && (
         <div className="sub-forums-section" style={{ marginBottom: '3rem' }}>
@@ -157,7 +173,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
           <span style={{ paddingLeft: '1.5rem', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>Dernier message</span>
         </div>
 
-        {forum.topics.length > 0 ? forum.topics.map((topic) => {
+        {topics.length > 0 ? topics.map((topic) => {
           const topicView = topic.topicViews[0];
           const topicHasNew = !topicView || topic.updatedAt > topicView.lastViewedAt;
 
@@ -196,6 +212,51 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginTop: '2rem' }}>
+          {currentPage > 1 && (
+            <Link href={`/forum/${id}?page=${currentPage - 1}`} className="page-link" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <ChevronLeft size={16} />
+            </Link>
+          )}
+
+          {Array.from({ length: totalPages }).map((_, i) => {
+            const p = i + 1;
+            // Show: first, last, current ±2
+            const show = p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2;
+            const showEllipsisBefore = p === totalPages && currentPage < totalPages - 3;
+            const showEllipsisAfter = p === 1 && currentPage > 4;
+
+            if (!show) return null;
+
+            return (
+              <span key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                {showEllipsisBefore && <span style={{ color: '#666', padding: '0 0.3rem' }}>…</span>}
+                <Link
+                  href={`/forum/${id}?page=${p}`}
+                  className={`page-link ${p === currentPage ? 'active' : ''}`}
+                >
+                  {p}
+                </Link>
+                {showEllipsisAfter && <span style={{ color: '#666', padding: '0 0.3rem' }}>…</span>}
+              </span>
+            );
+          })}
+
+          {currentPage < totalPages && (
+            <Link href={`/forum/${id}?page=${currentPage + 1}`} className="page-link" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <ChevronRight size={16} />
+            </Link>
+          )}
+
+          <span style={{ color: '#666', fontSize: '0.85rem', marginLeft: '0.5rem' }}>
+            Page {currentPage}/{totalPages} · {totalTopics} sujet{totalTopics > 1 ? 's' : ''}
+          </span>
+        </div>
+      )}
+
      </div>
      <ForumSidebar 
        forumId={id} 
