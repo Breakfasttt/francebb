@@ -132,6 +132,7 @@ model Topic {
 
   posts      Post[]
   topicViews TopicView[]
+  isDeleted  Boolean     @default(false)
 }
 
 model Post {

@@ -10345,6 +10345,7 @@ export namespace Prisma {
     updatedAt: Date | null
     forumId: string | null
     authorId: string | null
+    isDeleted: boolean | null
   }
 
   export type TopicMaxAggregateOutputType = {
@@ -10356,6 +10357,7 @@ export namespace Prisma {
     updatedAt: Date | null
     forumId: string | null
     authorId: string | null
+    isDeleted: boolean | null
   }
 
   export type TopicCountAggregateOutputType = {
@@ -10367,6 +10369,7 @@ export namespace Prisma {
     updatedAt: number
     forumId: number
     authorId: number
+    isDeleted: number
     _all: number
   }
 
@@ -10380,6 +10383,7 @@ export namespace Prisma {
     updatedAt?: true
     forumId?: true
     authorId?: true
+    isDeleted?: true
   }
 
   export type TopicMaxAggregateInputType = {
@@ -10391,6 +10395,7 @@ export namespace Prisma {
     updatedAt?: true
     forumId?: true
     authorId?: true
+    isDeleted?: true
   }
 
   export type TopicCountAggregateInputType = {
@@ -10402,6 +10407,7 @@ export namespace Prisma {
     updatedAt?: true
     forumId?: true
     authorId?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -10486,6 +10492,7 @@ export namespace Prisma {
     updatedAt: Date
     forumId: string
     authorId: string
+    isDeleted: boolean
     _count: TopicCountAggregateOutputType | null
     _min: TopicMinAggregateOutputType | null
     _max: TopicMaxAggregateOutputType | null
@@ -10514,6 +10521,7 @@ export namespace Prisma {
     updatedAt?: boolean
     forumId?: boolean
     authorId?: boolean
+    isDeleted?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
@@ -10530,6 +10538,7 @@ export namespace Prisma {
     updatedAt?: boolean
     forumId?: boolean
     authorId?: boolean
+    isDeleted?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
@@ -10543,6 +10552,7 @@ export namespace Prisma {
     updatedAt?: boolean
     forumId?: boolean
     authorId?: boolean
+    isDeleted?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
@@ -10556,9 +10566,10 @@ export namespace Prisma {
     updatedAt?: boolean
     forumId?: boolean
     authorId?: boolean
+    isDeleted?: boolean
   }
 
-  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "createdAt" | "updatedAt" | "forumId" | "authorId", ExtArgs["result"]["topic"]>
+  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "createdAt" | "updatedAt" | "forumId" | "authorId" | "isDeleted", ExtArgs["result"]["topic"]>
   export type TopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -10592,6 +10603,7 @@ export namespace Prisma {
       updatedAt: Date
       forumId: string
       authorId: string
+      isDeleted: boolean
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -11027,6 +11039,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Topic", 'DateTime'>
     readonly forumId: FieldRef<"Topic", 'String'>
     readonly authorId: FieldRef<"Topic", 'String'>
+    readonly isDeleted: FieldRef<"Topic", 'Boolean'>
   }
     
 
@@ -16015,7 +16028,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     forumId: 'forumId',
-    authorId: 'authorId'
+    authorId: 'authorId',
+    isDeleted: 'isDeleted'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
@@ -16677,6 +16691,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    isDeleted?: BoolFilter<"Topic"> | boolean
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     posts?: PostListRelationFilter
@@ -16692,6 +16707,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    isDeleted?: SortOrder
     forum?: ForumOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
@@ -16710,6 +16726,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    isDeleted?: BoolFilter<"Topic"> | boolean
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     posts?: PostListRelationFilter
@@ -16725,6 +16742,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    isDeleted?: SortOrder
     _count?: TopicCountOrderByAggregateInput
     _max?: TopicMaxOrderByAggregateInput
     _min?: TopicMinOrderByAggregateInput
@@ -16742,6 +16760,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Topic"> | Date | string
     forumId?: StringWithAggregatesFilter<"Topic"> | string
     authorId?: StringWithAggregatesFilter<"Topic"> | string
+    isDeleted?: BoolWithAggregatesFilter<"Topic"> | boolean
   }
 
   export type PostWhereInput = {
@@ -17609,6 +17628,7 @@ export namespace Prisma {
     isSticky?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     forum: ForumCreateNestedOneWithoutTopicsInput
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
@@ -17624,6 +17644,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     forumId: string
     authorId: string
+    isDeleted?: boolean
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -17635,6 +17656,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
@@ -17650,6 +17672,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -17663,6 +17686,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     forumId: string
     authorId: string
+    isDeleted?: boolean
   }
 
   export type TopicUpdateManyMutationInput = {
@@ -17672,6 +17696,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TopicUncheckedUpdateManyInput = {
@@ -17683,6 +17708,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PostCreateInput = {
@@ -18549,6 +18575,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TopicMaxOrderByAggregateInput = {
@@ -18560,6 +18587,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TopicMinOrderByAggregateInput = {
@@ -18571,6 +18599,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type TopicScalarRelationFilter = {
@@ -20232,6 +20261,7 @@ export namespace Prisma {
     isSticky?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     forum: ForumCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
@@ -20245,6 +20275,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     forumId: string
+    isDeleted?: boolean
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -20578,6 +20609,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    isDeleted?: BoolFilter<"Topic"> | boolean
   }
 
   export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -20970,6 +21002,7 @@ export namespace Prisma {
     isSticky?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
@@ -20983,6 +21016,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+    isDeleted?: boolean
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -21323,6 +21357,7 @@ export namespace Prisma {
     isSticky?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     forum: ForumCreateNestedOneWithoutTopicsInput
     author: UserCreateNestedOneWithoutTopicsInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
@@ -21337,6 +21372,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     forumId: string
     authorId: string
+    isDeleted?: boolean
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
 
@@ -21474,6 +21510,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
@@ -21488,6 +21525,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
 
@@ -21839,6 +21877,7 @@ export namespace Prisma {
     isSticky?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    isDeleted?: boolean
     forum: ForumCreateNestedOneWithoutTopicsInput
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
@@ -21853,6 +21892,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     forumId: string
     authorId: string
+    isDeleted?: boolean
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
   }
 
@@ -21928,6 +21968,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
@@ -21942,6 +21983,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
   }
 
@@ -22244,6 +22286,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     forumId: string
+    isDeleted?: boolean
   }
 
   export type PostCreateManyAuthorInput = {
@@ -22443,6 +22486,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
@@ -22456,6 +22500,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -22468,6 +22513,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     forumId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PostUpdateWithoutAuthorInput = {
@@ -22709,6 +22755,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     authorId: string
+    isDeleted?: boolean
   }
 
   export type ForumUpdateWithoutParentForumInput = {
@@ -22746,6 +22793,7 @@ export namespace Prisma {
     isSticky?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
@@ -22759,6 +22807,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -22771,6 +22820,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PostCreateManyTopicInput = {

@@ -149,23 +149,23 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
           const topicHasNew = !topicView || topic.updatedAt > topicView.lastViewedAt;
 
           return (
-            <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`}>
+            <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`} style={{ opacity: topic.isDeleted ? 0.6 : 1 }}>
               <div className="forum-info">
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? '#ffd700' : 'white' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topic.isDeleted ? '#888' : (topicHasNew ? '#ffd700' : 'white') }}>
                   {topic.isSticky && <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />}
-                  <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
-                  {topicHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
+                  <span dangerouslySetInnerHTML={{ __html: topic.isDeleted ? "Ce topic a était supprimer par son créateur" : parseInlineBBCode(topic.title) }} />
+                  {topicHasNew && !topic.isDeleted && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                 </h3>
-                <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>
+                {!topic.isDeleted && <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>}
               </div>
 
               <div className="forum-stats">
-                <div><span className="stat-val">{topic._count.posts}</span> msgs</div>
+                <div><span className="stat-val">{topic.isDeleted ? 1 : topic._count.posts}</span> msgs</div>
               </div>
 
               <div className="forum-last-post">
                 <span className="last-post-meta">
-                  Dernière act.
+                  {topic.isDeleted ? "Supprimé" : "Dernière act."}
                   <br />
                   {new Date(topic.updatedAt).toLocaleDateString("fr-FR")}
                 </span>

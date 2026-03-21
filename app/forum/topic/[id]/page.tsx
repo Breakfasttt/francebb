@@ -42,6 +42,34 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
 
   if (!topic) notFound();
 
+  if (topic.isDeleted) {
+    return (
+      <main className="container forum-container">
+        <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+          <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
+            <ArrowLeft size={20} />
+          </Link>
+          <div style={{ textAlign: 'center' }}>
+            <h1 style={{ margin: '0.5rem 0', color: '#666' }}>Sujet supprimé</h1>
+          </div>
+        </header>
+        <div style={{ 
+          padding: '5rem 2rem', 
+          textAlign: 'center', 
+          background: 'rgba(255,255,255,0.02)', 
+          borderRadius: '16px', 
+          border: '1px solid var(--glass-border)',
+          backdropFilter: 'blur(10px)'
+        }}>
+          <h2 style={{ color: '#888', fontWeight: 500 }}>Ce topic a était supprimer par son créateur</h2>
+          <Link href={`/forum/${topic.forumId}`} className="widget-button secondary-btn" style={{ marginTop: '2.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', width: 'auto', padding: '0.8rem 2rem' }}>
+            <ArrowLeft size={16} /> Retour au forum
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="container forum-container">
       <MarkAsRead topicId={id} />

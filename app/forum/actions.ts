@@ -403,15 +403,20 @@ export async function deletePost(postId: string) {
     throw new Error("Seul l'auteur peut supprimer son message.");
   }
 
-  // If it's the first post of the topic, we shouldn't allow deleting it (delete topic instead?)
-  // For now, let's keep it simple or check if it's the only post.
+  // If it's the first post of the topic, we mark the topic as deleted
   if (post.topic.posts[0].id === postId) {
-    throw new Error("Impossible de supprimer le premier message du sujet. Supprimez le sujet entier à la place.");
+    await prisma.topic.update({
+      where: { id: post.topicId },
+      data: { isDeleted: true }
+    });
+    // We don't actually delete the record from Post table to maintain "at least one message" rule
+    // but we can clear its content if we want, or just rely on Topic.isDeleted in UI.
+  } else {
+    await prisma.post.delete({
+      where: { id: postId }
+    });
   }
 
-  await prisma.post.delete({
-    where: { id: postId }
-  });
-
   revalidatePath(`/forum/topic/${post.topicId}`);
+  revalidatePath(`/forum/${post.topic.forumId}`);
 }
