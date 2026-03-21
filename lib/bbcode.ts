@@ -23,7 +23,7 @@ export const smileysMap: Record<string, string> = {
 /**
  * A simple BBCode parser that escapes HTML to prevent XSS and replaces known tags.
  */
-export function parseBBCode(text: string): string {
+export function parseBBCode(text: string, postStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>): string {
   if (!text) return "";
 
   // 1. Escape basic HTML tags to prevent XSS
@@ -73,7 +73,21 @@ export function parseBBCode(text: string): string {
   html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
 
   // Quotes — [quote=UserID|PostID]content[/quote]
-  html = html.replace(/\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\](.*?)\[\/quote\]/gi, (match, userId, postId, content) => {
+  html = html.replace(/\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, content) => {
+    if (postId && postStatusMap && postStatusMap[postId]) {
+      const status = postStatusMap[postId];
+      if (status.isDeleted) {
+        return `<div class="bb-quote" style="border-left: 4px solid #888; background: rgba(255,255,255,0.03); padding: 1.5rem; margin: 1rem 0; border-radius: 0 8px 8px 0; font-style: italic; color: #888; text-align: center;">
+          Ce message a était supprimé par son auteur
+        </div>`;
+      }
+      if (status.isModerated) {
+        return `<div class="bb-quote" style="border-left: 4px solid #ff8888; background: rgba(194, 29, 29, 0.1); padding: 1.5rem; margin: 1rem 0; border-radius: 0 8px 8px 0; font-style: italic; color: #ff8888; text-align: center;">
+          Le contenu de ce message a été masqué par la modération.
+        </div>`;
+      }
+    }
+
     return `<div class="bb-quote" style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.03); padding: 1rem; margin: 1rem 0; border-radius: 0 8px 8px 0; font-style: italic;">
       <div style="font-size: 0.8rem; color: var(--secondary); margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-style: normal;">
         <span>Par <a href="/profile?id=${userId}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 700;">@${userId}</a></span>

@@ -9,6 +9,7 @@ import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import TopicSidebar from "@/components/forum/TopicSidebar";
 import PostActions from "@/components/forum/PostActions";
 import QuickReply from "@/components/forum/QuickReply";
+import { getQuoteStatusMap } from "@/app/forum/actions";
 import "../../forum.css";
 
 export const dynamic = "force-dynamic";
@@ -41,6 +42,9 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   });
 
   if (!topic) notFound();
+
+  const postContents = topic.posts.map(p => p.content);
+  const quoteStatusMap = await getQuoteStatusMap(postContents);
 
   return (
     <main className="container forum-container">
@@ -161,7 +165,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
                           wordBreak: 'break-word',
                           opacity: post.isModerated ? 0.6 : 1
                         }}
-                        dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
+                        dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap) }}
                       />
                     </div>
                   ) : (

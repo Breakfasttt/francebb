@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Clock, User, Pencil } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { getTopicLatestPosts, getPostById } from "@/app/forum/actions";
+import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import EditPostForm from "@/components/forum/EditPostForm";
 import "../../../forum.css";
@@ -43,6 +43,7 @@ export default async function EditPostPage({
 
   // Get 3 latest posts for context
   const latestPosts = await getTopicLatestPosts(post.topicId, 3);
+  const quoteStatusMap = await getQuoteStatusMap(latestPosts.map(p => p.content));
 
   return (
     <main className="container forum-container">
@@ -87,7 +88,7 @@ export default async function EditPostPage({
                   </div>
                   <div 
                     style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: '#aaa', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
-                    dangerouslySetInnerHTML={{ __html: parseBBCode(latest.content) }}
+                    dangerouslySetInnerHTML={{ __html: parseBBCode(latest.content, quoteStatusMap) }}
                   />
                 </div>
               ))}

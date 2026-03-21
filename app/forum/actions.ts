@@ -146,6 +146,32 @@ export async function createForum(formData: FormData) {
   redirect(parentForumId ? `/forum/${parentForumId}` : "/forum");
 }
 
+export async function getQuoteStatusMap(contents: string[]) {
+  const quoteRegex = /\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\]/gi;
+  const postIds = new Set<string>();
+  
+  for (const content of contents) {
+    if (!content) continue;
+    const matches = [...content.matchAll(quoteRegex)];
+    for (const match of matches) {
+      if (match[2]) postIds.add(match[2]);
+    }
+  }
+
+  if (postIds.size === 0) return {};
+
+  const posts = await prisma.post.findMany({
+    where: { id: { in: Array.from(postIds) } },
+    select: { id: true, isDeleted: true, isModerated: true }
+  });
+
+  const map: Record<string, { isDeleted: boolean, isModerated: boolean }> = {};
+  for (const p of posts) {
+    map[p.id] = { isDeleted: p.isDeleted, isModerated: p.isModerated };
+  }
+  return map;
+}
+
 export async function getCategories() {
   return await prisma.category.findMany({
     orderBy: { order: "asc" }
