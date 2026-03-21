@@ -112,6 +112,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   if (!topic) notFound();
 
+  const displayViews = topic.views || 0;
+
   const totalPages = Math.max(1, Math.ceil(totalPostCount / POSTS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
 
@@ -293,6 +295,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         topicTitle={topic.title}
         authorId={topic.authorId}
         currentUserId={currentUserId}
+        views={displayViews}
       />
     </div>
   </main>

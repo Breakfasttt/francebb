@@ -178,6 +178,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
 
               <div className="forum-stats">
                 <div><span className="stat-val">{topic._count.posts}</span> msgs</div>
+                <div><span className="stat-val">{(topic.views || 0).toLocaleString("fr-FR")}</span> vues</div>
               </div>
 
               <div className="forum-last-post">

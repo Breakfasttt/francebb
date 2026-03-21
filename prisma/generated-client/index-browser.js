@@ -201,6 +201,7 @@ exports.Prisma.TopicScalarFieldEnum = {
   isSticky: 'isSticky',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  views: 'views',
   forumId: 'forumId',
   authorId: 'authorId'
 };

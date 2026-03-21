@@ -3,9 +3,14 @@
 import { useEffect } from "react";
 import { markTopicAsRead } from "@/app/forum/actions";
 
+const viewedTopics = new Set<string>();
+
 export default function MarkAsRead({ topicId }: { topicId: string }) {
   useEffect(() => {
-    markTopicAsRead(topicId);
+    if (!viewedTopics.has(topicId)) {
+      viewedTopics.add(topicId);
+      markTopicAsRead(topicId);
+    }
 
     // Force scroll to hash if present with robust retry logic
     const hash = window.location.hash;

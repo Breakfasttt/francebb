@@ -123,6 +123,7 @@ model Topic {
   isSticky  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  views     Int      @default(0)
 
   forumId String
   forum   Forum  @relation(fields: [forumId], references: [id])

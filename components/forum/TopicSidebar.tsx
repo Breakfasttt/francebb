@@ -15,7 +15,8 @@ import {
   Type,
   ChevronsDown,
   Mail,
-  Check
+  Check,
+  Eye
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -36,6 +37,7 @@ interface TopicSidebarProps {
   topicTitle?: string;
   authorId?: string;
   currentUserId?: string;
+  views?: number;
 }
 
 export default function TopicSidebar({ 
@@ -49,7 +51,8 @@ export default function TopicSidebar({
   allForums = [],
   topicTitle = "",
   authorId = "",
-  currentUserId = ""
+  currentUserId = "",
+  views = 0
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -234,9 +237,16 @@ export default function TopicSidebar({
 
           {/* 2. Topic Actions Block */}
           <div className="sidebar-widget topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem', fontSize: '0.85rem', color: '#aaa', textTransform: 'uppercase' }}>
-              Sujet
-            </h3>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+              <h3 style={{ margin: 0, fontSize: '0.85rem', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Sujet
+              </h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#666', fontSize: '0.75rem', fontWeight: 600 }} title={`${views.toLocaleString("fr-FR")} vues`}>
+                 <Eye size={13} />
+                 <span>{views.toLocaleString("fr-FR")}</span>
+              </div>
+            </div>
+
             <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
               className="widget-button" style={{ background: 'var(--primary)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
               <MessageSquare size={16} /><span>Répondre</span>

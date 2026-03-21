@@ -62,6 +62,9 @@ export async function getRandomPostUrl() {
 }
 
 export async function markTopicAsRead(topicId: string) {
+  // Increment views safely using RAW SQL to avoid triggering Prisma's @updatedAt (which makes topics 'unread')
+  await prisma.$executeRaw`UPDATE "Topic" SET "views" = Coalesce("views", 0) + 1 WHERE "id" = ${topicId}`;
+
   const session = await auth();
   if (!session?.user?.id) return;
 
