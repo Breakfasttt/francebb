@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "./DeleteForumButton";
+import MarkAllAsReadButton from "./MarkAllAsReadButton";
 
 export default async function ForumSidebar({ forumId, forumName, categoryId, parentForumId }: { forumId?: string; forumName?: string; categoryId?: string; parentForumId?: string }) {
   const unreadMessages = await getUnreadMessagesCount();
@@ -45,12 +46,19 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
           )}
 
           {/* Posts Non Lus */}
-          <div className="sidebar-widget unread-widget">
-            <Link href="/forum/unread" className="widget-button">
-              <MessageSquare size={18} />
-              <span>Voir les posts non lus ({unreadTopics})</span>
-            </Link>
-          </div>
+          {!forumId && !categoryId && !parentForumId && (
+            <>
+              <div className="sidebar-widget unread-widget">
+                <Link href="/forum/unread" className="widget-button">
+                  <MessageSquare size={18} />
+                  <span>Voir les posts non lus ({unreadTopics})</span>
+                </Link>
+              </div>
+              <div className="sidebar-widget mark-all-read-widget">
+                <MarkAllAsReadButton />
+              </div>
+            </>
+          )}
 
           {/* Recent Posts - Only on main forum to save space */}
           {!forumId && (

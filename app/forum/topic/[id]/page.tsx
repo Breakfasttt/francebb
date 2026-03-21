@@ -10,6 +10,7 @@ import TopicSidebar from "@/components/forum/TopicSidebar";
 import PostActions from "@/components/forum/PostActions";
 import QuickReply from "@/components/forum/QuickReply";
 import { getQuoteStatusMap } from "@/app/forum/actions";
+import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import "../../forum.css";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
     include: {
       forum: {
         include: { 
+          category: true,
           parentForum: {
             include: { category: true }
           }
@@ -46,10 +48,20 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   const postContents = topic.posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
 
+  const breadcrumbs = [];
+  if (topic.forum.parentForum) {
+    if (topic.forum.parentForum.category) breadcrumbs.push({ label: topic.forum.parentForum.category.name, isCategory: true });
+    breadcrumbs.push({ label: topic.forum.parentForum.name, href: `/forum/${topic.forum.parentForumId}` });
+  } else if (topic.forum.category) {
+    breadcrumbs.push({ label: topic.forum.category.name, isCategory: true });
+  }
+  breadcrumbs.push({ label: topic.forum.name, href: `/forum/${topic.forumId}` });
+  breadcrumbs.push({ label: topic.title });
+
   return (
     <main className="container forum-container">
       <MarkAsRead topicId={id} />
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
         <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -59,7 +71,9 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
         </div>
       </header>
  
-       <div className="forum-layout">
+      <ForumBreadcrumbs items={breadcrumbs} />
+
+       <div className="forum-layout" style={{ display: 'block' }}>
          <div className="forum-main-content">
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

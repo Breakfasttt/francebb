@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import EditPostForm from "@/components/forum/EditPostForm";
+import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import "../../../forum.css";
 import { isModerator } from "@/lib/roles";
 
@@ -28,7 +29,16 @@ export default async function EditPostPage({
     include: { 
       author: true,
       topic: {
-        include: { forum: true }
+        include: { 
+          forum: {
+            include: {
+              category: true,
+              parentForum: {
+                include: { category: true }
+              }
+            }
+          }
+        }
       }
     }
   });
@@ -45,9 +55,20 @@ export default async function EditPostPage({
   const latestPosts = await getTopicLatestPosts(post.topicId, 3);
   const quoteStatusMap = await getQuoteStatusMap(latestPosts.map(p => p.content));
 
+  const breadcrumbs = [];
+  if (post.topic.forum.parentForum) {
+    if (post.topic.forum.parentForum.category) breadcrumbs.push({ label: post.topic.forum.parentForum.category.name, isCategory: true });
+    breadcrumbs.push({ label: post.topic.forum.parentForum.name, href: `/forum/${post.topic.forum.parentForumId}` });
+  } else if (post.topic.forum.category) {
+    breadcrumbs.push({ label: post.topic.forum.category.name, isCategory: true });
+  }
+  breadcrumbs.push({ label: post.topic.forum.name, href: `/forum/${post.topic.forumId}` });
+  breadcrumbs.push({ label: post.topic.title, href: `/forum/topic/${post.topic.id}` });
+  breadcrumbs.push({ label: "Modifier le message" });
+
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
         <Link href={`/forum/topic/${post.topicId}`} className="back-button" title="Retour au sujet" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -57,6 +78,8 @@ export default async function EditPostPage({
         </div>
       </header>
  
+      <ForumBreadcrumbs items={breadcrumbs} />
+
       <div className="forum-layout" style={{ display: 'block' }}>
         <div className="forum-main-content">
           <EditPostForm 

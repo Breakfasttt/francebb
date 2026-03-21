@@ -2,8 +2,8 @@ import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, MessageSquarePlus } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
-import "../forum.css";
 import Link from "next/link";
+import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { createTopic } from "../actions";
 import { prisma } from "@/lib/prisma";
@@ -18,7 +18,12 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
 
   const forum = await prisma.forum.findUnique({
     where: { id: forumId },
-    select: { name: true, categoryId: true, id: true }
+    include: {
+      category: true,
+      parentForum: {
+        include: { category: true }
+      }
+    }
   });
 
   if (!forum) notFound();
@@ -30,9 +35,19 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
 
   const userCanStick = isModerator(session.user.role);
 
+  const breadcrumbs = [];
+  if (forum.parentForum) {
+    if (forum.parentForum.category) breadcrumbs.push({ label: forum.parentForum.category.name, isCategory: true });
+    breadcrumbs.push({ label: forum.parentForum.name, href: `/forum/${forum.parentForumId}` });
+  } else if (forum.category) {
+    breadcrumbs.push({ label: forum.category.name, isCategory: true });
+  }
+  breadcrumbs.push({ label: forum.name, href: `/forum/${forum.id}` });
+  breadcrumbs.push({ label: "Nouveau sujet" });
+
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
         <Link href={`/forum/${forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -42,6 +57,8 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
         </div>
       </header>
  
+      <ForumBreadcrumbs items={breadcrumbs} />
+
       <form action={createTopic}>
         <input type="hidden" name="forumId" value={forumId} />
         

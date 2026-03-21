@@ -446,3 +446,47 @@ export async function deletePost(postId: string) {
   revalidatePath(`/forum/topic/${post.topicId}`);
   revalidatePath(`/forum/${post.topic.forumId}`);
 }
+
+export async function markAllTopicsAsRead() {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non autorisé" };
+
+  try {
+    const topics = await prisma.topic.findMany({
+      select: {
+        id: true,
+        updatedAt: true,
+        topicViews: {
+          where: { userId: session.user.id },
+          select: { lastViewedAt: true }
+        }
+      }
+    });
+
+    const now = new Date();
+    const toUpdate = topics.filter(t => !t.topicViews[0] || t.topicViews[0].lastViewedAt < t.updatedAt);
+
+    if (toUpdate.length > 0) {
+      await prisma.$transaction(
+        toUpdate.map(t => 
+          prisma.topicView.upsert({
+            where: {
+              userId_topicId: {
+                userId: session.user.id,
+                topicId: t.id
+              }
+            },
+            update: { lastViewedAt: now },
+            create: { userId: session.user.id, topicId: t.id, lastViewedAt: now }
+          })
+        )
+      );
+    }
+
+    revalidatePath("/forum");
+    return { success: true };
+  } catch (error) {
+    console.error("markAllTopicsAsRead Error:", error);
+    return { success: false, error: "Une erreur est survenue." };
+  }
+}

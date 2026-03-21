@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import ReplyForm from "@/components/forum/ReplyForm";
+import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import "../../../forum.css";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +28,16 @@ export default async function ReplyPage({
 
   const topic = await prisma.topic.findUnique({
     where: { id },
-    include: { forum: true }
+    include: { 
+      forum: {
+        include: {
+          category: true,
+          parentForum: {
+            include: { category: true }
+          }
+        }
+      } 
+    }
   });
 
   if (!topic) notFound();
@@ -49,9 +59,20 @@ export default async function ReplyPage({
   const latestPosts = await getTopicLatestPosts(id, 3);
   const quoteStatusMap = await getQuoteStatusMap(latestPosts.map(p => p.content));
 
+  const breadcrumbs = [];
+  if (topic.forum.parentForum) {
+    if (topic.forum.parentForum.category) breadcrumbs.push({ label: topic.forum.parentForum.category.name, isCategory: true });
+    breadcrumbs.push({ label: topic.forum.parentForum.name, href: `/forum/${topic.forum.parentForumId}` });
+  } else if (topic.forum.category) {
+    breadcrumbs.push({ label: topic.forum.category.name, isCategory: true });
+  }
+  breadcrumbs.push({ label: topic.forum.name, href: `/forum/${topic.forumId}` });
+  breadcrumbs.push({ label: topic.title, href: `/forum/topic/${topic.id}` });
+  breadcrumbs.push({ label: "Répondre" });
+
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
         <Link href={`/forum/topic/${id}`} className="back-button" title="Retour au sujet" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -60,6 +81,8 @@ export default async function ReplyPage({
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></p>
         </div>
       </header>
+
+      <ForumBreadcrumbs items={breadcrumbs} />
  
       <div className="forum-layout" style={{ display: 'block' }}>
         <div className="forum-main-content">

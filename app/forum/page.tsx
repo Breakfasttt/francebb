@@ -1,4 +1,4 @@
-import { ArrowLeft, Bell, Hash } from "lucide-react";
+import { ArrowLeft, Bell, Hash, Folder } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
 import "./forum.css";
 
@@ -108,6 +108,7 @@ export default async function ForumPage() {
                   <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>
                     <div className="forum-info">
                       <h3 style={{ color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <Folder size={18} style={{ color: forumHasNew ? '#ffd700' : '#888' }} />
                         <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
                         {forumHasNew && <Bell size={14} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                       </h3>

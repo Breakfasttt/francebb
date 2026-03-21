@@ -1,9 +1,10 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, Bell, Pin } from "lucide-react";
+import { ArrowLeft, Bell, Pin, Folder, FileText } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
+import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
 import { notFound } from "next/navigation";
 import "../forum.css";
 
@@ -62,9 +63,18 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
     return !view || topic.updatedAt > view.lastViewedAt;
   });
 
+  const breadcrumbs = [];
+  if (forum.parentForum) {
+    if (forum.parentForum.category) breadcrumbs.push({ label: forum.parentForum.category.name, isCategory: true });
+    breadcrumbs.push({ label: forum.parentForum.name, href: `/forum/${forum.parentForumId}` });
+  } else if (forum.category) {
+    breadcrumbs.push({ label: forum.category.name, isCategory: true });
+  }
+  breadcrumbs.push({ label: forum.name });
+
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
+      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
@@ -77,6 +87,8 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
         </div>
       </header>
  
+      <ForumBreadcrumbs items={breadcrumbs} />
+
        <div className="forum-layout">
          <div className="forum-main-content">
 
@@ -96,6 +108,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
                 <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>
                   <div className="forum-info">
                     <h3 style={{ color: subHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <Folder size={16} style={{ color: subHasNew ? '#ffd700' : '#888' }} />
                       {sub.name}
                       {subHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                     </h3>
@@ -152,7 +165,11 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
             <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`}>
               <div className="forum-info">
                 <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? '#ffd700' : 'white' }}>
-                  {topic.isSticky && <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />}
+                  {topic.isSticky ? (
+                    <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />
+                  ) : (
+                    <FileText size={16} style={{ color: topicHasNew ? '#ffd700' : '#888' }} />
+                  )}
                   <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
                   {topicHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                 </h3>
