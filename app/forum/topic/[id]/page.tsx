@@ -42,7 +42,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         },
         author: true,
         posts: {
-          orderBy: { createdAt: "asc" },
+          orderBy: [{ createdAt: "asc" }, { id: "asc" }],
           skip,
           take: POSTS_PER_PAGE,
           include: {
@@ -55,7 +55,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     prisma.post.count({ where: { topicId: id } }),
     prisma.post.findFirst({
       where: { topicId: id },
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       select: { id: true }
     }),
     prisma.forum.findMany({
@@ -90,7 +90,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <span style={{ color: 'var(--secondary)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />
+          <span style={{ color: 'var(--accent)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />
           <h1 style={{ margin: '0.5rem 0' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
         </div>
       </header>
@@ -102,7 +102,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {topic.posts.map((post, index) => (
-          <div key={post.id} id={`post-${post.id}`} className="premium-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden', scrollMarginTop: '100px' }}>
+          <div key={post.id} id={`post-${post.id}`} className="premium-card forum-post-card" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: '200px', padding: 0, overflow: 'hidden' }}>
             {/* Sidebar Auteur */}
             <div style={{
               background: 'rgba(255,255,255,0.03)',

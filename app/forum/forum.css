@@ -303,3 +303,7 @@
     transform: scale(1.15);
   }
 }
+
+.forum-post-card {
+  scroll-margin-top: 110px;
+}
