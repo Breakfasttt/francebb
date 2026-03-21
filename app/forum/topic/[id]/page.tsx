@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 import MarkAsRead from "@/components/forum/MarkAsRead";
+import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 
 export default async function TopicPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -42,10 +43,8 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <span style={{ color: 'var(--secondary)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }}>
-            {topic.forum.name}
-          </span>
-          <h1 style={{ margin: '0.5rem 0' }}>{topic.title}</h1>
+          <span style={{ color: 'var(--secondary)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />
+          <h1 style={{ margin: '0.5rem 0' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
         </div>
       </header>
  
@@ -99,9 +98,10 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
                 <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
                 <span>#{index + 1}</span>
               </div>
-              <div style={{ color: '#ddd', lineHeight: '1.6', fontSize: '1.1rem', flex: 1 }}>
-                {post.content}
-              </div>
+              <div 
+                style={{ color: '#ddd', lineHeight: '1.6', fontSize: '1.1rem', flex: 1, wordBreak: 'break-word' }}
+                dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
+              />
               <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                 <button className="reset-btn" style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Citer</button>
               </div>

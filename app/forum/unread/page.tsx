@@ -2,6 +2,7 @@ import { ArrowLeft, Clock, MessageSquare } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
 import "../forum.css";
 import Link from "next/link";
+import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
 
 
@@ -46,8 +47,8 @@ export default async function UnreadPostsPage() {
         {unreadTopics.length > 0 ? unreadTopics.map((topic) => (
           <Link key={topic.id} href={`/forum/topic/${topic.id}`} className="forum-item has-new">
             <div className="forum-info">
-              <h3 style={{ color: '#ffd700' }}>{topic.title}</h3>
-              <p>Dans <strong>{topic.forum.name}</strong> • Par {topic.author.name}</p>
+              <h3 style={{ color: '#ffd700' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+              <p>Dans <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} /> • Par {topic.author.name}</p>
             </div>
 
             <div className="forum-stats">

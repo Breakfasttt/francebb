@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { parseInlineBBCode } from "@/lib/bbcode";
 
 export default async function ForumPage() {
   const session = await auth();
@@ -107,7 +108,7 @@ export default async function ForumPage() {
                   <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>
                     <div className="forum-info">
                       <h3 style={{ color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        {forum.name}
+                        <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
                         {forumHasNew && <Bell size={14} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                       </h3>
                       {forum.description && <p>{forum.description}</p>}

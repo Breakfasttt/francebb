@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin } from "lucide-react";
 import ForumSidebar from "@/components/forum/ForumSidebar";
 import Link from "next/link";
+import { parseInlineBBCode } from "@/lib/bbcode";
 import { notFound } from "next/navigation";
 import "../forum.css";
 
@@ -69,7 +70,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0, color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'center' }}>
-            {forum.name}
+            <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
             {forumHasNew && <Bell size={20} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
           </h1>
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>{forum.description}</p>
@@ -152,7 +153,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
               <div className="forum-info">
                 <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? '#ffd700' : 'white' }}>
                   {topic.isSticky && <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />}
-                  {topic.title}
+                  <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
                   {topicHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                 </h3>
                 <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>
