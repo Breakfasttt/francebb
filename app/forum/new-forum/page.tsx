@@ -21,7 +21,7 @@ export default async function NewForumPage({ searchParams }: { searchParams: Pro
   const topForums = await getForums();
 
   return (
-    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
+    <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />

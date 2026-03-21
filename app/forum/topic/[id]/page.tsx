@@ -35,7 +35,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   if (!topic) notFound();
 
   return (
-    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
+    <main className="container forum-container">
       <MarkAsRead topicId={id} />
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>

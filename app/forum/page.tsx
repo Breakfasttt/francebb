@@ -51,7 +51,7 @@ export default async function ForumPage() {
   });
 
   return (
-    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
+    <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
