@@ -19,9 +19,10 @@ export default function EditPostForm({ postId, initialContent }: { postId: strin
     
     setIsSubmitting(true);
     try {
-      await updatePost(postId, content);
-      // updatePost redirects on success, but just in case:
-      // router.push(...);
+      const result = await updatePost(postId, content);
+      if (result?.topicId) {
+        router.push(`/forum/topic/${result.topicId}`);
+      }
     } catch (error) {
       console.error("Edit error:", error);
       alert("Erreur lors de la modification du message.");

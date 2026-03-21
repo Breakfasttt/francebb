@@ -152,6 +152,8 @@ model Post {
   moderationReason String?
   moderatedBy      String?
   moderator        User?   @relation("ModeratedPosts", fields: [moderatedBy], references: [id])
+
+  isDeleted Boolean @default(false)
 }
 
 model Pm {

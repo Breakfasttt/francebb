@@ -215,7 +215,8 @@ exports.Prisma.PostScalarFieldEnum = {
   authorId: 'authorId',
   isModerated: 'isModerated',
   moderationReason: 'moderationReason',
-  moderatedBy: 'moderatedBy'
+  moderatedBy: 'moderatedBy',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.PmScalarFieldEnum = {

@@ -14,9 +14,9 @@ console.log(`[PRISMA] Utilisation de la base : ${config.url}`);
 const adapter = new PrismaLibSql(config);
 
 // Forcer la remise à zéro du cache global pour le nouveau client custom
-// v6: added isDeleted to Topic
-if (globalForPrisma.prisma && globalForPrisma.prismaVersion !== "v6") {
-  console.log("[PRISMA] Resetting global cache to v6 (topic deletion support)");
+// v8: cleaned up Topic.isDeleted, using Post.isDeleted
+if (globalForPrisma.prisma && globalForPrisma.prismaVersion !== "v8") {
+  console.log("[PRISMA] Resetting global cache to v8 (clean schema)");
   globalForPrisma.prisma = undefined as any;
 }
 
@@ -26,7 +26,7 @@ export const prisma =
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
-  globalForPrisma.prismaVersion = "v6";
+  globalForPrisma.prismaVersion = "v8";
 }
 
 // v3: added Category, Forum, Topic, Post models

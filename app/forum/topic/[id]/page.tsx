@@ -42,34 +42,6 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
 
   if (!topic) notFound();
 
-  if (topic.isDeleted) {
-    return (
-      <main className="container forum-container">
-        <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-          <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
-            <ArrowLeft size={20} />
-          </Link>
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ margin: '0.5rem 0', color: '#666' }}>Sujet supprimé</h1>
-          </div>
-        </header>
-        <div style={{ 
-          padding: '5rem 2rem', 
-          textAlign: 'center', 
-          background: 'rgba(255,255,255,0.02)', 
-          borderRadius: '16px', 
-          border: '1px solid var(--glass-border)',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <h2 style={{ color: '#888', fontWeight: 500 }}>Ce topic a était supprimer par son créateur</h2>
-          <Link href={`/forum/${topic.forumId}`} className="widget-button secondary-btn" style={{ marginTop: '2.5rem', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', width: 'auto', padding: '0.8rem 2rem' }}>
-            <ArrowLeft size={16} /> Retour au forum
-          </Link>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="container forum-container">
       <MarkAsRead topicId={id} />
@@ -130,62 +102,86 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
             {/* Contenu Message */}
             <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
               <div style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: '#666' }}>
-                <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                  {post.updatedAt.getTime() > post.createdAt.getTime() + 1000 && (
+                    <span style={{ color: '#555' }}>• modifié le : {new Date(post.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                  )}
+                </div>
                 <span>#{index + 1}</span>
               </div>
 
-              {/* Moderation Notice */}
-              {post.isModerated && (
+              {/* Message Content - Visibility & Deletion Logic */}
+              {post.isDeleted ? (
                 <div style={{ 
-                  background: 'rgba(194, 29, 29, 0.1)', 
-                  border: '1px solid rgba(194, 29, 29, 0.3)', 
-                  borderRadius: '8px', 
-                  padding: '1rem', 
-                  marginBottom: '1.5rem',
-                  color: '#ff8888',
-                  fontSize: '0.95rem',
-                  fontStyle: 'italic'
+                  background: 'rgba(255, 255, 255, 0.03)', 
+                  border: '1px solid var(--glass-border)', 
+                  borderRadius: '12px', 
+                  padding: '2rem', 
+                  marginBottom: '1rem',
+                  color: '#888',
+                  fontSize: '1rem',
+                  fontStyle: 'italic',
+                  textAlign: 'center'
                 }}>
-                  Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
-                </div>
-              )}
-
-              {/* Message Content - Visibility Logic */}
-              {(!post.isModerated || isUserModerator || currentUserId === post.authorId) ? (
-                <div style={{ position: 'relative' }}>
-                  {post.isModerated && (
-                    <div style={{ fontSize: '0.7rem', color: 'var(--primary)', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 700 }}>
-                      [Contenu original visible par vous seul et les modérateurs]
-                    </div>
-                  )}
-                  <div 
-                    style={{ 
-                      color: post.isModerated ? '#888' : '#ddd', 
-                      lineHeight: '1.6', 
-                      fontSize: '1.1rem', 
-                      flex: 1, 
-                      wordBreak: 'break-word',
-                      opacity: post.isModerated ? 0.6 : 1
-                    }}
-                    dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
-                  />
+                  Ce message a était supprimé par son auteur
                 </div>
               ) : (
-                <div style={{ color: '#666', fontStyle: 'italic', padding: '1rem 0' }}>
-                  Le contenu de ce message a été masqué par la modération.
-                </div>
+                <>
+                  {/* Moderation Notice */}
+                  {post.isModerated && (
+                    <div style={{ 
+                      background: 'rgba(194, 29, 29, 0.1)', 
+                      border: '1px solid rgba(194, 29, 29, 0.3)', 
+                      borderRadius: '8px', 
+                      padding: '1rem', 
+                      marginBottom: '1.5rem',
+                      color: '#ff8888',
+                      fontSize: '0.95rem',
+                      fontStyle: 'italic'
+                    }}>
+                      Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
+                    </div>
+                  )}
+
+                  {/* Message Content - Visibility Logic */}
+                  {(!post.isModerated || isUserModerator || currentUserId === post.authorId) ? (
+                    <div style={{ position: 'relative' }}>
+                      {post.isModerated && (
+                        <div style={{ fontSize: '0.7rem', color: 'var(--primary)', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 700 }}>
+                          [Contenu original visible par vous seul et les modérateurs]
+                        </div>
+                      )}
+                      <div 
+                        style={{ 
+                          color: post.isModerated ? '#888' : '#ddd', 
+                          lineHeight: '1.6', 
+                          fontSize: '1.1rem', 
+                          flex: 1, 
+                          wordBreak: 'break-word',
+                          opacity: post.isModerated ? 0.6 : 1
+                        }}
+                        dangerouslySetInnerHTML={{ __html: parseBBCode(post.content) }}
+                      />
+                    </div>
+                  ) : (
+                    <div style={{ color: '#666', fontStyle: 'italic', padding: '1rem 0' }}>
+                      Le contenu de ce message a été masqué par la modération.
+                    </div>
+                  )}
+                  
+                  <PostActions 
+                    postId={post.id}
+                    authorId={post.authorId}
+                    authorName={post.author.name || ""}
+                    content={post.content}
+                    currentUserId={currentUserId}
+                    isModerator={isUserModerator}
+                    topicId={id}
+                    isModerated={post.isModerated}
+                  />
+                </>
               )}
-              
-              <PostActions 
-                postId={post.id}
-                authorId={post.authorId}
-                authorName={post.author.name || ""}
-                content={post.content}
-                currentUserId={currentUserId}
-                isModerator={isUserModerator}
-                topicId={id}
-                isModerated={post.isModerated}
-              />
             </div>
           </div>
         ))}
