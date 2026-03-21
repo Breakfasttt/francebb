@@ -1,6 +1,6 @@
 import { getUnreadMessagesCount, getRecentPosts, getRandomPostUrl, getUnreadTopicsCount } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell, Search } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -71,7 +71,7 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
             <div className="sidebar-widget recent-posts-widget">
               <h3>
                 <Clock size={16} />
-                Dernières activités
+                Dernières réponses
               </h3>
               <div className="recent-posts-list">
                 {recentPosts.map((post) => {
@@ -85,6 +85,7 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
                       className={`recent-post-item ${!post.isRead ? 'has-new' : ''}`}
                     >
                       <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <FileText size={13} style={{ color: !post.isRead ? 'var(--accent)' : '#888', flexShrink: 0 }} />
                         {post.topic.title}
                         {!post.isRead && <Bell size={12} fill="var(--accent)" color="var(--accent)" className="animate-pulse-subtle" />}
                       </span>

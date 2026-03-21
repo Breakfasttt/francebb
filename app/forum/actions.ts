@@ -22,30 +22,45 @@ export async function getRecentPosts(limit: number = 3) {
   const session = await auth();
   const userId = session?.user?.id;
 
-  const posts = await prisma.post.findMany({
+  const topics = await prisma.topic.findMany({
     take: limit,
     orderBy: {
-      createdAt: "desc"
+      updatedAt: "desc"
     },
     include: {
-      topic: {
-        include: {
-          _count: {
-            select: { posts: true }
-          },
-          topicViews: {
-            where: { userId: userId || "" }
-          }
-        }
+      _count: {
+        select: { posts: true }
       },
-      author: true
+      topicViews: {
+        where: { userId: userId || "" }
+      },
+      posts: {
+        where: { isDeleted: false },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+        include: { author: true }
+      }
     }
   });
 
-  return posts.map(post => ({
-    ...post,
-    isRead: post.topic.topicViews[0] ? post.topic.updatedAt <= post.topic.topicViews[0].lastViewedAt : false
-  }));
+  return topics
+    .filter(t => t.posts.length > 0)
+    .map(topic => {
+      const lastPost = topic.posts[0];
+      return {
+        id: lastPost.id,
+        createdAt: lastPost.createdAt,
+        author: lastPost.author,
+        topic: {
+          id: topic.id,
+          title: topic.title,
+          updatedAt: topic.updatedAt,
+          topicViews: topic.topicViews,
+          _count: topic._count
+        },
+        isRead: topic.topicViews[0] ? topic.updatedAt <= topic.topicViews[0].lastViewedAt : false
+      };
+    });
 }
 
 export async function getRandomPostUrl() {
