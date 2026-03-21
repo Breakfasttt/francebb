@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, User } from "lucide-react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import MarkAsRead from "@/components/forum/MarkAsRead";
@@ -21,11 +21,49 @@ const POSTS_PER_PAGE = 20;
 export default async function TopicPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ page?: string }> }) {
   const { id } = await params;
   const { page: pageStr } = await searchParams;
-  const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
-  const skip = (currentPage - 1) * POSTS_PER_PAGE;
 
   const session = await auth();
   const currentUserId = session?.user?.id;
+
+  // Jump to first unread post if no specific page is requested
+  if (!pageStr && currentUserId) {
+    const topicView = await prisma.topicView.findUnique({
+      where: { userId_topicId: { userId: currentUserId, topicId: id } }
+    });
+
+    if (topicView) {
+      const firstUnread = await prisma.post.findFirst({
+        where: {
+          topicId: id,
+          createdAt: { gt: topicView.lastViewedAt }
+        },
+        orderBy: [{ createdAt: 'asc' }, { id: 'asc' }],
+        select: { id: true, createdAt: true }
+      });
+
+      if (firstUnread) {
+        // Count posts BEFORE this one using the same deterministic order
+        const countBefore = await prisma.post.count({
+          where: {
+            topicId: id,
+            OR: [
+              { createdAt: { lt: firstUnread.createdAt } },
+              { 
+                createdAt: firstUnread.createdAt,
+                id: { lt: firstUnread.id }
+              }
+            ]
+          }
+        });
+        const targetPage = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
+        redirect(`/forum/topic/${id}?page=${targetPage}#post-${firstUnread.id}`);
+      }
+    }
+  }
+
+  const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
+  const skip = (currentPage - 1) * POSTS_PER_PAGE;
+
   const isUserModerator = isModerator(session?.user?.role);
 
   const [topic, totalPostCount, lastPost, allForums] = await Promise.all([

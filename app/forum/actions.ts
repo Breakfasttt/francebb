@@ -85,6 +85,22 @@ export async function markTopicAsRead(topicId: string) {
   revalidatePath(`/forum/topic/${topicId}`);
 }
 
+export async function markTopicAsUnread(topicId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return;
+
+  await prisma.topicView.deleteMany({
+    where: {
+      userId: session.user.id,
+      topicId: topicId
+    }
+  });
+
+  revalidatePath(`/forum/topic/${topicId}`);
+  revalidatePath("/forum/unread");
+  revalidatePath("/forum");
+}
+
 export async function getUnreadTopicsCount() {
   const session = await auth();
   if (!session?.user?.id) return 0;

@@ -13,11 +13,12 @@ import {
   Trash2,
   Move,
   Type,
-  ChevronsDown
+  ChevronsDown,
+  Mail
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
-import { togglePinTopic, deleteTopicPermanent } from "@/app/forum/actions";
+import { togglePinTopic, deleteTopicPermanent, markTopicAsUnread } from "@/app/forum/actions";
 import Modal from "@/components/Modal";
 import MoveTopicModal from "./MoveTopicModal";
 import EditTopicTitleModal from "./EditTopicTitleModal";
@@ -138,6 +139,17 @@ export default function TopicSidebar({
     });
   };
 
+  const handleMarkAsUnread = () => {
+    startTransition(async () => {
+      try {
+        await markTopicAsUnread(topicId);
+        router.push("/forum");
+      } catch (error) {
+        alert(error instanceof Error ? error.message : "Erreur");
+      }
+    });
+  };
+
   const handleGoToLast = (e: React.MouseEvent) => {
     if (currentPage === lastPage) {
       e.preventDefault();
@@ -254,6 +266,15 @@ export default function TopicSidebar({
             >
               <ChevronsDown size={16} /><span>Dernier message</span>
             </a>
+
+            <button 
+              onClick={handleMarkAsUnread}
+              disabled={isPending}
+              className="widget-button secondary-btn" 
+              style={{ textAlign: 'left', padding: '8px 12px' }}
+            >
+              <Mail size={16} /><span>Marquer non lu</span>
+            </button>
 
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="widget-button secondary-btn" style={{ textAlign: 'left', padding: '8px 12px' }}>
