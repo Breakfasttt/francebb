@@ -1,4 +1,6 @@
 import { ArrowLeft, Bell, Hash } from "lucide-react";
+import ForumSidebar from "@/components/forum/ForumSidebar";
+import "./forum.css";
 
 export const dynamic = "force-dynamic";
 
@@ -49,7 +51,7 @@ export default async function ForumPage() {
   });
 
   return (
-    <>
+    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
@@ -60,8 +62,9 @@ export default async function ForumPage() {
         </div>
       </header>
 
-
-      {categories.map((category) => {
+      <div className="forum-layout">
+        <div className="forum-main-content">
+          {categories.map((category) => {
         // Check if category has any unread topics (including sub-forums)
         const categoryHasNew = category.forums.some(forum => {
           const directUnread = forum.topics.some(topic => {
@@ -132,9 +135,12 @@ export default async function ForumPage() {
                 );
               })}
             </div>
-          </section>
-        );
-      })}
-    </>
+           </section>
+         );
+       })}
+     </div>
+     <ForumSidebar />
+   </div>
+ </main>
   );
 }

@@ -1,12 +1,13 @@
 import { getUnreadMessagesCount, getRecentPosts, getRandomPostUrl, getUnreadTopicsCount } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Play, Repeat, Clock } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { PlusCircle } from "lucide-react";
+import DeleteForumButton from "./DeleteForumButton";
 
-export default async function ForumSidebar() {
+export default async function ForumSidebar({ forumId, forumName, categoryId, parentForumId }: { forumId?: string; forumName?: string; categoryId?: string; parentForumId?: string }) {
   const unreadMessages = await getUnreadMessagesCount();
   const recentPosts = await getRecentPosts(3);
   const unreadTopics = await getUnreadTopicsCount();
@@ -70,15 +71,22 @@ export default async function ForumSidebar() {
 
         {/* Admin Tools */}
         {canCreateForum && (
-          <div className="sidebar-widget admin-widget" style={{ border: '1px solid rgba(194, 29, 29, 0.3)', background: 'rgba(194, 29, 29, 0.05)' }}>
-            <h3 style={{ color: 'var(--primary)' }}>
+          <div className="sidebar-widget admin-widget" style={{ border: '1px solid rgba(194, 29, 29, 0.3)', background: 'rgba(194, 29, 29, 0.05)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <h3 style={{ color: 'var(--primary)', margin: 0 }}>
               <PlusCircle size={16} />
               Administration
             </h3>
-            <Link href="/forum/new-forum" className="widget-button" style={{ background: 'var(--primary)' }}>
+            
+            <Link 
+              href={`/forum/new-forum?categoryId=${categoryId || ''}&parentForumId=${parentForumId || ''}`} 
+              className="widget-button" 
+              style={{ background: 'var(--primary)' }}
+            >
               <PlusCircle size={18} />
               <span>Nouveau forum</span>
             </Link>
+
+            {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
           </div>
         )}
       </div>

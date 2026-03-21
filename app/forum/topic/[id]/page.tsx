@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, MessageSquare, User } from "lucide-react";
+import ForumSidebar from "@/components/forum/ForumSidebar";
+import "../../forum.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -13,7 +15,13 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   const topic = await prisma.topic.findUnique({
     where: { id },
     include: {
-      forum: true,
+      forum: {
+        include: { 
+          parentForum: {
+            include: { category: true }
+          }
+        }
+      },
       author: true,
       posts: {
         orderBy: { createdAt: "asc" },
@@ -27,7 +35,7 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
   if (!topic) notFound();
 
   return (
-    <>
+    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
       <MarkAsRead topicId={id} />
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
@@ -40,6 +48,9 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
           <h1 style={{ margin: '0.5rem 0' }}>{topic.title}</h1>
         </div>
       </header>
+ 
+       <div className="forum-layout">
+         <div className="forum-main-content">
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {topic.posts.map((post, index) => (
@@ -125,6 +136,14 @@ export default async function TopicPage({ params }: { params: Promise<{ id: stri
           </button>
         </div>
       </div>
-    </>
+      </div>
+      <ForumSidebar 
+        forumId={topic.forumId} 
+        forumName={topic.forum.name} 
+        categoryId={topic.forum.categoryId || topic.forum.parentForum?.categoryId || undefined} 
+        parentForumId={topic.forumId} 
+      />
+    </div>
+  </main>
   );
 }

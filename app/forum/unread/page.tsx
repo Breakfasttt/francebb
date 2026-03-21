@@ -1,4 +1,6 @@
 import { ArrowLeft, Clock, MessageSquare } from "lucide-react";
+import ForumSidebar from "@/components/forum/ForumSidebar";
+import "../forum.css";
 import Link from "next/link";
 import { getUnreadTopics } from "../actions";
 
@@ -9,7 +11,7 @@ export default async function UnreadPostsPage() {
   const unreadTopics = await getUnreadTopics();
 
   return (
-    <>
+    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
@@ -19,6 +21,9 @@ export default async function UnreadPostsPage() {
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Liste des sujets ayant de nouvelles activités depuis votre dernière visite</p>
         </div>
       </header>
+ 
+       <div className="forum-layout">
+         <div className="forum-main-content">
 
 
       <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px', background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)' }}>
@@ -67,6 +72,9 @@ export default async function UnreadPostsPage() {
           </div>
         )}
       </div>
-    </>
+       </div>
+       <ForumSidebar />
+     </div>
+   </main>
   );
 }

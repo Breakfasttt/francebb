@@ -1,12 +1,15 @@
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, FolderPlus } from "lucide-react";
+import ForumSidebar from "@/components/forum/ForumSidebar";
+import "../forum.css";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createForum, getCategories, getForums } from "../actions";
 
 
-export default async function NewForumPage() {
+export default async function NewForumPage({ searchParams }: { searchParams: Promise<{ categoryId?: string, parentForumId?: string }> }) {
+  const { categoryId, parentForumId } = await searchParams;
   const session = await auth();
   const userRole = session?.user?.role;
 
@@ -18,7 +21,7 @@ export default async function NewForumPage() {
   const topForums = await getForums();
 
   return (
-    <>
+    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
@@ -28,6 +31,9 @@ export default async function NewForumPage() {
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Ajoutez une nouvelle section ou un sous-forum à la communauté</p>
         </div>
       </header>
+ 
+       <div className="forum-layout">
+         <div className="forum-main-content">
 
       <div style={{ maxWidth: '600px', margin: '0 auto', background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
         <form action={createForum} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -62,6 +68,7 @@ export default async function NewForumPage() {
                 <select
                   id="categoryId"
                   name="categoryId"
+                  defaultValue={categoryId || ""}
                   style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
                 >
                   <option value="">-- Aucune (Sous-forum) --</option>
@@ -75,6 +82,7 @@ export default async function NewForumPage() {
                 <select
                   id="parentForumId"
                   name="parentForumId"
+                  defaultValue={parentForumId || ""}
                   style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
                 >
                   <option value="">-- Aucun (Top-level) --</option>
@@ -108,6 +116,9 @@ export default async function NewForumPage() {
           </div>
         </form>
       </div>
-    </>
+        </div>
+       <ForumSidebar />
+     </div>
+   </main>
   );
 }

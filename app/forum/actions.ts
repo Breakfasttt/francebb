@@ -158,3 +158,65 @@ export async function getForums() {
     orderBy: { order: "asc" }
   });
 }
+
+export async function deleteForum(forumId: string) {
+  const session = await auth();
+  const userRole = session?.user?.role;
+  
+  if (!userRole || !isModerator(userRole)) {
+    throw new Error("Seuls les modérateurs peuvent supprimer des forums.");
+  }
+
+  // Deleting a forum requires deleting all its content manually since we don't have cascade delete in schema
+  // We need to handle sub-forums too
+  const subForums = await prisma.forum.findMany({
+    where: { parentForumId: forumId },
+    select: { id: true }
+  });
+
+  const allForumIds = [forumId, ...subForums.map(sf => sf.id)];
+
+  // 1. Delete all TopicViews for topics in these forums
+  await prisma.topicView.deleteMany({
+    where: {
+      topic: {
+        forumId: { in: allForumIds }
+      }
+    }
+  });
+
+  // 2. Delete all posts in these forums
+  await prisma.post.deleteMany({
+    where: {
+      topic: {
+        forumId: { in: allForumIds }
+      }
+    }
+  });
+
+  // 3. Delete all topics in these forums
+  await prisma.topic.deleteMany({
+    where: {
+      forumId: { in: allForumIds }
+    }
+  });
+
+  // 4. Delete sub-forums
+  await prisma.forum.deleteMany({
+    where: {
+      parentForumId: forumId
+    }
+  });
+
+  // 5. Delete the forum itself
+  const deletedForum = await prisma.forum.delete({
+    where: { id: forumId }
+  });
+
+  revalidatePath("/forum");
+  if (deletedForum.parentForumId) {
+    revalidatePath(`/forum/${deletedForum.parentForumId}`);
+  }
+
+  redirect("/forum");
+}

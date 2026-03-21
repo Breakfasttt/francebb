@@ -1,12 +1,12 @@
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin } from "lucide-react";
+import ForumSidebar from "@/components/forum/ForumSidebar";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
+import "../forum.css";
 
 export const dynamic = "force-dynamic";
-
-import { auth } from "@/auth";
 
 export default async function ForumDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -32,6 +32,9 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
             }
           }
         }
+      },
+      parentForum: {
+        include: { category: true }
       },
       topics: {
         orderBy: [
@@ -59,7 +62,7 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
   });
 
   return (
-    <>
+    <main className="container forum-container" style={{ paddingBottom: '5rem' }}>
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
         <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
@@ -72,6 +75,9 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>{forum.description}</p>
         </div>
       </header>
+ 
+       <div className="forum-layout">
+         <div className="forum-main-content">
 
       <div className="forum-actions" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
         <button className="reset-btn" style={{ background: 'var(--primary)', color: 'white', border: 'none' }}>
@@ -176,6 +182,14 @@ export default async function ForumDetailPage({ params }: { params: Promise<{ id
           </div>
         )}
       </div>
-    </>
+     </div>
+     <ForumSidebar 
+       forumId={id} 
+       forumName={forum.name} 
+       categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
+       parentForumId={id} 
+     />
+   </div>
+ </main>
   );
 }

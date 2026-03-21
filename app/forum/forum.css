@@ -154,10 +154,25 @@
 /* Sidebar Styling */
 .forum-sidebar {
   position: sticky;
-  top: 2rem;
+  top: 6.5rem; /* Account for navbar (approx 5.5rem) + offset */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-height: calc(100vh - 7.5rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+/* Custom scrollbar for the sidebar */
+.forum-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.forum-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.forum-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
 }
 
 .sidebar-widget-container {
