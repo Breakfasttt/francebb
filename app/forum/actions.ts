@@ -2,8 +2,8 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
 import { isModerator } from "@/lib/roles";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getUnreadMessagesCount() {
@@ -74,7 +74,7 @@ export async function getUnreadTopicsCount() {
 
   // This is a bit more complex in Prisma without raw SQL or multiple queries
   // We want topics where (TopicView doesn't exist OR topic.updatedAt > TopicView.lastViewedAt)
-  
+
   const topics = await prisma.topic.findMany({
     include: {
       topicViews: {
@@ -117,7 +117,7 @@ export async function getUnreadTopics() {
 export async function createForum(formData: FormData) {
   const session = await auth();
   const userRole = session?.user?.role;
-  
+
   if (!userRole || !isModerator(userRole)) {
     throw new Error("Seuls les modérateurs peuvent créer des forums.");
   }
@@ -162,7 +162,7 @@ export async function getForums() {
 export async function deleteForum(forumId: string) {
   const session = await auth();
   const userRole = session?.user?.role;
-  
+
   if (!userRole || !isModerator(userRole)) {
     throw new Error("Seuls les modérateurs peuvent supprimer des forums.");
   }
@@ -262,6 +262,6 @@ export async function createTopic(formData: FormData) {
 
   revalidatePath(`/forum/${forumId}`);
   revalidatePath("/forum/unread");
-  
+
   redirect(`/forum/topic/${topic.id}`);
 }

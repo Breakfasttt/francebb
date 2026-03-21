@@ -63,6 +63,12 @@ export function parseBBCode(text: string): string {
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$2</a>");
   // [url]https://example.com[/url]
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
+  
+  // Topic Links
+  // [topic=ID]text[/topic]
+  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
+  // [url]https://example.com[/url]
+  html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
 
   // 4. Replace Images
   html = html.replace(
@@ -141,6 +147,7 @@ export function parseInlineBBCode(text: string): string {
   html = html.replace(/\[youtube\].*?\[\/youtube\]/gi, "🎥 Vidéo");
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2"); // Strip link, keep text
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
+  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2"); // Keep just the text and an icon
   html = html.replace(/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/gi, "« $1 »");
 
   // 3. Replace Smileys

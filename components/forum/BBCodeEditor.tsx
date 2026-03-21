@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Bold, Italic, Underline, Link as LinkIcon, Image as ImageIcon, Youtube, Eye, EyeOff, PenLine, Loader2, Smile, Palette } from "lucide-react";
-import SmileyGrid from "./SmileyGrid";
-import { parseBBCode } from "@/lib/bbcode";
 import Toast from "@/components/Toast";
+import { parseBBCode } from "@/lib/bbcode";
+import { siteConfig } from "@/lib/siteConfig";
+import { Bold, Eye, EyeOff, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, Youtube } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import SmileyGrid from "./SmileyGrid";
 
 interface BBCodeEditorProps {
   name: string;
@@ -14,22 +15,23 @@ interface BBCodeEditorProps {
   rows?: number;
 }
 
-// A generic Imgur Client-ID suitable for anonymous uploads
-const IMGUR_CLIENT_ID = process.env.NEXT_PUBLIC_IMGUR_CLIENT_ID || "c4d4ce51b914ce7";
+const IMGUR_CLIENT_ID = siteConfig.api.imgur.clientId;
 
 export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10 }: BBCodeEditorProps) {
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic' | null>(null);
   const [toolInputUrl, setToolInputUrl] = useState("");
+  const [toolInputText, setToolInputText] = useState("");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const showToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 5000);
+    // Affichage prolongé pour que l'utilisateur ait le temps de lire l'erreur
+    setTimeout(() => setToast(null), 7000);
   };
 
   // Sync external defaultValue changes
@@ -40,7 +42,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const insertTag = (startTag: string, endTag: string = "") => {
     if (!textareaRef.current) return;
     const textarea = textareaRef.current;
-    
+
     // Fallback for browsers that don't support selectionStart
     if (typeof textarea.selectionStart === "undefined") {
       const newContent = content + startTag + endTag;
@@ -78,9 +80,81 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
   const submitLink = () => {
     if (toolInputUrl) {
-      insertTag(`[url=${toolInputUrl}]`, "[/url]");
+      if (!textareaRef.current) return;
+      const textarea = textareaRef.current;
+
+      if (typeof textarea.selectionStart === "undefined") {
+        const label = toolInputText.trim() !== "" ? toolInputText : toolInputUrl;
+        const newContent = content + `[url=${toolInputUrl}]${label}[/url]`;
+        setContent(newContent);
+        setToolInputUrl("");
+        setToolInputText("");
+        setActiveTool(null);
+        return;
+      }
+
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = content;
+
+      const before = text.substring(0, start);
+      const selected = text.substring(start, end);
+      const after = text.substring(end, text.length);
+
+      const label = toolInputText.trim() !== "" ? toolInputText : (selected || toolInputUrl);
+      const newContent = before + `[url=${toolInputUrl}]${label}[/url]` + after;
+      setContent(newContent);
+
       setToolInputUrl("");
+      setToolInputText("");
       setActiveTool(null);
+
+      setTimeout(() => {
+        textarea.focus();
+        const newCursorPos = before.length + `[url=${toolInputUrl}]${label}[/url]`.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      }, 0);
+    }
+  };
+
+  const submitTopic = () => {
+    if (toolInputUrl) {
+      if (!textareaRef.current) return;
+      const textarea = textareaRef.current;
+
+      const topicId = toolInputUrl.match(/\/topic\/([a-zA-Z0-9_-]+)/)?.[1] || toolInputUrl.trim();
+
+      if (typeof textarea.selectionStart === "undefined") {
+        const label = toolInputText.trim() !== "" ? toolInputText : `Sujet #${topicId.substring(0, 6)}`;
+        const newContent = content + `[topic=${topicId}]${label}[/topic]`;
+        setContent(newContent);
+        setToolInputUrl("");
+        setToolInputText("");
+        setActiveTool(null);
+        return;
+      }
+
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = content;
+
+      const before = text.substring(0, start);
+      const selected = text.substring(start, end);
+      const after = text.substring(end, text.length);
+
+      const label = toolInputText.trim() !== "" ? toolInputText : (selected || `Sujet #${topicId.substring(0, 6)}`);
+      const newContent = before + `[topic=${topicId}]${label}[/topic]` + after;
+      setContent(newContent);
+
+      setToolInputUrl("");
+      setToolInputText("");
+      setActiveTool(null);
+
+      setTimeout(() => {
+        textarea.focus();
+        const newCursorPos = before.length + `[topic=${topicId}]${label}[/topic]`.length;
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      }, 0);
     }
   };
 
@@ -100,12 +174,23 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'topic') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
       setActiveTool(tool);
       setToolInputUrl(""); // reset input when opening a new tool
+      setToolInputText("");
+
+      if ((tool === 'link' || tool === 'topic') && textareaRef.current) {
+        const textarea = textareaRef.current;
+        if (typeof textarea.selectionStart !== "undefined") {
+          const selected = content.substring(textarea.selectionStart, textarea.selectionEnd);
+          if (selected) {
+            setToolInputText(selected);
+          }
+        }
+      }
     }
   };
 
@@ -151,22 +236,22 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
   return (
     <div className="bbcode-editor" style={{ border: "1px solid var(--glass-border)", borderRadius: "8px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-      
+
       {/* Hidden file input for image upload */}
-      <input 
-        type="file" 
-        accept="image/*" 
-        ref={fileInputRef} 
-        style={{ display: "none" }} 
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        style={{ display: "none" }}
         onChange={handleImageUpload}
       />
 
       {/* Editor Toolbar */}
-      <div 
-        className="editor-toolbar" 
-        style={{ 
-          background: "rgba(255,255,255,0.05)", 
-          padding: "0.5rem", 
+      <div
+        className="editor-toolbar"
+        style={{
+          background: "rgba(255,255,255,0.05)",
+          padding: "0.5rem",
           borderBottom: "1px solid var(--glass-border)",
           display: "flex",
           justifyContent: "space-between",
@@ -185,20 +270,24 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           <button type="button" onClick={() => insertTag("[u]", "[/u]")} className="toolbar-btn" title="Souligné">
             <Underline size={16} />
           </button>
-          
+
           <button type="button" onClick={() => toggleTool('color')} className={`toolbar-btn ${activeTool === 'color' ? 'active-tool' : ''}`} title="Couleur du texte">
             <Palette size={16} />
           </button>
-          
+
           <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
-          
+
           <button type="button" onClick={() => toggleTool('link')} className={`toolbar-btn ${activeTool === 'link' ? 'active-tool' : ''}`} title="Ajouter un lien">
             <LinkIcon size={16} />
           </button>
-          
-          <button 
-            type="button" 
-            onClick={() => toggleTool('image')} 
+
+          <button type="button" onClick={() => toggleTool('topic')} className={`toolbar-btn ${activeTool === 'topic' ? 'active-tool' : ''}`} title="Lier un sujet du forum">
+            <Hash size={16} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => toggleTool('image')}
             className={`toolbar-btn ${activeTool === 'image' ? 'active-tool' : ''}`}
             title="Ajouter une image"
           >
@@ -210,15 +299,15 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           </button>
 
           <div style={{ width: "1px", height: "20px", background: "var(--glass-border)", margin: "0 0.5rem" }}></div>
-          
+
           <button type="button" onClick={() => toggleTool('smileys')} className={`toolbar-btn ${activeTool === 'smileys' ? 'active-tool' : ''}`} title="Insérer un smiley">
             <Smile size={16} />
           </button>
         </div>
 
         <div>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => setIsPreview(!isPreview)}
             className={`widget-button ${isPreview ? "active" : "secondary-btn"}`}
             style={{ padding: "0.4rem 0.8rem", height: "auto", fontSize: "0.85rem" }}
@@ -237,22 +326,49 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         <div className="active-tool-panel" style={{ background: "rgba(0,0,0,0.3)", padding: "1rem", borderBottom: "1px solid var(--glass-border)" }}>
           {activeTool === 'link' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input 
-                type="url" 
-                placeholder="https://..." 
+              <input
+                type="url"
+                placeholder="URL (ex: https://...)"
                 value={toolInputUrl}
                 onChange={(e) => setToolInputUrl(e.target.value)}
                 style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
                 autoFocus
               />
+              <input
+                type="text"
+                placeholder="Texte (optionnel)"
+                value={toolInputText}
+                onChange={(e) => setToolInputText(e.target.value)}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+              />
               <button type="button" onClick={submitLink} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+            </div>
+          )}
+          {activeTool === 'topic' && (
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <input
+                type="text"
+                placeholder="URL compléte ou ID du sujet..."
+                value={toolInputUrl}
+                onChange={(e) => setToolInputUrl(e.target.value)}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                autoFocus
+              />
+              <input
+                type="text"
+                placeholder="Texte du lien (optionnel)"
+                value={toolInputText}
+                onChange={(e) => setToolInputText(e.target.value)}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+              />
+              <button type="button" onClick={submitTopic} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Lier le sujet</button>
             </div>
           )}
           {activeTool === 'youtube' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input 
-                type="text" 
-                placeholder="URL de la vidéo YouTube..." 
+              <input
+                type="text"
+                placeholder="URL de la vidéo YouTube..."
                 value={toolInputUrl}
                 onChange={(e) => setToolInputUrl(e.target.value)}
                 style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
@@ -264,9 +380,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           {activeTool === 'image' && (
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <input 
-                  type="url" 
-                  placeholder="URL d'une image existante (https://...)" 
+                <input
+                  type="url"
+                  placeholder="URL d'une image existante (https://...)"
                   value={toolInputUrl}
                   onChange={(e) => setToolInputUrl(e.target.value)}
                   style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
@@ -279,10 +395,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 <span style={{ color: "#aaa", fontSize: "0.9rem" }}>OU</span>
                 <div style={{ flex: 1, height: "1px", background: "var(--glass-border)" }}></div>
               </div>
-              <button 
-                type="button" 
-                onClick={() => fileInputRef.current?.click()} 
-                className="widget-button secondary-btn" 
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="widget-button secondary-btn"
                 disabled={isUploading}
                 style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}
               >
@@ -335,11 +451,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       )}
 
       {/* Editor Content Area */}
-      <div 
+      <div
         className="editor-content-area"
-        style={{ 
-          position: "relative", 
-          flex: 1, 
+        style={{
+          position: "relative",
+          flex: 1,
           display: "grid",
           gridTemplateColumns: isPreview ? "repeat(auto-fit, minmax(300px, 1fr))" : "1fr",
           gap: isPreview ? "1rem" : "0",
@@ -354,13 +470,13 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           onChange={(e) => setContent(e.target.value)}
           placeholder={placeholder}
           rows={rows}
-          style={{ 
-            width: "100%", 
+          style={{
+            width: "100%",
             height: "100%",
-            padding: "1rem", 
-            background: "rgba(0,0,0,0.2)", 
+            padding: "1rem",
+            background: "rgba(0,0,0,0.2)",
             border: "none",
-            color: "white", 
+            color: "white",
             resize: "vertical",
             outline: "none",
             lineHeight: "1.5",
@@ -371,12 +487,12 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         />
 
         {isPreview && (
-          <div 
+          <div
             className="editor-preview"
-            style={{ 
-              width: "100%", 
+            style={{
+              width: "100%",
               height: "100%",
-              padding: "1rem", 
+              padding: "1rem",
               background: "rgba(255,255,255,0.02)",
               color: "#eee",
               overflowY: "auto",
