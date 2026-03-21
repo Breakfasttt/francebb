@@ -8,24 +8,36 @@ export default function DeletionToast() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const deletedTopic = searchParams.get("deletedTopic");
+  const deletedForum = searchParams.get("deletedForum");
   const [show, setShow] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastTitle, setToastTitle] = useState("");
 
   useEffect(() => {
-    if (deletedTopic) {
+    if (deletedTopic || deletedForum) {
       setShow(true);
+      if (deletedTopic) {
+        setToastMessage("Sujet supprimé avec succès :");
+        setToastTitle(decodeURIComponent(deletedTopic));
+      } else if (deletedForum) {
+        setToastMessage("Forum supprimé avec succès :");
+        setToastTitle(decodeURIComponent(deletedForum));
+      }
+
       const timer = setTimeout(() => {
         setShow(false);
-        // Clean up the URL by removing the parameter
+        // Clean up the URL by removing the parameters
         const currentParams = new URLSearchParams(window.location.search);
         currentParams.delete("deletedTopic");
+        currentParams.delete("deletedForum");
         const newUrl = window.location.pathname + (currentParams.toString() ? `?${currentParams.toString()}` : "");
         router.replace(newUrl, { scroll: false });
       }, 8000);
       return () => clearTimeout(timer);
     }
-  }, [deletedTopic, router]);
+  }, [deletedTopic, deletedForum, router]);
 
-  if (!show || !deletedTopic) return null;
+  if (!show || (!deletedTopic && !deletedForum)) return null;
 
   return (
     <div className="deletion-toast-container">
@@ -34,8 +46,8 @@ export default function DeletionToast() {
           <Check size={18} />
         </div>
         <div className="toast-content">
-          <p>Sujet supprimé avec succès :</p>
-          <strong title={decodeURIComponent(deletedTopic)}>{decodeURIComponent(deletedTopic)}</strong>
+          <p>{toastMessage}</p>
+          <strong title={toastTitle}>{toastTitle}</strong>
         </div>
         <button onClick={() => setShow(false)} className="toast-close">
           <X size={14} />

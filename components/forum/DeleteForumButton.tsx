@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteForum } from "@/app/forum/actions";
 import Modal from "@/components/Modal";
@@ -12,17 +12,20 @@ interface DeleteForumButtonProps {
 
 export default function DeleteForumButton({ forumId, forumName }: DeleteForumButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await deleteForum(forumId);
-    } catch (error) {
-      alert(error instanceof Error ? error.message : "Une erreur est survenue lors de la suppression.");
-      setIsDeleting(false);
-      setIsModalOpen(false);
-    }
+  const handleDelete = () => {
+    startTransition(async () => {
+      try {
+        await deleteForum(forumId, forumName);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (errorMessage.includes("NEXT_REDIRECT")) return;
+
+        alert(errorMessage);
+        setIsModalOpen(false);
+      }
+    });
   };
 
   return (
@@ -38,7 +41,7 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => !isDeleting && setIsModalOpen(false)}
+        onClose={() => !isPending && setIsModalOpen(false)}
         onConfirm={handleDelete}
         title={`Supprimer le forum : ${forumName}`}
         message={`Êtes-vous sûr de vouloir supprimer le forum "${forumName}" ? Cette action est irréversible et supprimera TOUS les sujets et messages associés.`}

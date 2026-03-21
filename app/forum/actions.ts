@@ -263,7 +263,7 @@ export async function getForums() {
   });
 }
 
-export async function deleteForum(forumId: string) {
+export async function deleteForum(forumId: string, forumName: string) {
   const session = await auth();
   const userRole = session?.user?.role;
 
@@ -322,7 +322,7 @@ export async function deleteForum(forumId: string) {
     revalidatePath(`/forum/${deletedForum.parentForumId}`);
   }
 
-  redirect("/forum");
+  redirect(`/forum?deletedForum=${encodeURIComponent(forumName)}`);
 }
 
 export async function createTopic(formData: FormData) {
