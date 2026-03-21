@@ -6,12 +6,13 @@ import { createPortal } from "react-dom";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   title: string;
-  message: string;
+  message?: string;
+  children?: React.ReactNode;
 }
 
-export default function Modal({ isOpen, onClose, onConfirm, title, message }: ModalProps) {
+export default function Modal({ isOpen, onClose, onConfirm, title, message, children }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,11 +26,15 @@ export default function Modal({ isOpen, onClose, onConfirm, title, message }: Mo
     <div className="modal-overlay">
       <div className="modal-content">
         <h2>{title}</h2>
-        <p>{message}</p>
-        <div className="modal-actions">
-          <button onClick={onClose} className="btn-secondary">Annuler</button>
-          <button onClick={onConfirm} className="btn-danger">Confirmer</button>
-        </div>
+        {children ? children : (
+          <>
+            <p>{message}</p>
+            <div className="modal-actions">
+              <button onClick={onClose} className="btn-secondary">Annuler</button>
+              <button onClick={onConfirm} className="btn-danger">Confirmer</button>
+            </div>
+          </>
+        )}
       </div>
 
       <style jsx>{`

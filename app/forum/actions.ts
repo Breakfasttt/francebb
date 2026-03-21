@@ -435,13 +435,7 @@ export async function deletePost(postId: string) {
     data: { isDeleted: true }
   });
 
-  // Also reset Topic.isDeleted if it was set by error in previous iteration
-  if (post.topic.isDeleted) {
-    await prisma.topic.update({
-      where: { id: post.topicId },
-      data: { isDeleted: false }
-    });
-  }
+
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   revalidatePath(`/forum/${post.topic.forumId}`);
@@ -489,4 +483,96 @@ export async function markAllTopicsAsRead() {
     console.error("markAllTopicsAsRead Error:", error);
     return { success: false, error: "Une erreur est survenue." };
   }
+}
+
+export async function togglePinTopic(topicId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent épingler des sujets.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId },
+    select: { isSticky: true }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { isSticky: !topic.isSticky }
+  });
+
+  revalidatePath(`/forum/topic/${topicId}`);
+}
+
+export async function deleteTopicPermanent(topicId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent supprimer des sujets.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  // Manual cleanup since cascade might not be set
+  await prisma.$transaction([
+    prisma.topicView.deleteMany({ where: { topicId } }),
+    prisma.post.deleteMany({ where: { topicId } }),
+    prisma.topic.delete({ where: { id: topicId } })
+  ]);
+
+  revalidatePath(`/forum/${topic.forumId}`);
+  redirect(`/forum/${topic.forumId}`);
+}
+
+export async function moveTopic(topicId: string, newForumId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent déplacer des sujets.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { forumId: newForumId }
+  });
+
+  revalidatePath(`/forum/${topic.forumId}`);
+  revalidatePath(`/forum/${newForumId}`);
+  revalidatePath(`/forum/topic/${topicId}`);
+}
+
+export async function updateTopicTitle(topicId: string, title: string) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    throw new Error("Vous devez être connecté.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId },
+    select: { authorId: true }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  const sessionUser = session.user as { id: string; role: string };
+  if (topic.authorId !== sessionUser.id && !isModerator(sessionUser.role)) {
+    throw new Error("Vous n'avez pas l'autorisation de modifier ce sujet.");
+  }
+
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { title }
+  });
+
+  revalidatePath(`/forum/topic/${topicId}`);
 }

@@ -28,7 +28,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const currentUserId = session?.user?.id;
   const isUserModerator = isModerator(session?.user?.role);
 
-  const [topic, totalPostCount] = await Promise.all([
+  const [topic, totalPostCount, lastPost, allForums] = await Promise.all([
     prisma.topic.findUnique({
       where: { id },
       include: {
@@ -52,7 +52,16 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         }
       }
     }),
-    prisma.post.count({ where: { topicId: id } })
+    prisma.post.count({ where: { topicId: id } }),
+    prisma.post.findFirst({
+      where: { topicId: id },
+      orderBy: { createdAt: "desc" },
+      select: { id: true }
+    }),
+    prisma.forum.findMany({
+      orderBy: { name: "asc" },
+      select: { id: true, name: true }
+    })
   ]);
 
   if (!topic) notFound();
@@ -225,7 +234,19 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
       <QuickReply topicId={id} />
       </div>
-      <TopicSidebar topicId={id} currentPage={safeCurrentPage} totalPages={totalPages} />
+      <TopicSidebar 
+        topicId={id} 
+        currentPage={safeCurrentPage} 
+        totalPages={totalPages}
+        isModerator={isUserModerator}
+        isPinned={topic.isSticky}
+        lastPostId={lastPost?.id || ""}
+        lastPage={totalPages}
+        allForums={allForums}
+        topicTitle={topic.title}
+        authorId={topic.authorId}
+        currentUserId={currentUserId}
+      />
     </div>
   </main>
   );

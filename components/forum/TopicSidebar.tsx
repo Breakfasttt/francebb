@@ -1,21 +1,62 @@
 "use client";
 
 import Link from "next/link";
-import { MessageSquare, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { 
+  MessageSquare, 
+  ArrowUp, 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsLeft, 
+  ChevronsRight,
+  Pin,
+  PinOff,
+  Trash2,
+  Move,
+  Type,
+  ChevronsDown
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useTransition } from "react";
+import { togglePinTopic, deleteTopicPermanent } from "@/app/forum/actions";
+import Modal from "@/components/Modal";
+import MoveTopicModal from "./MoveTopicModal";
+import EditTopicTitleModal from "./EditTopicTitleModal";
 
 interface TopicSidebarProps {
   topicId: string;
   currentPage: number;
   totalPages: number;
+  isModerator?: boolean;
+  isPinned?: boolean;
+  lastPostId?: string;
+  lastPage?: number;
+  allForums?: { id: string; name: string; }[];
+  topicTitle?: string;
+  authorId?: string;
+  currentUserId?: string;
 }
 
-export default function TopicSidebar({ topicId, currentPage, totalPages }: TopicSidebarProps) {
+export default function TopicSidebar({ 
+  topicId, 
+  currentPage, 
+  totalPages,
+  isModerator = false,
+  isPinned = false,
+  lastPostId = "",
+  lastPage = 1,
+  allForums = [],
+  topicTitle = "",
+  authorId = "",
+  currentUserId = ""
+}: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [inputPage, setInputPage] = useState(String(currentPage));
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isPending, startTransition] = useTransition();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showMoveModal, setShowMoveModal] = useState(false);
+  const [showEditTitleModal, setShowEditTitleModal] = useState(false);
 
   // Synchronize state when the prop changes (e.g. navigation)
   useEffect(() => {
@@ -71,6 +112,37 @@ export default function TopicSidebar({ topicId, currentPage, totalPages }: Topic
     textDecoration: 'none',
   });
 
+  const handleTogglePin = () => {
+    startTransition(async () => {
+      try {
+        await togglePinTopic(topicId);
+      } catch (error) {
+        alert(error instanceof Error ? error.message : "Erreur lors du changement d'épinglage");
+      }
+    });
+  };
+
+  const handleDeleteTopic = () => {
+    startTransition(async () => {
+      try {
+        await deleteTopicPermanent(topicId);
+      } catch (error) {
+        alert(error instanceof Error ? error.message : "Erreur lors de la suppression");
+        setShowDeleteModal(false);
+      }
+    });
+  };
+
+  const handleGoToLast = () => {
+    if (lastPostId) {
+      router.push(`${pathname}?page=${lastPage}#post-${lastPostId}`);
+    } else {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+  };
+
+  const canEditTitle = isModerator || (currentUserId === authorId);
+
   return (
     <aside className="forum-sidebar">
       <div className="sidebar-sticky-inner">
@@ -85,14 +157,63 @@ export default function TopicSidebar({ topicId, currentPage, totalPages }: Topic
               className="widget-button" style={{ background: 'var(--primary)', border: 'none', cursor: 'pointer', textAlign: 'left' }}>
               <MessageSquare size={18} /><span>Répondre</span>
             </button>
-            <button onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+            
+            {canEditTitle && (
+              <button 
+                onClick={() => setShowEditTitleModal(true)}
+                className="widget-button secondary-btn" 
+                style={{ textAlign: 'left' }}
+              >
+                <Type size={18} />
+                <span>Modifier le titre</span>
+              </button>
+            )}
+
+            <button onClick={handleGoToLast}
               className="widget-button secondary-btn" style={{ textAlign: 'left' }}>
-              <ArrowDown size={18} /><span>Dernier message</span>
+              <ChevronsDown size={18} /><span>Aller au dernier message</span>
             </button>
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="widget-button secondary-btn" style={{ textAlign: 'left' }}>
               <ArrowUp size={18} /><span>Haut de page</span>
             </button>
+
+            {/* Moderator Actions */}
+            {isModerator && (
+              <div style={{ marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                <span style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', fontWeight: 700 }}>Modération</span>
+                
+                <button 
+                  onClick={handleTogglePin}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', color: isPinned ? '#eab308' : 'white' }}
+                >
+                  {isPinned ? <PinOff size={18} /> : <Pin size={18} />}
+                  <span>{isPinned ? "Désépingler" : "Épingler"}</span>
+                </button>
+
+                <button 
+                  onClick={() => setShowMoveModal(true)}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left' }}
+                >
+                  <Move size={18} />
+                  <span>Déplacer</span>
+                </button>
+
+                <button 
+                  onClick={() => setShowDeleteModal(true)}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', color: '#ff6666' }}
+                >
+                  <Trash2 size={18} />
+                  <span>Supprimer sujet</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Pagination */}
@@ -130,7 +251,7 @@ export default function TopicSidebar({ topicId, currentPage, totalPages }: Topic
 
               {/* Jump-to input */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#888' }}>
-                <span style={{ whiteSpace: 'nowrap' }}>Aller à la page</span>
+                <span style={{ whiteSpace: 'nowrap' }}>Page</span>
                 <input
                   ref={inputRef}
                   type="text"
@@ -165,6 +286,51 @@ export default function TopicSidebar({ topicId, currentPage, totalPages }: Topic
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modals */}
+      <Modal 
+        isOpen={showDeleteModal} 
+        onClose={() => setShowDeleteModal(false)}
+        title="Supprimer le sujet"
+      >
+        <div style={{ padding: '1.5rem', textAlign: 'center' }}>
+          <p style={{ marginBottom: '1.5rem', color: '#ddd' }}>
+            Êtes-vous sûr de vouloir supprimer définitivement ce sujet et tous ses messages ?
+            Cette action est irréversible.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            <button 
+              onClick={() => setShowDeleteModal(false)}
+              className="widget-button secondary-btn"
+              style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
+            >
+              Annuler
+            </button>
+            <button 
+              onClick={handleDeleteTopic}
+              disabled={isPending}
+              className="widget-button"
+              style={{ width: 'auto', padding: '0.5rem 1.5rem', background: '#e04444' }}
+            >
+              {isPending ? "Suppression..." : "Confirmer la suppression"}
+            </button>
+          </div>
+        </div>
+      </Modal>
+
+      <MoveTopicModal 
+        isOpen={showMoveModal}
+        onClose={() => setShowMoveModal(false)}
+        topicId={topicId}
+        allForums={allForums}
+      />
+
+      <EditTopicTitleModal 
+        isOpen={showEditTitleModal}
+        onClose={() => setShowEditTitleModal(false)}
+        topicId={topicId}
+        initialTitle={topicTitle}
+      />
     </aside>
   );
 }

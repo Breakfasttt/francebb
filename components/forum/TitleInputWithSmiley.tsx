@@ -5,9 +5,19 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 import { Smile } from "lucide-react";
 import SmileyGrid from "./SmileyGrid";
 
-export default function TitleInputWithSmiley() {
+interface TitleInputWithSmileyProps {
+  initialValue?: string;
+  name?: string;
+  placeholder?: string;
+}
+
+export default function TitleInputWithSmiley({ 
+  initialValue = "", 
+  name = "title", 
+  placeholder = "Ex: Rechercher des joueurs, Stratégies Elfes..." 
+}: TitleInputWithSmileyProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [titleValue, setTitleValue] = useState("");
+  const [titleValue, setTitleValue] = useState(initialValue);
   const [isSmileyOpen, setIsSmileyOpen] = useState(false);
 
   const handleSmileySelect = (code: string) => {
