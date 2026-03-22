@@ -133,7 +133,6 @@ export default function ConversationList({ onSelectConversation }: ConversationL
           <div className="conversation-grid">
             {conversations.map(conv => {
               const otherUser = conv.user1Id === session?.user?.id ? conv.user2 : conv.user1;
-              const lastMessage = conv.messages[0];
               const unreadCount = conv._count.messages;
 
               return (
@@ -152,19 +151,12 @@ export default function ConversationList({ onSelectConversation }: ConversationL
                   </div>
                   
                   <div className="conv-content">
-                    <div className="conv-header">
+                    <div className="conv-header" style={{ marginBottom: 0 }}>
                       <span className="user-name">{otherUser.name}</span>
                       <span className="last-time">
                         {formatDistanceToNow(new Date(conv.updatedAt), { addSuffix: true, locale: fr })}
                       </span>
                     </div>
-                    <p className="last-message">
-                      {lastMessage ? (
-                         lastMessage.authorId === session?.user?.id ? `Vous : ${lastMessage.content}` : lastMessage.content
-                      ) : (
-                        <span className="no-msgs">Aucun message</span>
-                      )}
-                    </p>
                   </div>
                   
                   <ChevronRight size={18} className="arrow-icon" />
@@ -370,8 +362,7 @@ export default function ConversationList({ onSelectConversation }: ConversationL
         .conv-header {
           display: flex;
           justify-content: space-between;
-          align-items: baseline;
-          margin-bottom: 0.4rem;
+          align-items: center;
         }
         .user-name {
           font-weight: 700;
@@ -381,18 +372,6 @@ export default function ConversationList({ onSelectConversation }: ConversationL
         .last-time {
           font-size: 0.75rem;
           color: #666;
-        }
-        .last-message {
-          margin: 0;
-          font-size: 0.9rem;
-          color: #888;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .no-msgs {
-          font-style: italic;
-          color: #444;
         }
         .arrow-icon {
           color: #444;

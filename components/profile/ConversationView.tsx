@@ -161,13 +161,13 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         .conversation-view-container {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
+          gap: 0.75rem;
         }
         .conv-view-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding-bottom: 1rem;
+          padding-bottom: 0.5rem;
         }
         .back-btn {
           display: flex;
