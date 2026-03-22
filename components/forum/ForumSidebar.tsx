@@ -1,4 +1,10 @@
-import { getUnreadMessagesCount, getRecentPosts, getRandomPostUrl, getUnreadTopicsCount } from "@/app/forum/actions";
+import { 
+  getUnreadMessagesCount, 
+  getRecentPosts, 
+  getRandomPostUrl, 
+  getUnreadTopicsCount,
+  getSubForumCount
+} from "@/app/forum/actions";
 import Link from "next/link";
 import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -7,6 +13,7 @@ import { isModerator } from "@/lib/roles";
 import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "./DeleteForumButton";
 import MarkAllAsReadButton from "./MarkAllAsReadButton";
+import NewForumButton from "./NewForumButton";
 
 import SidebarPagination from "./SidebarPagination";
 
@@ -30,6 +37,7 @@ export default async function ForumSidebar({
   const unreadMessages = await getUnreadMessagesCount();
   const recentPosts = await getRecentPosts(3);
   const unreadTopics = await getUnreadTopicsCount();
+  const subForumCount = parentForumId ? await getSubForumCount(parentForumId) : 0;
   const session = await auth();
   const canCreateForum = isModerator(session?.user?.role);
 
@@ -143,14 +151,11 @@ export default async function ForumSidebar({
                 Administration
               </h3>
               
-              <Link 
-                href={`/forum/new-forum?categoryId=${categoryId || ''}&parentForumId=${parentForumId || ''}`} 
-                className="widget-button" 
-                style={{ background: 'var(--primary)' }}
-              >
-                <PlusCircle size={18} />
-                <span>Nouveau forum</span>
-              </Link>
+              <NewForumButton 
+                categoryId={categoryId}
+                parentForumId={parentForumId}
+                subForumCount={subForumCount}
+              />
 
               {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
             </div>

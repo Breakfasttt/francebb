@@ -210,6 +210,12 @@ export async function getUnreadTopics() {
   });
 }
 
+export async function getSubForumCount(parentForumId: string) {
+  return await prisma.forum.count({
+    where: { parentForumId }
+  });
+}
+
 export async function createForum(formData: FormData) {
   const session = await auth();
   const userRole = session?.user?.role;
@@ -223,6 +229,13 @@ export async function createForum(formData: FormData) {
   const categoryId = formData.get("categoryId") as string || null;
   const parentForumId = formData.get("parentForumId") as string || null;
   const order = parseInt(formData.get("order") as string || "0");
+
+  if (parentForumId) {
+    const count = await prisma.forum.count({ where: { parentForumId } });
+    if (count >= 5) {
+      throw new Error("Le nombre maximum de sous-forums (5) a été atteint pour ce forum.");
+    }
+  }
 
   const forum = await prisma.forum.create({
     data: {
