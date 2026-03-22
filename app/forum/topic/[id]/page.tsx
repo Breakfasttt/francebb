@@ -209,7 +209,15 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                     {post.author.nafNumber && (
                       <div style={{ fontSize: '0.7rem', color: '#999', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
-                        <Trophy size={12} color="#eab308" /> <span style={{ color: '#eee', fontWeight: 600 }}>{post.author.nafNumber}</span>
+                        <Trophy size={12} color="#eab308" /> 
+                        <a 
+                          href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${post.author.nafNumber}`} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          style={{ color: '#eee', fontWeight: 600, textDecoration: 'none', transition: 'color 0.2s' }}
+                        >
+                          {post.author.nafNumber}
+                        </a>
                       </div>
                     )}
                     {post.author.region && (

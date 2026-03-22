@@ -1,64 +1,63 @@
 export type UserRole = 
+  | "SUPERADMIN"
   | "ADMIN"
-  | "RC_NAF"
   | "CONSEIL_ORGA"
   | "MODERATOR"
-  | "MODERATOR_BROCANTE"
-  | "MODERATOR_VESTIAIRES"
-  | "MODERATOR_TRADUCTEUR"
   | "ORGA"
   | "COACH";
 
-export const ROLE_POWER: Record<UserRole, number> = {
-  ADMIN: 100,
-  RC_NAF: 90,
+export const ROLE_POWER: Record<string, number> = {
+  SUPERADMIN: 100,
+  ADMIN: 90,
   CONSEIL_ORGA: 80,
   MODERATOR: 70,
-  MODERATOR_BROCANTE: 60,
-  MODERATOR_VESTIAIRES: 50,
-  MODERATOR_TRADUCTEUR: 40,
   ORGA: 30,
   COACH: 10,
 };
 
-export const ROLE_LABELS: Record<UserRole, string> = {
+export const ROLE_LABELS: Record<string, string> = {
+  SUPERADMIN: "Super Admin",
   ADMIN: "Administrateur",
-  RC_NAF: "RC NAF",
   CONSEIL_ORGA: "Conseil des Orgas",
   MODERATOR: "Modérateur",
-  MODERATOR_BROCANTE: "Modérateur Brocante",
-  MODERATOR_VESTIAIRES: "Modérateur Les Vestiaires",
-  MODERATOR_TRADUCTEUR: "Modérateur Traducteur",
   ORGA: "Orga",
   COACH: "Coach",
 };
+
+export function getRolePower(role: string): number {
+  return ROLE_POWER[role] ?? ROLE_POWER.COACH;
+}
+
+export function getRoleLabel(role: string): string {
+  return ROLE_LABELS[role] ?? role;
+}
 
 /**
  * Seuls les rôles >= MODERATOR (Power 70) peuvent modifier les rôles.
  * On ne peut pas modifier un utilisateur de rang supérieur ou égal au sien.
  * On ne peut pas donner un rôle supérieur au sien.
  */
-export function canManageRoles(userRole: UserRole): boolean {
-  return ROLE_POWER[userRole] >= ROLE_POWER.MODERATOR;
+export function canManageRoles(userRole: UserRole | string): boolean {
+  return getRolePower(userRole) >= ROLE_POWER.MODERATOR;
 }
 
-export function canEditTargetRole(userRole: UserRole, targetCurrentRole: UserRole): boolean {
+export function canEditTargetRole(userRole: UserRole | string, targetCurrentRole: UserRole | string): boolean {
   if (!canManageRoles(userRole)) return false;
   
   // On ne peut pas toucher à quelqu'un de plus puissant ou égal à soi
-  return ROLE_POWER[userRole] > ROLE_POWER[targetCurrentRole];
+  return getRolePower(userRole) > getRolePower(targetCurrentRole);
 }
 
-export function getAllowedRolesToAssign(userRole: UserRole): UserRole[] {
+export function getAllowedRolesToAssign(userRole: UserRole | string): UserRole[] {
   if (!canManageRoles(userRole)) return [];
   
   // On peut attribuer n'importe quel rôle strictement inférieur au sien
   return (Object.keys(ROLE_POWER) as UserRole[]).filter(
-    role => ROLE_POWER[role] < ROLE_POWER[userRole]
+    role => ROLE_POWER[role] < getRolePower(userRole)
   );
 }
 
 export function isModerator(role: string | null | undefined): boolean {
   if (!role) return false;
-  return ROLE_POWER[role as UserRole] >= ROLE_POWER.MODERATOR;
+  return getRolePower(role) >= ROLE_POWER.MODERATOR;
 }

@@ -150,7 +150,8 @@ exports.Prisma.UserScalarFieldEnum = {
   region: 'region',
   league: 'league',
   signature: 'signature',
-  isBanned: 'isBanned'
+  isBanned: 'isBanned',
+  banReason: 'banReason'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

@@ -1,11 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { unstable_noStore as noStore } from "next/cache";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 // auth.ts - MODE SIMULATION DYNAMIQUE
 export const auth = async () => {
   noStore();
-  const userId = "user_test_breakyt";
+  const cookieStore = await cookies();
+  const simulatedId = cookieStore.get("simulated_user_id")?.value;
+  const userId = simulatedId || "user_test_breakyt";
 
   try {
     const user = await prisma.user.findUnique({

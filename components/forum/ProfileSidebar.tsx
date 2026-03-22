@@ -77,7 +77,18 @@ export default function ProfileSidebar({
         <div className="profile-stats-grid">
           <div className="stat-item">
             <span className="stat-label">NAF</span>
-            <span className="stat-value">{user.nafNumber || "—"}</span>
+            <span className="stat-value">
+              {user.nafNumber ? (
+                <a 
+                  href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}
+                >
+                  {user.nafNumber}
+                </a>
+              ) : "—"}
+            </span>
           </div>
           <div className="stat-item">
             <span className="stat-label">Messages</span>

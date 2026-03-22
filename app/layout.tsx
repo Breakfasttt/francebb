@@ -8,6 +8,8 @@ import Link from "next/link";
 import { Settings, MessageSquare } from "lucide-react";
 import { canManageRoles, UserRole } from "@/lib/roles";
 import { prisma } from "@/lib/prisma";
+import BannedRedirect from "@/components/BannedRedirect";
+import DebugAuthWidget from "@/components/DebugAuthWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +26,17 @@ export default async function RootLayout({
   const session = await auth();
   
   let userRole: UserRole = "COACH";
+  let isBanned = false;
+  
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true }
+      select: { role: true, isBanned: true }
     });
-    if (user) userRole = user.role as UserRole;
+    if (user) {
+      userRole = user.role as UserRole;
+      isBanned = user.isBanned;
+    }
   }
 
   const isAdmin = canManageRoles(userRole);
@@ -37,6 +44,8 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body suppressHydrationWarning>
+        <DebugAuthWidget />
+        <BannedRedirect isBanned={isBanned} />
         <AuthProvider session={session}>
           <Toaster position="bottom-right" toastOptions={{
             style: {

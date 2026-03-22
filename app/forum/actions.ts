@@ -10,9 +10,17 @@ export async function getUnreadMessagesCount() {
   const session = await auth();
   if (!session?.user?.id) return 0;
 
-  return await prisma.pm.count({
+  return await prisma.privateMessage.count({
     where: {
-      receiverId: session.user.id,
+      conversation: {
+        OR: [
+          { user1Id: session.user.id },
+          { user2Id: session.user.id }
+        ]
+      },
+      authorId: {
+        not: session.user.id
+      },
       readAt: null
     }
   });
