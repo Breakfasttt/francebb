@@ -11,6 +11,7 @@ import { ArrowLeft, MessageSquare, Trophy, Settings } from "lucide-react";
 import ProfileSidebar from "@/components/forum/ProfileSidebar";
 import ProfileActivity from "@/components/forum/ProfileActivity";
 import ProfileEdit from "@/components/forum/ProfileEdit";
+import ProfilePM from "@/components/profile/ProfilePM";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { useSession } from "next-auth/react";
 
@@ -114,14 +115,7 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "pm" && isOwnProfile && (
-            <div className="premium-card empty-state fade-in">
-              <MessageSquare size={48} />
-              <h3>Messages Privés</h3>
-              <p>Accédez bientôt à votre messagerie directement depuis votre profil.</p>
-              <Link href="/forum/messages" className="btn-primary" style={{ marginTop: '1.5rem', textDecoration: 'none', display: 'inline-block' }}>
-                 Voir la messagerie
-              </Link>
-            </div>
+            <ProfilePM />
           )}
         </div>
       </div>

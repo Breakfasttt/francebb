@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { auth } from "@/auth";
+import { Toaster } from "react-hot-toast";
 import { SignInButton } from "@/components/SignInButton";
 import Link from "next/link";
 import { Settings, MessageSquare } from "lucide-react";
@@ -37,6 +38,13 @@ export default async function RootLayout({
     <html lang="fr">
       <body suppressHydrationWarning>
         <AuthProvider session={session}>
+          <Toaster position="bottom-right" toastOptions={{
+            style: {
+              background: '#1a1a20',
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.1)',
+            },
+          }} />
           <nav className="nav">
             <Link href="/" className="logo">France<span>Blood Bowl</span></Link>
             <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>

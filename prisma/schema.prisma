@@ -52,8 +52,9 @@ model User {
   topics        Topic[]
   posts         Post[]
 
-  sentMessages     Pm[] @relation("SentMessages")
-  receivedMessages Pm[] @relation("ReceivedMessages")
+  user1Conversations Conversation[] @relation("User1Conversations")
+  user2Conversations Conversation[] @relation("User2Conversations")
+  privateMessages   PrivateMessage[] @relation("SentPrivateMessages")
   topicViews       TopicView[]
   mentionsMade     Mention[] @relation("MentionsMade")
   mentionsReceived Mention[] @relation("MentionsReceived")
@@ -165,16 +166,37 @@ model Post {
   reactions        PostReaction[]
 }
 
-model Pm {
-  id          String   @id @default(cuid())
-  senderId    String
-  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiverId  String
-  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
-  subject     String
-  content     String
-  createdAt   DateTime @default(now())
-  readAt      DateTime?
+model Conversation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user1Id   String
+  user1     User     @relation("User1Conversations", fields: [user1Id], references: [id])
+  user2Id   String
+  user2     User     @relation("User2Conversations", fields: [user2Id], references: [id])
+  
+  messages  PrivateMessage[]
+  
+  // Deleted flags per user (for "one-way" deletion if we want that, 
+  // but user said "irréversible" so maybe just a global delete).
+  // For now let's keep it simple as per request.
+
+  @@unique([user1Id, user2Id])
+}
+
+model PrivateMessage {
+  id             String       @id @default(cuid())
+  content        String
+  createdAt      DateTime     @default(now())
+  
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  authorId       String
+  author         User         @relation("SentPrivateMessages", fields: [authorId], references: [id])
+  
+  readAt         DateTime?
 }
 
 model TopicView {
