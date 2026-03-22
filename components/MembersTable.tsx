@@ -1,11 +1,12 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel } from "@/lib/roles";
+import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
 import { Mail, Ban, Trash2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
+import Modal from "@/components/Modal";
 
 interface Props {
   users: any[];
@@ -16,64 +17,120 @@ interface Props {
 export default function MembersTable({ users, currentUserRole, currentUserId }: Props) {
   const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState("");
+  
+  type SortConfig = { key: "name" | "role" | "naf"; direction: "asc" | "desc" } | null;
+  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
-  const handleRoleChange = async (userId: string, newRole: UserRole) => {
-    if (confirm(`Voulez-vous vraiment changer le rôle de cet utilisateur vers ${ROLE_LABELS[newRole]} ?`)) {
-      startTransition(async () => {
-        try {
-          await updateUserRole(userId, newRole);
-          toast.success("Rôle mis à jour");
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-      });
-    }
+  const [roleModal, setRoleModal] = useState<{ isOpen: boolean, userId: string, newRole: UserRole | "", roleLabel: string }>({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
+  const [banModal, setBanModal] = useState<{ isOpen: boolean, userId: string, isBanning: boolean, userName: string }>({ isOpen: false, userId: "", isBanning: false, userName: "" });
+  const [banReason, setBanReason] = useState("");
+  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean, userId: string, userName: string }>({ isOpen: false, userId: "", userName: "" });
+
+  const handleRoleSelect = (userId: string, newRole: UserRole) => {
+    setRoleModal({ isOpen: true, userId, newRole, roleLabel: ROLE_LABELS[newRole] });
   };
 
-  const handleToggleBan = async (userId: string, currentBanStatus: boolean) => {
-    const action = currentBanStatus ? "débannir" : "bannir";
-    let reason = "";
-    if (!currentBanStatus) {
-      const input = prompt("Raison du bannissement (obligatoire) :");
-      if (input === null) return;
-      if (!input.trim()) {
-        toast.error("La raison est obligatoire pour bannir un utilisateur.");
-        return;
-      }
-      reason = input.trim();
-    } else {
-      if (!confirm("Voulez-vous vraiment débannir cet utilisateur ?")) return;
-    }
-
+  const confirmRoleChange = () => {
+    if (!roleModal.userId || !roleModal.newRole) return;
     startTransition(async () => {
       try {
-        await toggleBanUser(userId, !currentBanStatus, reason);
-        toast.success(`Utilisateur ${currentBanStatus ? 'débanni' : 'banni'} avec succès`);
+        await updateUserRole(roleModal.userId, roleModal.newRole as UserRole);
+        toast.success("Rôle mis à jour");
       } catch (error: any) {
         toast.error(error.message);
+      } finally {
+        setRoleModal({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
       }
     });
   };
 
-  const handleDeleteUser = async (userId: string) => {
-    if (confirm("ATTENTION : Cette action est IRREVERSIBLE. Toutes les données de cet utilisateur (messages, topics, conversations) seront supprimées définitivement. Confirmez-vous ?")) {
-      startTransition(async () => {
-        try {
-          await deleteUser(userId);
-          toast.success("Utilisateur supprimé définitivement");
-        } catch (error: any) {
-          toast.error(error.message);
-        }
-      });
+  const handleToggleBanClick = (userId: string, currentBanStatus: boolean, userName: string) => {
+    setBanReason("");
+    setBanModal({ isOpen: true, userId, isBanning: !currentBanStatus, userName });
+  };
+
+  const confirmBanToggle = () => {
+    if (banModal.isBanning && !banReason.trim()) {
+      toast.error("La raison est obligatoire pour bannir un utilisateur.");
+      return;
     }
+    startTransition(async () => {
+      try {
+        await toggleBanUser(banModal.userId, banModal.isBanning, banReason.trim());
+        toast.success(`Utilisateur ${!banModal.isBanning ? 'débanni' : 'banni'} avec succès`);
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setBanModal({ isOpen: false, userId: "", isBanning: false, userName: "" });
+      }
+    });
+  };
+
+  const handleDeleteClick = (userId: string, userName: string) => {
+    setDeleteModal({ isOpen: true, userId, userName });
+  };
+
+  const confirmDelete = () => {
+    startTransition(async () => {
+      try {
+        await deleteUser(deleteModal.userId);
+        toast.success("Utilisateur supprimé définitivement");
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setDeleteModal({ isOpen: false, userId: "", userName: "" });
+      }
+    });
   };
 
   const showRoles = canManageRoles(currentUserRole);
   const showMod = isModerator(currentUserRole);
+  const showDelete = currentUserRole === "SUPERADMIN";
 
   const filteredUsers = users.filter(u => 
     u.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSort = (key: "name" | "role" | "naf") => {
+    let direction: "asc" | "desc" = "asc";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
+    if (!sortConfig) return 0;
+    
+    if (sortConfig.key === "name") {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (nameA < nameB) return sortConfig.direction === "asc" ? -1 : 1;
+      if (nameA > nameB) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    }
+    
+    if (sortConfig.key === "role") {
+      const powerA = getRolePower(a.role);
+      const powerB = getRolePower(b.role);
+      // For roles, higher power first when asc
+      if (powerA < powerB) return sortConfig.direction === "asc" ? 1 : -1;
+      if (powerA > powerB) return sortConfig.direction === "asc" ? -1 : 1;
+      return 0;
+    }
+    
+    if (sortConfig.key === "naf") {
+      const nafA = a.nafNumber ? parseInt(a.nafNumber, 10) : Infinity;
+      const nafB = b.nafNumber ? parseInt(b.nafNumber, 10) : Infinity;
+      
+      if (nafA === Infinity && nafB === Infinity) return 0;
+      if (nafA < nafB) return sortConfig.direction === "asc" ? -1 : 1;
+      if (nafA > nafB) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    }
+    
+    return 0;
+  });
 
   return (
     <div className="premium-card" style={{ padding: '1.5rem', overflowX: 'auto' }}>
@@ -98,17 +155,23 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
       <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--glass-border)' }}>
-            <th style={{ padding: '1rem' }}>Utilisateur</th>
-            <th style={{ padding: '1rem' }}>Rôle</th>
-            <th style={{ padding: '1rem' }}>N°NAF</th>
+            <th onClick={() => handleSort('name')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              Utilisateur {sortConfig?.key === 'name' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+            </th>
+            <th onClick={() => handleSort('role')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              Rôle {sortConfig?.key === 'role' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+            </th>
+            <th onClick={() => handleSort('naf')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              N°NAF {sortConfig?.key === 'naf' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+            </th>
             <th style={{ padding: '1rem', textAlign: 'center' }}>MP</th>
             {showRoles && <th style={{ padding: '1rem' }}>Gestion des Rôles</th>}
             {showMod && <th style={{ padding: '1rem' }}>Modération</th>}
-            {showMod && <th style={{ padding: '1rem' }}>Gestion</th>}
+            {showDelete && <th style={{ padding: '1rem' }}>Gestion</th>}
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map(user => {
+          {sortedUsers.map(user => {
             const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
             const selectableRoles = getAllowedRolesToAssign(currentUserRole);
 
@@ -166,9 +229,9 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
                   <td style={{ padding: '1rem' }}>
                     {canEdit ? (
                       <select 
-                        defaultValue={user.role}
+                        value={user.role}
                         disabled={isPending}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value as UserRole)}
+                        onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
                         style={{ 
                           background: 'rgba(255,255,255,0.05)', 
                           border: '1px solid var(--glass-border)',
@@ -194,7 +257,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
                     {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
                       <button 
                         disabled={isPending}
-                        onClick={() => handleToggleBan(user.id, user.isBanned)}
+                        onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
                         style={{ 
                           background: user.isBanned ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
                           border: `1px solid ${user.isBanned ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
@@ -216,31 +279,27 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
                     )}
                   </td>
                 )}
-                {showMod && (
+                {showDelete && (
                   <td style={{ padding: '1rem' }}>
-                    {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
-                      <button 
-                        disabled={isPending}
-                        onClick={() => handleDeleteUser(user.id)}
-                        style={{ 
-                          background: 'transparent', 
-                          border: '1px solid rgba(239, 68, 68, 0.5)',
-                          color: '#ef4444',
-                          padding: '0.4rem 0.8rem',
-                          borderRadius: '6px',
-                          cursor: isPending ? 'not-allowed' : 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.4rem',
-                          fontSize: '0.8rem',
-                          fontWeight: 600
-                        }}
-                      >
-                        <Trash2 size={14} /> Supprimer
-                      </button>
-                    ) : (
-                      <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
-                    )}
+                    <button 
+                      disabled={isPending}
+                      onClick={() => handleDeleteClick(user.id, user.name)}
+                      style={{ 
+                        background: 'transparent', 
+                        border: '1px solid rgba(239, 68, 68, 0.5)',
+                        color: '#ef4444',
+                        padding: '0.4rem 0.8rem',
+                        borderRadius: '6px',
+                        cursor: isPending ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        fontSize: '0.8rem',
+                        fontWeight: 600
+                      }}
+                    >
+                      <Trash2 size={14} /> Supprimer
+                    </button>
                   </td>
                 )}
               </tr>
@@ -248,6 +307,102 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
           })}
         </tbody>
       </table>
+
+      <Modal 
+        isOpen={roleModal.isOpen} 
+        onClose={() => setRoleModal(v => ({...v, isOpen: false}))}
+        onConfirm={confirmRoleChange}
+        title="Changement de rôle"
+        message={`Voulez-vous vraiment changer le rôle de cet utilisateur vers "${roleModal.roleLabel}" ?`}
+      />
+
+      <Modal
+        isOpen={banModal.isOpen}
+        onClose={() => setBanModal(v => ({...v, isOpen: false}))}
+        onConfirm={confirmBanToggle}
+        title={banModal.isBanning ? "Bannir l'utilisateur" : "Débannir l'utilisateur"}
+      >
+        <p style={{ color: '#ccc', marginBottom: '1rem', lineHeight: 1.5 }}>
+          {banModal.isBanning 
+            ? `Vous êtes sur le point de bannir ${banModal.userName}. Veuillez indiquer la raison du bannissement.`
+            : `Voulez-vous vraiment débannir ${banModal.userName} ?`
+          }
+        </p>
+        
+        {banModal.isBanning && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontSize: '0.85rem', color: '#888', fontWeight: 600 }}>Raison du bannissement (obligatoire)</label>
+            <input 
+              type="text" 
+              value={banReason}
+              onChange={(e) => setBanReason(e.target.value)}
+              placeholder="Ex: Spam répété, insulte..."
+              style={{
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid var(--glass-border)',
+                borderRadius: '6px',
+                padding: '0.8rem',
+                color: 'white',
+                outline: 'none',
+                width: '100%',
+                boxSizing: 'border-box'
+              }}
+              autoFocus
+            />
+          </div>
+        )}
+
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+          <button 
+            onClick={() => setBanModal(v => ({...v, isOpen: false}))} 
+            style={{ background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
+          >
+            Annuler
+          </button>
+          <button 
+            onClick={confirmBanToggle} 
+            disabled={isPending}
+            style={{ background: banModal.isBanning ? '#ef4444' : '#22c55e', color: 'white', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+          >
+            Confirmer
+          </button>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={deleteModal.isOpen} 
+        onClose={() => setDeleteModal(v => ({...v, isOpen: false}))}
+        onConfirm={confirmDelete}
+        title="Suppression définitive"
+      >
+        <p style={{ color: '#fca5a5', lineHeight: 1.5 }}>
+          <strong>ATTENTION :</strong> Cette action est <strong>IRRÉVERSIBLE</strong>.
+        </p>
+        <p style={{ color: '#ccc', marginTop: '0.5rem', lineHeight: 1.5 }}>
+          Toutes les données de {deleteModal.userName} (messages, topics, conversations privées) 
+          seront supprimées définitivement de la base de données.
+        </p>
+        <p style={{ color: '#eab308', marginTop: '1rem', lineHeight: 1.5, background: 'rgba(234, 179, 8, 0.1)', padding: '0.8rem', borderRadius: '6px', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+          <strong>RAPPEL SUPERADMIN :</strong> Cette option ne doit être utilisée <strong>QUE</strong> pour purger les faux comptes, les comptes buggés, ou vider les comptes abandonnés/fantômes. 
+          Pour les cas classiques de modération, privilégiez le bannissement.
+        </p>
+        
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '2rem' }}>
+          <button 
+            onClick={() => setDeleteModal(v => ({...v, isOpen: false}))} 
+            style={{ background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
+          >
+            Annuler
+          </button>
+          <button 
+            onClick={confirmDelete} 
+            disabled={isPending}
+            style={{ background: '#ef4444', color: 'white', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+          >
+            Confirmer la suppression
+          </button>
+        </div>
+      </Modal>
 
       <style jsx>{`
         .role-badge {

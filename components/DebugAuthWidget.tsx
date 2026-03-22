@@ -41,7 +41,7 @@ export default function DebugAuthWidget() {
     <div style={{
       position: 'fixed',
       bottom: '1rem',
-      left: '1rem',
+      right: '1rem',
       zIndex: 9999,
       fontFamily: 'system-ui, sans-serif'
     }}>
