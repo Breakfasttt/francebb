@@ -118,13 +118,14 @@ model Forum {
 }
 
 model Topic {
-  id        String   @id @default(cuid())
-  title     String
-  isLocked  Boolean  @default(false)
-  isSticky  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  views     Int      @default(0)
+  id         String   @id @default(cuid())
+  title      String
+  isLocked   Boolean  @default(false)
+  isSticky   Boolean  @default(false)
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  views      Int      @default(0)
 
   forumId String
   forum   Forum  @relation(fields: [forumId], references: [id])

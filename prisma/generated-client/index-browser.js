@@ -199,6 +199,7 @@ exports.Prisma.TopicScalarFieldEnum = {
   title: 'title',
   isLocked: 'isLocked',
   isSticky: 'isSticky',
+  isArchived: 'isArchived',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   views: 'views',

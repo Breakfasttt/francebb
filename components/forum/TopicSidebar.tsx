@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
-import { togglePinTopic, deleteTopicPermanent } from "@/app/forum/actions";
+import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic } from "@/app/forum/actions";
 import Modal from "@/components/Modal";
 import MoveTopicModal from "./MoveTopicModal";
 import EditTopicTitleModal from "./EditTopicTitleModal";
@@ -39,6 +39,7 @@ interface TopicSidebarProps {
   authorId?: string;
   currentUserId?: string;
   views?: number;
+  isArchived?: boolean;
 }
 
 export default function TopicSidebar({ 
@@ -53,7 +54,8 @@ export default function TopicSidebar({
   topicTitle = "",
   authorId = "",
   currentUserId = "",
-  views = 0
+  views = 0,
+  isArchived = false
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -63,6 +65,17 @@ export default function TopicSidebar({
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
 
+
+  const handleToggleArchive = () => {
+    startTransition(async () => {
+      try {
+        await toggleArchiveTopic(topicId);
+        router.refresh();
+      } catch (error: any) {
+        alert(error.message);
+      }
+    });
+  };
 
   const handleTogglePin = () => {
     startTransition(async () => {
@@ -165,6 +178,7 @@ export default function TopicSidebar({
               <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.65rem', color: '#555', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
                 
+                
                 <button 
                   onClick={handleTogglePin}
                   disabled={isPending}
@@ -183,6 +197,22 @@ export default function TopicSidebar({
                 >
                   <Move size={16} />
                   <span>Déplacer</span>
+                </button>
+
+                {/* Archivage */}
+                <button 
+                  onClick={handleToggleArchive}
+                  disabled={isPending}
+                  className="widget-button secondary-btn"
+                  style={{ 
+                    textAlign: 'left', 
+                    padding: '8px 12px',
+                    borderColor: isArchived ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
+                    color: isArchived ? 'var(--accent)' : 'white'
+                  }}
+                >
+                  <Eye size={16} style={{ opacity: isArchived ? 1 : 0.7 }} />
+                  <span>{isArchived ? "Désarchiver" : "Archiver"}</span>
                 </button>
 
                 <button 

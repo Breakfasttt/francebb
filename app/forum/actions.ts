@@ -27,6 +27,9 @@ export async function getRecentPosts(limit: number = 3) {
     orderBy: {
       updatedAt: "desc"
     },
+    where: {
+      isArchived: false
+    },
     include: {
       _count: {
         select: { posts: true }
@@ -64,11 +67,12 @@ export async function getRecentPosts(limit: number = 3) {
 }
 
 export async function getRandomPostUrl() {
-  const count = await prisma.topic.count();
+  const count = await prisma.topic.count({ where: { isArchived: false } });
   if (count === 0) return "/forum";
 
   const skip = Math.floor(Math.random() * count);
   const randomTopic = await prisma.topic.findFirst({
+    where: { isArchived: false },
     skip: skip,
     select: { id: true }
   });
@@ -172,6 +176,7 @@ export async function getUnreadTopicsCount() {
   // We want topics where (TopicView doesn't exist OR topic.updatedAt > TopicView.lastViewedAt)
 
   const topics = await prisma.topic.findMany({
+    where: { isArchived: false },
     include: {
       topicViews: {
         where: { userId: session.user.id }
@@ -192,6 +197,7 @@ export async function getUnreadTopics() {
   if (!session?.user?.id) return [];
 
   const topics = await prisma.topic.findMany({
+    where: { isArchived: false },
     include: {
       author: true,
       forum: true,
@@ -725,4 +731,26 @@ export async function togglePostReaction(postId: string, emoji: string) {
   if (post) {
     revalidatePath(`/forum/topic/${post.topicId}`);
   }
+}
+
+export async function toggleArchiveTopic(topicId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    throw new Error("Seuls les modérateurs peuvent archiver des sujets.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId },
+    select: { id: true, isArchived: true, forumId: true }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { isArchived: !topic.isArchived }
+  });
+
+  revalidatePath(`/forum/${topic.forumId}`);
+  revalidatePath(`/forum/topic/${topicId}`);
 }

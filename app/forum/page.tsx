@@ -24,6 +24,7 @@ export default async function ForumPage() {
             select: { topics: true }
           },
           topics: {
+            where: { isArchived: false },
             orderBy: { updatedAt: "desc" },
             include: {
               author: true,

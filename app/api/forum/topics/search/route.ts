@@ -14,6 +14,7 @@ export async function GET(request: Request) {
       title: {
         contains: query,
       },
+      isArchived: false,
     },
     take: 10,
     select: {

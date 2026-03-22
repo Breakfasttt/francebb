@@ -122,6 +122,7 @@ model Topic {
   title     String
   isLocked  Boolean  @default(false)
   isSticky  Boolean  @default(false)
+  isArchived Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   views     Int      @default(0)

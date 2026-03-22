@@ -10488,6 +10488,7 @@ export namespace Prisma {
     title: string | null
     isLocked: boolean | null
     isSticky: boolean | null
+    isArchived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     views: number | null
@@ -10500,6 +10501,7 @@ export namespace Prisma {
     title: string | null
     isLocked: boolean | null
     isSticky: boolean | null
+    isArchived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     views: number | null
@@ -10512,6 +10514,7 @@ export namespace Prisma {
     title: number
     isLocked: number
     isSticky: number
+    isArchived: number
     createdAt: number
     updatedAt: number
     views: number
@@ -10534,6 +10537,7 @@ export namespace Prisma {
     title?: true
     isLocked?: true
     isSticky?: true
+    isArchived?: true
     createdAt?: true
     updatedAt?: true
     views?: true
@@ -10546,6 +10550,7 @@ export namespace Prisma {
     title?: true
     isLocked?: true
     isSticky?: true
+    isArchived?: true
     createdAt?: true
     updatedAt?: true
     views?: true
@@ -10558,6 +10563,7 @@ export namespace Prisma {
     title?: true
     isLocked?: true
     isSticky?: true
+    isArchived?: true
     createdAt?: true
     updatedAt?: true
     views?: true
@@ -10657,6 +10663,7 @@ export namespace Prisma {
     title: string
     isLocked: boolean
     isSticky: boolean
+    isArchived: boolean
     createdAt: Date
     updatedAt: Date
     views: number
@@ -10688,6 +10695,7 @@ export namespace Prisma {
     title?: boolean
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     views?: boolean
@@ -10705,6 +10713,7 @@ export namespace Prisma {
     title?: boolean
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     views?: boolean
@@ -10719,6 +10728,7 @@ export namespace Prisma {
     title?: boolean
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     views?: boolean
@@ -10733,6 +10743,7 @@ export namespace Prisma {
     title?: boolean
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     views?: boolean
@@ -10740,7 +10751,7 @@ export namespace Prisma {
     authorId?: boolean
   }
 
-  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId", ExtArgs["result"]["topic"]>
+  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId", ExtArgs["result"]["topic"]>
   export type TopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -10770,6 +10781,7 @@ export namespace Prisma {
       title: string
       isLocked: boolean
       isSticky: boolean
+      isArchived: boolean
       createdAt: Date
       updatedAt: Date
       views: number
@@ -11206,6 +11218,7 @@ export namespace Prisma {
     readonly title: FieldRef<"Topic", 'String'>
     readonly isLocked: FieldRef<"Topic", 'Boolean'>
     readonly isSticky: FieldRef<"Topic", 'Boolean'>
+    readonly isArchived: FieldRef<"Topic", 'Boolean'>
     readonly createdAt: FieldRef<"Topic", 'DateTime'>
     readonly updatedAt: FieldRef<"Topic", 'DateTime'>
     readonly views: FieldRef<"Topic", 'Int'>
@@ -17319,6 +17332,7 @@ export namespace Prisma {
     title: 'title',
     isLocked: 'isLocked',
     isSticky: 'isSticky',
+    isArchived: 'isArchived',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     views: 'views',
@@ -17997,6 +18011,7 @@ export namespace Prisma {
     title?: StringFilter<"Topic"> | string
     isLocked?: BoolFilter<"Topic"> | boolean
     isSticky?: BoolFilter<"Topic"> | boolean
+    isArchived?: BoolFilter<"Topic"> | boolean
     createdAt?: DateTimeFilter<"Topic"> | Date | string
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     views?: IntFilter<"Topic"> | number
@@ -18013,6 +18028,7 @@ export namespace Prisma {
     title?: SortOrder
     isLocked?: SortOrder
     isSticky?: SortOrder
+    isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     views?: SortOrder
@@ -18032,6 +18048,7 @@ export namespace Prisma {
     title?: StringFilter<"Topic"> | string
     isLocked?: BoolFilter<"Topic"> | boolean
     isSticky?: BoolFilter<"Topic"> | boolean
+    isArchived?: BoolFilter<"Topic"> | boolean
     createdAt?: DateTimeFilter<"Topic"> | Date | string
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     views?: IntFilter<"Topic"> | number
@@ -18048,6 +18065,7 @@ export namespace Prisma {
     title?: SortOrder
     isLocked?: SortOrder
     isSticky?: SortOrder
+    isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     views?: SortOrder
@@ -18068,6 +18086,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Topic"> | string
     isLocked?: BoolWithAggregatesFilter<"Topic"> | boolean
     isSticky?: BoolWithAggregatesFilter<"Topic"> | boolean
+    isArchived?: BoolWithAggregatesFilter<"Topic"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Topic"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Topic"> | Date | string
     views?: IntWithAggregatesFilter<"Topic"> | number
@@ -19014,6 +19033,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -19028,6 +19048,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -19042,6 +19063,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -19056,6 +19078,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -19070,6 +19093,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -19082,6 +19106,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -19092,6 +19117,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -20041,6 +20067,7 @@ export namespace Prisma {
     title?: SortOrder
     isLocked?: SortOrder
     isSticky?: SortOrder
+    isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     views?: SortOrder
@@ -20057,6 +20084,7 @@ export namespace Prisma {
     title?: SortOrder
     isLocked?: SortOrder
     isSticky?: SortOrder
+    isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     views?: SortOrder
@@ -20069,6 +20097,7 @@ export namespace Prisma {
     title?: SortOrder
     isLocked?: SortOrder
     isSticky?: SortOrder
+    isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     views?: SortOrder
@@ -21893,6 +21922,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -21906,6 +21936,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -22272,6 +22303,7 @@ export namespace Prisma {
     title?: StringFilter<"Topic"> | string
     isLocked?: BoolFilter<"Topic"> | boolean
     isSticky?: BoolFilter<"Topic"> | boolean
+    isArchived?: BoolFilter<"Topic"> | boolean
     createdAt?: DateTimeFilter<"Topic"> | Date | string
     updatedAt?: DateTimeFilter<"Topic"> | Date | string
     views?: IntFilter<"Topic"> | number
@@ -22700,6 +22732,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -22713,6 +22746,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -23065,6 +23099,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -23078,6 +23113,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -23245,6 +23281,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -23258,6 +23295,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -23642,6 +23680,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -23655,6 +23694,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -23735,6 +23775,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -23748,6 +23789,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24236,6 +24278,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -24447,6 +24490,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24460,6 +24504,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24473,6 +24518,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24749,6 +24795,7 @@ export namespace Prisma {
     title: string
     isLocked?: boolean
     isSticky?: boolean
+    isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
@@ -24788,6 +24835,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24801,6 +24849,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
@@ -24814,6 +24863,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number

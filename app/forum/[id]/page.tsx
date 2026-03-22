@@ -57,7 +57,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
   // Fetch paginated topics
   const topics = await prisma.topic.findMany({
-    where: { forumId: id },
+    where: { 
+      forumId: id,
+      isArchived: false
+    },
     orderBy: [
       { isSticky: "desc" },
       { updatedAt: "desc" }

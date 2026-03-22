@@ -83,7 +83,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   });
 
   // 2. Build Query Filters
-  let whereClause: any = { isDeleted: false };
+  let whereClause: any = { 
+    isDeleted: false,
+    topic: { isArchived: false }
+  };
   
   // Modérateur or not
   const isMod = isModerator(session?.user?.role);
@@ -116,7 +119,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     const allForumsFlat = await prisma.forum.findMany({ select: { id: true, parentForumId: true } });
     const targetForumIds = getDescendantForumIds(allForumsFlat, forumId);
     
-    whereClause.topic = { forumId: { in: targetForumIds } };
+    whereClause.topic = { 
+      ...whereClause.topic,
+      forumId: { in: targetForumIds } 
+    };
   }
 
   let posts: any[] = [];
