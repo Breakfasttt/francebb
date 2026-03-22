@@ -266,6 +266,19 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                         }}
                         dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap) }}
                       />
+
+                      {post.author.signature && (
+                        <div style={{ 
+                          marginTop: '2.5rem', 
+                          paddingTop: '1rem', 
+                          borderTop: '1px solid rgba(255,255,255,0.05)', 
+                          fontSize: '0.85rem', 
+                          color: '#777',
+                          fontStyle: 'italic',
+                          maxWidth: '100%',
+                          overflow: 'hidden'
+                        }} dangerouslySetInnerHTML={{ __html: parseBBCode(post.author.signature) }} />
+                      )}
                     </div>
                   ) : (
                     <div style={{ color: '#666', fontStyle: 'italic', padding: '1rem 0' }}>

@@ -13,11 +13,13 @@ interface BBCodeEditorProps {
   defaultValue?: string;
   placeholder?: string;
   rows?: number;
+  maxLength?: number;
+  onChange?: (value: string) => void;
 }
 
 const IMGUR_CLIENT_ID = siteConfig.api.imgur.clientId;
 
-export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10 }: BBCodeEditorProps) {
+export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange }: BBCodeEditorProps) {
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -117,6 +119,14 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     };
   }, [isPreview, activeTool]);
 
+  const handleContentChange = (newContent: string) => {
+    if (maxLength && newContent.length > maxLength) {
+      newContent = newContent.substring(0, maxLength);
+    }
+    setContent(newContent);
+    if (onChange) onChange(newContent);
+  };
+
   // Listen for external insert requests (e.g. from Quote button)
   useEffect(() => {
     const handleRemoteInsert = (e: any) => {
@@ -136,7 +146,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     // Fallback for browsers that don't support selectionStart
     if (typeof textarea.selectionStart === "undefined") {
       const newContent = content + startTag + endTag;
-      setContent(newContent);
+      handleContentChange(newContent);
       return;
     }
 
@@ -149,7 +159,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     const after = text.substring(end, text.length);
 
     const newContent = before + startTag + selected + endTag + after;
-    setContent(newContent);
+    handleContentChange(newContent);
 
     // Re-focus and set cursor position
     setTimeout(() => {
@@ -173,16 +183,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       if (!textareaRef.current) return;
       const textarea = textareaRef.current;
 
-      if (typeof textarea.selectionStart === "undefined") {
-        const label = toolInputText.trim() !== "" ? toolInputText : toolInputUrl;
-        const newContent = content + `[url=${toolInputUrl}]${label}[/url]`;
-        setContent(newContent);
-        setToolInputUrl("");
-        setToolInputText("");
-        setActiveTool(null);
-        return;
-      }
-
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const text = content;
@@ -192,8 +192,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       const after = text.substring(end, text.length);
 
       const label = toolInputText.trim() !== "" ? toolInputText : (selected || toolInputUrl);
-      const newContent = before + `[url=${toolInputUrl}]${label}[/url]` + after;
-      setContent(newContent);
+      const tag = `[url=${toolInputUrl}]${label}[/url]`;
+      const newContent = before + tag + after;
+      
+      handleContentChange(newContent);
 
       setToolInputUrl("");
       setToolInputText("");
@@ -201,7 +203,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
       setTimeout(() => {
         textarea.focus();
-        const newCursorPos = before.length + `[url=${toolInputUrl}]${label}[/url]`.length;
+        const newCursorPos = before.length + tag.length;
         textarea.setSelectionRange(newCursorPos, newCursorPos);
       }, 0);
     }
@@ -213,23 +215,16 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     const topicId = selectedTopic.id;
     const defaultTitle = selectedTopic.title;
 
-    const label = toolInputText.trim() !== "" ? toolInputText : defaultTitle;
-
-    if (typeof textarea.selectionStart === "undefined") {
-      setContent(content + `[topic=${topicId}]${label}[/topic]`);
-      setToolInputText(""); setTopicQuery(""); setTopicResults([]); setSelectedTopic(null); setActiveTool(null);
-      return;
-    }
-
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const before = content.substring(0, start);
     const selected = content.substring(start, end);
     const after = content.substring(end);
+    
     const finalLabel = toolInputText.trim() !== "" ? toolInputText : (selected || defaultTitle);
     const tag = `[topic=${topicId}]${finalLabel}[/topic]`;
 
-    setContent(before + tag + after);
+    handleContentChange(before + tag + after);
     setToolInputText(""); setTopicQuery(""); setTopicResults([]); setSelectedTopic(null); setActiveTool(null);
 
     setTimeout(() => {
@@ -245,12 +240,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     // Check if we just typed "@" or if we want to replace it
     const tag = `[mention=${id}]${username}[/mention]`;
     
-    if (typeof textarea.selectionStart === "undefined") {
-      setContent(content + tag);
-      setMentionQuery(""); setMentionResults([]); setActiveTool(null);
-      return;
-    }
-
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const before = content.substring(0, start);
@@ -262,7 +251,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       finalBefore = before.slice(0, -1);
     }
 
-    setContent(finalBefore + tag + " " + after);
+    handleContentChange(finalBefore + tag + " " + after);
     setMentionQuery(""); setMentionResults([]); setActiveTool(null);
 
     setTimeout(() => {
@@ -711,9 +700,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         style={{
           position: "relative",
           flex: 1,
-          display: "grid",
-          gridTemplateColumns: isPreview ? "repeat(auto-fit, minmax(300px, 1fr))" : "1fr",
-          gap: isPreview ? "1rem" : "0",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0",
           alignItems: "stretch"
         }}
       >
@@ -722,12 +711,12 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           name={name}
           ref={textareaRef}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => handleContentChange(e.target.value)}
           placeholder={placeholder}
           rows={rows}
           style={{
             width: "100%",
-            height: "100%",
+            height: isPreview ? "200px" : "100%",
             padding: "1rem",
             background: "rgba(0,0,0,0.2)",
             border: "none",
@@ -737,7 +726,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             lineHeight: "1.5",
             fontSize: "1rem",
             fontFamily: "inherit",
-            borderRight: isPreview ? "1px solid var(--glass-border)" : "none"
+            borderBottom: isPreview ? "1px solid var(--glass-border)" : "none"
           }}
         />
 
@@ -746,8 +735,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             className="editor-preview"
             style={{
               width: "100%",
-              height: "100%",
-              padding: "1rem",
+              minHeight: "150px",
+              maxHeight: "400px",
+              padding: "1.5rem",
               background: "rgba(255,255,255,0.02)",
               color: "#eee",
               overflowY: "auto",
@@ -757,6 +747,12 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           />
         )}
       </div>
+
+      {maxLength && (
+        <div style={{ padding: "0.3rem 1rem", background: "rgba(0,0,0,0.2)", borderTop: "1px solid var(--glass-border)", display: "flex", justifyContent: "flex-end", fontSize: "0.75rem", color: content.length >= maxLength ? "#ef4444" : "#888" }}>
+          {content.length} / {maxLength} caractères
+        </div>
+      )}
 
       {toast && (
         <Toast

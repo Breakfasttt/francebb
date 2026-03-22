@@ -145,7 +145,12 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
-  role: 'role'
+  role: 'role',
+  nafNumber: 'nafNumber',
+  region: 'region',
+  league: 'league',
+  signature: 'signature',
+  isBanned: 'isBanned'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

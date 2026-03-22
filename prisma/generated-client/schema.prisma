@@ -44,6 +44,11 @@ model User {
   sessions      Session[]
   tournaments   Tournament[]
   role          String       @default("COACH") // ADMIN, RC_NAF, CONSEIL_ORGA, MODERATOR, MODERATOR_BROCANTE, MODERATOR_VESTIAIRES, MODERATOR_TRADUCTEUR, ORGA, COACH
+  nafNumber     String?
+  region        String? // IDF, Nord-Ouest, Nord-Est, Sud-Est, Sud-Ouest
+  league        String?
+  signature     String?
+  isBanned      Boolean      @default(false)
   topics        Topic[]
   posts         Post[]
 
