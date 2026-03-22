@@ -8,9 +8,25 @@ import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "./DeleteForumButton";
 import MarkAllAsReadButton from "./MarkAllAsReadButton";
 
+import SidebarPagination from "./SidebarPagination";
+
 const POSTS_PER_PAGE = 20;
 
-export default async function ForumSidebar({ forumId, forumName, categoryId, parentForumId }: { forumId?: string; forumName?: string; categoryId?: string; parentForumId?: string }) {
+export default async function ForumSidebar({ 
+  forumId, 
+  forumName, 
+  categoryId, 
+  parentForumId,
+  currentPage,
+  totalPages
+}: { 
+  forumId?: string; 
+  forumName?: string; 
+  categoryId?: string; 
+  parentForumId?: string;
+  currentPage?: number;
+  totalPages?: number;
+}) {
   const unreadMessages = await getUnreadMessagesCount();
   const recentPosts = await getRecentPosts(3);
   const unreadTopics = await getUnreadTopicsCount();
@@ -27,6 +43,14 @@ export default async function ForumSidebar({ forumId, forumName, categoryId, par
     <aside className="forum-sidebar">
       <div className="sidebar-sticky-inner">
         <div className="sidebar-widget-container">
+          {/* 1. Pages Block (Forum / Search) */}
+          {(totalPages && totalPages > 1) && (
+            <SidebarPagination 
+              currentPage={currentPage || 1}
+              totalPages={totalPages}
+            />
+          )}
+
           {/* Messages Privés */}
           {unreadMessages > 0 && (
             <div className="sidebar-widget message-widget animate-pulse-subtle">

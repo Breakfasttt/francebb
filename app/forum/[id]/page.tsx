@@ -213,49 +213,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         )}
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', marginTop: '2rem' }}>
-          {currentPage > 1 && (
-            <Link href={`/forum/${id}?page=${currentPage - 1}`} className="page-link" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-              <ChevronLeft size={16} />
-            </Link>
-          )}
-
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const p = i + 1;
-            // Show: first, last, current ±2
-            const show = p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2;
-            const showEllipsisBefore = p === totalPages && currentPage < totalPages - 3;
-            const showEllipsisAfter = p === 1 && currentPage > 4;
-
-            if (!show) return null;
-
-            return (
-              <span key={p} style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                {showEllipsisBefore && <span style={{ color: '#666', padding: '0 0.3rem' }}>…</span>}
-                <Link
-                  href={`/forum/${id}?page=${p}`}
-                  className={`page-link ${p === currentPage ? 'active' : ''}`}
-                >
-                  {p}
-                </Link>
-                {showEllipsisAfter && <span style={{ color: '#666', padding: '0 0.3rem' }}>…</span>}
-              </span>
-            );
-          })}
-
-          {currentPage < totalPages && (
-            <Link href={`/forum/${id}?page=${currentPage + 1}`} className="page-link" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-              <ChevronRight size={16} />
-            </Link>
-          )}
-
-          <span style={{ color: '#666', fontSize: '0.85rem', marginLeft: '0.5rem' }}>
-            Page {currentPage}/{totalPages} · {totalTopics} sujet{totalTopics > 1 ? 's' : ''}
-          </span>
-        </div>
-      )}
+      {/* Pagination moved to sidebar */}
 
      </div>
      <ForumSidebar 
@@ -263,6 +221,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
        forumName={forum.name} 
        categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
        parentForumId={id} 
+       currentPage={currentPage}
+       totalPages={totalPages}
      />
    </div>
  </main>
