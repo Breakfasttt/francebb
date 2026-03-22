@@ -5,6 +5,7 @@ import DebugAuthWidget from "@/components/DebugAuthWidget";
 import { SignInButton } from "@/components/SignInButton";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/lib/roles";
+import { Mail } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -40,6 +41,24 @@ export default async function RootLayout({
 
   const isAdmin = false; // kept for future use
 
+  let unreadCount = 0;
+  if (session?.user?.id) {
+    try {
+      unreadCount = await prisma.privateMessage.count({
+        where: {
+          conversation: {
+            OR: [
+              { user1Id: session.user.id },
+              { user2Id: session.user.id }
+            ]
+          },
+          authorId: { not: session.user.id },
+          readAt: null
+        }
+      });
+    } catch {}
+  }
+
   return (
     <html lang="fr">
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -62,6 +81,39 @@ export default async function RootLayout({
               color: 'transparent'
             }}>France<span> Blood Bowl</span></Link>
             <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+              {session?.user && (
+                <a
+                  href="/profile?tab=pm"
+                  title={`${unreadCount} message(s) non lu(s)`}
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'white',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <Mail size={22} />
+                  <span style={{
+                    position: 'absolute',
+                    top: '-8px',
+                    right: '-10px',
+                    background: 'var(--primary)',
+                    color: 'white',
+                    borderRadius: '50%',
+                    width: '18px',
+                    height: '18px',
+                    fontSize: '0.65rem',
+                    fontWeight: 700,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    lineHeight: 1
+                  }}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                </a>
+              )}
               <SignInButton user={session?.user} />
             </div>
           </nav>
