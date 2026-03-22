@@ -8,6 +8,12 @@ export const auth = async () => {
   noStore();
   const cookieStore = await cookies();
   const simulatedId = cookieStore.get("simulated_user_id")?.value;
+
+  // If explicitly set to empty or "DISCONNECTED", simulate a logged-out user
+  if (simulatedId === "" || simulatedId === "DISCONNECTED") {
+    return null;
+  }
+
   const userId = simulatedId || "user_test_breakyt";
 
   try {
@@ -15,17 +21,13 @@ export const auth = async () => {
       where: { id: userId }
     });
 
-    const now = new Date().toLocaleTimeString();
-    //console.log(`[AUTH @ ${now}] Session demandée pour ${userId}. Trouvé en base : ${user?.name || "aucun (par défaut)"}`);
+    if (!user) {
+      console.warn(`[AUTH] Utilisateur simulé introuvable en base : ${userId}. Cliquez sur "Créer comptes de Test" dans le widget de debug.`);
+      return null;
+    }
 
     return {
-      user: user || {
-        id: userId,
-        name: "Breakyt",
-        email: "breakyt@bbfrance.fr",
-        image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Breakyt",
-        role: "ADMIN"
-      },
+      user,
       expires: "2030-01-01T00:00:00.000Z"
     };
   } catch (error) {

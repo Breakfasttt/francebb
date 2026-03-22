@@ -1,35 +1,52 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+interface SignInButtonProps {
+  user?: {
+    id: string;
+    name?: string | null;
+    image?: string | null;
+  } | null;
+}
 
-export function SignInButton() {
-  const { data: session, status } = useSession();
+export function SignInButton({ user }: SignInButtonProps) {
 
-  if (status === "loading") return <button className="btn-primary" disabled>Chargement...</button>;
+  const handleDisconnect = () => {
+    document.cookie = `simulated_user_id=DISCONNECTED; path=/; max-age=31536000`;
+    window.location.reload();
+  };
 
-  if (session) {
+  const handleConnect = () => {
+    document.cookie = `simulated_user_id=; path=/; max-age=0`;
+    window.location.reload();
+  };
+
+  if (!user) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <a href="/profile" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {session.user?.image && (
-            <img 
-              src={session.user.image} 
-              alt="Avatar" 
-              style={{ width: '32px', height: '32px', borderRadius: '50%' }} 
-            />
-          )}
-          <span>{session.user?.name || "Joueur"}</span>
-        </a>
-        <button onClick={() => alert("Mode Simulation : Déconnexion désactivée")} className="btn-primary" style={{ background: '#333' }}>
-          Déconnexion
-        </button>
-      </div>
+      <button onClick={handleConnect} className="btn-primary">
+        Se connecter
+      </button>
     );
   }
 
   return (
-    <button className="btn-primary">
-      Connecté (Simulé)
-    </button>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <a href="/profile" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' }}>
+        {user.image && (
+          <img
+            src={user.image}
+            alt="Avatar"
+            style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+          />
+        )}
+        <span>{user.name || "Joueur"}</span>
+      </a>
+      <button
+        onClick={handleDisconnect}
+        className="btn-primary"
+        style={{ background: '#333' }}
+      >
+        Déconnexion
+      </button>
+    </div>
   );
 }

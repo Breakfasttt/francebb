@@ -1,8 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Trophy, MessageSquare, MapPin, Calendar } from "lucide-react";
+import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus } from "lucide-react";
+import { auth } from "@/auth";
 
 export default async function Home() {
+  const session = await auth();
+  const isAuth = !!session?.user;
+
   const nextTournaments = await prisma.tournament.findMany({
     where: {
       date: { gte: new Date() }
@@ -14,38 +18,113 @@ export default async function Home() {
   });
 
   return (
-    <main className="container">
-      <section className="hero">
-        <h1>France Blood Bowl</h1>
-        <p>L'arène centrale des coachs français. Tournois, rencontres et partage.</p>
+    <main className="container" style={{ padding: '0.5rem 1rem' }}>
+      <section className="hero" style={{ padding: '0.5rem 0.5rem 0 0.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h1 style={{ 
+            fontSize: '3rem', 
+            fontWeight: 900, 
+            letterSpacing: '-1px',
+            background: 'linear-gradient(135deg, #002395 0%, #ffffff 50%, #ED2939 100%)', 
+            WebkitBackgroundClip: 'text', 
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            color: 'transparent',
+            margin: '0 0 0.5rem 0'
+          }}>
+            FRANCE BLOOD BOWL
+          </h1>
+          <p style={{ 
+            fontSize: '1.1rem', 
+            color: '#aaa', 
+            maxWidth: '600px', 
+            margin: '0',
+            lineHeight: 1.4,
+            fontWeight: 500
+          }}>
+            L'arène ultime des coachs francophones.<br/>
+            <span style={{ color: 'var(--accent)' }}>Tournois professionnels, ligues et carnage garanti.</span>
+          </p>
+        </div>
         
-        <div className="action-buttons">
-          <Link href="/tournaments" className="action-card">
-            <Trophy size={32} style={{ marginBottom: '0.8rem', color: 'var(--accent)' }} />
-            <div>Tournois</div>
+        {/* LIGNE 1 */}
+        <div className="action-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '1rem',
+          margin: '0 auto 1.5rem auto',
+          maxWidth: '850px'
+        }}>
+          <Link href="/jouer" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <Info size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem', lineHeight: 1.1 }}>Jouer à<br/>Blood Bowl !</div>
           </Link>
-          <Link href="/forum" className="action-card">
-            <MessageSquare size={32} style={{ marginBottom: '0.8rem', color: 'var(--accent)' }} />
-            <div>Forum</div>
+
+          {isAuth && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Link href="/ligues" className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+                <Shield size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+                <div style={{ fontSize: '1rem' }}>Ligues</div>
+              </Link>
+              <Link href="/ligues/create" className="action-card-mini" style={{ padding: '0.5rem' }}>
+                <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
+              </Link>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <Link href="/tournaments" className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+              <Trophy size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+              <div style={{ fontSize: '1rem' }}>Tournois</div>
+            </Link>
+            <Link href="/tournaments/create" className="action-card-mini" style={{ padding: '0.5rem' }}>
+              <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* LIGNE 2 */}
+        <div className="action-grid" style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '1rem',
+          margin: '0 auto 1.5rem auto',
+          maxWidth: '850px'
+        }}>
+          <Link href="/forum" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <MessageSquare size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Forum</div>
+          </Link>
+
+          {isAuth && (
+            <Link href="/membres" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+              <Users size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+              <div style={{ fontSize: '1rem' }}>Membres</div>
+            </Link>
+          )}
+
+          <Link href="/ressources" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <BookOpen size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Ressources</div>
           </Link>
         </div>
       </section>
 
-      <section>
-        <h2 className="section-title">Prochains Événements</h2>
+      <section style={{ marginTop: '0.5rem', paddingBottom: '2rem' }}>
+        <h2 className="section-title" style={{ marginBottom: '0.8rem', fontSize: '1.2rem' }}>Prochains Événements</h2>
         <div className="grid">
           {nextTournaments.length > 0 ? (
             nextTournaments.map((t: any) => (
-              <div key={t.id} className="premium-card hover-effect" style={{ padding: '1.2rem' }}>
-                <div className="tournament-badge">À VENIR</div>
-                <h3 style={{ marginTop: '0.8rem', fontSize: '1.2rem' }}>{t.name}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
+              <div key={t.id} className="premium-card hover-effect" style={{ padding: '1rem' }}>
+                <div className="tournament-badge" style={{ display: 'inline-block', fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>À VENIR</div>
+                <h3 style={{ marginTop: '0.5rem', fontSize: '1.1rem' }}>{t.name}</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', margin: '0.4rem 0', fontSize: '0.85rem' }}>
                   <MapPin size={14} /> {t.location}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#888', margin: '0.5rem 0', fontSize: '0.9rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', margin: '0.4rem 0', fontSize: '0.85rem' }}>
                   <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                 </div>
-                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{t.description}</p>
+                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, color: '#ccc' }}>{t.description}</p>
               </div>
             ))
           ) : (
@@ -53,6 +132,32 @@ export default async function Home() {
           )}
         </div>
       </section>
+      
+      <style>{`
+        .action-card-mini {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.5rem;
+          background: rgba(255,255,255,0.02);
+          border: 1px solid var(--glass-border);
+          border-radius: 8px;
+          color: var(--accent);
+          cursor: pointer;
+          transition: all 0.2s;
+          text-decoration: none;
+        }
+        .action-card-mini:hover {
+          background: rgba(255,215,0,0.1);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(255,215,0,0.2);
+        }
+        .action-card-mini span {
+          font-size: 0.8rem;
+          margin-left: 0.4rem;
+          font-weight: 600;
+        }
+      `}</style>
     </main>
   );
 }

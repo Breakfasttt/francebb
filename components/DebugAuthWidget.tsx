@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { seedMockUsers } from "@/app/debugActions";
 
 // Only render in dev
@@ -22,14 +21,19 @@ const ROLES = [
 
 export default function DebugAuthWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   if (process.env.NODE_ENV !== "development") return null;
 
   const handleSwitch = (userId: string) => {
     document.cookie = `simulated_user_id=${userId}; path=/; max-age=31536000`;
     setIsOpen(false);
-    router.refresh();
+    window.location.reload();
+  };
+
+  const handleDisconnect = () => {
+    document.cookie = `simulated_user_id=DISCONNECTED; path=/; max-age=31536000`;
+    setIsOpen(false);
+    window.location.reload();
   };
 
   const handleSeed = async () => {
@@ -88,6 +92,24 @@ export default function DebugAuthWidget() {
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: '300px', overflowY: 'auto' }}>
+            <button
+              onClick={handleDisconnect}
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                color: '#aaa',
+                padding: '0.5rem',
+                borderRadius: '4px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                fontStyle: 'italic'
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
+            >
+              🚫 Déconnecté (invité)
+            </button>
             {ROLES.map(role => (
               <button
                 key={role.id}
