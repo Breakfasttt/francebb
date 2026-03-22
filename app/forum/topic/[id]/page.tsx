@@ -244,24 +244,26 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   >
                     <User size={10} /> PROFIL
                   </Link>
-                  <Link 
-                    href={`/profile?tab=pm&recipientId=${post.author.id}`}
-                    style={{ 
-                      padding: '0.35rem 0.6rem', 
-                      background: 'rgba(34, 197, 94, 0.1)', 
-                      border: '1px solid rgba(34, 197, 94, 0.2)', 
-                      borderRadius: '4px', 
-                      color: '#4ade80', 
-                      fontSize: '0.65rem', 
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.3rem'
-                    }}
-                  >
-                    <Mail size={10} /> MP
-                  </Link>
+                  {post.author.id !== currentUserId && (
+                    <Link 
+                      href={`/profile?tab=pm&recipientId=${post.author.id}`}
+                      style={{ 
+                        padding: '0.35rem 0.6rem', 
+                        background: 'rgba(34, 197, 94, 0.1)', 
+                        border: '1px solid rgba(34, 197, 94, 0.2)', 
+                        borderRadius: '4px', 
+                        color: '#4ade80', 
+                        fontSize: '0.65rem', 
+                        textDecoration: 'none',
+                        fontWeight: 700,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem'
+                      }}
+                    >
+                      <Mail size={10} /> MP
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
