@@ -1,15 +1,18 @@
-"use client";
-
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { updateProfile } from "@/app/profile/actions";
 import Toast from "@/components/Toast";
 import BBCodeEditor from "./BBCodeEditor";
+import { siteConfig } from "@/lib/siteConfig";
+import { Image as ImageIcon, Loader2, Upload } from "lucide-react";
+
+const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
 interface ProfileEditProps {
   user: any;
+  onUpdate?: () => void;
 }
 
-export default function ProfileEdit({ user }: ProfileEditProps) {
+export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
   const [formData, setFormData] = useState({
     name: user.name || "",
     image: user.image || "",
@@ -20,7 +23,46 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
   });
   
   const [isPending, startTransition] = useTransition();
+  const [isUploading, setIsUploading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const showToast = (message: string, type: "success" | "error") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3500);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formDataUpload = new FormData();
+    formDataUpload.append("image", file);
+
+    try {
+      // ImgBB API requires the key as a query parameter
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: "POST",
+        body: formDataUpload,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // ImgBB returns the URL in data.data.url
+        setFormData(prev => ({ ...prev, image: data.data.url }));
+        showToast("Image uploadée avec succès !", "success");
+      } else {
+        showToast(`Erreur ImgBB: ${data.error?.message || "Échec"}`, "error");
+      }
+    } catch (error) {
+      showToast("Erreur lors de l'upload de l'image.", "error");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +73,11 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
       try {
         const result = await updateProfile(data);
         if (result.success) {
-          setToast({ message: "Profil mis à jour !", type: "success" });
+          showToast("Profil mis à jour !", "success");
+          if (onUpdate) onUpdate();
         }
       } catch (err) {
-        setToast({ message: "Erreur lors de la mise à jour", type: "error" });
+        showToast("Erreur lors de la mise à jour", "error");
       }
     });
   };
@@ -57,6 +100,15 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
       <h3 className="section-title">Éditer mon profil</h3>
       
       <form onSubmit={handleSubmit} className="profile-edit-form">
+        {/* Hidden File Input */}
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          style={{ display: "none" }} 
+          accept="image/*" 
+          onChange={handleImageUpload} 
+        />
+
         <div className="form-grid">
           <div className="form-group">
             <label>Pseudo</label>
@@ -84,7 +136,24 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
 
           <div className="form-group full-width">
             <label>URL de l'avatar</label>
-            <input name="image" value={formData.image} onChange={handleChange} placeholder="https://..." />
+            <div className="avatar-input-group">
+              <input 
+                name="image" 
+                value={formData.image} 
+                onChange={handleChange} 
+                placeholder="https://..." 
+                style={{ flex: 1 }}
+              />
+              <button 
+                type="button" 
+                className="upload-btn" 
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+              >
+                {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                {isUploading ? "..." : "Upload"}
+              </button>
+            </div>
           </div>
 
           <div className="form-group full-width">
@@ -141,6 +210,36 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
           text-transform: uppercase;
           color: #555;
           letter-spacing: 0.05em;
+        }
+        .avatar-input-group {
+          display: flex;
+          gap: 0.5rem;
+        }
+        .upload-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.8rem 1.2rem;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid var(--glass-border);
+          border-radius: 8px;
+          color: #ccc;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 0.85rem;
+          transition: all 0.2s;
+        }
+        .upload-btn:hover:not(:disabled) {
+          background: rgba(255,255,255,0.1);
+          color: white;
+          border-color: #888;
+        }
+        .animate-spin {
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
         input, select {
           padding: 0.8rem 1rem;

@@ -10,9 +10,10 @@ import toast from "react-hot-toast";
 
 interface ConversationListProps {
   onSelectConversation: (id: string) => void;
+  initialRecipientId?: string | null;
 }
 
-export default function ConversationList({ onSelectConversation }: ConversationListProps) {
+export default function ConversationList({ onSelectConversation, initialRecipientId }: ConversationListProps) {
   const { data: session } = useSession();
   const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -21,6 +22,14 @@ export default function ConversationList({ onSelectConversation }: ConversationL
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    if (initialRecipientId && session?.user) {
+      handleStartConversation(initialRecipientId);
+      // We clear the URL parameter to avoid re-triggering on refresh if possible, 
+      // but since this is a prop, we rely on the parent or just let it be.
+    }
+  }, [initialRecipientId, !!session]);
 
   useEffect(() => {
     loadConversations();
@@ -78,14 +87,18 @@ export default function ConversationList({ onSelectConversation }: ConversationL
   return (
     <div className="conversation-list-container fade-in">
       <div className="pm-search-bar">
-        <div className="search-input-wrapper">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Rechercher un coach pour discuter..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="search-input-layout">
+          <div className="search-icon-box">
+            <Search size={22} className="search-icon-large" />
+          </div>
+          <div className="search-input-wrapper">
+            <input 
+              type="text" 
+              placeholder="Rechercher un coach pour discuter..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
         
         {searchResults.length > 0 && (
@@ -188,22 +201,38 @@ export default function ConversationList({ onSelectConversation }: ConversationL
         .pm-search-bar {
           position: relative;
         }
-        .search-input-wrapper {
-          position: relative;
+        .search-input-layout {
           display: flex;
           align-items: center;
+          gap: 1rem;
         }
-        .search-icon {
-          position: absolute;
-          left: 1.25rem;
-          color: #666;
+        .search-icon-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--glass-border);
+          border-radius: 10px;
+          height: 48px; /* High visibility as requested */
+          width: 48px;
+          flex-shrink: 0;
+          color: #aaa;
+          transition: all 0.2s;
+        }
+        .search-icon-large {
+          color: var(--primary); /* High contrast */
+        }
+        .search-input-wrapper {
+          flex: 1;
+          position: relative;
         }
         .search-input-wrapper input {
           width: 100%;
-          padding: 1.2rem 1.25rem 1.2rem 3.5rem;
+          height: 48px;
+          padding: 0 1.25rem;
           background: rgba(255, 255, 255, 0.03);
           border: 1px solid var(--glass-border);
-          border-radius: 12px;
+          border-radius: 10px;
           color: white;
           font-size: 1rem;
           transition: all 0.2s;

@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import ConversationList from "./ConversationList";
 import ConversationView from "./ConversationView";
 
 export default function ProfilePM() {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const recipientId = searchParams.get("recipientId");
 
   if (activeConversationId) {
     return (
@@ -19,6 +22,7 @@ export default function ProfilePM() {
   return (
     <ConversationList 
       onSelectConversation={(id: string) => setActiveConversationId(id)} 
+      initialRecipientId={recipientId}
     />
   );
 }

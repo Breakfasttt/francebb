@@ -17,7 +17,7 @@ interface BBCodeEditorProps {
   onChange?: (value: string) => void;
 }
 
-const IMGUR_CLIENT_ID = siteConfig.api.imgur.clientId;
+const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
 export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange }: BBCodeEditorProps) {
   const [content, setContent] = useState(defaultValue);
@@ -327,23 +327,20 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     formData.append("image", file);
 
     try {
-      const response = await fetch("https://api.imgur.com/3/image", {
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
         method: "POST",
-        headers: {
-          Authorization: `Client-ID ${IMGUR_CLIENT_ID}`,
-        },
         body: formData,
       });
 
       const data = await response.json();
 
       if (data.success) {
-        insertTag(`[img]${data.data.link}[/img]`, "");
+        insertTag(`[img]${data.data.url}[/img]`, "");
         setActiveTool(null);
         showToast("Image insérée avec succès !", "success");
       } else {
-        showToast(`Erreur Imgur: ${data.data?.error || "Requête rejetée"}`, "error");
-        console.error("Imgur error:", data);
+        showToast(`Erreur ImgBB: ${data.error?.message || "Requête rejetée"}`, "error");
+        console.error("ImgBB error:", data);
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -621,7 +618,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}
               >
                 {isUploading ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
-                {isUploading ? "Upload en cours..." : "Uploader depuis mon ordinateur (Imgur)"}
+                {isUploading ? "Upload en cours..." : "Uploader depuis mon ordinateur (ImgBB)"}
               </button>
             </div>
           )}

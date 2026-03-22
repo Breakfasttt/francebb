@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, User } from "lucide-react";
+import { ArrowLeft, User, MessageSquare, MapPin, Shield, Trophy, ExternalLink, Mail } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -122,6 +122,14 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const postContents = topic.posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
 
+  const regionLabels: Record<string, string> = {
+    "IDF": "R1 - Île-de-France",
+    "Nord-Ouest": "R2 - Nord-Ouest",
+    "Nord-Est": "R3 - Nord-Est",
+    "Sud-Est": "R4 - Sud-Est",
+    "Sud-Ouest": "R5 - Sud-Ouest",
+  };
+
   const breadcrumbs = [];
   if (topic.forum.parentForum) {
     if (topic.forum.parentForum.category) breadcrumbs.push({ label: topic.forum.parentForum.category.name, isCategory: true });
@@ -168,37 +176,95 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '1rem',
+              gap: '1.2rem',
               textAlign: 'center'
             }}>
               <div style={{ position: 'relative' }}>
                 {post.author.image ? (
-                  <img src={post.author.image} alt="" style={{ width: '80px', height: '80px', borderRadius: '12px', border: '2px solid var(--glass-border)' }} />
+                  <img src={post.author.image} alt="" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--glass-border)', objectFit: 'cover' }} />
                 ) : (
-                  <div style={{ width: '80px', height: '80px', borderRadius: '12px', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <User size={40} color="#888" />
                   </div>
                 )}
                 <div style={{
                   position: 'absolute',
-                  bottom: '-5px',
-                  right: '-5px',
+                  bottom: '2px',
+                  right: '2px',
                   background: 'var(--primary)',
-                  width: '20px',
-                  height: '20px',
+                  width: '18px',
+                  height: '18px',
                   borderRadius: '50%',
                   border: '2px solid #1a1a20'
                 }}></div>
               </div>
-              <div>
-                <div style={{ fontWeight: 700, color: 'white', fontSize: '1.1rem' }}>{post.author.name}</div>
+              
+              <div style={{ width: '100%' }}>
+                <div style={{ fontWeight: 700, color: 'white', fontSize: '1.1rem', wordBreak: 'break-word' }}>{post.author.name}</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--accent)', textTransform: 'uppercase', marginTop: '0.2rem', fontWeight: 600 }}>
-                  {post.author.role}
+                  {post.author.role || 'COACH'}
+                </div>
+
+                {(post.author.nafNumber || post.author.region || post.author.league) && (
+                  <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    {post.author.nafNumber && (
+                      <div style={{ fontSize: '0.7rem', color: '#999', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                        <Trophy size={12} color="#eab308" /> <span style={{ color: '#eee', fontWeight: 600 }}>{post.author.nafNumber}</span>
+                      </div>
+                    )}
+                    {post.author.region && (
+                      <div style={{ fontSize: '0.7rem', color: '#999', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                        <MapPin size={12} color="#3b82f6" /> {regionLabels[post.author.region] || post.author.region}
+                      </div>
+                    )}
+                    {post.author.league && (
+                      <div style={{ fontSize: '0.7rem', color: '#999', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                        <Shield size={12} color="#22c55e" /> {post.author.league}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
+                  <Link 
+                    href={`/profile?id=${post.author.id}`}
+                    style={{ 
+                      padding: '0.35rem 0.6rem', 
+                      background: 'rgba(59, 130, 246, 0.1)', 
+                      border: '1px solid rgba(59, 130, 246, 0.2)', 
+                      borderRadius: '4px', 
+                      color: '#60a5fa', 
+                      fontSize: '0.65rem', 
+                      textDecoration: 'none',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.3rem'
+                    }}
+                  >
+                    <User size={10} /> PROFIL
+                  </Link>
+                  <Link 
+                    href={`/profile?tab=pm&recipientId=${post.author.id}`}
+                    style={{ 
+                      padding: '0.35rem 0.6rem', 
+                      background: 'rgba(34, 197, 94, 0.1)', 
+                      border: '1px solid rgba(34, 197, 94, 0.2)', 
+                      borderRadius: '4px', 
+                      color: '#4ade80', 
+                      fontSize: '0.65rem', 
+                      textDecoration: 'none',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.3rem'
+                    }}
+                  >
+                    <Mail size={10} /> MP
+                  </Link>
                 </div>
               </div>
             </div>
-
-            {/* Contenu Message */}
             <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
               <div style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.8rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: '#666' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>

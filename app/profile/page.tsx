@@ -26,43 +26,44 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("activity");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchData() {
-      // Wait for session to be loaded if no ID is provided
-      if (status === "loading") return;
-      
-      const targetId = id || session?.user?.id;
-      if (!targetId || targetId === "undefined") {
-        if (status === "unauthenticated" && !id) {
-           redirect("/");
-        }
+  async function fetchData() {
+    // Wait for session to be loaded if no ID is provided
+    if (status === "loading") return;
+    
+    const targetId = id || session?.user?.id;
+    if (!targetId || targetId === "undefined") {
+      if (status === "unauthenticated" && !id) {
+         redirect("/");
+      }
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/users/${targetId}`);
+      if (!res.ok) {
+        setUser(null);
+        setLoading(false);
         return;
       }
-
-      setLoading(true);
-      try {
-        const res = await fetch(`/api/users/${targetId}`);
-        if (!res.ok) {
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-        const userData = await res.json();
-        if (userData.error) {
-           setUser(null);
-        } else {
-           setUser(userData);
-           const userStats = await getUserStats(targetId);
-           setStats(userStats);
-           const userActivities = await getUserActivity(targetId);
-           setActivities(userActivities);
-        }
-      } catch (err) {
-        console.error("Error fetching profile data:", err);
-      } finally {
-        setLoading(false);
+      const userData = await res.json();
+      if (userData.error) {
+         setUser(null);
+      } else {
+         setUser(userData);
+         const userStats = await getUserStats(targetId);
+         setStats(userStats);
+         const userActivities = await getUserActivity(targetId);
+         setActivities(userActivities);
       }
+    } catch (err) {
+      console.error("Error fetching profile data:", err);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
     fetchData();
   }, [id, session, status]);
 
@@ -103,7 +104,7 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "edit" && isOwnProfile && (
-            <ProfileEdit user={user} />
+            <ProfileEdit user={user} onUpdate={fetchData} />
           )}
 
           {activeTab === "palmares" && (
