@@ -98,10 +98,10 @@ export default async function EditPostPage({
                 <div key={latest.id} className={`premium-card ${latest.id === id ? 'is-editing' : ''}`} style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr', opacity: latest.id === id ? 0.5 : 1, border: latest.id === id ? '1px dashed var(--primary)' : '1px solid var(--glass-border)' }}>
                   <div style={{ borderRight: '1px solid rgba(255,255,255,0.05)', paddingRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                     {latest.author.image ? (
-                      <img src={latest.author.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />
+                      <img src={latest.author.image} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <User size={20} color="#888" />
+                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <User size={24} color="#888" />
                       </div>
                     )}
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>

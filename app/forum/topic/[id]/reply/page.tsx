@@ -104,10 +104,10 @@ export default async function ReplyPage({
                 <div key={post.id} className="premium-card" style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr' }}>
                   <div style={{ borderRight: '1px solid rgba(255,255,255,0.05)', paddingRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                     {post.author.image ? (
-                      <img src={post.author.image} alt="" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />
+                      <img src={post.author.image} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <User size={20} color="#888" />
+                      <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <User size={24} color="#888" />
                       </div>
                     )}
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{post.author.name}</div>

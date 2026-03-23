@@ -181,10 +181,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             }}>
               <div style={{ position: 'relative' }}>
                 {post.author.image ? (
-                  <img src={post.author.image} alt="" style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid var(--glass-border)', objectFit: 'cover' }} />
+                  <img src={post.author.image} alt="" style={{ width: '90px', height: '90px', borderRadius: '50%', border: '2px solid var(--glass-border)', objectFit: 'cover' }} />
                 ) : (
-                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <User size={40} color="#888" />
+                  <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <User size={45} color="#888" />
                   </div>
                 )}
                 <div style={{

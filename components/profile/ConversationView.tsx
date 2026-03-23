@@ -245,7 +245,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         .author-avatar, .author-avatar-placeholder {
           width: 48px;
           height: 48px;
-          border-radius: 8px;
+          border-radius: 50%;
           object-fit: cover;
         }
         .author-avatar-placeholder {
