@@ -817,3 +817,41 @@ export async function toggleFollowTopic(topicId: string) {
     return { success: false, error: "Erreur lors de la mise à jour du suivi.", isFollowing: false };
   }
 }
+
+/**
+ * Récupérer la liste des topics suivis par l'utilisateur connecté.
+ */
+export async function getFollowedTopics() {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return [];
+
+  try {
+    const rows = await prisma.$queryRaw<Array<{
+      id: string;
+      title: string;
+      updatedAt: string | Date;
+      forumId: string;
+    }>>`
+      SELECT
+        t.id as id,
+        t.title as title,
+        t.updatedAt as "updatedAt",
+        t.forumId as "forumId"
+      FROM "TopicFollow" tf
+      JOIN "Topic" t ON t.id = tf."topicId"
+      WHERE tf."userId" = ${userId}
+      ORDER BY t.updatedAt DESC
+      LIMIT 20
+    `;
+
+    return rows.map((r) => ({
+      id: r.id,
+      title: r.title,
+      updatedAt: r.updatedAt ? new Date(r.updatedAt) : new Date(0),
+      forumId: r.forumId,
+    }));
+  } catch {
+    return [];
+  }
+}

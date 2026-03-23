@@ -13,6 +13,7 @@ import ProfileActivity from "@/components/forum/ProfileActivity";
 import ProfileEdit from "@/components/forum/ProfileEdit";
 import ProfilePM from "@/components/profile/ProfilePM";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
+import { getFollowedTopics } from "@/app/forum/actions";
 import { useSession } from "next-auth/react";
 
 export default function ProfilePage() {
@@ -31,6 +32,16 @@ export default function ProfilePage() {
   };
   const [activeTab, setActiveTab] = useState<ProfileTab>(() => sanitizeTab(tabParam));
   const [loading, setLoading] = useState(true);
+
+  type FollowedTopic = {
+    id: string;
+    title: string;
+    updatedAt: Date;
+    forumId: string;
+  };
+  const [followedTopics, setFollowedTopics] = useState<FollowedTopic[]>([]);
+  const [followedLoading, setFollowedLoading] = useState(false);
+  const [showFollowedTopics, setShowFollowedTopics] = useState(false);
 
   async function fetchData() {
     // Wait for session to be loaded if no ID is provided
@@ -111,7 +122,55 @@ export default function ProfilePage() {
 
         <div className="profile-main-content">
           {activeTab === "activity" && (
-            <ProfileActivity activities={activities} userName={user.name} />
+            <>
+              <ProfileActivity activities={activities} userName={user.name} />
+
+              {isOwnProfile && (
+                <div className="premium-card followed-topics-card fade-in">
+                  <button
+                    type="button"
+                    className="followed-topics-toggle"
+                    onClick={async () => {
+                      setShowFollowedTopics((v) => !v);
+                      // Lazy-load: only fetch when opening.
+                      if (!showFollowedTopics && followedTopics.length === 0) {
+                        setFollowedLoading(true);
+                        const topics = await getFollowedTopics();
+                        setFollowedTopics(topics as FollowedTopic[]);
+                        setFollowedLoading(false);
+                      }
+                    }}
+                  >
+                    Sujet suivi
+                  </button>
+
+                  {showFollowedTopics && (
+                    <div className="followed-topics-content">
+                      {followedLoading ? (
+                        <div className="followed-topics-empty">Chargement...</div>
+                      ) : followedTopics.length === 0 ? (
+                        <div className="followed-topics-empty">Aucun sujet suivi pour le moment.</div>
+                      ) : (
+                        <div className="followed-topics-list">
+                          {followedTopics.map((t) => (
+                            <Link
+                              key={t.id}
+                              href={`/forum/topic/${t.id}`}
+                              className="followed-topic-item"
+                            >
+                              <span className="followed-topic-title">{t.title}</span>
+                              <span className="followed-topic-date">
+                                {t.updatedAt ? t.updatedAt.toLocaleDateString("fr-FR") : ""}
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
 
           {activeTab === "edit" && isOwnProfile && (
@@ -182,6 +241,84 @@ export default function ProfilePage() {
         .empty-state p {
           max-width: 300px;
           margin: 0 auto;
+        }
+
+        .followed-topics-card {
+          margin-top: 2rem;
+          padding: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .followed-topics-toggle {
+          background: transparent;
+          border: 1px solid var(--glass-border);
+          color: white;
+          padding: 0.8rem 1rem;
+          border-radius: 10px;
+          cursor: pointer;
+          text-align: left;
+          font-weight: 800;
+          letter-spacing: 0.03em;
+          transition: all 0.2s;
+        }
+
+        .followed-topics-toggle:hover {
+          border-color: var(--primary);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        }
+
+        .followed-topics-content {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .followed-topics-empty {
+          color: #aaa;
+          padding: 0.5rem 0.25rem;
+        }
+
+        .followed-topics-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .followed-topic-item {
+          display: flex;
+          justify-content: space-between;
+          gap: 1rem;
+          padding: 0.9rem 1rem;
+          border-radius: 12px;
+          border: 1px solid rgba(255,255,255,0.06);
+          background: rgba(255, 255, 255, 0.02);
+          transition: all 0.2s;
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .followed-topic-item:hover {
+          border-color: var(--primary);
+          background: rgba(255, 255, 255, 0.04);
+          transform: translateY(-2px);
+        }
+
+        .followed-topic-title {
+          font-weight: 800;
+          color: #fff;
+          line-height: 1.3;
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .followed-topic-date {
+          color: #666;
+          font-size: 0.8rem;
+          white-space: nowrap;
         }
         @media (max-width: 900px) {
           .profile-content-layout {
