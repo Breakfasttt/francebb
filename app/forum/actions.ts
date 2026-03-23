@@ -762,3 +762,58 @@ export async function toggleArchiveTopic(topicId: string) {
   revalidatePath(`/forum/${topic.forumId}`);
   revalidatePath(`/forum/topic/${topicId}`);
 }
+
+/**
+ * Suivi d'un sujet (follow/unfollow).
+ * NOTE: la table "TopicFollow" est créée via une migration dédiée.
+ */
+export async function isFollowingTopic(topicId: string) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return false;
+
+  try {
+    const rows = await prisma.$queryRaw<Array<{ exists: number }>>`
+      SELECT 1 as "exists"
+      FROM "TopicFollow"
+      WHERE "userId" = ${userId} AND "topicId" = ${topicId}
+      LIMIT 1
+    `;
+
+    return rows.length > 0;
+  } catch {
+    // Si la migration n'a pas été appliquée, on considère "pas suivi".
+    return false;
+  }
+}
+
+/**
+ * Basculer le suivi d'un sujet.
+ */
+export async function toggleFollowTopic(topicId: string) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return { success: false, error: "Non autorisé", isFollowing: false };
+
+  try {
+    const isAlreadyFollowing = await isFollowingTopic(topicId);
+
+    if (isAlreadyFollowing) {
+      await prisma.$executeRaw`
+        DELETE FROM "TopicFollow"
+        WHERE "userId" = ${userId} AND "topicId" = ${topicId}
+      `;
+      revalidatePath(`/forum/topic/${topicId}`);
+      return { success: true, isFollowing: false };
+    }
+
+    await prisma.$executeRaw`
+      INSERT INTO "TopicFollow" ("userId", "topicId")
+      VALUES (${userId}, ${topicId})
+    `;
+    revalidatePath(`/forum/topic/${topicId}`);
+    return { success: true, isFollowing: true };
+  } catch {
+    return { success: false, error: "Erreur lors de la mise à jour du suivi.", isFollowing: false };
+  }
+}

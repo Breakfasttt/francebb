@@ -16,11 +16,12 @@ import {
   ChevronsDown,
   Mail,
   Check,
-  Eye
+  Eye,
+  Bell
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
-import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic } from "@/app/forum/actions";
+import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic, isFollowingTopic, toggleFollowTopic } from "@/app/forum/actions";
 import Modal from "@/components/Modal";
 import MoveTopicModal from "./MoveTopicModal";
 import EditTopicTitleModal from "./EditTopicTitleModal";
@@ -64,6 +65,7 @@ export default function TopicSidebar({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
 
   const handleToggleArchive = () => {
@@ -117,6 +119,37 @@ export default function TopicSidebar({
 
   const canEditTitle = isModerator || (currentUserId === authorId);
 
+  useEffect(() => {
+    let isMounted = true;
+    async function loadFollowStatus() {
+      if (!currentUserId) {
+        if (isMounted) setIsFollowing(false);
+        return;
+      }
+
+      const next = await isFollowingTopic(topicId);
+      if (isMounted) setIsFollowing(next);
+    }
+
+    loadFollowStatus();
+    return () => {
+      isMounted = false;
+    };
+  }, [topicId, currentUserId]);
+
+  const handleToggleFollow = () => {
+    startTransition(async () => {
+      const res = await toggleFollowTopic(topicId);
+      if (!res.success) {
+        alert(res.error || "Impossible de mettre à jour le suivi.");
+        return;
+      }
+
+      setIsFollowing(res.isFollowing);
+      router.refresh();
+    });
+  };
+
   return (
     <aside className="forum-sidebar">
       <div className="sidebar-sticky-inner">
@@ -147,6 +180,23 @@ export default function TopicSidebar({
               <MessageSquare size={16} /><span>Répondre</span>
             </button>
             
+            {currentUserId && (
+              <button
+                onClick={handleToggleFollow}
+                disabled={isPending}
+                className="widget-button secondary-btn"
+                style={{
+                  textAlign: 'left',
+                  padding: '8px 12px',
+                  borderColor: isFollowing ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
+                  color: isFollowing ? 'var(--accent)' : 'white',
+                }}
+              >
+                <Bell size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
+                <span>{isFollowing ? "Arrêter de suivre le sujet" : "Suivre le sujet"}</span>
+              </button>
+            )}
+
             {canEditTitle && (
               <button 
                 onClick={() => setShowEditTitleModal(true)}
