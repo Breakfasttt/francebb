@@ -94,24 +94,26 @@ export default async function RootLayout({
                   }}
                 >
                   <Mail size={22} />
-                  <span style={{
-                    position: 'absolute',
-                    top: '-8px',
-                    right: '-10px',
-                    background: 'var(--primary)',
-                    color: 'white',
-                    borderRadius: '50%',
-                    width: '18px',
-                    height: '18px',
-                    fontSize: '0.65rem',
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    lineHeight: 1
-                  }}>
-                    {unreadCount > 9 ? '9+' : unreadCount}
-                  </span>
+                  {unreadCount > 0 && (
+                    <span style={{
+                      position: 'absolute',
+                      top: '-8px',
+                      right: '-10px',
+                      background: 'var(--primary)',
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: '18px',
+                      height: '18px',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      lineHeight: 1
+                    }}>
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
                 </a>
               )}
               <SignInButton user={session?.user} />

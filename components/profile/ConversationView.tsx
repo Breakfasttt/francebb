@@ -6,6 +6,7 @@ import { getConversationMessages, sendPrivateMessage, deleteConversation } from 
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import BBCodeEditor from "@/components/forum/BBCodeEditor";
@@ -18,6 +19,7 @@ interface ConversationViewProps {
 
 export default function ConversationView({ conversationId, onBack }: ConversationViewProps) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState("");
@@ -37,6 +39,9 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
       const data = await getConversationMessages(conversationId, page);
       setMessages(data.messages);
       setTotalPages(data.totalPages);
+      // `getConversationMessages` marque les messages non lus en "lus".
+      // On force alors un refresh des Server Components pour mettre à jour le badge header.
+      router.refresh();
     } catch (err: any) {
       toast.error(err.message || "Erreur chargement messages");
       onBack();

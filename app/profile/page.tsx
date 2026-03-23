@@ -18,12 +18,18 @@ import { useSession } from "next-auth/react";
 export default function ProfilePage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const tabParam = searchParams.get("tab");
   const { data: session, status } = useSession();
   
   const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState({ postCount: 0 });
   const [activities, setActivities] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState("activity");
+  type ProfileTab = "activity" | "palmares" | "pm" | "edit";
+  const sanitizeTab = (tab: string | null): ProfileTab => {
+    if (tab === "activity" || tab === "palmares" || tab === "pm" || tab === "edit") return tab;
+    return "activity";
+  };
+  const [activeTab, setActiveTab] = useState<ProfileTab>(() => sanitizeTab(tabParam));
   const [loading, setLoading] = useState(true);
 
   async function fetchData() {
@@ -66,6 +72,11 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchData();
   }, [id, session, status]);
+
+  useEffect(() => {
+    // Synchronise l'onglet avec le paramètre d'URL (ex: /profile?tab=pm)
+    setActiveTab(sanitizeTab(tabParam));
+  }, [tabParam]);
 
   if (loading || status === "loading") return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Chargement...</div>;
   if (!user) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Utilisateur introuvable.</div>;
