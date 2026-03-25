@@ -189,7 +189,8 @@ exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  order: 'order'
+  order: 'order',
+  allowedRoles: 'allowedRoles'
 };
 
 exports.Prisma.ForumScalarFieldEnum = {
@@ -197,6 +198,7 @@ exports.Prisma.ForumScalarFieldEnum = {
   name: 'name',
   description: 'description',
   order: 'order',
+  allowedRoles: 'allowedRoles',
   categoryId: 'categoryId',
   parentForumId: 'parentForumId'
 };
@@ -273,6 +275,7 @@ exports.Prisma.PostReactionScalarFieldEnum = {
 exports.Prisma.RoleConfigScalarFieldEnum = {
   name: 'name',
   label: 'label',
+  color: 'color',
   power: 'power',
   isBaseRole: 'isBaseRole',
   updatedAt: 'updatedAt'

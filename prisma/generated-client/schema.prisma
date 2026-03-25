@@ -104,18 +104,20 @@ model Tournament {
 }
 
 model Category {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-  order       Int     @default(0)
-  forums      Forum[]
+  id           String  @id @default(cuid())
+  name         String
+  description  String?
+  order        Int     @default(0)
+  allowedRoles String  @default("ALL")
+  forums       Forum[]
 }
 
 model Forum {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-  order       Int     @default(0)
+  id           String  @id @default(cuid())
+  name         String
+  description  String?
+  order        Int     @default(0)
+  allowedRoles String  @default("ALL")
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
@@ -248,6 +250,7 @@ model PostReaction {
 model RoleConfig {
   name       String   @id
   label      String
+  color      String   @default("#888888")
   power      Int
   isBaseRole Boolean  @default(false)
   updatedAt  DateTime @updatedAt

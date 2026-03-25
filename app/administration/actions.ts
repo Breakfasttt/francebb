@@ -108,7 +108,7 @@ export async function getAllRoles() {
   return roles;
 }
 
-export async function createCustomRole(data: { name: string, label: string, power: number }) {
+export async function createCustomRole(data: { name: string, label: string, color: string, power: number }) {
   const session = await auth();
   const userRole = (session?.user as any)?.role;
   const myPower = getRolePower(userRole);
@@ -131,6 +131,7 @@ export async function createCustomRole(data: { name: string, label: string, powe
     data: {
       name: safeName,
       label: data.label,
+      color: data.color || "#888888",
       power: data.power,
       isBaseRole: false
     }
@@ -170,4 +171,111 @@ export async function deleteCustomRole(roleName: string) {
   await prisma.roleConfig.delete({ where: { name: roleName } });
 
   return { success: true };
+}
+
+export async function reorderRoles(orderedNames: string[]) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  // Interdire explicitement tout changement d'ordre des rôles de base, on se base sur eux comme ancres.
+  const roles = await prisma.roleConfig.findMany();
+  
+  // Organiser en map pour un accès rapide
+  const roleMap = new Map(roles.map(r => [r.name, r]));
+
+  // Recréer une liste complète des rôles dans le bon ordre en insérant les manquants à la fin par défaut
+  let validOrder = orderedNames.map(n => roleMap.get(n)).filter(Boolean) as any[];
+
+  // Validation: aucun rôle custom ne peut être au-dessus de MODERATOR dans la nouvelle liste.
+  // Modérateur a le power 70. RTC a le power 50.
+  let modIndex = validOrder.findIndex(r => r.name === "MODERATOR");
+  if (modIndex !== -1) {
+    const customRolesAboveMod = validOrder.slice(0, modIndex).filter(r => !r.isBaseRole);
+    if (customRolesAboveMod.length > 0) {
+      return { success: false, error: "Impossible de déplacer un rôle personnalisé au dessus de Modérateur." };
+    }
+  }
+
+  // Redistribution des puissances (powers).
+  // On trouve les intervalles entre les rôles de base, et on répartit la puissance des rôles customs.
+  const updates = [];
+  
+  let currentBasePower = 100; // Power initial absurde avant SUPERADMIN
+  let currentGroupCustoms: string[] = [];
+  
+  // On itère du haut vers le bas (descendant)
+  for (let i = 0; i < validOrder.length; i++) {
+    const role = validOrder[i];
+    
+    if (role.isBaseRole) {
+      // On vient de taper un rôle de base. 
+      // Si on avait des customs en attente d'attribution de power, on doit les étaler entre currentBasePower et role.power
+      if (currentGroupCustoms.length > 0) {
+        const span = currentBasePower - role.power;
+        const step = Math.floor(span / (currentGroupCustoms.length + 1));
+        
+        for (let j = 0; j < currentGroupCustoms.length; j++) {
+          const newPower = currentBasePower - (step * (j + 1));
+          updates.push({ name: currentGroupCustoms[j], power: newPower });
+        }
+        currentGroupCustoms = [];
+      }
+      currentBasePower = role.power;
+    } else {
+      currentGroupCustoms.push(role.name);
+    }
+  }
+
+  // S'il reste des customs en dessous du dernier rôle de base (COACH = 10)
+  if (currentGroupCustoms.length > 0) {
+    const span = currentBasePower - 0; // Puissance minimum absolue = 0
+    const step = Math.floor(span / (currentGroupCustoms.length + 1));
+    for (let j = 0; j < currentGroupCustoms.length; j++) {
+      const newPower = currentBasePower - (step * (j + 1));
+      updates.push({ name: currentGroupCustoms[j], power: Math.max(0, newPower) });
+    }
+  }
+
+  // Appliquer les changements
+  if (updates.length > 0) {
+    await prisma.$transaction(
+      updates.map(u => prisma.roleConfig.update({
+        where: { name: u.name },
+        data: { power: u.power }
+      }))
+    );
+  }
+
+  return { success: true };
+}
+
+// ---- FORUM STRUCTURE MANAGEMENT ----
+
+export async function getForumStructure() {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) return [];
+
+  const categories = await prisma.category.findMany({
+    orderBy: { order: 'asc' },
+    include: {
+      forums: {
+        where: { parentForumId: null }, // Only root forums of this category
+        orderBy: { order: 'asc' },
+        include: {
+          subForums: {
+            orderBy: { order: 'asc' },
+            include: {
+              subForums: { orderBy: { order: 'asc' } } // Fetch deep enough (depth 5 limit as requetsed)
+            }
+          }
+        }
+      }
+    }
+  });
+
+  return categories;
 }

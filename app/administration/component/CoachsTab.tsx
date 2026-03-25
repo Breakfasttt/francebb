@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { Users, Search, ShieldAlert } from "lucide-react";
-import { searchCoaches, updateCoachRole, getAllRoles } from "../actions";
-import { getRolePower, ROLE_POWER, UserRole } from "@/lib/roles";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import { getRolePower, UserRole } from "@/lib/roles";
+import { Search, ShieldAlert, Users } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
+import { getAllRoles, searchCoaches, updateCoachRole } from "../actions";
 
 interface CoachsTabProps {
   currentUserRole: UserRole;
@@ -69,18 +69,18 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
     <div className="premium-card fade-in" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <Users size={28} color="var(--primary)" />
-        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Gestion des Coachs</h3>
+        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Rôles des Membres</h3>
       </div>
-      
+
       <p style={{ color: '#ccc', lineHeight: 1.6, marginBottom: '2rem' }}>
-        Recherchez un utilisateur pour lui attribuer un nouveau rôle. 
-        Vous ne pouvez affecter que des rôles <strong style={{color: 'white'}}>strictement inférieurs au vôtre</strong>.
+        Recherchez un utilisateur pour lui attribuer un nouveau rôle.
+        Vous ne pouvez affecter que des rôles <strong style={{ color: 'white' }}>strictement inférieurs au vôtre</strong>.
       </p>
 
       <div className="search-bar-container">
         <Search size={20} className="search-icon" />
-        <input 
-          type="text" 
+        <input
+          type="text"
           placeholder="Rechercher par pseudo..."
           value={query}
           onChange={handleSearch}
@@ -97,21 +97,25 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
         {users.map(u => {
           const uPower = getRolePower(u.role);
           const canEdit = isSuperAdmin || (myPower > uPower && u.role !== "SUPERADMIN");
+          const roleConfig = dbRoles.find(r => r.name === u.role);
+          const userColor = roleConfig ? roleConfig.color : "#666";
 
           return (
             <div key={u.id} className={`user-item ${u.role === "SUPERADMIN" ? "super-item" : ""}`}>
               <div className="user-info">
                 <UserAvatar image={u.image} name={u.name} size={40} selectedRank={u.avatarFrame} isBanned={u.isBanned} />
                 <div className="user-text">
-                  <strong>{u.name}</strong> 
-                  <span className={`role-badge ${u.role.toLowerCase()}`}>{u.role}</span>
+                  <strong>{u.name}</strong>
+                  <span className="role-badge" style={{ background: userColor, color: u.role === "SUPERADMIN" ? "black" : "white" }}>
+                    {roleConfig ? roleConfig.label : u.role}
+                  </span>
                 </div>
               </div>
 
               <div className="user-actions">
                 {canEdit ? (
-                  <select 
-                    value={u.role} 
+                  <select
+                    value={u.role}
                     onChange={(e) => handleRoleChange(u.id, e.target.value)}
                     disabled={isPending}
                     className="role-select"
@@ -120,7 +124,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
                       <option value={u.role} disabled>{u.role}</option>
                     )}
                     {availableRoles.map(r => (
-                      <option key={r.name} value={r.name}>{r.label} (Puissance: {r.power})</option>
+                      <option key={r.name} value={r.name}>{r.label}</option>
                     ))}
                   </select>
                 ) : (
@@ -199,17 +203,11 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
         .role-badge {
           display: inline-block;
           font-size: 0.7rem;
-          background: #444;
-          color: white;
           padding: 2px 6px;
           border-radius: 4px;
           font-weight: 800;
           width: fit-content;
         }
-        .role-badge.superadmin { background: #eab308; color: black; }
-        .role-badge.admin { background: #ef4444; }
-        .role-badge.moderator { background: #22c55e; }
-        .role-badge.orga { background: #3b82f6; }
         .role-select {
           background: #111;
           border: 1px solid var(--glass-border);

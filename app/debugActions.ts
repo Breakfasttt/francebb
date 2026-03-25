@@ -16,18 +16,18 @@ export async function seedMockUsers() {
   
   try {
     const baseRolesData = [
-      { name: "SUPERADMIN", label: "Super Admin", power: 100, isBaseRole: true },
-      { name: "ADMIN", label: "Administrateur", power: 90, isBaseRole: true },
-      { name: "MODERATOR", label: "Modérateur", power: 70, isBaseRole: true },
-      { name: "RTC", label: "RTC", power: 50, isBaseRole: true },
-      { name: "CHEF_LIGUE", label: "Chef de ligue", power: 40, isBaseRole: true },
-      { name: "COACH", label: "Coach", power: 10, isBaseRole: true },
+      { name: "SUPERADMIN", label: "Super Admin", color: "#eab308", power: 100, isBaseRole: true },
+      { name: "ADMIN", label: "Administrateur", color: "#ef4444", power: 90, isBaseRole: true },
+      { name: "MODERATOR", label: "Modérateur", color: "#22c55e", power: 70, isBaseRole: true },
+      { name: "RTC", label: "RTC", color: "#3b82f6", power: 50, isBaseRole: true },
+      { name: "CHEF_LIGUE", label: "Chef de ligue", color: "#a855f7", power: 40, isBaseRole: true },
+      { name: "COACH", label: "Coach", color: "#888888", power: 10, isBaseRole: true },
     ];
 
     for (const roleDef of baseRolesData) {
       await prisma.roleConfig.upsert({
         where: { name: roleDef.name },
-        update: { label: roleDef.label, power: roleDef.power, isBaseRole: roleDef.isBaseRole },
+        update: { label: roleDef.label, color: roleDef.color, power: roleDef.power, isBaseRole: roleDef.isBaseRole },
         create: roleDef
       });
     }

@@ -1,16 +1,17 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-import { redirect, useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import Link from "next/link";
-import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
-import RolesTab from "./component/RolesTab";
-import CoachsTab from "./component/CoachsTab";
-import BackupTab from "./component/BackupTab";
-import ResetTab from "./component/ResetTab";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
+import BackupTab from "./component/BackupTab";
+import CoachsTab from "./component/CoachsTab";
+import ResetTab from "./component/ResetTab";
+import RolesTab from "./component/RolesTab";
+import StructureTab from "./component/StructureTab";
 
 import "./page.css";
 
@@ -70,7 +71,7 @@ export default function AdministrationPage() {
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <h1 className="page-title">Super <span>Administration</span></h1>
+          <h1 className="page-title"><span>Administration</span></h1>
           <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>
             Gestion avancée de la plateforme
           </p>
@@ -82,17 +83,15 @@ export default function AdministrationPage() {
 
         <div className="admin-main-content">
           {activeTab === "coachs" && (
-             <CoachsTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
+            <CoachsTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
           )}
 
           {activeTab === "roles" && (
-             <RolesTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
+            <RolesTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
           )}
 
           {activeTab === "structure" && (
-            <div className="premium-card fade-in" style={{ padding: '3rem', textAlign: 'center', color: '#888' }}>
-              Le constructeur de base Forum (Drag & Drop) va bientôt être développé.
-            </div>
+            <StructureTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
           )}
 
           {activeTab === "backup" && isSuperAdmin && <BackupTab />}

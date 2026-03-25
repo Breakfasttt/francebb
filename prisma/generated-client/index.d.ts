@@ -8591,6 +8591,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     order: number | null
+    allowedRoles: string | null
   }
 
   export type CategoryMaxAggregateOutputType = {
@@ -8598,6 +8599,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     order: number | null
+    allowedRoles: string | null
   }
 
   export type CategoryCountAggregateOutputType = {
@@ -8605,6 +8607,7 @@ export namespace Prisma {
     name: number
     description: number
     order: number
+    allowedRoles: number
     _all: number
   }
 
@@ -8622,6 +8625,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
   }
 
   export type CategoryMaxAggregateInputType = {
@@ -8629,6 +8633,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
   }
 
   export type CategoryCountAggregateInputType = {
@@ -8636,6 +8641,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
     _all?: true
   }
 
@@ -8730,6 +8736,7 @@ export namespace Prisma {
     name: string
     description: string | null
     order: number
+    allowedRoles: string
     _count: CategoryCountAggregateOutputType | null
     _avg: CategoryAvgAggregateOutputType | null
     _sum: CategorySumAggregateOutputType | null
@@ -8756,6 +8763,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
     forums?: boolean | Category$forumsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
@@ -8765,6 +8773,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8772,6 +8781,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectScalar = {
@@ -8779,9 +8789,10 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forums?: boolean | Category$forumsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -8799,6 +8810,7 @@ export namespace Prisma {
       name: string
       description: string | null
       order: number
+      allowedRoles: string
     }, ExtArgs["result"]["category"]>
     composites: {}
   }
@@ -9227,6 +9239,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Category", 'String'>
     readonly description: FieldRef<"Category", 'String'>
     readonly order: FieldRef<"Category", 'Int'>
+    readonly allowedRoles: FieldRef<"Category", 'String'>
   }
     
 
@@ -9685,6 +9698,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     order: number | null
+    allowedRoles: string | null
     categoryId: string | null
     parentForumId: string | null
   }
@@ -9694,6 +9708,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     order: number | null
+    allowedRoles: string | null
     categoryId: string | null
     parentForumId: string | null
   }
@@ -9703,6 +9718,7 @@ export namespace Prisma {
     name: number
     description: number
     order: number
+    allowedRoles: number
     categoryId: number
     parentForumId: number
     _all: number
@@ -9722,6 +9738,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
     categoryId?: true
     parentForumId?: true
   }
@@ -9731,6 +9748,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
     categoryId?: true
     parentForumId?: true
   }
@@ -9740,6 +9758,7 @@ export namespace Prisma {
     name?: true
     description?: true
     order?: true
+    allowedRoles?: true
     categoryId?: true
     parentForumId?: true
     _all?: true
@@ -9836,6 +9855,7 @@ export namespace Prisma {
     name: string
     description: string | null
     order: number
+    allowedRoles: string
     categoryId: string | null
     parentForumId: string | null
     _count: ForumCountAggregateOutputType | null
@@ -9864,6 +9884,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -9878,6 +9899,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -9889,6 +9911,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -9900,11 +9923,12 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     order?: boolean
+    allowedRoles?: boolean
     categoryId?: boolean
     parentForumId?: boolean
   }
 
-  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "categoryId" | "parentForumId", ExtArgs["result"]["forum"]>
+  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "categoryId" | "parentForumId", ExtArgs["result"]["forum"]>
   export type ForumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | Forum$categoryArgs<ExtArgs>
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
@@ -9934,6 +9958,7 @@ export namespace Prisma {
       name: string
       description: string | null
       order: number
+      allowedRoles: string
       categoryId: string | null
       parentForumId: string | null
     }, ExtArgs["result"]["forum"]>
@@ -10367,6 +10392,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Forum", 'String'>
     readonly description: FieldRef<"Forum", 'String'>
     readonly order: FieldRef<"Forum", 'Int'>
+    readonly allowedRoles: FieldRef<"Forum", 'String'>
     readonly categoryId: FieldRef<"Forum", 'String'>
     readonly parentForumId: FieldRef<"Forum", 'String'>
   }
@@ -18762,6 +18788,7 @@ export namespace Prisma {
   export type RoleConfigMinAggregateOutputType = {
     name: string | null
     label: string | null
+    color: string | null
     power: number | null
     isBaseRole: boolean | null
     updatedAt: Date | null
@@ -18770,6 +18797,7 @@ export namespace Prisma {
   export type RoleConfigMaxAggregateOutputType = {
     name: string | null
     label: string | null
+    color: string | null
     power: number | null
     isBaseRole: boolean | null
     updatedAt: Date | null
@@ -18778,6 +18806,7 @@ export namespace Prisma {
   export type RoleConfigCountAggregateOutputType = {
     name: number
     label: number
+    color: number
     power: number
     isBaseRole: number
     updatedAt: number
@@ -18796,6 +18825,7 @@ export namespace Prisma {
   export type RoleConfigMinAggregateInputType = {
     name?: true
     label?: true
+    color?: true
     power?: true
     isBaseRole?: true
     updatedAt?: true
@@ -18804,6 +18834,7 @@ export namespace Prisma {
   export type RoleConfigMaxAggregateInputType = {
     name?: true
     label?: true
+    color?: true
     power?: true
     isBaseRole?: true
     updatedAt?: true
@@ -18812,6 +18843,7 @@ export namespace Prisma {
   export type RoleConfigCountAggregateInputType = {
     name?: true
     label?: true
+    color?: true
     power?: true
     isBaseRole?: true
     updatedAt?: true
@@ -18907,6 +18939,7 @@ export namespace Prisma {
   export type RoleConfigGroupByOutputType = {
     name: string
     label: string
+    color: string
     power: number
     isBaseRole: boolean
     updatedAt: Date
@@ -18934,6 +18967,7 @@ export namespace Prisma {
   export type RoleConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     name?: boolean
     label?: boolean
+    color?: boolean
     power?: boolean
     isBaseRole?: boolean
     updatedAt?: boolean
@@ -18944,6 +18978,7 @@ export namespace Prisma {
   export type RoleConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     name?: boolean
     label?: boolean
+    color?: boolean
     power?: boolean
     isBaseRole?: boolean
     updatedAt?: boolean
@@ -18952,6 +18987,7 @@ export namespace Prisma {
   export type RoleConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     name?: boolean
     label?: boolean
+    color?: boolean
     power?: boolean
     isBaseRole?: boolean
     updatedAt?: boolean
@@ -18960,12 +18996,13 @@ export namespace Prisma {
   export type RoleConfigSelectScalar = {
     name?: boolean
     label?: boolean
+    color?: boolean
     power?: boolean
     isBaseRole?: boolean
     updatedAt?: boolean
   }
 
-  export type RoleConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "label" | "power" | "isBaseRole" | "updatedAt", ExtArgs["result"]["roleConfig"]>
+  export type RoleConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "label" | "color" | "power" | "isBaseRole" | "updatedAt", ExtArgs["result"]["roleConfig"]>
   export type RoleConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | RoleConfig$usersArgs<ExtArgs>
     _count?: boolean | RoleConfigCountOutputTypeDefaultArgs<ExtArgs>
@@ -18981,6 +19018,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       name: string
       label: string
+      color: string
       power: number
       isBaseRole: boolean
       updatedAt: Date
@@ -19410,6 +19448,7 @@ export namespace Prisma {
   interface RoleConfigFieldRefs {
     readonly name: FieldRef<"RoleConfig", 'String'>
     readonly label: FieldRef<"RoleConfig", 'String'>
+    readonly color: FieldRef<"RoleConfig", 'String'>
     readonly power: FieldRef<"RoleConfig", 'Int'>
     readonly isBaseRole: FieldRef<"RoleConfig", 'Boolean'>
     readonly updatedAt: FieldRef<"RoleConfig", 'DateTime'>
@@ -19944,7 +19983,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
-    order: 'order'
+    order: 'order',
+    allowedRoles: 'allowedRoles'
   };
 
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -19955,6 +19995,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     order: 'order',
+    allowedRoles: 'allowedRoles',
     categoryId: 'categoryId',
     parentForumId: 'parentForumId'
   };
@@ -20055,6 +20096,7 @@ export namespace Prisma {
   export const RoleConfigScalarFieldEnum: {
     name: 'name',
     label: 'label',
+    color: 'color',
     power: 'power',
     isBaseRole: 'isBaseRole',
     updatedAt: 'updatedAt'
@@ -20587,6 +20629,7 @@ export namespace Prisma {
     name?: StringFilter<"Category"> | string
     description?: StringNullableFilter<"Category"> | string | null
     order?: IntFilter<"Category"> | number
+    allowedRoles?: StringFilter<"Category"> | string
     forums?: ForumListRelationFilter
   }
 
@@ -20595,6 +20638,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     forums?: ForumOrderByRelationAggregateInput
   }
 
@@ -20606,6 +20650,7 @@ export namespace Prisma {
     name?: StringFilter<"Category"> | string
     description?: StringNullableFilter<"Category"> | string | null
     order?: IntFilter<"Category"> | number
+    allowedRoles?: StringFilter<"Category"> | string
     forums?: ForumListRelationFilter
   }, "id">
 
@@ -20614,6 +20659,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     _count?: CategoryCountOrderByAggregateInput
     _avg?: CategoryAvgOrderByAggregateInput
     _max?: CategoryMaxOrderByAggregateInput
@@ -20629,6 +20675,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Category"> | string
     description?: StringNullableWithAggregatesFilter<"Category"> | string | null
     order?: IntWithAggregatesFilter<"Category"> | number
+    allowedRoles?: StringWithAggregatesFilter<"Category"> | string
   }
 
   export type ForumWhereInput = {
@@ -20639,6 +20686,7 @@ export namespace Prisma {
     name?: StringFilter<"Forum"> | string
     description?: StringNullableFilter<"Forum"> | string | null
     order?: IntFilter<"Forum"> | number
+    allowedRoles?: StringFilter<"Forum"> | string
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
@@ -20652,6 +20700,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
     category?: CategoryOrderByWithRelationInput
@@ -20668,6 +20717,7 @@ export namespace Prisma {
     name?: StringFilter<"Forum"> | string
     description?: StringNullableFilter<"Forum"> | string | null
     order?: IntFilter<"Forum"> | number
+    allowedRoles?: StringFilter<"Forum"> | string
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
@@ -20681,6 +20731,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
     _count?: ForumCountOrderByAggregateInput
@@ -20698,6 +20749,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Forum"> | string
     description?: StringNullableWithAggregatesFilter<"Forum"> | string | null
     order?: IntWithAggregatesFilter<"Forum"> | number
+    allowedRoles?: StringWithAggregatesFilter<"Forum"> | string
     categoryId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
     parentForumId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
   }
@@ -21206,6 +21258,7 @@ export namespace Prisma {
     NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
     name?: StringFilter<"RoleConfig"> | string
     label?: StringFilter<"RoleConfig"> | string
+    color?: StringFilter<"RoleConfig"> | string
     power?: IntFilter<"RoleConfig"> | number
     isBaseRole?: BoolFilter<"RoleConfig"> | boolean
     updatedAt?: DateTimeFilter<"RoleConfig"> | Date | string
@@ -21215,6 +21268,7 @@ export namespace Prisma {
   export type RoleConfigOrderByWithRelationInput = {
     name?: SortOrder
     label?: SortOrder
+    color?: SortOrder
     power?: SortOrder
     isBaseRole?: SortOrder
     updatedAt?: SortOrder
@@ -21227,6 +21281,7 @@ export namespace Prisma {
     OR?: RoleConfigWhereInput[]
     NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
     label?: StringFilter<"RoleConfig"> | string
+    color?: StringFilter<"RoleConfig"> | string
     power?: IntFilter<"RoleConfig"> | number
     isBaseRole?: BoolFilter<"RoleConfig"> | boolean
     updatedAt?: DateTimeFilter<"RoleConfig"> | Date | string
@@ -21236,6 +21291,7 @@ export namespace Prisma {
   export type RoleConfigOrderByWithAggregationInput = {
     name?: SortOrder
     label?: SortOrder
+    color?: SortOrder
     power?: SortOrder
     isBaseRole?: SortOrder
     updatedAt?: SortOrder
@@ -21252,6 +21308,7 @@ export namespace Prisma {
     NOT?: RoleConfigScalarWhereWithAggregatesInput | RoleConfigScalarWhereWithAggregatesInput[]
     name?: StringWithAggregatesFilter<"RoleConfig"> | string
     label?: StringWithAggregatesFilter<"RoleConfig"> | string
+    color?: StringWithAggregatesFilter<"RoleConfig"> | string
     power?: IntWithAggregatesFilter<"RoleConfig"> | number
     isBaseRole?: BoolWithAggregatesFilter<"RoleConfig"> | boolean
     updatedAt?: DateTimeWithAggregatesFilter<"RoleConfig"> | Date | string
@@ -21786,6 +21843,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     forums?: ForumCreateNestedManyWithoutCategoryInput
   }
 
@@ -21794,6 +21852,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     forums?: ForumUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -21802,6 +21861,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     forums?: ForumUpdateManyWithoutCategoryNestedInput
   }
 
@@ -21810,6 +21870,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     forums?: ForumUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -21818,6 +21879,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
   }
 
   export type CategoryUpdateManyMutationInput = {
@@ -21825,6 +21887,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
   }
 
   export type CategoryUncheckedUpdateManyInput = {
@@ -21832,6 +21895,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForumCreateInput = {
@@ -21839,6 +21903,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
@@ -21850,6 +21915,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
@@ -21861,6 +21927,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
@@ -21872,6 +21939,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
@@ -21883,6 +21951,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
     parentForumId?: string | null
   }
@@ -21892,6 +21961,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForumUncheckedUpdateManyInput = {
@@ -21899,6 +21969,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -22393,6 +22464,7 @@ export namespace Prisma {
   export type RoleConfigCreateInput = {
     name: string
     label: string
+    color?: string
     power: number
     isBaseRole?: boolean
     updatedAt?: Date | string
@@ -22402,6 +22474,7 @@ export namespace Prisma {
   export type RoleConfigUncheckedCreateInput = {
     name: string
     label: string
+    color?: string
     power: number
     isBaseRole?: boolean
     updatedAt?: Date | string
@@ -22411,6 +22484,7 @@ export namespace Prisma {
   export type RoleConfigUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22420,6 +22494,7 @@ export namespace Prisma {
   export type RoleConfigUncheckedUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22429,6 +22504,7 @@ export namespace Prisma {
   export type RoleConfigCreateManyInput = {
     name: string
     label: string
+    color?: string
     power: number
     isBaseRole?: boolean
     updatedAt?: Date | string
@@ -22437,6 +22513,7 @@ export namespace Prisma {
   export type RoleConfigUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22445,6 +22522,7 @@ export namespace Prisma {
   export type RoleConfigUncheckedUpdateManyInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23024,6 +23102,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
   }
 
   export type CategoryAvgOrderByAggregateInput = {
@@ -23035,6 +23114,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
   }
 
   export type CategoryMinOrderByAggregateInput = {
@@ -23042,6 +23122,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
   }
 
   export type CategorySumOrderByAggregateInput = {
@@ -23063,6 +23144,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -23076,6 +23158,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -23085,6 +23168,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     order?: SortOrder
+    allowedRoles?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -23367,6 +23451,7 @@ export namespace Prisma {
   export type RoleConfigCountOrderByAggregateInput = {
     name?: SortOrder
     label?: SortOrder
+    color?: SortOrder
     power?: SortOrder
     isBaseRole?: SortOrder
     updatedAt?: SortOrder
@@ -23379,6 +23464,7 @@ export namespace Prisma {
   export type RoleConfigMaxOrderByAggregateInput = {
     name?: SortOrder
     label?: SortOrder
+    color?: SortOrder
     power?: SortOrder
     isBaseRole?: SortOrder
     updatedAt?: SortOrder
@@ -23387,6 +23473,7 @@ export namespace Prisma {
   export type RoleConfigMinOrderByAggregateInput = {
     name?: SortOrder
     label?: SortOrder
+    color?: SortOrder
     power?: SortOrder
     isBaseRole?: SortOrder
     updatedAt?: SortOrder
@@ -25269,6 +25356,7 @@ export namespace Prisma {
   export type RoleConfigCreateWithoutUsersInput = {
     name: string
     label: string
+    color?: string
     power: number
     isBaseRole?: boolean
     updatedAt?: Date | string
@@ -25277,6 +25365,7 @@ export namespace Prisma {
   export type RoleConfigUncheckedCreateWithoutUsersInput = {
     name: string
     label: string
+    color?: string
     power: number
     isBaseRole?: boolean
     updatedAt?: Date | string
@@ -25692,6 +25781,7 @@ export namespace Prisma {
   export type RoleConfigUpdateWithoutUsersInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25700,6 +25790,7 @@ export namespace Prisma {
   export type RoleConfigUncheckedUpdateWithoutUsersInput = {
     name?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
     power?: IntFieldUpdateOperationsInput | number
     isBaseRole?: BoolFieldUpdateOperationsInput | boolean
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26088,6 +26179,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -26098,6 +26190,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -26136,6 +26229,7 @@ export namespace Prisma {
     name?: StringFilter<"Forum"> | string
     description?: StringNullableFilter<"Forum"> | string | null
     order?: IntFilter<"Forum"> | number
+    allowedRoles?: StringFilter<"Forum"> | string
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
   }
@@ -26145,6 +26239,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
   }
 
   export type CategoryUncheckedCreateWithoutForumsInput = {
@@ -26152,6 +26247,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
   }
 
   export type CategoryCreateOrConnectWithoutForumsInput = {
@@ -26164,6 +26260,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -26174,6 +26271,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
     parentForumId?: string | null
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -26189,6 +26287,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     category?: CategoryCreateNestedOneWithoutForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -26199,6 +26298,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -26266,6 +26366,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
   }
 
   export type CategoryUncheckedUpdateWithoutForumsInput = {
@@ -26273,6 +26374,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
   }
 
   export type ForumUpsertWithoutSubForumsInput = {
@@ -26291,6 +26393,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -26301,6 +26404,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -26343,6 +26447,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
@@ -26353,6 +26458,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
@@ -26498,6 +26604,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
@@ -26508,6 +26615,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
@@ -28886,6 +28994,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     parentForumId?: string | null
   }
 
@@ -28894,6 +29003,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -28904,6 +29014,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -28914,6 +29025,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -28922,6 +29034,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     order?: number
+    allowedRoles?: string
     categoryId?: string | null
   }
 
@@ -28942,6 +29055,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     category?: CategoryUpdateOneWithoutForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -28952,6 +29066,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -28962,6 +29077,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
