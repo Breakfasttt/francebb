@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated-client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { createClient } from "@libsql/client";
 
@@ -9,11 +9,39 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   const userId = "user_test_breakyt";
 
+  console.log("Cleaning all existing data...");
+  await prisma.postReaction.deleteMany();
+  await prisma.mention.deleteMany();
+  await prisma.topicView.deleteMany();
+  await prisma.privateMessage.deleteMany();
+  await prisma.conversation.deleteMany();
+  await prisma.post.deleteMany();
+  await prisma.topic.deleteMany();
+  await prisma.forum.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.tournament.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.roleConfig.deleteMany();
+
+  console.log("Seeding base roles...");
+  const baseRoles = [
+    { name: "SUPERADMIN", label: "Super Admin", power: 100, color: "#c21d1d" },
+    { name: "ADMIN", label: "Administrateur", power: 90, color: "#e11d48" },
+    { name: "MODERATOR", label: "Modérateur", power: 70, color: "#f59e0b" },
+    { name: "RTC", label: "RTC", power: 50, color: "#8b5cf6" },
+    { name: "CHEF_LIGUE", label: "Chef de ligue", power: 40, color: "#10b981" },
+    { name: "COACH", label: "Coach", power: 10, color: "#64748b" },
+  ];
+
+  for (const br of baseRoles) {
+    await prisma.roleConfig.create({
+      data: { ...br, isBaseRole: true }
+    });
+  }
+
   console.log("Upserting test user...");
-  await prisma.user.upsert({
-    where: { id: userId },
-    update: { role: "ADMIN" },
-    create: {
+  await prisma.user.create({
+    data: {
       id: userId,
       name: "Breakyt",
       email: "breakyt@bbfrance.fr",
@@ -23,12 +51,10 @@ async function main() {
   });
 
   console.log("Creating role test users...");
-  const rolesToSeed = ["ORGA", "MODERATOR", "RC_NAF"];
+  const rolesToSeed = ["MODERATOR", "RTC", "CHEF_LIGUE"];
   for (const role of rolesToSeed) {
-    await prisma.user.upsert({
-      where: { email: `${role.toLowerCase()}@bbfrance.fr` },
-      update: { role },
-      create: {
+    await prisma.user.create({
+      data: {
         name: `Test ${role}`,
         email: `${role.toLowerCase()}@bbfrance.fr`,
         role
@@ -169,13 +195,9 @@ async function main() {
     });
   }
 
-  console.log("Cleaning old forum data...");
-  await prisma.post.deleteMany();
-  await prisma.topic.deleteMany();
-  await prisma.forum.deleteMany();
-  await prisma.category.deleteMany();
-
   console.log("Seeding forum hierarchy...");
+
+
 
   const forumData = [
     {
@@ -183,7 +205,13 @@ async function main() {
       order: 1,
       forums: [
         { name: "Bienvenue à toi le noob !", description: "Présentations et accueil des nouveaux coachs." },
-        { name: "Les petites discussions à la buvette", description: "Actualités, rumeurs et discussions générales." },
+        { 
+          name: "Les petites discussions à la buvette", 
+          description: "Actualités, rumeurs et discussions générales.",
+          subForums: [
+             { name: "Blood Bowl Magazine", description: "Le fanzine de la communauté." }
+          ]
+        },
         { name: "Le salon des figurinistes", description: "Peinture, sculpture et modélisme." },
         { name: "La brocante", description: "Achats, ventes et échanges." },
         { name: "La bibliothèque", description: "Fluff, histoires et récits épiques." },
@@ -194,7 +222,14 @@ async function main() {
       name: "Le terrain",
       order: 2,
       forums: [
-        { name: "Les tournois", description: "Annonces, résultats et débriefings de tournois." },
+        { 
+          name: "Les tournois", 
+          description: "Annonces, résultats et débriefings de tournois.",
+          subForums: [
+            { name: "Archives tournois", description: "Souvenirs des éditions passées." },
+            { name: "Salle des Trophées", description: "Palmarès et récompenses." }
+          ]
+        },
         { name: "Les challenges régionaux", description: "Classements et infos sur les compétitions régionales." },
         { name: "Le championnat de France", description: "Tout sur l'événement majeur annuel." },
         { name: "La NAF / La NAF World Cup", description: "Actualités internationales et Coupe du Monde." },
@@ -205,7 +240,14 @@ async function main() {
       name: "Sombre Fontaine",
       order: 3,
       forums: [
-        { name: "Le Stade De France", description: "Tout sur l'Équipe de France et les Eurobowls." },
+        { 
+          name: "Le Stade De France", 
+          description: "Tout sur l'Équipe de France et les Eurobowls.",
+          subForums: [
+            { name: "EdF 2026 - Candidatures du sélectionneur", description: "Postulez pour mener les Bleus." },
+            { name: "EdF 2026 - Candidatures des joueurs", description: "Rejoignez le squad tricolore." }
+          ]
+        },
       ]
     },
     {
@@ -220,7 +262,14 @@ async function main() {
       name: "Les vestiaires",
       order: 5,
       forums: [
-        { name: "Rosters en tournoi et en ligue", description: "Optimisation d'équipe et choix de compétences." },
+        { 
+          name: "Rosters en tournoi et en ligue", 
+          description: "Optimisation d'équipe et choix de compétences.",
+          subForums: [
+            { name: "Rosters en tournoi", description: "Compos optimisées pour la gagne." },
+            { name: "Rosters en ligue", description: "Gestion de l'évolution sur le long terme." }
+          ]
+        },
         { name: "Tableau noir", description: "Tactiques approfondies et schémas de jeu." },
         { name: "Précisions sur les règles", description: "Questions d'arbitrage et interprétations." },
       ]
@@ -252,8 +301,21 @@ async function main() {
         }
       });
 
+      // Ajout des sous-forums si présents
+      if ((f as any).subForums) {
+        for (const sf of (f as any).subForums) {
+          await prisma.forum.create({
+            data: {
+              name: sf.name,
+              description: sf.description || null,
+              parentForumId: forum.id
+            }
+          });
+        }
+      }
+
       // Add a welcome topic for each forum
-      const topic = await prisma.topic.create({
+      await prisma.topic.create({
         data: {
           title: `Bienvenue dans ${f.name}`,
           forumId: forum.id,
