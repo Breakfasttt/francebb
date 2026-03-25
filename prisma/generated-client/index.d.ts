@@ -2336,6 +2336,7 @@ export namespace Prisma {
     moderatedPosts: number
     postReactions: number
     followedTopics: number
+    commissairesTournaments: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2353,6 +2354,7 @@ export namespace Prisma {
     moderatedPosts?: boolean | UserCountOutputTypeCountModeratedPostsArgs
     postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
     followedTopics?: boolean | UserCountOutputTypeCountFollowedTopicsArgs
+    commissairesTournaments?: boolean | UserCountOutputTypeCountCommissairesTournamentsArgs
   }
 
   // Custom InputTypes
@@ -2462,6 +2464,44 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFollowedTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TopicFollowWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCommissairesTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentWhereInput
+  }
+
+
+  /**
+   * Count Type TournamentCountOutputType
+   */
+
+  export type TournamentCountOutputType = {
+    commissaires: number
+  }
+
+  export type TournamentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    commissaires?: boolean | TournamentCountOutputTypeCountCommissairesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TournamentCountOutputType
+     */
+    select?: TournamentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TournamentCountOutputType without action
+   */
+  export type TournamentCountOutputTypeCountCommissairesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -5168,6 +5208,7 @@ export namespace Prisma {
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
+    commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5238,6 +5279,7 @@ export namespace Prisma {
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
+    commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5265,6 +5307,7 @@ export namespace Prisma {
       moderatedPosts: Prisma.$PostPayload<ExtArgs>[]
       postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
       followedTopics: Prisma.$TopicFollowPayload<ExtArgs>[]
+      commissairesTournaments: Prisma.$TournamentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5689,6 +5732,7 @@ export namespace Prisma {
     moderatedPosts<T extends User$moderatedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     followedTopics<T extends User$followedTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$followedTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    commissairesTournaments<T extends User$commissairesTournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commissairesTournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6482,6 +6526,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
+  }
+
+  /**
+   * User.commissairesTournaments
+   */
+  export type User$commissairesTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    where?: TournamentWhereInput
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    cursor?: TournamentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
   }
 
   /**
@@ -7491,39 +7559,58 @@ export namespace Prisma {
     maxParticipants: number | null
     currentParticipants: number | null
     preRegistered: number | null
+    coachsPerTeam: number | null
     totalMatches: number | null
     price: number | null
+    priceMeals: number | null
+    priceLodging: number | null
   }
 
   export type TournamentSumAggregateOutputType = {
     maxParticipants: number | null
     currentParticipants: number | null
     preRegistered: number | null
+    coachsPerTeam: number | null
     totalMatches: number | null
     price: number | null
+    priceMeals: number | null
+    priceLodging: number | null
   }
 
   export type TournamentMinAggregateOutputType = {
     id: string | null
     name: string | null
     date: Date | null
+    endDate: Date | null
     location: string | null
+    address: string | null
     ville: string | null
     departement: string | null
     region: string | null
+    regionNAF: string | null
     description: string | null
     maxParticipants: number | null
     currentParticipants: number | null
     preRegistered: number | null
+    isTeam: boolean | null
+    coachsPerTeam: number | null
     days: string | null
     totalMatches: number | null
     price: number | null
+    priceMeals: number | null
+    priceLodging: number | null
     structure: string | null
     lodgingAtVenue: boolean | null
     ruleset: string | null
     mealsIncluded: boolean | null
     fridayArrival: boolean | null
     gameEdition: string | null
+    platform: string | null
+    isNAF: boolean | null
+    isCDF: boolean | null
+    isCGO: boolean | null
+    isTGE: boolean | null
+    isTSC: boolean | null
     organizerId: string | null
   }
 
@@ -7531,23 +7618,36 @@ export namespace Prisma {
     id: string | null
     name: string | null
     date: Date | null
+    endDate: Date | null
     location: string | null
+    address: string | null
     ville: string | null
     departement: string | null
     region: string | null
+    regionNAF: string | null
     description: string | null
     maxParticipants: number | null
     currentParticipants: number | null
     preRegistered: number | null
+    isTeam: boolean | null
+    coachsPerTeam: number | null
     days: string | null
     totalMatches: number | null
     price: number | null
+    priceMeals: number | null
+    priceLodging: number | null
     structure: string | null
     lodgingAtVenue: boolean | null
     ruleset: string | null
     mealsIncluded: boolean | null
     fridayArrival: boolean | null
     gameEdition: string | null
+    platform: string | null
+    isNAF: boolean | null
+    isCDF: boolean | null
+    isCGO: boolean | null
+    isTGE: boolean | null
+    isTSC: boolean | null
     organizerId: string | null
   }
 
@@ -7555,23 +7655,36 @@ export namespace Prisma {
     id: number
     name: number
     date: number
+    endDate: number
     location: number
+    address: number
     ville: number
     departement: number
     region: number
+    regionNAF: number
     description: number
     maxParticipants: number
     currentParticipants: number
     preRegistered: number
+    isTeam: number
+    coachsPerTeam: number
     days: number
     totalMatches: number
     price: number
+    priceMeals: number
+    priceLodging: number
     structure: number
     lodgingAtVenue: number
     ruleset: number
     mealsIncluded: number
     fridayArrival: number
     gameEdition: number
+    platform: number
+    isNAF: number
+    isCDF: number
+    isCGO: number
+    isTGE: number
+    isTSC: number
     organizerId: number
     _all: number
   }
@@ -7581,39 +7694,58 @@ export namespace Prisma {
     maxParticipants?: true
     currentParticipants?: true
     preRegistered?: true
+    coachsPerTeam?: true
     totalMatches?: true
     price?: true
+    priceMeals?: true
+    priceLodging?: true
   }
 
   export type TournamentSumAggregateInputType = {
     maxParticipants?: true
     currentParticipants?: true
     preRegistered?: true
+    coachsPerTeam?: true
     totalMatches?: true
     price?: true
+    priceMeals?: true
+    priceLodging?: true
   }
 
   export type TournamentMinAggregateInputType = {
     id?: true
     name?: true
     date?: true
+    endDate?: true
     location?: true
+    address?: true
     ville?: true
     departement?: true
     region?: true
+    regionNAF?: true
     description?: true
     maxParticipants?: true
     currentParticipants?: true
     preRegistered?: true
+    isTeam?: true
+    coachsPerTeam?: true
     days?: true
     totalMatches?: true
     price?: true
+    priceMeals?: true
+    priceLodging?: true
     structure?: true
     lodgingAtVenue?: true
     ruleset?: true
     mealsIncluded?: true
     fridayArrival?: true
     gameEdition?: true
+    platform?: true
+    isNAF?: true
+    isCDF?: true
+    isCGO?: true
+    isTGE?: true
+    isTSC?: true
     organizerId?: true
   }
 
@@ -7621,23 +7753,36 @@ export namespace Prisma {
     id?: true
     name?: true
     date?: true
+    endDate?: true
     location?: true
+    address?: true
     ville?: true
     departement?: true
     region?: true
+    regionNAF?: true
     description?: true
     maxParticipants?: true
     currentParticipants?: true
     preRegistered?: true
+    isTeam?: true
+    coachsPerTeam?: true
     days?: true
     totalMatches?: true
     price?: true
+    priceMeals?: true
+    priceLodging?: true
     structure?: true
     lodgingAtVenue?: true
     ruleset?: true
     mealsIncluded?: true
     fridayArrival?: true
     gameEdition?: true
+    platform?: true
+    isNAF?: true
+    isCDF?: true
+    isCGO?: true
+    isTGE?: true
+    isTSC?: true
     organizerId?: true
   }
 
@@ -7645,23 +7790,36 @@ export namespace Prisma {
     id?: true
     name?: true
     date?: true
+    endDate?: true
     location?: true
+    address?: true
     ville?: true
     departement?: true
     region?: true
+    regionNAF?: true
     description?: true
     maxParticipants?: true
     currentParticipants?: true
     preRegistered?: true
+    isTeam?: true
+    coachsPerTeam?: true
     days?: true
     totalMatches?: true
     price?: true
+    priceMeals?: true
+    priceLodging?: true
     structure?: true
     lodgingAtVenue?: true
     ruleset?: true
     mealsIncluded?: true
     fridayArrival?: true
     gameEdition?: true
+    platform?: true
+    isNAF?: true
+    isCDF?: true
+    isCGO?: true
+    isTGE?: true
+    isTSC?: true
     organizerId?: true
     _all?: true
   }
@@ -7756,23 +7914,36 @@ export namespace Prisma {
     id: string
     name: string
     date: Date
+    endDate: Date | null
     location: string
+    address: string | null
     ville: string | null
     departement: string | null
     region: string | null
+    regionNAF: string | null
     description: string | null
     maxParticipants: number | null
     currentParticipants: number
     preRegistered: number
+    isTeam: boolean
+    coachsPerTeam: number
     days: string | null
     totalMatches: number | null
     price: number | null
+    priceMeals: number | null
+    priceLodging: number | null
     structure: string | null
     lodgingAtVenue: boolean
     ruleset: string | null
     mealsIncluded: boolean
     fridayArrival: boolean
     gameEdition: string | null
+    platform: string | null
+    isNAF: boolean
+    isCDF: boolean
+    isCGO: boolean
+    isTGE: boolean
+    isTSC: boolean
     organizerId: string
     _count: TournamentCountAggregateOutputType | null
     _avg: TournamentAvgAggregateOutputType | null
@@ -7799,49 +7970,77 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
+    address?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
+    regionNAF?: boolean
     description?: boolean
     maxParticipants?: boolean
     currentParticipants?: boolean
     preRegistered?: boolean
+    isTeam?: boolean
+    coachsPerTeam?: boolean
     days?: boolean
     totalMatches?: boolean
     price?: boolean
+    priceMeals?: boolean
+    priceLodging?: boolean
     structure?: boolean
     lodgingAtVenue?: boolean
     ruleset?: boolean
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: boolean
+    platform?: boolean
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
+    commissaires?: boolean | Tournament$commissairesArgs<ExtArgs>
+    _count?: boolean | TournamentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
 
   export type TournamentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
+    address?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
+    regionNAF?: boolean
     description?: boolean
     maxParticipants?: boolean
     currentParticipants?: boolean
     preRegistered?: boolean
+    isTeam?: boolean
+    coachsPerTeam?: boolean
     days?: boolean
     totalMatches?: boolean
     price?: boolean
+    priceMeals?: boolean
+    priceLodging?: boolean
     structure?: boolean
     lodgingAtVenue?: boolean
     ruleset?: boolean
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: boolean
+    platform?: boolean
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -7850,23 +8049,36 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
+    address?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
+    regionNAF?: boolean
     description?: boolean
     maxParticipants?: boolean
     currentParticipants?: boolean
     preRegistered?: boolean
+    isTeam?: boolean
+    coachsPerTeam?: boolean
     days?: boolean
     totalMatches?: boolean
     price?: boolean
+    priceMeals?: boolean
+    priceLodging?: boolean
     structure?: boolean
     lodgingAtVenue?: boolean
     ruleset?: boolean
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: boolean
+    platform?: boolean
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -7875,30 +8087,45 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     date?: boolean
+    endDate?: boolean
     location?: boolean
+    address?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
+    regionNAF?: boolean
     description?: boolean
     maxParticipants?: boolean
     currentParticipants?: boolean
     preRegistered?: boolean
+    isTeam?: boolean
+    coachsPerTeam?: boolean
     days?: boolean
     totalMatches?: boolean
     price?: boolean
+    priceMeals?: boolean
+    priceLodging?: boolean
     structure?: boolean
     lodgingAtVenue?: boolean
     ruleset?: boolean
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: boolean
+    platform?: boolean
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "location" | "ville" | "departement" | "region" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "days" | "totalMatches" | "price" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "organizerId", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "organizerId", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
+    commissaires?: boolean | Tournament$commissairesArgs<ExtArgs>
+    _count?: boolean | TournamentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TournamentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
@@ -7912,28 +8139,42 @@ export namespace Prisma {
     objects: {
       organizer: Prisma.$UserPayload<ExtArgs>
       topic: Prisma.$TopicPayload<ExtArgs> | null
+      commissaires: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       date: Date
+      endDate: Date | null
       location: string
+      address: string | null
       ville: string | null
       departement: string | null
       region: string | null
+      regionNAF: string | null
       description: string | null
       maxParticipants: number | null
       currentParticipants: number
       preRegistered: number
+      isTeam: boolean
+      coachsPerTeam: number
       days: string | null
       totalMatches: number | null
       price: number | null
+      priceMeals: number | null
+      priceLodging: number | null
       structure: string | null
       lodgingAtVenue: boolean
       ruleset: string | null
       mealsIncluded: boolean
       fridayArrival: boolean
       gameEdition: string | null
+      platform: string | null
+      isNAF: boolean
+      isCDF: boolean
+      isCGO: boolean
+      isTGE: boolean
+      isTSC: boolean
       organizerId: string
     }, ExtArgs["result"]["tournament"]>
     composites: {}
@@ -8331,6 +8572,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organizer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     topic<T extends Tournament$topicArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$topicArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    commissaires<T extends Tournament$commissairesArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$commissairesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8363,23 +8605,36 @@ export namespace Prisma {
     readonly id: FieldRef<"Tournament", 'String'>
     readonly name: FieldRef<"Tournament", 'String'>
     readonly date: FieldRef<"Tournament", 'DateTime'>
+    readonly endDate: FieldRef<"Tournament", 'DateTime'>
     readonly location: FieldRef<"Tournament", 'String'>
+    readonly address: FieldRef<"Tournament", 'String'>
     readonly ville: FieldRef<"Tournament", 'String'>
     readonly departement: FieldRef<"Tournament", 'String'>
     readonly region: FieldRef<"Tournament", 'String'>
+    readonly regionNAF: FieldRef<"Tournament", 'String'>
     readonly description: FieldRef<"Tournament", 'String'>
     readonly maxParticipants: FieldRef<"Tournament", 'Int'>
     readonly currentParticipants: FieldRef<"Tournament", 'Int'>
     readonly preRegistered: FieldRef<"Tournament", 'Int'>
+    readonly isTeam: FieldRef<"Tournament", 'Boolean'>
+    readonly coachsPerTeam: FieldRef<"Tournament", 'Int'>
     readonly days: FieldRef<"Tournament", 'String'>
     readonly totalMatches: FieldRef<"Tournament", 'Int'>
     readonly price: FieldRef<"Tournament", 'Float'>
+    readonly priceMeals: FieldRef<"Tournament", 'Float'>
+    readonly priceLodging: FieldRef<"Tournament", 'Float'>
     readonly structure: FieldRef<"Tournament", 'String'>
     readonly lodgingAtVenue: FieldRef<"Tournament", 'Boolean'>
     readonly ruleset: FieldRef<"Tournament", 'String'>
     readonly mealsIncluded: FieldRef<"Tournament", 'Boolean'>
     readonly fridayArrival: FieldRef<"Tournament", 'Boolean'>
     readonly gameEdition: FieldRef<"Tournament", 'String'>
+    readonly platform: FieldRef<"Tournament", 'String'>
+    readonly isNAF: FieldRef<"Tournament", 'Boolean'>
+    readonly isCDF: FieldRef<"Tournament", 'Boolean'>
+    readonly isCGO: FieldRef<"Tournament", 'Boolean'>
+    readonly isTGE: FieldRef<"Tournament", 'Boolean'>
+    readonly isTSC: FieldRef<"Tournament", 'Boolean'>
     readonly organizerId: FieldRef<"Tournament", 'String'>
   }
     
@@ -8796,6 +9051,30 @@ export namespace Prisma {
      */
     include?: TopicInclude<ExtArgs> | null
     where?: TopicWhereInput
+  }
+
+  /**
+   * Tournament.commissaires
+   */
+  export type Tournament$commissairesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -22376,23 +22655,36 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     date: 'date',
+    endDate: 'endDate',
     location: 'location',
+    address: 'address',
     ville: 'ville',
     departement: 'departement',
     region: 'region',
+    regionNAF: 'regionNAF',
     description: 'description',
     maxParticipants: 'maxParticipants',
     currentParticipants: 'currentParticipants',
     preRegistered: 'preRegistered',
+    isTeam: 'isTeam',
+    coachsPerTeam: 'coachsPerTeam',
     days: 'days',
     totalMatches: 'totalMatches',
     price: 'price',
+    priceMeals: 'priceMeals',
+    priceLodging: 'priceLodging',
     structure: 'structure',
     lodgingAtVenue: 'lodgingAtVenue',
     ruleset: 'ruleset',
     mealsIncluded: 'mealsIncluded',
     fridayArrival: 'fridayArrival',
     gameEdition: 'gameEdition',
+    platform: 'platform',
+    isNAF: 'isNAF',
+    isCDF: 'isCDF',
+    isCGO: 'isCGO',
+    isTGE: 'isTGE',
+    isTSC: 'isTSC',
     organizerId: 'organizerId'
   };
 
@@ -22782,6 +23074,7 @@ export namespace Prisma {
     moderatedPosts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
     followedTopics?: TopicFollowListRelationFilter
+    commissairesTournaments?: TournamentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -22813,6 +23106,7 @@ export namespace Prisma {
     moderatedPosts?: PostOrderByRelationAggregateInput
     postReactions?: PostReactionOrderByRelationAggregateInput
     followedTopics?: TopicFollowOrderByRelationAggregateInput
+    commissairesTournaments?: TournamentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -22847,6 +23141,7 @@ export namespace Prisma {
     moderatedPosts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
     followedTopics?: TopicFollowListRelationFilter
+    commissairesTournaments?: TournamentListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -22937,52 +23232,80 @@ export namespace Prisma {
     id?: StringFilter<"Tournament"> | string
     name?: StringFilter<"Tournament"> | string
     date?: DateTimeFilter<"Tournament"> | Date | string
+    endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
+    address?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
+    regionNAF?: StringNullableFilter<"Tournament"> | string | null
     description?: StringNullableFilter<"Tournament"> | string | null
     maxParticipants?: IntNullableFilter<"Tournament"> | number | null
     currentParticipants?: IntFilter<"Tournament"> | number
     preRegistered?: IntFilter<"Tournament"> | number
+    isTeam?: BoolFilter<"Tournament"> | boolean
+    coachsPerTeam?: IntFilter<"Tournament"> | number
     days?: StringNullableFilter<"Tournament"> | string | null
     totalMatches?: IntNullableFilter<"Tournament"> | number | null
     price?: FloatNullableFilter<"Tournament"> | number | null
+    priceMeals?: FloatNullableFilter<"Tournament"> | number | null
+    priceLodging?: FloatNullableFilter<"Tournament"> | number | null
     structure?: StringNullableFilter<"Tournament"> | string | null
     lodgingAtVenue?: BoolFilter<"Tournament"> | boolean
     ruleset?: StringNullableFilter<"Tournament"> | string | null
     mealsIncluded?: BoolFilter<"Tournament"> | boolean
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
+    platform?: StringNullableFilter<"Tournament"> | string | null
+    isNAF?: BoolFilter<"Tournament"> | boolean
+    isCDF?: BoolFilter<"Tournament"> | boolean
+    isCGO?: BoolFilter<"Tournament"> | boolean
+    isTGE?: BoolFilter<"Tournament"> | boolean
+    isTSC?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
+    commissaires?: UserListRelationFilter
   }
 
   export type TournamentOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     date?: SortOrder
+    endDate?: SortOrderInput | SortOrder
     location?: SortOrder
+    address?: SortOrderInput | SortOrder
     ville?: SortOrderInput | SortOrder
     departement?: SortOrderInput | SortOrder
     region?: SortOrderInput | SortOrder
+    regionNAF?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     maxParticipants?: SortOrderInput | SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    isTeam?: SortOrder
+    coachsPerTeam?: SortOrder
     days?: SortOrderInput | SortOrder
     totalMatches?: SortOrderInput | SortOrder
     price?: SortOrderInput | SortOrder
+    priceMeals?: SortOrderInput | SortOrder
+    priceLodging?: SortOrderInput | SortOrder
     structure?: SortOrderInput | SortOrder
     lodgingAtVenue?: SortOrder
     ruleset?: SortOrderInput | SortOrder
     mealsIncluded?: SortOrder
     fridayArrival?: SortOrder
     gameEdition?: SortOrderInput | SortOrder
+    platform?: SortOrderInput | SortOrder
+    isNAF?: SortOrder
+    isCDF?: SortOrder
+    isCGO?: SortOrder
+    isTGE?: SortOrder
+    isTSC?: SortOrder
     organizerId?: SortOrder
     organizer?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
+    commissaires?: UserOrderByRelationAggregateInput
   }
 
   export type TournamentWhereUniqueInput = Prisma.AtLeast<{
@@ -22992,49 +23315,76 @@ export namespace Prisma {
     NOT?: TournamentWhereInput | TournamentWhereInput[]
     name?: StringFilter<"Tournament"> | string
     date?: DateTimeFilter<"Tournament"> | Date | string
+    endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
+    address?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
+    regionNAF?: StringNullableFilter<"Tournament"> | string | null
     description?: StringNullableFilter<"Tournament"> | string | null
     maxParticipants?: IntNullableFilter<"Tournament"> | number | null
     currentParticipants?: IntFilter<"Tournament"> | number
     preRegistered?: IntFilter<"Tournament"> | number
+    isTeam?: BoolFilter<"Tournament"> | boolean
+    coachsPerTeam?: IntFilter<"Tournament"> | number
     days?: StringNullableFilter<"Tournament"> | string | null
     totalMatches?: IntNullableFilter<"Tournament"> | number | null
     price?: FloatNullableFilter<"Tournament"> | number | null
+    priceMeals?: FloatNullableFilter<"Tournament"> | number | null
+    priceLodging?: FloatNullableFilter<"Tournament"> | number | null
     structure?: StringNullableFilter<"Tournament"> | string | null
     lodgingAtVenue?: BoolFilter<"Tournament"> | boolean
     ruleset?: StringNullableFilter<"Tournament"> | string | null
     mealsIncluded?: BoolFilter<"Tournament"> | boolean
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
+    platform?: StringNullableFilter<"Tournament"> | string | null
+    isNAF?: BoolFilter<"Tournament"> | boolean
+    isCDF?: BoolFilter<"Tournament"> | boolean
+    isCGO?: BoolFilter<"Tournament"> | boolean
+    isTGE?: BoolFilter<"Tournament"> | boolean
+    isTSC?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
+    commissaires?: UserListRelationFilter
   }, "id">
 
   export type TournamentOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     date?: SortOrder
+    endDate?: SortOrderInput | SortOrder
     location?: SortOrder
+    address?: SortOrderInput | SortOrder
     ville?: SortOrderInput | SortOrder
     departement?: SortOrderInput | SortOrder
     region?: SortOrderInput | SortOrder
+    regionNAF?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     maxParticipants?: SortOrderInput | SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    isTeam?: SortOrder
+    coachsPerTeam?: SortOrder
     days?: SortOrderInput | SortOrder
     totalMatches?: SortOrderInput | SortOrder
     price?: SortOrderInput | SortOrder
+    priceMeals?: SortOrderInput | SortOrder
+    priceLodging?: SortOrderInput | SortOrder
     structure?: SortOrderInput | SortOrder
     lodgingAtVenue?: SortOrder
     ruleset?: SortOrderInput | SortOrder
     mealsIncluded?: SortOrder
     fridayArrival?: SortOrder
     gameEdition?: SortOrderInput | SortOrder
+    platform?: SortOrderInput | SortOrder
+    isNAF?: SortOrder
+    isCDF?: SortOrder
+    isCGO?: SortOrder
+    isTGE?: SortOrder
+    isTSC?: SortOrder
     organizerId?: SortOrder
     _count?: TournamentCountOrderByAggregateInput
     _avg?: TournamentAvgOrderByAggregateInput
@@ -23050,23 +23400,36 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Tournament"> | string
     name?: StringWithAggregatesFilter<"Tournament"> | string
     date?: DateTimeWithAggregatesFilter<"Tournament"> | Date | string
+    endDate?: DateTimeNullableWithAggregatesFilter<"Tournament"> | Date | string | null
     location?: StringWithAggregatesFilter<"Tournament"> | string
+    address?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     ville?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     departement?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     region?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    regionNAF?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     description?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     maxParticipants?: IntNullableWithAggregatesFilter<"Tournament"> | number | null
     currentParticipants?: IntWithAggregatesFilter<"Tournament"> | number
     preRegistered?: IntWithAggregatesFilter<"Tournament"> | number
+    isTeam?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    coachsPerTeam?: IntWithAggregatesFilter<"Tournament"> | number
     days?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     totalMatches?: IntNullableWithAggregatesFilter<"Tournament"> | number | null
     price?: FloatNullableWithAggregatesFilter<"Tournament"> | number | null
+    priceMeals?: FloatNullableWithAggregatesFilter<"Tournament"> | number | null
+    priceLodging?: FloatNullableWithAggregatesFilter<"Tournament"> | number | null
     structure?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     lodgingAtVenue?: BoolWithAggregatesFilter<"Tournament"> | boolean
     ruleset?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     mealsIncluded?: BoolWithAggregatesFilter<"Tournament"> | boolean
     fridayArrival?: BoolWithAggregatesFilter<"Tournament"> | boolean
     gameEdition?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    platform?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    isNAF?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isCDF?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isCGO?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isTGE?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isTSC?: BoolWithAggregatesFilter<"Tournament"> | boolean
     organizerId?: StringWithAggregatesFilter<"Tournament"> | string
   }
 
@@ -24068,6 +24431,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -24098,6 +24462,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUpdateInput = {
@@ -24128,6 +24493,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -24158,6 +24524,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -24253,123 +24620,192 @@ export namespace Prisma {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
+    commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentUncheckedCreateInput = {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
+    commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
+    commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TournamentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
+    commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TournamentCreateManyInput = {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId: string
   }
 
@@ -24377,46 +24813,72 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TournamentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -25685,27 +26147,50 @@ export namespace Prisma {
     isNot?: TopicWhereInput | null
   }
 
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type TournamentCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
+    address?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
+    regionNAF?: SortOrder
     description?: SortOrder
     maxParticipants?: SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    isTeam?: SortOrder
+    coachsPerTeam?: SortOrder
     days?: SortOrder
     totalMatches?: SortOrder
     price?: SortOrder
+    priceMeals?: SortOrder
+    priceLodging?: SortOrder
     structure?: SortOrder
     lodgingAtVenue?: SortOrder
     ruleset?: SortOrder
     mealsIncluded?: SortOrder
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
+    platform?: SortOrder
+    isNAF?: SortOrder
+    isCDF?: SortOrder
+    isCGO?: SortOrder
+    isTGE?: SortOrder
+    isTSC?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -25713,31 +26198,47 @@ export namespace Prisma {
     maxParticipants?: SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    coachsPerTeam?: SortOrder
     totalMatches?: SortOrder
     price?: SortOrder
+    priceMeals?: SortOrder
+    priceLodging?: SortOrder
   }
 
   export type TournamentMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
+    address?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
+    regionNAF?: SortOrder
     description?: SortOrder
     maxParticipants?: SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    isTeam?: SortOrder
+    coachsPerTeam?: SortOrder
     days?: SortOrder
     totalMatches?: SortOrder
     price?: SortOrder
+    priceMeals?: SortOrder
+    priceLodging?: SortOrder
     structure?: SortOrder
     lodgingAtVenue?: SortOrder
     ruleset?: SortOrder
     mealsIncluded?: SortOrder
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
+    platform?: SortOrder
+    isNAF?: SortOrder
+    isCDF?: SortOrder
+    isCGO?: SortOrder
+    isTGE?: SortOrder
+    isTSC?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -25745,23 +26246,36 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     date?: SortOrder
+    endDate?: SortOrder
     location?: SortOrder
+    address?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
+    regionNAF?: SortOrder
     description?: SortOrder
     maxParticipants?: SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    isTeam?: SortOrder
+    coachsPerTeam?: SortOrder
     days?: SortOrder
     totalMatches?: SortOrder
     price?: SortOrder
+    priceMeals?: SortOrder
+    priceLodging?: SortOrder
     structure?: SortOrder
     lodgingAtVenue?: SortOrder
     ruleset?: SortOrder
     mealsIncluded?: SortOrder
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
+    platform?: SortOrder
+    isNAF?: SortOrder
+    isCDF?: SortOrder
+    isCGO?: SortOrder
+    isTGE?: SortOrder
+    isTSC?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -25769,8 +26283,11 @@ export namespace Prisma {
     maxParticipants?: SortOrder
     currentParticipants?: SortOrder
     preRegistered?: SortOrder
+    coachsPerTeam?: SortOrder
     totalMatches?: SortOrder
     price?: SortOrder
+    priceMeals?: SortOrder
+    priceLodging?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -26170,16 +26687,6 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
-  export type UserListRelationFilter = {
-    every?: UserWhereInput
-    some?: UserWhereInput
-    none?: UserWhereInput
-  }
-
-  export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type RoleConfigCountOrderByAggregateInput = {
     name?: SortOrder
     label?: SortOrder
@@ -26427,6 +26934,12 @@ export namespace Prisma {
     connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
   }
 
+  export type TournamentCreateNestedManyWithoutCommissairesInput = {
+    create?: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput> | TournamentCreateWithoutCommissairesInput[] | TournamentUncheckedCreateWithoutCommissairesInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCommissairesInput | TournamentCreateOrConnectWithoutCommissairesInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -26523,6 +27036,12 @@ export namespace Prisma {
     connectOrCreate?: TopicFollowCreateOrConnectWithoutUserInput | TopicFollowCreateOrConnectWithoutUserInput[]
     createMany?: TopicFollowCreateManyUserInputEnvelope
     connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+  }
+
+  export type TournamentUncheckedCreateNestedManyWithoutCommissairesInput = {
+    create?: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput> | TournamentCreateWithoutCommissairesInput[] | TournamentUncheckedCreateWithoutCommissairesInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCommissairesInput | TournamentCreateOrConnectWithoutCommissairesInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -26739,6 +27258,19 @@ export namespace Prisma {
     deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
   }
 
+  export type TournamentUpdateManyWithoutCommissairesNestedInput = {
+    create?: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput> | TournamentCreateWithoutCommissairesInput[] | TournamentUncheckedCreateWithoutCommissairesInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCommissairesInput | TournamentCreateOrConnectWithoutCommissairesInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCommissairesInput | TournamentUpsertWithWhereUniqueWithoutCommissairesInput[]
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCommissairesInput | TournamentUpdateWithWhereUniqueWithoutCommissairesInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCommissairesInput | TournamentUpdateManyWithWhereWithoutCommissairesInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -26935,6 +27467,19 @@ export namespace Prisma {
     deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
   }
 
+  export type TournamentUncheckedUpdateManyWithoutCommissairesNestedInput = {
+    create?: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput> | TournamentCreateWithoutCommissairesInput[] | TournamentUncheckedCreateWithoutCommissairesInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCommissairesInput | TournamentCreateOrConnectWithoutCommissairesInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCommissairesInput | TournamentUpsertWithWhereUniqueWithoutCommissairesInput[]
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCommissairesInput | TournamentUpdateWithWhereUniqueWithoutCommissairesInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCommissairesInput | TournamentUpdateManyWithWhereWithoutCommissairesInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutTournamentsInput = {
     create?: XOR<UserCreateWithoutTournamentsInput, UserUncheckedCreateWithoutTournamentsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTournamentsInput
@@ -26947,10 +27492,22 @@ export namespace Prisma {
     connect?: TopicWhereUniqueInput
   }
 
+  export type UserCreateNestedManyWithoutCommissairesTournamentsInput = {
+    create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
   export type TopicUncheckedCreateNestedOneWithoutTournamentInput = {
     create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
     connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
     connect?: TopicWhereUniqueInput
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput = {
+    create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -26987,6 +27544,19 @@ export namespace Prisma {
     update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutTournamentInput, TopicUpdateWithoutTournamentInput>, TopicUncheckedUpdateWithoutTournamentInput>
   }
 
+  export type UserUpdateManyWithoutCommissairesTournamentsNestedInput = {
+    create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCommissairesTournamentsInput | UserUpsertWithWhereUniqueWithoutCommissairesTournamentsInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCommissairesTournamentsInput | UserUpdateWithWhereUniqueWithoutCommissairesTournamentsInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCommissairesTournamentsInput | UserUpdateManyWithWhereWithoutCommissairesTournamentsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
   export type TopicUncheckedUpdateOneWithoutTournamentNestedInput = {
     create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
     connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
@@ -26995,6 +27565,19 @@ export namespace Prisma {
     delete?: TopicWhereInput | boolean
     connect?: TopicWhereUniqueInput
     update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutTournamentInput, TopicUpdateWithoutTournamentInput>, TopicUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput = {
+    create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutCommissairesTournamentsInput | UserUpsertWithWhereUniqueWithoutCommissairesTournamentsInput[]
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutCommissairesTournamentsInput | UserUpdateWithWhereUniqueWithoutCommissairesTournamentsInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutCommissairesTournamentsInput | UserUpdateManyWithWhereWithoutCommissairesTournamentsInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type ForumCreateNestedManyWithoutCategoryInput = {
@@ -27963,6 +28546,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -27992,6 +28576,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -28037,6 +28622,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -28066,6 +28652,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -28095,6 +28682,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -28124,6 +28712,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -28169,6 +28758,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -28198,6 +28788,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -28262,48 +28853,76 @@ export namespace Prisma {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     topic?: TopicCreateNestedOneWithoutTournamentInput
+    commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentUncheckedCreateWithoutOrganizerInput = {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
+    commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentCreateOrConnectWithoutOrganizerInput = {
@@ -28647,6 +29266,87 @@ export namespace Prisma {
     data: TopicFollowCreateManyUserInput | TopicFollowCreateManyUserInput[]
   }
 
+  export type TournamentCreateWithoutCommissairesInput = {
+    id?: string
+    name: string
+    date: Date | string
+    endDate?: Date | string | null
+    location: string
+    address?: string | null
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    regionNAF?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
+    organizer: UserCreateNestedOneWithoutTournamentsInput
+    topic?: TopicCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentUncheckedCreateWithoutCommissairesInput = {
+    id?: string
+    name: string
+    date: Date | string
+    endDate?: Date | string | null
+    location: string
+    address?: string | null
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    regionNAF?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
+    organizerId: string
+    topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
+  }
+
+  export type TournamentCreateOrConnectWithoutCommissairesInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput>
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -28730,23 +29430,36 @@ export namespace Prisma {
     id?: StringFilter<"Tournament"> | string
     name?: StringFilter<"Tournament"> | string
     date?: DateTimeFilter<"Tournament"> | Date | string
+    endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
+    address?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
+    regionNAF?: StringNullableFilter<"Tournament"> | string | null
     description?: StringNullableFilter<"Tournament"> | string | null
     maxParticipants?: IntNullableFilter<"Tournament"> | number | null
     currentParticipants?: IntFilter<"Tournament"> | number
     preRegistered?: IntFilter<"Tournament"> | number
+    isTeam?: BoolFilter<"Tournament"> | boolean
+    coachsPerTeam?: IntFilter<"Tournament"> | number
     days?: StringNullableFilter<"Tournament"> | string | null
     totalMatches?: IntNullableFilter<"Tournament"> | number | null
     price?: FloatNullableFilter<"Tournament"> | number | null
+    priceMeals?: FloatNullableFilter<"Tournament"> | number | null
+    priceLodging?: FloatNullableFilter<"Tournament"> | number | null
     structure?: StringNullableFilter<"Tournament"> | string | null
     lodgingAtVenue?: BoolFilter<"Tournament"> | boolean
     ruleset?: StringNullableFilter<"Tournament"> | string | null
     mealsIncluded?: BoolFilter<"Tournament"> | boolean
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
+    platform?: StringNullableFilter<"Tournament"> | string | null
+    isNAF?: BoolFilter<"Tournament"> | boolean
+    isCDF?: BoolFilter<"Tournament"> | boolean
+    isCGO?: BoolFilter<"Tournament"> | boolean
+    isTGE?: BoolFilter<"Tournament"> | boolean
+    isTSC?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
   }
 
@@ -29054,6 +29767,22 @@ export namespace Prisma {
     topicId?: StringFilter<"TopicFollow"> | string
   }
 
+  export type TournamentUpsertWithWhereUniqueWithoutCommissairesInput = {
+    where: TournamentWhereUniqueInput
+    update: XOR<TournamentUpdateWithoutCommissairesInput, TournamentUncheckedUpdateWithoutCommissairesInput>
+    create: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput>
+  }
+
+  export type TournamentUpdateWithWhereUniqueWithoutCommissairesInput = {
+    where: TournamentWhereUniqueInput
+    data: XOR<TournamentUpdateWithoutCommissairesInput, TournamentUncheckedUpdateWithoutCommissairesInput>
+  }
+
+  export type TournamentUpdateManyWithWhereWithoutCommissairesInput = {
+    where: TournamentScalarWhereInput
+    data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCommissairesInput>
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -29081,6 +29810,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -29110,6 +29840,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -29154,6 +29885,71 @@ export namespace Prisma {
     create: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
   }
 
+  export type UserCreateWithoutCommissairesTournamentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput>
+  }
+
   export type UserUpsertWithoutTournamentsInput = {
     update: XOR<UserUpdateWithoutTournamentsInput, UserUncheckedUpdateWithoutTournamentsInput>
     create: XOR<UserCreateWithoutTournamentsInput, UserUncheckedCreateWithoutTournamentsInput>
@@ -29192,6 +29988,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -29221,6 +30018,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -29264,6 +30062,41 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutCommissairesTournamentsInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutCommissairesTournamentsInput, UserUncheckedUpdateWithoutCommissairesTournamentsInput>
+    create: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutCommissairesTournamentsInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutCommissairesTournamentsInput, UserUncheckedUpdateWithoutCommissairesTournamentsInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutCommissairesTournamentsInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCommissairesTournamentsInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringNullableFilter<"User"> | string | null
+    email?: StringNullableFilter<"User"> | string | null
+    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    image?: StringNullableFilter<"User"> | string | null
+    role?: StringFilter<"User"> | string
+    nafNumber?: StringNullableFilter<"User"> | string | null
+    region?: StringNullableFilter<"User"> | string | null
+    league?: StringNullableFilter<"User"> | string | null
+    signature?: StringNullableFilter<"User"> | string | null
+    isBanned?: BoolFilter<"User"> | boolean
+    banReason?: StringNullableFilter<"User"> | string | null
+    avatarFrame?: StringNullableFilter<"User"> | string | null
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -29614,6 +30447,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -29643,6 +30477,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -29729,48 +30564,76 @@ export namespace Prisma {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
+    commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentUncheckedCreateWithoutTopicInput = {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
     organizerId: string
+    commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
   }
 
   export type TournamentCreateOrConnectWithoutTopicInput = {
@@ -29853,6 +30716,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -29882,6 +30746,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -29947,48 +30812,76 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
+    commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TournamentUncheckedUpdateWithoutTopicInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
+    commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TopicCreateWithoutPostsInput = {
@@ -30055,6 +30948,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -30084,6 +30978,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -30143,6 +31038,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -30172,6 +31068,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -30283,6 +31180,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -30312,6 +31210,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -30368,6 +31267,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -30397,6 +31297,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -30442,6 +31343,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -30471,6 +31373,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -30505,6 +31408,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -30534,6 +31438,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -30604,6 +31509,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -30633,6 +31539,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUpsertWithoutUser2ConversationsInput = {
@@ -30673,6 +31580,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -30702,6 +31610,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -30772,6 +31681,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -30801,6 +31711,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -30877,6 +31788,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -30906,6 +31818,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -30935,6 +31848,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -30964,6 +31878,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -31046,6 +31961,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -31075,6 +31991,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -31180,6 +32097,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -31209,6 +32127,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -31243,6 +32162,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -31272,6 +32192,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -31356,6 +32277,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -31385,6 +32307,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -31425,6 +32348,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -31454,6 +32378,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type PostCreateWithoutReactionsInput = {
@@ -31516,6 +32441,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -31545,6 +32471,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -31629,6 +32556,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -31658,6 +32586,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -31687,6 +32616,7 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -31716,6 +32646,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -31741,25 +32672,6 @@ export namespace Prisma {
   export type UserUpdateManyWithWhereWithoutRoleConfigInput = {
     where: UserScalarWhereInput
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutRoleConfigInput>
-  }
-
-  export type UserScalarWhereInput = {
-    AND?: UserScalarWhereInput | UserScalarWhereInput[]
-    OR?: UserScalarWhereInput[]
-    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
-    id?: StringFilter<"User"> | string
-    name?: StringNullableFilter<"User"> | string | null
-    email?: StringNullableFilter<"User"> | string | null
-    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
-    image?: StringNullableFilter<"User"> | string | null
-    role?: StringFilter<"User"> | string
-    nafNumber?: StringNullableFilter<"User"> | string | null
-    region?: StringNullableFilter<"User"> | string | null
-    league?: StringNullableFilter<"User"> | string | null
-    signature?: StringNullableFilter<"User"> | string | null
-    isBanned?: BoolFilter<"User"> | boolean
-    banReason?: StringNullableFilter<"User"> | string | null
-    avatarFrame?: StringNullableFilter<"User"> | string | null
   }
 
   export type UserCreateWithoutFollowedTopicsInput = {
@@ -31789,6 +32701,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -31818,6 +32731,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -31900,6 +32814,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -31929,6 +32844,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type TopicUpsertWithoutFollowsInput = {
@@ -31998,23 +32914,36 @@ export namespace Prisma {
     id?: string
     name: string
     date: Date | string
+    endDate?: Date | string | null
     location: string
+    address?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
+    regionNAF?: string | null
     description?: string | null
     maxParticipants?: number | null
     currentParticipants?: number
     preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
     days?: string | null
     totalMatches?: number | null
     price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
     structure?: string | null
     lodgingAtVenue?: boolean
     ruleset?: string | null
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
   }
 
   export type TopicCreateManyAuthorInput = {
@@ -32177,71 +33106,112 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUpdateOneWithoutTournamentNestedInput
+    commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TournamentUncheckedUpdateWithoutOrganizerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
+    commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
   }
 
   export type TournamentUncheckedUpdateManyWithoutOrganizerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     currentParticipants?: IntFieldUpdateOperationsInput | number
     preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
     days?: NullableStringFieldUpdateOperationsInput | string | null
     totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
     price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
     structure?: NullableStringFieldUpdateOperationsInput | string | null
     lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
     ruleset?: NullableStringFieldUpdateOperationsInput | string | null
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TopicUpdateWithoutAuthorInput = {
@@ -32548,6 +33518,195 @@ export namespace Prisma {
 
   export type TopicFollowUncheckedUpdateManyWithoutUserInput = {
     topicId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TournamentUpdateWithoutCommissairesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
+    topic?: TopicUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutCommissairesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: StringFieldUpdateOperationsInput | string
+    topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
+  }
+
+  export type TournamentUncheckedUpdateManyWithoutCommissairesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserUpdateWithoutCommissairesTournamentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -32930,6 +34089,7 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -32959,6 +34119,7 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {

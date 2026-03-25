@@ -473,25 +473,49 @@ export async function createTopic(formData: FormData) {
   let tournamentData: any = null;
   if (forum?.isTournamentForum) {
     const tDateStr = formData.get("tDate") as string;
-    if (!tDateStr) throw new Error("La date du tournoi est obligatoire pour un sujet de tournoi.");
+    const tEndDateStr = formData.get("tEndDate") as string;
+    if (!tDateStr) throw new Error("La date de début du tournoi est obligatoire.");
     
+    const startDate = new Date(tDateStr);
+    const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+    const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+    const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
+
     tournamentData = {
       name: title,
-      date: new Date(tDateStr),
+      date: startDate,
+      endDate: endDate,
       location: formData.get("tLocation") as string || "Lieu non précisé",
+      address: formData.get("tAddress") as string,
       ville: formData.get("tVille") as string,
       departement: formData.get("tDept") as string,
       region: formData.get("tRegion") as string,
+      regionNAF: formData.get("tRegionNAF") as string,
       maxParticipants: parseInt(formData.get("tMax") as string) || null,
+      isTeam: formData.get("isTeam") === "on",
+      coachsPerTeam: parseInt(formData.get("tCoachsPerTeam") as string) || 1,
       price: parseFloat(formData.get("tPrice") as string) || null,
-      days: formData.get("tDays") as string || "1",
+      priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
+      priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
+      days: calculatedDays.toString(),
       structure: formData.get("tStructure") as string,
-      ruleset: formData.get("tRuleset") as string || "NAF",
+      ruleset: formData.get("tRuleset") as string,
       gameEdition: formData.get("tGame") as string || "BB20",
+      platform: formData.get("tPlatform") as string || "Tabletop",
       mealsIncluded: formData.get("tMeals") === "on",
       lodgingAtVenue: formData.get("tLodging") === "on",
       fridayArrival: formData.get("tFriday") === "on",
-      organizerId: session.user.id
+      isNAF: formData.get("isNAF") === "on",
+      isCDF: formData.get("isCDF") === "on",
+      isCGO: formData.get("isCGO") === "on",
+      isTGE: formData.get("isTGE") === "on",
+      isTSC: formData.get("isTSC") === "on",
+      organizerId: session.user.id,
+      commissaires: {
+        connect: commissaireIds.map(id => ({ id }))
+      }
     };
   }
 
@@ -1064,3 +1088,134 @@ export async function toggleTopicLock(topicId: string) {
   revalidatePath(`/forum/${topic.forumId}`);
   return { success: true };
 }
+
+/**
+ * Rechercher des utilisateurs par leur nom.
+ */
+export async function searchUsersAction(query: string) {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+  if (!query || query.length < 2) return [];
+
+  const users = await prisma.user.findMany({
+    where: {
+      name: { contains: query },
+      isBanned: false
+    },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      avatarFrame: true
+    },
+    take: 8
+  });
+
+  return users;
+}
+
+/**
+ * Mettre à jour les informations d'un tournoi.
+ * Seul le créateur, les commissaires ou la modération peuvent modifier.
+ */
+export async function updateTournament(tournamentId: string, topicId: string, firstPostId: string, formData: FormData) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non autorisé.");
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: { commissaires: true }
+  });
+
+  if (!tournament) throw new Error("Tournoi introuvable.");
+
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+  const isMod = isModerator(session.user.role);
+
+  if (!isOrganizer && !isCommissaire && !isMod) {
+    throw new Error("Vous n'avez pas les droits pour modifier ce tournoi.");
+  }
+
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+  const tDateStr = formData.get("tDate") as string;
+  const tEndDateStr = formData.get("tEndDate") as string;
+
+  if (!title || !content || !tDateStr) {
+    throw new Error("Titre, contenu et date de début sont obligatoires.");
+  }
+
+  const startDate = new Date(tDateStr);
+  const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
+  
+  // Validation des dates (fail-safe)
+  if (endDate < startDate) {
+    throw new Error("La date de fin ne peut pas être avant la date de début.");
+  }
+  
+  const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+  const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+  // Mise à jour du tournoi
+  const updateData: any = {
+    name: title,
+    date: startDate,
+    endDate: endDate,
+    address: formData.get("tAddress") as string,
+    ville: formData.get("tVille") as string,
+    departement: formData.get("tDept") as string,
+    region: formData.get("tRegion") as string,
+    regionNAF: formData.get("tRegionNAF") as string,
+    maxParticipants: parseInt(formData.get("tMax") as string) || null,
+    isTeam: formData.get("isTeam") === "on",
+    coachsPerTeam: parseInt(formData.get("tCoachsPerTeam") as string) || (formData.get("isTeam") === "on" ? 1 : null),
+    price: parseFloat(formData.get("tPrice") as string) || null,
+    priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
+    priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
+    days: calculatedDays.toString(),
+    structure: formData.get("tStructure") as string,
+    ruleset: formData.get("tRuleset") as string,
+    gameEdition: formData.get("tGame") as string,
+    platform: formData.get("tPlatform") as string,
+    mealsIncluded: formData.get("tMeals") === "on",
+    lodgingAtVenue: formData.get("tLodging") === "on",
+    fridayArrival: formData.get("tFriday") === "on",
+    isNAF: formData.get("isNAF") === "on",
+    isCDF: formData.get("isCDF") === "on",
+    isCGO: formData.get("isCGO") === "on",
+    isTGE: formData.get("isTGE") === "on",
+    isTSC: formData.get("isTSC") === "on",
+  };
+
+  // Seul l'organisateur (ou modérateur) peut changer les commissaires
+  if (isOrganizer || isMod) {
+    const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
+    updateData.commissaires = {
+      set: commissaireIds.map(id => ({ id }))
+    };
+  }
+
+  await prisma.$transaction([
+    prisma.tournament.update({
+      where: { id: tournamentId },
+      data: updateData
+    }),
+    prisma.topic.update({
+      where: { id: topicId },
+      data: { title }
+    }),
+    prisma.post.update({
+      where: { id: firstPostId },
+      data: { content }
+    })
+  ]);
+
+  revalidatePath(`/forum/topic/${topicId}`);
+  // On récupère le forumId du topic si possible pour revalider la liste
+  const topic = await prisma.topic.findUnique({ where: { id: topicId }, select: { forumId: true }});
+  if (topic) revalidatePath(`/forum/${topic.forumId}`);
+  
+  redirect(`/forum/topic/${topicId}`);
+}
+

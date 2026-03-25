@@ -16,6 +16,9 @@ interface PostItemProps {
   safeCurrentPage: number;
   regionLabels: Record<string, string>;
   isFirstPostAlwaysVisible?: boolean;
+  isTournament?: boolean;
+  tournamentId?: string;
+  firstPostId?: string;
 }
 
 const PostItem: React.FC<PostItemProps> = ({ 
@@ -27,7 +30,10 @@ const PostItem: React.FC<PostItemProps> = ({
   quoteStatusMap, 
   safeCurrentPage,
   regionLabels,
-  isFirstPostAlwaysVisible = false
+  isFirstPostAlwaysVisible = false,
+  isTournament = false,
+  tournamentId,
+  firstPostId
 }) => {
   return (
     <div 
@@ -245,6 +251,9 @@ const PostItem: React.FC<PostItemProps> = ({
               isModerator={isUserModerator}
               topicId={topicId}
               isModerated={post.isModerated}
+              isTournament={isTournament}
+              tournamentId={tournamentId}
+              isFirstPost={post.id === firstPostId}
             />
           </>
         )}

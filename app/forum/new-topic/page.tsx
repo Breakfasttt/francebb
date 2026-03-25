@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, MessageSquarePlus } from "lucide-react";
 import Link from "next/link";
+import "../page.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { createTopic } from "../actions";
@@ -9,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { parseInlineBBCode } from "@/lib/bbcode";
+import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
 
 /**
  * Page de création d'un sujet classique.
@@ -85,38 +87,12 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
             </div>
           </div>
 
-          <aside className="forum-sidebar">
-            <div className="sidebar-sticky-inner">
-              <div className="forum-widget" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem', margin: 0 }}>
-                  <MessageSquarePlus size={16} /> Publication
-                </h3>
-
-                {userCanStick && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
-                      <input type="checkbox" name="isSticky" value="true" style={{ width: '16px', height: '16px' }} />
-                      <span>Épingler (Post-it)</span>
-                    </label>
-                    
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer' }}>
-                      <input type="checkbox" name="isLocked" value="true" style={{ width: '16px', height: '16px' }} />
-                      <span>Verrouiller le sujet</span>
-                    </label>
-                  </div>
-                )}
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.5rem' }}>
-                  <button type="submit" className="widget-button" style={{ width: '100%', background: 'var(--primary)', padding: '0.8rem', fontSize: '1.1rem', justifyContent: 'center' }}>
-                    Créer le sujet
-                  </button>
-                  <Link href={`/forum/${forumId}`} className="widget-button secondary-btn" style={{ width: '100%', justifyContent: 'center' }}>
-                    Annuler
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </aside>
+          <CreateTopicSidebar 
+            forumId={forumId} 
+            userRole={session.user.role} 
+            submitLabel="Créer le sujet" 
+            icon={<MessageSquarePlus size={18} />}
+          />
         </div>
       </form>
    </main>

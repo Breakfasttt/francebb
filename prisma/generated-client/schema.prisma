@@ -56,15 +56,16 @@ model User {
   topics      Topic[]
   posts       Post[]
 
-  user1Conversations Conversation[]   @relation("User1Conversations")
-  user2Conversations Conversation[]   @relation("User2Conversations")
-  privateMessages    PrivateMessage[] @relation("SentPrivateMessages")
-  topicViews         TopicView[]
-  mentionsMade       Mention[]        @relation("MentionsMade")
-  mentionsReceived   Mention[]        @relation("MentionsReceived")
-  moderatedPosts     Post[]           @relation("ModeratedPosts")
-  postReactions      PostReaction[]
-  followedTopics     TopicFollow[]
+  user1Conversations      Conversation[]   @relation("User1Conversations")
+  user2Conversations      Conversation[]   @relation("User2Conversations")
+  privateMessages         PrivateMessage[] @relation("SentPrivateMessages")
+  topicViews              TopicView[]
+  mentionsMade            Mention[]        @relation("MentionsMade")
+  mentionsReceived        Mention[]        @relation("MentionsReceived")
+  moderatedPosts          Post[]           @relation("ModeratedPosts")
+  postReactions           PostReaction[]
+  followedTopics          TopicFollow[]
+  commissairesTournaments Tournament[]     @relation("TournamentCommissaires")
 }
 
 model VerificationToken {
@@ -76,22 +77,30 @@ model VerificationToken {
 }
 
 model Tournament {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
   date        DateTime
+  endDate     DateTime?
   location    String
+  address     String?
   ville       String?
   departement String?
   region      String?
+  regionNAF   String?
   description String?
 
   maxParticipants     Int?
   currentParticipants Int  @default(0)
   preRegistered       Int  @default(0)
 
+  isTeam        Boolean @default(false)
+  coachsPerTeam Int     @default(1)
+
   days         String? @default("1")
   totalMatches Int?
   price        Float?
+  priceMeals   Float?
+  priceLodging Float?
 
   structure      String? // e.g., "Resurrection", "Evolutif"
   lodgingAtVenue Boolean @default(false)
@@ -99,11 +108,19 @@ model Tournament {
   mealsIncluded  Boolean @default(false)
   fridayArrival  Boolean @default(false)
   gameEdition    String? // e.g., "BB20", "BB3", "BB7"
+  platform       String? @default("Tabletop")
+
+  isNAF Boolean @default(false)
+  isCDF Boolean @default(false)
+  isCGO Boolean @default(false)
+  isTGE Boolean @default(false)
+  isTSC Boolean @default(false)
 
   organizerId String
   organizer   User   @relation(fields: [organizerId], references: [id])
 
-  topic Topic?
+  topic        Topic?
+  commissaires User[] @relation("TournamentCommissaires")
 }
 
 model Category {

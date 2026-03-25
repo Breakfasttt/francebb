@@ -46,6 +46,8 @@ interface TopicSidebarProps {
   currentUserId?: string;
   views?: number;
   isArchived?: boolean;
+  isTournament?: boolean;
+  tournamentId?: string;
 }
 
 export default function TopicSidebar({ 
@@ -63,7 +65,9 @@ export default function TopicSidebar({
   authorId = "",
   currentUserId = "",
   views = 0,
-  isArchived = false
+  isArchived = false,
+  isTournament = false,
+  tournamentId
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -73,6 +77,14 @@ export default function TopicSidebar({
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+
+  const handleEditTitleClick = () => {
+    if (isTournament && tournamentId) {
+      router.push(`/forum/edit-tournament/${tournamentId}`);
+    } else {
+      setShowEditTitleModal(true);
+    }
+  };
 
 
   const handleToggleArchive = () => {
@@ -226,7 +238,7 @@ export default function TopicSidebar({
 
             {canEditTitle && (
               <button 
-                onClick={() => setShowEditTitleModal(true)}
+                onClick={handleEditTitleClick}
                 className="widget-button secondary-btn" 
                 style={{ textAlign: 'left', padding: '8px 12px' }}
               >

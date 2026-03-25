@@ -19,9 +19,26 @@ interface PostActionsProps {
   topicId: string;
   onQuote?: (quote: string) => void;
   isModerated?: boolean;
+  isTournament?: boolean;
+  tournamentId?: string;
+  isFirstPost?: boolean;
 }
 
-export default function PostActions({ postId, authorId, authorName, content, initialReactions, currentUserId, isModerator, topicId, onQuote, isModerated }: PostActionsProps) {
+export default function PostActions({ 
+  postId, 
+  authorId, 
+  authorName, 
+  content, 
+  initialReactions, 
+  currentUserId, 
+  isModerator, 
+  topicId, 
+  onQuote, 
+  isModerated,
+  isTournament = false,
+  tournamentId,
+  isFirstPost = false
+}: PostActionsProps) {
   const canEdit = currentUserId === authorId || isModerator;
   const isAuthor = currentUserId === authorId;
 
@@ -130,9 +147,9 @@ export default function PostActions({ postId, authorId, authorName, content, ini
           {/* Modifier */}
           {canEdit && (
             <Link 
-              href={`/forum/post/${postId}/edit`} 
+              href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
               className="widget-button hover-brightness" 
-              title="Modifier le message"
+              title={isTournament && isFirstPost ? "Modifier le tournoi" : "Modifier le message"}
               style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'white', border: 'none' }}
             >
               <Pencil size={16} />

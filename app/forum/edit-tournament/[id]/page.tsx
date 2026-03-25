@@ -1,45 +1,62 @@
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
-import { ArrowLeft, Trophy, Calendar, MapPin, Users, Coins, Monitor, Shield, Home, Utensils, BedDouble, Sun } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import "../page.css";
+import "../../page.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
-import { createTopic } from "../actions";
 import { prisma } from "@/lib/prisma";
-import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import TournamentForm from "@/app/forum/component/TournamentForm";
 
 /**
- * Page de création d'un sujet de tournoi.
+ * Page d'édition d'un tournoi existant.
  */
 
-export default async function NewTournamentPage({ searchParams }: { searchParams: Promise<{ forumId?: string }> }) {
-  const { forumId } = await searchParams;
-  if (!forumId) notFound();
-
-  const forum = await prisma.forum.findUnique({
-    where: { id: forumId },
+export default async function EditTournamentPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  
+  const tournament = await prisma.tournament.findUnique({
+    where: { id },
     include: {
-      category: true,
-      parentForum: {
-        include: { category: true }
+      commissaires: true,
+      topic: {
+        include: {
+          forum: {
+            include: {
+              category: true,
+              parentForum: { include: { category: true } }
+            }
+          },
+          posts: {
+            orderBy: { createdAt: 'asc' },
+            take: 1
+          }
+        }
       }
     }
   });
 
-  if (!forum || !forum.isTournamentForum) notFound();
+  if (!tournament || !tournament.topic) notFound();
 
   const session = await auth();
   if (!session?.user?.id) {
-    redirect("/forum");
+    redirect(`/forum/topic/${tournament.topic.id}`);
   }
 
-  const userCanStick = isModerator(session.user.role);
+  // Vérifier les droits (Auteur ou Commissaire ou Modérateur)
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+  const isMod = isModerator(session.user.role);
 
-  // Charger toutes les données de référence nécessaires
+  if (!isOrganizer && !isCommissaire && !isMod) {
+    redirect(`/forum/topic/${tournament.topic.id}`);
+  }
+
+  const firstPost = tournament.topic.posts[0];
+  if (!firstPost) notFound();
+
+  // Charger toutes les données de référence
   const [franceRegions, gameEditions, departments, tournamentTypes, platforms, coachRegions] = await Promise.all([
     prisma.referenceData.findMany({ where: { group: 'REGION_FRANCE', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'GAME_EDITION', isActive: true }, orderBy: { order: 'asc' } }),
@@ -49,6 +66,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
     prisma.referenceData.findMany({ where: { group: 'COACH_REGION', isActive: true }, orderBy: { order: 'asc' } }),
   ]);
 
+  const forum = tournament.topic.forum;
   const breadcrumbs = [];
   if (forum.parentForum) {
     if (forum.parentForum.category) breadcrumbs.push({ label: forum.parentForum.category.name, isCategory: true });
@@ -57,25 +75,26 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
     breadcrumbs.push({ label: forum.category.name, isCategory: true });
   }
   breadcrumbs.push({ label: forum.name, href: `/forum/${forum.id}` });
-  breadcrumbs.push({ label: "Annoncer un tournoi" });
+  breadcrumbs.push({ label: tournament.topic.title, href: `/forum/topic/${tournament.topic.id}` });
+  breadcrumbs.push({ label: "Modifier le tournoi" });
 
   return (
     <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <Link href={`/forum/${forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
+        <Link href={`/forum/topic/${tournament.topic.id}`} className="back-button" title="Retour au sujet" style={{ position: 'absolute', left: 0 }}>
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0 }}>Annoncer un <span>tournoi</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
+          <h1 style={{ margin: 0 }}>Modifier le <span>tournoi</span></h1>
+          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.topic.title) }} /></p>
         </div>
       </header>
  
       <ForumBreadcrumbs items={breadcrumbs} />
 
       <TournamentForm 
-        forumId={forumId}
-        userCanStick={userCanStick}
+        forumId={forum.id}
+        userCanStick={isMod}
         referenceData={{
           franceRegions,
           gameEditions,
@@ -83,6 +102,13 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
           tournamentTypes,
           platforms,
           coachRegions
+        }}
+        initialData={{
+          ...tournament,
+          topicId: tournament.topic.id,
+          firstPostId: firstPost.id,
+          postContent: firstPost.content,
+          isOrganizer: isOrganizer // Pour restreindre l'édition des commissaires
         }}
       />
    </main>

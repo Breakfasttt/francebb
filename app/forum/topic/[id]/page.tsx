@@ -213,6 +213,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             quoteStatusMap={quoteStatusMap}
             safeCurrentPage={safeCurrentPage}
             regionLabels={regionLabels}
+            isTournament={!!topic.tournament}
+            tournamentId={topic.tournament?.id}
+            firstPostId={topic.posts[0]?.id}
           />
         ))}
       </div>
@@ -251,6 +254,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         currentUserId={currentUserId}
         views={displayViews}
         isArchived={topic.isArchived}
+        isTournament={!!topic.tournament}
+        tournamentId={topic.tournament?.id}
       />
     </div>
   </main>
