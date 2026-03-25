@@ -1,12 +1,25 @@
-import { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { updateProfile } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import Modal from "@/common/components/Modal/Modal";
+import RankSelect from "@/common/components/RankSelect/RankSelect";
 import Toast from "@/common/components/Toast/Toast";
+import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
-import { Loader2, Upload } from "lucide-react";
+import { Dices, Loader2, Sparkles, Upload } from "lucide-react";
 import { useRef, useState, useTransition } from "react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
+
+const DICEBEAR_STYLES = [
+  { id: "adventurer", label: "Aventurier" },
+  { id: "avataaars", label: "Moderne" },
+  { id: "bottts", label: "Robot" },
+  { id: "fun-emoji", label: "Smiley" },
+  { id: "lorelei", label: "Lorelei" },
+  { id: "open-peeps", label: "Minimaliste" },
+  { id: "personas", label: "Humain" },
+  { id: "pixel-art", label: "Pixel Art" },
+];
 
 interface ProfileEditProps {
   user: any;
@@ -24,6 +37,10 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     signature: user.signature || "",
     avatarFrame: user.avatarFrame || "auto",
   });
+
+  const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
+  const [genSeed, setGenSeed] = useState(user.name || "");
+  const [genStyle, setGenStyle] = useState("avataaars");
 
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
@@ -65,6 +82,20 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
+  };
+
+  const handleRandomAvatar = () => {
+    const style = DICEBEAR_STYLES[Math.floor(Math.random() * DICEBEAR_STYLES.length)].id;
+    const seed = Math.random().toString(36).substring(7);
+    const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
+    setFormData(prev => ({ ...prev, image: url }));
+    showToast("Avatar généré !", "success");
+  };
+
+  const handleGenerateApply = () => {
+    const url = `https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`;
+    setFormData(prev => ({ ...prev, image: url }));
+    setIsGeneratorOpen(false);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -116,86 +147,285 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           onChange={handleImageUpload}
         />
 
-        <div className="form-grid">
-          <div className="form-group">
-            <label>Pseudo</label>
-            <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
-          </div>
+        <div className="profile-edit-layout-rows">
+          <div className="form-row-box">
+            <div className="form-group">
+              <label>Pseudo</label>
+              <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
+            </div>
 
-          <div className="form-group">
-            <label>Numéro NAF</label>
-            <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
-          </div>
+            <div className="form-group">
+              <label>Numéro NAF</label>
+              <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
+            </div>
 
-          <div className="form-group">
-            <label>Région de tournoi</label>
-            <select name="region" value={formData.region} onChange={handleChange}>
-              {regions.map(r => (
-                <option key={r.value} value={r.value}>{r.label}</option>
-              ))}
-            </select>
-          </div>
+            <div className="form-group">
+              <label>Région de tournoi</label>
+              <select name="region" value={formData.region} onChange={handleChange}>
+                {regions.map(r => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-group">
-            <label>Ligue</label>
-            <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
-          </div>
-
-          <div className="form-group">
-            <label>Contour d'avatar</label>
-            <select name="avatarFrame" value={formData.avatarFrame} onChange={handleChange}>
-              <option value="auto">Automatique (basé sur mes messages)</option>
-              <option value="none">Aucun contour</option>
-              {postCount >= 100 && <option value="bronze">Bronze (Déverrouillé)</option>}
-              {postCount >= 100 && postCount < 100 && <option disabled>Bronze (Verrouillé)</option>}
-              
-              {postCount >= 300 ? <option value="silver">Argent (Déverrouillé)</option> : <option disabled>Argent (Verrouillé à 300 messages)</option>}
-              {postCount >= 700 ? <option value="gold">Or (Déverrouillé)</option> : <option disabled>Or (Verrouillé à 700 messages)</option>}
-              {postCount >= 1000 ? <option value="platinum">Platine (Déverrouillé)</option> : <option disabled>Platine (Verrouillé à 1000 messages)</option>}
-              {postCount >= 2000 ? <option value="diamond">Diamant (Déverrouillé)</option> : <option disabled>Diamant (Verrouillé à 2000 messages)</option>}
-              {postCount >= 4000 ? <option value="master">Master (Déverrouillé)</option> : <option disabled>Master (Verrouillé à 4000 messages)</option>}
-              {postCount >= 10000 ? <option value="grand-master">Grand Master (Déverrouillé)</option> : <option disabled>Grand Master (Verrouillé à 10000 messages)</option>}
-            </select>
-          </div>
-
-          <div className="form-group full-width">
-            <label>URL de l'avatar</label>
-            <div className="avatar-input-group">
-              <input
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                placeholder="https://..."
-                style={{ flex: 1 }}
-              />
-              <button
-                type="button"
-                className="upload-btn"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-              >
-                {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                {isUploading ? "..." : "Upload"}
-              </button>
+            <div className="form-group">
+              <label>Ligue</label>
+              <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
             </div>
           </div>
 
-          <div className="form-group full-width">
-            <label>Signature du forum (250 car. max)</label>
-            <BBCodeEditor
-              name="signature"
-              defaultValue={user.signature || ""}
-              maxLength={250}
-              rows={4}
-              onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
-            />
+
+          <div className="full-width avatar-studio-box">
+            <div className="studio-preview-pane">
+              <UserAvatar
+                image={formData.image}
+                selectedRank={formData.avatarFrame as Rank}
+                size={140}
+                postCount={postCount}
+              />
+              <div className="preview-label">Aperçu</div>
+            </div>
+
+            <div className="studio-controls-pane">
+              <div className="form-group">
+                <label>URL de l'avatar</label>
+                <div className="avatar-input-group">
+                  <input
+                    name="image"
+                    value={formData.image}
+                    onChange={handleChange}
+                    placeholder="https://..."
+                    style={{ flex: 1 }}
+                  />
+                  <button
+                    type="button"
+                    className="upload-btn dicebear-btn"
+                    onClick={handleRandomAvatar}
+                    title="Aléatoire"
+                  >
+                    <Dices size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    className="upload-btn dicebear-btn sparkles-btn"
+                    onClick={() => setIsGeneratorOpen(true)}
+                    title="Personnaliser"
+                  >
+                    <Sparkles size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    className="upload-btn"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isUploading}
+                  >
+                    {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Contour d'avatar</label>
+                <RankSelect
+                  value={formData.avatarFrame}
+                  onSelect={(frame) => setFormData(prev => ({ ...prev, avatarFrame: frame }))}
+                  postCount={postCount}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="form-row-box no-bg">
+            <div className="form-group full-width">
+              <label>Signature du forum (250 car. max)</label>
+              <BBCodeEditor
+                name="signature"
+                defaultValue={user.signature || ""}
+                maxLength={250}
+                rows={4}
+                onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
+              />
+            </div>
           </div>
         </div>
 
-        <button type="submit" className="btn-primary" disabled={isPending}>
-          {isPending ? "Enregistrement..." : "Mettre à jour mon profil"}
-        </button>
+        <div className="form-actions-edit">
+          <button type="submit" className="btn-save" disabled={isPending}>
+            {isPending ? <Loader2 size={18} className="animate-spin" /> : "Sauvegarder le profil"}
+          </button>
+        </div>
       </form>
+
+      <Modal
+        isOpen={isGeneratorOpen}
+        onClose={() => setIsGeneratorOpen(false)}
+        onConfirm={handleGenerateApply}
+        title="Générateur d'Avatar Dicebear"
+        confirmText="Appliquer"
+      >
+        <div className="avatar-gen-modal">
+          <div className="gen-preview">
+            <img src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`} alt="Preview" />
+          </div>
+
+          <div className="gen-field">
+            <label>Seed (Texte de génération)</label>
+            <input
+              type="text"
+              value={genSeed}
+              onChange={(e) => setGenSeed(e.target.value)}
+              placeholder="Ex: votre pseudo"
+            />
+          </div>
+
+          <div className="gen-styles-grid">
+            {DICEBEAR_STYLES.map(style => (
+              <button
+                key={style.id}
+                className={`style-item ${genStyle === style.id ? 'active' : ''}`}
+                onClick={() => setGenStyle(style.id)}
+              >
+                <img src={`https://api.dicebear.com/7.x/${style.id}/svg?seed=preview`} alt={style.label} />
+                <span>{style.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </Modal>
+
+      <style jsx>{`
+            .upload-btn.dicebear-btn {
+                background: rgba(255, 255, 255, 0.05);
+                color: #aaa;
+                padding: 0 10px;
+            }
+            .upload-btn.dicebear-btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
+            .sparkles-btn {
+                color: var(--accent) !important;
+            }
+
+            .avatar-studio-box {
+              display: flex;
+              gap: 2.5rem;
+              background: rgba(0,0,0,0.2);
+              padding: 2rem;
+              border-radius: 16px;
+              border: 1px solid var(--glass-border);
+              margin-bottom: 0.5rem;
+            }
+
+            .studio-preview-pane {
+              flex-shrink: 0;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 1rem;
+              padding-right: 2.5rem;
+              border-right: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .studio-controls-pane {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              gap: 1.5rem;
+              justify-content: center;
+            }
+
+            .preview-label {
+              font-size: 0.65rem;
+              text-transform: uppercase;
+              letter-spacing: 0.12em;
+              color: #555;
+              font-weight: 900;
+            }
+            
+            .avatar-gen-modal {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 0.5rem;
+            }
+            .gen-preview {
+                display: flex;
+                justify-content: center;
+                background: rgba(0,0,0,0.2);
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            .gen-preview img {
+                width: 120px;
+                height: 120px;
+                border-radius: 12px;
+                background: white;
+            }
+            .gen-field {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .gen-field label { font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase; }
+            .gen-field input {
+                background: rgba(255,255,255,0.05);
+                border: 1px solid var(--glass-border);
+                padding: 0.8rem;
+                border-radius: 8px;
+                color: white;
+                outline: none;
+            }
+            .gen-styles-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            .style-item {
+                background: rgba(255,255,255,0.03);
+                border: 2px solid transparent;
+                padding: 8px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.2s;
+            }
+            .style-item img { width: 40px; height: 40px; border-radius: 4px; background: white; }
+            .style-item span { font-size: 0.75rem; color: #888; font-weight: 600; }
+            .style-item:hover { background: rgba(255,255,255,0.08); }
+            .style-item.active {
+                border-color: var(--accent);
+                background: rgba(255, 215, 0, 0.05);
+            }
+            .style-item.active span { color: var(--accent); }
+            
+            .form-actions-edit {
+                margin-top: 0;
+                display: flex;
+                justify-content: center;
+            }
+            .btn-save {
+                background: var(--primary);
+                color: white;
+                border: none;
+                padding: 1rem 2rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            .btn-save:hover:not(:disabled) {
+                background: #d42020;
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(194, 29, 29, 0.3);
+            }
+            .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+        `}</style>
 
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
@@ -203,7 +433,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
 
       <style jsx>{`
         .profile-edit-container {
-          padding: 2rem;
+          padding: 1.5rem 2rem;
         }
         .section-title {
           margin: 0 0 2rem 0;
@@ -213,14 +443,34 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .profile-edit-form {
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: 0.8rem;
+          max-width: 900px;
+          margin: 0 auto;
+          width: 100%;
         }
-        .form-grid {
+        .profile-edit-layout-rows {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          width: 100%;
+        }
+        .form-row-box, .avatar-studio-box {
           display: grid;
           grid-template-columns: 1fr 1fr;
+          gap: 2.5rem;
+          background: rgba(0,0,0,0.18);
+          padding: 2rem;
+          border-radius: 16px;
+          border: 1px solid var(--glass-border);
           width: 100%;
-          gap: 1.5rem;
-          margin-bottom: 1rem;
+        }
+        .form-row-box.no-bg {
+          background: transparent;
+          border: none;
+          padding: 0;
+        }
+        .avatar-studio-box {
+          grid-template-columns: 180px 1fr;
         }
         .form-group {
           display: flex;

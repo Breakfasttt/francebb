@@ -20,6 +20,7 @@ export async function GET(
         league: true,
         signature: true,
         isBanned: true,
+        avatarFrame: true,
       }
     });
 

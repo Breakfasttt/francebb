@@ -10,9 +10,22 @@ interface ModalProps {
   title: string;
   message?: string;
   children?: React.ReactNode;
+  confirmText?: string;
+  cancelText?: string;
+  variant?: "danger" | "primary";
 }
 
-export default function Modal({ isOpen, onClose, onConfirm, title, message, children }: ModalProps) {
+export default function Modal({ 
+  isOpen, 
+  onClose, 
+  onConfirm, 
+  title, 
+  message, 
+  children,
+  confirmText,
+  cancelText,
+  variant = "primary"
+}: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -26,15 +39,19 @@ export default function Modal({ isOpen, onClose, onConfirm, title, message, chil
     <div className="modal-overlay">
       <div className="modal-content">
         <h2>{title}</h2>
-        {children ? children : (
-          <>
-            <p>{message}</p>
-            <div className="modal-actions">
-              <button onClick={onClose} className="btn-secondary">Annuler</button>
-              <button onClick={onConfirm} className="btn-danger">Confirmer</button>
-            </div>
-          </>
-        )}
+        {message && <p>{message}</p>}
+        {children}
+        
+        <div className="modal-actions">
+          <button onClick={onClose} className="btn-secondary">
+            {cancelText || "Annuler"}
+          </button>
+          {onConfirm && (
+            <button onClick={onConfirm} className={`btn-confirm ${variant === 'danger' ? 'btn-danger' : 'btn-primary'}`}>
+              {confirmText || "Confirmer"}
+            </button>
+          )}
+        </div>
       </div>
 
       <style jsx>{`
@@ -100,6 +117,31 @@ export default function Modal({ isOpen, onClose, onConfirm, title, message, chil
           background: #c21d1d;
           border: none;
           color: white;
+          padding: 0.8rem 1.5rem;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: 0.2s;
+        }
+
+        .btn-primary {
+          background: var(--accent, #ffd700);
+          border: none;
+          color: black;
+          padding: 0.8rem 1.5rem;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 700;
+          transition: 0.2s;
+        }
+
+        .btn-primary:hover {
+          background: #fffb00;
+          filter: brightness(1.1);
+        }
+
+        .btn-confirm {
+          border: none;
           padding: 0.8rem 1.5rem;
           border-radius: 8px;
           cursor: pointer;

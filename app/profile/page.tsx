@@ -32,8 +32,6 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ postCount: 0 });
-  const [debugPostCount, setDebugPostCount] = useState<number | null>(null);
-  const [debugBanned, setDebugBanned] = useState<boolean | null>(null);
   const [activities, setActivities] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<ProfileTab>("followed");
 
@@ -129,12 +127,12 @@ export default function ProfilePage() {
 
       <div className="profile-content-layout">
         <ProfileSidebar 
-          postCount={debugPostCount !== null ? debugPostCount : stats.postCount}
+          user={user} 
+          postCount={stats.postCount}
           isOwnProfile={true}
           activeTab={activeTab}
-          isModerator={isModerator}
-          user={{ ...user, isBanned: debugBanned !== null ? debugBanned : user?.isBanned }}
           onTabChange={(tab: any) => setActiveTab(tab as ProfileTab)}
+          isModerator={isModerator}
         />
 
         <div className="profile-main-content">
@@ -230,75 +228,6 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
-      {/* Debug Ranks Overlay */}
-      <div className="debug-ranks-overlay">
-        <p>Debug Rangs Avatar</p>
-        <div className="debug-buttons">
-          <button onClick={() => setDebugPostCount(0)}>Raw</button>
-          <button onClick={() => setDebugPostCount(150)}>Bronze</button>
-          <button onClick={() => setDebugPostCount(400)}>Silver</button>
-          <button onClick={() => setDebugPostCount(850)}>Gold</button>
-          <button onClick={() => setDebugPostCount(1500)}>Plat</button>
-          <button onClick={() => setDebugPostCount(3000)}>Diamond</button>
-          <button onClick={() => setDebugPostCount(6000)}>Master</button>
-          <button onClick={() => setDebugPostCount(15000)}>GM</button>
-          <button onClick={() => setDebugBanned(prev => !prev)} className={debugBanned ? "debug-active" : ""}>BAN</button>
-          <button onClick={() => { setDebugPostCount(null); setDebugBanned(null); }} className="debug-reset">Reset</button>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .debug-ranks-overlay {
-          position: fixed;
-          bottom: 20px;
-          right: 20px;
-          background: #1a1a20;
-          border: 1px solid var(--glass-border);
-          padding: 1rem;
-          border-radius: 12px;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-          z-index: 9999;
-          font-family: var(--font-outfit);
-        }
-        .debug-ranks-overlay p {
-          margin: 0 0 10px 0;
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          font-weight: 800;
-          color: #555;
-          letter-spacing: 0.05em;
-        }
-        .debug-buttons {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 6px;
-        }
-        .debug-buttons button {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: #888;
-          padding: 6px 10px;
-          border-radius: 6px;
-          font-size: 0.75rem;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .debug-buttons button:hover {
-          background: rgba(255,255,255,0.1);
-          color: white;
-          border-color: #555;
-        }
-        .debug-reset {
-          background: rgba(194, 29, 29, 0.1) !important;
-          color: #c21d1d !important;
-          border-color: rgba(194, 29, 29, 0.2) !important;
-        }
-        .debug-active {
-          background: #c21d1d !important;
-          color: white !important;
-          border-color: #f00 !important;
-        }
-      `}</style>
     </main>
   );
 }
