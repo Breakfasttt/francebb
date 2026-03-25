@@ -231,7 +231,9 @@ exports.Prisma.ConversationScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   user1Id: 'user1Id',
-  user2Id: 'user2Id'
+  user2Id: 'user2Id',
+  user1DeletedAt: 'user1DeletedAt',
+  user2DeletedAt: 'user2DeletedAt'
 };
 
 exports.Prisma.PrivateMessageScalarFieldEnum = {

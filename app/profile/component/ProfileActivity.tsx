@@ -12,14 +12,6 @@ interface ProfileActivityProps {
 }
 
 export default function ProfileActivity({ activities, userName }: ProfileActivityProps) {
-  if (activities.length === 0) {
-    return (
-      <div className="premium-card activity-empty">
-        <p>Aucune activité récente trouvée pour {userName}.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="premium-card profile-activity-card-global fade-in">
       <div className="activity-box-header">
@@ -28,7 +20,12 @@ export default function ProfileActivity({ activities, userName }: ProfileActivit
       </div>
 
       <div className="profile-activity-list">
-        {activities.map((post) => (
+        {activities.length === 0 ? (
+          <div className="no-activity-container">
+            <FileText size={32} />
+            <p>Aucune activité récente trouvée pour <strong>{userName}</strong>.</p>
+          </div>
+        ) : activities.map((post) => (
           <Link
             key={post.id}
             href={`/forum/topic/${post.topicId}#post-${post.id}`}

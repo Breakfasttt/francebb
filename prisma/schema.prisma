@@ -179,9 +179,9 @@ model Conversation {
   
   messages  PrivateMessage[]
   
-  // Deleted flags per user (for "one-way" deletion if we want that, 
-  // but user said "irréversible" so maybe just a global delete).
-  // For now let's keep it simple as per request.
+  // Per-user soft deletion
+  user1DeletedAt DateTime?
+  user2DeletedAt DateTime?
 
   @@unique([user1Id, user2Id])
 }

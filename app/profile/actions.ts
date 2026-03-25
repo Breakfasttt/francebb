@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
+import { encrypt, decrypt } from "@/lib/crypto";
 
 export async function updateProfile(formData: FormData) {
   const session = await auth();
@@ -104,8 +105,8 @@ export async function getConversations(page = 1) {
   const conversations = await prisma.conversation.findMany({
     where: {
       OR: [
-        { user1Id: userId },
-        { user2Id: userId }
+        { user1Id: userId, user1DeletedAt: null },
+        { user2Id: userId, user2DeletedAt: null }
       ]
     },
     orderBy: { updatedAt: "desc" },
@@ -134,14 +135,21 @@ export async function getConversations(page = 1) {
   const total = await prisma.conversation.count({
     where: {
       OR: [
-        { user1Id: userId },
-        { user2Id: userId }
+        { user1Id: userId, user1DeletedAt: null },
+        { user2Id: userId, user2DeletedAt: null }
       ]
     }
   });
 
+  const decryptedConversations = conversations.map(c => {
+    if (c.messages.length > 0) {
+      c.messages[0].content = decrypt(c.messages[0].content);
+    }
+    return c;
+  });
+
   return {
-    conversations,
+    conversations: decryptedConversations,
     totalPages: Math.ceil(total / CONVERSATIONS_PER_PAGE),
     currentPage: page
   };
@@ -155,15 +163,20 @@ export async function getConversationMessages(conversationId: string, page = 1) 
   const userId = session?.user?.id;
   if (!userId) throw new Error("Non autorisé");
 
-  // Verify membership
+  // Verify membership and get participants
   const conversation = await prisma.conversation.findUnique({
     where: { id: conversationId },
-    select: { user1Id: true, user2Id: true }
+    include: {
+      user1: { select: { id: true, name: true, image: true } },
+      user2: { select: { id: true, name: true, image: true } }
+    }
   });
 
   if (!conversation || (conversation.user1Id !== userId && conversation.user2Id !== userId)) {
     throw new Error("Conversation introuvable ou accès refusé");
   }
+
+  const recipient = conversation.user1Id === userId ? conversation.user2 : conversation.user1;
 
   const skip = (page - 1) * MESSAGES_PER_PAGE;
 
@@ -189,10 +202,16 @@ export async function getConversationMessages(conversationId: string, page = 1) 
 
   const total = await prisma.privateMessage.count({ where: { conversationId } });
 
+  const decryptedMessages = messages.map(msg => ({
+    ...msg,
+    content: decrypt(msg.content)
+  }));
+
   return {
-    messages,
+    messages: decryptedMessages,
     totalPages: Math.ceil(total / MESSAGES_PER_PAGE),
-    currentPage: page
+    currentPage: page,
+    recipient
   };
 }
 
@@ -215,7 +234,17 @@ export async function startConversation(recipientId: string) {
     }
   });
 
-  if (existing) return { success: true, conversationId: existing.id };
+  if (existing) {
+    // Si la conversation existait mais était masquée pour l'un des deux, on la restaure
+    await prisma.conversation.update({
+      where: { id: existing.id },
+      data: {
+        user1DeletedAt: existing.user1Id === userId ? null : undefined,
+        user2DeletedAt: existing.user2Id === userId ? null : undefined,
+      }
+    });
+    return { success: true, conversationId: existing.id };
+  }
 
   // Check limits for both users
   const user1Count = await prisma.conversation.count({
@@ -260,18 +289,24 @@ export async function sendPrivateMessage(conversationId: string, content: string
     throw new Error("Conversation introuvable");
   }
 
+    const encryptedContent = encrypt(content);
+  
   const message = await prisma.privateMessage.create({
     data: {
       conversationId,
       authorId: userId,
-      content
+      content: encryptedContent
     }
   });
 
-  // Update conversation timestamp for sorting
+  // Update conversation timestamp for sorting AND restore for both if deleted
   await prisma.conversation.update({
     where: { id: conversationId },
-    data: { updatedAt: new Date() }
+    data: { 
+      updatedAt: new Date(),
+      user1DeletedAt: null,
+      user2DeletedAt: null
+    }
   });
 
   revalidatePath("/profile");
@@ -295,8 +330,12 @@ export async function deleteConversation(conversationId: string) {
     throw new Error("Conversation introuvable");
   }
 
-  await prisma.conversation.delete({
-    where: { id: conversationId }
+  // Soft delete for the current user only
+  await prisma.conversation.update({
+    where: { id: conversationId },
+    data: {
+      [conversation.user1Id === userId ? "user1DeletedAt" : "user2DeletedAt"]: new Date()
+    }
   });
 
   revalidatePath("/profile");

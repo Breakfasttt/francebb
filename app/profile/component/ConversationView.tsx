@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowLeft, Send, Trash2, Clock, User, MessageCircle, AlertCircle, Inbox } from "lucide-react";
-import { getConversationMessages, sendPrivateMessage, deleteConversation } from "@/app/profile/actions";
-import { formatDistanceToNow } from "date-fns";
-import { fr } from "date-fns/locale";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { parseInlineBBCode } from "@/lib/bbcode";
+import { deleteConversation, getConversationMessages, sendPrivateMessage } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
+import { parseInlineBBCode } from "@/lib/bbcode";
+import { formatDistanceToNow } from "date-fns";
+import { fr } from "date-fns/locale";
+import { AlertTriangle, Archive, Clock, Inbox, Send, User } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface ConversationViewProps {
   conversationId: string;
@@ -27,6 +28,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [editorKey, setEditorKey] = useState(0);
+  const [recipient, setRecipient] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
       const data = await getConversationMessages(conversationId, page);
       setMessages(data.messages);
       setTotalPages(data.totalPages);
+      setRecipient(data.recipient);
       // `getConversationMessages` marque les messages non lus en "lus".
       // On force alors un refresh des Server Components pour mettre à jour le badge header.
       router.refresh();
@@ -90,24 +93,61 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         <button className="back-btn" onClick={onBack}>
           <Inbox size={18} /> Boîte de réception
         </button>
+        <div className="recipient-display">
+          {recipient && (
+            <>
+              {recipient.image ? (
+                <img src={recipient.image} alt={recipient.name} className="recipient-nav-avatar" />
+              ) : (
+                <div className="recipient-nav-avatar-placeholder"><User size={16} /></div>
+              )}
+              <span className="recipient-name-text">Vous parlez avec <strong>{recipient.name}</strong></span>
+
+              <div className="recipient-actions">
+                <Tooltip text="Signaler ce membre" position="bottom">
+                  <button
+                    className="icon-action-btn report-btn-small"
+                    onClick={() => {
+                      if (confirm(`Voulez-vous signaler ${recipient.name} ? (Le contenu de vos messages RESTERA PRIVÉ et ne sera pas partagé)`)) {
+                        toast.success("Signalement envoyé à l'équipe");
+                      }
+                    }}
+                  >
+                    <AlertTriangle size={14} />
+                  </button>
+                </Tooltip>
+              </div>
+            </>
+          )}
+        </div>
         <button className="btn-primary delete-btn-new" onClick={() => setIsDeleteModalOpen(true)}>
-          <Trash2 size={16} /> <span>Supprimer la conversation</span>
+          <Archive size={16} /> <span>Archiver la conversation</span>
         </button>
       </header>
 
-      <ConfirmModal 
+      <ConfirmModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Supprimer la conversation"
-        message="Voulez-vous vraiment supprimer cette conversation ? Cette action est irréversible."
-        confirmLabel="Supprimer"
+        title="Archiver la conversation"
+        message="Voulez-vous vraiment archiver cette conversation ? Elle disparaîtra de votre boîte de réception mais réapparaîtra si vous recevez un nouveau message."
+        confirmLabel="Archiver"
         isDanger={true}
       />
 
+      <div className="pm-disclaimer">
+        <AlertTriangle size={14} />
+        <p>
+          <strong>Note sur la confidentialité :<br />
+          </strong> Les messages privés sont destinés à vos échanges personnels, et sont chiffrés<br />
+          Évitez de partager des informations sensibles (mots de passe, données bancaires, etc.).<br />
+          Le contenu de vos messages ne sera <strong>JAMAIS</strong> partagé avec l'équipe de modération, même en cas de signalement.
+        </p>
+      </div>
+
       <div className="reply-box premium-card">
         <form onSubmit={handleSendMessage}>
-          <BBCodeEditor 
+          <BBCodeEditor
             key={editorKey}
             name="content"
             placeholder="Écrivez votre message..."
@@ -138,14 +178,14 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 )}
                 <span className="author-name">{msg.author.name}</span>
               </div>
-              
+
               <div className="message-content-wrapper">
                 <div className="message-meta">
                   <Clock size={12} />
                   <span>{formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true, locale: fr })}</span>
                 </div>
-                <div 
-                  className="message-body" 
+                <div
+                  className="message-body"
                   dangerouslySetInnerHTML={{ __html: parseInlineBBCode(msg.content) }}
                 />
               </div>
@@ -154,13 +194,15 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         )}
       </div>
 
-      {totalPages > 1 && (
-        <div className="pagination">
-          <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="btn-pagination">Précédent</button>
-          <span>Page {page} sur {totalPages}</span>
-          <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="btn-pagination">Suivant</button>
-        </div>
-      )}
+      {
+        totalPages > 1 && (
+          <div className="pagination">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="btn-pagination">Précédent</button>
+            <span>Page {page} sur {totalPages}</span>
+            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="btn-pagination">Suivant</button>
+          </div>
+        )
+      }
 
       <style jsx>{`
         .conversation-view-container {
@@ -203,6 +245,56 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           align-items: center;
           gap: 0.5rem;
         }
+        .recipient-display {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          background: rgba(255, 255, 255, 0.02);
+          padding: 0.4rem 1rem;
+          border-radius: 100px;
+          border: 1px solid var(--glass-border);
+        }
+        .recipient-nav-avatar, .recipient-nav-avatar-placeholder {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+        }
+        .recipient-nav-avatar-placeholder {
+          background: rgba(255, 255, 255, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #666;
+        }
+        .recipient-name-text {
+          font-size: 0.85rem;
+          color: #888;
+        }
+        .recipient-name-text strong {
+          color: #eee;
+        }
+        .recipient-actions {
+          display: flex;
+          align-items: center;
+          padding-left: 0.5rem;
+          border-left: 1px solid rgba(255,255,255,0.05);
+        }
+        .icon-action-btn {
+          background: transparent;
+          border: none;
+          color: #555;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4px;
+          border-radius: 4px;
+          transition: all 0.2s;
+        }
+        .report-btn-small:hover {
+          color: #ef4444;
+          background: rgba(239, 68, 68, 0.1);
+        }
         .reply-box {
           padding: 1.5rem;
           background: rgba(255, 255, 255, 0.03);
@@ -217,6 +309,24 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           font-size: 0.8rem;
           color: #555;
           margin: 0;
+        }
+        .pm-disclaimer {
+          display: flex;
+          gap: 0.8rem;
+          padding: 1rem 1.5rem;
+          background: rgba(255, 215, 0, 0.02);
+          border: 1px solid rgba(255, 215, 0, 0.1);
+          border-radius: 8px;
+          color: #777;
+          font-size: 0.8rem;
+          line-height: 1.4;
+          margin-bottom: 0.5rem;
+        }
+        .pm-disclaimer p {
+          margin: 0;
+        }
+        .pm-disclaimer strong {
+          color: #999;
         }
         .messages-list {
           display: flex;
@@ -305,6 +415,6 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           cursor: not-allowed;
         }
       `}</style>
-    </div>
+    </div >
   );
 }

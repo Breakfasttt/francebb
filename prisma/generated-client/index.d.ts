@@ -13161,6 +13161,8 @@ export namespace Prisma {
     updatedAt: Date | null
     user1Id: string | null
     user2Id: string | null
+    user1DeletedAt: Date | null
+    user2DeletedAt: Date | null
   }
 
   export type ConversationMaxAggregateOutputType = {
@@ -13169,6 +13171,8 @@ export namespace Prisma {
     updatedAt: Date | null
     user1Id: string | null
     user2Id: string | null
+    user1DeletedAt: Date | null
+    user2DeletedAt: Date | null
   }
 
   export type ConversationCountAggregateOutputType = {
@@ -13177,6 +13181,8 @@ export namespace Prisma {
     updatedAt: number
     user1Id: number
     user2Id: number
+    user1DeletedAt: number
+    user2DeletedAt: number
     _all: number
   }
 
@@ -13187,6 +13193,8 @@ export namespace Prisma {
     updatedAt?: true
     user1Id?: true
     user2Id?: true
+    user1DeletedAt?: true
+    user2DeletedAt?: true
   }
 
   export type ConversationMaxAggregateInputType = {
@@ -13195,6 +13203,8 @@ export namespace Prisma {
     updatedAt?: true
     user1Id?: true
     user2Id?: true
+    user1DeletedAt?: true
+    user2DeletedAt?: true
   }
 
   export type ConversationCountAggregateInputType = {
@@ -13203,6 +13213,8 @@ export namespace Prisma {
     updatedAt?: true
     user1Id?: true
     user2Id?: true
+    user1DeletedAt?: true
+    user2DeletedAt?: true
     _all?: true
   }
 
@@ -13284,6 +13296,8 @@ export namespace Prisma {
     updatedAt: Date
     user1Id: string
     user2Id: string
+    user1DeletedAt: Date | null
+    user2DeletedAt: Date | null
     _count: ConversationCountAggregateOutputType | null
     _min: ConversationMinAggregateOutputType | null
     _max: ConversationMaxAggregateOutputType | null
@@ -13309,6 +13323,8 @@ export namespace Prisma {
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
+    user1DeletedAt?: boolean
+    user2DeletedAt?: boolean
     user1?: boolean | UserDefaultArgs<ExtArgs>
     user2?: boolean | UserDefaultArgs<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
@@ -13321,6 +13337,8 @@ export namespace Prisma {
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
+    user1DeletedAt?: boolean
+    user2DeletedAt?: boolean
     user1?: boolean | UserDefaultArgs<ExtArgs>
     user2?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
@@ -13331,6 +13349,8 @@ export namespace Prisma {
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
+    user1DeletedAt?: boolean
+    user2DeletedAt?: boolean
     user1?: boolean | UserDefaultArgs<ExtArgs>
     user2?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
@@ -13341,9 +13361,11 @@ export namespace Prisma {
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
+    user1DeletedAt?: boolean
+    user2DeletedAt?: boolean
   }
 
-  export type ConversationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "user1Id" | "user2Id", ExtArgs["result"]["conversation"]>
+  export type ConversationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "user1Id" | "user2Id" | "user1DeletedAt" | "user2DeletedAt", ExtArgs["result"]["conversation"]>
   export type ConversationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user1?: boolean | UserDefaultArgs<ExtArgs>
     user2?: boolean | UserDefaultArgs<ExtArgs>
@@ -13372,6 +13394,8 @@ export namespace Prisma {
       updatedAt: Date
       user1Id: string
       user2Id: string
+      user1DeletedAt: Date | null
+      user2DeletedAt: Date | null
     }, ExtArgs["result"]["conversation"]>
     composites: {}
   }
@@ -13803,6 +13827,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Conversation", 'DateTime'>
     readonly user1Id: FieldRef<"Conversation", 'String'>
     readonly user2Id: FieldRef<"Conversation", 'String'>
+    readonly user1DeletedAt: FieldRef<"Conversation", 'DateTime'>
+    readonly user2DeletedAt: FieldRef<"Conversation", 'DateTime'>
   }
     
 
@@ -18693,7 +18719,9 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     user1Id: 'user1Id',
-    user2Id: 'user2Id'
+    user2Id: 'user2Id',
+    user1DeletedAt: 'user1DeletedAt',
+    user2DeletedAt: 'user2DeletedAt'
   };
 
   export type ConversationScalarFieldEnum = (typeof ConversationScalarFieldEnum)[keyof typeof ConversationScalarFieldEnum]
@@ -19567,6 +19595,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
     user1Id?: StringFilter<"Conversation"> | string
     user2Id?: StringFilter<"Conversation"> | string
+    user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
+    user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
     user1?: XOR<UserScalarRelationFilter, UserWhereInput>
     user2?: XOR<UserScalarRelationFilter, UserWhereInput>
     messages?: PrivateMessageListRelationFilter
@@ -19578,6 +19608,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user1Id?: SortOrder
     user2Id?: SortOrder
+    user1DeletedAt?: SortOrderInput | SortOrder
+    user2DeletedAt?: SortOrderInput | SortOrder
     user1?: UserOrderByWithRelationInput
     user2?: UserOrderByWithRelationInput
     messages?: PrivateMessageOrderByRelationAggregateInput
@@ -19593,6 +19625,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
     user1Id?: StringFilter<"Conversation"> | string
     user2Id?: StringFilter<"Conversation"> | string
+    user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
+    user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
     user1?: XOR<UserScalarRelationFilter, UserWhereInput>
     user2?: XOR<UserScalarRelationFilter, UserWhereInput>
     messages?: PrivateMessageListRelationFilter
@@ -19604,6 +19638,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user1Id?: SortOrder
     user2Id?: SortOrder
+    user1DeletedAt?: SortOrderInput | SortOrder
+    user2DeletedAt?: SortOrderInput | SortOrder
     _count?: ConversationCountOrderByAggregateInput
     _max?: ConversationMaxOrderByAggregateInput
     _min?: ConversationMinOrderByAggregateInput
@@ -19618,6 +19654,8 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Conversation"> | Date | string
     user1Id?: StringWithAggregatesFilter<"Conversation"> | string
     user2Id?: StringWithAggregatesFilter<"Conversation"> | string
+    user1DeletedAt?: DateTimeNullableWithAggregatesFilter<"Conversation"> | Date | string | null
+    user2DeletedAt?: DateTimeNullableWithAggregatesFilter<"Conversation"> | Date | string | null
   }
 
   export type PrivateMessageWhereInput = {
@@ -20700,6 +20738,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     user1: UserCreateNestedOneWithoutUser1ConversationsInput
     user2: UserCreateNestedOneWithoutUser2ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
@@ -20711,6 +20751,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     user1Id: string
     user2Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
@@ -20718,6 +20760,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
     user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
@@ -20729,6 +20773,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1Id?: StringFieldUpdateOperationsInput | string
     user2Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
@@ -20738,12 +20784,16 @@ export namespace Prisma {
     updatedAt?: Date | string
     user1Id: string
     user2Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
   }
 
   export type ConversationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationUncheckedUpdateManyInput = {
@@ -20752,6 +20802,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1Id?: StringFieldUpdateOperationsInput | string
     user2Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageCreateInput = {
@@ -21723,6 +21775,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user1Id?: SortOrder
     user2Id?: SortOrder
+    user1DeletedAt?: SortOrder
+    user2DeletedAt?: SortOrder
   }
 
   export type ConversationMaxOrderByAggregateInput = {
@@ -21731,6 +21785,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user1Id?: SortOrder
     user2Id?: SortOrder
+    user1DeletedAt?: SortOrder
+    user2DeletedAt?: SortOrder
   }
 
   export type ConversationMinOrderByAggregateInput = {
@@ -21739,6 +21795,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user1Id?: SortOrder
     user2Id?: SortOrder
+    user1DeletedAt?: SortOrder
+    user2DeletedAt?: SortOrder
   }
 
   export type ConversationScalarRelationFilter = {
@@ -23748,6 +23806,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     user2: UserCreateNestedOneWithoutUser2ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
   }
@@ -23757,6 +23817,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user2Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
@@ -23773,6 +23835,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     user1: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
   }
@@ -23782,6 +23846,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user1Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
   }
 
@@ -24142,6 +24208,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
     user1Id?: StringFilter<"Conversation"> | string
     user2Id?: StringFilter<"Conversation"> | string
+    user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
+    user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
   }
 
   export type ConversationUpsertWithWhereUniqueWithoutUser2Input = {
@@ -25643,6 +25711,8 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
     user1: UserCreateNestedOneWithoutUser1ConversationsInput
     user2: UserCreateNestedOneWithoutUser2ConversationsInput
   }
@@ -25653,6 +25723,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     user1Id: string
     user2Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
   }
 
   export type ConversationCreateOrConnectWithoutMessagesInput = {
@@ -25734,6 +25806,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
     user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
   }
@@ -25744,6 +25818,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1Id?: StringFieldUpdateOperationsInput | string
     user2Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUpsertWithoutPrivateMessagesInput = {
@@ -26595,6 +26671,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user2Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
   }
 
   export type ConversationCreateManyUser2Input = {
@@ -26602,6 +26680,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user1Id: string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
   }
 
   export type PrivateMessageCreateManyAuthorInput = {
@@ -26866,6 +26946,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
   }
@@ -26875,6 +26957,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user2Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
@@ -26883,12 +26967,16 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user2Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationUpdateWithoutUser2Input = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
   }
@@ -26898,6 +26986,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
   }
 
@@ -26906,6 +26996,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1Id?: StringFieldUpdateOperationsInput | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageUpdateWithoutAuthorInput = {

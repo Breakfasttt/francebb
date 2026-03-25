@@ -16,7 +16,7 @@ import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import "./page.css";
 
-type ProfileTab = "activity" | "edit" | "palmares" | "pm" | "followed";
+type ProfileTab = "followed" | "activity" | "edit" | "palmares" | "pm";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -33,7 +33,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ postCount: 0 });
   const [activities, setActivities] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<ProfileTab>("activity");
+  const [activeTab, setActiveTab] = useState<ProfileTab>("followed");
 
   type FollowedTopic = {
     id: string;
@@ -51,8 +51,8 @@ export default function ProfilePage() {
     if (tab === "edit") return "edit";
     if (tab === "palmares") return "palmares";
     if (tab === "pm") return "pm";
-    if (tab === "followed") return "followed";
-    return "activity";
+    if (tab === "activity") return "activity";
+    return "followed";
   };
 
   useEffect(() => {

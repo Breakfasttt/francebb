@@ -49,8 +49,8 @@ export default function ProfileSidebar({
   };
 
   const navItems = isOwnProfile ? [
-    { id: "activity", label: "Activité du forum", icon: <MessageSquare size={18} /> },
     { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
+    { id: "activity", label: "Activité du forum", icon: <MessageSquare size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },

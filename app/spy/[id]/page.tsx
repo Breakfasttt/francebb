@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { redirect, useParams, useSearchParams } from "next/navigation";
+import { redirect, useParams, useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Trophy, MessageSquare, AlertTriangle } from "lucide-react";
@@ -19,6 +19,7 @@ export default function SpyProfilePage() {
   const id = params.id as string;
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
+  const router = useRouter();
 
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -86,7 +87,7 @@ export default function SpyProfilePage() {
     try {
       const res = await startConversation(user.id);
       if (res.success) {
-        redirect(`/profile?tab=pm&conversationId=${res.conversationId}`);
+        router.push(`/profile?tab=pm&conversationId=${res.conversationId}`);
       }
     } catch (err: any) {
       alert(err.message);

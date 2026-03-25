@@ -9,6 +9,13 @@ export default function ProfilePM() {
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const recipientId = searchParams.get("recipientId");
+  const conversationId = searchParams.get("conversationId");
+
+  useEffect(() => {
+    if (conversationId) {
+      setActiveConversationId(conversationId);
+    }
+  }, [conversationId]);
 
   if (activeConversationId) {
     return (

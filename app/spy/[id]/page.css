@@ -259,26 +259,26 @@
   cursor: not-allowed;
 }
 
-/* Unread topics highlight - Forced Global Scoping */
-:global(.premium-card.activity-item.is-unread) {
+/* Unread topics highlight */
+.premium-card.activity-item.is-unread {
   background: rgba(255, 215, 0, 0.05) !important;
   border-color: #ffd700 !important;
 }
-:global(.activity-item.is-unread .activity-topic) {
+.activity-item.is-unread .activity-topic {
   color: #ffd700 !important;
   text-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
 }
-:global(.activity-item.is-unread .activity-type) {
+.activity-item.is-unread .activity-type {
   color: #ffd700 !important;
   opacity: 0.8;
 }
-:global(.activity-item.is-unread .activity-icon-container) {
+.activity-item.is-unread .activity-icon-container {
   color: #ffd700 !important;
   border-color: rgba(255, 215, 0, 0.5) !important;
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.2) !important;
   position: relative;
 }
-:global(.unread-dot-indicator) {
+.unread-dot-indicator {
   position: absolute !important;
   top: -4px !important;
   right: -4px !important;
