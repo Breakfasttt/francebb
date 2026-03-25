@@ -77,7 +77,7 @@ export default async function ForumSidebar({
           {forumId && (!isLocked || canCreateForum) && (
             <div className="sidebar-widget new-topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {isTournamentForum && (
-                <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
+                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
                   <Trophy size={18} />
                   <span>Nouveau Tournoi</span>
                 </Link>

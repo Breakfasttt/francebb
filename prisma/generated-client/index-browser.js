@@ -289,6 +289,15 @@ exports.Prisma.TopicFollowScalarFieldEnum = {
   topicId: 'topicId'
 };
 
+exports.Prisma.ReferenceDataScalarFieldEnum = {
+  id: 'id',
+  group: 'group',
+  key: 'key',
+  label: 'label',
+  order: 'order',
+  isActive: 'isActive'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -316,7 +325,8 @@ exports.Prisma.ModelName = {
   Mention: 'Mention',
   PostReaction: 'PostReaction',
   RoleConfig: 'RoleConfig',
-  TopicFollow: 'TopicFollow'
+  TopicFollow: 'TopicFollow',
+  ReferenceData: 'ReferenceData'
 };
 
 /**

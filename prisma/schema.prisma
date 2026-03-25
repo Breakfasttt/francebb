@@ -275,3 +275,14 @@ model TopicFollow {
 
   @@id([userId, topicId])
 }
+
+model ReferenceData {
+  id      String   @id @default(cuid())
+  group   String   // COACH_REGION, REGION_FRANCE, etc.
+  key     String   // Identifiant (ex: "IDF")
+  label   String   // Libellé (ex: "R1 - Île-de-France")
+  order   Int      @default(0)
+  isActive Boolean  @default(true)
+  
+  @@unique([group, key])
+}

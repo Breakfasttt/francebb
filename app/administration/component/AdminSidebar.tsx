@@ -1,8 +1,8 @@
 "use client";
 
-import { DatabaseBackup, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
+import { Database, DatabaseBackup, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
 
-export type AdminTab = "coachs" | "roles" | "structure" | "backup" | "reset";
+export type AdminTab = "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -39,6 +39,13 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
         >
           <LayoutList size={18} /> <span>Structure du Forum</span>
         </button>
+        <button
+          onClick={() => onTabChange("reference")}
+          className={`action-button full-width ${activeTab === "reference" ? 'primary-btn' : 'secondary-btn'}`}
+          style={{ justifyContent: 'flex-start' }}
+        >
+          <Database size={18} /> <span>Données de Référence</span>
+        </button>
       </div>
 
       {isSuperAdmin && (
@@ -72,6 +79,9 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
           padding: 2rem;
           width: 300px;
           flex-shrink: 0;
+          position: sticky;
+          top: 6.5rem;
+          align-self: flex-start;
         }
         .action-button {
           display: flex;

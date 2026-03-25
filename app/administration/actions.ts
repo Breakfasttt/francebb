@@ -279,3 +279,77 @@ export async function getForumStructure() {
 
   return categories;
 }
+
+export async function createReferenceData(data: { group: string, key: string, label: string, order: number }) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  try {
+    await prisma.referenceData.create({
+      data: {
+        group: data.group.toUpperCase().replace(/\s+/g, '_'),
+        key: data.key,
+        label: data.label,
+        order: data.order,
+        isActive: true
+      }
+    });
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: "Erreur lors de la création (couple groupe/clé déjà existant)." };
+  }
+}
+
+export async function updateReferenceData(id: string, data: { group: string, key: string, label: string, order: number, isActive: boolean }) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  try {
+    await prisma.referenceData.update({
+      where: { id },
+      data: {
+        group: data.group.toUpperCase().replace(/\s+/g, '_'),
+        key: data.key,
+        label: data.label,
+        order: data.order,
+        isActive: data.isActive
+      }
+    });
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: "Erreur lors de la mise à jour." };
+  }
+}
+
+export async function deleteReferenceData(id: string) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  await prisma.referenceData.delete({ where: { id } });
+
+  return { success: true };
+}
+
+export async function getAllReferenceDataAdmin() {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return [];
+  }
+
+  return await prisma.referenceData.findMany({
+    orderBy: [
+      { group: 'asc' },
+      { order: 'asc' }
+    ]
+  });
+}

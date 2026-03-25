@@ -93,6 +93,11 @@ export type RoleConfig = $Result.DefaultSelection<Prisma.$RoleConfigPayload>
  * 
  */
 export type TopicFollow = $Result.DefaultSelection<Prisma.$TopicFollowPayload>
+/**
+ * Model ReferenceData
+ * 
+ */
+export type ReferenceData = $Result.DefaultSelection<Prisma.$ReferenceDataPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -374,6 +379,16 @@ export class PrismaClient<
     * ```
     */
   get topicFollow(): Prisma.TopicFollowDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.referenceData`: Exposes CRUD operations for the **ReferenceData** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReferenceData
+    * const referenceData = await prisma.referenceData.findMany()
+    * ```
+    */
+  get referenceData(): Prisma.ReferenceDataDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -823,7 +838,8 @@ export namespace Prisma {
     Mention: 'Mention',
     PostReaction: 'PostReaction',
     RoleConfig: 'RoleConfig',
-    TopicFollow: 'TopicFollow'
+    TopicFollow: 'TopicFollow',
+    ReferenceData: 'ReferenceData'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -839,7 +855,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2027,6 +2043,80 @@ export namespace Prisma {
           }
         }
       }
+      ReferenceData: {
+        payload: Prisma.$ReferenceDataPayload<ExtArgs>
+        fields: Prisma.ReferenceDataFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReferenceDataFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReferenceDataFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          findFirst: {
+            args: Prisma.ReferenceDataFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReferenceDataFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          findMany: {
+            args: Prisma.ReferenceDataFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>[]
+          }
+          create: {
+            args: Prisma.ReferenceDataCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          createMany: {
+            args: Prisma.ReferenceDataCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReferenceDataCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>[]
+          }
+          delete: {
+            args: Prisma.ReferenceDataDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          update: {
+            args: Prisma.ReferenceDataUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReferenceDataDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReferenceDataUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReferenceDataUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReferenceDataUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferenceDataPayload>
+          }
+          aggregate: {
+            args: Prisma.ReferenceDataAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReferenceData>
+          }
+          groupBy: {
+            args: Prisma.ReferenceDataGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReferenceDataGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReferenceDataCountArgs<ExtArgs>
+            result: $Utils.Optional<ReferenceDataCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2151,6 +2241,7 @@ export namespace Prisma {
     postReaction?: PostReactionOmit
     roleConfig?: RoleConfigOmit
     topicFollow?: TopicFollowOmit
+    referenceData?: ReferenceDataOmit
   }
 
   /* Types for Logging */
@@ -21170,6 +21261,1051 @@ export namespace Prisma {
 
 
   /**
+   * Model ReferenceData
+   */
+
+  export type AggregateReferenceData = {
+    _count: ReferenceDataCountAggregateOutputType | null
+    _avg: ReferenceDataAvgAggregateOutputType | null
+    _sum: ReferenceDataSumAggregateOutputType | null
+    _min: ReferenceDataMinAggregateOutputType | null
+    _max: ReferenceDataMaxAggregateOutputType | null
+  }
+
+  export type ReferenceDataAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ReferenceDataSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ReferenceDataMinAggregateOutputType = {
+    id: string | null
+    group: string | null
+    key: string | null
+    label: string | null
+    order: number | null
+    isActive: boolean | null
+  }
+
+  export type ReferenceDataMaxAggregateOutputType = {
+    id: string | null
+    group: string | null
+    key: string | null
+    label: string | null
+    order: number | null
+    isActive: boolean | null
+  }
+
+  export type ReferenceDataCountAggregateOutputType = {
+    id: number
+    group: number
+    key: number
+    label: number
+    order: number
+    isActive: number
+    _all: number
+  }
+
+
+  export type ReferenceDataAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type ReferenceDataSumAggregateInputType = {
+    order?: true
+  }
+
+  export type ReferenceDataMinAggregateInputType = {
+    id?: true
+    group?: true
+    key?: true
+    label?: true
+    order?: true
+    isActive?: true
+  }
+
+  export type ReferenceDataMaxAggregateInputType = {
+    id?: true
+    group?: true
+    key?: true
+    label?: true
+    order?: true
+    isActive?: true
+  }
+
+  export type ReferenceDataCountAggregateInputType = {
+    id?: true
+    group?: true
+    key?: true
+    label?: true
+    order?: true
+    isActive?: true
+    _all?: true
+  }
+
+  export type ReferenceDataAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReferenceData to aggregate.
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferenceData to fetch.
+     */
+    orderBy?: ReferenceDataOrderByWithRelationInput | ReferenceDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReferenceDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferenceData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferenceData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReferenceData
+    **/
+    _count?: true | ReferenceDataCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReferenceDataAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReferenceDataSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReferenceDataMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReferenceDataMaxAggregateInputType
+  }
+
+  export type GetReferenceDataAggregateType<T extends ReferenceDataAggregateArgs> = {
+        [P in keyof T & keyof AggregateReferenceData]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReferenceData[P]>
+      : GetScalarType<T[P], AggregateReferenceData[P]>
+  }
+
+
+
+
+  export type ReferenceDataGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferenceDataWhereInput
+    orderBy?: ReferenceDataOrderByWithAggregationInput | ReferenceDataOrderByWithAggregationInput[]
+    by: ReferenceDataScalarFieldEnum[] | ReferenceDataScalarFieldEnum
+    having?: ReferenceDataScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReferenceDataCountAggregateInputType | true
+    _avg?: ReferenceDataAvgAggregateInputType
+    _sum?: ReferenceDataSumAggregateInputType
+    _min?: ReferenceDataMinAggregateInputType
+    _max?: ReferenceDataMaxAggregateInputType
+  }
+
+  export type ReferenceDataGroupByOutputType = {
+    id: string
+    group: string
+    key: string
+    label: string
+    order: number
+    isActive: boolean
+    _count: ReferenceDataCountAggregateOutputType | null
+    _avg: ReferenceDataAvgAggregateOutputType | null
+    _sum: ReferenceDataSumAggregateOutputType | null
+    _min: ReferenceDataMinAggregateOutputType | null
+    _max: ReferenceDataMaxAggregateOutputType | null
+  }
+
+  type GetReferenceDataGroupByPayload<T extends ReferenceDataGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReferenceDataGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReferenceDataGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReferenceDataGroupByOutputType[P]>
+            : GetScalarType<T[P], ReferenceDataGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReferenceDataSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group?: boolean
+    key?: boolean
+    label?: boolean
+    order?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["referenceData"]>
+
+  export type ReferenceDataSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group?: boolean
+    key?: boolean
+    label?: boolean
+    order?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["referenceData"]>
+
+  export type ReferenceDataSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    group?: boolean
+    key?: boolean
+    label?: boolean
+    order?: boolean
+    isActive?: boolean
+  }, ExtArgs["result"]["referenceData"]>
+
+  export type ReferenceDataSelectScalar = {
+    id?: boolean
+    group?: boolean
+    key?: boolean
+    label?: boolean
+    order?: boolean
+    isActive?: boolean
+  }
+
+  export type ReferenceDataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "group" | "key" | "label" | "order" | "isActive", ExtArgs["result"]["referenceData"]>
+
+  export type $ReferenceDataPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReferenceData"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      group: string
+      key: string
+      label: string
+      order: number
+      isActive: boolean
+    }, ExtArgs["result"]["referenceData"]>
+    composites: {}
+  }
+
+  type ReferenceDataGetPayload<S extends boolean | null | undefined | ReferenceDataDefaultArgs> = $Result.GetResult<Prisma.$ReferenceDataPayload, S>
+
+  type ReferenceDataCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReferenceDataFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReferenceDataCountAggregateInputType | true
+    }
+
+  export interface ReferenceDataDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReferenceData'], meta: { name: 'ReferenceData' } }
+    /**
+     * Find zero or one ReferenceData that matches the filter.
+     * @param {ReferenceDataFindUniqueArgs} args - Arguments to find a ReferenceData
+     * @example
+     * // Get one ReferenceData
+     * const referenceData = await prisma.referenceData.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReferenceDataFindUniqueArgs>(args: SelectSubset<T, ReferenceDataFindUniqueArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReferenceData that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReferenceDataFindUniqueOrThrowArgs} args - Arguments to find a ReferenceData
+     * @example
+     * // Get one ReferenceData
+     * const referenceData = await prisma.referenceData.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReferenceDataFindUniqueOrThrowArgs>(args: SelectSubset<T, ReferenceDataFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReferenceData that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataFindFirstArgs} args - Arguments to find a ReferenceData
+     * @example
+     * // Get one ReferenceData
+     * const referenceData = await prisma.referenceData.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReferenceDataFindFirstArgs>(args?: SelectSubset<T, ReferenceDataFindFirstArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReferenceData that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataFindFirstOrThrowArgs} args - Arguments to find a ReferenceData
+     * @example
+     * // Get one ReferenceData
+     * const referenceData = await prisma.referenceData.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReferenceDataFindFirstOrThrowArgs>(args?: SelectSubset<T, ReferenceDataFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReferenceData that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReferenceData
+     * const referenceData = await prisma.referenceData.findMany()
+     * 
+     * // Get first 10 ReferenceData
+     * const referenceData = await prisma.referenceData.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const referenceDataWithIdOnly = await prisma.referenceData.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReferenceDataFindManyArgs>(args?: SelectSubset<T, ReferenceDataFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReferenceData.
+     * @param {ReferenceDataCreateArgs} args - Arguments to create a ReferenceData.
+     * @example
+     * // Create one ReferenceData
+     * const ReferenceData = await prisma.referenceData.create({
+     *   data: {
+     *     // ... data to create a ReferenceData
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReferenceDataCreateArgs>(args: SelectSubset<T, ReferenceDataCreateArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReferenceData.
+     * @param {ReferenceDataCreateManyArgs} args - Arguments to create many ReferenceData.
+     * @example
+     * // Create many ReferenceData
+     * const referenceData = await prisma.referenceData.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReferenceDataCreateManyArgs>(args?: SelectSubset<T, ReferenceDataCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReferenceData and returns the data saved in the database.
+     * @param {ReferenceDataCreateManyAndReturnArgs} args - Arguments to create many ReferenceData.
+     * @example
+     * // Create many ReferenceData
+     * const referenceData = await prisma.referenceData.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReferenceData and only return the `id`
+     * const referenceDataWithIdOnly = await prisma.referenceData.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReferenceDataCreateManyAndReturnArgs>(args?: SelectSubset<T, ReferenceDataCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReferenceData.
+     * @param {ReferenceDataDeleteArgs} args - Arguments to delete one ReferenceData.
+     * @example
+     * // Delete one ReferenceData
+     * const ReferenceData = await prisma.referenceData.delete({
+     *   where: {
+     *     // ... filter to delete one ReferenceData
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReferenceDataDeleteArgs>(args: SelectSubset<T, ReferenceDataDeleteArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReferenceData.
+     * @param {ReferenceDataUpdateArgs} args - Arguments to update one ReferenceData.
+     * @example
+     * // Update one ReferenceData
+     * const referenceData = await prisma.referenceData.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReferenceDataUpdateArgs>(args: SelectSubset<T, ReferenceDataUpdateArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReferenceData.
+     * @param {ReferenceDataDeleteManyArgs} args - Arguments to filter ReferenceData to delete.
+     * @example
+     * // Delete a few ReferenceData
+     * const { count } = await prisma.referenceData.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReferenceDataDeleteManyArgs>(args?: SelectSubset<T, ReferenceDataDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReferenceData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReferenceData
+     * const referenceData = await prisma.referenceData.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReferenceDataUpdateManyArgs>(args: SelectSubset<T, ReferenceDataUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReferenceData and returns the data updated in the database.
+     * @param {ReferenceDataUpdateManyAndReturnArgs} args - Arguments to update many ReferenceData.
+     * @example
+     * // Update many ReferenceData
+     * const referenceData = await prisma.referenceData.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReferenceData and only return the `id`
+     * const referenceDataWithIdOnly = await prisma.referenceData.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReferenceDataUpdateManyAndReturnArgs>(args: SelectSubset<T, ReferenceDataUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReferenceData.
+     * @param {ReferenceDataUpsertArgs} args - Arguments to update or create a ReferenceData.
+     * @example
+     * // Update or create a ReferenceData
+     * const referenceData = await prisma.referenceData.upsert({
+     *   create: {
+     *     // ... data to create a ReferenceData
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReferenceData we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReferenceDataUpsertArgs>(args: SelectSubset<T, ReferenceDataUpsertArgs<ExtArgs>>): Prisma__ReferenceDataClient<$Result.GetResult<Prisma.$ReferenceDataPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReferenceData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataCountArgs} args - Arguments to filter ReferenceData to count.
+     * @example
+     * // Count the number of ReferenceData
+     * const count = await prisma.referenceData.count({
+     *   where: {
+     *     // ... the filter for the ReferenceData we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReferenceDataCountArgs>(
+      args?: Subset<T, ReferenceDataCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReferenceDataCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReferenceData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReferenceDataAggregateArgs>(args: Subset<T, ReferenceDataAggregateArgs>): Prisma.PrismaPromise<GetReferenceDataAggregateType<T>>
+
+    /**
+     * Group by ReferenceData.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferenceDataGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReferenceDataGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReferenceDataGroupByArgs['orderBy'] }
+        : { orderBy?: ReferenceDataGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReferenceDataGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReferenceDataGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReferenceData model
+   */
+  readonly fields: ReferenceDataFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReferenceData.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReferenceDataClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReferenceData model
+   */
+  interface ReferenceDataFieldRefs {
+    readonly id: FieldRef<"ReferenceData", 'String'>
+    readonly group: FieldRef<"ReferenceData", 'String'>
+    readonly key: FieldRef<"ReferenceData", 'String'>
+    readonly label: FieldRef<"ReferenceData", 'String'>
+    readonly order: FieldRef<"ReferenceData", 'Int'>
+    readonly isActive: FieldRef<"ReferenceData", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReferenceData findUnique
+   */
+  export type ReferenceDataFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter, which ReferenceData to fetch.
+     */
+    where: ReferenceDataWhereUniqueInput
+  }
+
+  /**
+   * ReferenceData findUniqueOrThrow
+   */
+  export type ReferenceDataFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter, which ReferenceData to fetch.
+     */
+    where: ReferenceDataWhereUniqueInput
+  }
+
+  /**
+   * ReferenceData findFirst
+   */
+  export type ReferenceDataFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter, which ReferenceData to fetch.
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferenceData to fetch.
+     */
+    orderBy?: ReferenceDataOrderByWithRelationInput | ReferenceDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReferenceData.
+     */
+    cursor?: ReferenceDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferenceData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferenceData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReferenceData.
+     */
+    distinct?: ReferenceDataScalarFieldEnum | ReferenceDataScalarFieldEnum[]
+  }
+
+  /**
+   * ReferenceData findFirstOrThrow
+   */
+  export type ReferenceDataFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter, which ReferenceData to fetch.
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferenceData to fetch.
+     */
+    orderBy?: ReferenceDataOrderByWithRelationInput | ReferenceDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReferenceData.
+     */
+    cursor?: ReferenceDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferenceData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferenceData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReferenceData.
+     */
+    distinct?: ReferenceDataScalarFieldEnum | ReferenceDataScalarFieldEnum[]
+  }
+
+  /**
+   * ReferenceData findMany
+   */
+  export type ReferenceDataFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter, which ReferenceData to fetch.
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferenceData to fetch.
+     */
+    orderBy?: ReferenceDataOrderByWithRelationInput | ReferenceDataOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReferenceData.
+     */
+    cursor?: ReferenceDataWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferenceData from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferenceData.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReferenceData.
+     */
+    distinct?: ReferenceDataScalarFieldEnum | ReferenceDataScalarFieldEnum[]
+  }
+
+  /**
+   * ReferenceData create
+   */
+  export type ReferenceDataCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ReferenceData.
+     */
+    data: XOR<ReferenceDataCreateInput, ReferenceDataUncheckedCreateInput>
+  }
+
+  /**
+   * ReferenceData createMany
+   */
+  export type ReferenceDataCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReferenceData.
+     */
+    data: ReferenceDataCreateManyInput | ReferenceDataCreateManyInput[]
+  }
+
+  /**
+   * ReferenceData createManyAndReturn
+   */
+  export type ReferenceDataCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReferenceData.
+     */
+    data: ReferenceDataCreateManyInput | ReferenceDataCreateManyInput[]
+  }
+
+  /**
+   * ReferenceData update
+   */
+  export type ReferenceDataUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ReferenceData.
+     */
+    data: XOR<ReferenceDataUpdateInput, ReferenceDataUncheckedUpdateInput>
+    /**
+     * Choose, which ReferenceData to update.
+     */
+    where: ReferenceDataWhereUniqueInput
+  }
+
+  /**
+   * ReferenceData updateMany
+   */
+  export type ReferenceDataUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReferenceData.
+     */
+    data: XOR<ReferenceDataUpdateManyMutationInput, ReferenceDataUncheckedUpdateManyInput>
+    /**
+     * Filter which ReferenceData to update
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * Limit how many ReferenceData to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReferenceData updateManyAndReturn
+   */
+  export type ReferenceDataUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * The data used to update ReferenceData.
+     */
+    data: XOR<ReferenceDataUpdateManyMutationInput, ReferenceDataUncheckedUpdateManyInput>
+    /**
+     * Filter which ReferenceData to update
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * Limit how many ReferenceData to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReferenceData upsert
+   */
+  export type ReferenceDataUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ReferenceData to update in case it exists.
+     */
+    where: ReferenceDataWhereUniqueInput
+    /**
+     * In case the ReferenceData found by the `where` argument doesn't exist, create a new ReferenceData with this data.
+     */
+    create: XOR<ReferenceDataCreateInput, ReferenceDataUncheckedCreateInput>
+    /**
+     * In case the ReferenceData was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReferenceDataUpdateInput, ReferenceDataUncheckedUpdateInput>
+  }
+
+  /**
+   * ReferenceData delete
+   */
+  export type ReferenceDataDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+    /**
+     * Filter which ReferenceData to delete.
+     */
+    where: ReferenceDataWhereUniqueInput
+  }
+
+  /**
+   * ReferenceData deleteMany
+   */
+  export type ReferenceDataDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReferenceData to delete
+     */
+    where?: ReferenceDataWhereInput
+    /**
+     * Limit how many ReferenceData to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReferenceData without action
+   */
+  export type ReferenceDataDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferenceData
+     */
+    select?: ReferenceDataSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferenceData
+     */
+    omit?: ReferenceDataOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -21398,6 +22534,18 @@ export namespace Prisma {
   };
 
   export type TopicFollowScalarFieldEnum = (typeof TopicFollowScalarFieldEnum)[keyof typeof TopicFollowScalarFieldEnum]
+
+
+  export const ReferenceDataScalarFieldEnum: {
+    id: 'id',
+    group: 'group',
+    key: 'key',
+    label: 'label',
+    order: 'order',
+    isActive: 'isActive'
+  };
+
+  export type ReferenceDataScalarFieldEnum = (typeof ReferenceDataScalarFieldEnum)[keyof typeof ReferenceDataScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -22680,6 +23828,66 @@ export namespace Prisma {
     topicId?: StringWithAggregatesFilter<"TopicFollow"> | string
   }
 
+  export type ReferenceDataWhereInput = {
+    AND?: ReferenceDataWhereInput | ReferenceDataWhereInput[]
+    OR?: ReferenceDataWhereInput[]
+    NOT?: ReferenceDataWhereInput | ReferenceDataWhereInput[]
+    id?: StringFilter<"ReferenceData"> | string
+    group?: StringFilter<"ReferenceData"> | string
+    key?: StringFilter<"ReferenceData"> | string
+    label?: StringFilter<"ReferenceData"> | string
+    order?: IntFilter<"ReferenceData"> | number
+    isActive?: BoolFilter<"ReferenceData"> | boolean
+  }
+
+  export type ReferenceDataOrderByWithRelationInput = {
+    id?: SortOrder
+    group?: SortOrder
+    key?: SortOrder
+    label?: SortOrder
+    order?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type ReferenceDataWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    group_key?: ReferenceDataGroupKeyCompoundUniqueInput
+    AND?: ReferenceDataWhereInput | ReferenceDataWhereInput[]
+    OR?: ReferenceDataWhereInput[]
+    NOT?: ReferenceDataWhereInput | ReferenceDataWhereInput[]
+    group?: StringFilter<"ReferenceData"> | string
+    key?: StringFilter<"ReferenceData"> | string
+    label?: StringFilter<"ReferenceData"> | string
+    order?: IntFilter<"ReferenceData"> | number
+    isActive?: BoolFilter<"ReferenceData"> | boolean
+  }, "id" | "group_key">
+
+  export type ReferenceDataOrderByWithAggregationInput = {
+    id?: SortOrder
+    group?: SortOrder
+    key?: SortOrder
+    label?: SortOrder
+    order?: SortOrder
+    isActive?: SortOrder
+    _count?: ReferenceDataCountOrderByAggregateInput
+    _avg?: ReferenceDataAvgOrderByAggregateInput
+    _max?: ReferenceDataMaxOrderByAggregateInput
+    _min?: ReferenceDataMinOrderByAggregateInput
+    _sum?: ReferenceDataSumOrderByAggregateInput
+  }
+
+  export type ReferenceDataScalarWhereWithAggregatesInput = {
+    AND?: ReferenceDataScalarWhereWithAggregatesInput | ReferenceDataScalarWhereWithAggregatesInput[]
+    OR?: ReferenceDataScalarWhereWithAggregatesInput[]
+    NOT?: ReferenceDataScalarWhereWithAggregatesInput | ReferenceDataScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReferenceData"> | string
+    group?: StringWithAggregatesFilter<"ReferenceData"> | string
+    key?: StringWithAggregatesFilter<"ReferenceData"> | string
+    label?: StringWithAggregatesFilter<"ReferenceData"> | string
+    order?: IntWithAggregatesFilter<"ReferenceData"> | number
+    isActive?: BoolWithAggregatesFilter<"ReferenceData"> | boolean
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -23960,6 +25168,69 @@ export namespace Prisma {
     topicId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ReferenceDataCreateInput = {
+    id?: string
+    group: string
+    key: string
+    label: string
+    order?: number
+    isActive?: boolean
+  }
+
+  export type ReferenceDataUncheckedCreateInput = {
+    id?: string
+    group: string
+    key: string
+    label: string
+    order?: number
+    isActive?: boolean
+  }
+
+  export type ReferenceDataUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ReferenceDataUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ReferenceDataCreateManyInput = {
+    id?: string
+    group: string
+    key: string
+    label: string
+    order?: number
+    isActive?: boolean
+  }
+
+  export type ReferenceDataUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ReferenceDataUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    group?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -24962,6 +26233,46 @@ export namespace Prisma {
   export type TopicFollowMinOrderByAggregateInput = {
     userId?: SortOrder
     topicId?: SortOrder
+  }
+
+  export type ReferenceDataGroupKeyCompoundUniqueInput = {
+    group: string
+    key: string
+  }
+
+  export type ReferenceDataCountOrderByAggregateInput = {
+    id?: SortOrder
+    group?: SortOrder
+    key?: SortOrder
+    label?: SortOrder
+    order?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type ReferenceDataAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ReferenceDataMaxOrderByAggregateInput = {
+    id?: SortOrder
+    group?: SortOrder
+    key?: SortOrder
+    label?: SortOrder
+    order?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type ReferenceDataMinOrderByAggregateInput = {
+    id?: SortOrder
+    group?: SortOrder
+    key?: SortOrder
+    label?: SortOrder
+    order?: SortOrder
+    isActive?: SortOrder
+  }
+
+  export type ReferenceDataSumOrderByAggregateInput = {
+    order?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {

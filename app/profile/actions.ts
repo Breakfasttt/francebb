@@ -448,3 +448,11 @@ export async function deleteAccount() {
     return { success: false, error: "Une erreur est survenue lors de la suppression." };
   }
 }
+
+export async function getReferenceDataAction(group: string) {
+  return await prisma.referenceData.findMany({
+    where: { group, isActive: true },
+    orderBy: { order: "asc" },
+    select: { key: true, label: true }
+  });
+}

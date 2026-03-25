@@ -75,7 +75,7 @@ export default async function Home() {
               <Trophy size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
               <div style={{ fontSize: '1rem' }}>Tournois</div>
             </Link>
-            <Link href={isAuth ? "/forum/new-topic?forumId=cmn6amj3t000us4pexd764iy1" : "/auth/login?callback=/forum/new-topic?forumId=cmn6amj3t000us4pexd764iy1"} className="action-card-mini" style={{ padding: '0.5rem' }}>
+            <Link href={isAuth ? "/forum/new-tournament?forumId=cmn6amj3t000us4pexd764iy1" : "/auth/login?callback=/forum/new-tournament?forumId=cmn6amj3t000us4pexd764iy1"} className="action-card-mini" style={{ padding: '0.5rem' }}>
               <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
             </Link>
           </div>

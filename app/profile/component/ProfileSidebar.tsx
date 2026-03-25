@@ -199,7 +199,9 @@ export default function ProfileSidebar({
           gap: 1.5rem;
           width: 300px;
           flex-shrink: 0;
-          position: relative;
+          position: sticky;
+          top: 6.5rem;
+          align-self: flex-start;
         }
         .profile-summary-box {
           position: relative;

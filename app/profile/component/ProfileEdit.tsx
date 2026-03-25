@@ -1,4 +1,4 @@
-import { updateProfile } from "@/app/profile/actions";
+import { updateProfile, getReferenceDataAction } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import Modal from "@/common/components/Modal/Modal";
 import RankSelect from "@/common/components/RankSelect/RankSelect";
@@ -6,7 +6,7 @@ import Toast from "@/common/components/Toast/Toast";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Loader2, Sparkles, Upload } from "lucide-react";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -47,6 +47,16 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [regions, setRegions] = useState<{ key: string; label: string }[]>([]);
+
+  useEffect(() => {
+    async function loadRegions() {
+      const data = await getReferenceDataAction("COACH_REGION");
+      setRegions(data);
+    }
+    loadRegions();
+  }, []);
+
   const showToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3500);
@@ -61,7 +71,6 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     formDataUpload.append("image", file);
 
     try {
-      // ImgBB API requires the key as a query parameter
       const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
         method: "POST",
         body: formDataUpload,
@@ -70,7 +79,6 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
       const data = await response.json();
 
       if (data.success) {
-        // ImgBB returns the URL in data.data.url
         setFormData(prev => ({ ...prev, image: data.data.url }));
         showToast("Image uploadée avec succès !", "success");
       } else {
@@ -108,8 +116,6 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         const result = await updateProfile(data);
         if (result.success) {
           showToast("Profil mis à jour !", "success");
-          // On attend un peu pour que le toast soit visible et pour éviter 
-          // de couper le flux de réponse du serveur trop tôt (Error in input stream)
           if (onUpdate) {
             setTimeout(() => onUpdate(), 1000);
           }
@@ -124,21 +130,11 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const regions = [
-    { value: "", label: "Sélectionnez une région" },
-    { value: "IDF", label: "R1 - Île-de-France" },
-    { value: "Nord-Ouest", label: "R2 - Nord-Ouest" },
-    { value: "Nord-Est", label: "R3 - Nord-Est" },
-    { value: "Sud-Est", label: "R4 - Sud-Est" },
-    { value: "Sud-Ouest", label: "R5 - Sud-Ouest" },
-  ];
-
   return (
     <div className="premium-card profile-edit-container fade-in">
       <h3 className="section-title">Éditer mon profil</h3>
 
       <form onSubmit={handleSubmit} className="profile-edit-form">
-        {/* Hidden File Input */}
         <input
           type="file"
           ref={fileInputRef}
@@ -162,8 +158,9 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             <div className="form-group">
               <label>Région de tournoi</label>
               <select name="region" value={formData.region} onChange={handleChange}>
+                <option value="">Sélectionnez une région</option>
                 {regions.map(r => (
-                  <option key={r.value} value={r.value}>{r.label}</option>
+                  <option key={r.key} value={r.key}>{r.label}</option>
                 ))}
               </select>
             </div>
