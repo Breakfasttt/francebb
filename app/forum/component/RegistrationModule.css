@@ -1,0 +1,197 @@
+/* Module d'inscription aux tournois */
+
+.registration-module {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    color: white;
+}
+
+.registration-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 1rem;
+}
+
+.registration-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.25rem;
+    color: var(--accent);
+}
+
+/* Grilles de disposition */
+.registration-grid-individual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.registration-grid-individual .waiting-list-zone {
+    grid-column: span 2;
+    margin-top: 1rem;
+}
+
+.registration-team-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.registration-grid-team {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Zones de dépôt (Droppable) */
+.registration-zone {
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.registration-zone.is-over {
+    border-color: var(--accent);
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.zone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.zone-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+}
+
+.zone-count {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #ccc;
+}
+
+/* Items (Sortable/Draggable) */
+.registration-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: default;
+    position: relative;
+    transition: transform 0.1s ease;
+}
+
+.registration-item.is-dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+.drag-handle {
+    cursor: grab;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.payment-status-select {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    color: #ccc;
+    font-size: 0.75rem;
+    padding: 3px 6px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.payment-status-select:focus {
+    border-color: var(--accent);
+}
+
+/* Formulaire équipe */
+.team-creation-box {
+    grid-column: span 2;
+    background: rgba(194, 29, 29, 0.05);
+    border: 1px solid rgba(194, 29, 29, 0.2);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.team-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1rem;
+    align-items: end;
+}
+
+/* Badges et divers */
+.mercenary-badge {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.7rem;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.cancel-btn {
+    color: #ff4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.cancel-btn:hover {
+    opacity: 1;
+}
+
+.empty-zone-text {
+    text-align: center;
+    color: #444;
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-top: 2rem;
+}

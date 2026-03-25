@@ -67,6 +67,27 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   const [startDate, setStartDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "");
   const [endDate, setEndDate] = useState(initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "");
 
+  const handleNumericKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, allowDecimal = false) => {
+    // Liste des touches spéciales autorisées
+    const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Home', 'End', 'Enter', 'Escape'];
+    if (allowDecimal) {
+      allowedKeys.push('.', ',');
+    }
+    
+    // Autoriser les raccourcis Ctrl/Cmd + A, C, V, X
+    if (e.ctrlKey || e.metaKey) return;
+
+    // Bloquer ce qui n'est pas un chiffre ou une touche autorisée
+    if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+    
+    // Bloquer les virgules/points multiples
+    if ((e.key === '.' || e.key === ',') && (e.currentTarget.value.includes('.') || e.currentTarget.value.includes(','))) {
+      e.preventDefault();
+    }
+  };
+
   const handleSelectUser = (user: any) => {
     setCommissaires(prev => [...prev, user]);
   };
@@ -227,12 +248,37 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 {isTeam && (
                   <div className="form-group">
                     <label>Coachs par équipe</label>
-                    <input type="number" name="tCoachsPerTeam" defaultValue={initialData?.coachsPerTeam || 1} min={1} className="admin-input" />
+                    <input 
+                      type="number" 
+                      name="tCoachsPerTeam" 
+                      defaultValue={Math.max(2, initialData?.coachsPerTeam || 2)} 
+                      min={2} 
+                      className="admin-input" 
+                      onKeyDown={(e) => handleNumericKeyDown(e)}
+                      onInput={(e: any) => {
+                        const val = e.target.value;
+                        if (val === "0") e.target.value = "2"; 
+                      }}
+                      onBlur={(e) => {
+                        if (parseInt(e.target.value) < 2 || !e.target.value) e.target.value = "2";
+                      }}
+                    />
                   </div>
                 )}
                 <div className="form-group">
                   <label>{isTeam ? "Nombre d'équipes max" : "Nombre de coachs max"}</label>
-                  <input type="number" name="tMax" defaultValue={initialData?.maxParticipants || ""} placeholder="Ex: 40" className="admin-input" />
+                  <input 
+                    type="number" 
+                    name="tMax" 
+                    defaultValue={initialData?.maxParticipants || ""} 
+                    placeholder="Ex: 40" 
+                    min={1} 
+                    className="admin-input" 
+                    onKeyDown={(e) => handleNumericKeyDown(e)}
+                    onBlur={(e) => {
+                      if (e.target.value && parseInt(e.target.value) < 1) e.target.value = "1";
+                    }}
+                  />
                 </div>
               </div>
 
@@ -306,15 +352,18 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
                 <div className="form-group">
                   <label>Prix Inscription (€)</label>
-                  <input type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex: 15" className="admin-input" />
+                  <input type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex: 15" className="admin-input" 
+                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
                 </div>
                 <div className="form-group">
                   <label>Prix Repas (€ optionnel)</label>
-                  <input type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex: 5" className="admin-input" />
+                  <input type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex: 5" className="admin-input" 
+                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
                 </div>
                 <div className="form-group">
                   <label>Prix Logement (€ optionnel)</label>
-                  <input type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex: 10" className="admin-input" />
+                  <input type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex: 10" className="admin-input" 
+                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
                 </div>
               </div>
 

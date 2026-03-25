@@ -312,6 +312,40 @@ exports.Prisma.ReferenceDataScalarFieldEnum = {
   isActive: 'isActive'
 };
 
+exports.Prisma.TournamentRegistrationScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  userId: 'userId',
+  status: 'status',
+  paymentStatus: 'paymentStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TournamentTeamScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  tournamentId: 'tournamentId',
+  captainId: 'captainId',
+  status: 'status',
+  paymentStatus: 'paymentStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TournamentTeamMemberScalarFieldEnum = {
+  id: 'id',
+  teamId: 'teamId',
+  userId: 'userId'
+};
+
+exports.Prisma.TournamentMercenaryScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -321,7 +355,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.RegistrationStatus = exports.$Enums.RegistrationStatus = {
+  PRE_REGISTERED: 'PRE_REGISTERED',
+  REGISTERED: 'REGISTERED',
+  WAITING_LIST: 'WAITING_LIST'
+};
 
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  NOT_PAID: 'NOT_PAID',
+  PAID: 'PAID',
+  AT_TOURNAMENT: 'AT_TOURNAMENT',
+  GUEST: 'GUEST',
+  DEPANNAGE: 'DEPANNAGE'
+};
 
 exports.Prisma.ModelName = {
   Account: 'Account',
@@ -340,7 +386,11 @@ exports.Prisma.ModelName = {
   PostReaction: 'PostReaction',
   RoleConfig: 'RoleConfig',
   TopicFollow: 'TopicFollow',
-  ReferenceData: 'ReferenceData'
+  ReferenceData: 'ReferenceData',
+  TournamentRegistration: 'TournamentRegistration',
+  TournamentTeam: 'TournamentTeam',
+  TournamentTeamMember: 'TournamentTeamMember',
+  TournamentMercenary: 'TournamentMercenary'
 };
 
 /**

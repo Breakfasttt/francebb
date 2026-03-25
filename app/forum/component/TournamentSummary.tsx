@@ -68,21 +68,19 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'space-between', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <h2 style={{ margin: 0 }}>Détails du Tournoi</h2>
-                {tournament.isTeam && (
-                <span className="team-badge" style={{ background: 'var(--accent)', color: '#000', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', fontWeight: 800 }}>
-                    PAR ÉQUIPE ({tournament.coachsPerTeam})
-                </span>
-                )}
             </div>
-            {championships.length > 0 && (
-                <div style={{ display: 'flex', gap: '0.4rem' }}>
-                    {championships.map(c => (
-                        <span key={c.label} style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--accent)', fontSize: '0.7rem', padding: '2px 6px', border: '1px solid var(--accent)', borderRadius: '4px', fontWeight: 700 }}>
-                            {c.label}
-                        </span>
-                    ))}
-                </div>
-            )}
+            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                {tournament.isTeam && (
+                    <span className="team-badge" style={{ background: 'var(--accent)', color: '#000', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', fontWeight: 800 }}>
+                        PAR ÉQUIPE DE {tournament.coachsPerTeam}
+                    </span>
+                )}
+                {championships.map(c => (
+                    <span key={c.label} style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--accent)', fontSize: '0.7rem', padding: '2px 6px', border: '1px solid var(--accent)', borderRadius: '4px', fontWeight: 700 }}>
+                        {c.label}
+                    </span>
+                ))}
+            </div>
           </div>
           <p>{tournament.name}</p>
         </div>

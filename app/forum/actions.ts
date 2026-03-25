@@ -497,7 +497,7 @@ export async function createTopic(formData: FormData) {
       regionNAF: formData.get("tRegionNAF") as string,
       maxParticipants: parseInt(formData.get("tMax") as string) || null,
       isTeam: formData.get("isTeam") === "on",
-      coachsPerTeam: parseInt(formData.get("tCoachsPerTeam") as string) || 1,
+      coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,
       price: parseFloat(formData.get("tPrice") as string) || null,
       priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
       priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
@@ -1173,7 +1173,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     regionNAF: formData.get("tRegionNAF") as string,
     maxParticipants: parseInt(formData.get("tMax") as string) || null,
     isTeam: formData.get("isTeam") === "on",
-    coachsPerTeam: parseInt(formData.get("tCoachsPerTeam") as string) || (formData.get("isTeam") === "on" ? 1 : null),
+    coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,
     price: parseFloat(formData.get("tPrice") as string) || null,
     priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
     priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
@@ -1221,5 +1221,292 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   if (topic) revalidatePath(`/forum/${topic.forumId}`);
   
   redirect(`/forum/topic/${topicId}`);
+}
+
+/**
+ * Inscription individuelle à un tournoi
+ */
+export async function joinTournament(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+  const userId = session.user.id;
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: {
+      registrations: true,
+      topic: true
+    }
+  });
+
+  if (!tournament) return { success: false, error: "Tournoi introuvable" };
+
+  // Vérifier si déjà inscrit
+  const existing = await prisma.tournamentRegistration.findUnique({
+    where: { tournamentId_userId: { tournamentId, userId } }
+  });
+  if (existing) return { success: false, error: "Déjà inscrit" };
+
+  // Déterminer le statut (pré-inscrit ou liste d'attente)
+  const currentTotal = tournament.registrations.length;
+  const max = tournament.maxParticipants || 9999;
+  const status = currentTotal >= max ? "WAITING_LIST" : "PRE_REGISTERED";
+
+  try {
+    await prisma.tournamentRegistration.create({
+      data: {
+        tournamentId,
+        userId,
+        status: status as any,
+        paymentStatus: "NOT_PAID"
+      }
+    });
+
+    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Erreur lors de l'inscription" };
+  }
+}
+
+/**
+ * Désinscription individuelle
+ */
+export async function leaveTournament(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+  const userId = session.user.id;
+
+  try {
+    const reg = await prisma.tournamentRegistration.findUnique({
+      where: { tournamentId_userId: { tournamentId, userId } },
+      include: { tournament: { include: { topic: true } } }
+    });
+
+    if (!reg) return { success: false, error: "Inscription introuvable" };
+
+    await prisma.tournamentRegistration.delete({
+      where: { id: reg.id }
+    });
+
+    if (reg.tournament.topic) revalidatePath(`/forum/topic/${reg.tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Désinscription impossible" };
+  }
+}
+
+/**
+ * Inscription / Désinscription mercenaire
+ */
+export async function toggleMercenary(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+  const userId = session.user.id;
+
+  try {
+    const existing = await prisma.tournamentMercenary.findUnique({
+      where: { tournamentId_userId: { tournamentId, userId } }
+    });
+
+    const tournament = await prisma.tournament.findUnique({ 
+      where: { id: tournamentId },
+      include: { topic: true }
+    });
+
+    if (existing) {
+      await prisma.tournamentMercenary.delete({
+        where: { id: existing.id }
+      });
+    } else {
+      await prisma.tournamentMercenary.create({
+        data: { tournamentId, userId }
+      });
+    }
+
+    if (tournament?.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Action impossible" };
+  }
+}
+
+/**
+ * Création d'équipe
+ */
+export async function createTeam(tournamentId: string, name: string, memberIds: string[]) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+  const userId = session.user.id;
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: { teams: true, topic: true }
+  });
+
+  if (!tournament) return { success: false, error: "Tournoi introuvable" };
+
+  // Status
+  const currentTotal = tournament.teams.length;
+  const max = tournament.maxParticipants || 9999;
+  const status = currentTotal >= max ? "WAITING_LIST" : "PRE_REGISTERED";
+
+  try {
+    const team = await prisma.tournamentTeam.create({
+      data: {
+        name,
+        tournamentId,
+        captainId: userId,
+        status: status as any,
+        paymentStatus: "NOT_PAID",
+        members: {
+          create: memberIds.map(id => ({ userId: id }))
+        }
+      }
+    });
+
+    // Retrait des mercenaires
+    await prisma.tournamentMercenary.deleteMany({
+      where: { tournamentId, userId: { in: [userId, ...memberIds] } }
+    });
+
+    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Erreur lors de la création" };
+  }
+}
+
+/**
+ * Mise à jour d'équipe
+ */
+export async function updateTeam(teamId: string, name: string, memberIds: string[]) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+
+  try {
+    const team = await prisma.tournamentTeam.findUnique({
+      where: { id: teamId },
+      include: { tournament: { include: { topic: true } } }
+    });
+
+    if (!team) return { success: false, error: "Équipe introuvable" };
+    if (team.captainId !== session.user.id) return { success: false, error: "Action interdite" };
+
+    await prisma.$transaction([
+      prisma.tournamentTeamMember.deleteMany({ where: { teamId } }),
+      prisma.tournamentTeam.update({
+        where: { id: teamId },
+        data: {
+          name,
+          members: {
+            create: memberIds.map(id => ({ userId: id }))
+          }
+        }
+      })
+    ]);
+
+    // Retrait des mercenaires
+    await prisma.tournamentMercenary.deleteMany({
+      where: { tournamentId: team.tournamentId, userId: { in: memberIds } }
+    });
+
+    if (team.tournament.topic) revalidatePath(`/forum/topic/${team.tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Erreur lors de la mise à jour" };
+  }
+}
+
+/**
+ * Suppression d'équipe
+ */
+export async function deleteTeam(teamId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+
+  try {
+    const team = await prisma.tournamentTeam.findUnique({
+      where: { id: teamId },
+      include: { tournament: { include: { topic: true } } }
+    });
+
+    if (!team) return { success: false, error: "Équipe introuvable" };
+    if (team.captainId !== session.user.id) return { success: false, error: "Action interdite" };
+
+    await prisma.tournamentTeam.delete({ where: { id: teamId } });
+
+    if (team.tournament.topic) revalidatePath(`/forum/topic/${team.tournament.topic.id}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Action impossible" };
+  }
+}
+
+/**
+ * Mise à jour du statut d'inscription (Admin/Comm)
+ */
+export async function updateRegistrationStatus(params: {
+  type: "PLAYER" | "TEAM",
+  id: string,
+  status: string,
+  paymentStatus?: string
+}) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+
+  // TODO: Check if moderator or commissioner (maybe in the caller or here)
+  
+  try {
+    let topicId: string | undefined;
+
+    if (params.type === "PLAYER") {
+      const reg = await prisma.tournamentRegistration.update({
+        where: { id: params.id },
+        data: {
+          status: params.status as any,
+          paymentStatus: params.paymentStatus as any
+        },
+        include: { tournament: { include: { topic: true } } }
+      });
+      topicId = reg.tournament.topic?.id;
+    } else {
+      const team = await prisma.tournamentTeam.update({
+        where: { id: params.id },
+        data: {
+          status: params.status as any,
+          paymentStatus: params.paymentStatus as any
+        },
+        include: { tournament: { include: { topic: true } } }
+      });
+      topicId = team.tournament.topic?.id;
+    }
+
+    if (topicId) revalidatePath(`/forum/topic/${topicId}`);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: "Mise à jour impossible" };
+  }
+}
+
+/**
+ * Recherche d'utilisateurs pour l'inscription d'équipe
+ */
+export async function findUsersSearch(query: string) {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+
+  if (query.length < 2) return [];
+
+  return await prisma.user.findMany({
+    where: {
+      OR: [
+        { name: { contains: query } },
+        { email: { contains: query } }
+      ]
+    },
+    take: 5,
+    select: { id: true, name: true, image: true }
+  });
 }
 

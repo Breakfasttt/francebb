@@ -15,9 +15,9 @@ const adapter = new PrismaLibSql(config);
 
 // Forcer la remise à zéro du cache global pour le nouveau client custom
 // v8: cleaned up Topic.isDeleted, using Post.isDeleted
-// Force reset for new Tournament fields (endDate, commissaires)
-if (globalForPrisma.prisma && globalForPrisma.prismaVersion !== "v13") {
-  console.log("[PRISMA] Resetting global cache to v13 (Tournament endDate + commissaires)");
+// Force reset for new Tournament fields (endDate, commissaires) + Registration Module
+if (globalForPrisma.prisma && globalForPrisma.prismaVersion !== "v14") {
+  console.log("[PRISMA] Resetting global cache to v14 (Tournament Registration Module)");
   globalForPrisma.prisma = undefined as any;
 }
 
@@ -27,7 +27,7 @@ export const prisma =
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
-  globalForPrisma.prismaVersion = "v13";
+  globalForPrisma.prismaVersion = "v14";
 }
 
 // v3: added Category, Forum, Topic, Post models

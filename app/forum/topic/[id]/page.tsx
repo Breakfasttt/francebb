@@ -15,6 +15,7 @@ import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import SharePostButton from "@/app/forum/component/SharePostButton";
 import PostReactions from "@/app/forum/component/PostReactions";
 import TournamentSummary from "@/app/forum/component/TournamentSummary";
+import RegistrationModule from "@/app/forum/component/RegistrationModule";
 import PostItem from "@/app/forum/component/PostItem";
 import "../../page.css";
 
@@ -81,7 +82,19 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     prisma.topic.findUnique({
       where: { id },
       include: {
-        tournament: true,
+        tournament: { 
+          include: { 
+            commissaires: true,
+            registrations: { include: { user: true } },
+            teams: { 
+              include: { 
+                members: { include: { user: true } },
+                captain: true
+              } 
+            },
+            mercenaries: { include: { user: true } }
+          } 
+        },
         forum: {
           include: { 
             category: true,
@@ -136,6 +149,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const totalPages = Math.max(1, Math.ceil(totalPostCount / POSTS_PER_PAGE));
   const safeCurrentPage = Math.min(currentPage, totalPages);
 
+  const isTournamentOrganizer = topic.tournament?.organizerId === currentUserId;
+  const isTournamentCommissaire = topic.tournament?.commissaires.some((c: any) => c.id === currentUserId);
+  const canEditTournament = isUserModerator || isTournamentOrganizer || isTournamentCommissaire;
+
   const postContents = topic.posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
 
@@ -184,7 +201,17 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
       <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {/* Résumé du tournoi si applicable */}
-        {topic.tournament && <TournamentSummary tournament={topic.tournament} />}
+        {topic.tournament && (
+          <>
+            <TournamentSummary tournament={topic.tournament} />
+            <RegistrationModule 
+              tournament={topic.tournament} 
+              currentUser={session?.user}
+              isOrganizer={!!isTournamentOrganizer}
+              isCommissioner={!!isTournamentCommissaire}
+            />
+          </>
+        )}
 
         {/* Premier message persistant pour les tournois (si page > 1) */}
         {firstPostForTournament && (
@@ -256,6 +283,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         isArchived={topic.isArchived}
         isTournament={!!topic.tournament}
         tournamentId={topic.tournament?.id}
+        canEditTournament={canEditTournament}
       />
     </div>
   </main>

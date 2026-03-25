@@ -48,6 +48,7 @@ interface TopicSidebarProps {
   isArchived?: boolean;
   isTournament?: boolean;
   tournamentId?: string;
+  canEditTournament?: boolean;
 }
 
 export default function TopicSidebar({ 
@@ -67,7 +68,8 @@ export default function TopicSidebar({
   views = 0,
   isArchived = false,
   isTournament = false,
-  tournamentId
+  tournamentId,
+  canEditTournament = false
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -236,14 +238,14 @@ export default function TopicSidebar({
               </button>
             )}
 
-            {canEditTitle && (
+            {(isTournament ? canEditTournament : canEditTitle) && (
               <button 
                 onClick={handleEditTitleClick}
                 className="widget-button secondary-btn" 
                 style={{ textAlign: 'left', padding: '8px 12px' }}
               >
                 <Type size={16} />
-                <span>Modifier le titre</span>
+                <span>{isTournament ? "Modifier le tournoi" : "Modifier le titre"}</span>
               </button>
             )}
 

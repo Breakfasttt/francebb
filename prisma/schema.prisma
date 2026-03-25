@@ -66,6 +66,11 @@ model User {
   postReactions    PostReaction[]
   followedTopics   TopicFollow[]
   commissairesTournaments Tournament[] @relation("TournamentCommissaires")
+  
+  tournamentRegistrations TournamentRegistration[]
+  captainTeams            TournamentTeam[] @relation("TeamCaptain")
+  teamMemberships         TournamentTeamMember[]
+  mercenaryStatus         TournamentMercenary[]
 }
  
 model VerificationToken {
@@ -122,6 +127,10 @@ model Tournament {
   
   topic               Topic?
   commissaires        User[]   @relation("TournamentCommissaires")
+
+  registrations       TournamentRegistration[]
+  teams               TournamentTeam[]
+  mercenaries         TournamentMercenary[]
 }
 
 model Category {
@@ -303,4 +312,70 @@ model ReferenceData {
   isActive Boolean  @default(true)
   
   @@unique([group, key])
+}
+
+enum RegistrationStatus {
+  PRE_REGISTERED
+  REGISTERED
+  WAITING_LIST
+}
+
+enum PaymentStatus {
+  NOT_PAID
+  PAID
+  AT_TOURNAMENT
+  GUEST
+  DEPANNAGE
+}
+
+model TournamentRegistration {
+  id            String             @id @default(cuid())
+  tournamentId  String
+  tournament    Tournament         @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status        RegistrationStatus @default(PRE_REGISTERED)
+  paymentStatus PaymentStatus      @default(NOT_PAID)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+
+  @@unique([tournamentId, userId])
+}
+
+model TournamentTeam {
+  id            String             @id @default(cuid())
+  name          String
+  tournamentId  String
+  tournament    Tournament         @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  captainId     String
+  captain       User               @relation("TeamCaptain", fields: [captainId], references: [id])
+  status        RegistrationStatus @default(PRE_REGISTERED)
+  paymentStatus PaymentStatus      @default(NOT_PAID)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  
+  members       TournamentTeamMember[]
+
+  @@unique([tournamentId, name])
+}
+
+model TournamentTeamMember {
+  id        String         @id @default(cuid())
+  teamId    String
+  team      TournamentTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id])
+  
+  @@unique([teamId, userId])
+}
+
+model TournamentMercenary {
+  id           String     @id @default(cuid())
+  tournamentId String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime           @default(now())
+
+  @@unique([tournamentId, userId])
 }
