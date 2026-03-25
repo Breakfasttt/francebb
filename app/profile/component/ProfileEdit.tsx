@@ -1,3 +1,4 @@
+import { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { updateProfile } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import Toast from "@/common/components/Toast/Toast";
@@ -9,10 +10,11 @@ const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
 interface ProfileEditProps {
   user: any;
+  postCount: number;
   onUpdate?: () => void;
 }
 
-export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
+export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditProps) {
   const [formData, setFormData] = useState({
     name: user.name || "",
     image: user.image || "",
@@ -20,6 +22,7 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
     region: user.region || "",
     league: user.league || "",
     signature: user.signature || "",
+    avatarFrame: user.avatarFrame || "auto",
   });
 
   const [isPending, startTransition] = useTransition();
@@ -136,6 +139,23 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
           <div className="form-group">
             <label>Ligue</label>
             <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
+          </div>
+
+          <div className="form-group">
+            <label>Contour d'avatar</label>
+            <select name="avatarFrame" value={formData.avatarFrame} onChange={handleChange}>
+              <option value="auto">Automatique (basé sur mes messages)</option>
+              <option value="none">Aucun contour</option>
+              {postCount >= 100 && <option value="bronze">Bronze (Déverrouillé)</option>}
+              {postCount >= 100 && postCount < 100 && <option disabled>Bronze (Verrouillé)</option>}
+              
+              {postCount >= 300 ? <option value="silver">Argent (Déverrouillé)</option> : <option disabled>Argent (Verrouillé à 300 messages)</option>}
+              {postCount >= 700 ? <option value="gold">Or (Déverrouillé)</option> : <option disabled>Or (Verrouillé à 700 messages)</option>}
+              {postCount >= 1000 ? <option value="platinum">Platine (Déverrouillé)</option> : <option disabled>Platine (Verrouillé à 1000 messages)</option>}
+              {postCount >= 2000 ? <option value="diamond">Diamant (Déverrouillé)</option> : <option disabled>Diamant (Verrouillé à 2000 messages)</option>}
+              {postCount >= 4000 ? <option value="master">Master (Déverrouillé)</option> : <option disabled>Master (Verrouillé à 4000 messages)</option>}
+              {postCount >= 10000 ? <option value="grand-master">Grand Master (Déverrouillé)</option> : <option disabled>Grand Master (Verrouillé à 10000 messages)</option>}
+            </select>
           </div>
 
           <div className="form-group full-width">

@@ -16,6 +16,7 @@ export async function updateProfile(formData: FormData) {
   const region = formData.get("region") as string;
   const league = formData.get("league") as string;
   const signature = formData.get("signature") as string;
+  const avatarFrame = formData.get("avatarFrame") as string;
 
   await prisma.user.update({
     where: { id: session.user.id },
@@ -26,6 +27,7 @@ export async function updateProfile(formData: FormData) {
       region: region || null,
       league: league || null,
       signature: signature || null,
+      avatarFrame: avatarFrame || "auto",
     }
   });
 

@@ -3,6 +3,7 @@
 import { toggleBanUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
+import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -70,20 +71,16 @@ export default function ProfileSidebar({
   return (
     <div className="profile-sidebar-wrapper">
       <div className="premium-card profile-summary-box">
-        {user.isBanned && (
-          <div className="banned-badge">
-            <Ban size={14} /> <span>BANNI</span>
-          </div>
-        )}
 
-        <div className="profile-avatar-container">
-          {user.image ? (
-            <img src={user.image} alt={user.name || ""} className="profile-avatar-large" />
-          ) : (
-            <div className="profile-avatar-placeholder">
-              <UserIcon size={48} />
-            </div>
-          )}
+        <div className="profile-avatar-container" id="profile-avatar-debug">
+          <UserAvatar 
+            image={user.image} 
+            name={user.name} 
+            postCount={postCount} 
+            size={120} 
+            isBanned={user.isBanned}
+            selectedRank={user.avatarFrame}
+          />
         </div>
 
         <h2 className="profile-name">{user.name}</h2>
@@ -230,30 +227,9 @@ export default function ProfileSidebar({
           box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
         }
         .profile-avatar-container {
-          width: 120px;
-          height: 120px;
-          border-radius: 50%;
-          padding: 4px;
-          background: linear-gradient(135deg, var(--primary), var(--secondary));
-          margin-bottom: 1.5rem;
-        }
-        .profile-avatar-large {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 4px solid var(--glass-bg);
-        }
-        .profile-avatar-placeholder {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.05);
           display: flex;
-          align-items: center;
           justify-content: center;
-          color: #555;
-          border: 4px solid var(--glass-bg);
+          margin-bottom: 2rem;
         }
         .profile-name {
           margin: 0;

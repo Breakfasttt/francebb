@@ -50,6 +50,7 @@ model User {
   signature     String?
   isBanned      Boolean      @default(false)
   banReason     String?
+  avatarFrame   String?      @default("auto") // auto, none, bronze, silver, gold, platinum, diamond, master, grand-master
   topics        Topic[]
   posts         Post[]
 
