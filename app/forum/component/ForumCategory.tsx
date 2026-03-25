@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Hash, Folder, Bell, ChevronDown, ChevronUp } from "lucide-react";
+import { Hash, Folder, Bell, ChevronDown, ChevronUp, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 
@@ -59,6 +59,7 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
                   <h3 style={{ color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Folder size={18} style={{ color: forumHasNew ? '#ffd700' : '#888' }} />
                     <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
+                    {forum.isLocked && <LockIcon size={14} style={{ color: '#ef4444', opacity: 0.8 }} />}
                     {forumHasNew && <Bell size={14} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                   </h3>
                   {forum.description && <p>{forum.description}</p>}

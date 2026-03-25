@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, User, MessageSquare, MapPin, Shield, Trophy, ExternalLink, Mail } from "lucide-react";
+import { ArrowLeft, User, MessageSquare, MapPin, Shield, Trophy, ExternalLink, Mail, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -380,7 +380,23 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         ))}
       </div>
 
-      <QuickReply topicId={id} />
+      {(!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
+        <QuickReply topicId={id} />
+      ) : (
+        <div id="quick-reply-area" style={{ 
+          padding: '3rem 2rem', 
+          textAlign: 'center', 
+          background: 'rgba(239, 68, 68, 0.03)', 
+          borderRadius: '12px', 
+          border: '1px solid rgba(239, 68, 68, 0.2)', 
+          color: '#888',
+          marginTop: '3rem'
+        }}>
+          <LockIcon size={32} style={{ marginBottom: '1rem', color: '#ef4444', opacity: 0.6 }} />
+          <h3 style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Sujet verrouillé</h3>
+          <p>Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération.</p>
+        </div>
+      )}
       </div>
       <TopicSidebar 
         topicId={id} 
@@ -388,6 +404,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         totalPages={totalPages}
         isModerator={isUserModerator}
         isPinned={topic.isSticky}
+        isLocked={topic.isLocked}
+        isForumLocked={topic.forum.isLocked}
         lastPostId={lastPost?.id || ""}
         lastPage={totalPages}
         allForums={allForums}

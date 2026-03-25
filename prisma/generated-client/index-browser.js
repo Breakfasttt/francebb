@@ -199,6 +199,7 @@ exports.Prisma.ForumScalarFieldEnum = {
   description: 'description',
   order: 'order',
   allowedRoles: 'allowedRoles',
+  isLocked: 'isLocked',
   categoryId: 'categoryId',
   parentForumId: 'parentForumId'
 };

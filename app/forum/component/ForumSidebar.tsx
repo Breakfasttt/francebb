@@ -6,7 +6,7 @@ import {
   getSubForumCount
 } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Lock as LockIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -14,7 +14,7 @@ import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
 import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
-
+import LockButton from "@/app/forum/component/LockButton";
 import SidebarPagination from "@/app/forum/component/SidebarPagination";
 
 const POSTS_PER_PAGE = 20;
@@ -24,6 +24,7 @@ export default async function ForumSidebar({
   forumName, 
   categoryId, 
   parentForumId,
+  isLocked,
   currentPage,
   totalPages
 }: { 
@@ -31,6 +32,7 @@ export default async function ForumSidebar({
   forumName?: string; 
   categoryId?: string; 
   parentForumId?: string;
+  isLocked?: boolean;
   currentPage?: number;
   totalPages?: number;
 }) {
@@ -70,12 +72,21 @@ export default async function ForumSidebar({
           )}
 
           {/* Nouveau Sujet */}
-          {forumId && (
+          {forumId && (!isLocked || canCreateForum) && (
             <div className="sidebar-widget new-topic-widget">
               <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--primary)' }}>
                 <PlusCircle size={18} />
                 <span>Nouveau Sujet</span>
               </Link>
+            </div>
+          )}
+
+          {forumId && isLocked && !canCreateForum && (
+            <div className="sidebar-widget new-topic-widget" style={{ opacity: 0.6 }}>
+              <div className="widget-button" style={{ background: '#444', border: 'none', cursor: 'not-allowed' }}>
+                <LockIcon size={18} />
+                <span>Forum verrouillé</span>
+              </div>
             </div>
           )}
 
@@ -116,7 +127,8 @@ export default async function ForumSidebar({
                       href={postUrl} 
                       className={`recent-post-item ${!post.isRead ? 'has-new' : ''}`}
                     >
-                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        {post.topic.forum.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
                         <FileText size={13} style={{ color: !post.isRead ? 'var(--accent)' : '#888', flexShrink: 0 }} />
                         {post.topic.title}
                         {!post.isRead && <Bell size={12} fill="var(--accent)" color="var(--accent)" className="animate-pulse-subtle" />}
@@ -158,6 +170,13 @@ export default async function ForumSidebar({
               />
 
               {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
+              {forumId && (
+                <LockButton 
+                  id={forumId} 
+                  type="forum" 
+                  isLocked={isLocked || false} 
+                />
+              )}
             </div>
           )}
         </div>

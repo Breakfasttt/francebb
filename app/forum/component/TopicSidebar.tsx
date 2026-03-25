@@ -17,7 +17,8 @@ import {
   Mail,
   Check,
   Eye,
-  Bookmark
+  Bookmark,
+  Lock as LockIcon
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -27,12 +28,16 @@ import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
 import SidebarPagination from "@/app/forum/component/SidebarPagination";
 
+import LockButton from "@/app/forum/component/LockButton";
+
 interface TopicSidebarProps {
   topicId: string;
   currentPage: number;
   totalPages: number;
   isModerator?: boolean;
   isPinned?: boolean;
+  isLocked?: boolean;
+  isForumLocked?: boolean;
   lastPostId?: string;
   lastPage?: number;
   allForums?: { id: string; name: string; }[];
@@ -49,6 +54,8 @@ export default function TopicSidebar({
   totalPages,
   isModerator = false,
   isPinned = false,
+  isLocked = false,
+  isForumLocked = false,
   lastPostId = "",
   lastPage = 1,
   allForums = [],
@@ -175,10 +182,30 @@ export default function TopicSidebar({
               </div>
             </div>
 
-            <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
-              className="widget-button" style={{ background: 'var(--primary)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
-              <MessageSquare size={16} /><span>Répondre</span>
-            </button>
+            {(isLocked || isForumLocked) && (
+              <div style={{ 
+                padding: '0.8rem', 
+                background: 'rgba(239, 68, 68, 0.1)', 
+                border: '1px solid rgba(239, 68, 68, 0.2)', 
+                borderRadius: '8px',
+                color: '#ef4444',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}>
+                <LockIcon size={14} />
+                <span>{isForumLocked ? "Forum verrouillé" : "Sujet verrouillé"}</span>
+              </div>
+            )}
+
+            {(!(isLocked || isForumLocked) || isModerator) && (
+              <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
+                className="widget-button" style={{ background: 'var(--primary)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
+                <MessageSquare size={16} /><span>Répondre</span>
+              </button>
+            )}
             
             {currentUserId && (
               <button
@@ -264,6 +291,12 @@ export default function TopicSidebar({
                   <Eye size={16} style={{ opacity: isArchived ? 1 : 0.7 }} />
                   <span>{isArchived ? "Désarchiver" : "Archiver"}</span>
                 </button>
+
+                <LockButton 
+                  id={topicId} 
+                  type="topic" 
+                  isLocked={isLocked} 
+                />
 
                 <button 
                   onClick={() => setShowDeleteModal(true)}

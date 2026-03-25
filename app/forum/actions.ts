@@ -39,6 +39,7 @@ export async function getRecentPosts(limit: number = 3) {
       isArchived: false
     },
     include: {
+      forum: true,
       _count: {
         select: { posts: true }
       },
@@ -67,7 +68,8 @@ export async function getRecentPosts(limit: number = 3) {
           title: topic.title,
           updatedAt: topic.updatedAt,
           topicViews: topic.topicViews,
-          _count: topic._count
+          _count: topic._count,
+          forum: topic.forum
         },
         isRead: topic.topicViews[0] ? topic.updatedAt <= topic.topicViews[0].lastViewedAt : false
       };
@@ -413,6 +415,16 @@ export async function createTopic(formData: FormData) {
     throw new Error("Titre, contenu et forum sont obligatoires.");
   }
 
+  // Vérifier si le forum est locké
+  const forum = await prisma.forum.findUnique({
+    where: { id: forumId },
+    select: { isLocked: true }
+  });
+
+  if (forum?.isLocked && !isModerator(session.user.role)) {
+    throw new Error("Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet.");
+  }
+
   // Create the topic AND the first post in a transaction
   const topic = await prisma.$transaction(async (tx) => {
     const newTopic = await tx.topic.create({
@@ -446,6 +458,19 @@ export async function createPost(topicId: string, content: string) {
   const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté pour répondre.");
+  }
+  if (!content) throw new Error("Le contenu est obligatoire.");
+
+  // Vérifier si le topic ou le forum est locké
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId },
+    include: { forum: { select: { isLocked: true } } }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  if ((topic.isLocked || topic.forum.isLocked) && !isModerator(session.user.role)) {
+    throw new Error("Ce sujet est verrouillé. Vous ne pouvez plus y répondre.");
   }
 
   const post = await prisma.post.create({
@@ -913,4 +938,49 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
     console.error("getFollowedTopics error:", error);
     return { topics: [], totalPages: 0 };
   }
+}
+export async function toggleForumLock(forumId: string) {
+  const session = await auth();
+  if (!isModerator(session?.user?.role)) {
+    throw new Error("Action non autorisée.");
+  }
+
+  const forum = await prisma.forum.findUnique({
+    where: { id: forumId },
+    select: { isLocked: true }
+  });
+
+  if (!forum) throw new Error("Forum introuvable.");
+
+  await prisma.forum.update({
+    where: { id: forumId },
+    data: { isLocked: !forum.isLocked }
+  });
+
+  revalidatePath("/forum");
+  revalidatePath(`/forum/${forumId}`);
+  return { success: true };
+}
+
+export async function toggleTopicLock(topicId: string) {
+  const session = await auth();
+  if (!isModerator(session?.user?.role)) {
+    throw new Error("Action non autorisée.");
+  }
+
+  const topic = await prisma.topic.findUnique({
+    where: { id: topicId },
+    select: { isLocked: true, forumId: true }
+  });
+
+  if (!topic) throw new Error("Sujet introuvable.");
+
+  await prisma.topic.update({
+    where: { id: topicId },
+    data: { isLocked: !topic.isLocked }
+  });
+
+  revalidatePath(`/forum/topic/${topicId}`);
+  revalidatePath(`/forum/${topic.forumId}`);
+  return { success: true };
 }

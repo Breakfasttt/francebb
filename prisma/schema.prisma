@@ -119,6 +119,7 @@ model Forum {
   description String?
   order       Int      @default(0)
   allowedRoles String  @default("ALL")
+  isLocked     Boolean  @default(false)
   
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])

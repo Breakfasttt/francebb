@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Lock as LockIcon } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
@@ -101,6 +101,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0, color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'center' }}>
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
+            {forum.isLocked && <LockIcon size={20} style={{ color: '#ef4444', opacity: 0.8 }} />}
             {forumHasNew && <Bell size={20} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
           </h1>
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>{forum.description}</p>
@@ -129,6 +130,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                     <h3 style={{ color: subHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <Folder size={16} style={{ color: subHasNew ? '#ffd700' : '#888' }} />
                       {sub.name}
+                      {sub.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
                       {subHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                     </h3>
                     {sub.description && <p>{sub.description}</p>}
@@ -190,6 +192,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                     <FileText size={16} style={{ color: topicHasNew ? '#ffd700' : '#888' }} />
                   )}
                   <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+                  {topic.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
                   {topicHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
                 </h3>
                 <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>
@@ -216,18 +219,17 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         )}
       </div>
 
-      {/* Pagination moved to sidebar */}
-
      </div>
      <ForumSidebar 
        forumId={id} 
        forumName={forum.name} 
        categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
        parentForumId={id} 
+       isLocked={forum.isLocked}
        currentPage={currentPage}
        totalPages={totalPages}
      />
    </div>
- </main>
+  </main>
   );
 }
