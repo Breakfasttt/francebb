@@ -83,6 +83,7 @@ model Tournament {
   endDate     DateTime?
   location    String
   address     String?
+  gmapsUrl    String?
   ville       String?
   departement String?
   region      String?

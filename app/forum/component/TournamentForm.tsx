@@ -6,7 +6,7 @@ import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { 
   Trophy, Calendar, MapPin, Users, Coins, Monitor, 
-  Shield, Utensils, BedDouble, Sun, Map, Save
+  Shield, Utensils, BedDouble, Sun, Map, Save, Globe
 } from "lucide-react";
 import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
@@ -28,6 +28,8 @@ interface TournamentFormProps {
     date: Date;
     endDate: Date | null;
     address: string | null;
+    gmapsUrl: string | null;
+    location: string;
     ville: string | null;
     departement: string | null;
     region: string | null;
@@ -202,6 +204,14 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                     <input type="text" name="tAddress" defaultValue={initialData?.address || ""} placeholder="Ex: 5 rue de la Paix, Paris" className="admin-input" 
                            style={{ paddingLeft: '2.8rem' }} />
                     <Map size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
+                  </div>
+                </div>
+                <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                  <label>Lien Google Maps direct (Optionnel)</label>
+                  <div style={{ position: 'relative' }}>
+                    <input type="url" name="tGmapsUrl" defaultValue={initialData?.gmapsUrl || ""} placeholder="Ex: https://goo.gl/maps/..." className="admin-input" 
+                           style={{ paddingLeft: '2.8rem' }} />
+                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
                   </div>
                 </div>
               </div>

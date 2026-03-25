@@ -168,6 +168,7 @@ exports.Prisma.TournamentScalarFieldEnum = {
   endDate: 'endDate',
   location: 'location',
   address: 'address',
+  gmapsUrl: 'gmapsUrl',
   ville: 'ville',
   departement: 'departement',
   region: 'region',

@@ -7584,6 +7584,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string | null
     address: string | null
+    gmapsUrl: string | null
     ville: string | null
     departement: string | null
     region: string | null
@@ -7621,6 +7622,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string | null
     address: string | null
+    gmapsUrl: string | null
     ville: string | null
     departement: string | null
     region: string | null
@@ -7658,6 +7660,7 @@ export namespace Prisma {
     endDate: number
     location: number
     address: number
+    gmapsUrl: number
     ville: number
     departement: number
     region: number
@@ -7719,6 +7722,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     address?: true
+    gmapsUrl?: true
     ville?: true
     departement?: true
     region?: true
@@ -7756,6 +7760,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     address?: true
+    gmapsUrl?: true
     ville?: true
     departement?: true
     region?: true
@@ -7793,6 +7798,7 @@ export namespace Prisma {
     endDate?: true
     location?: true
     address?: true
+    gmapsUrl?: true
     ville?: true
     departement?: true
     region?: true
@@ -7917,6 +7923,7 @@ export namespace Prisma {
     endDate: Date | null
     location: string
     address: string | null
+    gmapsUrl: string | null
     ville: string | null
     departement: string | null
     region: string | null
@@ -7973,6 +7980,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     address?: boolean
+    gmapsUrl?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
@@ -8014,6 +8022,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     address?: boolean
+    gmapsUrl?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
@@ -8052,6 +8061,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     address?: boolean
+    gmapsUrl?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
@@ -8090,6 +8100,7 @@ export namespace Prisma {
     endDate?: boolean
     location?: boolean
     address?: boolean
+    gmapsUrl?: boolean
     ville?: boolean
     departement?: boolean
     region?: boolean
@@ -8120,7 +8131,7 @@ export namespace Prisma {
     organizerId?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "organizerId", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "organizerId", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
@@ -8148,6 +8159,7 @@ export namespace Prisma {
       endDate: Date | null
       location: string
       address: string | null
+      gmapsUrl: string | null
       ville: string | null
       departement: string | null
       region: string | null
@@ -8608,6 +8620,7 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Tournament", 'DateTime'>
     readonly location: FieldRef<"Tournament", 'String'>
     readonly address: FieldRef<"Tournament", 'String'>
+    readonly gmapsUrl: FieldRef<"Tournament", 'String'>
     readonly ville: FieldRef<"Tournament", 'String'>
     readonly departement: FieldRef<"Tournament", 'String'>
     readonly region: FieldRef<"Tournament", 'String'>
@@ -22658,6 +22671,7 @@ export namespace Prisma {
     endDate: 'endDate',
     location: 'location',
     address: 'address',
+    gmapsUrl: 'gmapsUrl',
     ville: 'ville',
     departement: 'departement',
     region: 'region',
@@ -23235,6 +23249,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
     address?: StringNullableFilter<"Tournament"> | string | null
+    gmapsUrl?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
@@ -23275,6 +23290,7 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     address?: SortOrderInput | SortOrder
+    gmapsUrl?: SortOrderInput | SortOrder
     ville?: SortOrderInput | SortOrder
     departement?: SortOrderInput | SortOrder
     region?: SortOrderInput | SortOrder
@@ -23318,6 +23334,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
     address?: StringNullableFilter<"Tournament"> | string | null
+    gmapsUrl?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
@@ -23358,6 +23375,7 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     location?: SortOrder
     address?: SortOrderInput | SortOrder
+    gmapsUrl?: SortOrderInput | SortOrder
     ville?: SortOrderInput | SortOrder
     departement?: SortOrderInput | SortOrder
     region?: SortOrderInput | SortOrder
@@ -23403,6 +23421,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableWithAggregatesFilter<"Tournament"> | Date | string | null
     location?: StringWithAggregatesFilter<"Tournament"> | string
     address?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    gmapsUrl?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     ville?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     departement?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     region?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
@@ -24623,6 +24642,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -24662,6 +24682,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -24701,6 +24722,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24740,6 +24762,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24779,6 +24802,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -24816,6 +24840,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24852,6 +24877,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26164,6 +26190,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     address?: SortOrder
+    gmapsUrl?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
@@ -26212,6 +26239,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     address?: SortOrder
+    gmapsUrl?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
@@ -26249,6 +26277,7 @@ export namespace Prisma {
     endDate?: SortOrder
     location?: SortOrder
     address?: SortOrder
+    gmapsUrl?: SortOrder
     ville?: SortOrder
     departement?: SortOrder
     region?: SortOrder
@@ -28856,6 +28885,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -28894,6 +28924,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -29273,6 +29304,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -29311,6 +29343,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -29433,6 +29466,7 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Tournament"> | Date | string | null
     location?: StringFilter<"Tournament"> | string
     address?: StringNullableFilter<"Tournament"> | string | null
+    gmapsUrl?: StringNullableFilter<"Tournament"> | string | null
     ville?: StringNullableFilter<"Tournament"> | string | null
     departement?: StringNullableFilter<"Tournament"> | string | null
     region?: StringNullableFilter<"Tournament"> | string | null
@@ -30567,6 +30601,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -30605,6 +30640,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -30815,6 +30851,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30853,6 +30890,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -32917,6 +32955,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     location: string
     address?: string | null
+    gmapsUrl?: string | null
     ville?: string | null
     departement?: string | null
     region?: string | null
@@ -33109,6 +33148,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33147,6 +33187,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33185,6 +33226,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33527,6 +33569,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33565,6 +33608,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33603,6 +33647,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     location?: StringFieldUpdateOperationsInput | string
     address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     departement?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null

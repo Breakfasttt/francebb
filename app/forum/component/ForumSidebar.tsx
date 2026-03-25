@@ -137,7 +137,11 @@ export default async function ForumSidebar({
                     >
                       <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         {post.topic.forum.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
-                        <FileText size={13} style={{ color: !post.isRead ? 'var(--accent)' : '#888', flexShrink: 0 }} />
+                        {post.topic.tournamentId ? (
+                           <Trophy size={13} style={{ color: !post.isRead ? 'var(--accent)' : 'white', opacity: !post.isRead ? 1 : 0.6, flexShrink: 0 }} />
+                        ) : (
+                           <FileText size={13} style={{ color: !post.isRead ? 'var(--accent)' : '#888', flexShrink: 0 }} />
+                        )}
                         {post.topic.title}
                         {!post.isRead && <Bell size={12} fill="var(--accent)" color="var(--accent)" className="animate-pulse-subtle" />}
                       </span>

@@ -69,7 +69,8 @@ export async function getRecentPosts(limit: number = 3) {
           updatedAt: topic.updatedAt,
           topicViews: topic.topicViews,
           _count: topic._count,
-          forum: topic.forum
+          forum: topic.forum,
+          tournamentId: topic.tournamentId
         },
         isRead: topic.topicViews[0] ? topic.updatedAt <= topic.topicViews[0].lastViewedAt : false
       };
@@ -487,8 +488,9 @@ export async function createTopic(formData: FormData) {
       name: title,
       date: startDate,
       endDate: endDate,
-      location: formData.get("tLocation") as string || "Lieu non précisé",
+      location: formData.get("tAddress") as string || "Lieu non précisé",
       address: formData.get("tAddress") as string,
+      gmapsUrl: formData.get("tGmapsUrl") as string,
       ville: formData.get("tVille") as string,
       departement: formData.get("tDept") as string,
       region: formData.get("tRegion") as string,
@@ -1162,7 +1164,9 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     name: title,
     date: startDate,
     endDate: endDate,
+    location: formData.get("tAddress") as string || "Lieu non précisé",
     address: formData.get("tAddress") as string,
+    gmapsUrl: formData.get("tGmapsUrl") as string,
     ville: formData.get("tVille") as string,
     departement: formData.get("tDept") as string,
     region: formData.get("tRegion") as string,
