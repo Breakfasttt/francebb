@@ -4,8 +4,8 @@ import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
 import { SignInButton } from "@/common/components/SignInButton/SignInButton";
 import { prisma } from "@/lib/prisma";
-import { UserRole } from "@/lib/roles";
-import { Mail } from "lucide-react";
+import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
+import { Mail, ShieldAlert, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -39,7 +39,8 @@ export default async function RootLayout({
     }
   }
 
-  const isAdmin = false; // kept for future use
+  const isMod = isModerator(userRole);
+  const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
 
   let unreadCount = 0;
   if (session?.user?.id) {
@@ -81,6 +82,24 @@ export default async function RootLayout({
               color: 'transparent'
             }}>France<span> Blood Bowl</span></Link>
             <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+              {isAdmin && (
+                <Link
+                  href="/administration"
+                  title="Administration"
+                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                >
+                  <Settings size={22} />
+                </Link>
+              )}
+              {isMod && (
+                <Link
+                  href="/moderation"
+                  title="Modération"
+                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                >
+                  <ShieldAlert size={22} />
+                </Link>
+              )}
               {session?.user && (
                 <a
                   href="/profile?tab=pm"
