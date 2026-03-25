@@ -192,6 +192,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                 <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? '#ffd700' : 'white' }}>
                   {topic.isSticky ? (
                     <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />
+                  ) : topic.tournamentId ? (
+                    <Trophy size={16} style={{ color: topicHasNew ? 'var(--accent)' : 'white', opacity: topicHasNew ? 1 : 0.6 }} />
                   ) : (
                     <FileText size={16} style={{ color: topicHasNew ? '#ffd700' : '#888' }} />
                   )}

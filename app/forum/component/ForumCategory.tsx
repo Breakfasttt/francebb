@@ -76,7 +76,15 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
                 <div className="forum-last-post">
                   {lastTopic ? (
                     <>
-                      <span className="last-post-title" style={{ color: forumHasNew ? '#ffd700' : 'white' }}>{lastTopic.title}</span>
+                      <span className="last-post-title" style={{ 
+                        color: forumHasNew ? '#ffd700' : 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.4rem'
+                      }}>
+                        {lastTopic.tournamentId && <Trophy size={12} style={{ color: forumHasNew ? 'var(--accent)' : 'white', opacity: forumHasNew ? 1 : 0.6 }} />}
+                        {lastTopic.title}
+                      </span>
                       <span className="last-post-meta">
                         Par <strong>{lastTopic.author.name}</strong>
                         <br />

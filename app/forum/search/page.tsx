@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import Link from "next/link";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -195,7 +195,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 }} className="hover:border-primary/50">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: "1.1rem" }}>
+                      <h3 style={{ margin: 0, fontSize: "1.1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        {post.topic.tournamentId && <Trophy size={16} style={{ color: "white", opacity: 0.7 }} />}
                         <Link href={`/forum/topic/${post.topicId}#${post.id}`} style={{ color: "white", textDecoration: "none" }} className="hover:text-primary transition-colors">
                           Sujet: {post.topic.title}
                         </Link>

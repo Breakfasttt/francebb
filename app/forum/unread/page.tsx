@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, MessageSquare } from "lucide-react";
+import { ArrowLeft, Clock, MessageSquare, Trophy } from "lucide-react";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
@@ -61,7 +61,10 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
                 alignItems: 'center'
               }}>
                 <Link href={`/forum/topic/${topic.id}`} className="forum-info" style={{ textDecoration: 'none' }}>
-                  <h3 style={{ color: '#ffd700', margin: 0 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {topic.tournamentId && <Trophy size={16} color="var(--accent)" />}
+                    <h3 style={{ color: '#ffd700', margin: 0 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+                  </div>
                   <p style={{ margin: '0.3rem 0 0', color: '#888', fontSize: '0.85rem' }}>Dans <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} /> • Par {topic.author.name}</p>
                 </Link>
 
