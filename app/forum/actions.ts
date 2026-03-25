@@ -200,28 +200,55 @@ export async function getUnreadTopicsCount() {
 
   return unreadCount;
 }
-export async function getUnreadTopics() {
+export async function getUnreadTopics(page: number = 1, limit: number = 20) {
   const session = await auth();
-  if (!session?.user?.id) return [];
+  if (!session?.user?.id) return { topics: [], total: 0 };
 
-  const topics = await prisma.topic.findMany({
+  const userId = session.user.id;
+  const skip = (page - 1) * limit;
+
+  // Récupérer tous les sujets potentiels (non archivés)
+  // On récupère uniquement le minimum pour le filtrage
+  const allTopics = await prisma.topic.findMany({
     where: { isArchived: false },
-    include: {
-      author: true,
-      forum: true,
-      _count: { select: { posts: true } },
+    select: {
+      id: true,
+      updatedAt: true,
       topicViews: {
-        where: { userId: session.user.id }
+        where: { userId },
+        select: { lastViewedAt: true }
       }
     },
     orderBy: { updatedAt: "desc" }
   });
 
-  return topics.filter(topic => {
-    const view = topic.topicViews[0];
-    if (!view) return true;
-    return topic.updatedAt > view.lastViewedAt;
+  // Filtrer les IDs non lus
+  const unreadIds = allTopics
+    .filter(topic => {
+      const view = topic.topicViews[0];
+      if (!view) return true; // Jamais lu
+      return topic.updatedAt > view.lastViewedAt; // Mis à jour depuis la dernière lecture
+    })
+    .map(t => t.id);
+
+  const total = unreadIds.length;
+  const paginatedIds = unreadIds.slice(skip, skip + limit);
+
+  // Récupérer les données complètes pour les IDs de la page courante
+  const topics = await prisma.topic.findMany({
+    where: { id: { in: paginatedIds } },
+    include: {
+      author: true,
+      forum: true,
+      _count: { select: { posts: true } },
+      topicViews: {
+        where: { userId }
+      }
+    },
+    orderBy: { updatedAt: "desc" }
   });
+
+  return { topics, total };
 }
 
 export async function getSubForumCount(parentForumId: string) {

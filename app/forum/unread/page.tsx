@@ -1,15 +1,19 @@
 import { ArrowLeft, Clock, MessageSquare } from "lucide-react";
-import ForumSidebar from "@/app/forum/component/ForumSidebar";
-import "../page.css";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
-
+import UnreadSidebar from "./component/UnreadSidebar";
+import "../page.css";
 
 export const dynamic = "force-dynamic";
 
-export default async function UnreadPostsPage() {
-  const unreadTopics = await getUnreadTopics();
+const POSTS_PER_PAGE = 20;
+
+export default async function UnreadPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageStr } = await searchParams;
+  const currentPage = Math.max(1, parseInt(pageStr || "1", 10));
+  const { topics: unreadTopics, total } = await getUnreadTopics(currentPage, POSTS_PER_PAGE);
+  const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
   return (
     <main className="container forum-container">
@@ -74,7 +78,7 @@ export default async function UnreadPostsPage() {
         )}
       </div>
        </div>
-       <ForumSidebar />
+       <UnreadSidebar currentPage={currentPage} totalPages={totalPages} />
      </div>
    </main>
   );
