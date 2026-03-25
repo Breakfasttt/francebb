@@ -379,3 +379,72 @@ export async function searchUsersForPm(query: string) {
     isFull: (u._count.user1Conversations + u._count.user2Conversations) >= CONVERSATION_LIMIT
   }));
 }
+export async function deleteAccount() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non connecté");
+
+  const userId = session.user.id;
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      // 1. Supprimer les données privées et sensibles
+      await tx.account.deleteMany({ where: { userId } });
+      await tx.session.deleteMany({ where: { userId } });
+      await tx.topicView.deleteMany({ where: { userId } });
+      await tx.postReaction.deleteMany({ where: { userId } });
+      await tx.mention.deleteMany({ where: { OR: [{ mentionerId: userId }, { mentionedUserId: userId }] } });
+      
+      // 2. Supprimer les messages privés et conversations associées
+      await tx.privateMessage.deleteMany({ where: { authorId: userId } });
+      await tx.conversation.deleteMany({ where: { OR: [{ user1Id: userId }, { user2Id: userId }] } });
+
+      // 3. Anonymiser l'activité publique pour ne pas casser la structure du forum
+      // On vérifie si l'utilisateur "Ghost" existe, sinon on le crée
+      const ghostId = "ghost_coach";
+      let ghost = await tx.user.findUnique({ where: { id: ghostId } });
+      if (!ghost) {
+        ghost = await tx.user.create({
+          data: {
+            id: ghostId,
+            name: "Coach Inconnu",
+            email: "ghost@breakfasttt.fr",
+            role: "COACH",
+            isBanned: true // Pour éviter toute connexion
+          }
+        });
+      }
+
+      await tx.topic.updateMany({
+        where: { authorId: userId },
+        data: { authorId: ghostId }
+      });
+
+      await tx.post.updateMany({
+        where: { authorId: userId },
+        data: { authorId: ghostId, content: "[Ce message a été supprimé suite à la clôture du compte]" }
+      });
+
+      // 4. Supprimer l'utilisateur lui-même (sauf si SUPERADMIN)
+      if (session.user.role === "SUPERADMIN") {
+        await tx.user.update({
+          where: { id: userId },
+          data: {
+            image: null,
+            signature: null,
+            nafNumber: null,
+            region: null,
+            league: null,
+            avatarFrame: "auto"
+          }
+        });
+      } else {
+        await tx.user.delete({ where: { id: userId } });
+      }
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la suppression du compte:", error);
+    return { success: false, error: "Une erreur est survenue lors de la suppression." };
+  }
+}

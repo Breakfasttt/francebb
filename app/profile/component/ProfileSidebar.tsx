@@ -55,6 +55,7 @@ export default function ProfileSidebar({
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
+    { id: "settings", label: "Gérer mon compte", icon: <Shield size={18} /> },
   ] : [
     { id: "activity", label: "Activité du forum", icon: <MessageSquare size={18} /> },
     ...(user.nafNumber ? [{ id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> }] : []),

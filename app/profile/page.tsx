@@ -12,11 +12,12 @@ import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
 import ProfilePM from "@/app/profile/component/ProfilePM";
+import ProfileSettings from "@/app/profile/component/ProfileSettings";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import "./page.css";
 
-type ProfileTab = "followed" | "activity" | "edit" | "palmares" | "pm";
+type ProfileTab = "followed" | "activity" | "edit" | "palmares" | "pm" | "settings";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -52,6 +53,7 @@ export default function ProfilePage() {
     if (tab === "palmares") return "palmares";
     if (tab === "pm") return "pm";
     if (tab === "activity") return "activity";
+    if (tab === "settings") return "settings";
     return "followed";
   };
 
@@ -225,6 +227,10 @@ export default function ProfilePage() {
 
           {activeTab === "pm" && (
             <ProfilePM />
+          )}
+
+          {activeTab === "settings" && (
+            <ProfileSettings user={user} />
           )}
         </div>
       </div>
