@@ -1,10 +1,11 @@
 "use client";
 
-import { User } from "@prisma/client";
-import { User as UserIcon, MapPin, Trophy, MessageSquare, Shield, AlertTriangle, Ban, UserCheck, Bookmark } from "lucide-react";
-import { useState, useTransition } from "react";
 import { toggleBanUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
+import { AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
 
 interface ProfileSidebarProps {
   user: any;
@@ -13,19 +14,32 @@ interface ProfileSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   isModerator?: boolean;
+  onContact?: () => void;
 }
 
-export default function ProfileSidebar({ 
-  user, 
-  postCount, 
-  isOwnProfile, 
-  activeTab, 
+export default function ProfileSidebar({
+  user,
+  postCount,
+  isOwnProfile,
+  activeTab,
   onTabChange,
-  isModerator = false
+  isModerator = false,
+  onContact
 }: ProfileSidebarProps) {
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handleTabClick = (id: string) => {
+    onTabChange(id);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", id);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const handleToggleBan = () => {
     startTransition(async () => {
@@ -61,7 +75,7 @@ export default function ProfileSidebar({
             <Ban size={14} /> <span>BANNI</span>
           </div>
         )}
-        
+
         <div className="profile-avatar-container">
           {user.image ? (
             <img src={user.image} alt={user.name || ""} className="profile-avatar-large" />
@@ -80,10 +94,10 @@ export default function ProfileSidebar({
             <span className="stat-label">NAF</span>
             <span className="stat-value">
               {user.nafNumber ? (
-                <a 
-                  href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}
                 >
                   {user.nafNumber}
@@ -97,24 +111,35 @@ export default function ProfileSidebar({
           </div>
         </div>
 
-        <div className="profile-info-list">
-          {user.region && (
-            <div className="info-item">
-              <MapPin size={16} />
-              <span>{regionLabels[user.region] || user.region}</span>
-            </div>
-          )}
-          {user.league && (
-            <div className="info-item">
-              <Shield size={16} />
-              <span>{user.league}</span>
-            </div>
-          )}
-        </div>
+        {(user.region || user.league) && (
+          <div className="profile-info-list">
+            {user.region && (
+              <div className="info-item">
+                <MapPin size={16} />
+                <span>{regionLabels[user.region] || user.region}</span>
+              </div>
+            )}
+            {user.league && (
+              <div className="info-item">
+                <Shield size={16} />
+                <span>{user.league}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {!isOwnProfile && (
           <div className="profile-actions">
-            <button 
+            {onContact && (
+              <button
+                onClick={onContact}
+                className="action-button primary-btn full-width"
+              >
+                <MessageSquare size={16} />
+                <span>Message privé</span>
+              </button>
+            )}
+            <button
               onClick={() => setShowReportModal(true)}
               className="action-button secondary-btn full-width"
             >
@@ -123,7 +148,7 @@ export default function ProfileSidebar({
             </button>
 
             {isModerator && (
-              <button 
+              <button
                 onClick={() => setShowBanModal(true)}
                 className={`action-button full-width ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
                 disabled={isPending}
@@ -134,33 +159,34 @@ export default function ProfileSidebar({
             )}
           </div>
         )}
+
+        {/* Floating Icons Navigation (Docked on the right edge) */}
+        <div className="profile-floating-nav">
+          {navItems.map((item) => (
+            <Tooltip key={item.id} text={item.label} position="right">
+              <button
+                onClick={() => handleTabClick(item.id)}
+                className={`nav-icon-item ${activeTab === item.id ? 'active' : ''}`}
+              >
+                {item.icon}
+              </button>
+            </Tooltip>
+          ))}
+        </div>
       </div>
 
-      <div className="premium-card profile-nav-box">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onTabChange(item.id)}
-            className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </button>
-        ))}
-      </div>
-
-      <Modal 
+      <Modal
         isOpen={showBanModal}
         onClose={() => setShowBanModal(false)}
         onConfirm={handleToggleBan}
         title={user.isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
-        message={user.isBanned 
-          ? `Voulez-vous vraiment débannir ${user.name} ?` 
+        message={user.isBanned
+          ? `Voulez-vous vraiment débannir ${user.name} ?`
           : `Voulez-vous vraiment bannir ${user.name} ? Il ne pourra plus poster sur le forum.`
         }
       />
 
-      <Modal 
+      <Modal
         isOpen={showReportModal}
         onClose={() => setShowReportModal(false)}
         onConfirm={() => setShowReportModal(false)} // Simulation for now
@@ -175,14 +201,18 @@ export default function ProfileSidebar({
           gap: 1.5rem;
           width: 300px;
           flex-shrink: 0;
+          position: relative;
         }
         .profile-summary-box {
           position: relative;
-          padding: 2rem 1.5rem;
+          padding: 2rem 1.25rem 1.25rem 1.25rem;
           text-align: center;
           display: flex;
           flex-direction: column;
           align-items: center;
+          width: 255px;
+          z-index: 2;
+          border-top-right-radius: 0;
         }
         .banned-badge {
           position: absolute;
@@ -243,8 +273,8 @@ export default function ProfileSidebar({
           grid-template-columns: 1fr 1fr;
           width: 100%;
           gap: 1rem;
-          margin-bottom: 1.5rem;
-          padding-bottom: 1.5rem;
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
           border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .stat-item {
@@ -266,9 +296,9 @@ export default function ProfileSidebar({
         .profile-info-list {
           display: flex;
           flex-direction: column;
-          gap: 0.8rem;
+          gap: 0.4rem;
           width: 100%;
-          margin-bottom: 1.5rem;
+          margin-bottom: 0.4rem;
         }
         .info-item {
           display: flex;
@@ -296,36 +326,48 @@ export default function ProfileSidebar({
           transition: all 0.2s;
         }
         .full-width { width: 100%; }
+        .primary-btn { background: var(--primary); color: white; border: none; }
+        .secondary-btn { background: rgba(255,255,255,0.05); color: #888; border: 1px solid var(--glass-border); }
         .success-btn { background: #22c55e; color: white; border: none; }
         .danger-btn { background: #ef4444; color: white; border: none; }
         
-        .profile-nav-box {
-          padding: 0.8rem;
+        .profile-floating-nav {
+          position: absolute;
+          left: 254px;
+          top: -1px;
           display: flex;
           flex-direction: column;
-          gap: 0.4rem;
+          align-items: center;
+          gap: 6px;
+          padding: 10px 0;
+          width: 46px;
+          background: rgba(255, 255, 255, 0.03);
+          backdrop-filter: blur(12px);
+          border: 1px solid var(--glass-border);
+          border-left: none;
+          border-radius: 0 12px 12px 0;
+          box-shadow: 12px 0 30px rgba(0,0,0,0.3);
+          z-index: 1;
         }
-        .nav-item {
+        .nav-icon-item {
+          width: 36px;
+          height: 36px;
           display: flex;
           align-items: center;
-          gap: 1rem;
-          padding: 0.8rem 1rem;
+          justify-content: center;
           border-radius: 8px;
           background: transparent;
           border: none;
           color: #888;
-          font-size: 0.9rem;
-          font-weight: 500;
           cursor: pointer;
           transition: all 0.2s;
-          text-align: left;
         }
-        .nav-item:hover {
-          background: rgba(255,255,255,0.03);
+        .nav-icon-item:hover {
+          background: rgba(255, 255, 255, 0.05);
           color: #ccc;
         }
-        .nav-item.active {
-          background: rgba(194, 29, 29, 0.1);
+        .nav-icon-item.active {
+          background: rgba(194, 29, 29, 0.2);
           color: var(--primary);
         }
       `}</style>

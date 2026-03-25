@@ -178,7 +178,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
             return (
               <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', opacity: user.isBanned ? 0.5 : 1 }}>
                 <td style={{ padding: '1rem' }}>
-                  <Link href={`/profile?id=${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
+                  <Link href={`/spy/${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
                     {user.image && <img src={user.image} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />}
                     <span style={{ fontWeight: 600, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
                       {user.name} {user.isBanned && "(Banni)"}

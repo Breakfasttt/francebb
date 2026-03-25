@@ -1,9 +1,9 @@
-import { useState, useTransition, useRef } from "react";
 import { updateProfile } from "@/app/profile/actions";
-import Toast from "@/common/components/Toast/Toast";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import Toast from "@/common/components/Toast/Toast";
 import { siteConfig } from "@/lib/siteConfig";
-import { Image as ImageIcon, Loader2, Upload } from "lucide-react";
+import { Loader2, Upload } from "lucide-react";
+import { useRef, useState, useTransition } from "react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -21,7 +21,7 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
     league: user.league || "",
     signature: user.signature || "",
   });
-  
+
   const [isPending, startTransition] = useTransition();
   const [isUploading, setIsUploading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -74,7 +74,11 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
         const result = await updateProfile(data);
         if (result.success) {
           showToast("Profil mis à jour !", "success");
-          if (onUpdate) onUpdate();
+          // On attend un peu pour que le toast soit visible et pour éviter 
+          // de couper le flux de réponse du serveur trop tôt (Error in input stream)
+          if (onUpdate) {
+            setTimeout(() => onUpdate(), 1000);
+          }
         }
       } catch (err) {
         showToast("Erreur lors de la mise à jour", "error");
@@ -98,15 +102,15 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
   return (
     <div className="premium-card profile-edit-container fade-in">
       <h3 className="section-title">Éditer mon profil</h3>
-      
+
       <form onSubmit={handleSubmit} className="profile-edit-form">
         {/* Hidden File Input */}
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          style={{ display: "none" }} 
-          accept="image/*" 
-          onChange={handleImageUpload} 
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          accept="image/*"
+          onChange={handleImageUpload}
         />
 
         <div className="form-grid">
@@ -114,7 +118,7 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
             <label>Pseudo</label>
             <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
           </div>
-          
+
           <div className="form-group">
             <label>Numéro NAF</label>
             <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
@@ -137,16 +141,16 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
           <div className="form-group full-width">
             <label>URL de l'avatar</label>
             <div className="avatar-input-group">
-              <input 
-                name="image" 
-                value={formData.image} 
-                onChange={handleChange} 
-                placeholder="https://..." 
+              <input
+                name="image"
+                value={formData.image}
+                onChange={handleChange}
+                placeholder="https://..."
                 style={{ flex: 1 }}
               />
-              <button 
-                type="button" 
-                className="upload-btn" 
+              <button
+                type="button"
+                className="upload-btn"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isUploading}
               >
@@ -158,10 +162,10 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
 
           <div className="form-group full-width">
             <label>Signature du forum (250 car. max)</label>
-            <BBCodeEditor 
-              name="signature" 
-              defaultValue={user.signature || ""} 
-              maxLength={250} 
+            <BBCodeEditor
+              name="signature"
+              defaultValue={user.signature || ""}
+              maxLength={250}
               rows={4}
               onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
             />
@@ -191,10 +195,14 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
           flex-direction: column;
           gap: 2rem;
         }
-        .form-grid {
+        .profile-stats-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
+          width: 100%;
+          gap: 1rem;
+          margin-bottom: 1rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .form-group {
           display: flex;

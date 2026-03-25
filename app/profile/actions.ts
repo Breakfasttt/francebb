@@ -48,7 +48,7 @@ export async function toggleBanUser(userId: string) {
     data: { isBanned: !user.isBanned }
   });
 
-  revalidatePath(`/profile?id=${userId}`);
+  revalidatePath(`/spy/${userId}`);
   return { success: true };
 }
 

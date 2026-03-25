@@ -235,7 +235,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
                 <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
                   <Link 
-                    href={`/profile?id=${post.author.id}`}
+                    href={`/spy/${post.author.id}`}
                     style={{ 
                       padding: '0.35rem 0.6rem', 
                       background: 'rgba(59, 130, 246, 0.1)', 

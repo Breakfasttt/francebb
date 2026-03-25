@@ -1,0 +1,58 @@
+.tooltip-container {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip-bubble {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.tooltip-top {
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-right {
+  left: 125%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip-bottom {
+  top: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-left {
+  right: 125%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.tooltip-right {
+  animation: tooltipFadeRight 0.2s ease-out;
+}
+
+@keyframes tooltipFadeRight {
+  from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
