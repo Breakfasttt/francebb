@@ -271,7 +271,8 @@ export async function createForum(formData: FormData) {
   const description = formData.get("description") as string;
   const categoryId = formData.get("categoryId") as string || null;
   const parentForumId = formData.get("parentForumId") as string || null;
-  const order = parseInt(formData.get("order") as string || "0");
+  const isTournamentForum = formData.get("isTournamentForum") === "on";
+  const afterId = formData.get("afterId") as string;
 
   if (parentForumId) {
     const count = await prisma.forum.count({ where: { parentForumId } });
@@ -280,14 +281,35 @@ export async function createForum(formData: FormData) {
     }
   }
 
-  const forum = await prisma.forum.create({
-    data: {
-      name,
-      description,
-      categoryId: categoryId || undefined,
-      parentForumId: parentForumId || undefined,
-      order,
-    }
+  // Déterminer l'ordre
+  let order = 0;
+  if (afterId && afterId !== "START") {
+    const prev = await prisma.forum.findUnique({ where: { id: afterId }, select: { order: true } });
+    if (prev) order = prev.order + 1;
+  }
+
+  // Transaction pour garder la cohésion
+  const forum = await prisma.$transaction(async (tx) => {
+    // Décaler tout ce qui est après
+    await tx.forum.updateMany({
+      where: {
+        categoryId: categoryId || undefined,
+        parentForumId: parentForumId || undefined,
+        order: { gte: order }
+      },
+      data: { order: { increment: 1 } }
+    });
+
+    return await tx.forum.create({
+      data: {
+        name,
+        description,
+        categoryId: categoryId || undefined,
+        parentForumId: parentForumId || undefined,
+        order,
+        isTournamentForum,
+      }
+    });
   });
 
   revalidatePath("/forum");
@@ -334,6 +356,28 @@ export async function getForums() {
   return await prisma.forum.findMany({
     where: { parentForumId: null },
     orderBy: { order: "asc" }
+  });
+}
+
+export async function getSiblings(categoryId?: string | null, parentForumId?: string | null) {
+  if (parentForumId) {
+    return await prisma.forum.findMany({
+      where: { parentForumId },
+      orderBy: { order: 'asc' }
+    });
+  }
+  if (categoryId) {
+    return await prisma.forum.findMany({
+      where: { categoryId, parentForumId: null },
+      orderBy: { order: 'asc' }
+    });
+  }
+  return [];
+}
+
+export async function getAllForums() {
+  return await prisma.forum.findMany({
+    orderBy: { order: 'asc' }
   });
 }
 

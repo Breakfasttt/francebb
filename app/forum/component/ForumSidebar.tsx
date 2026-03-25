@@ -73,20 +73,16 @@ export default async function ForumSidebar({
             </div>
           )}
 
-          {/* Nouveau Tournoi (si forum de tournoi) */}
-          {forumId && isTournamentForum && (!isLocked || canCreateForum) && (
-            <div className="sidebar-widget new-topic-widget">
-              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
-                <Trophy size={18} />
-                <span>Nouveau Tournoi</span>
-              </Link>
-            </div>
-          )}
-
-          {/* Nouveau Sujet */}
+          {/* Nouveau Sujet / Tournoi */}
           {forumId && (!isLocked || canCreateForum) && (
-            <div className="sidebar-widget new-topic-widget">
-              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: isTournamentForum ? 'rgba(255,255,255,0.05)' : 'var(--primary)', border: isTournamentForum ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
+            <div className="sidebar-widget new-topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {isTournamentForum && (
+                <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
+                  <Trophy size={18} />
+                  <span>Nouveau Tournoi</span>
+                </Link>
+              )}
+              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--primary)' }}>
                 <PlusCircle size={18} />
                 <span>Nouveau Sujet</span>
               </Link>
