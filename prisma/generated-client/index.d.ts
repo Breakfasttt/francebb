@@ -7727,6 +7727,7 @@ export namespace Prisma {
     gameEdition?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | Tournament$topicArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
 
   export type TournamentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7806,6 +7807,7 @@ export namespace Prisma {
   export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "location" | "ville" | "departement" | "region" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "days" | "totalMatches" | "price" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "organizerId", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | Tournament$topicArgs<ExtArgs>
   }
   export type TournamentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
@@ -7818,6 +7820,7 @@ export namespace Prisma {
     name: "Tournament"
     objects: {
       organizer: Prisma.$UserPayload<ExtArgs>
+      topic: Prisma.$TopicPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8236,6 +8239,7 @@ export namespace Prisma {
   export interface Prisma__TournamentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     organizer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    topic<T extends Tournament$topicArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$topicArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8682,6 +8686,25 @@ export namespace Prisma {
      * Limit how many Tournaments to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Tournament.topic
+   */
+  export type Tournament$topicArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Topic
+     */
+    select?: TopicSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Topic
+     */
+    omit?: TopicOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicInclude<ExtArgs> | null
+    where?: TopicWhereInput
   }
 
   /**
@@ -9837,6 +9860,7 @@ export namespace Prisma {
     order: number | null
     allowedRoles: string | null
     isLocked: boolean | null
+    isTournamentForum: boolean | null
     categoryId: string | null
     parentForumId: string | null
   }
@@ -9848,6 +9872,7 @@ export namespace Prisma {
     order: number | null
     allowedRoles: string | null
     isLocked: boolean | null
+    isTournamentForum: boolean | null
     categoryId: string | null
     parentForumId: string | null
   }
@@ -9859,6 +9884,7 @@ export namespace Prisma {
     order: number
     allowedRoles: number
     isLocked: number
+    isTournamentForum: number
     categoryId: number
     parentForumId: number
     _all: number
@@ -9880,6 +9906,7 @@ export namespace Prisma {
     order?: true
     allowedRoles?: true
     isLocked?: true
+    isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
   }
@@ -9891,6 +9918,7 @@ export namespace Prisma {
     order?: true
     allowedRoles?: true
     isLocked?: true
+    isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
   }
@@ -9902,6 +9930,7 @@ export namespace Prisma {
     order?: true
     allowedRoles?: true
     isLocked?: true
+    isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
     _all?: true
@@ -10000,6 +10029,7 @@ export namespace Prisma {
     order: number
     allowedRoles: string
     isLocked: boolean
+    isTournamentForum: boolean
     categoryId: string | null
     parentForumId: string | null
     _count: ForumCountAggregateOutputType | null
@@ -10030,6 +10060,7 @@ export namespace Prisma {
     order?: boolean
     allowedRoles?: boolean
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -10046,6 +10077,7 @@ export namespace Prisma {
     order?: boolean
     allowedRoles?: boolean
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -10059,6 +10091,7 @@ export namespace Prisma {
     order?: boolean
     allowedRoles?: boolean
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -10072,11 +10105,12 @@ export namespace Prisma {
     order?: boolean
     allowedRoles?: boolean
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
   }
 
-  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "isLocked" | "categoryId" | "parentForumId", ExtArgs["result"]["forum"]>
+  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "isLocked" | "isTournamentForum" | "categoryId" | "parentForumId", ExtArgs["result"]["forum"]>
   export type ForumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | Forum$categoryArgs<ExtArgs>
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
@@ -10108,6 +10142,7 @@ export namespace Prisma {
       order: number
       allowedRoles: string
       isLocked: boolean
+      isTournamentForum: boolean
       categoryId: string | null
       parentForumId: string | null
     }, ExtArgs["result"]["forum"]>
@@ -10543,6 +10578,7 @@ export namespace Prisma {
     readonly order: FieldRef<"Forum", 'Int'>
     readonly allowedRoles: FieldRef<"Forum", 'String'>
     readonly isLocked: FieldRef<"Forum", 'Boolean'>
+    readonly isTournamentForum: FieldRef<"Forum", 'Boolean'>
     readonly categoryId: FieldRef<"Forum", 'String'>
     readonly parentForumId: FieldRef<"Forum", 'String'>
   }
@@ -11079,6 +11115,7 @@ export namespace Prisma {
     views: number | null
     forumId: string | null
     authorId: string | null
+    tournamentId: string | null
   }
 
   export type TopicMaxAggregateOutputType = {
@@ -11092,6 +11129,7 @@ export namespace Prisma {
     views: number | null
     forumId: string | null
     authorId: string | null
+    tournamentId: string | null
   }
 
   export type TopicCountAggregateOutputType = {
@@ -11105,6 +11143,7 @@ export namespace Prisma {
     views: number
     forumId: number
     authorId: number
+    tournamentId: number
     _all: number
   }
 
@@ -11128,6 +11167,7 @@ export namespace Prisma {
     views?: true
     forumId?: true
     authorId?: true
+    tournamentId?: true
   }
 
   export type TopicMaxAggregateInputType = {
@@ -11141,6 +11181,7 @@ export namespace Prisma {
     views?: true
     forumId?: true
     authorId?: true
+    tournamentId?: true
   }
 
   export type TopicCountAggregateInputType = {
@@ -11154,6 +11195,7 @@ export namespace Prisma {
     views?: true
     forumId?: true
     authorId?: true
+    tournamentId?: true
     _all?: true
   }
 
@@ -11254,6 +11296,7 @@ export namespace Prisma {
     views: number
     forumId: string
     authorId: string
+    tournamentId: string | null
     _count: TopicCountAggregateOutputType | null
     _avg: TopicAvgAggregateOutputType | null
     _sum: TopicSumAggregateOutputType | null
@@ -11286,11 +11329,13 @@ export namespace Prisma {
     views?: boolean
     forumId?: boolean
     authorId?: boolean
+    tournamentId?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
     follows?: boolean | Topic$followsArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
@@ -11305,8 +11350,10 @@ export namespace Prisma {
     views?: boolean
     forumId?: boolean
     authorId?: boolean
+    tournamentId?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
   export type TopicSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11320,8 +11367,10 @@ export namespace Prisma {
     views?: boolean
     forumId?: boolean
     authorId?: boolean
+    tournamentId?: boolean
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
   export type TopicSelectScalar = {
@@ -11335,24 +11384,28 @@ export namespace Prisma {
     views?: boolean
     forumId?: boolean
     authorId?: boolean
+    tournamentId?: boolean
   }
 
-  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId", ExtArgs["result"]["topic"]>
+  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId" | "tournamentId", ExtArgs["result"]["topic"]>
   export type TopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
     follows?: boolean | Topic$followsArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TopicIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
   }
   export type TopicIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
+    tournament?: boolean | Topic$tournamentArgs<ExtArgs>
   }
 
   export type $TopicPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11363,6 +11416,7 @@ export namespace Prisma {
       posts: Prisma.$PostPayload<ExtArgs>[]
       topicViews: Prisma.$TopicViewPayload<ExtArgs>[]
       follows: Prisma.$TopicFollowPayload<ExtArgs>[]
+      tournament: Prisma.$TournamentPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11375,6 +11429,7 @@ export namespace Prisma {
       views: number
       forumId: string
       authorId: string
+      tournamentId: string | null
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -11774,6 +11829,7 @@ export namespace Prisma {
     posts<T extends Topic$postsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     topicViews<T extends Topic$topicViewsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$topicViewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     follows<T extends Topic$followsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$followsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tournament<T extends Topic$tournamentArgs<ExtArgs> = {}>(args?: Subset<T, Topic$tournamentArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11813,6 +11869,7 @@ export namespace Prisma {
     readonly views: FieldRef<"Topic", 'Int'>
     readonly forumId: FieldRef<"Topic", 'String'>
     readonly authorId: FieldRef<"Topic", 'String'>
+    readonly tournamentId: FieldRef<"Topic", 'String'>
   }
     
 
@@ -12281,6 +12338,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
+  }
+
+  /**
+   * Topic.tournament
+   */
+  export type Topic$tournamentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    where?: TournamentWhereInput
   }
 
   /**
@@ -21205,6 +21281,7 @@ export namespace Prisma {
     order: 'order',
     allowedRoles: 'allowedRoles',
     isLocked: 'isLocked',
+    isTournamentForum: 'isTournamentForum',
     categoryId: 'categoryId',
     parentForumId: 'parentForumId'
   };
@@ -21222,7 +21299,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt',
     views: 'views',
     forumId: 'forumId',
-    authorId: 'authorId'
+    authorId: 'authorId',
+    tournamentId: 'tournamentId'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
@@ -21730,6 +21808,7 @@ export namespace Prisma {
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
   }
 
   export type TournamentOrderByWithRelationInput = {
@@ -21755,6 +21834,7 @@ export namespace Prisma {
     gameEdition?: SortOrderInput | SortOrder
     organizerId?: SortOrder
     organizer?: UserOrderByWithRelationInput
+    topic?: TopicOrderByWithRelationInput
   }
 
   export type TournamentWhereUniqueInput = Prisma.AtLeast<{
@@ -21783,6 +21863,7 @@ export namespace Prisma {
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
   }, "id">
 
   export type TournamentOrderByWithAggregationInput = {
@@ -21908,6 +21989,7 @@ export namespace Prisma {
     order?: IntFilter<"Forum"> | number
     allowedRoles?: StringFilter<"Forum"> | string
     isLocked?: BoolFilter<"Forum"> | boolean
+    isTournamentForum?: BoolFilter<"Forum"> | boolean
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
@@ -21923,6 +22005,7 @@ export namespace Prisma {
     order?: SortOrder
     allowedRoles?: SortOrder
     isLocked?: SortOrder
+    isTournamentForum?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
     category?: CategoryOrderByWithRelationInput
@@ -21941,6 +22024,7 @@ export namespace Prisma {
     order?: IntFilter<"Forum"> | number
     allowedRoles?: StringFilter<"Forum"> | string
     isLocked?: BoolFilter<"Forum"> | boolean
+    isTournamentForum?: BoolFilter<"Forum"> | boolean
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
@@ -21956,6 +22040,7 @@ export namespace Prisma {
     order?: SortOrder
     allowedRoles?: SortOrder
     isLocked?: SortOrder
+    isTournamentForum?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
     _count?: ForumCountOrderByAggregateInput
@@ -21975,6 +22060,7 @@ export namespace Prisma {
     order?: IntWithAggregatesFilter<"Forum"> | number
     allowedRoles?: StringWithAggregatesFilter<"Forum"> | string
     isLocked?: BoolWithAggregatesFilter<"Forum"> | boolean
+    isTournamentForum?: BoolWithAggregatesFilter<"Forum"> | boolean
     categoryId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
     parentForumId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
   }
@@ -21993,11 +22079,13 @@ export namespace Prisma {
     views?: IntFilter<"Topic"> | number
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    tournamentId?: StringNullableFilter<"Topic"> | string | null
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     posts?: PostListRelationFilter
     topicViews?: TopicViewListRelationFilter
     follows?: TopicFollowListRelationFilter
+    tournament?: XOR<TournamentNullableScalarRelationFilter, TournamentWhereInput> | null
   }
 
   export type TopicOrderByWithRelationInput = {
@@ -22011,15 +22099,18 @@ export namespace Prisma {
     views?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    tournamentId?: SortOrderInput | SortOrder
     forum?: ForumOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
     topicViews?: TopicViewOrderByRelationAggregateInput
     follows?: TopicFollowOrderByRelationAggregateInput
+    tournament?: TournamentOrderByWithRelationInput
   }
 
   export type TopicWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    tournamentId?: string
     AND?: TopicWhereInput | TopicWhereInput[]
     OR?: TopicWhereInput[]
     NOT?: TopicWhereInput | TopicWhereInput[]
@@ -22037,7 +22128,8 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     topicViews?: TopicViewListRelationFilter
     follows?: TopicFollowListRelationFilter
-  }, "id">
+    tournament?: XOR<TournamentNullableScalarRelationFilter, TournamentWhereInput> | null
+  }, "id" | "tournamentId">
 
   export type TopicOrderByWithAggregationInput = {
     id?: SortOrder
@@ -22050,6 +22142,7 @@ export namespace Prisma {
     views?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    tournamentId?: SortOrderInput | SortOrder
     _count?: TopicCountOrderByAggregateInput
     _avg?: TopicAvgOrderByAggregateInput
     _max?: TopicMaxOrderByAggregateInput
@@ -22071,6 +22164,7 @@ export namespace Prisma {
     views?: IntWithAggregatesFilter<"Topic"> | number
     forumId?: StringWithAggregatesFilter<"Topic"> | string
     authorId?: StringWithAggregatesFilter<"Topic"> | string
+    tournamentId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
   }
 
   export type PostWhereInput = {
@@ -22969,6 +23063,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     organizer: UserCreateNestedOneWithoutTournamentsInput
+    topic?: TopicCreateNestedOneWithoutTournamentInput
   }
 
   export type TournamentUncheckedCreateInput = {
@@ -22993,6 +23088,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     organizerId: string
+    topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
   }
 
   export type TournamentUpdateInput = {
@@ -23017,6 +23113,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
+    topic?: TopicUpdateOneWithoutTournamentNestedInput
   }
 
   export type TournamentUncheckedUpdateInput = {
@@ -23041,6 +23138,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     organizerId?: StringFieldUpdateOperationsInput | string
+    topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
   }
 
   export type TournamentCreateManyInput = {
@@ -23181,6 +23279,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
@@ -23194,6 +23293,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
@@ -23207,6 +23307,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
@@ -23220,6 +23321,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
@@ -23233,6 +23335,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
   }
@@ -23244,6 +23347,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForumUncheckedUpdateManyInput = {
@@ -23253,6 +23357,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -23271,6 +23376,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateInput = {
@@ -23284,6 +23390,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    tournamentId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
@@ -23303,6 +23410,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateInput = {
@@ -23316,6 +23424,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
@@ -23332,6 +23441,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    tournamentId?: string | null
   }
 
   export type TopicUpdateManyMutationInput = {
@@ -23356,6 +23466,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateInput = {
@@ -24298,6 +24409,11 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type TopicNullableScalarRelationFilter = {
+    is?: TopicWhereInput | null
+    isNot?: TopicWhereInput | null
+  }
+
   export type TournamentCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -24477,6 +24593,7 @@ export namespace Prisma {
     order?: SortOrder
     allowedRoles?: SortOrder
     isLocked?: SortOrder
+    isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -24492,6 +24609,7 @@ export namespace Prisma {
     order?: SortOrder
     allowedRoles?: SortOrder
     isLocked?: SortOrder
+    isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -24503,6 +24621,7 @@ export namespace Prisma {
     order?: SortOrder
     allowedRoles?: SortOrder
     isLocked?: SortOrder
+    isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
   }
@@ -24516,6 +24635,11 @@ export namespace Prisma {
     isNot?: ForumWhereInput
   }
 
+  export type TournamentNullableScalarRelationFilter = {
+    is?: TournamentWhereInput | null
+    isNot?: TournamentWhereInput | null
+  }
+
   export type TopicCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -24527,6 +24651,7 @@ export namespace Prisma {
     views?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    tournamentId?: SortOrder
   }
 
   export type TopicAvgOrderByAggregateInput = {
@@ -24544,6 +24669,7 @@ export namespace Prisma {
     views?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    tournamentId?: SortOrder
   }
 
   export type TopicMinOrderByAggregateInput = {
@@ -24557,6 +24683,7 @@ export namespace Prisma {
     views?: SortOrder
     forumId?: SortOrder
     authorId?: SortOrder
+    tournamentId?: SortOrder
   }
 
   export type TopicSumOrderByAggregateInput = {
@@ -25503,6 +25630,18 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type TopicCreateNestedOneWithoutTournamentInput = {
+    create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
+    connect?: TopicWhereUniqueInput
+  }
+
+  export type TopicUncheckedCreateNestedOneWithoutTournamentInput = {
+    create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
+    connect?: TopicWhereUniqueInput
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -25525,6 +25664,26 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutTournamentsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTournamentsInput, UserUpdateWithoutTournamentsInput>, UserUncheckedUpdateWithoutTournamentsInput>
+  }
+
+  export type TopicUpdateOneWithoutTournamentNestedInput = {
+    create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
+    upsert?: TopicUpsertWithoutTournamentInput
+    disconnect?: TopicWhereInput | boolean
+    delete?: TopicWhereInput | boolean
+    connect?: TopicWhereUniqueInput
+    update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutTournamentInput, TopicUpdateWithoutTournamentInput>, TopicUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TopicUncheckedUpdateOneWithoutTournamentNestedInput = {
+    create?: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutTournamentInput
+    upsert?: TopicUpsertWithoutTournamentInput
+    disconnect?: TopicWhereInput | boolean
+    delete?: TopicWhereInput | boolean
+    connect?: TopicWhereUniqueInput
+    update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutTournamentInput, TopicUpdateWithoutTournamentInput>, TopicUncheckedUpdateWithoutTournamentInput>
   }
 
   export type ForumCreateNestedManyWithoutCategoryInput = {
@@ -25718,6 +25877,12 @@ export namespace Prisma {
     connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
   }
 
+  export type TournamentCreateNestedOneWithoutTopicInput = {
+    create?: XOR<TournamentCreateWithoutTopicInput, TournamentUncheckedCreateWithoutTopicInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutTopicInput
+    connect?: TournamentWhereUniqueInput
+  }
+
   export type PostUncheckedCreateNestedManyWithoutTopicInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -25795,6 +25960,16 @@ export namespace Prisma {
     update?: TopicFollowUpdateWithWhereUniqueWithoutTopicInput | TopicFollowUpdateWithWhereUniqueWithoutTopicInput[]
     updateMany?: TopicFollowUpdateManyWithWhereWithoutTopicInput | TopicFollowUpdateManyWithWhereWithoutTopicInput[]
     deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
+  }
+
+  export type TournamentUpdateOneWithoutTopicNestedInput = {
+    create?: XOR<TournamentCreateWithoutTopicInput, TournamentUncheckedCreateWithoutTopicInput>
+    connectOrCreate?: TournamentCreateOrConnectWithoutTopicInput
+    upsert?: TournamentUpsertWithoutTopicInput
+    disconnect?: TournamentWhereInput | boolean
+    delete?: TournamentWhereInput | boolean
+    connect?: TournamentWhereUniqueInput
+    update?: XOR<XOR<TournamentUpdateToOneWithWhereWithoutTopicInput, TournamentUpdateWithoutTopicInput>, TournamentUncheckedUpdateWithoutTopicInput>
   }
 
   export type PostUncheckedUpdateManyWithoutTopicNestedInput = {
@@ -26793,6 +26968,7 @@ export namespace Prisma {
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    topic?: TopicCreateNestedOneWithoutTournamentInput
   }
 
   export type TournamentUncheckedCreateWithoutOrganizerInput = {
@@ -26816,6 +26992,7 @@ export namespace Prisma {
     mealsIncluded?: boolean
     fridayArrival?: boolean
     gameEdition?: string | null
+    topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
   }
 
   export type TournamentCreateOrConnectWithoutOrganizerInput = {
@@ -26863,6 +27040,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutAuthorInput = {
@@ -26875,6 +27053,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     forumId: string
+    tournamentId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
@@ -27319,6 +27498,7 @@ export namespace Prisma {
     views?: IntFilter<"Topic"> | number
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    tournamentId?: StringNullableFilter<"Topic"> | string | null
   }
 
   export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -27626,6 +27806,43 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutTournamentsInput, UserUncheckedCreateWithoutTournamentsInput>
   }
 
+  export type TopicCreateWithoutTournamentInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forum: ForumCreateNestedOneWithoutTopicsInput
+    author: UserCreateNestedOneWithoutTopicsInput
+    posts?: PostCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicUncheckedCreateWithoutTournamentInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicCreateOrConnectWithoutTournamentInput = {
+    where: TopicWhereUniqueInput
+    create: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+  }
+
   export type UserUpsertWithoutTournamentsInput = {
     update: XOR<UserUpdateWithoutTournamentsInput, UserUncheckedUpdateWithoutTournamentsInput>
     create: XOR<UserCreateWithoutTournamentsInput, UserUncheckedCreateWithoutTournamentsInput>
@@ -27695,6 +27912,49 @@ export namespace Prisma {
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type TopicUpsertWithoutTournamentInput = {
+    update: XOR<TopicUpdateWithoutTournamentInput, TopicUncheckedUpdateWithoutTournamentInput>
+    create: XOR<TopicCreateWithoutTournamentInput, TopicUncheckedCreateWithoutTournamentInput>
+    where?: TopicWhereInput
+  }
+
+  export type TopicUpdateToOneWithWhereWithoutTournamentInput = {
+    where?: TopicWhereInput
+    data: XOR<TopicUpdateWithoutTournamentInput, TopicUncheckedUpdateWithoutTournamentInput>
+  }
+
+  export type TopicUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
+    author?: UserUpdateOneRequiredWithoutTopicsNestedInput
+    posts?: PostUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateWithoutTournamentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
   export type ForumCreateWithoutCategoryInput = {
     id?: string
     name: string
@@ -27702,6 +27962,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -27714,6 +27975,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -27754,6 +28016,7 @@ export namespace Prisma {
     order?: IntFilter<"Forum"> | number
     allowedRoles?: StringFilter<"Forum"> | string
     isLocked?: BoolFilter<"Forum"> | boolean
+    isTournamentForum?: BoolFilter<"Forum"> | boolean
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
   }
@@ -27786,6 +28049,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -27798,6 +28062,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -27815,6 +28080,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     category?: CategoryCreateNestedOneWithoutForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -27827,6 +28093,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
@@ -27854,6 +28121,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutForumInput = {
@@ -27866,6 +28134,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     authorId: string
+    tournamentId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
@@ -27925,6 +28194,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -27937,6 +28207,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -27981,6 +28252,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     category?: CategoryCreateNestedOneWithoutForumsInput
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
@@ -27993,6 +28265,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
@@ -28141,6 +28414,59 @@ export namespace Prisma {
     data: TopicFollowCreateManyTopicInput | TopicFollowCreateManyTopicInput[]
   }
 
+  export type TournamentCreateWithoutTopicInput = {
+    id?: string
+    name: string
+    date: Date | string
+    location: string
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    organizer: UserCreateNestedOneWithoutTournamentsInput
+  }
+
+  export type TournamentUncheckedCreateWithoutTopicInput = {
+    id?: string
+    name: string
+    date: Date | string
+    location: string
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    organizerId: string
+  }
+
+  export type TournamentCreateOrConnectWithoutTopicInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutTopicInput, TournamentUncheckedCreateWithoutTopicInput>
+  }
+
   export type ForumUpsertWithoutTopicsInput = {
     update: XOR<ForumUpdateWithoutTopicsInput, ForumUncheckedUpdateWithoutTopicsInput>
     create: XOR<ForumCreateWithoutTopicsInput, ForumUncheckedCreateWithoutTopicsInput>
@@ -28159,6 +28485,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     category?: CategoryUpdateOneWithoutForumsNestedInput
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
@@ -28171,6 +28498,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
@@ -28293,6 +28621,65 @@ export namespace Prisma {
     data: XOR<TopicFollowUpdateManyMutationInput, TopicFollowUncheckedUpdateManyWithoutTopicInput>
   }
 
+  export type TournamentUpsertWithoutTopicInput = {
+    update: XOR<TournamentUpdateWithoutTopicInput, TournamentUncheckedUpdateWithoutTopicInput>
+    create: XOR<TournamentCreateWithoutTopicInput, TournamentUncheckedCreateWithoutTopicInput>
+    where?: TournamentWhereInput
+  }
+
+  export type TournamentUpdateToOneWithWhereWithoutTopicInput = {
+    where?: TournamentWhereInput
+    data: XOR<TournamentUpdateWithoutTopicInput, TournamentUncheckedUpdateWithoutTopicInput>
+  }
+
+  export type TournamentUpdateWithoutTopicInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: StringFieldUpdateOperationsInput | string
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutTopicInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    location?: StringFieldUpdateOperationsInput | string
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    organizerId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type TopicCreateWithoutPostsInput = {
     id?: string
     title: string
@@ -28306,6 +28693,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutTopicsInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutPostsInput = {
@@ -28319,6 +28707,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    tournamentId?: string | null
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -28526,6 +28915,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutPostsInput = {
@@ -28539,6 +28929,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -29282,6 +29673,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutTopicViewsInput = {
@@ -29295,6 +29687,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    tournamentId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -29397,6 +29790,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutTopicViewsInput = {
@@ -29410,6 +29804,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -30132,6 +30527,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutFollowsInput = {
@@ -30145,6 +30541,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    tournamentId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -30247,6 +30644,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutFollowsInput = {
@@ -30260,6 +30658,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -30317,6 +30716,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     forumId: string
+    tournamentId?: string | null
   }
 
   export type PostCreateManyAuthorInput = {
@@ -30483,6 +30883,7 @@ export namespace Prisma {
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    topic?: TopicUpdateOneWithoutTournamentNestedInput
   }
 
   export type TournamentUncheckedUpdateWithoutOrganizerInput = {
@@ -30506,6 +30907,7 @@ export namespace Prisma {
     mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
   }
 
   export type TournamentUncheckedUpdateManyWithoutOrganizerInput = {
@@ -30544,6 +30946,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutAuthorInput = {
@@ -30556,6 +30959,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
@@ -30571,6 +30975,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostUpdateWithoutAuthorInput = {
@@ -30841,6 +31246,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     parentForumId?: string | null
   }
 
@@ -30851,6 +31257,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -30863,6 +31270,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -30875,6 +31283,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -30885,6 +31294,7 @@ export namespace Prisma {
     order?: number
     allowedRoles?: string
     isLocked?: boolean
+    isTournamentForum?: boolean
     categoryId?: string | null
   }
 
@@ -30898,6 +31308,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     authorId: string
+    tournamentId?: string | null
   }
 
   export type ForumUpdateWithoutParentForumInput = {
@@ -30907,6 +31318,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     category?: CategoryUpdateOneWithoutForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -30919,6 +31331,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
@@ -30931,6 +31344,7 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -30947,6 +31361,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutForumInput = {
@@ -30959,6 +31374,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
@@ -30974,6 +31390,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateManyTopicInput = {

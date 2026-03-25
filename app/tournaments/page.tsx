@@ -3,6 +3,8 @@ import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilte
 import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import ActiveFilters from "@/app/tournaments/component/ActiveFilters";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +13,9 @@ export default async function TournamentsPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const session = await auth();
+  if (!session) redirect("/auth/login?callback=/tournaments");
+
   const params = await searchParams;
 
   const query = params.query as string | undefined;
@@ -58,7 +63,10 @@ export default async function TournamentsPage({
   const tournaments = await prisma.tournament.findMany({
     where,
     orderBy,
-    include: { organizer: true }
+    include: { 
+      organizer: true,
+      topic: { select: { id: true } }
+    }
   });
 
   return (
@@ -111,7 +119,7 @@ export default async function TournamentsPage({
                     <div className="stat-price">
                        {t.price ? `${t.price}€` : "Gratuit"}
                     </div>
-                    <Link href={`/tournaments/${t.id}`} className="view-btn">Détails</Link>
+                    <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`} className="view-btn">Détails</Link>
                   </div>
                 </div>
               ))}

@@ -6,11 +6,14 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import ForumCategory from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function ForumPage() {
   const session = await auth();
+  if (!session) redirect("/auth/login?callback=/forum");
+
   const userId = session?.user?.id;
 
   const categories = await prisma.category.findMany({

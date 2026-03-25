@@ -102,6 +102,8 @@ model Tournament {
 
   organizerId String
   organizer   User   @relation(fields: [organizerId], references: [id])
+
+  topic Topic?
 }
 
 model Category {
@@ -114,12 +116,13 @@ model Category {
 }
 
 model Forum {
-  id           String  @id @default(cuid())
-  name         String
-  description  String?
-  order        Int     @default(0)
-  allowedRoles String  @default("ALL")
-  isLocked     Boolean @default(false)
+  id                String  @id @default(cuid())
+  name              String
+  description       String?
+  order             Int     @default(0)
+  allowedRoles      String  @default("ALL")
+  isLocked          Boolean @default(false)
+  isTournamentForum Boolean @default(false)
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
@@ -150,6 +153,9 @@ model Topic {
   posts      Post[]
   topicViews TopicView[]
   follows    TopicFollow[]
+
+  tournamentId String?     @unique
+  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
 }
 
 model Post {

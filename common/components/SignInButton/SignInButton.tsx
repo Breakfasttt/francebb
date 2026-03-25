@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 interface SignInButtonProps {
   user?: {
@@ -22,9 +23,9 @@ export function SignInButton({ user }: SignInButtonProps) {
 
   if (!user) {
     return (
-      <button onClick={handleConnect} className="btn-primary">
+      <Link href="/auth/login" className="btn-primary" style={{ textDecoration: 'none' }}>
         Se connecter
-      </button>
+      </Link>
     );
   }
 

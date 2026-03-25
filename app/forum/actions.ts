@@ -415,18 +415,52 @@ export async function createTopic(formData: FormData) {
     throw new Error("Titre, contenu et forum sont obligatoires.");
   }
 
-  // Vérifier si le forum est locké
+  // Vérifier si le forum est locké ou un forum de tournoi
   const forum = await prisma.forum.findUnique({
     where: { id: forumId },
-    select: { isLocked: true }
+    select: { isLocked: true, isTournamentForum: true }
   });
 
   if (forum?.isLocked && !isModerator(session.user.role)) {
     throw new Error("Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet.");
   }
 
-  // Create the topic AND the first post in a transaction
+  // Données de tournoi si applicable
+  let tournamentData: any = null;
+  if (forum?.isTournamentForum) {
+    const tDateStr = formData.get("tDate") as string;
+    if (!tDateStr) throw new Error("La date du tournoi est obligatoire pour un sujet de tournoi.");
+    
+    tournamentData = {
+      name: title,
+      date: new Date(tDateStr),
+      location: formData.get("tLocation") as string || "Lieu non précisé",
+      ville: formData.get("tVille") as string,
+      departement: formData.get("tDept") as string,
+      region: formData.get("tRegion") as string,
+      maxParticipants: parseInt(formData.get("tMax") as string) || null,
+      price: parseFloat(formData.get("tPrice") as string) || null,
+      days: formData.get("tDays") as string || "1",
+      structure: formData.get("tStructure") as string,
+      ruleset: formData.get("tRuleset") as string || "NAF",
+      gameEdition: formData.get("tGame") as string || "BB20",
+      mealsIncluded: formData.get("tMeals") === "on",
+      lodgingAtVenue: formData.get("tLodging") === "on",
+      fridayArrival: formData.get("tFriday") === "on",
+      organizerId: session.user.id
+    };
+  }
+
+  // Create the topic AND the first post (and optional tournament) in a transaction
   const topic = await prisma.$transaction(async (tx) => {
+    let tournamentId = null;
+    if (tournamentData) {
+      const tournament = await tx.tournament.create({
+        data: tournamentData
+      });
+      tournamentId = tournament.id;
+    }
+
     const newTopic = await tx.topic.create({
       data: {
         title,
@@ -434,6 +468,7 @@ export async function createTopic(formData: FormData) {
         authorId: session.user.id,
         isSticky: isSticky && isModerator(session.user.role),
         isLocked: isLocked && isModerator(session.user.role),
+        tournamentId: tournamentId
       }
     });
 
@@ -450,6 +485,7 @@ export async function createTopic(formData: FormData) {
 
   revalidatePath(`/forum/${forumId}`);
   revalidatePath("/forum/unread");
+  revalidatePath("/tournaments");
 
   redirect(`/forum/topic/${topic.id}`);
 }

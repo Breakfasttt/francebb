@@ -12,7 +12,7 @@ export default async function MembersPage() {
   const session = await auth();
 
   // 1. Authentification
-  if (!session?.user) redirect("/");
+  if (!session?.user) redirect("/auth/login?callback=/membres");
 
   // 2. Récupérer le rôle complet depuis la DB
   const me = await prisma.user.findUnique({

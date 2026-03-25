@@ -200,6 +200,7 @@ exports.Prisma.ForumScalarFieldEnum = {
   order: 'order',
   allowedRoles: 'allowedRoles',
   isLocked: 'isLocked',
+  isTournamentForum: 'isTournamentForum',
   categoryId: 'categoryId',
   parentForumId: 'parentForumId'
 };
@@ -214,7 +215,8 @@ exports.Prisma.TopicScalarFieldEnum = {
   updatedAt: 'updatedAt',
   views: 'views',
   forumId: 'forumId',
-  authorId: 'authorId'
+  authorId: 'authorId',
+  tournamentId: 'tournamentId'
 };
 
 exports.Prisma.PostScalarFieldEnum = {

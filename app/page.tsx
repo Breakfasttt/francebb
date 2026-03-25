@@ -60,24 +60,22 @@ export default async function Home() {
             <div style={{ fontSize: '1rem', lineHeight: 1.1 }}>Jouer à<br/>Blood Bowl !</div>
           </Link>
 
-          {isAuth && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <Link href="/ligues" className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
-                <Shield size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
-                <div style={{ fontSize: '1rem' }}>Ligues</div>
-              </Link>
-              <Link href="/ligues/create" className="action-card-mini" style={{ padding: '0.5rem' }}>
-                <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
-              </Link>
-            </div>
-          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <Link href={isAuth ? "/league" : "/auth/login?callback=/league"} className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+              <Shield size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+              <div style={{ fontSize: '1rem' }}>Ligues</div>
+            </Link>
+            <Link href={isAuth ? "/league/create" : "/auth/login?callback=/league/create"} className="action-card-mini" style={{ padding: '0.5rem' }}>
+              <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
+            </Link>
+          </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <Link href="/tournaments" className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <Link href={isAuth ? "/tournaments" : "/auth/login?callback=/tournaments"} className="action-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
               <Trophy size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
               <div style={{ fontSize: '1rem' }}>Tournois</div>
             </Link>
-            <Link href="/tournaments/create" className="action-card-mini" style={{ padding: '0.5rem' }}>
+            <Link href={isAuth ? "/forum/new-topic?forumId=cmn6amj3t000us4pexd764iy1" : "/auth/login?callback=/forum/new-topic?forumId=cmn6amj3t000us4pexd764iy1"} className="action-card-mini" style={{ padding: '0.5rem' }}>
               <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
             </Link>
           </div>
@@ -91,17 +89,15 @@ export default async function Home() {
           margin: '0 auto 1.5rem auto',
           maxWidth: '850px'
         }}>
-          <Link href="/forum" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+          <Link href={isAuth ? "/forum" : "/auth/login?callback=/forum"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
             <MessageSquare size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
             <div style={{ fontSize: '1rem' }}>Forum</div>
           </Link>
 
-          {isAuth && (
-            <Link href="/membres" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
-              <Users size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
-              <div style={{ fontSize: '1rem' }}>Membres</div>
-            </Link>
-          )}
+          <Link href={isAuth ? "/membres" : "/auth/login?callback=/membres"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <Users size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Membres</div>
+          </Link>
 
           <Link href="/ressources" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
             <BookOpen size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
