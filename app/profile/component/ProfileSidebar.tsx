@@ -312,6 +312,9 @@ export default function ProfileSidebar({
           flex-direction: column;
           gap: 0.8rem;
           width: 100%;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          padding-top: 1.2rem;
+          margin-top: 0.8rem;
         }
         .action-button {
           display: flex;
