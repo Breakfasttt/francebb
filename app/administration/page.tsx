@@ -7,6 +7,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
 import RolesTab from "./component/RolesTab";
+import CoachsTab from "./component/CoachsTab";
 import BackupTab from "./component/BackupTab";
 import ResetTab from "./component/ResetTab";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
@@ -26,7 +27,7 @@ export default function AdministrationPage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [activeTab, setActiveTab] = useState<AdminTab>("backup");
+  const [activeTab, setActiveTab] = useState<AdminTab>("coachs");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -37,7 +38,7 @@ export default function AdministrationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    if (tabParam && ["roles", "structure", "backup", "reset"].includes(tabParam)) {
+    if (tabParam && ["coachs", "roles", "structure", "backup", "reset"].includes(tabParam)) {
       setActiveTab(tabParam as AdminTab);
     }
   }, [tabParam]);
@@ -80,6 +81,10 @@ export default function AdministrationPage() {
         <AdminSidebar activeTab={activeTab} onTabChange={handleTabChange} isSuperAdmin={isSuperAdmin} />
 
         <div className="admin-main-content">
+          {activeTab === "coachs" && (
+             <CoachsTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
+          )}
+
           {activeTab === "roles" && (
              <RolesTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
           )}

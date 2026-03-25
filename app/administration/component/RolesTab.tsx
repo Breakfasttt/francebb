@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { Users, Search, ShieldAlert, Check } from "lucide-react";
-import { searchCoaches, updateCoachRole } from "../actions";
-import { getRolePower, ROLE_POWER, UserRole } from "@/lib/roles";
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import { ShieldCheck, Plus, Trash2, ShieldAlert } from "lucide-react";
+import { getAllRoles, createCustomRole, deleteCustomRole } from "../actions";
+import { getRolePower, UserRole } from "@/lib/roles";
 import toast from "react-hot-toast";
 
 interface RolesTabProps {
@@ -13,46 +12,53 @@ interface RolesTabProps {
 }
 
 export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProps) {
-  const [query, setQuery] = useState("");
-  const [users, setUsers] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [roles, setRoles] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+
+  const [newName, setNewName] = useState("");
+  const [newLabel, setNewLabel] = useState("");
+  const [newPower, setNewPower] = useState(1);
 
   const myPower = getRolePower(currentUserRole);
 
-  const availableRoles = Object.keys(ROLE_POWER)
-    .filter(role => role !== "SUPERADMIN") // Personne ne peut accorder SUPERADMIN via l'UI
-    .filter(role => isSuperAdmin || ROLE_POWER[role] < myPower)
-    .sort((a, b) => ROLE_POWER[b] - ROLE_POWER[a]);
-
   useEffect(() => {
-    loadUsers("");
+    loadRoles();
   }, []);
 
-  const loadUsers = async (searchQuery: string) => {
+  const loadRoles = async () => {
     setIsLoading(true);
-    const data = await searchCoaches(searchQuery);
-    setUsers(data);
+    const data = await getAllRoles();
+    setRoles(data);
     setIsLoading(false);
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-    // Debounce simple
-    const timeout = setTimeout(() => {
-      loadUsers(e.target.value);
-    }, 500);
-    return () => clearTimeout(timeout);
+  const handleCreate = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName || !newLabel) return toast.error("Champs requis");
+    
+    startTransition(async () => {
+      const res = await createCustomRole({ name: newName, label: newLabel, power: Number(newPower) });
+      if (res.success) {
+        toast.success("Rôle créé avec succès !");
+        setNewName(""); setNewLabel(""); setNewPower(1);
+        loadRoles();
+      } else {
+        toast.error(res.error || "Erreur lors de la création");
+      }
+    });
   };
 
-  const handleRoleChange = (userId: string, newRole: string) => {
+  const handleDelete = (roleName: string) => {
+    if (!window.confirm(`Supprimer le rôle ${roleName} ? Les utilisateurs seront rétrogradés COACH.`)) return;
+
     startTransition(async () => {
-      const res = await updateCoachRole(userId, newRole);
+      const res = await deleteCustomRole(roleName);
       if (res.success) {
-        toast.success("Rôle mis à jour");
-        loadUsers(query);
+        toast.success("Rôle supprimé !");
+        loadRoles();
       } else {
-        toast.error(res.error || "Erreur lors de la mise à jour");
+        toast.error(res.error || "Erreur de suppression");
       }
     });
   };
@@ -60,177 +66,131 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
   return (
     <div className="premium-card fade-in" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <Users size={28} color="var(--primary)" />
-        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Gestion des Rôles</h3>
+        <ShieldCheck size={28} color="var(--primary)" />
+        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Configuration des Rôles</h3>
       </div>
       
-      <p style={{ color: '#ccc', lineHeight: 1.6, marginBottom: '2rem' }}>
-        Recherchez un utilisateur pour lui attribuer un nouveau rôle. 
-        Vous ne pouvez affecter que des rôles <strong style={{color: 'white'}}>strictement inférieurs au vôtre</strong>.
-      </p>
+      {/* CREATION FORM */}
+      <form onSubmit={handleCreate} className="create-role-box">
+        <h4>Créer un nouveau rôle</h4>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <input 
+            type="text" 
+            placeholder="ID unique (ex: ARBITRE)" 
+            value={newName} 
+            onChange={e => setNewName(e.target.value)} 
+            disabled={isPending}
+            required
+            className="default-input flex-1"
+          />
+          <input 
+            type="text" 
+            placeholder="Label (ex: Arbitre Principal)" 
+            value={newLabel} 
+            onChange={e => setNewLabel(e.target.value)} 
+            disabled={isPending}
+            required
+            className="default-input flex-1"
+          />
+          <input 
+            type="number" 
+            placeholder="Puissance (1-100)" 
+            value={newPower} 
+            onChange={e => setNewPower(parseInt(e.target.value))} 
+            disabled={isPending}
+            min={1} 
+            max={isSuperAdmin ? 100 : myPower - 1}
+            required
+            className="default-input"
+            style={{ width: '120px' }}
+          />
+          <button type="submit" disabled={isPending} className="action-button primary-btn flex-shrink-0">
+            <Plus size={18} /> CRÉER
+          </button>
+        </div>
+        <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem' }}>*La puissance détermine la hiérarchie. Vous ne pouvez accorder une puissance supérieure ou égale à la vôtre ({myPower}).</p>
+      </form>
 
-      <div className="search-bar-container">
-        <Search size={20} className="search-icon" />
-        <input 
-          type="text" 
-          placeholder="Rechercher par pseudo..."
-          value={query}
-          onChange={handleSearch}
-          className="search-input"
-        />
-        {isLoading && <span className="loading-indicator">⏳</span>}
-      </div>
+      {/* ROLES LIST */}
+      <div style={{ marginTop: '2rem' }}>
+        <h4>Rôles existants</h4>
+        {isLoading ? <p>Chargement...</p> : (
+          <div className="roles-list">
+            {roles.map(r => {
+              const canDelete = !r.isBaseRole && (isSuperAdmin || r.power < myPower);
 
-      <div className="users-list">
-        {users.length === 0 && !isLoading && (
-          <div className="empty-state">Aucun coach trouvé ou base vide.</div>
-        )}
-
-        {users.map(u => {
-          const uPower = getRolePower(u.role);
-          const canEdit = isSuperAdmin || (myPower > uPower && u.role !== "SUPERADMIN");
-
-          return (
-            <div key={u.id} className={`user-item ${u.role === "SUPERADMIN" ? "super-item" : ""}`}>
-              <div className="user-info">
-                <UserAvatar image={u.image} name={u.name} size={40} selectedRank={u.avatarFrame} isBanned={u.isBanned} />
-                <div className="user-text">
-                  <strong>{u.name}</strong> 
-                  <span className={`role-badge ${u.role.toLowerCase()}`}>{u.role}</span>
-                </div>
-              </div>
-
-              <div className="user-actions">
-                {canEdit ? (
-                  <select 
-                    value={u.role} 
-                    onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                    disabled={isPending}
-                    className="role-select"
-                  >
-                    {/* On affiche le rôle actuel même s'il n'est pas dans les dispos pour des raisons d'historique */}
-                    {!availableRoles.includes(u.role) && (
-                      <option value={u.role} disabled>{u.role}</option>
-                    )}
-                    {availableRoles.map(r => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                ) : (
-                  <div className="locked-badge">
-                    <ShieldAlert size={16} /> Verrouillé (Hiérarchie)
+              return (
+                <div key={r.name} className={`role-card ${r.isBaseRole ? 'base-role' : 'custom-role'}`}>
+                  <div className="role-info">
+                    <strong>{r.label} <code className="role-name">{r.name}</code></strong>
+                    <span className="power-badge">Puissance: {r.power}</span>
+                    <span className="count-badge">{r._count?.users || 0} coachs affectés</span>
                   </div>
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  <div className="role-actions">
+                    {r.isBaseRole ? (
+                      <span className="locked-badge"><ShieldAlert size={14} /> Base</span>
+                    ) : canDelete ? (
+                      <button 
+                        onClick={() => handleDelete(r.name)} 
+                        disabled={isPending} 
+                        className="delete-icon-btn"
+                        title="Supprimer ce rôle"
+                        type="button"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    ) : (
+                      <span className="locked-badge">Hiérarchie bloquée</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <style jsx>{`
-        .search-bar-container {
-          position: relative;
-          margin-bottom: 2rem;
-          display: flex;
-          align-items: center;
-        }
-        .search-icon {
-          position: absolute;
-          left: 1rem;
-          color: #666;
-        }
-        .search-input {
-          width: 100%;
+        .create-role-box {
           background: rgba(0,0,0,0.3);
-          border: 1px solid var(--glass-border);
-          padding: 1rem 1rem 1rem 3rem;
-          border-radius: 8px;
-          color: white;
-          font-size: 1rem;
-          transition: border-color 0.2s;
-        }
-        .search-input:focus {
-          outline: none;
-          border-color: var(--primary);
-        }
-        .loading-indicator {
-          position: absolute;
-          right: 1.5rem;
-        }
-        .users-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-        }
-        .user-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 1rem;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid var(--glass-border);
+          border: 1px dashed var(--glass-border);
+          padding: 1.5rem;
           border-radius: 8px;
         }
-        .user-item.super-item {
-          border-color: rgba(234, 179, 8, 0.4);
-          background: rgba(234, 179, 8, 0.05);
-        }
-        .user-info {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-        }
-        .user-text {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2rem;
-        }
-        .user-text strong {
-          color: white;
-          font-size: 1.1rem;
-        }
-        .role-badge {
-          display: inline-block;
-          font-size: 0.7rem;
-          background: #444;
-          color: white;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-weight: 800;
-          width: fit-content;
-        }
-        .role-badge.superadmin { background: #eab308; color: black; }
-        .role-badge.admin { background: #ef4444; }
-        .role-badge.moderator { background: #22c55e; }
-        .role-badge.orga { background: #3b82f6; }
-        .role-select {
-          background: #111;
-          border: 1px solid var(--glass-border);
-          color: white;
-          padding: 0.6rem 1rem;
-          border-radius: 8px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-        .role-select:focus {
-          outline: none;
-          border-color: var(--primary);
-        }
-        .locked-badge {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: #888;
-          font-size: 0.8rem;
+        .create-role-box h4 { margin-top: 0; margin-bottom: 1rem; color: #ccc; }
+        .default-input {
           background: rgba(255,255,255,0.05);
-          padding: 0.5rem 1rem;
+          border: 1px solid var(--glass-border);
+          color: white;
+          padding: 0.8rem 1rem;
           border-radius: 8px;
         }
-        .empty-state {
-          text-align: center;
-          padding: 3rem;
-          color: #666;
+        .default-input:focus { outline: none; border-color: var(--primary); }
+        .flex-1 { flex: 1; }
+        .primary-btn { padding: 0.8rem 1.5rem; background: var(--primary); color: white; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+        .primary-btn:hover { background: #dc2626; }
+        .primary-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .roles-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .role-card {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+          border-radius: 8px;
+          border: 1px solid var(--glass-border);
         }
+        .base-role { background: rgba(255,255,255,0.02); }
+        .custom-role { background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.2); }
+        .role-info { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+        .role-info strong { color: white; display: flex; align-items: center; gap: 0.5rem; }
+        .role-name { background: rgba(0,0,0,0.5); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #888; }
+        .power-badge { background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; color: #eee; }
+        .count-badge { background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .locked-badge { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; color: #888; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; }
+        .delete-icon-btn { background: none; border: none; color: #ef4444; cursor: pointer; padding: 0.5rem; border-radius: 4px; transition: background 0.2s; }
+        .delete-icon-btn:hover { background: rgba(239, 68, 68, 0.1); }
+        .delete-icon-btn:disabled { opacity: 0.5; }
       `}</style>
     </div>
   );

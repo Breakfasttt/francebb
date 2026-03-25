@@ -11,12 +11,11 @@ if (process.env.NODE_ENV !== "development") {
 const ROLES = [
   { id: "user_test_superadmin", name: "SuperAdmin" },
   { id: "user_test_admin", name: "Admin" },
-  { id: "user_test_conseil", name: "Conseil Orga" },
   { id: "user_test_moderator", name: "Modérateur" },
-  { id: "user_test_orga", name: "Orga" },
-  { id: "user_test_breakyt", name: "Breakyt (Admin)" }, // Legacy from original script
+  { id: "user_test_rtc", name: "RTC" },
+  { id: "user_test_chefligue", name: "Chef Ligue" },
+  { id: "user_test_breakyt", name: "Breakyt (Admin)" }, // Legacy
   { id: "user_test_coach1", name: "Coach 1" },
-  { id: "user_test_coach2", name: "Coach 2" },
 ];
 
 export default function DebugAuthWidget() {

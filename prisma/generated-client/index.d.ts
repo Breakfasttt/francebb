@@ -83,6 +83,11 @@ export type Mention = $Result.DefaultSelection<Prisma.$MentionPayload>
  * 
  */
 export type PostReaction = $Result.DefaultSelection<Prisma.$PostReactionPayload>
+/**
+ * Model RoleConfig
+ * 
+ */
+export type RoleConfig = $Result.DefaultSelection<Prisma.$RoleConfigPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -344,6 +349,16 @@ export class PrismaClient<
     * ```
     */
   get postReaction(): Prisma.PostReactionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roleConfig`: Exposes CRUD operations for the **RoleConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoleConfigs
+    * const roleConfigs = await prisma.roleConfig.findMany()
+    * ```
+    */
+  get roleConfig(): Prisma.RoleConfigDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -791,7 +806,8 @@ export namespace Prisma {
     PrivateMessage: 'PrivateMessage',
     TopicView: 'TopicView',
     Mention: 'Mention',
-    PostReaction: 'PostReaction'
+    PostReaction: 'PostReaction',
+    RoleConfig: 'RoleConfig'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -807,7 +823,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1847,6 +1863,80 @@ export namespace Prisma {
           }
         }
       }
+      RoleConfig: {
+        payload: Prisma.$RoleConfigPayload<ExtArgs>
+        fields: Prisma.RoleConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoleConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoleConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.RoleConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoleConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          findMany: {
+            args: Prisma.RoleConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          create: {
+            args: Prisma.RoleConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          createMany: {
+            args: Prisma.RoleConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoleConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.RoleConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          update: {
+            args: Prisma.RoleConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoleConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoleConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoleConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoleConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoleConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.RoleConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoleConfig>
+          }
+          groupBy: {
+            args: Prisma.RoleConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoleConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoleConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<RoleConfigCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1969,6 +2059,7 @@ export namespace Prisma {
     topicView?: TopicViewOmit
     mention?: MentionOmit
     postReaction?: PostReactionOmit
+    roleConfig?: RoleConfigOmit
   }
 
   /* Types for Logging */
@@ -2362,6 +2453,37 @@ export namespace Prisma {
    */
   export type ConversationCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PrivateMessageWhereInput
+  }
+
+
+  /**
+   * Count Type RoleConfigCountOutputType
+   */
+
+  export type RoleConfigCountOutputType = {
+    users: number
+  }
+
+  export type RoleConfigCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | RoleConfigCountOutputTypeCountUsersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RoleConfigCountOutputType without action
+   */
+  export type RoleConfigCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfigCountOutputType
+     */
+    select?: RoleConfigCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RoleConfigCountOutputType without action
+   */
+  export type RoleConfigCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
   }
 
 
@@ -4834,6 +4956,7 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     tournaments?: boolean | User$tournamentsArgs<ExtArgs>
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
     topics?: boolean | User$topicsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
     user1Conversations?: boolean | User$user1ConversationsArgs<ExtArgs>
@@ -4861,6 +4984,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4877,6 +5001,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -4900,6 +5025,7 @@ export namespace Prisma {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     tournaments?: boolean | User$tournamentsArgs<ExtArgs>
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
     topics?: boolean | User$topicsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
     user1Conversations?: boolean | User$user1ConversationsArgs<ExtArgs>
@@ -4912,8 +5038,12 @@ export namespace Prisma {
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
+  }
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
+  }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -4921,6 +5051,7 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       tournaments: Prisma.$TournamentPayload<ExtArgs>[]
+      roleConfig: Prisma.$RoleConfigPayload<ExtArgs> | null
       topics: Prisma.$TopicPayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
       user1Conversations: Prisma.$ConversationPayload<ExtArgs>[]
@@ -5343,6 +5474,7 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournaments<T extends User$tournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$tournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    roleConfig<T extends User$roleConfigArgs<ExtArgs> = {}>(args?: Subset<T, User$roleConfigArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     topics<T extends User$topicsArgs<ExtArgs> = {}>(args?: Subset<T, User$topicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user1Conversations<T extends User$user1ConversationsArgs<ExtArgs> = {}>(args?: Subset<T, User$user1ConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5647,6 +5779,10 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5717,6 +5853,10 @@ export namespace Prisma {
      * Limit how many Users to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -5855,6 +5995,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * User.roleConfig
+   */
+  export type User$roleConfigArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    where?: RoleConfigWhereInput
   }
 
   /**
@@ -18581,6 +18740,1113 @@ export namespace Prisma {
 
 
   /**
+   * Model RoleConfig
+   */
+
+  export type AggregateRoleConfig = {
+    _count: RoleConfigCountAggregateOutputType | null
+    _avg: RoleConfigAvgAggregateOutputType | null
+    _sum: RoleConfigSumAggregateOutputType | null
+    _min: RoleConfigMinAggregateOutputType | null
+    _max: RoleConfigMaxAggregateOutputType | null
+  }
+
+  export type RoleConfigAvgAggregateOutputType = {
+    power: number | null
+  }
+
+  export type RoleConfigSumAggregateOutputType = {
+    power: number | null
+  }
+
+  export type RoleConfigMinAggregateOutputType = {
+    name: string | null
+    label: string | null
+    power: number | null
+    isBaseRole: boolean | null
+    updatedAt: Date | null
+  }
+
+  export type RoleConfigMaxAggregateOutputType = {
+    name: string | null
+    label: string | null
+    power: number | null
+    isBaseRole: boolean | null
+    updatedAt: Date | null
+  }
+
+  export type RoleConfigCountAggregateOutputType = {
+    name: number
+    label: number
+    power: number
+    isBaseRole: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RoleConfigAvgAggregateInputType = {
+    power?: true
+  }
+
+  export type RoleConfigSumAggregateInputType = {
+    power?: true
+  }
+
+  export type RoleConfigMinAggregateInputType = {
+    name?: true
+    label?: true
+    power?: true
+    isBaseRole?: true
+    updatedAt?: true
+  }
+
+  export type RoleConfigMaxAggregateInputType = {
+    name?: true
+    label?: true
+    power?: true
+    isBaseRole?: true
+    updatedAt?: true
+  }
+
+  export type RoleConfigCountAggregateInputType = {
+    name?: true
+    label?: true
+    power?: true
+    isBaseRole?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RoleConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoleConfig to aggregate.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoleConfigs
+    **/
+    _count?: true | RoleConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoleConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoleConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoleConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoleConfigMaxAggregateInputType
+  }
+
+  export type GetRoleConfigAggregateType<T extends RoleConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoleConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoleConfig[P]>
+      : GetScalarType<T[P], AggregateRoleConfig[P]>
+  }
+
+
+
+
+  export type RoleConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoleConfigWhereInput
+    orderBy?: RoleConfigOrderByWithAggregationInput | RoleConfigOrderByWithAggregationInput[]
+    by: RoleConfigScalarFieldEnum[] | RoleConfigScalarFieldEnum
+    having?: RoleConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoleConfigCountAggregateInputType | true
+    _avg?: RoleConfigAvgAggregateInputType
+    _sum?: RoleConfigSumAggregateInputType
+    _min?: RoleConfigMinAggregateInputType
+    _max?: RoleConfigMaxAggregateInputType
+  }
+
+  export type RoleConfigGroupByOutputType = {
+    name: string
+    label: string
+    power: number
+    isBaseRole: boolean
+    updatedAt: Date
+    _count: RoleConfigCountAggregateOutputType | null
+    _avg: RoleConfigAvgAggregateOutputType | null
+    _sum: RoleConfigSumAggregateOutputType | null
+    _min: RoleConfigMinAggregateOutputType | null
+    _max: RoleConfigMaxAggregateOutputType | null
+  }
+
+  type GetRoleConfigGroupByPayload<T extends RoleConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoleConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoleConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoleConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], RoleConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoleConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    name?: boolean
+    label?: boolean
+    power?: boolean
+    isBaseRole?: boolean
+    updatedAt?: boolean
+    users?: boolean | RoleConfig$usersArgs<ExtArgs>
+    _count?: boolean | RoleConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    name?: boolean
+    label?: boolean
+    power?: boolean
+    isBaseRole?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    name?: boolean
+    label?: boolean
+    power?: boolean
+    isBaseRole?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["roleConfig"]>
+
+  export type RoleConfigSelectScalar = {
+    name?: boolean
+    label?: boolean
+    power?: boolean
+    isBaseRole?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RoleConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"name" | "label" | "power" | "isBaseRole" | "updatedAt", ExtArgs["result"]["roleConfig"]>
+  export type RoleConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    users?: boolean | RoleConfig$usersArgs<ExtArgs>
+    _count?: boolean | RoleConfigCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RoleConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RoleConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RoleConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoleConfig"
+    objects: {
+      users: Prisma.$UserPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      name: string
+      label: string
+      power: number
+      isBaseRole: boolean
+      updatedAt: Date
+    }, ExtArgs["result"]["roleConfig"]>
+    composites: {}
+  }
+
+  type RoleConfigGetPayload<S extends boolean | null | undefined | RoleConfigDefaultArgs> = $Result.GetResult<Prisma.$RoleConfigPayload, S>
+
+  type RoleConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoleConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoleConfigCountAggregateInputType | true
+    }
+
+  export interface RoleConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoleConfig'], meta: { name: 'RoleConfig' } }
+    /**
+     * Find zero or one RoleConfig that matches the filter.
+     * @param {RoleConfigFindUniqueArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoleConfigFindUniqueArgs>(args: SelectSubset<T, RoleConfigFindUniqueArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoleConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoleConfigFindUniqueOrThrowArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoleConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, RoleConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoleConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindFirstArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoleConfigFindFirstArgs>(args?: SelectSubset<T, RoleConfigFindFirstArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoleConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindFirstOrThrowArgs} args - Arguments to find a RoleConfig
+     * @example
+     * // Get one RoleConfig
+     * const roleConfig = await prisma.roleConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoleConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, RoleConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoleConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoleConfigs
+     * const roleConfigs = await prisma.roleConfig.findMany()
+     * 
+     * // Get first 10 RoleConfigs
+     * const roleConfigs = await prisma.roleConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `name`
+     * const roleConfigWithNameOnly = await prisma.roleConfig.findMany({ select: { name: true } })
+     * 
+     */
+    findMany<T extends RoleConfigFindManyArgs>(args?: SelectSubset<T, RoleConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoleConfig.
+     * @param {RoleConfigCreateArgs} args - Arguments to create a RoleConfig.
+     * @example
+     * // Create one RoleConfig
+     * const RoleConfig = await prisma.roleConfig.create({
+     *   data: {
+     *     // ... data to create a RoleConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoleConfigCreateArgs>(args: SelectSubset<T, RoleConfigCreateArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoleConfigs.
+     * @param {RoleConfigCreateManyArgs} args - Arguments to create many RoleConfigs.
+     * @example
+     * // Create many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoleConfigCreateManyArgs>(args?: SelectSubset<T, RoleConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoleConfigs and returns the data saved in the database.
+     * @param {RoleConfigCreateManyAndReturnArgs} args - Arguments to create many RoleConfigs.
+     * @example
+     * // Create many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoleConfigs and only return the `name`
+     * const roleConfigWithNameOnly = await prisma.roleConfig.createManyAndReturn({
+     *   select: { name: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoleConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, RoleConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoleConfig.
+     * @param {RoleConfigDeleteArgs} args - Arguments to delete one RoleConfig.
+     * @example
+     * // Delete one RoleConfig
+     * const RoleConfig = await prisma.roleConfig.delete({
+     *   where: {
+     *     // ... filter to delete one RoleConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoleConfigDeleteArgs>(args: SelectSubset<T, RoleConfigDeleteArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoleConfig.
+     * @param {RoleConfigUpdateArgs} args - Arguments to update one RoleConfig.
+     * @example
+     * // Update one RoleConfig
+     * const roleConfig = await prisma.roleConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoleConfigUpdateArgs>(args: SelectSubset<T, RoleConfigUpdateArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoleConfigs.
+     * @param {RoleConfigDeleteManyArgs} args - Arguments to filter RoleConfigs to delete.
+     * @example
+     * // Delete a few RoleConfigs
+     * const { count } = await prisma.roleConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoleConfigDeleteManyArgs>(args?: SelectSubset<T, RoleConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoleConfigUpdateManyArgs>(args: SelectSubset<T, RoleConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoleConfigs and returns the data updated in the database.
+     * @param {RoleConfigUpdateManyAndReturnArgs} args - Arguments to update many RoleConfigs.
+     * @example
+     * // Update many RoleConfigs
+     * const roleConfig = await prisma.roleConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoleConfigs and only return the `name`
+     * const roleConfigWithNameOnly = await prisma.roleConfig.updateManyAndReturn({
+     *   select: { name: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoleConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, RoleConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoleConfig.
+     * @param {RoleConfigUpsertArgs} args - Arguments to update or create a RoleConfig.
+     * @example
+     * // Update or create a RoleConfig
+     * const roleConfig = await prisma.roleConfig.upsert({
+     *   create: {
+     *     // ... data to create a RoleConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoleConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoleConfigUpsertArgs>(args: SelectSubset<T, RoleConfigUpsertArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoleConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigCountArgs} args - Arguments to filter RoleConfigs to count.
+     * @example
+     * // Count the number of RoleConfigs
+     * const count = await prisma.roleConfig.count({
+     *   where: {
+     *     // ... the filter for the RoleConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoleConfigCountArgs>(
+      args?: Subset<T, RoleConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoleConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoleConfigAggregateArgs>(args: Subset<T, RoleConfigAggregateArgs>): Prisma.PrismaPromise<GetRoleConfigAggregateType<T>>
+
+    /**
+     * Group by RoleConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoleConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoleConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoleConfigGroupByArgs['orderBy'] }
+        : { orderBy?: RoleConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoleConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoleConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoleConfig model
+   */
+  readonly fields: RoleConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoleConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoleConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    users<T extends RoleConfig$usersArgs<ExtArgs> = {}>(args?: Subset<T, RoleConfig$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoleConfig model
+   */
+  interface RoleConfigFieldRefs {
+    readonly name: FieldRef<"RoleConfig", 'String'>
+    readonly label: FieldRef<"RoleConfig", 'String'>
+    readonly power: FieldRef<"RoleConfig", 'Int'>
+    readonly isBaseRole: FieldRef<"RoleConfig", 'Boolean'>
+    readonly updatedAt: FieldRef<"RoleConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoleConfig findUnique
+   */
+  export type RoleConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig findUniqueOrThrow
+   */
+  export type RoleConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig findFirst
+   */
+  export type RoleConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoleConfigs.
+     */
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig findFirstOrThrow
+   */
+  export type RoleConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfig to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoleConfigs.
+     */
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig findMany
+   */
+  export type RoleConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which RoleConfigs to fetch.
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoleConfigs to fetch.
+     */
+    orderBy?: RoleConfigOrderByWithRelationInput | RoleConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoleConfigs.
+     */
+    cursor?: RoleConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoleConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoleConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoleConfigs.
+     */
+    distinct?: RoleConfigScalarFieldEnum | RoleConfigScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig create
+   */
+  export type RoleConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoleConfig.
+     */
+    data: XOR<RoleConfigCreateInput, RoleConfigUncheckedCreateInput>
+  }
+
+  /**
+   * RoleConfig createMany
+   */
+  export type RoleConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoleConfigs.
+     */
+    data: RoleConfigCreateManyInput | RoleConfigCreateManyInput[]
+  }
+
+  /**
+   * RoleConfig createManyAndReturn
+   */
+  export type RoleConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoleConfigs.
+     */
+    data: RoleConfigCreateManyInput | RoleConfigCreateManyInput[]
+  }
+
+  /**
+   * RoleConfig update
+   */
+  export type RoleConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoleConfig.
+     */
+    data: XOR<RoleConfigUpdateInput, RoleConfigUncheckedUpdateInput>
+    /**
+     * Choose, which RoleConfig to update.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig updateMany
+   */
+  export type RoleConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoleConfigs.
+     */
+    data: XOR<RoleConfigUpdateManyMutationInput, RoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which RoleConfigs to update
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig updateManyAndReturn
+   */
+  export type RoleConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update RoleConfigs.
+     */
+    data: XOR<RoleConfigUpdateManyMutationInput, RoleConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which RoleConfigs to update
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig upsert
+   */
+  export type RoleConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoleConfig to update in case it exists.
+     */
+    where: RoleConfigWhereUniqueInput
+    /**
+     * In case the RoleConfig found by the `where` argument doesn't exist, create a new RoleConfig with this data.
+     */
+    create: XOR<RoleConfigCreateInput, RoleConfigUncheckedCreateInput>
+    /**
+     * In case the RoleConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoleConfigUpdateInput, RoleConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * RoleConfig delete
+   */
+  export type RoleConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+    /**
+     * Filter which RoleConfig to delete.
+     */
+    where: RoleConfigWhereUniqueInput
+  }
+
+  /**
+   * RoleConfig deleteMany
+   */
+  export type RoleConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoleConfigs to delete
+     */
+    where?: RoleConfigWhereInput
+    /**
+     * Limit how many RoleConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoleConfig.users
+   */
+  export type RoleConfig$usersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
+  }
+
+  /**
+   * RoleConfig without action
+   */
+  export type RoleConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoleConfig
+     */
+    select?: RoleConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoleConfig
+     */
+    omit?: RoleConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoleConfigInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18784,6 +20050,17 @@ export namespace Prisma {
   };
 
   export type PostReactionScalarFieldEnum = (typeof PostReactionScalarFieldEnum)[keyof typeof PostReactionScalarFieldEnum]
+
+
+  export const RoleConfigScalarFieldEnum: {
+    name: 'name',
+    label: 'label',
+    power: 'power',
+    isBaseRole: 'isBaseRole',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RoleConfigScalarFieldEnum = (typeof RoleConfigScalarFieldEnum)[keyof typeof RoleConfigScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -19008,6 +20285,7 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     tournaments?: TournamentListRelationFilter
+    roleConfig?: XOR<RoleConfigNullableScalarRelationFilter, RoleConfigWhereInput> | null
     topics?: TopicListRelationFilter
     posts?: PostListRelationFilter
     user1Conversations?: ConversationListRelationFilter
@@ -19037,6 +20315,7 @@ export namespace Prisma {
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     tournaments?: TournamentOrderByRelationAggregateInput
+    roleConfig?: RoleConfigOrderByWithRelationInput
     topics?: TopicOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
     user1Conversations?: ConversationOrderByRelationAggregateInput
@@ -19069,6 +20348,7 @@ export namespace Prisma {
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     tournaments?: TournamentListRelationFilter
+    roleConfig?: XOR<RoleConfigNullableScalarRelationFilter, RoleConfigWhereInput> | null
     topics?: TopicListRelationFilter
     posts?: PostListRelationFilter
     user1Conversations?: ConversationListRelationFilter
@@ -19920,6 +21200,63 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"PostReaction"> | string
   }
 
+  export type RoleConfigWhereInput = {
+    AND?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    OR?: RoleConfigWhereInput[]
+    NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    name?: StringFilter<"RoleConfig"> | string
+    label?: StringFilter<"RoleConfig"> | string
+    power?: IntFilter<"RoleConfig"> | number
+    isBaseRole?: BoolFilter<"RoleConfig"> | boolean
+    updatedAt?: DateTimeFilter<"RoleConfig"> | Date | string
+    users?: UserListRelationFilter
+  }
+
+  export type RoleConfigOrderByWithRelationInput = {
+    name?: SortOrder
+    label?: SortOrder
+    power?: SortOrder
+    isBaseRole?: SortOrder
+    updatedAt?: SortOrder
+    users?: UserOrderByRelationAggregateInput
+  }
+
+  export type RoleConfigWhereUniqueInput = Prisma.AtLeast<{
+    name?: string
+    AND?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    OR?: RoleConfigWhereInput[]
+    NOT?: RoleConfigWhereInput | RoleConfigWhereInput[]
+    label?: StringFilter<"RoleConfig"> | string
+    power?: IntFilter<"RoleConfig"> | number
+    isBaseRole?: BoolFilter<"RoleConfig"> | boolean
+    updatedAt?: DateTimeFilter<"RoleConfig"> | Date | string
+    users?: UserListRelationFilter
+  }, "name">
+
+  export type RoleConfigOrderByWithAggregationInput = {
+    name?: SortOrder
+    label?: SortOrder
+    power?: SortOrder
+    isBaseRole?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RoleConfigCountOrderByAggregateInput
+    _avg?: RoleConfigAvgOrderByAggregateInput
+    _max?: RoleConfigMaxOrderByAggregateInput
+    _min?: RoleConfigMinOrderByAggregateInput
+    _sum?: RoleConfigSumOrderByAggregateInput
+  }
+
+  export type RoleConfigScalarWhereWithAggregatesInput = {
+    AND?: RoleConfigScalarWhereWithAggregatesInput | RoleConfigScalarWhereWithAggregatesInput[]
+    OR?: RoleConfigScalarWhereWithAggregatesInput[]
+    NOT?: RoleConfigScalarWhereWithAggregatesInput | RoleConfigScalarWhereWithAggregatesInput[]
+    name?: StringWithAggregatesFilter<"RoleConfig"> | string
+    label?: StringWithAggregatesFilter<"RoleConfig"> | string
+    power?: IntWithAggregatesFilter<"RoleConfig"> | number
+    isBaseRole?: BoolWithAggregatesFilter<"RoleConfig"> | boolean
+    updatedAt?: DateTimeWithAggregatesFilter<"RoleConfig"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -20078,7 +21415,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -20089,6 +21425,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -20136,7 +21473,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20147,6 +21483,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -20210,7 +21547,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21054,6 +22390,66 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type RoleConfigCreateInput = {
+    name: string
+    label: string
+    power: number
+    isBaseRole?: boolean
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutRoleConfigInput
+  }
+
+  export type RoleConfigUncheckedCreateInput = {
+    name: string
+    label: string
+    power: number
+    isBaseRole?: boolean
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutRoleConfigInput
+  }
+
+  export type RoleConfigUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutRoleConfigNestedInput
+  }
+
+  export type RoleConfigUncheckedUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutRoleConfigNestedInput
+  }
+
+  export type RoleConfigCreateManyInput = {
+    name: string
+    label: string
+    power: number
+    isBaseRole?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type RoleConfigUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoleConfigUncheckedUpdateManyInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -21289,6 +22685,11 @@ export namespace Prisma {
     every?: TournamentWhereInput
     some?: TournamentWhereInput
     none?: TournamentWhereInput
+  }
+
+  export type RoleConfigNullableScalarRelationFilter = {
+    is?: RoleConfigWhereInput | null
+    isNot?: RoleConfigWhereInput | null
   }
 
   export type TopicListRelationFilter = {
@@ -21953,6 +23354,48 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
+  }
+
+  export type UserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoleConfigCountOrderByAggregateInput = {
+    name?: SortOrder
+    label?: SortOrder
+    power?: SortOrder
+    isBaseRole?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RoleConfigAvgOrderByAggregateInput = {
+    power?: SortOrder
+  }
+
+  export type RoleConfigMaxOrderByAggregateInput = {
+    name?: SortOrder
+    label?: SortOrder
+    power?: SortOrder
+    isBaseRole?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RoleConfigMinOrderByAggregateInput = {
+    name?: SortOrder
+    label?: SortOrder
+    power?: SortOrder
+    isBaseRole?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RoleConfigSumOrderByAggregateInput = {
+    power?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -22020,6 +23463,12 @@ export namespace Prisma {
     connectOrCreate?: TournamentCreateOrConnectWithoutOrganizerInput | TournamentCreateOrConnectWithoutOrganizerInput[]
     createMany?: TournamentCreateManyOrganizerInputEnvelope
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
+  export type RoleConfigCreateNestedOneWithoutUsersInput = {
+    create?: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: RoleConfigCreateOrConnectWithoutUsersInput
+    connect?: RoleConfigWhereUniqueInput
   }
 
   export type TopicCreateNestedManyWithoutAuthorInput = {
@@ -22231,6 +23680,16 @@ export namespace Prisma {
     update?: TournamentUpdateWithWhereUniqueWithoutOrganizerInput | TournamentUpdateWithWhereUniqueWithoutOrganizerInput[]
     updateMany?: TournamentUpdateManyWithWhereWithoutOrganizerInput | TournamentUpdateManyWithWhereWithoutOrganizerInput[]
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
+  export type RoleConfigUpdateOneWithoutUsersNestedInput = {
+    create?: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
+    connectOrCreate?: RoleConfigCreateOrConnectWithoutUsersInput
+    upsert?: RoleConfigUpsertWithoutUsersInput
+    disconnect?: RoleConfigWhereInput | boolean
+    delete?: RoleConfigWhereInput | boolean
+    connect?: RoleConfigWhereUniqueInput
+    update?: XOR<XOR<RoleConfigUpdateToOneWithWhereWithoutUsersInput, RoleConfigUpdateWithoutUsersInput>, RoleConfigUncheckedUpdateWithoutUsersInput>
   }
 
   export type TopicUpdateManyWithoutAuthorNestedInput = {
@@ -23179,6 +24638,48 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostReactionsInput, UserUpdateWithoutPostReactionsInput>, UserUncheckedUpdateWithoutPostReactionsInput>
   }
 
+  export type UserCreateNestedManyWithoutRoleConfigInput = {
+    create?: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput> | UserCreateWithoutRoleConfigInput[] | UserUncheckedCreateWithoutRoleConfigInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoleConfigInput | UserCreateOrConnectWithoutRoleConfigInput[]
+    createMany?: UserCreateManyRoleConfigInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUncheckedCreateNestedManyWithoutRoleConfigInput = {
+    create?: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput> | UserCreateWithoutRoleConfigInput[] | UserUncheckedCreateWithoutRoleConfigInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoleConfigInput | UserCreateOrConnectWithoutRoleConfigInput[]
+    createMany?: UserCreateManyRoleConfigInputEnvelope
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type UserUpdateManyWithoutRoleConfigNestedInput = {
+    create?: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput> | UserCreateWithoutRoleConfigInput[] | UserUncheckedCreateWithoutRoleConfigInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoleConfigInput | UserCreateOrConnectWithoutRoleConfigInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutRoleConfigInput | UserUpsertWithWhereUniqueWithoutRoleConfigInput[]
+    createMany?: UserCreateManyRoleConfigInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutRoleConfigInput | UserUpdateWithWhereUniqueWithoutRoleConfigInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutRoleConfigInput | UserUpdateManyWithWhereWithoutRoleConfigInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type UserUncheckedUpdateManyWithoutRoleConfigNestedInput = {
+    create?: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput> | UserCreateWithoutRoleConfigInput[] | UserUncheckedCreateWithoutRoleConfigInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutRoleConfigInput | UserCreateOrConnectWithoutRoleConfigInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutRoleConfigInput | UserUpsertWithWhereUniqueWithoutRoleConfigInput[]
+    createMany?: UserCreateManyRoleConfigInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutRoleConfigInput | UserUpdateWithWhereUniqueWithoutRoleConfigInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutRoleConfigInput | UserUpdateManyWithWhereWithoutRoleConfigInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -23402,7 +24903,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -23412,6 +24912,7 @@ export namespace Prisma {
     avatarFrame?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -23474,7 +24975,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23484,6 +24984,7 @@ export namespace Prisma {
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -23530,7 +25031,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -23540,6 +25040,7 @@ export namespace Prisma {
     avatarFrame?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -23602,7 +25103,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23612,6 +25112,7 @@ export namespace Prisma {
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -23763,6 +25264,27 @@ export namespace Prisma {
 
   export type TournamentCreateManyOrganizerInputEnvelope = {
     data: TournamentCreateManyOrganizerInput | TournamentCreateManyOrganizerInput[]
+  }
+
+  export type RoleConfigCreateWithoutUsersInput = {
+    name: string
+    label: string
+    power: number
+    isBaseRole?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type RoleConfigUncheckedCreateWithoutUsersInput = {
+    name: string
+    label: string
+    power: number
+    isBaseRole?: boolean
+    updatedAt?: Date | string
+  }
+
+  export type RoleConfigCreateOrConnectWithoutUsersInput = {
+    where: RoleConfigWhereUniqueInput
+    create: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
   }
 
   export type TopicCreateWithoutAuthorInput = {
@@ -24156,6 +25678,33 @@ export namespace Prisma {
     organizerId?: StringFilter<"Tournament"> | string
   }
 
+  export type RoleConfigUpsertWithoutUsersInput = {
+    update: XOR<RoleConfigUpdateWithoutUsersInput, RoleConfigUncheckedUpdateWithoutUsersInput>
+    create: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
+    where?: RoleConfigWhereInput
+  }
+
+  export type RoleConfigUpdateToOneWithWhereWithoutUsersInput = {
+    where?: RoleConfigWhereInput
+    data: XOR<RoleConfigUpdateWithoutUsersInput, RoleConfigUncheckedUpdateWithoutUsersInput>
+  }
+
+  export type RoleConfigUpdateWithoutUsersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoleConfigUncheckedUpdateWithoutUsersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    label?: StringFieldUpdateOperationsInput | string
+    power?: IntFieldUpdateOperationsInput | number
+    isBaseRole?: BoolFieldUpdateOperationsInput | boolean
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TopicUpsertWithWhereUniqueWithoutAuthorInput = {
     where: TopicWhereUniqueInput
     update: XOR<TopicUpdateWithoutAuthorInput, TopicUncheckedUpdateWithoutAuthorInput>
@@ -24412,7 +25961,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -24422,6 +25970,7 @@ export namespace Prisma {
     avatarFrame?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -24484,7 +26033,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24494,6 +26042,7 @@ export namespace Prisma {
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -24820,7 +26369,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -24831,6 +26379,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
@@ -24981,7 +26530,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24992,6 +26540,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
@@ -25102,7 +26651,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25113,6 +26661,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
@@ -25188,7 +26737,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25199,6 +26747,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -25322,7 +26871,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25333,6 +26881,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
@@ -25405,7 +26954,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25416,6 +26964,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -25477,7 +27026,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25488,6 +27036,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
@@ -25538,7 +27087,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25549,6 +27097,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -25635,7 +27184,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25646,6 +27194,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
@@ -25702,7 +27251,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25713,6 +27261,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -25799,7 +27348,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25810,6 +27358,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -25902,7 +27451,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25913,6 +27461,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -25958,7 +27507,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -25969,6 +27517,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -26063,7 +27612,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26074,6 +27622,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -26191,7 +27740,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -26202,6 +27750,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -26252,7 +27801,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -26263,6 +27811,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -26363,7 +27912,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26374,6 +27922,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -26430,7 +27979,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26441,6 +27989,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -26519,7 +28068,6 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
-    role?: string
     nafNumber?: string | null
     region?: string | null
     league?: string | null
@@ -26530,6 +28078,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
@@ -26630,7 +28179,6 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     region?: NullableStringFieldUpdateOperationsInput | string | null
     league?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26641,6 +28189,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
@@ -26678,6 +28227,106 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserCreateWithoutRoleConfigInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutRoleConfigInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutRoleConfigInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput>
+  }
+
+  export type UserCreateManyRoleConfigInputEnvelope = {
+    data: UserCreateManyRoleConfigInput | UserCreateManyRoleConfigInput[]
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutRoleConfigInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutRoleConfigInput, UserUncheckedUpdateWithoutRoleConfigInput>
+    create: XOR<UserCreateWithoutRoleConfigInput, UserUncheckedCreateWithoutRoleConfigInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutRoleConfigInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutRoleConfigInput, UserUncheckedUpdateWithoutRoleConfigInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutRoleConfigInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutRoleConfigInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringNullableFilter<"User"> | string | null
+    email?: StringNullableFilter<"User"> | string | null
+    emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
+    image?: StringNullableFilter<"User"> | string | null
+    role?: StringFilter<"User"> | string
+    nafNumber?: StringNullableFilter<"User"> | string | null
+    region?: StringNullableFilter<"User"> | string | null
+    league?: StringNullableFilter<"User"> | string | null
+    signature?: StringNullableFilter<"User"> | string | null
+    isBanned?: BoolFilter<"User"> | boolean
+    banReason?: StringNullableFilter<"User"> | string | null
+    avatarFrame?: StringNullableFilter<"User"> | string | null
   }
 
   export type AccountCreateManyUserInput = {
@@ -27522,6 +29171,92 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserCreateManyRoleConfigInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+  }
+
+  export type UserUpdateWithoutRoleConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRoleConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

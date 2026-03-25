@@ -95,3 +95,79 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
 
   return { success: true };
 }
+
+// ---- CUSTOM ROLES MANAGEMENT ----
+
+export async function getAllRoles() {
+  const roles = await prisma.roleConfig.findMany({
+    orderBy: { power: "desc" },
+    include: {
+      _count: { select: { users: true } }
+    }
+  });
+  return roles;
+}
+
+export async function createCustomRole(data: { name: string, label: string, power: number }) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  const myPower = getRolePower(userRole);
+
+  if (!userRole || myPower < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  if (data.power >= myPower && userRole !== "SUPERADMIN") {
+    return { success: false, error: "Vous ne pouvez pas créer un rôle plus puissant ou égal au vôtre." };
+  }
+
+  // Format ID from name
+  const safeName = data.name.toUpperCase().replace(/[^A-Z0-9_]/g, "_");
+
+  const exists = await prisma.roleConfig.findUnique({ where: { name: safeName } });
+  if (exists) return { success: false, error: "Ce rôle existe déjà." };
+
+  await prisma.roleConfig.create({
+    data: {
+      name: safeName,
+      label: data.label,
+      power: data.power,
+      isBaseRole: false
+    }
+  });
+
+  return { success: true };
+}
+
+export async function deleteCustomRole(roleName: string) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  const roleConfig = await prisma.roleConfig.findUnique({ 
+    where: { name: roleName },
+    include: { _count: { select: { users: true } } }
+  });
+
+  if (!roleConfig) return { success: false, error: "Role introuvable." };
+  if (roleConfig.isBaseRole) return { success: false, error: "Impossible de supprimer un rôle de base." };
+
+  const myPower = getRolePower(userRole);
+  if (roleConfig.power >= myPower && userRole !== "SUPERADMIN") {
+    return { success: false, error: "Impossible de supprimer un rôle de rang supérieur ou égal." };
+  }
+
+  // Re-assign users to COACH
+  if (roleConfig._count.users > 0) {
+    await prisma.user.updateMany({
+      where: { role: roleName },
+      data: { role: "COACH" }
+    });
+  }
+
+  await prisma.roleConfig.delete({ where: { name: roleName } });
+
+  return { success: true };
+}

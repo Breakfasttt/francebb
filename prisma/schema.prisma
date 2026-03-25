@@ -43,7 +43,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   tournaments   Tournament[]
-  role          String    @default("COACH") // SUPERADMIN, ADMIN, CONSEIL_ORGA, MODERATOR, ORGA, COACH
+  role          String      @default("COACH") // SUPERADMIN, ADMIN, MODERATOR, RTC, CHEF_LIGUE, COACH
+  roleConfig    RoleConfig? @relation(fields: [role], references: [name])
+  
   nafNumber     String?
   region        String?   // IDF, Nord-Ouest, Nord-Est, Sud-Est, Sud-Ouest
   league        String?
@@ -241,4 +243,14 @@ model PostReaction {
 
   @@unique([postId, userId, emoji])
   @@index([postId])
+}
+
+model RoleConfig {
+  name        String   @id
+  label       String
+  power       Int
+  isBaseRole  Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
 }

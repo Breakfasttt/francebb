@@ -270,6 +270,14 @@ exports.Prisma.PostReactionScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.RoleConfigScalarFieldEnum = {
+  name: 'name',
+  label: 'label',
+  power: 'power',
+  isBaseRole: 'isBaseRole',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -295,7 +303,8 @@ exports.Prisma.ModelName = {
   PrivateMessage: 'PrivateMessage',
   TopicView: 'TopicView',
   Mention: 'Mention',
-  PostReaction: 'PostReaction'
+  PostReaction: 'PostReaction',
+  RoleConfig: 'RoleConfig'
 };
 
 /**

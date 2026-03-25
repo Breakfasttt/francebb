@@ -1,26 +1,26 @@
 export type UserRole = 
   | "SUPERADMIN"
   | "ADMIN"
-  | "CONSEIL_ORGA"
   | "MODERATOR"
-  | "ORGA"
+  | "RTC"
+  | "CHEF_LIGUE"
   | "COACH";
 
 export const ROLE_POWER: Record<string, number> = {
   SUPERADMIN: 100,
   ADMIN: 90,
-  CONSEIL_ORGA: 80,
   MODERATOR: 70,
-  ORGA: 30,
+  RTC: 50,
+  CHEF_LIGUE: 40,
   COACH: 10,
 };
 
 export const ROLE_LABELS: Record<string, string> = {
   SUPERADMIN: "Super Admin",
   ADMIN: "Administrateur",
-  CONSEIL_ORGA: "Conseil des Orgas",
   MODERATOR: "Modérateur",
-  ORGA: "Orga",
+  RTC: "RTC",
+  CHEF_LIGUE: "Chef de ligue",
   COACH: "Coach",
 };
 

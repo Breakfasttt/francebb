@@ -43,16 +43,18 @@ model User {
   accounts      Account[]
   sessions      Session[]
   tournaments   Tournament[]
-  role          String       @default("COACH") // SUPERADMIN, ADMIN, CONSEIL_ORGA, MODERATOR, ORGA, COACH
-  nafNumber     String?
-  region        String? // IDF, Nord-Ouest, Nord-Est, Sud-Est, Sud-Ouest
-  league        String?
-  signature     String?
-  isBanned      Boolean      @default(false)
-  banReason     String?
-  avatarFrame   String?      @default("auto") // auto, none, bronze, silver, gold, platinum, diamond, master, grand-master
-  topics        Topic[]
-  posts         Post[]
+  role          String       @default("COACH") // SUPERADMIN, ADMIN, MODERATOR, RTC, CHEF_LIGUE, COACH
+  roleConfig    RoleConfig?  @relation(fields: [role], references: [name])
+
+  nafNumber   String?
+  region      String? // IDF, Nord-Ouest, Nord-Est, Sud-Est, Sud-Ouest
+  league      String?
+  signature   String?
+  isBanned    Boolean @default(false)
+  banReason   String?
+  avatarFrame String? @default("auto") // auto, none, bronze, silver, gold, platinum, diamond, master, grand-master
+  topics      Topic[]
+  posts       Post[]
 
   user1Conversations Conversation[]   @relation("User1Conversations")
   user2Conversations Conversation[]   @relation("User2Conversations")
@@ -241,4 +243,14 @@ model PostReaction {
 
   @@unique([postId, userId, emoji])
   @@index([postId])
+}
+
+model RoleConfig {
+  name       String   @id
+  label      String
+  power      Int
+  isBaseRole Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+
+  users User[]
 }
