@@ -821,37 +821,61 @@ export async function toggleFollowTopic(topicId: string) {
 /**
  * Récupérer la liste des topics suivis par l'utilisateur connecté.
  */
-export async function getFollowedTopics() {
+export async function getFollowedTopics(page: number = 1, limit: number = 20) {
   const session = await auth();
   const userId = session?.user?.id;
-  if (!userId) return [];
+  if (!userId) return { topics: [], totalPages: 0 };
+
+  const skip = (page - 1) * limit;
 
   try {
+    // 1. Get total count
+    const countResult = await prisma.$queryRaw<Array<{ count: bigint | number }>>`
+      SELECT count(*) as count FROM "TopicFollow" WHERE "userId" = ${userId}
+    `;
+    const totalCount = Number(countResult[0]?.count || 0);
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // 2. Get paginated results
     const rows = await prisma.$queryRaw<Array<{
       id: string;
       title: string;
       updatedAt: string | Date;
       forumId: string;
+      lastViewedAt: string | Date | null;
     }>>`
       SELECT
         t.id as id,
         t.title as title,
         t.updatedAt as "updatedAt",
-        t.forumId as "forumId"
+        t.forumId as "forumId",
+        tv.lastViewedAt as "lastViewedAt"
       FROM "TopicFollow" tf
       JOIN "Topic" t ON t.id = tf."topicId"
+      LEFT JOIN "TopicView" tv ON tv.topicId = t.id AND tv.userId = ${userId}
       WHERE tf."userId" = ${userId}
       ORDER BY t.updatedAt DESC
-      LIMIT 20
+      LIMIT ${limit} OFFSET ${skip}
     `;
 
-    return rows.map((r) => ({
-      id: r.id,
-      title: r.title,
-      updatedAt: r.updatedAt ? new Date(r.updatedAt) : new Date(0),
-      forumId: r.forumId,
-    }));
-  } catch {
-    return [];
+    const topics = rows.map((r) => {
+      const topicDate = r.updatedAt ? new Date(r.updatedAt) : new Date(0);
+      const viewDate = r.lastViewedAt ? new Date(r.lastViewedAt) : null;
+      
+      const isUnread = !viewDate || topicDate.getTime() > viewDate.getTime();
+      
+      return {
+        id: r.id,
+        title: r.title,
+        updatedAt: topicDate,
+        forumId: r.forumId,
+        isUnread: isUnread,
+      };
+    });
+
+    return { topics, totalPages };
+  } catch (error) {
+    console.error("getFollowedTopics error:", error);
+    return { topics: [], totalPages: 0 };
   }
 }

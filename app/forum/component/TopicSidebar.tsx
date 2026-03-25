@@ -17,7 +17,7 @@ import {
   Mail,
   Check,
   Eye,
-  Bell
+  Bookmark
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -192,7 +192,7 @@ export default function TopicSidebar({
                   color: isFollowing ? 'var(--accent)' : 'white',
                 }}
               >
-                <Bell size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
+                <Bookmark size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
                 <span>{isFollowing ? "Arrêter de suivre le sujet" : "Suivre le sujet"}</span>
               </button>
             )}

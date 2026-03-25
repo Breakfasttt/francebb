@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "@prisma/client";
-import { User as UserIcon, MapPin, Trophy, MessageSquare, Shield, AlertTriangle, Ban, UserCheck } from "lucide-react";
+import { User as UserIcon, MapPin, Trophy, MessageSquare, Shield, AlertTriangle, Ban, UserCheck, Bookmark } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toggleBanUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
@@ -36,6 +36,7 @@ export default function ProfileSidebar({
 
   const navItems = isOwnProfile ? [
     { id: "activity", label: "Activité du forum", icon: <MessageSquare size={18} /> },
+    { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
