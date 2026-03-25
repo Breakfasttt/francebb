@@ -1,9 +1,27 @@
 .admin-container {
-  padding: 2rem 0;
+  padding: 4rem 1rem;
 }
-.admin-content {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--glass-border);
-  padding: 2rem;
-  border-radius: 12px;
+
+.admin-content-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-content-layout {
+    flex-direction: column;
+  }
+  .profile-sidebar-wrapper {
+    width: 100% !important;
+  }
 }
