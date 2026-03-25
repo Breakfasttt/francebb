@@ -800,16 +800,17 @@ export async function isFollowingTopic(topicId: string) {
   if (!userId) return false;
 
   try {
-    const rows = await prisma.$queryRaw<Array<{ exists: number }>>`
-      SELECT 1 as "exists"
-      FROM "TopicFollow"
-      WHERE "userId" = ${userId} AND "topicId" = ${topicId}
-      LIMIT 1
-    `;
+    const follow = await (prisma as any).topicFollow.findUnique({
+      where: {
+        userId_topicId: {
+          userId,
+          topicId
+        }
+      }
+    });
 
-    return rows.length > 0;
+    return !!follow;
   } catch {
-    // Si la migration n'a pas été appliquée, on considère "pas suivi".
     return false;
   }
 }
@@ -826,21 +827,28 @@ export async function toggleFollowTopic(topicId: string) {
     const isAlreadyFollowing = await isFollowingTopic(topicId);
 
     if (isAlreadyFollowing) {
-      await prisma.$executeRaw`
-        DELETE FROM "TopicFollow"
-        WHERE "userId" = ${userId} AND "topicId" = ${topicId}
-      `;
+      await (prisma as any).topicFollow.delete({
+        where: {
+          userId_topicId: {
+            userId,
+            topicId
+          }
+        }
+      });
       revalidatePath(`/forum/topic/${topicId}`);
       return { success: true, isFollowing: false };
     }
 
-    await prisma.$executeRaw`
-      INSERT INTO "TopicFollow" ("userId", "topicId")
-      VALUES (${userId}, ${topicId})
-    `;
+    await (prisma as any).topicFollow.create({
+      data: {
+        userId,
+        topicId
+      }
+    });
     revalidatePath(`/forum/topic/${topicId}`);
     return { success: true, isFollowing: true };
-  } catch {
+  } catch (error: any) {
+    console.error("DEBUG - toggleFollowTopic Error:", error);
     return { success: false, error: "Erreur lors de la mise à jour du suivi.", isFollowing: false };
   }
 }
@@ -857,45 +865,45 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
 
   try {
     // 1. Get total count
-    const countResult = await prisma.$queryRaw<Array<{ count: bigint | number }>>`
-      SELECT count(*) as count FROM "TopicFollow" WHERE "userId" = ${userId}
-    `;
-    const totalCount = Number(countResult[0]?.count || 0);
+    const totalCount = await (prisma as any).topicFollow.count({
+      where: { userId }
+    });
     const totalPages = Math.ceil(totalCount / limit);
 
-    // 2. Get paginated results
-    const rows = await prisma.$queryRaw<Array<{
-      id: string;
-      title: string;
-      updatedAt: string | Date;
-      forumId: string;
-      lastViewedAt: string | Date | null;
-    }>>`
-      SELECT
-        t.id as id,
-        t.title as title,
-        t.updatedAt as "updatedAt",
-        t.forumId as "forumId",
-        tv.lastViewedAt as "lastViewedAt"
-      FROM "TopicFollow" tf
-      JOIN "Topic" t ON t.id = tf."topicId"
-      LEFT JOIN "TopicView" tv ON tv.topicId = t.id AND tv.userId = ${userId}
-      WHERE tf."userId" = ${userId}
-      ORDER BY t.updatedAt DESC
-      LIMIT ${limit} OFFSET ${skip}
-    `;
+    // 2. Get paginated results with included Topic and TopicView
+    const follows = await (prisma as any).topicFollow.findMany({
+      where: { userId },
+      skip,
+      take: limit,
+      include: {
+        topic: {
+          include: {
+            topicViews: {
+              where: { userId }
+            }
+          }
+        }
+      },
+      orderBy: {
+        topic: {
+           updatedAt: 'desc'
+        }
+      }
+    });
 
-    const topics = rows.map((r) => {
-      const topicDate = r.updatedAt ? new Date(r.updatedAt) : new Date(0);
-      const viewDate = r.lastViewedAt ? new Date(r.lastViewedAt) : null;
+    const topics = follows.map((f: any) => {
+      const topic = f.topic;
+      const view = topic.topicViews?.[0];
       
+      const topicDate = new Date(topic.updatedAt);
+      const viewDate = view ? new Date(view.lastViewedAt) : null;
       const isUnread = !viewDate || topicDate.getTime() > viewDate.getTime();
       
       return {
-        id: r.id,
-        title: r.title,
+        id: topic.id,
+        title: topic.title,
         updatedAt: topicDate,
-        forumId: r.forumId,
+        forumId: topic.forumId,
         isUnread: isUnread,
       };
     });

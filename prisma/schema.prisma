@@ -64,6 +64,7 @@ model User {
   mentionsReceived Mention[] @relation("MentionsReceived")
   moderatedPosts   Post[]    @relation("ModeratedPosts")
   postReactions    PostReaction[]
+  followedTopics   TopicFollow[]
 }
  
 model VerificationToken {
@@ -145,8 +146,9 @@ model Topic {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   
-  posts     Post[]
+  posts      Post[]
   topicViews TopicView[]
+  follows    TopicFollow[]
 }
 
 model Post {
@@ -256,4 +258,13 @@ model RoleConfig {
   updatedAt   DateTime @updatedAt
 
   users       User[]
+}
+
+model TopicFollow {
+  userId  String
+  topicId String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic   Topic  @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@id([userId, topicId])
 }

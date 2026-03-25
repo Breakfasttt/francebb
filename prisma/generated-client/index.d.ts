@@ -88,6 +88,11 @@ export type PostReaction = $Result.DefaultSelection<Prisma.$PostReactionPayload>
  * 
  */
 export type RoleConfig = $Result.DefaultSelection<Prisma.$RoleConfigPayload>
+/**
+ * Model TopicFollow
+ * 
+ */
+export type TopicFollow = $Result.DefaultSelection<Prisma.$TopicFollowPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -359,6 +364,16 @@ export class PrismaClient<
     * ```
     */
   get roleConfig(): Prisma.RoleConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.topicFollow`: Exposes CRUD operations for the **TopicFollow** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TopicFollows
+    * const topicFollows = await prisma.topicFollow.findMany()
+    * ```
+    */
+  get topicFollow(): Prisma.TopicFollowDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -807,7 +822,8 @@ export namespace Prisma {
     TopicView: 'TopicView',
     Mention: 'Mention',
     PostReaction: 'PostReaction',
-    RoleConfig: 'RoleConfig'
+    RoleConfig: 'RoleConfig',
+    TopicFollow: 'TopicFollow'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -823,7 +839,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1937,6 +1953,80 @@ export namespace Prisma {
           }
         }
       }
+      TopicFollow: {
+        payload: Prisma.$TopicFollowPayload<ExtArgs>
+        fields: Prisma.TopicFollowFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TopicFollowFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TopicFollowFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          findFirst: {
+            args: Prisma.TopicFollowFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TopicFollowFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          findMany: {
+            args: Prisma.TopicFollowFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>[]
+          }
+          create: {
+            args: Prisma.TopicFollowCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          createMany: {
+            args: Prisma.TopicFollowCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TopicFollowCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>[]
+          }
+          delete: {
+            args: Prisma.TopicFollowDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          update: {
+            args: Prisma.TopicFollowUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          deleteMany: {
+            args: Prisma.TopicFollowDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TopicFollowUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TopicFollowUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>[]
+          }
+          upsert: {
+            args: Prisma.TopicFollowUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TopicFollowPayload>
+          }
+          aggregate: {
+            args: Prisma.TopicFollowAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTopicFollow>
+          }
+          groupBy: {
+            args: Prisma.TopicFollowGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TopicFollowGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TopicFollowCountArgs<ExtArgs>
+            result: $Utils.Optional<TopicFollowCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2060,6 +2150,7 @@ export namespace Prisma {
     mention?: MentionOmit
     postReaction?: PostReactionOmit
     roleConfig?: RoleConfigOmit
+    topicFollow?: TopicFollowOmit
   }
 
   /* Types for Logging */
@@ -2153,6 +2244,7 @@ export namespace Prisma {
     mentionsReceived: number
     moderatedPosts: number
     postReactions: number
+    followedTopics: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2169,6 +2261,7 @@ export namespace Prisma {
     mentionsReceived?: boolean | UserCountOutputTypeCountMentionsReceivedArgs
     moderatedPosts?: boolean | UserCountOutputTypeCountModeratedPostsArgs
     postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
+    followedTopics?: boolean | UserCountOutputTypeCountFollowedTopicsArgs
   }
 
   // Custom InputTypes
@@ -2273,6 +2366,13 @@ export namespace Prisma {
     where?: PostReactionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFollowedTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TopicFollowWhereInput
+  }
+
 
   /**
    * Count Type CategoryCountOutputType
@@ -2352,11 +2452,13 @@ export namespace Prisma {
   export type TopicCountOutputType = {
     posts: number
     topicViews: number
+    follows: number
   }
 
   export type TopicCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | TopicCountOutputTypeCountPostsArgs
     topicViews?: boolean | TopicCountOutputTypeCountTopicViewsArgs
+    follows?: boolean | TopicCountOutputTypeCountFollowsArgs
   }
 
   // Custom InputTypes
@@ -2382,6 +2484,13 @@ export namespace Prisma {
    */
   export type TopicCountOutputTypeCountTopicViewsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TopicViewWhereInput
+  }
+
+  /**
+   * TopicCountOutputType without action
+   */
+  export type TopicCountOutputTypeCountFollowsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TopicFollowWhereInput
   }
 
 
@@ -4967,6 +5076,7 @@ export namespace Prisma {
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
+    followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5036,6 +5146,7 @@ export namespace Prisma {
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     moderatedPosts?: boolean | User$moderatedPostsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
+    followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5062,6 +5173,7 @@ export namespace Prisma {
       mentionsReceived: Prisma.$MentionPayload<ExtArgs>[]
       moderatedPosts: Prisma.$PostPayload<ExtArgs>[]
       postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
+      followedTopics: Prisma.$TopicFollowPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5485,6 +5597,7 @@ export namespace Prisma {
     mentionsReceived<T extends User$mentionsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     moderatedPosts<T extends User$moderatedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    followedTopics<T extends User$followedTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$followedTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6254,6 +6367,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.followedTopics
+   */
+  export type User$followedTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    where?: TopicFollowWhereInput
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    cursor?: TopicFollowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
   }
 
   /**
@@ -11140,6 +11277,7 @@ export namespace Prisma {
     author?: boolean | UserDefaultArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
+    follows?: boolean | Topic$followsArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
@@ -11192,6 +11330,7 @@ export namespace Prisma {
     author?: boolean | UserDefaultArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
+    follows?: boolean | Topic$followsArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TopicIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11210,6 +11349,7 @@ export namespace Prisma {
       author: Prisma.$UserPayload<ExtArgs>
       posts: Prisma.$PostPayload<ExtArgs>[]
       topicViews: Prisma.$TopicViewPayload<ExtArgs>[]
+      follows: Prisma.$TopicFollowPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11620,6 +11760,7 @@ export namespace Prisma {
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     posts<T extends Topic$postsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     topicViews<T extends Topic$topicViewsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$topicViewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    follows<T extends Topic$followsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$followsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12103,6 +12244,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TopicViewScalarFieldEnum | TopicViewScalarFieldEnum[]
+  }
+
+  /**
+   * Topic.follows
+   */
+  export type Topic$followsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    where?: TopicFollowWhereInput
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    cursor?: TopicFollowWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
   }
 
   /**
@@ -19886,6 +20051,1036 @@ export namespace Prisma {
 
 
   /**
+   * Model TopicFollow
+   */
+
+  export type AggregateTopicFollow = {
+    _count: TopicFollowCountAggregateOutputType | null
+    _min: TopicFollowMinAggregateOutputType | null
+    _max: TopicFollowMaxAggregateOutputType | null
+  }
+
+  export type TopicFollowMinAggregateOutputType = {
+    userId: string | null
+    topicId: string | null
+  }
+
+  export type TopicFollowMaxAggregateOutputType = {
+    userId: string | null
+    topicId: string | null
+  }
+
+  export type TopicFollowCountAggregateOutputType = {
+    userId: number
+    topicId: number
+    _all: number
+  }
+
+
+  export type TopicFollowMinAggregateInputType = {
+    userId?: true
+    topicId?: true
+  }
+
+  export type TopicFollowMaxAggregateInputType = {
+    userId?: true
+    topicId?: true
+  }
+
+  export type TopicFollowCountAggregateInputType = {
+    userId?: true
+    topicId?: true
+    _all?: true
+  }
+
+  export type TopicFollowAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TopicFollow to aggregate.
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TopicFollows to fetch.
+     */
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TopicFollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TopicFollows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TopicFollows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TopicFollows
+    **/
+    _count?: true | TopicFollowCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TopicFollowMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TopicFollowMaxAggregateInputType
+  }
+
+  export type GetTopicFollowAggregateType<T extends TopicFollowAggregateArgs> = {
+        [P in keyof T & keyof AggregateTopicFollow]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTopicFollow[P]>
+      : GetScalarType<T[P], AggregateTopicFollow[P]>
+  }
+
+
+
+
+  export type TopicFollowGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TopicFollowWhereInput
+    orderBy?: TopicFollowOrderByWithAggregationInput | TopicFollowOrderByWithAggregationInput[]
+    by: TopicFollowScalarFieldEnum[] | TopicFollowScalarFieldEnum
+    having?: TopicFollowScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TopicFollowCountAggregateInputType | true
+    _min?: TopicFollowMinAggregateInputType
+    _max?: TopicFollowMaxAggregateInputType
+  }
+
+  export type TopicFollowGroupByOutputType = {
+    userId: string
+    topicId: string
+    _count: TopicFollowCountAggregateOutputType | null
+    _min: TopicFollowMinAggregateOutputType | null
+    _max: TopicFollowMaxAggregateOutputType | null
+  }
+
+  type GetTopicFollowGroupByPayload<T extends TopicFollowGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TopicFollowGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TopicFollowGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TopicFollowGroupByOutputType[P]>
+            : GetScalarType<T[P], TopicFollowGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TopicFollowSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    topicId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["topicFollow"]>
+
+  export type TopicFollowSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    topicId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["topicFollow"]>
+
+  export type TopicFollowSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    topicId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["topicFollow"]>
+
+  export type TopicFollowSelectScalar = {
+    userId?: boolean
+    topicId?: boolean
+  }
+
+  export type TopicFollowOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "topicId", ExtArgs["result"]["topicFollow"]>
+  export type TopicFollowInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }
+  export type TopicFollowIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }
+  export type TopicFollowIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    topic?: boolean | TopicDefaultArgs<ExtArgs>
+  }
+
+  export type $TopicFollowPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TopicFollow"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      topic: Prisma.$TopicPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      userId: string
+      topicId: string
+    }, ExtArgs["result"]["topicFollow"]>
+    composites: {}
+  }
+
+  type TopicFollowGetPayload<S extends boolean | null | undefined | TopicFollowDefaultArgs> = $Result.GetResult<Prisma.$TopicFollowPayload, S>
+
+  type TopicFollowCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TopicFollowFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TopicFollowCountAggregateInputType | true
+    }
+
+  export interface TopicFollowDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TopicFollow'], meta: { name: 'TopicFollow' } }
+    /**
+     * Find zero or one TopicFollow that matches the filter.
+     * @param {TopicFollowFindUniqueArgs} args - Arguments to find a TopicFollow
+     * @example
+     * // Get one TopicFollow
+     * const topicFollow = await prisma.topicFollow.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TopicFollowFindUniqueArgs>(args: SelectSubset<T, TopicFollowFindUniqueArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TopicFollow that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TopicFollowFindUniqueOrThrowArgs} args - Arguments to find a TopicFollow
+     * @example
+     * // Get one TopicFollow
+     * const topicFollow = await prisma.topicFollow.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TopicFollowFindUniqueOrThrowArgs>(args: SelectSubset<T, TopicFollowFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TopicFollow that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowFindFirstArgs} args - Arguments to find a TopicFollow
+     * @example
+     * // Get one TopicFollow
+     * const topicFollow = await prisma.topicFollow.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TopicFollowFindFirstArgs>(args?: SelectSubset<T, TopicFollowFindFirstArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TopicFollow that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowFindFirstOrThrowArgs} args - Arguments to find a TopicFollow
+     * @example
+     * // Get one TopicFollow
+     * const topicFollow = await prisma.topicFollow.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TopicFollowFindFirstOrThrowArgs>(args?: SelectSubset<T, TopicFollowFindFirstOrThrowArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TopicFollows that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TopicFollows
+     * const topicFollows = await prisma.topicFollow.findMany()
+     * 
+     * // Get first 10 TopicFollows
+     * const topicFollows = await prisma.topicFollow.findMany({ take: 10 })
+     * 
+     * // Only select the `userId`
+     * const topicFollowWithUserIdOnly = await prisma.topicFollow.findMany({ select: { userId: true } })
+     * 
+     */
+    findMany<T extends TopicFollowFindManyArgs>(args?: SelectSubset<T, TopicFollowFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TopicFollow.
+     * @param {TopicFollowCreateArgs} args - Arguments to create a TopicFollow.
+     * @example
+     * // Create one TopicFollow
+     * const TopicFollow = await prisma.topicFollow.create({
+     *   data: {
+     *     // ... data to create a TopicFollow
+     *   }
+     * })
+     * 
+     */
+    create<T extends TopicFollowCreateArgs>(args: SelectSubset<T, TopicFollowCreateArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TopicFollows.
+     * @param {TopicFollowCreateManyArgs} args - Arguments to create many TopicFollows.
+     * @example
+     * // Create many TopicFollows
+     * const topicFollow = await prisma.topicFollow.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TopicFollowCreateManyArgs>(args?: SelectSubset<T, TopicFollowCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TopicFollows and returns the data saved in the database.
+     * @param {TopicFollowCreateManyAndReturnArgs} args - Arguments to create many TopicFollows.
+     * @example
+     * // Create many TopicFollows
+     * const topicFollow = await prisma.topicFollow.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TopicFollows and only return the `userId`
+     * const topicFollowWithUserIdOnly = await prisma.topicFollow.createManyAndReturn({
+     *   select: { userId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TopicFollowCreateManyAndReturnArgs>(args?: SelectSubset<T, TopicFollowCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TopicFollow.
+     * @param {TopicFollowDeleteArgs} args - Arguments to delete one TopicFollow.
+     * @example
+     * // Delete one TopicFollow
+     * const TopicFollow = await prisma.topicFollow.delete({
+     *   where: {
+     *     // ... filter to delete one TopicFollow
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TopicFollowDeleteArgs>(args: SelectSubset<T, TopicFollowDeleteArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TopicFollow.
+     * @param {TopicFollowUpdateArgs} args - Arguments to update one TopicFollow.
+     * @example
+     * // Update one TopicFollow
+     * const topicFollow = await prisma.topicFollow.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TopicFollowUpdateArgs>(args: SelectSubset<T, TopicFollowUpdateArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TopicFollows.
+     * @param {TopicFollowDeleteManyArgs} args - Arguments to filter TopicFollows to delete.
+     * @example
+     * // Delete a few TopicFollows
+     * const { count } = await prisma.topicFollow.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TopicFollowDeleteManyArgs>(args?: SelectSubset<T, TopicFollowDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TopicFollows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TopicFollows
+     * const topicFollow = await prisma.topicFollow.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TopicFollowUpdateManyArgs>(args: SelectSubset<T, TopicFollowUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TopicFollows and returns the data updated in the database.
+     * @param {TopicFollowUpdateManyAndReturnArgs} args - Arguments to update many TopicFollows.
+     * @example
+     * // Update many TopicFollows
+     * const topicFollow = await prisma.topicFollow.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TopicFollows and only return the `userId`
+     * const topicFollowWithUserIdOnly = await prisma.topicFollow.updateManyAndReturn({
+     *   select: { userId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TopicFollowUpdateManyAndReturnArgs>(args: SelectSubset<T, TopicFollowUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TopicFollow.
+     * @param {TopicFollowUpsertArgs} args - Arguments to update or create a TopicFollow.
+     * @example
+     * // Update or create a TopicFollow
+     * const topicFollow = await prisma.topicFollow.upsert({
+     *   create: {
+     *     // ... data to create a TopicFollow
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TopicFollow we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TopicFollowUpsertArgs>(args: SelectSubset<T, TopicFollowUpsertArgs<ExtArgs>>): Prisma__TopicFollowClient<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TopicFollows.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowCountArgs} args - Arguments to filter TopicFollows to count.
+     * @example
+     * // Count the number of TopicFollows
+     * const count = await prisma.topicFollow.count({
+     *   where: {
+     *     // ... the filter for the TopicFollows we want to count
+     *   }
+     * })
+    **/
+    count<T extends TopicFollowCountArgs>(
+      args?: Subset<T, TopicFollowCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TopicFollowCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TopicFollow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TopicFollowAggregateArgs>(args: Subset<T, TopicFollowAggregateArgs>): Prisma.PrismaPromise<GetTopicFollowAggregateType<T>>
+
+    /**
+     * Group by TopicFollow.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TopicFollowGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TopicFollowGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TopicFollowGroupByArgs['orderBy'] }
+        : { orderBy?: TopicFollowGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TopicFollowGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTopicFollowGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TopicFollow model
+   */
+  readonly fields: TopicFollowFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TopicFollow.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TopicFollowClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    topic<T extends TopicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TopicDefaultArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TopicFollow model
+   */
+  interface TopicFollowFieldRefs {
+    readonly userId: FieldRef<"TopicFollow", 'String'>
+    readonly topicId: FieldRef<"TopicFollow", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TopicFollow findUnique
+   */
+  export type TopicFollowFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter, which TopicFollow to fetch.
+     */
+    where: TopicFollowWhereUniqueInput
+  }
+
+  /**
+   * TopicFollow findUniqueOrThrow
+   */
+  export type TopicFollowFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter, which TopicFollow to fetch.
+     */
+    where: TopicFollowWhereUniqueInput
+  }
+
+  /**
+   * TopicFollow findFirst
+   */
+  export type TopicFollowFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter, which TopicFollow to fetch.
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TopicFollows to fetch.
+     */
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TopicFollows.
+     */
+    cursor?: TopicFollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TopicFollows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TopicFollows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TopicFollows.
+     */
+    distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
+  }
+
+  /**
+   * TopicFollow findFirstOrThrow
+   */
+  export type TopicFollowFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter, which TopicFollow to fetch.
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TopicFollows to fetch.
+     */
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TopicFollows.
+     */
+    cursor?: TopicFollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TopicFollows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TopicFollows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TopicFollows.
+     */
+    distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
+  }
+
+  /**
+   * TopicFollow findMany
+   */
+  export type TopicFollowFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter, which TopicFollows to fetch.
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TopicFollows to fetch.
+     */
+    orderBy?: TopicFollowOrderByWithRelationInput | TopicFollowOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TopicFollows.
+     */
+    cursor?: TopicFollowWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TopicFollows from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TopicFollows.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TopicFollows.
+     */
+    distinct?: TopicFollowScalarFieldEnum | TopicFollowScalarFieldEnum[]
+  }
+
+  /**
+   * TopicFollow create
+   */
+  export type TopicFollowCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TopicFollow.
+     */
+    data: XOR<TopicFollowCreateInput, TopicFollowUncheckedCreateInput>
+  }
+
+  /**
+   * TopicFollow createMany
+   */
+  export type TopicFollowCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TopicFollows.
+     */
+    data: TopicFollowCreateManyInput | TopicFollowCreateManyInput[]
+  }
+
+  /**
+   * TopicFollow createManyAndReturn
+   */
+  export type TopicFollowCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * The data used to create many TopicFollows.
+     */
+    data: TopicFollowCreateManyInput | TopicFollowCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TopicFollow update
+   */
+  export type TopicFollowUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TopicFollow.
+     */
+    data: XOR<TopicFollowUpdateInput, TopicFollowUncheckedUpdateInput>
+    /**
+     * Choose, which TopicFollow to update.
+     */
+    where: TopicFollowWhereUniqueInput
+  }
+
+  /**
+   * TopicFollow updateMany
+   */
+  export type TopicFollowUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TopicFollows.
+     */
+    data: XOR<TopicFollowUpdateManyMutationInput, TopicFollowUncheckedUpdateManyInput>
+    /**
+     * Filter which TopicFollows to update
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * Limit how many TopicFollows to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TopicFollow updateManyAndReturn
+   */
+  export type TopicFollowUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * The data used to update TopicFollows.
+     */
+    data: XOR<TopicFollowUpdateManyMutationInput, TopicFollowUncheckedUpdateManyInput>
+    /**
+     * Filter which TopicFollows to update
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * Limit how many TopicFollows to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TopicFollow upsert
+   */
+  export type TopicFollowUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TopicFollow to update in case it exists.
+     */
+    where: TopicFollowWhereUniqueInput
+    /**
+     * In case the TopicFollow found by the `where` argument doesn't exist, create a new TopicFollow with this data.
+     */
+    create: XOR<TopicFollowCreateInput, TopicFollowUncheckedCreateInput>
+    /**
+     * In case the TopicFollow was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TopicFollowUpdateInput, TopicFollowUncheckedUpdateInput>
+  }
+
+  /**
+   * TopicFollow delete
+   */
+  export type TopicFollowDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+    /**
+     * Filter which TopicFollow to delete.
+     */
+    where: TopicFollowWhereUniqueInput
+  }
+
+  /**
+   * TopicFollow deleteMany
+   */
+  export type TopicFollowDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TopicFollows to delete
+     */
+    where?: TopicFollowWhereInput
+    /**
+     * Limit how many TopicFollows to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TopicFollow without action
+   */
+  export type TopicFollowDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TopicFollow
+     */
+    select?: TopicFollowSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TopicFollow
+     */
+    omit?: TopicFollowOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicFollowInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -20103,6 +21298,14 @@ export namespace Prisma {
   };
 
   export type RoleConfigScalarFieldEnum = (typeof RoleConfigScalarFieldEnum)[keyof typeof RoleConfigScalarFieldEnum]
+
+
+  export const TopicFollowScalarFieldEnum: {
+    userId: 'userId',
+    topicId: 'topicId'
+  };
+
+  export type TopicFollowScalarFieldEnum = (typeof TopicFollowScalarFieldEnum)[keyof typeof TopicFollowScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -20338,6 +21541,7 @@ export namespace Prisma {
     mentionsReceived?: MentionListRelationFilter
     moderatedPosts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
+    followedTopics?: TopicFollowListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20368,6 +21572,7 @@ export namespace Prisma {
     mentionsReceived?: MentionOrderByRelationAggregateInput
     moderatedPosts?: PostOrderByRelationAggregateInput
     postReactions?: PostReactionOrderByRelationAggregateInput
+    followedTopics?: TopicFollowOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -20401,6 +21606,7 @@ export namespace Prisma {
     mentionsReceived?: MentionListRelationFilter
     moderatedPosts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
+    followedTopics?: TopicFollowListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -20772,6 +21978,7 @@ export namespace Prisma {
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     posts?: PostListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    follows?: TopicFollowListRelationFilter
   }
 
   export type TopicOrderByWithRelationInput = {
@@ -20789,6 +21996,7 @@ export namespace Prisma {
     author?: UserOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
     topicViews?: TopicViewOrderByRelationAggregateInput
+    follows?: TopicFollowOrderByRelationAggregateInput
   }
 
   export type TopicWhereUniqueInput = Prisma.AtLeast<{
@@ -20809,6 +22017,7 @@ export namespace Prisma {
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     posts?: PostListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    follows?: TopicFollowListRelationFilter
   }, "id">
 
   export type TopicOrderByWithAggregationInput = {
@@ -21314,6 +22523,50 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"RoleConfig"> | Date | string
   }
 
+  export type TopicFollowWhereInput = {
+    AND?: TopicFollowWhereInput | TopicFollowWhereInput[]
+    OR?: TopicFollowWhereInput[]
+    NOT?: TopicFollowWhereInput | TopicFollowWhereInput[]
+    userId?: StringFilter<"TopicFollow"> | string
+    topicId?: StringFilter<"TopicFollow"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
+  }
+
+  export type TopicFollowOrderByWithRelationInput = {
+    userId?: SortOrder
+    topicId?: SortOrder
+    user?: UserOrderByWithRelationInput
+    topic?: TopicOrderByWithRelationInput
+  }
+
+  export type TopicFollowWhereUniqueInput = Prisma.AtLeast<{
+    userId_topicId?: TopicFollowUserIdTopicIdCompoundUniqueInput
+    AND?: TopicFollowWhereInput | TopicFollowWhereInput[]
+    OR?: TopicFollowWhereInput[]
+    NOT?: TopicFollowWhereInput | TopicFollowWhereInput[]
+    userId?: StringFilter<"TopicFollow"> | string
+    topicId?: StringFilter<"TopicFollow"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
+  }, "userId_topicId">
+
+  export type TopicFollowOrderByWithAggregationInput = {
+    userId?: SortOrder
+    topicId?: SortOrder
+    _count?: TopicFollowCountOrderByAggregateInput
+    _max?: TopicFollowMaxOrderByAggregateInput
+    _min?: TopicFollowMinOrderByAggregateInput
+  }
+
+  export type TopicFollowScalarWhereWithAggregatesInput = {
+    AND?: TopicFollowScalarWhereWithAggregatesInput | TopicFollowScalarWhereWithAggregatesInput[]
+    OR?: TopicFollowScalarWhereWithAggregatesInput[]
+    NOT?: TopicFollowScalarWhereWithAggregatesInput | TopicFollowScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"TopicFollow"> | string
+    topicId?: StringWithAggregatesFilter<"TopicFollow"> | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -21493,6 +22746,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21522,6 +22776,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -21551,6 +22806,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21580,6 +22836,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21987,6 +23244,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateInput = {
@@ -22002,6 +23260,7 @@ export namespace Prisma {
     authorId: string
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUpdateInput = {
@@ -22017,6 +23276,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateInput = {
@@ -22032,6 +23292,7 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicCreateManyInput = {
@@ -22528,6 +23789,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TopicFollowCreateInput = {
+    user: UserCreateNestedOneWithoutFollowedTopicsInput
+    topic: TopicCreateNestedOneWithoutFollowsInput
+  }
+
+  export type TopicFollowUncheckedCreateInput = {
+    userId: string
+    topicId: string
+  }
+
+  export type TopicFollowUpdateInput = {
+    user?: UserUpdateOneRequiredWithoutFollowedTopicsNestedInput
+    topic?: TopicUpdateOneRequiredWithoutFollowsNestedInput
+  }
+
+  export type TopicFollowUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    topicId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TopicFollowCreateManyInput = {
+    userId: string
+    topicId: string
+  }
+
+  export type TopicFollowUpdateManyMutationInput = {
+
+  }
+
+  export type TopicFollowUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    topicId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -22812,6 +24107,12 @@ export namespace Prisma {
     none?: PostReactionWhereInput
   }
 
+  export type TopicFollowListRelationFilter = {
+    every?: TopicFollowWhereInput
+    some?: TopicFollowWhereInput
+    none?: TopicFollowWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -22849,6 +24150,10 @@ export namespace Prisma {
   }
 
   export type PostReactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TopicFollowOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23483,6 +24788,26 @@ export namespace Prisma {
     power?: SortOrder
   }
 
+  export type TopicFollowUserIdTopicIdCompoundUniqueInput = {
+    userId: string
+    topicId: string
+  }
+
+  export type TopicFollowCountOrderByAggregateInput = {
+    userId?: SortOrder
+    topicId?: SortOrder
+  }
+
+  export type TopicFollowMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    topicId?: SortOrder
+  }
+
+  export type TopicFollowMinOrderByAggregateInput = {
+    userId?: SortOrder
+    topicId?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -23628,6 +24953,13 @@ export namespace Prisma {
     connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
   }
 
+  export type TopicFollowCreateNestedManyWithoutUserInput = {
+    create?: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput> | TopicFollowCreateWithoutUserInput[] | TopicFollowUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutUserInput | TopicFollowCreateOrConnectWithoutUserInput[]
+    createMany?: TopicFollowCreateManyUserInputEnvelope
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -23717,6 +25049,13 @@ export namespace Prisma {
     connectOrCreate?: PostReactionCreateOrConnectWithoutUserInput | PostReactionCreateOrConnectWithoutUserInput[]
     createMany?: PostReactionCreateManyUserInputEnvelope
     connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+  }
+
+  export type TopicFollowUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput> | TopicFollowCreateWithoutUserInput[] | TopicFollowUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutUserInput | TopicFollowCreateOrConnectWithoutUserInput[]
+    createMany?: TopicFollowCreateManyUserInputEnvelope
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -23919,6 +25258,20 @@ export namespace Prisma {
     deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
   }
 
+  export type TopicFollowUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput> | TopicFollowCreateWithoutUserInput[] | TopicFollowUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutUserInput | TopicFollowCreateOrConnectWithoutUserInput[]
+    upsert?: TopicFollowUpsertWithWhereUniqueWithoutUserInput | TopicFollowUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TopicFollowCreateManyUserInputEnvelope
+    set?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    disconnect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    delete?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    update?: TopicFollowUpdateWithWhereUniqueWithoutUserInput | TopicFollowUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TopicFollowUpdateManyWithWhereWithoutUserInput | TopicFollowUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -24099,6 +25452,20 @@ export namespace Prisma {
     update?: PostReactionUpdateWithWhereUniqueWithoutUserInput | PostReactionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PostReactionUpdateManyWithWhereWithoutUserInput | PostReactionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
+  }
+
+  export type TopicFollowUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput> | TopicFollowCreateWithoutUserInput[] | TopicFollowUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutUserInput | TopicFollowCreateOrConnectWithoutUserInput[]
+    upsert?: TopicFollowUpsertWithWhereUniqueWithoutUserInput | TopicFollowUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TopicFollowCreateManyUserInputEnvelope
+    set?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    disconnect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    delete?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    update?: TopicFollowUpdateWithWhereUniqueWithoutUserInput | TopicFollowUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TopicFollowUpdateManyWithWhereWithoutUserInput | TopicFollowUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTournamentsInput = {
@@ -24315,6 +25682,13 @@ export namespace Prisma {
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
   }
 
+  export type TopicFollowCreateNestedManyWithoutTopicInput = {
+    create?: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput> | TopicFollowCreateWithoutTopicInput[] | TopicFollowUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutTopicInput | TopicFollowCreateOrConnectWithoutTopicInput[]
+    createMany?: TopicFollowCreateManyTopicInputEnvelope
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutTopicInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -24327,6 +25701,13 @@ export namespace Prisma {
     connectOrCreate?: TopicViewCreateOrConnectWithoutTopicInput | TopicViewCreateOrConnectWithoutTopicInput[]
     createMany?: TopicViewCreateManyTopicInputEnvelope
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
+  }
+
+  export type TopicFollowUncheckedCreateNestedManyWithoutTopicInput = {
+    create?: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput> | TopicFollowCreateWithoutTopicInput[] | TopicFollowUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutTopicInput | TopicFollowCreateOrConnectWithoutTopicInput[]
+    createMany?: TopicFollowCreateManyTopicInputEnvelope
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
   }
 
   export type ForumUpdateOneRequiredWithoutTopicsNestedInput = {
@@ -24373,6 +25754,20 @@ export namespace Prisma {
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
   }
 
+  export type TopicFollowUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput> | TopicFollowCreateWithoutTopicInput[] | TopicFollowUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutTopicInput | TopicFollowCreateOrConnectWithoutTopicInput[]
+    upsert?: TopicFollowUpsertWithWhereUniqueWithoutTopicInput | TopicFollowUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: TopicFollowCreateManyTopicInputEnvelope
+    set?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    disconnect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    delete?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    update?: TopicFollowUpdateWithWhereUniqueWithoutTopicInput | TopicFollowUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: TopicFollowUpdateManyWithWhereWithoutTopicInput | TopicFollowUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutTopicNestedInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -24399,6 +25794,20 @@ export namespace Prisma {
     update?: TopicViewUpdateWithWhereUniqueWithoutTopicInput | TopicViewUpdateWithWhereUniqueWithoutTopicInput[]
     updateMany?: TopicViewUpdateManyWithWhereWithoutTopicInput | TopicViewUpdateManyWithWhereWithoutTopicInput[]
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
+  }
+
+  export type TopicFollowUncheckedUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput> | TopicFollowCreateWithoutTopicInput[] | TopicFollowUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: TopicFollowCreateOrConnectWithoutTopicInput | TopicFollowCreateOrConnectWithoutTopicInput[]
+    upsert?: TopicFollowUpsertWithWhereUniqueWithoutTopicInput | TopicFollowUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: TopicFollowCreateManyTopicInputEnvelope
+    set?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    disconnect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    delete?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    connect?: TopicFollowWhereUniqueInput | TopicFollowWhereUniqueInput[]
+    update?: TopicFollowUpdateWithWhereUniqueWithoutTopicInput | TopicFollowUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: TopicFollowUpdateManyWithWhereWithoutTopicInput | TopicFollowUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
   }
 
   export type TopicCreateNestedOneWithoutPostsInput = {
@@ -24767,6 +26176,34 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutFollowedTopicsInput = {
+    create?: XOR<UserCreateWithoutFollowedTopicsInput, UserUncheckedCreateWithoutFollowedTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedTopicsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TopicCreateNestedOneWithoutFollowsInput = {
+    create?: XOR<TopicCreateWithoutFollowsInput, TopicUncheckedCreateWithoutFollowsInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutFollowsInput
+    connect?: TopicWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFollowedTopicsNestedInput = {
+    create?: XOR<UserCreateWithoutFollowedTopicsInput, UserUncheckedCreateWithoutFollowedTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFollowedTopicsInput
+    upsert?: UserUpsertWithoutFollowedTopicsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFollowedTopicsInput, UserUpdateWithoutFollowedTopicsInput>, UserUncheckedUpdateWithoutFollowedTopicsInput>
+  }
+
+  export type TopicUpdateOneRequiredWithoutFollowsNestedInput = {
+    create?: XOR<TopicCreateWithoutFollowsInput, TopicUncheckedCreateWithoutFollowsInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutFollowsInput
+    upsert?: TopicUpsertWithoutFollowsInput
+    connect?: TopicWhereUniqueInput
+    update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutFollowsInput, TopicUpdateWithoutFollowsInput>, TopicUncheckedUpdateWithoutFollowsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -25010,6 +26447,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -25038,6 +26476,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -25082,6 +26521,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -25110,6 +26550,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -25138,6 +26579,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -25166,6 +26608,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -25210,6 +26653,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -25238,6 +26682,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -25388,6 +26833,7 @@ export namespace Prisma {
     forum: ForumCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutAuthorInput = {
@@ -25402,6 +26848,7 @@ export namespace Prisma {
     forumId: string
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutAuthorInput = {
@@ -25662,6 +27109,23 @@ export namespace Prisma {
 
   export type PostReactionCreateManyUserInputEnvelope = {
     data: PostReactionCreateManyUserInput | PostReactionCreateManyUserInput[]
+  }
+
+  export type TopicFollowCreateWithoutUserInput = {
+    topic: TopicCreateNestedOneWithoutFollowsInput
+  }
+
+  export type TopicFollowUncheckedCreateWithoutUserInput = {
+    topicId: string
+  }
+
+  export type TopicFollowCreateOrConnectWithoutUserInput = {
+    where: TopicFollowWhereUniqueInput
+    create: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput>
+  }
+
+  export type TopicFollowCreateManyUserInputEnvelope = {
+    data: TopicFollowCreateManyUserInput | TopicFollowCreateManyUserInput[]
   }
 
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
@@ -26046,6 +27510,30 @@ export namespace Prisma {
     userId?: StringFilter<"PostReaction"> | string
   }
 
+  export type TopicFollowUpsertWithWhereUniqueWithoutUserInput = {
+    where: TopicFollowWhereUniqueInput
+    update: XOR<TopicFollowUpdateWithoutUserInput, TopicFollowUncheckedUpdateWithoutUserInput>
+    create: XOR<TopicFollowCreateWithoutUserInput, TopicFollowUncheckedCreateWithoutUserInput>
+  }
+
+  export type TopicFollowUpdateWithWhereUniqueWithoutUserInput = {
+    where: TopicFollowWhereUniqueInput
+    data: XOR<TopicFollowUpdateWithoutUserInput, TopicFollowUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TopicFollowUpdateManyWithWhereWithoutUserInput = {
+    where: TopicFollowScalarWhereInput
+    data: XOR<TopicFollowUpdateManyMutationInput, TopicFollowUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TopicFollowScalarWhereInput = {
+    AND?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
+    OR?: TopicFollowScalarWhereInput[]
+    NOT?: TopicFollowScalarWhereInput | TopicFollowScalarWhereInput[]
+    userId?: StringFilter<"TopicFollow"> | string
+    topicId?: StringFilter<"TopicFollow"> | string
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -26072,6 +27560,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -26100,6 +27589,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -26144,6 +27634,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -26172,6 +27663,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -26325,6 +27817,7 @@ export namespace Prisma {
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutForumInput = {
@@ -26339,6 +27832,7 @@ export namespace Prisma {
     authorId: string
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutForumInput = {
@@ -26495,6 +27989,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -26523,6 +28018,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -26586,6 +28082,23 @@ export namespace Prisma {
 
   export type TopicViewCreateManyTopicInputEnvelope = {
     data: TopicViewCreateManyTopicInput | TopicViewCreateManyTopicInput[]
+  }
+
+  export type TopicFollowCreateWithoutTopicInput = {
+    user: UserCreateNestedOneWithoutFollowedTopicsInput
+  }
+
+  export type TopicFollowUncheckedCreateWithoutTopicInput = {
+    userId: string
+  }
+
+  export type TopicFollowCreateOrConnectWithoutTopicInput = {
+    where: TopicFollowWhereUniqueInput
+    create: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput>
+  }
+
+  export type TopicFollowCreateManyTopicInputEnvelope = {
+    data: TopicFollowCreateManyTopicInput | TopicFollowCreateManyTopicInput[]
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -26658,6 +28171,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -26686,6 +28200,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -26720,6 +28235,22 @@ export namespace Prisma {
     data: XOR<TopicViewUpdateManyMutationInput, TopicViewUncheckedUpdateManyWithoutTopicInput>
   }
 
+  export type TopicFollowUpsertWithWhereUniqueWithoutTopicInput = {
+    where: TopicFollowWhereUniqueInput
+    update: XOR<TopicFollowUpdateWithoutTopicInput, TopicFollowUncheckedUpdateWithoutTopicInput>
+    create: XOR<TopicFollowCreateWithoutTopicInput, TopicFollowUncheckedCreateWithoutTopicInput>
+  }
+
+  export type TopicFollowUpdateWithWhereUniqueWithoutTopicInput = {
+    where: TopicFollowWhereUniqueInput
+    data: XOR<TopicFollowUpdateWithoutTopicInput, TopicFollowUncheckedUpdateWithoutTopicInput>
+  }
+
+  export type TopicFollowUpdateManyWithWhereWithoutTopicInput = {
+    where: TopicFollowScalarWhereInput
+    data: XOR<TopicFollowUpdateManyMutationInput, TopicFollowUncheckedUpdateManyWithoutTopicInput>
+  }
+
   export type TopicCreateWithoutPostsInput = {
     id?: string
     title: string
@@ -26732,6 +28263,7 @@ export namespace Prisma {
     forum: ForumCreateNestedOneWithoutTopicsInput
     author: UserCreateNestedOneWithoutTopicsInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutPostsInput = {
@@ -26746,6 +28278,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutPostsInput = {
@@ -26779,6 +28312,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -26807,6 +28341,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -26865,6 +28400,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -26893,6 +28429,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -26946,6 +28483,7 @@ export namespace Prisma {
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutPostsInput = {
@@ -26960,6 +28498,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -26999,6 +28538,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -27027,6 +28567,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -27082,6 +28623,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -27110,6 +28652,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -27154,6 +28697,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -27182,6 +28726,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -27215,6 +28760,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -27243,6 +28789,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -27312,6 +28859,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -27340,6 +28888,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUser2ConversationsInput = {
@@ -27379,6 +28928,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -27407,6 +28957,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -27476,6 +29027,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -27504,6 +29056,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -27579,6 +29132,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -27607,6 +29161,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -27635,6 +29190,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -27663,6 +29219,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -27682,6 +29239,7 @@ export namespace Prisma {
     forum: ForumCreateNestedOneWithoutTopicsInput
     author: UserCreateNestedOneWithoutTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutTopicViewsInput = {
@@ -27696,6 +29254,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutTopicViewsInput = {
@@ -27740,6 +29299,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -27768,6 +29328,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -27793,6 +29354,7 @@ export namespace Prisma {
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutTopicViewsInput = {
@@ -27807,6 +29369,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type PostCreateWithoutMentionsInput = {
@@ -27868,6 +29431,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -27896,6 +29460,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -27929,6 +29494,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -27957,6 +29523,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -28040,6 +29607,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -28068,6 +29636,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -28107,6 +29676,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -28135,6 +29705,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostCreateWithoutReactionsInput = {
@@ -28196,6 +29767,7 @@ export namespace Prisma {
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -28224,6 +29796,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -28307,6 +29880,7 @@ export namespace Prisma {
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -28335,6 +29909,7 @@ export namespace Prisma {
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -28363,6 +29938,7 @@ export namespace Prisma {
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -28391,6 +29967,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -28435,6 +30012,214 @@ export namespace Prisma {
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
+  }
+
+  export type UserCreateWithoutFollowedTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFollowedTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFollowedTopicsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFollowedTopicsInput, UserUncheckedCreateWithoutFollowedTopicsInput>
+  }
+
+  export type TopicCreateWithoutFollowsInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forum: ForumCreateNestedOneWithoutTopicsInput
+    author: UserCreateNestedOneWithoutTopicsInput
+    posts?: PostCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicUncheckedCreateWithoutFollowsInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicCreateOrConnectWithoutFollowsInput = {
+    where: TopicWhereUniqueInput
+    create: XOR<TopicCreateWithoutFollowsInput, TopicUncheckedCreateWithoutFollowsInput>
+  }
+
+  export type UserUpsertWithoutFollowedTopicsInput = {
+    update: XOR<UserUpdateWithoutFollowedTopicsInput, UserUncheckedUpdateWithoutFollowedTopicsInput>
+    create: XOR<UserCreateWithoutFollowedTopicsInput, UserUncheckedCreateWithoutFollowedTopicsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFollowedTopicsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFollowedTopicsInput, UserUncheckedUpdateWithoutFollowedTopicsInput>
+  }
+
+  export type UserUpdateWithoutFollowedTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TopicUpsertWithoutFollowsInput = {
+    update: XOR<TopicUpdateWithoutFollowsInput, TopicUncheckedUpdateWithoutFollowsInput>
+    create: XOR<TopicCreateWithoutFollowsInput, TopicUncheckedCreateWithoutFollowsInput>
+    where?: TopicWhereInput
+  }
+
+  export type TopicUpdateToOneWithWhereWithoutFollowsInput = {
+    where?: TopicWhereInput
+    data: XOR<TopicUpdateWithoutFollowsInput, TopicUncheckedUpdateWithoutFollowsInput>
+  }
+
+  export type TopicUpdateWithoutFollowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
+    author?: UserUpdateOneRequiredWithoutTopicsNestedInput
+    posts?: PostUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateWithoutFollowsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -28569,6 +30354,10 @@ export namespace Prisma {
     emoji: string
     createdAt?: Date | string
     postId: string
+  }
+
+  export type TopicFollowCreateManyUserInput = {
+    topicId: string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -28712,6 +30501,7 @@ export namespace Prisma {
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutAuthorInput = {
@@ -28726,6 +30516,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateManyWithoutAuthorInput = {
@@ -28989,6 +30780,18 @@ export namespace Prisma {
     postId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type TopicFollowUpdateWithoutUserInput = {
+    topic?: TopicUpdateOneRequiredWithoutFollowsNestedInput
+  }
+
+  export type TopicFollowUncheckedUpdateWithoutUserInput = {
+    topicId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TopicFollowUncheckedUpdateManyWithoutUserInput = {
+    topicId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ForumCreateManyCategoryInput = {
     id?: string
     name: string
@@ -29093,6 +30896,7 @@ export namespace Prisma {
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutForumInput = {
@@ -29107,6 +30911,7 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateManyWithoutForumInput = {
@@ -29137,6 +30942,10 @@ export namespace Prisma {
     userId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+  }
+
+  export type TopicFollowCreateManyTopicInput = {
+    userId: string
   }
 
   export type PostUpdateWithoutTopicInput = {
@@ -29195,6 +31004,18 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TopicFollowUpdateWithoutTopicInput = {
+    user?: UserUpdateOneRequiredWithoutFollowedTopicsNestedInput
+  }
+
+  export type TopicFollowUncheckedUpdateWithoutTopicInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type TopicFollowUncheckedUpdateManyWithoutTopicInput = {
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MentionCreateManyPostInput = {
@@ -29330,6 +31151,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -29358,6 +31180,7 @@ export namespace Prisma {
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {

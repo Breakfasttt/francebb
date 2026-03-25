@@ -281,6 +281,11 @@ exports.Prisma.RoleConfigScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TopicFollowScalarFieldEnum = {
+  userId: 'userId',
+  topicId: 'topicId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -307,7 +312,8 @@ exports.Prisma.ModelName = {
   TopicView: 'TopicView',
   Mention: 'Mention',
   PostReaction: 'PostReaction',
-  RoleConfig: 'RoleConfig'
+  RoleConfig: 'RoleConfig',
+  TopicFollow: 'TopicFollow'
 };
 
 /**
