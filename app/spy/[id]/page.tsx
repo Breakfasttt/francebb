@@ -1,14 +1,14 @@
 "use client";
 
+import { ArrowLeft, Trophy } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { redirect, useParams, useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Trophy, MessageSquare, AlertTriangle } from "lucide-react";
+import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
+import { getUserActivity, getUserStats, startConversation } from "@/app/profile/actions";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
-import { getUserStats, getUserActivity, startConversation } from "@/app/profile/actions";
+import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import "./page.css";
 
 type ProfileTab = "activity" | "palmares";
@@ -44,8 +44,8 @@ export default function SpyProfilePage() {
 
         const response = await fetch(`/api/users/${id}`);
         if (!response.ok) {
-           setUser(null);
-           return;
+          setUser(null);
+          return;
         }
         const userData = await response.json();
         setUser(userData);
@@ -109,8 +109,8 @@ export default function SpyProfilePage() {
       </header>
 
       <div className="profile-content-layout">
-        <ProfileSidebar 
-          user={user} 
+        <ProfileSidebar
+          user={user}
           postCount={stats.postCount}
           isOwnProfile={false}
           activeTab={activeTab}
@@ -127,7 +127,7 @@ export default function SpyProfilePage() {
           {activeTab === "palmares" && (
             <div className="premium-card empty-state fade-in">
               <Trophy size={48} />
-              <h3>Palmarès CAF</h3>
+              <h3>Palmarès NAF</h3>
               <p>Ce coach n'a pas encore de palmarès enregistré.</p>
             </div>
           )}

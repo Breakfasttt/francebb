@@ -195,14 +195,12 @@ export default function ProfileEdit({ user, onUpdate }: ProfileEditProps) {
           flex-direction: column;
           gap: 2rem;
         }
-        .profile-stats-grid {
+        .form-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
           width: 100%;
-          gap: 1rem;
+          gap: 1.5rem;
           margin-bottom: 1rem;
-          padding-bottom: 1rem;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .form-group {
           display: flex;
