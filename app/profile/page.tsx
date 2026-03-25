@@ -8,10 +8,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, MessageSquare, Trophy, Settings } from "lucide-react";
 
-import ProfileSidebar from "@/components/forum/ProfileSidebar";
-import ProfileActivity from "@/components/forum/ProfileActivity";
-import ProfileEdit from "@/components/forum/ProfileEdit";
-import ProfilePM from "@/components/profile/ProfilePM";
+import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
+import ProfileActivity from "@/app/profile/component/ProfileActivity";
+import ProfileEdit from "@/app/profile/component/ProfileEdit";
+import ProfilePM from "@/app/profile/component/ProfilePM";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import { useSession } from "next-auth/react";

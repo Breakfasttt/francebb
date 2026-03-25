@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { isModerator, UserRole } from "@/lib/roles";
-import MembersTable from "@/components/MembersTable";
+import MembersTable from "@/app/membres/component/MembersTable";
 import Link from "next/link";
 import { ArrowLeft, Users } from "lucide-react";
 

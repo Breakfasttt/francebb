@@ -1,14 +1,14 @@
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, MessageSquarePlus } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
+import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import Link from "next/link";
-import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { createTopic } from "../actions";
 import { prisma } from "@/lib/prisma";
-import BBCodeEditor from "@/components/forum/BBCodeEditor";
-import TitleInputWithSmiley from "@/components/forum/TitleInputWithSmiley";
+import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 
 

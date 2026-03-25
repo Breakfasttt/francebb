@@ -1,11 +1,11 @@
 import { ArrowLeft } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
-import "./forum.css";
+import ForumSidebar from "@/app/forum/component/ForumSidebar";
+import "./page.css";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import ForumCategory from "@/components/forum/ForumCategory";
-import DeletionToast from "@/components/forum/DeletionToast";
+import ForumCategory from "@/app/forum/component/ForumCategory";
+import DeletionToast from "@/app/forum/component/DeletionToast";
 
 export const dynamic = "force-dynamic";
 

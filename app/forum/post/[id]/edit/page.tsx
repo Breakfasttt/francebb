@@ -5,9 +5,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
-import EditPostForm from "@/components/forum/EditPostForm";
-import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
-import "../../../forum.css";
+import EditPostForm from "@/app/forum/component/EditPostForm";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
+import "../../../page.css";
 import { isModerator } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";

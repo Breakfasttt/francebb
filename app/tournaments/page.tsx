@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import TournamentFilterSidebar from "@/components/TournamentFilterSidebar";
+import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
 import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import ActiveFilters from "@/components/ActiveFilters";
+import ActiveFilters from "@/app/tournaments/component/ActiveFilters";
 
 export const dynamic = "force-dynamic";
 

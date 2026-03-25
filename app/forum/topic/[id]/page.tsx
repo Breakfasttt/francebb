@@ -4,17 +4,17 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
-import MarkAsRead from "@/components/forum/MarkAsRead";
+import MarkAsRead from "@/app/forum/component/MarkAsRead";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
-import TopicSidebar from "@/components/forum/TopicSidebar";
-import PostActions from "@/components/forum/PostActions";
-import QuickReply from "@/components/forum/QuickReply";
+import TopicSidebar from "@/app/forum/component/TopicSidebar";
+import PostActions from "@/app/forum/component/PostActions";
+import QuickReply from "@/app/forum/component/QuickReply";
 import { getQuoteStatusMap } from "@/app/forum/actions";
-import MarkUnreadAction from "@/components/forum/MarkUnreadAction";
-import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
-import SharePostButton from "@/components/forum/SharePostButton";
-import PostReactions from "@/components/forum/PostReactions";
-import "../../forum.css";
+import MarkUnreadAction from "@/app/forum/component/MarkUnreadAction";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
+import SharePostButton from "@/app/forum/component/SharePostButton";
+import PostReactions from "@/app/forum/component/PostReactions";
+import "../../page.css";
 
 export const dynamic = "force-dynamic";
 

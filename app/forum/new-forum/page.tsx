@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, FolderPlus } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
-import "../forum.css";
+import ForumSidebar from "@/app/forum/component/ForumSidebar";
+import "../page.css";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createForum, getCategories, getForums } from "../actions";

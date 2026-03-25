@@ -5,9 +5,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
-import ReplyForm from "@/components/forum/ReplyForm";
-import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
-import "../../../forum.css";
+import ReplyForm from "@/app/forum/component/ReplyForm";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
+import "../../../page.css";
 
 export const dynamic = "force-dynamic";
 

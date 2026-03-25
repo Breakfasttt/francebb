@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import SearchForm, { ForumOption } from "@/components/forum/SearchForm";
+import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import Link from "next/link";
 import { ArrowLeft, Eye } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";

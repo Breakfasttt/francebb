@@ -1,12 +1,12 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
+import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
-import ForumBreadcrumbs from "@/components/forum/ForumBreadcrumbs";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound } from "next/navigation";
-import "../forum.css";
+import "../page.css";
 
 export const dynamic = "force-dynamic";
 

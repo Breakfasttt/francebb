@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
-import AuthProvider from "@/components/AuthProvider";
-import BannedRedirect from "@/components/BannedRedirect";
-import DebugAuthWidget from "@/components/DebugAuthWidget";
-import { SignInButton } from "@/components/SignInButton";
+import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
+import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
+import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
+import { SignInButton } from "@/common/components/SignInButton/SignInButton";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@/lib/roles";
 import { Mail } from "lucide-react";

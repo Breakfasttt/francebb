@@ -1,6 +1,6 @@
 import { ArrowLeft, Clock, MessageSquare } from "lucide-react";
-import ForumSidebar from "@/components/forum/ForumSidebar";
-import "../forum.css";
+import ForumSidebar from "@/app/forum/component/ForumSidebar";
+import "../page.css";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
