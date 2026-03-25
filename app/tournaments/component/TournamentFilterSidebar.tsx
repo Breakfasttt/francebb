@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
 
 const DEPT_NAMES: Record<string, string> = {
@@ -162,7 +162,7 @@ export default function TournamentFilterSidebar() {
                        value={searchParams.get(filter.name) || "Toutes"}
                        onChange={(e) => handleFilterChange(filter.name, e.target.value === "Toutes" ? "" : e.target.value)}
                      >
-                       {filter.options?.map(opt => {
+                       {(filter as any).options?.map((opt: string) => {
                          const [val, label] = opt.includes('|') ? opt.split('|') : [opt, opt];
                          return <option key={val} value={val}>{label}</option>;
                        })}

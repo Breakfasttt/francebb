@@ -124,4 +124,12 @@ Cette version contient des breaking changes — les APIs, conventions et structu
 peuvent différer de tes données d'entraînement.
 Lire le guide correspondant dans `node_modules/next/dist/docs/` avant d'écrire du code.
 Respecter les notices de dépréciation.
+
+
+## test et scripting :
+- Si tu dois faire des script (python, ts, etc) pour tester, créer un dossier `scripts/` à la racine du projet et y mettre tes scripts
+- N'ajoute pas de scripts dans le `package.json` sans me le demander
+- si tu dois faire des logs, redirige la sortie vers un fichier `logs/` à la racine du projet
+- supprime logs et scripts qui ne sont plus utile à la fin de ton travail/analyse
+
 <!-- END:nextjs-agent-rules -->

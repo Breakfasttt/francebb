@@ -1,8 +1,5 @@
 "use client";
 
-import { use } from "react";
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { redirect, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -116,7 +113,7 @@ export default function ProfilePage() {
           postCount={stats.postCount}
           isOwnProfile={isOwnProfile}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={(tab) => setActiveTab(tab as ProfileTab)}
           isModerator={isModerator}
         />
 
