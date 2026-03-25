@@ -6,7 +6,7 @@ import {
   getSubForumCount
 } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Lock as LockIcon } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Trophy, Lock as LockIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -25,6 +25,7 @@ export default async function ForumSidebar({
   categoryId, 
   parentForumId,
   isLocked,
+  isTournamentForum,
   currentPage,
   totalPages
 }: { 
@@ -33,6 +34,7 @@ export default async function ForumSidebar({
   categoryId?: string; 
   parentForumId?: string;
   isLocked?: boolean;
+  isTournamentForum?: boolean;
   currentPage?: number;
   totalPages?: number;
 }) {
@@ -71,10 +73,20 @@ export default async function ForumSidebar({
             </div>
           )}
 
+          {/* Nouveau Tournoi (si forum de tournoi) */}
+          {forumId && isTournamentForum && (!isLocked || canCreateForum) && (
+            <div className="sidebar-widget new-topic-widget">
+              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
+                <Trophy size={18} />
+                <span>Nouveau Tournoi</span>
+              </Link>
+            </div>
+          )}
+
           {/* Nouveau Sujet */}
           {forumId && (!isLocked || canCreateForum) && (
             <div className="sidebar-widget new-topic-widget">
-              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--primary)' }}>
+              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: isTournamentForum ? 'rgba(255,255,255,0.05)' : 'var(--primary)', border: isTournamentForum ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
                 <PlusCircle size={18} />
                 <span>Nouveau Sujet</span>
               </Link>

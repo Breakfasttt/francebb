@@ -8,7 +8,7 @@ import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { UserRole } from "@/lib/roles";
 import {
   ArrowBigDown, ArrowBigUp, ChevronDown, ChevronRight, FolderGit2, GripVertical,
-  IndentDecrease, IndentIncrease, Plus, Settings2, Trash2
+  IndentDecrease, IndentIncrease, Plus, Settings2, Trophy, Trash2
 } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
@@ -87,7 +87,11 @@ function SortableForumItem({
       <div className="forum-row">
         <div {...attributes} {...listeners} className="drag-handle"><GripVertical size={16} /></div>
         <div className="forum-title-container">
-          <FolderGit2 size={15} color="var(--primary)" />
+          {forum.isTournamentForum ? (
+            <Trophy size={15} color="var(--accent)" />
+          ) : (
+            <FolderGit2 size={15} color="var(--primary)" />
+          )}
           <strong>{forum.name}</strong>
           <span className={`badge-role ${forum.allowedRoles === "ALL" ? "badge-all" : "badge-restricted"}`}>
             {forum.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${forum.allowedRoles}`}
@@ -162,6 +166,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
   const [formName, setFormName] = useState("");
   const [formDesc, setFormDesc] = useState("");
   const [formAllowedRoles, setFormAllowedRoles] = useState<string>("ALL");
+  const [formIsTournament, setFormIsTournament] = useState(false);
   const [availableDbRoles, setAvailableDbRoles] = useState<any[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -356,13 +361,15 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
   };
   const openCreateForum = (parentId = "") => {
     setEditingItem(null); setEditingType('Forum'); setParentTargetId(parentId);
-    setFormName(""); setFormDesc(""); setFormAllowedRoles("ALL"); setIsPanelOpen(true);
+    setFormName(""); setFormDesc(""); setFormAllowedRoles("ALL"); setFormIsTournament(false); setIsPanelOpen(true);
   };
   const openEdit = (item: any, type: 'Category' | 'Forum') => {
     setEditingItem(item); setEditingType(type);
     setParentTargetId(item.categoryId || item.parentForumId || null);
     setFormName(item.name); setFormDesc(item.description || "");
-    setFormAllowedRoles(item.allowedRoles || "ALL"); setIsPanelOpen(true);
+    setFormAllowedRoles(item.allowedRoles || "ALL"); 
+    setFormIsTournament(item.isTournamentForum || false);
+    setIsPanelOpen(true);
   };
 
   const handleSave = () => {
@@ -375,11 +382,12 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           : await createCategory({ name: formName, description: formDesc, allowedRoles: formAllowedRoles });
       } else {
         if (editingItem) {
-          res = await updateForum(editingItem.id, { name: formName, description: formDesc, allowedRoles: formAllowedRoles });
+          res = await updateForum(editingItem.id, { name: formName, description: formDesc, allowedRoles: formAllowedRoles, isTournamentForum: formIsTournament });
         } else {
           const isCat = categories.some((c: any) => c.id === parentTargetId);
           res = await createForum({
             name: formName, description: formDesc, allowedRoles: formAllowedRoles,
+            isTournamentForum: formIsTournament,
             categoryId: isCat ? (parentTargetId ?? undefined) : undefined,
             parentForumId: !isCat ? (parentTargetId ?? undefined) : undefined,
           });
@@ -566,6 +574,27 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
               {availableDbRoles.map(r => (<option key={r.name} value={r.name}>{r.label} et supérieurs</option>))}
             </select>
           </div>
+
+          {editingType === 'Forum' && (
+            <div className="panel-field">
+              <label>Options de forum</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '0.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <input 
+                  type="checkbox" 
+                  id="chk-tournament"
+                  checked={formIsTournament} 
+                  onChange={e => setFormIsTournament(e.target.checked)}
+                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                />
+                <label htmlFor="chk-tournament" style={{ margin: 0, cursor: 'pointer', fontSize: '0.85rem' }}>
+                  Forum de tournoi
+                </label>
+              </div>
+              <p style={{ marginTop: '0.2rem', color: '#888' }}>
+                Active le type "Tournament Topic" et les icônes de trophées.
+              </p>
+            </div>
+          )}
 
           <div className="panel-footer">
             <button className="action-button primary-btn full-width" onClick={handleSave} disabled={isPending}>

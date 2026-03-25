@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Hash, Folder, Bell, ChevronDown, ChevronUp, Lock as LockIcon } from "lucide-react";
+import { Hash, Folder, Bell, ChevronDown, ChevronUp, Trophy, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 
@@ -57,7 +57,11 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
               <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>
                 <div className="forum-info">
                   <h3 style={{ color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Folder size={18} style={{ color: forumHasNew ? '#ffd700' : '#888' }} />
+                    {forum.isTournamentForum ? (
+                      <Trophy size={18} style={{ color: forumHasNew ? 'var(--accent)' : 'white', opacity: forumHasNew ? 1 : 0.6 }} />
+                    ) : (
+                      <Folder size={18} style={{ color: forumHasNew ? '#ffd700' : '#888' }} />
+                    )}
                     <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
                     {forum.isLocked && <LockIcon size={14} style={{ color: '#ef4444', opacity: 0.8 }} />}
                     {forumHasNew && <Bell size={14} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}

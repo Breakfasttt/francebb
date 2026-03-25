@@ -104,7 +104,7 @@ export async function reorderCategories(orderedIds: string[]) {
 
 // ---------------- FORUM ACTIONS ----------------
 
-export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string }) {
+export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string, isTournamentForum?: boolean }) {
   const session = await auth();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
@@ -127,6 +127,7 @@ export async function createForum(data: { name: string, description: string, all
       allowedRoles: data.allowedRoles,
       categoryId: data.categoryId || null,
       parentForumId: data.parentForumId || null,
+      isTournamentForum: !!data.isTournamentForum,
       order: newOrder
     }
   });
@@ -134,7 +135,7 @@ export async function createForum(data: { name: string, description: string, all
   return { success: true };
 }
 
-export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string }) {
+export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string, isTournamentForum?: boolean }) {
   const session = await auth();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
@@ -152,7 +153,8 @@ export async function updateForum(id: string, data: { name: string, description:
     data: {
       name: data.name,
       description: data.description,
-      allowedRoles: data.allowedRoles
+      allowedRoles: data.allowedRoles,
+      isTournamentForum: data.isTournamentForum
     }
   });
   return { success: true };

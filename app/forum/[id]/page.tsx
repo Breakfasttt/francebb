@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Lock as LockIcon } from "lucide-react";
+import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Trophy, Lock as LockIcon } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
@@ -128,7 +128,11 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                 <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>
                   <div className="forum-info">
                     <h3 style={{ color: subHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <Folder size={16} style={{ color: subHasNew ? '#ffd700' : '#888' }} />
+                      {sub.isTournamentForum ? (
+                        <Trophy size={16} style={{ color: subHasNew ? 'var(--accent)' : 'white', opacity: subHasNew ? 1 : 0.6 }} />
+                      ) : (
+                        <Folder size={16} style={{ color: subHasNew ? '#ffd700' : '#888' }} />
+                      )}
                       {sub.name}
                       {sub.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
                       {subHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
@@ -220,16 +224,17 @@ export default async function ForumDetailPage({ params, searchParams }: { params
       </div>
 
      </div>
-     <ForumSidebar 
-       forumId={id} 
-       forumName={forum.name} 
-       categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
-       parentForumId={id} 
-       isLocked={forum.isLocked}
-       currentPage={currentPage}
-       totalPages={totalPages}
-     />
-   </div>
+      <ForumSidebar 
+        forumId={id} 
+        forumName={forum.name} 
+        categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
+        parentForumId={id} 
+        isLocked={forum.isLocked}
+        isTournamentForum={forum.isTournamentForum}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
+    </div>
   </main>
   );
 }
