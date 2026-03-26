@@ -152,7 +152,8 @@ exports.Prisma.UserScalarFieldEnum = {
   signature: 'signature',
   isBanned: 'isBanned',
   banReason: 'banReason',
-  avatarFrame: 'avatarFrame'
+  avatarFrame: 'avatarFrame',
+  theme: 'theme'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {

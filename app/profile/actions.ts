@@ -456,3 +456,16 @@ export async function getReferenceDataAction(group: string) {
     select: { key: true, label: true }
   });
 }
+
+export async function updateTheme(theme: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non connecté");
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: { theme }
+  });
+
+  revalidatePath("/", "layout");
+  return { success: true };
+}

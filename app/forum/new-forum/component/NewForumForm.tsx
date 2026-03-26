@@ -61,7 +61,7 @@ export default function NewForumForm({
   }, [selectedCat, selectedParent, allForums]);
 
   return (
-    <div style={{ background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
+    <div style={{ background: 'var(--card-bg)', backdropFilter: 'blur(10px)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
       <form action={createAction} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div className="form-group">
           <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Nom du forum</label>
@@ -71,7 +71,7 @@ export default function NewForumForm({
             name="name"
             required
             placeholder="Ex: Discussions générales, Archives..."
-            style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
+            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
           />
         </div>
 
@@ -82,7 +82,7 @@ export default function NewForumForm({
             name="description"
             rows={3}
             placeholder="Décrivez brièvement le contenu de ce forum"
-            style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
+            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
           ></textarea>
         </div>
 
@@ -90,7 +90,7 @@ export default function NewForumForm({
           <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 600 }}>Type et Emplacement</label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
-              <label htmlFor="categoryId" style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '0.3rem' }}>Catégorie principale</label>
+              <label htmlFor="categoryId" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Catégorie principale</label>
               <select
                 id="categoryId"
                 name="categoryId"
@@ -99,7 +99,7 @@ export default function NewForumForm({
                   setSelectedCat(e.target.value);
                   setSelectedParent(""); // Reset parent quand on change de catégorie
                 }}
-                style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
+                style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
               >
                 <option value="">-- Aucune (Sous-forum) --</option>
                 {categories.map(c => (
@@ -108,13 +108,13 @@ export default function NewForumForm({
               </select>
             </div>
             <div>
-              <label htmlFor="parentForumId" style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '0.3rem' }}>Forum parent (optionnel)</label>
+              <label htmlFor="parentForumId" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Forum parent (optionnel)</label>
               <select
                 id="parentForumId"
                 name="parentForumId"
                 value={selectedParent}
                 onChange={(e) => setSelectedParent(e.target.value)}
-                style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
+                style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
               >
                 <option value="">-- Aucun (Top-level) --</option>
                 {availableParents.map(f => (
@@ -132,7 +132,7 @@ export default function NewForumForm({
             name="afterId"
             defaultValue={siblings.length > 0 ? siblings[siblings.length - 1].id : "START"}
             key={`${selectedCat}-${selectedParent}`} // Force le re-render du select quand on change d'endroit
-            style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white' }}
+            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
           >
             <option value="START">-- Au début --</option>
             {siblings.map(s => (
@@ -150,7 +150,7 @@ export default function NewForumForm({
             />
             <span style={{ fontWeight: 600 }}>Forum de tournoi</span>
           </label>
-          <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '0.5rem', marginLeft: '2.3rem' }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem', marginLeft: '2.3rem' }}>
             Active le type spécial "Tournament Topic", les champs de dates et l'icône de trophée pour ce forum.
           </p>
         </div>

@@ -67,7 +67,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Annoncer un <span>tournoi</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
+          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
         </div>
       </header>
  

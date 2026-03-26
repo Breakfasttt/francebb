@@ -78,7 +78,7 @@ export default async function ReplyPage({
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Répondre au <span>sujet</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></p>
+          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></p>
         </div>
       </header>
 
@@ -113,7 +113,7 @@ export default async function ReplyPage({
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{post.author.name}</div>
                   </div>
                   <div 
-                    style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: '#aaa', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
+                    style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--text-secondary)', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
                     dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap) }}
                   />
                 </div>

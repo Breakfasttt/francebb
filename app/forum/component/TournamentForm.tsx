@@ -119,13 +119,13 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       alignItems: 'center', 
       gap: '0.8rem', 
       padding: '1rem 0', 
-      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      borderBottom: '1px solid var(--glass-border)',
       marginTop: '1.5rem',
       marginBottom: '1rem'
     }}>
       <div style={{ color: 'var(--accent)' }}>{icon}</div>
       <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 800 }}>{title}</h4>
-      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)', marginLeft: '1rem' }}></div>
+      <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)', marginLeft: '1rem' }}></div>
     </div>
   );
 
@@ -146,7 +146,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
 
             <div style={{ 
               padding: '2rem', 
-              background: 'rgba(255, 255, 255, 0.02)', 
+              background: 'var(--glass-bg)', 
               borderRadius: '16px', 
               border: '1px solid var(--glass-border)' 
             }}>
@@ -156,7 +156,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 </div>
                 <div>
                     <h3 style={{ margin: 0, fontSize: '1.4rem' }}>{isEdit ? "Modification du Tournoi" : "Configuration du Tournoi"}</h3>
-                    <p style={{ margin: 0, color: '#888', fontSize: '0.9rem' }}>Les filtres permettent aux coachs de trouver facilement votre évènement.</p>
+                    <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>Les filtres permettent aux coachs de trouver facilement votre évènement.</p>
                 </div>
               </div>
 
@@ -232,7 +232,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                   <div style={{ position: 'relative' }}>
                     <input type="url" name="tGmapsUrl" defaultValue={initialData?.gmapsUrl || ""} placeholder="Ex: https://goo.gl/maps/..." className="admin-input" 
                            style={{ paddingLeft: '2.8rem' }} />
-                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
+                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                   </div>
                 </div>
               </div>
@@ -240,7 +240,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               <SectionSeparator icon={<Users size={18} />} title="Participants" />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', alignItems: 'end' }}>
                 <div className="form-group">
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', background: 'rgba(255,255,255,0.05)', padding: '0.8rem', borderRadius: '8px', border: isTeam ? '1px solid var(--accent)' : '1px solid var(--glass-border)' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', background: 'var(--glass-bg)', padding: '0.8rem', borderRadius: '8px', border: isTeam ? '1px solid var(--accent)' : '1px solid var(--glass-border)' }}>
                     <input type="checkbox" name="isTeam" checked={isTeam} onChange={e => setIsTeam(e.target.checked)} style={{ width: '18px', height: '18px' }} />
                     <span>En équipe</span>
                   </label>
@@ -297,7 +297,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                       maxSelections={10}
                     />
                     <input type="hidden" name="commissaireIds" value={commissaires.map(u => u.id).join(',')} />
-                    <p style={{ fontSize: '0.75rem', color: '#666', marginTop: '0.5rem' }}>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
                       Les commissaires pourront modifier les infos du tournoi et gérer les inscriptions.
                     </p>
                   </div>
@@ -420,16 +420,16 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
         .admin-input {
           width: 100%;
           padding: 0.9rem 1rem;
-          background: rgba(0, 0, 0, 0.3);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 10px;
-          color: white;
+          color: var(--foreground);
           font-size: 1rem;
           outline: none;
           transition: border-color 0.2s;
         }
         .admin-input:focus { border-color: var(--accent); }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #777; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
         
         .checkbox-box-admin {
           cursor: pointer;
@@ -441,10 +441,10 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           align-items: center;
           gap: 0.8rem;
           padding: 1.2rem;
-          background: rgba(255, 255, 255, 0.03);
+          background: var(--glass-bg);
           border-radius: 12px;
           border: 1px solid var(--glass-border);
-          color: #888;
+          color: var(--text-muted);
           transition: all 0.2s;
         }
         .checkbox-box-admin input:checked + .box-content {

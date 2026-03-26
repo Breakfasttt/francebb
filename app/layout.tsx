@@ -27,15 +27,17 @@ export default async function RootLayout({
 
   let userRole: UserRole = "COACH";
   let isBanned = false;
+  let userTheme = "dark";
 
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { role: true, isBanned: true }
+      select: { role: true, isBanned: true, theme: true }
     });
     if (user) {
       userRole = user.role as UserRole;
       isBanned = user.isBanned;
+      userTheme = user.theme || "dark";
     }
   }
 
@@ -61,7 +63,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="fr">
+    <html lang="fr" data-theme={userTheme}>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <DebugAuthWidget />
         <BannedRedirect isBanned={isBanned} />

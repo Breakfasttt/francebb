@@ -1,22 +1,18 @@
+import { getQuoteStatusMap } from "@/app/forum/actions";
+import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
+import MarkAsRead from "@/app/forum/component/MarkAsRead";
+import PostItem from "@/app/forum/component/PostItem";
+import QuickReply from "@/app/forum/component/QuickReply";
+import RegistrationModule from "@/app/forum/component/RegistrationModule";
+import TopicSidebar from "@/app/forum/component/TopicSidebar";
+import TournamentSummary from "@/app/forum/component/TournamentSummary";
+import { auth } from "@/auth";
+import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, User, MessageSquare, MapPin, Shield, Trophy, ExternalLink, Mail, Lock as LockIcon } from "lucide-react";
+import { isModerator } from "@/lib/roles";
+import { ArrowLeft, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { auth } from "@/auth";
-import { isModerator } from "@/lib/roles";
-import MarkAsRead from "@/app/forum/component/MarkAsRead";
-import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
-import TopicSidebar from "@/app/forum/component/TopicSidebar";
-import PostActions from "@/app/forum/component/PostActions";
-import QuickReply from "@/app/forum/component/QuickReply";
-import { getQuoteStatusMap } from "@/app/forum/actions";
-import MarkUnreadAction from "@/app/forum/component/MarkUnreadAction";
-import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
-import SharePostButton from "@/app/forum/component/SharePostButton";
-import PostReactions from "@/app/forum/component/PostReactions";
-import TournamentSummary from "@/app/forum/component/TournamentSummary";
-import RegistrationModule from "@/app/forum/component/RegistrationModule";
-import PostItem from "@/app/forum/component/PostItem";
 import "../../page.css";
 
 export const dynamic = "force-dynamic";
@@ -44,7 +40,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         topicId: id,
         OR: [
           { createdAt: { gt: viewDate } },
-          { 
+          {
             createdAt: viewDate,
             id: { gt: lastPostId || "" }
           }
@@ -54,23 +50,23 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       select: { id: true, createdAt: true }
     });
 
-      if (firstUnread) {
-        // Count posts BEFORE this one using the same deterministic order
-        const countBefore = await prisma.post.count({
-          where: {
-            topicId: id,
-            OR: [
-              { createdAt: { lt: firstUnread.createdAt } },
-              { 
-                createdAt: firstUnread.createdAt,
-                id: { lt: firstUnread.id }
-              }
-            ]
-          }
-        });
-        const targetPage = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
-        redirect(`/forum/topic/${id}?page=${targetPage}#post-${firstUnread.id}`);
-      }
+    if (firstUnread) {
+      // Count posts BEFORE this one using the same deterministic order
+      const countBefore = await prisma.post.count({
+        where: {
+          topicId: id,
+          OR: [
+            { createdAt: { lt: firstUnread.createdAt } },
+            {
+              createdAt: firstUnread.createdAt,
+              id: { lt: firstUnread.id }
+            }
+          ]
+        }
+      });
+      const targetPage = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
+      redirect(`/forum/topic/${id}?page=${targetPage}#post-${firstUnread.id}`);
+    }
   }
 
   const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
@@ -82,21 +78,21 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     prisma.topic.findUnique({
       where: { id },
       include: {
-        tournament: { 
-          include: { 
+        tournament: {
+          include: {
             commissaires: true,
             registrations: { include: { user: true } },
-            teams: { 
-              include: { 
+            teams: {
+              include: {
                 members: { include: { user: true } },
                 captain: true
-              } 
+              }
             },
             mercenaries: { include: { user: true } }
-          } 
+          }
         },
         forum: {
-          include: { 
+          include: {
             category: true,
             parentForum: {
               include: { category: true }
@@ -193,99 +189,99 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           </h1>
         </div>
       </header>
- 
+
       <ForumBreadcrumbs items={breadcrumbs} />
 
-       <div className="forum-layout">
-         <div className="forum-main-content">
+      <div className="forum-layout">
+        <div className="forum-main-content">
 
-      <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Résumé du tournoi si applicable */}
-        {topic.tournament && (
-          <>
-            <TournamentSummary tournament={topic.tournament} />
-            <RegistrationModule 
-              tournament={topic.tournament} 
-              currentUser={session?.user}
-              isOrganizer={!!isTournamentOrganizer}
-              isCommissioner={!!isTournamentCommissaire}
-            />
-          </>
-        )}
+          <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            {/* Résumé du tournoi si applicable */}
+            {topic.tournament && (
+              <>
+                <TournamentSummary tournament={topic.tournament} />
+                <RegistrationModule
+                  tournament={topic.tournament}
+                  currentUser={session?.user}
+                  isOrganizer={!!isTournamentOrganizer}
+                  isCommissioner={!!isTournamentCommissaire}
+                />
+              </>
+            )}
 
-        {/* Premier message persistant pour les tournois (si page > 1) */}
-        {firstPostForTournament && (
-          <PostItem 
-            post={firstPostForTournament}
-            index={0}
-            topicId={id}
-            currentUserId={currentUserId}
-            isUserModerator={isUserModerator}
-            quoteStatusMap={quoteStatusMap}
-            safeCurrentPage={safeCurrentPage}
-            regionLabels={regionLabels}
-            isFirstPostAlwaysVisible={true}
-          />
-        )}
+            {/* Premier message persistant pour les tournois (si page > 1) */}
+            {firstPostForTournament && (
+              <PostItem
+                post={firstPostForTournament}
+                index={0}
+                topicId={id}
+                currentUserId={currentUserId}
+                isUserModerator={isUserModerator}
+                quoteStatusMap={quoteStatusMap}
+                safeCurrentPage={safeCurrentPage}
+                regionLabels={regionLabels}
+                isFirstPostAlwaysVisible={true}
+              />
+            )}
 
-        {/* Liste des messages de la page courante */}
-        {topic.posts.map((post, index) => (
-          <PostItem 
-            key={post.id}
-            post={post}
-            index={skip + index}
-            topicId={id}
-            currentUserId={currentUserId}
-            isUserModerator={isUserModerator}
-            quoteStatusMap={quoteStatusMap}
-            safeCurrentPage={safeCurrentPage}
-            regionLabels={regionLabels}
-            isTournament={!!topic.tournament}
-            tournamentId={topic.tournament?.id}
-            firstPostId={topic.posts[0]?.id}
-          />
-        ))}
-      </div>
+            {/* Liste des messages de la page courante */}
+            {topic.posts.map((post, index) => (
+              <PostItem
+                key={post.id}
+                post={post}
+                index={skip + index}
+                topicId={id}
+                currentUserId={currentUserId}
+                isUserModerator={isUserModerator}
+                quoteStatusMap={quoteStatusMap}
+                safeCurrentPage={safeCurrentPage}
+                regionLabels={regionLabels}
+                isTournament={!!topic.tournament}
+                tournamentId={topic.tournament?.id}
+                firstPostId={topic.posts[0]?.id}
+              />
+            ))}
+          </div>
 
-      {(!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
-        <QuickReply topicId={id} />
-      ) : (
-        <div id="quick-reply-area" style={{ 
-          padding: '3rem 2rem', 
-          textAlign: 'center', 
-          background: 'rgba(239, 68, 68, 0.03)', 
-          borderRadius: '12px', 
-          border: '1px solid rgba(239, 68, 68, 0.2)', 
-          color: '#888',
-          marginTop: '3rem'
-        }}>
-          <LockIcon size={32} style={{ marginBottom: '1rem', color: '#ef4444', opacity: 0.6 }} />
-          <h3 style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Sujet verrouillé</h3>
-          <p>Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération.</p>
+          {(!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
+            <QuickReply topicId={id} />
+          ) : (
+            <div id="quick-reply-area" style={{
+              padding: '3rem 2rem',
+              textAlign: 'center',
+              background: 'rgba(239, 68, 68, 0.03)',
+              borderRadius: '12px',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              color: '#888',
+              marginTop: '3rem'
+            }}>
+              <LockIcon size={32} style={{ marginBottom: '1rem', color: '#ef4444', opacity: 0.6 }} />
+              <h3 style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Sujet verrouillé</h3>
+              <p>Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération.</p>
+            </div>
+          )}
         </div>
-      )}
+        <TopicSidebar
+          topicId={id}
+          currentPage={safeCurrentPage}
+          totalPages={totalPages}
+          isModerator={isUserModerator}
+          isPinned={topic.isSticky}
+          isLocked={topic.isLocked}
+          isForumLocked={topic.forum.isLocked}
+          lastPostId={lastPost?.id || ""}
+          lastPage={totalPages}
+          allForums={allForums}
+          topicTitle={topic.title}
+          authorId={topic.authorId}
+          currentUserId={currentUserId}
+          views={displayViews}
+          isArchived={topic.isArchived}
+          isTournament={!!topic.tournament}
+          tournamentId={topic.tournament?.id}
+          canEditTournament={canEditTournament}
+        />
       </div>
-      <TopicSidebar 
-        topicId={id} 
-        currentPage={safeCurrentPage} 
-        totalPages={totalPages}
-        isModerator={isUserModerator}
-        isPinned={topic.isSticky}
-        isLocked={topic.isLocked}
-        isForumLocked={topic.forum.isLocked}
-        lastPostId={lastPost?.id || ""}
-        lastPage={totalPages}
-        allForums={allForums}
-        topicTitle={topic.title}
-        authorId={topic.authorId}
-        currentUserId={currentUserId}
-        views={displayViews}
-        isArchived={topic.isArchived}
-        isTournament={!!topic.tournament}
-        tournamentId={topic.tournament?.id}
-        canEditTournament={canEditTournament}
-      />
-    </div>
-  </main>
+    </main>
   );
 }

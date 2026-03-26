@@ -5480,6 +5480,7 @@ export namespace Prisma {
     isBanned: boolean | null
     banReason: string | null
     avatarFrame: string | null
+    theme: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -5496,6 +5497,7 @@ export namespace Prisma {
     isBanned: boolean | null
     banReason: string | null
     avatarFrame: string | null
+    theme: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -5512,6 +5514,7 @@ export namespace Prisma {
     isBanned: number
     banReason: number
     avatarFrame: number
+    theme: number
     _all: number
   }
 
@@ -5530,6 +5533,7 @@ export namespace Prisma {
     isBanned?: true
     banReason?: true
     avatarFrame?: true
+    theme?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -5546,6 +5550,7 @@ export namespace Prisma {
     isBanned?: true
     banReason?: true
     avatarFrame?: true
+    theme?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -5562,6 +5567,7 @@ export namespace Prisma {
     isBanned?: true
     banReason?: true
     avatarFrame?: true
+    theme?: true
     _all?: true
   }
 
@@ -5651,6 +5657,7 @@ export namespace Prisma {
     isBanned: boolean
     banReason: string | null
     avatarFrame: string | null
+    theme: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -5684,6 +5691,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    theme?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     tournaments?: boolean | User$tournamentsArgs<ExtArgs>
@@ -5721,6 +5729,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    theme?: boolean
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5738,6 +5747,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    theme?: boolean
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -5755,9 +5765,10 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: boolean
     avatarFrame?: boolean
+    theme?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "league" | "signature" | "isBanned" | "banReason" | "avatarFrame", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "league" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -5826,6 +5837,7 @@ export namespace Prisma {
       isBanned: boolean
       banReason: string | null
       avatarFrame: string | null
+      theme: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -6282,6 +6294,7 @@ export namespace Prisma {
     readonly isBanned: FieldRef<"User", 'Boolean'>
     readonly banReason: FieldRef<"User", 'String'>
     readonly avatarFrame: FieldRef<"User", 'String'>
+    readonly theme: FieldRef<"User", 'String'>
   }
     
 
@@ -27668,7 +27681,8 @@ export namespace Prisma {
     signature: 'signature',
     isBanned: 'isBanned',
     banReason: 'banReason',
-    avatarFrame: 'avatarFrame'
+    avatarFrame: 'avatarFrame',
+    theme: 'theme'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -28152,6 +28166,7 @@ export namespace Prisma {
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
+    theme?: StringFilter<"User"> | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     tournaments?: TournamentListRelationFilter
@@ -28188,6 +28203,7 @@ export namespace Prisma {
     isBanned?: SortOrder
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
+    theme?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     tournaments?: TournamentOrderByRelationAggregateInput
@@ -28227,6 +28243,7 @@ export namespace Prisma {
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
+    theme?: StringFilter<"User"> | string
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     tournaments?: TournamentListRelationFilter
@@ -28263,6 +28280,7 @@ export namespace Prisma {
     isBanned?: SortOrder
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
+    theme?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -28285,6 +28303,7 @@ export namespace Prisma {
     isBanned?: BoolWithAggregatesFilter<"User"> | boolean
     banReason?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatarFrame?: StringNullableWithAggregatesFilter<"User"> | string | null
+    theme?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type VerificationTokenWhereInput = {
@@ -29784,6 +29803,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -29820,6 +29840,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -29854,6 +29875,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -29890,6 +29912,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -29925,6 +29948,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -29940,6 +29964,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -29956,6 +29981,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
   }
 
   export type VerificationTokenCreateInput = {
@@ -31718,6 +31744,7 @@ export namespace Prisma {
     isBanned?: SortOrder
     banReason?: SortOrder
     avatarFrame?: SortOrder
+    theme?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -31734,6 +31761,7 @@ export namespace Prisma {
     isBanned?: SortOrder
     banReason?: SortOrder
     avatarFrame?: SortOrder
+    theme?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -31750,6 +31778,7 @@ export namespace Prisma {
     isBanned?: SortOrder
     banReason?: SortOrder
     avatarFrame?: SortOrder
+    theme?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -34868,6 +34897,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
@@ -34903,6 +34933,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -34952,6 +34983,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
     roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
@@ -34987,6 +35019,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -35020,6 +35053,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
@@ -35055,6 +35089,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -35104,6 +35139,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
     roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
@@ -35139,6 +35175,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -36389,6 +36426,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
@@ -36424,6 +36462,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -36499,6 +36538,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -36534,6 +36574,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -36662,6 +36703,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
@@ -36697,6 +36739,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -36793,6 +36836,7 @@ export namespace Prisma {
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
+    theme?: StringFilter<"User"> | string
   }
 
   export type TournamentRegistrationUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -37177,6 +37221,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -37212,6 +37257,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -37462,6 +37508,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -37497,6 +37544,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -37710,6 +37758,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -37745,6 +37794,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -37808,6 +37858,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -37843,6 +37894,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -37958,6 +38010,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -37993,6 +38046,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38053,6 +38107,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -38088,6 +38143,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38137,6 +38193,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -38172,6 +38229,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -38210,6 +38268,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -38245,6 +38304,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -38319,6 +38379,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -38354,6 +38415,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38398,6 +38460,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -38433,6 +38496,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38507,6 +38571,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -38542,6 +38607,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -38622,6 +38688,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -38657,6 +38724,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38690,6 +38758,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -38725,6 +38794,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -38811,6 +38881,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -38846,6 +38917,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -38955,6 +39027,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -38990,6 +39063,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -39028,6 +39102,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -39063,6 +39138,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -39151,6 +39227,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -39186,6 +39263,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -39230,6 +39308,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -39265,6 +39344,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -39331,6 +39411,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -39366,6 +39447,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -39454,6 +39536,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -39489,6 +39572,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -39522,6 +39606,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -39556,6 +39641,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -39615,6 +39701,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -39650,6 +39737,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -39736,6 +39824,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -39771,6 +39860,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -39936,6 +40026,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -39971,6 +40062,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -40115,6 +40207,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -40150,6 +40243,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -40272,6 +40366,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -40307,6 +40402,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -40470,6 +40566,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -40505,6 +40602,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -40581,6 +40679,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -40616,6 +40715,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -40698,6 +40798,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -40733,6 +40834,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -40855,6 +40957,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -40890,6 +40993,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -41034,6 +41138,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -41069,6 +41174,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -42011,6 +42117,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -42046,6 +42153,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -42080,6 +42188,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
   }
 
   export type TournamentRegistrationUpdateWithoutTournamentInput = {
@@ -42510,6 +42619,7 @@ export namespace Prisma {
     isBanned?: boolean
     banReason?: string | null
     avatarFrame?: string | null
+    theme?: string
   }
 
   export type UserUpdateWithoutRoleConfigInput = {
@@ -42525,6 +42635,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -42559,6 +42670,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -42593,6 +42705,7 @@ export namespace Prisma {
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
   }
 
   export type TournamentTeamMemberCreateManyTeamInput = {

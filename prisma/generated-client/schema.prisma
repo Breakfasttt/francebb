@@ -67,6 +67,8 @@ model User {
   followedTopics          TopicFollow[]
   commissairesTournaments Tournament[]     @relation("TournamentCommissaires")
 
+  theme String @default("dark") // dark, light, blood
+
   tournamentRegistrations TournamentRegistration[]
   captainTeams            TournamentTeam[]         @relation("TeamCaptain")
   teamMemberships         TournamentTeamMember[]

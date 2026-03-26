@@ -1,5 +1,3 @@
-"use client";
-
 import { useTransition, useState } from "react";
 import { ShieldAlert, Trash2, Mail, LogOut, KeyRound } from "lucide-react";
 import { deleteAccount } from "../actions";
@@ -129,7 +127,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           color: #eee;
         }
         .settings-section {
-          margin-bottom: 3rem;
+          margin-bottom: 3.5rem;
         }
         .settings-subtitle {
           display: flex;

@@ -1,11 +1,11 @@
-import { updateProfile, getReferenceDataAction } from "@/app/profile/actions";
+import { getReferenceDataAction, updateProfile, updateTheme } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import Modal from "@/common/components/Modal/Modal";
 import RankSelect from "@/common/components/RankSelect/RankSelect";
 import Toast from "@/common/components/Toast/Toast";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
-import { Dices, Loader2, Sparkles, Upload } from "lucide-react";
+import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
@@ -43,6 +43,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
   const [genStyle, setGenStyle] = useState("avataaars");
 
   const [isPending, startTransition] = useTransition();
+  const [isUpdatingTheme, startThemeUpdate] = useTransition();
+  const [currentTheme, setCurrentTheme] = useState(user.theme || "dark");
   const [isUploading, setIsUploading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +108,18 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     setIsGeneratorOpen(false);
   };
 
+  const handleThemeChange = (newTheme: string) => {
+    setCurrentTheme(newTheme);
+    startThemeUpdate(async () => {
+      const result = await updateTheme(newTheme);
+      if (result.success) {
+        showToast("Thème mis à jour !", "success");
+      } else {
+        showToast("Erreur lors du changement de thème", "error");
+      }
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const data = new FormData();
@@ -144,34 +158,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         />
 
         <div className="profile-edit-layout-rows">
-          <div className="form-row-box">
-            <div className="form-group">
-              <label>Pseudo</label>
-              <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
-            </div>
-
-            <div className="form-group">
-              <label>Numéro NAF</label>
-              <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
-            </div>
-
-            <div className="form-group">
-              <label>Région de tournoi</label>
-              <select name="region" value={formData.region} onChange={handleChange}>
-                <option value="">Sélectionnez une région</option>
-                {regions.map(r => (
-                  <option key={r.key} value={r.key}>{r.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>Ligue</label>
-              <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
-            </div>
-          </div>
-
-
+          {/* 1. Avatar */}
           <div className="full-width avatar-studio-box">
             <div className="studio-preview-pane">
               <UserAvatar
@@ -232,6 +219,35 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             </div>
           </div>
 
+          {/* 2. Account Info */}
+          <div className="form-row-box">
+            <div className="form-group">
+              <label>Pseudo</label>
+              <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
+            </div>
+
+            <div className="form-group">
+              <label>Numéro NAF</label>
+              <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
+            </div>
+
+            <div className="form-group">
+              <label>Région de tournoi</label>
+              <select name="region" value={formData.region} onChange={handleChange}>
+                <option value="">Sélectionnez une région</option>
+                {regions.map(r => (
+                  <option key={r.key} value={r.key}>{r.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Ligue</label>
+              <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
+            </div>
+          </div>
+
+          {/* 3. Forum Signature */}
           <div className="form-row-box no-bg">
             <div className="form-group full-width">
               <label>Signature du forum (250 car. max)</label>
@@ -242,6 +258,68 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                 rows={4}
                 onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
               />
+            </div>
+          </div>
+
+          {/* 4. Appearance */}
+          <div className="form-row-box theme-section-box">
+            <div className="form-group full-width">
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Palette size={16} /> Apparence du site
+              </label>
+              <div className="theme-grid" style={{ marginTop: '0.5rem' }}>
+                <button
+                  type="button"
+                  className={`theme-card ${currentTheme === 'dark' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('dark')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview dark"></div>
+                  <div className="theme-info">
+                    <Moon size={14} />
+                    <span>Sombre</span>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  className={`theme-card ${currentTheme === 'light' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('light')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview light"></div>
+                  <div className="theme-info">
+                    <Sun size={14} />
+                    <span>Clair</span>
+                  </div>
+                </button>
+
+                <button 
+                  type="button"
+                  className={`theme-card ${currentTheme === 'blood' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('blood')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview blood"></div>
+                  <div className="theme-info">
+                    <Droplets size={14} />
+                    <span>Blood</span>
+                  </div>
+                </button>
+
+                <button 
+                  type="button"
+                  className={`theme-card ${currentTheme === 'malpierre' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('malpierre')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview malpierre"></div>
+                  <div className="theme-info">
+                    <Sparkles size={14} />
+                    <span>Malpierre</span>
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -337,7 +415,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
               font-size: 0.65rem;
               text-transform: uppercase;
               letter-spacing: 0.12em;
-              color: #555;
+              color: var(--text-muted);
               font-weight: 900;
             }
             
@@ -365,13 +443,13 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                 flex-direction: column;
                 gap: 8px;
             }
-            .gen-field label { font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase; }
+            .gen-field label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
             .gen-field input {
                 background: rgba(255,255,255,0.05);
                 border: 1px solid var(--glass-border);
                 padding: 0.8rem;
                 border-radius: 8px;
-                color: white;
+                color: var(--foreground);
                 outline: none;
             }
             .gen-styles-grid {
@@ -392,7 +470,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                 transition: all 0.2s;
             }
             .style-item img { width: 40px; height: 40px; border-radius: 4px; background: white; }
-            .style-item span { font-size: 0.75rem; color: #888; font-weight: 600; }
+            .style-item span { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
             .style-item:hover { background: rgba(255,255,255,0.08); }
             .style-item.active {
                 border-color: var(--accent);
@@ -435,7 +513,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .section-title {
           margin: 0 0 2rem 0;
           font-size: 1.2rem;
-          color: #eee;
+          color: var(--foreground);
         }
         .profile-edit-form {
           display: flex;
@@ -481,7 +559,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           font-size: 0.8rem;
           font-weight: 700;
           text-transform: uppercase;
-          color: #555;
+          color: var(--text-secondary);
           letter-spacing: 0.05em;
         }
         .avatar-input-group {
@@ -496,7 +574,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           background: rgba(255,255,255,0.05);
           border: 1px solid var(--glass-border);
           border-radius: 8px;
-          color: #ccc;
+          color: var(--text-secondary);
           cursor: pointer;
           font-weight: 600;
           font-size: 0.85rem;
@@ -519,7 +597,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           border-radius: 8px;
           border: 1px solid var(--glass-border);
           background: rgba(255,255,255,0.03);
-          color: white;
+          color: var(--foreground);
           font-size: 0.95rem;
           outline: none;
           transition: border-color 0.2s;
@@ -546,6 +624,53 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .btn-primary:disabled {
           opacity: 0.5;
           cursor: not-allowed;
+        }
+
+        .theme-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 1rem;
+          width: 100%;
+        }
+        .theme-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--glass-border);
+          border-radius: 12px;
+          padding: 0.8rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: flex;
+          flex-direction: column;
+          gap: 0.8rem;
+          color: var(--foreground);
+          text-align: left;
+        }
+        .theme-card:hover:not(:disabled) {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+        .theme-card.active {
+          background: rgba(194, 29, 29, 0.1);
+          border-color: var(--primary);
+          box-shadow: 0 0 15px rgba(194, 29, 29, 0.2);
+        }
+        .theme-preview {
+          height: 40px;
+          border-radius: 6px;
+          width: 100%;
+        }
+        .theme-preview.dark { background: #0a0a0c; border: 1px solid #1a1a20; }
+        .theme-preview.light { background: #f0f1f4; border: 1px solid #dee2e6; }
+        .theme-preview.blood { background: #120000; border: 1px solid #8b0000; }
+        .theme-preview.malpierre { background: #020a02; border: 1px solid #39ff14; }
+        
+        .theme-info {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          font-weight: 600;
+          font-size: 0.85rem;
         }
       `}</style>
     </div>

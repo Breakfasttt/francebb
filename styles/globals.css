@@ -1,13 +1,45 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default Theme (Dark) */
+  --background: #0a0a0c;
+  --foreground: #ffffff;
+  --primary: #c21d1d;
+  --primary-hover: #dd2525;
+  --accent: #ffd700;
+  --card-bg: rgba(26, 26, 30, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-muted: #888;
+  --nav-bg: rgba(10, 10, 12, 0.95);
+  --footer-bg: rgba(10, 10, 12, 0.95);
+  --input-bg: rgba(0, 0, 0, 0.2);
+  --shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+[data-theme='light'] {
+  --background: #f4f4f7;
+  --foreground: #111111;
+  --primary: #c21d1d;
+  --primary-hover: #a11818;
+  --accent: #d4af37;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --text-muted: #666;
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --footer-bg: rgba(255, 255, 255, 0.95);
+  --input-bg: #fff;
+}
+
+[data-theme='blood'] {
+  --background: #0f0202;
+  --foreground: #f0e6e6;
+  --primary: #ff0000;
+  --primary-hover: #cc0000;
+  --accent: #9b1111;
+  --card-bg: rgba(30, 0, 0, 0.4);
+  --glass-border: rgba(255, 0, 0, 0.2);
+  --text-muted: #a17b7b;
+  --nav-bg: rgba(15, 0, 0, 0.95);
+  --footer-bg: rgba(15, 0, 0, 0.95);
+  --input-bg: rgba(50, 0, 0, 0.3);
 }
 
 html,
@@ -19,9 +51,10 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 * {
@@ -35,8 +68,24 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* Glassmorphism Utilities */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+/* Button Reset (Standard for the project) */
+button, .btn {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Responsiveness helpers */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 60px;
   }
 }

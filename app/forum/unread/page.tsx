@@ -25,7 +25,7 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Messages <span>non lus</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Liste des sujets ayant de nouvelles activités depuis votre dernière visite</p>
+          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Liste des sujets ayant de nouvelles activités depuis votre dernière visite</p>
         </div>
       </header>
 

@@ -58,7 +58,7 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
         </Link>
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Nouveau <span>sujet</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
+          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
         </div>
       </header>
  
@@ -69,7 +69,7 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
         
         <div className="forum-layout">
           <div className="forum-main-content">
-            <div style={{ background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{ background: 'var(--card-bg)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div className="form-group">
                 <label htmlFor="title" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Titre du sujet</label>
                 <TitleInputWithSmiley />

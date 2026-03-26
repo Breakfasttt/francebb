@@ -198,7 +198,7 @@ export default function TournamentFilterSidebar() {
 
       <style jsx>{`
         .filter-sidebar {
-          background: rgba(26, 26, 32, 0.5);
+          background: var(--card-bg);
           backdrop-filter: blur(10px);
           border: 1px solid var(--glass-border);
           border-radius: 12px;
@@ -218,16 +218,16 @@ export default function TournamentFilterSidebar() {
         .search-icon {
           position: absolute;
           left: 1rem;
-          color: #888;
+          color: var(--text-muted);
         }
 
         .search-box input {
           width: 100%;
           padding: 0.8rem 1rem 0.8rem 2.8rem;
-          background: rgba(255,255,255,0.05);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 8px;
-          color: white;
+          color: var(--foreground);
           outline: none;
         }
 
@@ -262,15 +262,15 @@ export default function TournamentFilterSidebar() {
 
         .filter-item label {
           font-size: 0.85rem;
-          color: #aaa;
+          color: var(--text-secondary);
         }
 
         .filter-item select, .filter-item input[type="number"] {
-          background: rgba(255,255,255,0.1);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 6px;
           padding: 0.5rem;
-          color: white;
+          color: var(--foreground);
           outline: none;
         }
 
@@ -279,7 +279,7 @@ export default function TournamentFilterSidebar() {
           align-items: center;
           gap: 0.8rem;
           cursor: pointer;
-          color: #eee;
+          color: var(--foreground);
         }
 
         .checkbox-label input {
@@ -291,9 +291,9 @@ export default function TournamentFilterSidebar() {
         .reset-btn {
           margin-bottom: 0.5rem;
           padding: 0.8rem;
-          background: rgba(255,255,255,0.03);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          color: #aaa;
+          color: var(--text-secondary);
           border-radius: 8px;
           cursor: pointer;
           transition: all 0.2s;
@@ -309,7 +309,8 @@ export default function TournamentFilterSidebar() {
 
         .filter-item input[type="number"]:focus {
           border-color: var(--primary);
-          background: rgba(255,255,255,0.15);
+          background: var(--glass-bg);
+          filter: brightness(1.2);
         }
       `}</style>
     </div>

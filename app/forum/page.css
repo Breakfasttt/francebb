@@ -13,8 +13,10 @@
 }
 
 .forum-main-content {
-  min-width: 0; /* Prevents content overflow */
-  min-height: calc(100vh); /* Forces grid row to be tall enough for sidebar to stick */
+  min-width: 0;
+  /* Prevents content overflow */
+  min-height: calc(100vh);
+  /* Forces grid row to be tall enough for sidebar to stick */
 }
 
 .forum-category {
@@ -28,13 +30,13 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-left: 4px solid white;
+  border-left: 4px solid var(--foreground);
   transition: all 0.2s ease;
 }
 
 .category-header.accordion-header:hover {
   filter: brightness(1.2);
-  background: linear-gradient(90deg, var(--primary), rgba(255,255,255,0.05));
+  background: linear-gradient(90deg, var(--primary), var(--glass-border));
 }
 
 .forum-category.collapsed .category-header {
@@ -47,8 +49,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .category-header h2 {
@@ -56,7 +65,7 @@
   font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: white;
+  color: var(--foreground);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -67,12 +76,12 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-left: 4px solid white;
-  color: white;
+  border-left: 4px solid var(--foreground);
+  color: var(--foreground);
 }
 
 .forums-list {
-  background: rgba(26, 26, 32, 0.4);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-top: none;
@@ -100,7 +109,7 @@
 
 .forum-info h3 {
   margin: 0 0 0.3rem 0;
-  color: #fff;
+  color: var(--foreground);
   font-size: 1.1rem;
 }
 
@@ -111,7 +120,7 @@
 
 .forum-info p {
   margin: 0;
-  color: #bbb;
+  color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
@@ -121,11 +130,11 @@
   justify-content: center;
   gap: 0.3rem;
   font-size: 0.85rem;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .stat-val {
-  color: #eee;
+  color: var(--foreground);
   font-weight: 600;
 }
 
@@ -134,8 +143,8 @@
   flex-direction: column;
   justify-content: center;
   font-size: 0.85rem;
-  color: #bbb;
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border-left: 1px solid var(--glass-border);
   padding-left: 1.5rem;
 }
 
@@ -150,7 +159,7 @@
 
 .last-post-meta {
   font-size: 0.75rem;
-  color: #555;
+  color: var(--text-muted);
   margin-top: 0.2rem;
 }
 
@@ -180,7 +189,8 @@
 /* Sidebar Styling */
 .forum-sidebar {
   display: block;
-  align-self: stretch; /* Forces the container to be the full height of the grid row */
+  align-self: stretch;
+  /* Forces the container to be the full height of the grid row */
 }
 
 .sidebar-sticky-inner {
@@ -199,7 +209,7 @@
 }
 
 .sidebar-widget {
-  background: rgba(26, 26, 32, 0.6);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
@@ -211,7 +221,7 @@
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
   text-transform: uppercase;
-  color: #eee;
+  color: var(--foreground);
   letter-spacing: 0.5px;
   display: flex;
   align-items: center;
@@ -223,7 +233,7 @@
   align-items: center;
   gap: 0.8rem;
   text-decoration: none;
-  color: #eee;
+  color: var(--foreground);
   font-size: 0.9rem;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -257,9 +267,9 @@
 }
 
 .secondary-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-border);
   border: 1px solid var(--glass-border);
-  color: #eee;
+  color: var(--foreground);
 }
 
 .secondary-btn:hover {
@@ -288,7 +298,7 @@
 }
 
 .recent-post-topic {
-  color: white;
+  color: var(--foreground);
   font-weight: 600;
   font-size: 0.85rem;
   white-space: nowrap;
@@ -303,7 +313,7 @@
 
 .recent-post-meta {
   font-size: 0.7rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .message-widget {
@@ -334,7 +344,8 @@
 }
 
 /* BBCode Spoiler & Accordion Styles */
-.bb-spoiler, .bb-accordion {
+.bb-spoiler,
+.bb-accordion {
   margin: 1.5rem 0;
   border-radius: 12px;
   overflow: hidden;
@@ -344,7 +355,8 @@
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.bb-spoiler summary, .bb-accordion summary {
+.bb-spoiler summary,
+.bb-accordion summary {
   padding: 1rem 1.4rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.04);
@@ -353,7 +365,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: #fff;
+  color: var(--foreground);
   user-select: none;
   transition: background 0.2s ease;
   position: relative;
@@ -364,7 +376,8 @@
   display: none;
 }
 
-.bb-spoiler summary::before, .bb-accordion summary::before {
+.bb-spoiler summary::before,
+.bb-accordion summary::before {
   content: "→";
   font-family: monospace;
   font-size: 1.1rem;
@@ -373,17 +386,20 @@
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.bb-spoiler[open] summary::before, .bb-accordion[open] summary::before {
+.bb-spoiler[open] summary::before,
+.bb-accordion[open] summary::before {
   transform: rotate(90deg);
 }
 
-.bb-spoiler summary:hover, .bb-accordion summary:hover {
+.bb-spoiler summary:hover,
+.bb-accordion summary:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.bb-spoiler-content, .bb-accordion-content {
+.bb-spoiler-content,
+.bb-accordion-content {
   padding: 1.5rem;
-  color: #ddd;
+  color: var(--text-secondary);
   line-height: 1.7;
   border-top: 1px solid var(--glass-border);
   background: rgba(0, 0, 0, 0.1);
@@ -391,17 +407,24 @@
 }
 
 @keyframes slideDownIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Specific styling for Spoiler */
 .bb-spoiler {
-  border-left: 4px solid #666;
+  border-left: 4px solid var(--text-muted);
 }
 
 .bb-spoiler summary {
-  color: #aaa;
+  color: var(--text-secondary);
 }
 
 /* Specific styling for Accordion */

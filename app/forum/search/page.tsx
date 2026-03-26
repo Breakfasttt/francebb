@@ -178,7 +178,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
             {posts.length === 0 ? (
-              <div style={{ padding: "3rem", textAlign: "center", background: "rgba(255,255,255,0.02)", borderRadius: "12px", color: "#888" }}>
+              <div style={{ padding: "3rem", textAlign: "center", background: "rgba(255,255,255,0.02)", borderRadius: "12px", color: "var(--text-muted)" }}>
                 Aucun résultat ne correspond à vos filtres. Essayez d'élargir votre recherche.
               </div>
             ) : (
@@ -201,8 +201,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                           Sujet: {post.topic.title}
                         </Link>
                       </h3>
-                      <div style={{ fontSize: "0.85rem", color: "#aaa", marginTop: "0.4rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
-                        <span>Dans <strong style={{color:"#ccc"}}>{post.topic.forum.name}</strong></span>
+                      <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.4rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+                        <span>Dans <strong style={{color:"var(--text-secondary)"}}>{post.topic.forum.name}</strong></span>
                         <span>•</span>
                         <span>Par <strong style={{color:"var(--primary)"}}>{post.author.name}</strong></span>
                         <span>•</span>
@@ -210,13 +210,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                           Message posté il y a {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: fr })}
                         </span>
                         
-                        <span style={{ margin: "0 0.5rem", width: "1px", height: "12px", background: "rgba(255,255,255,0.2)" }}></span>
+                        <span style={{ margin: "0 0.5rem", width: "1px", height: "12px", background: "var(--glass-border)" }}></span>
                         
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "#bbb" }} title="Vues du sujet">
+                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "var(--text-muted)" }} title="Vues du sujet">
                           <Eye size={14} /> {post.topic.views || 0}
                         </span>
                         <span>•</span>
-                        <span title={new Date(post.topic.updatedAt).toLocaleString("fr-FR")} style={{ color: "#bbb" }}>
+                        <span title={new Date(post.topic.updatedAt).toLocaleString("fr-FR")} style={{ color: "var(--text-muted)" }}>
                           Dernier msg: {new Date(post.topic.updatedAt).toLocaleDateString("fr-FR")} à {new Date(post.topic.updatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       </div>
@@ -231,7 +231,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                     padding: "1rem", 
                     background: "rgba(0,0,0,0.2)", 
                     borderRadius: "8px",
-                    color: "#ddd",
+                    color: "var(--foreground)",
                     fontSize: "0.95rem",
                     lineHeight: "1.5",
                     borderLeft: "3px solid var(--primary)"

@@ -104,7 +104,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
             {forum.isLocked && <LockIcon size={20} style={{ color: '#ef4444', opacity: 0.8 }} />}
             {forumHasNew && <Bell size={20} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
           </h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>{forum.description}</p>
+          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>{forum.description}</p>
         </div>
       </header>
  
