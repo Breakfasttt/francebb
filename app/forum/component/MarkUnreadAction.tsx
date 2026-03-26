@@ -38,7 +38,7 @@ export default function MarkUnreadAction({ topicId, postId }: MarkUnreadActionPr
           background: 'none',
           border: 'none',
           padding: '4px',
-          color: '#666',
+          color: 'var(--text-muted)',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
@@ -57,16 +57,16 @@ export default function MarkUnreadAction({ topicId, postId }: MarkUnreadActionPr
           bottom: '125%',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'rgba(0,0,0,0.85)',
-          color: 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
+          background: 'var(--footer-bg)',
+          color: 'var(--header-foreground)',
+          padding: '4px 10px',
+          borderRadius: '6px',
           fontSize: '0.7rem',
           whiteSpace: 'nowrap',
           zIndex: 100,
           pointerEvents: 'none',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.1)'
+          boxShadow: 'var(--glass-shadow)',
+          border: '1px solid var(--glass-border)'
         }}>
           Marquer comme non lu
         </div>
@@ -75,7 +75,7 @@ export default function MarkUnreadAction({ topicId, postId }: MarkUnreadActionPr
       <style jsx>{`
         .unread-post-btn:hover {
           color: var(--accent) !important;
-          background: rgba(255,255,255,0.05) !important;
+          background: var(--glass-bg) !important;
         }
       `}</style>
     </div>

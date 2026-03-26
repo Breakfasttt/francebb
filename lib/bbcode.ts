@@ -54,7 +54,16 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   while (/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i.test(html)) {
     html = html.replace(
       /\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i,
-      `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; position: relative; z-index: 1;"><div style="background: var(--primary); color: white; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-radius: 6px 6px 0 0;">Citation</div></div><blockquote style='border-left:4px solid var(--primary); color:#aaa; background:rgba(255,255,255,0.05); padding:1rem; margin:0; border-radius: 0 4px 4px 4px;'>$1</blockquote></div>`
+      `<div class="bb-quote-wrapper" style="margin: 1.5rem 0; display: flex; flex-direction: column;">
+        <div style="display: flex; position: relative; z-index: 1;">
+          <div style="background: var(--primary); color: var(--header-foreground); padding: 0.3rem 0.8rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 6px 6px 0 0; letter-spacing: 0.5px;">
+            Citation
+          </div>
+        </div>
+        <blockquote style='border-left:4px solid var(--primary); border-top: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); color: var(--text-secondary); background: var(--glass-bg); padding:1rem; margin:0; border-radius: 0 8px 8px 8px; font-style: italic;'>
+          $1
+        </blockquote>
+      </div>`
     );
   }
 
@@ -95,17 +104,28 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     if (postId && postStatusMap && postStatusMap[postId]) {
       const status = postStatusMap[postId];
       if (status.isDeleted) {
-        quoteContent = `<div style="border-left: 4px solid #888; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: #888; text-align: center;">Ce message a était supprimé par son auteur</div>`;
+        quoteContent = `<div style="border-left: 4px solid var(--text-muted); background: var(--glass-bg); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-muted); text-align: center; border: 1px solid var(--glass-border);">Ce message a était supprimé par son auteur</div>`;
       } else if (status.isModerated) {
-        quoteContent = `<div style="border-left: 4px solid #ff8888; background: rgba(194, 29, 29, 0.1); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: #ff8888; text-align: center;">Le contenu de ce message a été masqué par la modération.</div>`;
+        quoteContent = `<div style="border-left: 4px solid var(--danger); background: var(--primary-transparent); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--danger); text-align: center; border: 1px solid var(--danger);">Le contenu de ce message a été masqué par la modération.</div>`;
       }
     }
 
     if (!quoteContent) {
-      quoteContent = `<div style="border-left: 4px solid var(--primary); background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 0 8px 8px 8px; font-style: italic; margin: 0;"><div>${content}</div></div>`;
+      quoteContent = `<div style="border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 1rem; border-radius: 0 8px 8px 8px; font-style: italic; margin: 0; border-top: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); color: var(--text-secondary);"><div>${content}</div></div>`;
     }
 
-    return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1;"><div style="display: flex; gap: 4px;"><div style="background: var(--primary); color: white; padding: 0.3rem 0.8rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; border-radius: 6px 6px 0 0;">Citation</div><div style="background: rgba(255,255,255,0.1); color: #ccc; padding: 0.3rem 0.8rem; font-size: 0.75rem; border-radius: 6px 6px 0 0;">Par <a href="/profile?id=${userId}" target="_blank" style="color: white; text-decoration: none; font-weight: 700;">@${userId}</a></div></div>${postId ? `<div style="background: rgba(255,255,255,0.05); color: #aaa; padding: 0.3rem 0.8rem; font-size: 0.75rem; border-radius: 6px 6px 0 0;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>` : ""}</div>${quoteContent}</div>`;
+    return `<div class="bb-quote-wrapper" style="margin: 1.5rem 0; display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1;">
+        <div style="display: flex; gap: 4px;">
+          <div style="background: var(--primary); color: var(--header-foreground); padding: 0.3rem 0.8rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 6px 6px 0 0; letter-spacing: 0.5px;">Citation</div>
+          <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.3rem 0.8rem; font-size: 0.7rem; border-radius: 6px 6px 0 0; font-weight: 600;">
+            Par <a href="/profile?id=${userId}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${userId}</a>
+          </div>
+        </div>
+        ${postId ? `<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.3rem 0.8rem; font-size: 0.7rem; border-radius: 6px 6px 0 0;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>` : ""}
+      </div>
+      ${quoteContent}
+    </div>`;
   });
 
   // 4. Replace Images

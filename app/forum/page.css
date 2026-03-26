@@ -323,7 +323,7 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--glass-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -332,13 +332,13 @@
 .bb-accordion summary {
   padding: 1rem 1.4rem;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--nav-bg-dark, rgba(0, 0, 0, 0.1));
   font-weight: 700;
   list-style: none;
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--foreground);
+  color: var(--header-foreground);
   user-select: none;
   transition: background 0.2s ease;
   position: relative;
@@ -366,7 +366,8 @@
 
 .bb-spoiler summary:hover,
 .bb-accordion summary:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--primary);
+  color: var(--header-foreground);
 }
 
 .bb-spoiler-content,
@@ -375,7 +376,7 @@
   color: var(--text-secondary);
   line-height: 1.7;
   border-top: 1px solid var(--glass-border);
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--glass-bg);
   animation: slideDownIn 0.3s ease-out;
 }
 

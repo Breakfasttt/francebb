@@ -44,15 +44,18 @@ const PostItem: React.FC<PostItemProps> = ({
         gridTemplateColumns: '200px 1fr',
         minHeight: '200px',
         padding: 0,
-        overflow: 'hidden',
-        border: isFirstPostAlwaysVisible ? '1px solid rgba(255, 215, 0, 0.3)' : undefined,
-        background: isFirstPostAlwaysVisible ? 'rgba(255, 215, 0, 0.02)' : undefined
+        position: 'relative',
+        borderColor: isFirstPostAlwaysVisible ? 'var(--accent)' : undefined,
+        background: isFirstPostAlwaysVisible ? 'var(--admin-bg)' : undefined
       }}
     >
       {/* Sidebar Auteur */}
       <div style={{
-        background: 'rgba(255,255,255,0.03)',
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(5px)',
         borderRight: '1px solid var(--glass-border)',
+        borderTopLeftRadius: '16px',
+        borderBottomLeftRadius: '16px',
         padding: '2rem 1rem',
         display: 'flex',
         flexDirection: 'column',
@@ -64,8 +67,8 @@ const PostItem: React.FC<PostItemProps> = ({
           {post.author.image ? (
             <img src={post.author.image} alt="" style={{ width: '90px', height: '90px', borderRadius: '50%', border: '2px solid var(--glass-border)', objectFit: 'cover' }} />
           ) : (
-            <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <User size={45} color="#888" />
+            <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <User size={45} color="var(--text-muted)" />
             </div>
           )}
           <div style={{
@@ -76,7 +79,7 @@ const PostItem: React.FC<PostItemProps> = ({
             width: '18px',
             height: '18px',
             borderRadius: '50%',
-            border: '2px solid #1a1a20'
+            border: '2px solid var(--background)'
           }}></div>
         </div>
 
@@ -87,10 +90,10 @@ const PostItem: React.FC<PostItemProps> = ({
           </div>
 
           {(post.author.nafNumber || post.author.region || post.author.league) && (
-            <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               {post.author.nafNumber && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
-                  <Trophy size={12} color="#eab308" />
+                  <Trophy size={12} color="var(--unread-marker)" />
                   <a
                     href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${post.author.nafNumber}`}
                     target="_blank"
@@ -119,10 +122,10 @@ const PostItem: React.FC<PostItemProps> = ({
               href={`/spy/${post.author.id}`}
               style={{
                 padding: '0.35rem 0.6rem',
-                background: 'rgba(59, 130, 246, 0.1)',
-                border: '1px solid rgba(59, 130, 246, 0.2)',
+                background: 'rgba(var(--accent-rgb, 255, 215, 0), 0.1)',
+                border: '1px solid var(--accent)',
                 borderRadius: '4px',
-                color: '#60a5fa',
+                color: 'var(--accent)',
                 fontSize: '0.65rem',
                 textDecoration: 'none',
                 fontWeight: 700,
@@ -138,10 +141,10 @@ const PostItem: React.FC<PostItemProps> = ({
                 href={`/profile?tab=pm&recipientId=${post.author.id}`}
                 style={{
                   padding: '0.35rem 0.6rem',
-                  background: 'rgba(34, 197, 94, 0.1)',
-                  border: '1px solid rgba(34, 197, 94, 0.2)',
+                  background: 'rgba(var(--success-rgb, 34, 197, 94), 0.1)',
+                  border: '1px solid var(--success)',
                   borderRadius: '4px',
-                  color: '#4ade80',
+                  color: 'var(--success)',
                   fontSize: '0.65rem',
                   textDecoration: 'none',
                   fontWeight: 700,
@@ -165,7 +168,7 @@ const PostItem: React.FC<PostItemProps> = ({
             )}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span>#{index + 1}</span>
+            <span style={{ fontWeight: 800, color: 'var(--accent)', marginRight: '0.5rem' }}>#{index + 1}</span>
             {currentUserId && <MarkUnreadAction topicId={topicId} postId={post.id} />}
             <SharePostButton postId={post.id} topicId={topicId} page={safeCurrentPage} />
           </div>
@@ -190,15 +193,17 @@ const PostItem: React.FC<PostItemProps> = ({
           <>
             {post.isModerated && (
               <div style={{
-                background: 'rgba(194, 29, 29, 0.1)',
-                border: '1px solid rgba(194, 29, 29, 0.3)',
+                background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)',
+                border: '1px solid var(--danger)',
                 borderRadius: '8px',
                 padding: '1rem',
                 marginBottom: '1.5rem',
-                color: '#ff8888',
+                color: 'var(--danger)',
                 fontSize: '0.95rem',
+                fontWeight: 600,
                 fontStyle: 'italic'
               }}>
+                <Shield size={14} style={{ display: 'inline', marginRight: '0.5rem' }} />
                 Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
               </div>
             )}

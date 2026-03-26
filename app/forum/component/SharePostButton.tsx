@@ -31,13 +31,13 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          color: copied ? '#22c55e' : '#555',
+          color: copied ? 'var(--success)' : 'var(--text-muted)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: '2px 4px',
           borderRadius: '4px',
-          transition: 'all 0.2s ease',
+          transition: 'all 0.2s ease'
         }}
       >
         {copied ? <Check size={13} /> : <Share2 size={13} />}
@@ -49,16 +49,16 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
           bottom: '125%',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: 'rgba(0,0,0,0.85)',
-          color: 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
+          background: 'var(--footer-bg)',
+          color: 'var(--header-foreground)',
+          padding: '4px 10px',
+          borderRadius: '6px',
           fontSize: '0.7rem',
           whiteSpace: 'nowrap',
           zIndex: 100,
           pointerEvents: 'none',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.1)',
+          boxShadow: 'var(--glass-shadow)',
+          border: '1px solid var(--glass-border)',
           animation: 'fadeInUp 0.2s ease-out'
         }}>
           Partager ce post
@@ -89,8 +89,8 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
 
       <style jsx>{`
         .share-post-btn:hover {
-          color: ${copied ? '#22c55e' : 'var(--accent)'} !important;
-          background: rgba(255,255,255,0.05) !important;
+          color: ${copied ? 'var(--success)' : 'var(--accent)'} !important;
+          background: var(--glass-bg) !important;
         }
       `}</style>
     </div>

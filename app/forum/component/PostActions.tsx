@@ -107,7 +107,7 @@ export default function PostActions({
                   onClick={() => setIsModModalOpen(true)}
                   className="secondary-btn" 
                   title="Modérer ce message"
-                  style={{ ...btnStyle, background: 'rgba(194, 29, 29, 0.1)', color: '#ff6666', borderColor: 'rgba(194, 29, 29, 0.3)' }}
+                  style={{ ...btnStyle, background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)', color: 'var(--danger)', borderColor: 'var(--danger)' }}
                 >
                   <ShieldAlert size={14} />
                   <span>Modérer</span>
@@ -117,7 +117,7 @@ export default function PostActions({
                   onClick={() => setIsRestoreModalOpen(true)}
                   className="secondary-btn" 
                   title="Restaurer ce message"
-                  style={{ ...btnStyle, background: 'rgba(46, 125, 50, 0.1)', color: '#81c784', borderColor: 'rgba(46, 125, 50, 0.3)' }}
+                  style={{ ...btnStyle, background: 'rgba(var(--success-rgb, 46, 125, 50), 0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}
                 >
                   <ShieldCheck size={14} />
                   <span>Restaurer</span>
@@ -134,41 +134,79 @@ export default function PostActions({
 
         {/* Right column: Action trio */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: '0.4rem' }}>
+          
           {/* Citer */}
-          <button 
-            onClick={handleQuote}
-            className="secondary-btn hover-brightness" 
-            title="Citer ce message"
-            style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', color: '#eee' }}
-          >
-            <MessageSquare size={16} />
-          </button>
+          <div className="tooltip-wrapper">
+            <button 
+              onClick={handleQuote}
+              className="secondary-btn hover-brightness" 
+              style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--glass-bg)', color: 'var(--foreground)' }}
+            >
+              <MessageSquare size={16} />
+            </button>
+            <span className="tooltip-text">Citer</span>
+          </div>
 
           {/* Modifier */}
           {canEdit && (
-            <Link 
-              href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
-              className="widget-button hover-brightness" 
-              title={isTournament && isFirstPost ? "Modifier le tournoi" : "Modifier le message"}
-              style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'white', border: 'none' }}
-            >
-              <Pencil size={16} />
-            </Link>
+            <div className="tooltip-wrapper">
+              <Link 
+                href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
+                className="widget-button hover-brightness" 
+                style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'var(--header-foreground)', border: 'none' }}
+              >
+                <Pencil size={16} />
+              </Link>
+              <span className="tooltip-text">{isTournament && isFirstPost ? "Modifier tournoi" : "Modifier"}</span>
+            </div>
           )}
 
           {/* Supprimer */}
           {isAuthor && (
-            <button 
-              onClick={() => setIsDeleteModalOpen(true)}
-              className="secondary-btn hover-brightness" 
-              title="Supprimer mon message"
-              style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', color: '#ff8888' }}
-            >
-              <Trash2 size={16} />
-            </button>
+            <div className="tooltip-wrapper">
+              <button 
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="secondary-btn hover-brightness" 
+                style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--glass-bg)', color: 'var(--danger)' }}
+              >
+                <Trash2 size={16} />
+              </button>
+              <span className="tooltip-text">Supprimer</span>
+            </div>
           )}
         </div>
       </div>
+
+      <style jsx>{`
+        .tooltip-wrapper {
+          position: relative;
+          display: inline-flex;
+        }
+        .tooltip-text {
+          visibility: hidden;
+          background-color: var(--footer-bg);
+          color: var(--header-foreground);
+          text-align: center;
+          padding: 4px 10px;
+          border-radius: 6px;
+          position: absolute;
+          z-index: 100;
+          bottom: 125%;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 0;
+          transition: opacity 0.3s;
+          font-size: 0.7rem;
+          white-space: nowrap;
+          box-shadow: var(--glass-shadow);
+          border: 1px solid var(--glass-border);
+          pointer-events: none;
+        }
+        .tooltip-wrapper:hover .tooltip-text {
+          visibility: visible;
+          opacity: 1;
+        }
+      `}</style>
 
       <ModerationModal 
         isOpen={isModModalOpen} 
