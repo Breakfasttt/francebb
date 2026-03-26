@@ -15,6 +15,15 @@
   --text-muted: #888;
   --text-secondary: #aaa;
   --glass-bg: rgba(26, 26, 32, 0.4);
+  --btn-shadow: rgba(194, 29, 29, 0.4);
+  --unread-marker: #ffd700;
+  --primary-transparent: rgba(194, 29, 29, 0.2);
+  --category-header-bg: rgba(194, 29, 29, 0.15);
+  --admin-bg: rgba(194, 29, 29, 0.05);
+  --admin-border: rgba(194, 29, 29, 0.3);
+  --danger: #ff4444;
+  --success: #22c55e;
+  --header-foreground: var(--foreground);
 }
 
 [data-theme='light'] {
@@ -23,16 +32,25 @@
   --foreground: #1c1c21;
   --primary: #c21d1d;
   --primary-hover: #a11818;
-  --secondary: #dee2e6;
+  --secondary: #d1d5db; /* Slightly darker secondary for contrast */
   --accent: #b8860b; /* Bronze/Alt Gold */
-  --card-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08);
-  --nav-bg: rgba(240, 241, 244, 0.9);
-  --footer-bg: rgba(240, 241, 244, 0.9);
-  --text-muted: #6b7280;
-  --text-secondary: #4b5563;
-  --glass-bg: rgba(255, 255, 255, 0.4);
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.25);
+  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
+  --nav-bg: rgba(240, 241, 244, 0.95);
+  --footer-bg: rgba(240, 241, 244, 0.98);
+  --text-muted: #4b5563;
+  --text-secondary: #374151;
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --btn-shadow: rgba(0, 0, 0, 0.1);
+  --unread-marker: #8b4513; /* Darker Bronze for unread */
+  --primary-transparent: rgba(194, 29, 29, 0.12);
+  --category-header-bg: rgba(194, 29, 29, 0.08);
+  --admin-bg: rgba(0, 0, 0, 0.03);
+  --admin-border: rgba(0, 0, 0, 0.15);
+  --danger: #b91c1c;
+  --success: #15803d;
+  --header-foreground: #ffffff;
 }
 
 [data-theme='blood'] {
@@ -51,14 +69,23 @@
   --text-muted: #b07070;
   --text-secondary: #e0a0a0;
   --glass-bg: rgba(30, 0, 0, 0.5);
+  --btn-shadow: rgba(255, 0, 0, 0.15);
+  --unread-marker: #ff4d4d;
+  --primary-transparent: rgba(255, 0, 0, 0.2);
+  --category-header-bg: rgba(120, 0, 0, 0.4);
+  --admin-bg: rgba(100, 0, 0, 0.1);
+  --admin-border: rgba(255, 0, 0, 0.3);
+  --danger: #ff0000;
+  --success: #39ff14;
+  --header-foreground: var(--foreground);
 }
 
 [data-theme='malpierre'] {
   --background: #020a02;
   --bg-gradient: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
   --foreground: #e6ffe6;
-  --primary: #39ff14; /* Radioactive Green */
-  --primary-hover: #32cd32;
+  --primary: #0a4d0a; /* Dark Warpstone Green */
+  --primary-hover: #0d610d;
   --secondary: #0c250c;
   --accent: #9bff70;
   --card-bg: rgba(0, 30, 5, 0.45);
@@ -69,6 +96,96 @@
   --text-muted: #5bb35b;
   --text-secondary: #8cfc00;
   --glass-bg: rgba(0, 25, 0, 0.5);
+  --btn-shadow: rgba(57, 255, 20, 0.12);
+  --unread-marker: #39ff14;
+  --primary-transparent: rgba(10, 77, 10, 0.35);
+  --category-header-bg: rgba(10, 50, 10, 0.5);
+  --admin-bg: rgba(10, 77, 10, 0.08);
+  --admin-border: rgba(57, 255, 20, 0.3);
+  --danger: #ff4444;
+  --success: #39ff14;
+  --header-foreground: var(--foreground);
+}
+
+[data-theme='nehekhara'] {
+  --background: #0b0e14; /* Deep Charcoal/Modern Black */
+  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%);
+  --foreground: #f1f5f9;
+  --primary: #d97706; /* Amber Gold (Tomb Kings inspiration) */
+  --primary-hover: #b45309;
+  --secondary: #1e293b;
+  --accent: #115e59; /* Modern Teal/Nil Green */
+  --card-bg: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(217, 119, 6, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --nav-bg: rgba(11, 14, 20, 0.95);
+  --footer-bg: rgba(2, 6, 23, 0.98);
+  --text-muted: #64748b;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(15, 23, 42, 0.5);
+  --btn-shadow: rgba(217, 119, 6, 0.2);
+  --unread-marker: #fbbf24;
+  --primary-transparent: rgba(217, 119, 6, 0.15);
+  --category-header-bg: rgba(217, 119, 6, 0.12);
+  --admin-bg: rgba(17, 94, 89, 0.05); /* Teal for admin */
+  --admin-border: rgba(17, 94, 89, 0.3);
+  --danger: #ef4444;
+  --success: #39ff14;
+}
+
+[data-theme='saison3'] {
+  --background: #efebdd; /* Stony Parchment */
+  --bg-gradient: linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%);
+  --foreground: #1a110a; /* Dark Rulebook Text */
+  --primary: #9e1d1d; /* Imperial Red for Buttons */
+  --primary-hover: #801717;
+  --secondary: #004175; /* Rulebook Navy */
+  --accent: #004175; /* Navy for clean headers */
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 65, 117, 0.25);
+  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+  --nav-bg: #9e1d1d; /* Solid Imperial Red Nav */
+  --footer-bg: #1a110a;
+  --text-muted: #5d4d42;
+  --text-secondary: #2d2016;
+  --glass-bg: rgba(0, 65, 117, 0.06); /* Light Navy Wash instead of White */
+  --btn-shadow: rgba(158, 29, 29, 0.2);
+  --unread-marker: #e11d48; /* High-Visibility Blood Red for Markers */
+  --primary-transparent: rgba(158, 29, 29, 0.1);
+  --category-header-bg: #004175; /* Navy Header from Player Cards */
+  --admin-bg: rgba(158, 29, 29, 0.05); 
+  --admin-border: rgba(158, 29, 29, 0.4);
+  --danger: #9e1d1d;
+  --success: #15803d;
+  --header-foreground: #f2efe1;
+  --category-hover-bg: rgba(0, 30, 60, 0.3);
+}
+
+[data-theme='naf'] {
+  --background: #011b33; /* Deep NAF Navy */
+  --bg-gradient: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
+  --foreground: #f1f5f9;
+  --primary: #fac710; /* NAF Star Yellow */
+  --primary-hover: #d9ad0d;
+  --secondary: #002b5c;
+  --accent: #ffffff; /* Stars White */
+  --card-bg: rgba(0, 43, 93, 0.35);
+  --glass-border: rgba(250, 199, 16, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  --nav-bg: rgba(1, 27, 51, 0.95);
+  --footer-bg: rgba(1, 15, 30, 0.98);
+  --text-muted: #748ba7;
+  --text-secondary: #a0b2c7;
+  --glass-bg: rgba(1, 43, 93, 0.4);
+  --btn-shadow: rgba(250, 199, 16, 0.15);
+  --unread-marker: #fac710;
+  --primary-transparent: rgba(250, 199, 16, 0.15);
+  --category-header-bg: rgba(1, 43, 93, 0.5);
+  --admin-bg: rgba(250, 199, 16, 0.05);
+  --admin-border: rgba(250, 199, 16, 0.3);
+  --danger: #ef4444;
+  --success: #39ff14;
+  --header-foreground: #ffffff;
 }
 
 * {
@@ -121,7 +238,7 @@ label {
 
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--header-foreground);
   padding: 0.8rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
@@ -189,7 +306,7 @@ label {
 
 .tournament-badge {
   background: var(--primary);
-  color: white;
+  color: var(--header-foreground);
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
   font-size: 0.75rem;
@@ -207,6 +324,7 @@ label {
   justify-content: center;
   color: var(--foreground);
   transition: all 0.2s ease;
+  background: var(--glass-bg);
   backdrop-filter: blur(8px);
   flex-shrink: 0;
 }
@@ -214,7 +332,9 @@ label {
 .back-button:hover {
   background: var(--primary);
   border-color: var(--primary);
+  color: var(--header-foreground);
   transform: scale(1.1);
+  box-shadow: 0 0 15px var(--btn-shadow);
 }
 
 .action-buttons {
@@ -233,18 +353,58 @@ label {
   color: var(--foreground);
   text-transform: uppercase;
   letter-spacing: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.widget-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--primary);
+  color: var(--header-foreground);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.widget-button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--btn-shadow);
+}
+
+.widget-button.active {
+  background: var(--accent);
+  color: var(--header-foreground);
+}
+
+.secondary-btn {
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
+  color: var(--foreground);
+}
+
+.secondary-btn:hover {
+  background: var(--glass-bg);
+  border-color: var(--text-muted);
+}
+
 .action-card:hover {
   background: var(--primary);
   border-color: var(--primary);
   transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 10px 25px rgba(194, 29, 29, 0.4);
+  box-shadow: 0 10px 25px var(--btn-shadow);
 }
 
 .section-title {
@@ -290,7 +450,7 @@ label {
 }
 
 .tournament-row {
-  background: rgba(26, 26, 32, 0.5);
+  background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
@@ -302,7 +462,7 @@ label {
 }
 
 .tournament-row:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
   border-color: var(--primary);
 }
 
@@ -356,7 +516,7 @@ label {
 }
 
 .icon-highlight {
-  filter: drop-shadow(0 0 5px rgba(194, 29, 29, 0.5));
+  filter: drop-shadow(0 0 5px var(--btn-shadow));
 }
 
 .t-title-row {
@@ -406,7 +566,7 @@ select option {
 }
 
 .active-filters-box {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 1rem 1.5rem;

@@ -9,6 +9,7 @@ import { Mail, ShieldAlert, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +28,7 @@ export default async function RootLayout({
 
   let userRole: UserRole = "COACH";
   let isBanned = false;
-  let userTheme = "dark";
+  let userTheme = "saison3";
 
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
@@ -37,7 +38,7 @@ export default async function RootLayout({
     if (user) {
       userRole = user.role as UserRole;
       isBanned = user.isBanned;
-      userTheme = user.theme || "dark";
+      userTheme = user.theme || "saison3";
     }
   }
 
@@ -63,16 +64,18 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="fr" data-theme={userTheme}>
+    <html lang="fr" suppressHydrationWarning>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <DebugAuthWidget />
+        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false}>
+          <DebugAuthWidget />
         <BannedRedirect isBanned={isBanned} />
         <AuthProvider session={session}>
           <Toaster position="bottom-right" toastOptions={{
             style: {
-              background: '#1a1a20',
-              color: '#fff',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--card-bg)',
+              color: 'var(--foreground)',
+              border: '1px solid var(--glass-border)',
+              backdropFilter: 'blur(10px)',
             },
           }} />
           <nav className="nav">
@@ -88,7 +91,7 @@ export default async function RootLayout({
                 <Link
                   href="/administration"
                   title="Administration"
-                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  style={{ color: 'var(--foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
                   <Settings size={22} />
                 </Link>
@@ -97,7 +100,7 @@ export default async function RootLayout({
                 <Link
                   href="/moderation"
                   title="Modération"
-                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  style={{ color: 'var(--foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
                   <ShieldAlert size={22} />
                 </Link>
@@ -110,7 +113,7 @@ export default async function RootLayout({
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
-                    color: 'white',
+                    color: 'var(--foreground)',
                     textDecoration: 'none'
                   }}
                 >
@@ -150,13 +153,13 @@ export default async function RootLayout({
             padding: '0.6rem',
             textAlign: 'center',
             fontSize: '0.75rem',
-            color: '#666',
-            borderTop: '1px solid rgba(255,255,255,0.05)',
-            background: 'rgba(10, 10, 12, 0.95)',
+            color: 'var(--text-muted)',
+            borderTop: '1px solid var(--glass-border)',
+            background: 'var(--footer-bg)',
             backdropFilter: 'blur(10px)',
             zIndex: 1000
           }}>
-            <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: '#888', transition: 'color 0.2s' }} className="footer-link">
+            <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: 'var(--text-secondary)', transition: 'color 0.2s' }} className="footer-link">
               Mentions légales
             </Link>
             {' • '}
@@ -165,7 +168,8 @@ export default async function RootLayout({
             </span>
           </footer>
         </AuthProvider>
-      </body>
-    </html>
+      </ThemeProvider>
+    </body>
+  </html>
   );
 }

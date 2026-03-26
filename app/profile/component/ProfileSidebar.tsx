@@ -264,13 +264,13 @@ export default function ProfileSidebar({
         .stat-label {
           font-size: 0.7rem;
           text-transform: uppercase;
-          color: #555;
+          color: var(--text-muted);
           font-weight: 800;
         }
         .stat-value {
           font-size: 1.2rem;
           font-weight: 600;
-          color: #eee;
+          color: var(--foreground);
         }
         .profile-info-list {
           display: flex;
@@ -284,7 +284,7 @@ export default function ProfileSidebar({
           align-items: center;
           gap: 0.8rem;
           font-size: 0.9rem;
-          color: #aaa;
+          color: var(--text-secondary);
         }
         .profile-actions {
           display: flex;
@@ -309,7 +309,7 @@ export default function ProfileSidebar({
         }
         .full-width { width: 100%; }
         .primary-btn { background: var(--primary); color: white; border: none; }
-        .secondary-btn { background: rgba(255,255,255,0.05); color: #888; border: 1px solid var(--glass-border); }
+        .secondary-btn { background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); }
         .success-btn { background: #22c55e; color: white; border: none; }
         .danger-btn { background: #ef4444; color: white; border: none; }
         
@@ -340,16 +340,16 @@ export default function ProfileSidebar({
           border-radius: 8px;
           background: transparent;
           border: none;
-          color: #888;
+          color: var(--text-muted);
           cursor: pointer;
           transition: all 0.2s;
         }
         .nav-icon-item:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: #ccc;
+          background: var(--glass-bg);
+          color: var(--foreground);
         }
         .nav-icon-item.active {
-          background: rgba(194, 29, 29, 0.2);
+          background: var(--primary-transparent);
           color: var(--primary);
         }
       `}</style>

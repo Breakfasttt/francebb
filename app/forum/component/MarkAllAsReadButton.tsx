@@ -27,7 +27,7 @@ export default function MarkAllAsReadButton() {
         <button 
           className="widget-button" 
           onClick={() => setIsConfirming(true)}
-          style={{ width: 'auto', padding: '0.8rem', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', color: '#ccc', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          style={{ width: 'auto', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <CheckCheck size={18} />
         </button>

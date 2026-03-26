@@ -7,6 +7,7 @@ import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
+import { useTheme } from "next-themes";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -44,7 +45,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
 
   const [isPending, startTransition] = useTransition();
   const [isUpdatingTheme, startThemeUpdate] = useTransition();
-  const [currentTheme, setCurrentTheme] = useState(user.theme || "dark");
+  const { theme, setTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState(theme || user.theme || "dark");
   const [isUploading, setIsUploading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -58,6 +60,10 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     }
     loadRegions();
   }, []);
+
+  useEffect(() => {
+    if (theme) setCurrentTheme(theme);
+  }, [theme]);
 
   const showToast = (message: string, type: "success" | "error") => {
     setToast({ message, type });
@@ -110,6 +116,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
 
   const handleThemeChange = (newTheme: string) => {
     setCurrentTheme(newTheme);
+    setTheme(newTheme);
     startThemeUpdate(async () => {
       const result = await updateTheme(newTheme);
       if (result.success) {
@@ -319,6 +326,45 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                     <span>Malpierre</span>
                   </div>
                 </button>
+
+                <button 
+                  type="button"
+                  className={`theme-card ${currentTheme === 'nehekhara' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('nehekhara')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview nehekhara"></div>
+                  <div className="theme-info">
+                    <Sparkles size={14} />
+                    <span>Néhékhara (Sables & Ambre)</span>
+                  </div>
+                </button>
+
+                <button 
+                  type="button"
+                  className={`theme-card ${currentTheme === 'saison3' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('saison3')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview saison3"></div>
+                  <div className="theme-info">
+                    <Sparkles size={14} />
+                    <span>Saison 3 (Legends 2025)</span>
+                  </div>
+                </button>
+
+                <button 
+                  type="button"
+                  className={`theme-card ${currentTheme === 'naf' ? 'active' : ''}`}
+                  onClick={() => handleThemeChange('naf')}
+                  disabled={isUpdatingTheme}
+                >
+                  <div className="theme-preview naf"></div>
+                  <div className="theme-info">
+                    <Sparkles size={14} />
+                    <span>NAF (Navy & Gold)</span>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
@@ -445,7 +491,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             }
             .gen-field label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
             .gen-field input {
-                background: rgba(255,255,255,0.05);
+                background: var(--glass-bg);
                 border: 1px solid var(--glass-border);
                 padding: 0.8rem;
                 border-radius: 8px;
@@ -596,7 +642,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           padding: 0.8rem 1rem;
           border-radius: 8px;
           border: 1px solid var(--glass-border);
-          background: rgba(255,255,255,0.03);
+          background: var(--glass-bg);
           color: var(--foreground);
           font-size: 0.95rem;
           outline: none;
@@ -662,8 +708,11 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         }
         .theme-preview.dark { background: #0a0a0c; border: 1px solid #1a1a20; }
         .theme-preview.light { background: #f0f1f4; border: 1px solid #dee2e6; }
-        .theme-preview.blood { background: #120000; border: 1px solid #8b0000; }
-        .theme-preview.malpierre { background: #020a02; border: 1px solid #39ff14; }
+        .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #ff0000 100%); }
+        .theme-preview.malpierre { background: linear-gradient(135deg, #020a02 0%, #39ff14 100%); }
+        .theme-preview.nehekhara { background: linear-gradient(135deg, #0b0e14 0%, #d97706 100%); }
+        .theme-preview.saison3 { background: linear-gradient(135deg, #9e1d1d 0%, #efebdd 100%); }
+        .theme-preview.naf { background: linear-gradient(135deg, #012b5d 0%, #fac710 100%); }
         
         .theme-info {
           display: flex;

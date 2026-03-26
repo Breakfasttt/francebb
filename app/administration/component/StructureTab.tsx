@@ -427,8 +427,8 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
       <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}
         title={`Supprimer ${editingType === 'Category' ? 'la catégorie' : 'le forum'} "${editingItem?.name}" ?`}
         confirmText="Supprimer définitivement" onConfirm={confirmDelete} variant="danger">
-        <p style={{ color: '#ccc', lineHeight: 1.6 }}>
-          Cette action est <strong style={{ color: '#dc2626' }}>irréversible</strong>. L&apos;élément doit être <strong>vide</strong> pour pouvoir être supprimé.
+        <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
+          Cette action est <strong style={{ color: 'var(--danger)' }}>irréversible</strong>. L&apos;élément doit être <strong>vide</strong> pour pouvoir être supprimé.
         </p>
       </Modal>
 
@@ -452,7 +452,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           <span><ArrowBigDown size={14} /> Catégorie Suiv.</span>
         </div>
 
-        {isLoading ? <p style={{ color: '#888' }}>Chargement...</p> : (
+        {isLoading ? <p style={{ color: 'var(--text-muted)' }}>Chargement...</p> : (
           <DndContext sensors={sensors} collisionDetection={closestCenter}
             onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
 
@@ -532,9 +532,9 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
               {activeId && (
                 <div className="forum-block drag-ghost">
                   <div className="forum-row">
-                    <GripVertical size={16} style={{ color: '#666' }} />
+                    <GripVertical size={16} style={{ color: 'var(--text-muted)' }} />
                     <FolderGit2 size={15} color="var(--primary)" />
-                    <strong style={{ color: '#eee', fontSize: '0.9rem' }}>{getActiveName()}</strong>
+                    <strong style={{ color: 'var(--foreground)', fontSize: '0.9rem' }}>{getActiveName()}</strong>
                   </div>
                 </div>
               )}
@@ -638,11 +638,11 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           transition: border-color 0.2s;
           position: relative;
         }
-        .category-block:hover { border-color: rgba(194,29,29,0.6); z-index: 5; }
+        .category-block:hover { border-color: var(--primary); z-index: 5; }
         .category-header {
           display: flex; align-items: center; padding: 0.9rem 1.2rem;
-          background: linear-gradient(90deg, rgba(194,29,29,0.12), rgba(255,255,255,0.03));
-          border-bottom: 1px solid rgba(194,29,29,0.2);
+          background: var(--glass-bg);
+          border-bottom: 1px solid var(--glass-border);
           gap: 0.8rem;
           border-radius: 16px 16px 0 0;
         }
@@ -684,7 +684,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
 
         .forum-row { display: flex; align-items: center; padding: 0.65rem 0.9rem; gap: 0.65rem; }
         .forum-title-container { flex: 1; display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
-        .forum-title-container strong { color: #eee; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .forum-title-container strong { color: var(--foreground); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .forum-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
         .sub-forums-container { padding: 0.6rem 0.8rem 0.8rem; background: rgba(0,0,0,0.15); }
 

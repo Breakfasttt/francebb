@@ -108,7 +108,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
       <style jsx>{`
         .profile-settings-view {
           padding: 2rem;
-          background: rgba(0, 0, 0, 0.2);
+          background: var(--card-bg);
           border-radius: 16px;
           border: 1px solid var(--glass-border);
         }
@@ -124,7 +124,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
         .activity-box-title {
           margin: 0;
           font-size: 1.2rem;
-          color: #eee;
+          color: var(--foreground);
         }
         .settings-section {
           margin-bottom: 3.5rem;
@@ -136,12 +136,12 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           font-size: 0.9rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: #555;
+          color: var(--text-muted);
           margin-bottom: 1.5rem;
           font-weight: 800;
         }
         .settings-subtitle.danger {
-          color: #ef4444;
+          color: var(--danger);
         }
         .auth-providers-list {
           display: flex;
@@ -153,7 +153,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           align-items: center;
           gap: 1rem;
           padding: 1rem;
-          background: rgba(255, 255, 255, 0.03);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 12px;
           transition: all 0.2s;
@@ -169,12 +169,12 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
         }
         .auth-label {
           font-size: 0.75rem;
-          color: #666;
+          color: var(--text-muted);
           font-weight: 700;
         }
         .auth-value {
           font-size: 0.95rem;
-          color: #eee;
+          color: var(--foreground);
         }
         .auth-status {
           font-size: 0.7rem;
@@ -185,9 +185,9 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           font-weight: 800;
         }
         .link-btn {
-          background: rgba(255,255,255,0.05);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          color: #888;
+          color: var(--text-muted);
           padding: 6px 12px;
           border-radius: 6px;
           font-size: 0.8rem;
@@ -199,17 +199,17 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           justify-content: space-between;
           align-items: center;
           padding: 1.5rem;
-          background: rgba(239, 68, 68, 0.05);
-          border: 1px solid rgba(239, 68, 68, 0.2);
+          background: rgba(var(--danger-rgb), 0.05);
+          border: 1px solid rgba(var(--danger-rgb), 0.2);
           border-radius: 12px;
         }
         .danger-text p {
           margin: 0;
           font-size: 0.9rem;
-          color: #aaa;
+          color: var(--text-muted);
         }
         .danger-text strong {
-          color: #ef4444;
+          color: var(--danger);
           font-size: 1rem;
           display: block;
           margin-bottom: 4px;
@@ -218,7 +218,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           display: flex;
           align-items: center;
           gap: 0.6rem;
-          background: #ef4444;
+          background: var(--danger);
           color: white;
           border: none;
           padding: 0.8rem 1.5rem;
@@ -228,9 +228,9 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           transition: all 0.2s;
         }
         .delete-account-btn:hover:not(:disabled) {
-          background: #dc2626;
+          filter: brightness(1.1);
           transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+          box-shadow: 0 10px 20px rgba(var(--danger-rgb), 0.2);
         }
         .delete-account-btn:disabled {
           opacity: 0.5;

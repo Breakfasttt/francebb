@@ -48,9 +48,9 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
           gap: '0.7rem',
           width: '100%',
           padding: '0.8rem',
-          background: isLocked ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-          color: isLocked ? '#22c55e' : '#ef4444',
-          border: `1px solid ${isLocked ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+          background: 'var(--glass-bg)',
+          color: isLocked ? 'var(--success)' : 'var(--danger)',
+          border: `1px solid ${isLocked ? 'var(--success)' : 'var(--danger)'}`,
           borderRadius: '8px',
           fontWeight: '600',
           fontSize: '0.9rem',
@@ -64,7 +64,9 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
       </button>
       <style jsx>{`
         .lock-toggle-btn:hover {
-          background: ${isLocked ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'} !important;
+          background: var(--glass-bg) !important;
+          border-color: ${isLocked ? 'var(--success)' : 'var(--danger)'} !important;
+          filter: brightness(1.2);
           transform: translateY(-1px);
         }
       `}</style>

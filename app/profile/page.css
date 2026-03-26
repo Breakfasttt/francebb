@@ -284,25 +284,25 @@
 }
 
 /* Unread topics highlight */
-.premium-card.activity-item.is-unread {
-  background: rgba(255, 215, 0, 0.05) !important;
-  border-color: #ffd700 !important;
+.premium-card activity-item.is-unread {
+  background: var(--primary-transparent) !important;
+  border-color: var(--unread-marker) !important;
 }
 
 .activity-item.is-unread .activity-topic {
-  color: #ffd700 !important;
-  text-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+  color: var(--unread-marker) !important;
+  text-shadow: 0 0 15px var(--btn-shadow) !important;
 }
 
 .activity-item.is-unread .activity-type {
-  color: #ffd700 !important;
+  color: var(--unread-marker) !important;
   opacity: 0.8;
 }
 
 .activity-item.is-unread .activity-icon-container {
-  color: #ffd700 !important;
-  border-color: rgba(255, 215, 0, 0.5) !important;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2) !important;
+  color: var(--unread-marker) !important;
+  border-color: var(--unread-marker) !important;
+  box-shadow: 0 0 15px var(--btn-shadow) !important;
   position: relative;
 }
 
@@ -312,10 +312,10 @@
   right: -4px !important;
   width: 10px !important;
   height: 10px !important;
-  background: #ffd700 !important;
+  background: var(--unread-marker) !important;
   border-radius: 50% !important;
-  border: 2px solid #1a1a20 !important;
-  box-shadow: 0 0 10px #ffd700 !important;
+  border: 2px solid var(--background) !important;
+  box-shadow: 0 0 10px var(--unread-marker) !important;
   animation: pulse-unread 2s infinite !important;
   z-index: 10 !important;
 }

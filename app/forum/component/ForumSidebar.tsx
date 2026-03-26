@@ -77,7 +77,7 @@ export default async function ForumSidebar({
           {forumId && (!isLocked || canCreateForum) && (
             <div className="sidebar-widget new-topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {isTournamentForum && (
-                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'black' }}>
+                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'var(--background)' }}>
                   <Trophy size={18} />
                   <span>Nouveau Tournoi</span>
                 </Link>
@@ -91,7 +91,7 @@ export default async function ForumSidebar({
 
           {forumId && isLocked && !canCreateForum && (
             <div className="sidebar-widget new-topic-widget" style={{ opacity: 0.6 }}>
-              <div className="widget-button" style={{ background: '#444', border: 'none', cursor: 'not-allowed' }}>
+              <div className="widget-button" style={{ background: 'var(--glass-bg)', border: 'none', cursor: 'not-allowed', color: 'var(--text-muted)' }}>
                 <LockIcon size={18} />
                 <span>Forum verrouillé</span>
               </div>
@@ -100,7 +100,7 @@ export default async function ForumSidebar({
 
           {/* Recherche Avancée */}
           <div className="sidebar-widget search-widget">
-            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button" style={{ background: 'rgba(255,255,255,0.05)', color: '#ccc', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button" style={{ background: 'var(--glass-bg)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>
               <Search size={18} />
               <span>Recherche avancée</span>
             </Link>
@@ -109,7 +109,7 @@ export default async function ForumSidebar({
           {/* Posts Non Lus */}
           {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
             <div className="sidebar-widget unread-widget" style={{ display: 'flex', gap: '4px' }}>
-              <Link href="/forum/unread" className="widget-button" style={{ flex: 1 }}>
+              <Link href="/forum/unread" className="widget-button secondary-btn" style={{ flex: 1 }}>
                 <MessageSquare size={18} />
                 <span>Posts non lus ({unreadTopics})</span>
               </Link>
@@ -135,15 +135,15 @@ export default async function ForumSidebar({
                       href={postUrl} 
                       className={`recent-post-item ${!post.isRead ? 'has-new' : ''}`}
                     >
-                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--accent)' : 'white', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {post.topic.forum.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
+                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        {post.topic.forum.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
                         {post.topic.tournamentId ? (
-                           <Trophy size={13} style={{ color: !post.isRead ? 'var(--accent)' : 'white', opacity: !post.isRead ? 1 : 0.6, flexShrink: 0 }} />
+                           <Trophy size={13} style={{ color: !post.isRead ? 'var(--accent)' : 'var(--foreground)', opacity: !post.isRead ? 1 : 0.6, flexShrink: 0 }} />
                         ) : (
-                           <FileText size={13} style={{ color: !post.isRead ? 'var(--accent)' : '#888', flexShrink: 0 }} />
+                           <FileText size={13} style={{ color: !post.isRead ? 'var(--unread-marker)' : 'var(--text-secondary)', flexShrink: 0 }} />
                         )}
                         {post.topic.title}
-                        {!post.isRead && <Bell size={12} fill="var(--accent)" color="var(--accent)" className="animate-pulse-subtle" />}
+                        {!post.isRead && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
                       </span>
                       <span className="recent-post-meta">
                         Par <strong>{post.author.name}</strong> • {new Date(post.createdAt).toLocaleDateString("fr-FR")}
@@ -169,7 +169,7 @@ export default async function ForumSidebar({
 
           {/* Admin Tools */}
           {canCreateForum && (
-            <div className="sidebar-widget admin-widget" style={{ border: '1px solid rgba(194, 29, 29, 0.3)', background: 'rgba(194, 29, 29, 0.05)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="sidebar-widget admin-widget" style={{ border: '1px solid var(--admin-border)', background: 'var(--admin-bg)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <h3 style={{ color: 'var(--primary)', margin: 0 }}>
                 <PlusCircle size={16} />
                 Administration

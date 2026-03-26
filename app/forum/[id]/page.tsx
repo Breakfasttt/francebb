@@ -99,10 +99,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0, color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'center' }}>
+          <h1 style={{ margin: 0, color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'center' }}>
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
-            {forum.isLocked && <LockIcon size={20} style={{ color: '#ef4444', opacity: 0.8 }} />}
-            {forumHasNew && <Bell size={20} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
+            {forum.isLocked && <LockIcon size={20} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
+            {forumHasNew && <Bell size={20} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
           </h1>
           <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>{forum.description}</p>
         </div>
@@ -127,15 +127,15 @@ export default async function ForumDetailPage({ params, searchParams }: { params
               return (
                 <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>
                   <div className="forum-info">
-                    <h3 style={{ color: subHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <h3 style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       {sub.isTournamentForum ? (
-                        <Trophy size={16} style={{ color: subHasNew ? 'var(--accent)' : 'white', opacity: subHasNew ? 1 : 0.6 }} />
+                        <Trophy size={16} style={{ color: subHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: subHasNew ? 1 : 0.6 }} />
                       ) : (
-                        <Folder size={16} style={{ color: subHasNew ? '#ffd700' : '#888' }} />
+                        <Folder size={16} style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
                       )}
                       {sub.name}
-                      {sub.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
-                      {subHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
+                      {sub.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
+                      {subHasNew && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
                     </h3>
                     {sub.description && <p>{sub.description}</p>}
                   </div>
@@ -147,7 +147,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                   <div className="forum-last-post">
                     {lastTopic ? (
                       <>
-                        <span className="last-post-title" style={{ color: subHasNew ? '#ffd700' : 'white' }}>{lastTopic.title}</span>
+                        <span className="last-post-title" style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)' }}>{lastTopic.title}</span>
                         <span className="last-post-meta">
                           Par <strong>{lastTopic.author.name}</strong>
                           <br />
@@ -155,7 +155,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                         </span>
                       </>
                     ) : (
-                      <span style={{ color: '#444' }}>Aucun sujet</span>
+                      <span style={{ color: 'var(--text-muted)' }}>Aucun sujet</span>
                     )}
                   </div>
                 </Link>
@@ -173,7 +173,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           background: 'rgba(255,255,255,0.03)',
           borderBottom: '1px solid var(--glass-border)',
           fontSize: '0.8rem',
-          color: '#888',
+          color: 'var(--text-muted)',
           textTransform: 'uppercase',
           letterSpacing: '1px'
         }}>
@@ -189,17 +189,17 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           return (
             <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`}>
               <div className="forum-info">
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? '#ffd700' : 'white' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? 'var(--unread-marker)' : 'var(--foreground)' }}>
                   {topic.isSticky ? (
                     <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />
                   ) : topic.tournamentId ? (
-                    <Trophy size={16} style={{ color: topicHasNew ? 'var(--accent)' : 'white', opacity: topicHasNew ? 1 : 0.6 }} />
+                    <Trophy size={16} style={{ color: topicHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: topicHasNew ? 1 : 0.6 }} />
                   ) : (
-                    <FileText size={16} style={{ color: topicHasNew ? '#ffd700' : '#888' }} />
+                    <FileText size={16} style={{ color: topicHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
                   )}
                   <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
-                  {topic.isLocked && <LockIcon size={12} style={{ color: '#ef4444', opacity: 0.8 }} />}
-                  {topicHasNew && <Bell size={12} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
+                  {topic.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
+                  {topicHasNew && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
                 </h3>
                 <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>
               </div>
@@ -219,7 +219,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
             </Link>
           );
         }) : (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#666' }}>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
             Aucun sujet dans ce forum pour le moment.
           </div>
         )}

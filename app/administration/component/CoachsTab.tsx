@@ -152,11 +152,11 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
         }
         .search-input {
           width: 100%;
-          background: rgba(0,0,0,0.3);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           padding: 1rem 1rem 1rem 3rem;
           border-radius: 8px;
-          color: white;
+          color: var(--foreground);
           font-size: 1rem;
           transition: border-color 0.2s;
         }
@@ -197,7 +197,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           gap: 0.2rem;
         }
         .user-text strong {
-          color: white;
+          color: var(--foreground);
           font-size: 1.1rem;
         }
         .role-badge {
@@ -209,9 +209,9 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           width: fit-content;
         }
         .role-select {
-          background: #111;
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          color: white;
+          color: var(--foreground);
           padding: 0.6rem 1rem;
           border-radius: 8px;
           font-weight: 600;

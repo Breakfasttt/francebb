@@ -210,13 +210,13 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 10px;
-          height: 48px; /* High visibility as requested */
+          height: 48px;
           width: 48px;
           flex-shrink: 0;
-          color: #aaa;
+          color: var(--text-muted);
           transition: all 0.2s;
         }
         .search-icon-large {
@@ -230,10 +230,10 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           width: 100%;
           height: 48px;
           padding: 0 1.25rem;
-          background: rgba(255, 255, 255, 0.03);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           border-radius: 10px;
-          color: white;
+          color: var(--foreground);
           font-size: 1rem;
           transition: all 0.2s;
         }
@@ -253,9 +253,9 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           padding: 0.5rem;
           max-height: 350px;
           overflow-y: auto;
-          background: #15151a; /* Solid dark background */
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+          background: var(--nav-bg); /* Use nav-bg for dropdown solidity */
+          border: 1px solid var(--glass-border);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.4);
         }
         .search-result-item {
           display: flex;
@@ -322,8 +322,8 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           transform: translateY(-2px);
         }
         .start-btn:disabled {
-          background: #333;
-          color: #666;
+          background: var(--disabled-bg);
+          color: var(--disabled-text);
           cursor: not-allowed;
         }
         .conversation-grid {
@@ -367,7 +367,7 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           justify-content: center;
           font-size: 1.5rem;
           font-weight: 700;
-          color: #666;
+          color: var(--text-muted);
         }
         .unread-dot {
           position: absolute;
@@ -375,14 +375,14 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           right: -6px;
           width: 20px;
           height: 20px;
-          background: var(--primary);
+          background: var(--unread-marker);
           color: white;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 2px solid #1a1a20;
-          box-shadow: 0 0 10px rgba(194, 29, 29, 0.5);
+          border: 2px solid var(--nav-bg);
+          box-shadow: 0 0 10px rgba(var(--primary-rgb, 194, 29, 29), 0.5);
         }
         .conv-content {
           flex: 1;
@@ -396,14 +396,14 @@ export default function ConversationList({ onSelectConversation, initialRecipien
         .user-name {
           font-weight: 700;
           font-size: 1.1rem;
-          color: #fff;
+          color: var(--foreground);
         }
         .last-time {
           font-size: 0.75rem;
-          color: #666;
+          color: var(--text-muted);
         }
         .arrow-icon {
-          color: #444;
+          color: var(--text-muted-dark);
           transition: transform 0.2s;
         }
         .conversation-card:hover .arrow-icon {
@@ -442,7 +442,7 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           font-size: 1.2rem;
           font-weight: 800;
           margin-bottom: 1.5rem;
-          color: #fff;
+          color: var(--foreground);
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
@@ -453,12 +453,12 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           flex-direction: column;
           align-items: center;
           gap: 1rem;
-          color: #444;
+          color: var(--text-muted);
         }
         .empty-state p {
           margin: 0;
           font-weight: 600;
-          color: #666;
+          color: var(--text-muted);
         }
         .sub-text {
           font-size: 0.85rem;

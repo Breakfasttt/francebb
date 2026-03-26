@@ -370,7 +370,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       <div
         className="editor-toolbar"
         style={{
-          background: "rgba(255,255,255,0.05)",
+          background: "var(--glass-bg)",
           padding: "0.5rem",
           borderBottom: "1px solid var(--glass-border)",
           display: "flex",
@@ -457,7 +457,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
       {/* Inline Tool Panel */}
       {activeTool && (
-        <div className="active-tool-panel" style={{ background: "rgba(0,0,0,0.3)", padding: "1rem", borderBottom: "1px solid var(--glass-border)" }}>
+        <div className="active-tool-panel" style={{ background: "var(--glass-bg)", padding: "1rem", borderBottom: "1px solid var(--glass-border)" }}>
           {activeTool === 'link' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <input
@@ -465,7 +465,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 placeholder="URL (ex: https://...)"
                 value={toolInputUrl}
                 onChange={(e) => setToolInputUrl(e.target.value)}
-                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
                 autoFocus
               />
               <input
@@ -473,7 +473,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 placeholder="Texte (optionnel)"
                 value={toolInputText}
                 onChange={(e) => setToolInputText(e.target.value)}
-                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
               />
               <button type="button" onClick={submitLink} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
             </div>
@@ -486,7 +486,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                   placeholder="Rechercher un sujet du forum..."
                   value={topicQuery}
                   onChange={(e) => setTopicQuery(e.target.value)}
-                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
                   autoFocus
                 />
                 {isSearchingTopics && (
@@ -500,10 +500,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                   {topicResults.map((topic) => (
                     <button
                       key={topic.id}
-                      type="button"
+                       type="button"
                       onClick={() => { setSelectedTopic(topic); setTopicResults([]); setTopicQuery(""); }}
-                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: selectedTopic?.id === topic.id ? "rgba(var(--primary-rgb,100,200,255),0.15)" : "transparent", border: "none", borderBottom: "1px solid rgba(255,255,255,0.05)", color: "white", cursor: "pointer" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: selectedTopic?.id === topic.id ? "rgba(var(--primary-rgb,100,200,255),0.15)" : "transparent", border: "none", borderBottom: "1px solid var(--glass-border)", color: "var(--foreground)", cursor: "pointer" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "var(--glass-bg)")}
                       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                     >
                       <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{topic.title}</div>
@@ -539,9 +539,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
               <input
                 type="text"
                 placeholder="URL de la vidéo YouTube..."
-                value={toolInputUrl}
+                 value={toolInputUrl}
                 onChange={(e) => setToolInputUrl(e.target.value)}
-                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
                 autoFocus
               />
               <button type="button" onClick={submitYoutube} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
@@ -553,9 +553,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 <input
                   type="text"
                   placeholder="Rechercher un membre par son nom..."
-                  value={mentionQuery}
+                   value={mentionQuery}
                   onChange={(e) => setMentionQuery(e.target.value)}
-                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                  style={{ width: "100%", padding: "0.4rem 2rem 0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
                   autoFocus
                 />
                 {isSearchingMentions && (
@@ -568,11 +568,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 <div style={{ display: "flex", flexDirection: "column", gap: "0", maxHeight: "170px", overflowY: "auto", background: "rgba(0,0,0,0.5)", borderRadius: "6px", border: "1px solid var(--glass-border)" }}>
                   {mentionResults.map((user) => (
                     <button
-                      key={user.id}
+                       key={user.id}
                       type="button"
                       onClick={() => submitMention(user.id, user.name || "Anonyme")}
-                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: "transparent", border: "none", borderBottom: "1px solid rgba(255,255,255,0.05)", color: "white", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.8rem" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                      style={{ textAlign: "left", padding: "0.5rem 0.8rem", background: "transparent", border: "none", borderBottom: "1px solid var(--glass-border)", color: "var(--foreground)", cursor: "pointer", display: "flex", alignItems: "center", gap: "0.8rem" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "var(--glass-bg)")}
                       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                     >
                       {user.image ? (
@@ -598,9 +598,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
                 <input
                   type="url"
                   placeholder="URL d'une image existante (https://...)"
-                  value={toolInputUrl}
+                   value={toolInputUrl}
                   onChange={(e) => setToolInputUrl(e.target.value)}
-                  style={{ flex: 1, padding: "0.4rem 0.8rem", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "white" }}
+                  style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }}
                   autoFocus
                 />
                 <button type="button" onClick={submitImageUrl} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer l'URL</button>
@@ -715,9 +715,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             width: "100%",
             height: isPreview ? "200px" : "100%",
             padding: "1rem",
-            background: "rgba(0,0,0,0.2)",
+            background: "var(--glass-bg)",
             border: "none",
-            color: "white",
+            color: "var(--foreground)",
             resize: "vertical",
             outline: "none",
             lineHeight: "1.5",
@@ -735,8 +735,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
               minHeight: "150px",
               maxHeight: "400px",
               padding: "1.5rem",
-              background: "rgba(255,255,255,0.02)",
-              color: "#eee",
+              background: "rgba(0,0,0,0.02)",
+              color: "var(--foreground)",
               overflowY: "auto",
               lineHeight: "1.6"
             }}
@@ -760,10 +760,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       )}
 
       <style jsx>{`
-        .toolbar-btn {
+         .toolbar-btn {
           background: transparent;
           border: 1px solid transparent;
-          color: #aaa;
+          color: var(--text-muted);
           padding: 0.4rem;
           border-radius: 4px;
           cursor: pointer;
@@ -773,8 +773,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           transition: all 0.2s ease;
         }
         .toolbar-btn:hover:not(:disabled) {
-          background: rgba(255,255,255,0.1);
-          color: white;
+          background: var(--glass-bg);
+          color: var(--foreground);
           border-color: var(--glass-border);
         }
         .toolbar-btn:disabled {

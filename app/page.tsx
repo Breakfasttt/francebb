@@ -36,7 +36,7 @@ export default async function Home() {
           </h1>
           <p style={{ 
             fontSize: '1.1rem', 
-            color: '#aaa', 
+            color: 'var(--text-secondary)', 
             maxWidth: '600px', 
             margin: '0',
             lineHeight: 1.4,
@@ -114,17 +114,17 @@ export default async function Home() {
               <div key={t.id} className="premium-card hover-effect" style={{ padding: '1rem' }}>
                 <div className="tournament-badge" style={{ display: 'inline-block', fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>À VENIR</div>
                 <h3 style={{ marginTop: '0.5rem', fontSize: '1.1rem' }}>{t.name}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', margin: '0.4rem 0', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
                   <MapPin size={14} /> {t.location}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#888', margin: '0.4rem 0', fontSize: '0.85rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
                   <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                 </div>
-                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, color: '#ccc' }}>{t.description}</p>
+                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, color: 'var(--text-secondary)' }}>{t.description}</p>
               </div>
             ))
           ) : (
-            <p style={{ color: '#888' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>
+            <p style={{ color: 'var(--text-muted)' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>
           )}
         </div>
       </section>

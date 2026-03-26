@@ -12,27 +12,36 @@ interface CategoryProps {
 
 export default function ForumCategory({ category, categoryHasNew }: CategoryProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <section className={`forum-category ${!isExpanded ? 'collapsed' : ''}`}>
       <div 
         className="category-header accordion-header" 
         onClick={() => setIsExpanded(!isExpanded)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{ 
-          borderColor: categoryHasNew ? '#ffd700' : 'white',
+          borderColor: categoryHasNew ? 'var(--unread-marker)' : 'var(--glass-border)',
           cursor: 'pointer',
+          background: isHovered ? 'var(--category-hover-bg)' : 'var(--category-header-bg)',
+          padding: '1.2rem 2rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Hash size={20} style={{ color: categoryHasNew ? '#ffd700' : 'white' }} />
-          <h2 style={{ color: categoryHasNew ? '#ffd700' : 'white', margin: 0 }}>
+          <Hash size={20} style={{ color: categoryHasNew ? 'var(--unread-marker)' : 'var(--header-foreground)' }} />
+          <h2 style={{ 
+            color: 'var(--header-foreground)', 
+            margin: 0,
+            textShadow: categoryHasNew ? '0 0 10px rgba(var(--unread-marker-rgb, 194, 29, 29), 0.5)' : 'none'
+          }}>
             {category.name}
           </h2>
         </div>
-        <div style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <div style={{ color: 'var(--text-muted)' }}>
           {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </div>
       </div>
@@ -56,15 +65,15 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
             return (
               <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>
                 <div className="forum-info">
-                  <h3 style={{ color: forumHasNew ? '#ffd700' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <h3 style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     {forum.isTournamentForum ? (
-                      <Trophy size={18} style={{ color: forumHasNew ? 'var(--accent)' : 'white', opacity: forumHasNew ? 1 : 0.6 }} />
+                      <Trophy size={18} style={{ color: forumHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: forumHasNew ? 1 : 0.6 }} />
                     ) : (
-                      <Folder size={18} style={{ color: forumHasNew ? '#ffd700' : '#888' }} />
+                      <Folder size={18} style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
                     )}
                     <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
-                    {forum.isLocked && <LockIcon size={14} style={{ color: '#ef4444', opacity: 0.8 }} />}
-                    {forumHasNew && <Bell size={14} fill="#ffd700" color="#ffd700" className="animate-pulse-subtle" />}
+                    {forum.isLocked && <LockIcon size={14} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
+                    {forumHasNew && <Bell size={14} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
                   </h3>
                   {forum.description && <p>{forum.description}</p>}
                 </div>
@@ -77,12 +86,12 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
                   {lastTopic ? (
                     <>
                       <span className="last-post-title" style={{ 
-                        color: forumHasNew ? '#ffd700' : 'white',
+                        color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.4rem'
                       }}>
-                        {lastTopic.tournamentId && <Trophy size={12} style={{ color: forumHasNew ? 'var(--accent)' : 'white', opacity: forumHasNew ? 1 : 0.6 }} />}
+                        {lastTopic.tournamentId && <Trophy size={12} style={{ color: forumHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: forumHasNew ? 1 : 0.6 }} />}
                         {lastTopic.title}
                       </span>
                       <span className="last-post-meta">
@@ -92,7 +101,7 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
                       </span>
                     </>
                   ) : (
-                    <span style={{ color: '#444' }}>Aucun sujet</span>
+                    <span style={{ color: 'var(--text-muted)' }}>Aucun sujet</span>
                   )}
                 </div>
               </Link>

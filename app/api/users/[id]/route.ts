@@ -21,6 +21,7 @@ export async function GET(
         signature: true,
         isBanned: true,
         avatarFrame: true,
+        theme: true,
       }
     });
 

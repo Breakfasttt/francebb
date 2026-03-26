@@ -33,7 +33,7 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
       <button 
         onClick={() => setIsModalOpen(true)}
         className="widget-button" 
-        style={{ background: '#333', color: '#ff4444', border: '1px solid #ff4444' }}
+        style={{ background: 'var(--glass-bg)', color: 'var(--danger)', border: '1px solid var(--danger)' }}
       >
         <Trash2 size={18} />
         <span>Supprimer forum</span>
