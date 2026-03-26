@@ -381,3 +381,8 @@ model TournamentMercenary {
 
   @@unique([tournamentId, userId])
 }
+
+model SiteSetting {
+  key   String @id
+  value String
+}

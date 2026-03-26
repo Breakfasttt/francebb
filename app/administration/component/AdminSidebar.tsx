@@ -1,8 +1,8 @@
 "use client";
 
-import { Database, DatabaseBackup, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
+import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
 
-export type AdminTab = "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
+export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -18,6 +18,13 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <button
+          onClick={() => onTabChange("general")}
+          className={`action-button full-width ${activeTab === "general" ? 'primary-btn' : 'secondary-btn'}`}
+          style={{ justifyContent: 'flex-start' }}
+        >
+          <Globe size={18} /> <span>Paramètres Généraux</span>
+        </button>
         <button
           onClick={() => onTabChange("roles")}
           className={`action-button full-width ${activeTab === "roles" ? 'primary-btn' : 'secondary-btn'}`}

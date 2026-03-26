@@ -94,9 +94,9 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
             gap: "0.4rem",
             padding: "0.3rem 0.6rem",
             borderRadius: "20px",
-            border: hasReacted ? "1px solid var(--primary)" : "1px solid rgba(255,255,255,0.1)",
-            background: hasReacted ? "rgba(var(--primary-rgb, 8, 145, 178), 0.15)" : "rgba(255,255,255,0.03)",
-            color: hasReacted ? "var(--primary)" : "#aaa",
+            border: hasReacted ? "1px solid var(--primary)" : "1px solid var(--glass-border)",
+            background: hasReacted ? "var(--primary-transparent)" : "var(--glass-bg)",
+            color: hasReacted ? "var(--primary)" : "var(--text-muted)",
             cursor: currentUserId ? (isPending ? "wait" : "pointer") : "default",
             fontSize: "0.85rem",
             transition: "all 0.2s"
@@ -104,32 +104,34 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
           className={currentUserId ? "hover-brightness" : ""}
         >
           <span>{emoji}</span>
-          <span style={{ fontWeight: 600, color: "white" }}>{count}</span>
+          <span style={{ fontWeight: 700, color: hasReacted ? "var(--primary)" : "var(--foreground)" }}>{count}</span>
         </button>
       ))}
 
       {currentUserId && (
         <div style={{ position: "relative" }}>
-          <button
-            title="Ajouter une réaction"
-            onClick={() => setShowPicker(!showPicker)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "28px",
-              height: "28px",
-              borderRadius: "50%",
-              border: "1px dashed rgba(255,255,255,0.2)",
-              background: "transparent",
-              color: "#888",
-              cursor: "pointer",
-              transition: "all 0.2s"
-            }}
-            className="hover-border-white hover-text-white"
-          >
-            <SmilePlus size={14} />
-          </button>
+          <div className="tooltip-wrapper">
+            <button
+              onClick={() => setShowPicker(!showPicker)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                border: "1px dashed var(--glass-border)",
+                background: "transparent",
+                color: "var(--text-muted)",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+              className="hover-border-accent hover-text-accent"
+            >
+              <SmilePlus size={14} />
+            </button>
+            <span className="tooltip-text">Réagir</span>
+          </div>
 
           {showPicker && (
             <>
@@ -140,16 +142,17 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
               />
               <div style={{
                 position: "absolute",
-                bottom: "calc(100% + 5px)",
-                left: "0",
-                background: "#1e1e24",
+                bottom: "calc(100% + 10px)",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "var(--footer-bg)",
                 border: "1px solid var(--glass-border)",
                 borderRadius: "12px",
                 padding: "0.5rem",
                 display: "grid",
                 gridTemplateColumns: "repeat(5, 1fr)",
                 gap: "0.2rem",
-                boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+                boxShadow: "var(--glass-shadow)",
                 zIndex: 10
               }}>
                 {COMMON_EMOJIS.map(emoji => (
@@ -175,6 +178,47 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
           )}
         </div>
       )}
+
+      <style jsx>{`
+        .tooltip-wrapper {
+          position: relative;
+          display: inline-flex;
+        }
+        .tooltip-text {
+          visibility: hidden;
+          background-color: var(--footer-bg);
+          color: var(--header-foreground);
+          text-align: center;
+          padding: 4px 10px;
+          border-radius: 6px;
+          position: absolute;
+          z-index: 100;
+          bottom: 125%;
+          left: 50%;
+          transform: translateX(-50%);
+          opacity: 0;
+          transition: opacity 0.3s;
+          font-size: 0.7rem;
+          white-space: nowrap;
+          box-shadow: var(--glass-shadow);
+          border: 1px solid var(--glass-border);
+          pointer-events: none;
+        }
+        .tooltip-wrapper:hover .tooltip-text {
+          visibility: visible;
+          opacity: 1;
+        }
+        .hover-border-accent:hover {
+          border-color: var(--accent) !important;
+          border-style: solid !important;
+        }
+        .hover-text-accent:hover {
+          color: var(--accent) !important;
+        }
+        .hover-bg-theme:hover {
+          background: var(--primary-transparent) !important;
+        }
+      `}</style>
     </div>
   );
 }

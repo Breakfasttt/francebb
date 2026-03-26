@@ -353,3 +353,28 @@ export async function getAllReferenceDataAdmin() {
     ]
   });
 }
+
+// ---- SITE SETTINGS MANAGEMENT ----
+
+export async function getSiteSetting(key: string) {
+  const setting = await prisma.siteSetting.findUnique({
+    where: { key }
+  });
+  return setting?.value || null;
+}
+
+export async function updateSiteSetting(key: string, value: string) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  await prisma.siteSetting.upsert({
+    where: { key },
+    update: { value },
+    create: { key, value }
+  });
+
+  return { success: true };
+}

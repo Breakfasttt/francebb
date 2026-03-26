@@ -347,6 +347,11 @@ exports.Prisma.TournamentMercenaryScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SiteSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -391,7 +396,8 @@ exports.Prisma.ModelName = {
   TournamentRegistration: 'TournamentRegistration',
   TournamentTeam: 'TournamentTeam',
   TournamentTeamMember: 'TournamentTeamMember',
-  TournamentMercenary: 'TournamentMercenary'
+  TournamentMercenary: 'TournamentMercenary',
+  SiteSetting: 'SiteSetting'
 };
 
 /**

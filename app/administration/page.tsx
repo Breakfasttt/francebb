@@ -13,6 +13,7 @@ import ResetTab from "./component/ResetTab";
 import RolesTab from "./component/RolesTab";
 import StructureTab from "./component/StructureTab";
 import ReferenceDataTab from "./component/ReferenceDataTab";
+import GeneralTab from "./component/GeneralTab";
 
 import "./page.css";
 
@@ -29,7 +30,7 @@ export default function AdministrationPage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [activeTab, setActiveTab] = useState<AdminTab>("coachs");
+  const [activeTab, setActiveTab] = useState<AdminTab>("general");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -40,7 +41,7 @@ export default function AdministrationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    if (tabParam && ["coachs", "roles", "structure", "backup", "reset", "reference"].includes(tabParam)) {
+    if (tabParam && ["general", "coachs", "roles", "structure", "backup", "reset", "reference"].includes(tabParam)) {
       setActiveTab(tabParam as AdminTab);
     }
   }, [tabParam]);
@@ -83,6 +84,10 @@ export default function AdministrationPage() {
         <AdminSidebar activeTab={activeTab} onTabChange={handleTabChange} isSuperAdmin={isSuperAdmin} />
 
         <div className="admin-main-content">
+          {activeTab === "general" && (
+            <GeneralTab />
+          )}
+
           {activeTab === "coachs" && (
             <CoachsTab currentUserRole={userRole} isSuperAdmin={isSuperAdmin} />
           )}
