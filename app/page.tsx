@@ -122,9 +122,10 @@ export default async function Home() {
           text-decoration: none;
         }
         .action-card-mini:hover {
-          background: rgba(255,215,0,0.1);
+          background: var(--primary-transparent);
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(255,215,0,0.2);
+          box-shadow: 0 4px 12px var(--btn-shadow);
+          border-color: var(--primary);
         }
         .action-card-mini span {
           font-size: 0.8rem;
