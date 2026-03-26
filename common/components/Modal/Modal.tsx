@@ -61,8 +61,8 @@ export default function Modal({
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(4px);
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -71,91 +71,88 @@ export default function Modal({
         }
 
         .modal-content {
-          background: #1a1a20;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: var(--card-bg);
+          border: 1px solid var(--glass-border);
           border-radius: 16px;
-          padding: 2rem;
-          max-width: 450px;
+          padding: 2.5rem;
+          max-width: 500px;
           width: 100%;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+          box-shadow: var(--glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.37));
           animation: modalAppear 0.3s ease-out;
         }
 
         h2 {
-          color: white;
-          margin-bottom: 1rem;
-          font-size: 1.5rem;
+          color: var(--primary);
+          margin-bottom: 1.2rem;
+          font-size: 1.8rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
         }
 
         p {
-          color: #ccc;
+          color: var(--foreground);
           margin-bottom: 2rem;
-          line-height: 1.5;
+          line-height: 1.6;
+          font-size: 1rem;
+          opacity: 0.9;
         }
 
         .modal-actions {
           display: flex;
           gap: 1rem;
           justify-content: flex-end;
+          margin-top: 2rem;
         }
 
         .btn-secondary {
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: white;
-          padding: 0.8rem 1.5rem;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          color: var(--foreground);
+          padding: 0.8rem 1.8rem;
           border-radius: 8px;
           cursor: pointer;
-          transition: 0.2s;
+          font-weight: 600;
+          transition: all 0.2s ease;
         }
 
         .btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: var(--primary-transparent);
+          border-color: var(--primary);
         }
 
         .btn-danger {
-          background: #c21d1d;
+          background: var(--danger, #c21d1d);
           border: none;
           color: white;
-          padding: 0.8rem 1.5rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: 0.2s;
-        }
-
-        .btn-primary {
-          background: var(--accent, #ffd700);
-          border: none;
-          color: black;
-          padding: 0.8rem 1.5rem;
+          padding: 0.8rem 1.8rem;
           border-radius: 8px;
           cursor: pointer;
           font-weight: 700;
-          transition: 0.2s;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 15px rgba(194, 29, 29, 0.3);
         }
 
-        .btn-primary:hover {
-          background: #fffb00;
-          filter: brightness(1.1);
-        }
-
-        .btn-confirm {
+        .btn-primary {
+          background: var(--primary);
           border: none;
-          padding: 0.8rem 1.5rem;
+          color: white;
+          padding: 0.8rem 1.8rem;
           border-radius: 8px;
           cursor: pointer;
-          font-weight: 600;
-          transition: 0.2s;
+          font-weight: 700;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 15px var(--btn-shadow);
         }
 
-        .btn-danger:hover {
-          background: #e02424;
+        .btn-primary:hover, .btn-danger:hover {
+          filter: brightness(1.1);
+          transform: translateY(-2px);
         }
 
         @keyframes modalAppear {
-          from { transform: scale(0.95); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
+          from { transform: scale(0.95) translateY(10px); opacity: 0; }
+          to { transform: scale(1) translateY(0); opacity: 1; }
         }
       `}</style>
     </div>,

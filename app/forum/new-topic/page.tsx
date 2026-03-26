@@ -57,8 +57,8 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
           <ArrowLeft size={20} />
         </Link>
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0 }}>Nouveau <span>sujet</span></h1>
-          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
+          <h1 style={{ margin: 0, fontSize: '2.5rem', color: 'var(--primary)' }}>Nouveau sujet</h1>
+          <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0' }}>Dans le forum : <strong style={{ color: 'var(--accent)' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
         </div>
       </header>
  

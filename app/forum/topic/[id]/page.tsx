@@ -179,7 +179,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         </Link>
         <div style={{ textAlign: 'center' }}>
           <span style={{ color: 'var(--accent)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />
-          <h1 style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
+          <h1 style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--primary)' }}>
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
             {topic.isArchived && (
               <span style={{ fontSize: '0.7rem', background: 'rgba(255,255,255,0.1)', color: '#888', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600 }}>

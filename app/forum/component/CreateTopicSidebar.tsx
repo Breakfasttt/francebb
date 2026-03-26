@@ -1,6 +1,7 @@
-import { MessageSquarePlus, CheckCircle, Pin, Lock } from "lucide-react";
+import { MessageSquarePlus, Pin, Lock } from "lucide-react";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
+import "./CreateTopicSidebar.css";
 
 interface CreateTopicSidebarProps {
   forumId: string;
@@ -34,15 +35,15 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
           </h3>
 
           {userCanStick && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '0.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', fontSize: '0.9rem' }}>
-                <input type="checkbox" name="isSticky" value="on" style={{ width: '16px', height: '16px' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '0.5rem 0', borderBottom: '1px solid var(--glass-border)' }}>
+              <label className="forum-sidebar-label">
+                <input type="checkbox" name="isSticky" value="on" className="forum-sidebar-checkbox" />
                 <Pin size={14} style={{ opacity: 0.6 }} />
                 <span>Épingler (Post-it)</span>
               </label>
               
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', fontSize: '0.9rem' }}>
-                <input type="checkbox" name="isLocked" value="on" style={{ width: '16px', height: '16px' }} />
+              <label className="forum-sidebar-label">
+                <input type="checkbox" name="isLocked" value="on" className="forum-sidebar-checkbox" />
                 <Lock size={14} style={{ opacity: 0.6 }} />
                 <span>Verrouiller le sujet</span>
               </label>

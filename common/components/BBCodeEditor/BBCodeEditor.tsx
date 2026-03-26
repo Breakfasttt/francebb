@@ -3,10 +3,11 @@
 import Toast from "@/common/components/Toast/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText } from "lucide-react";
+import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
+import Modal from "@/common/components/Modal/Modal";
 
 interface BBCodeEditorProps {
   name: string;
@@ -29,6 +30,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [toolInputText, setToolInputText] = useState("");
   const [toolInputAlign, setToolInputAlign] = useState<"center" | "left" | "right">("center");
   const [toolInputWrap, setToolInputWrap] = useState(false);
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
   const [topicQuery, setTopicQuery] = useState("");
   const [topicResults, setTopicResults] = useState<{id: string; title: string; forumName: string}[]>([]);
   const [isSearchingTopics, setIsSearchingTopics] = useState(false);
@@ -112,6 +115,46 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isPreview, activeTool]);
+
+  const generateAIPrompt = () => {
+    const rules = `Tu es un assistant expert en formatage BBCode pour le forum "France Blood Bowl".
+Ta mission est de prendre le texte fourni par l'utilisateur et de le mettre en forme avec les balises du forum.
+
+BALISES SUPPORTÉES :
+1. Mise en forme : [b]gras[/b], [i]italique[/i], [u]souligné[/u], [s]barré[/s], [hr] (ligne)
+2. Couleurs : [color=#c21d1d]texte[/color] (#c21d1d est le rouge du site, #ffd700 est l'or)
+3. Tailles : [size=1.2rem]texte[/size] (Titres recommandés : 1.5rem ou 1.3rem)
+4. Citations : [quote]texte[/quote] ou [quote=Pseudo]texte[/quote]
+5. Listes : [list][*]élément[/list]
+6. Médias :
+   - [img align=left|right|center wrap=yes|no]URL[/img]
+   - [youtube align=left|right|center wrap=yes|no]ID_OU_URL[/youtube]
+7. Interactif : [spoiler=Titre]contenu[/spoiler], [accordion=Titre]contenu[/accordion]
+8. Liens : [url=URL]texte[/url], [mention=ID]Pseudo[/mention], [topic=ID]Titre[/topic]
+
+CONSIGNES :
+- Structure le texte avec des titres en gras et plus grands.
+- Utilise les spoilers/accordions pour les longs textes ou stats.
+- Ne modifie pas le fond du message, juste la forme.
+- RÉPONDS UNIQUEMENT AVEC LE CODE BBCODE FINAL.
+
+TEXTE À FORMATER :
+-----------------
+${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bowl parfaitement formaté pour me montrer tes capacités.)"}
+-----------------`;
+    setAiPrompt(rules);
+    setIsAIModalOpen(true);
+  };
+
+  const copyAIPrompt = () => {
+    navigator.clipboard.writeText(aiPrompt);
+    showToast("Prompt copié ! Prêt à être collé dans une I.A.", "success");
+  };
+
+  const openAI = (url: string) => {
+    copyAIPrompt();
+    window.open(url, "_blank");
+  };
 
   const handleContentChange = (newContent: string) => {
     if (maxLength && newContent.length > maxLength) {
@@ -373,6 +416,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           <Tooltip text="Insérer un smiley">
             <button type="button" onClick={() => toggleTool('smileys')} className={`toolbar-btn ${activeTool === 'smileys' ? 'active-tool' : ''}`}><Smile size={16} /></button>
           </Tooltip>
+          <Tooltip text="Assistant I.A. (Mise en forme)">
+            <button type="button" onClick={generateAIPrompt} className="toolbar-btn ai-btn" style={{ color: "var(--accent)" }}>
+              <Sparkles size={16} />
+            </button>
+          </Tooltip>
         </div>
 
         <div>
@@ -576,6 +624,56 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         .pending { filter: grayscale(0.5); }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
+      
+      {isAIModalOpen && (
+        <Modal 
+          isOpen={isAIModalOpen} 
+          onClose={() => setIsAIModalOpen(false)} 
+          title="Assistant de Mise en forme I.A."
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", margin: 0 }}>
+              Nous avons préparé un prompt optimisé incluant les règles spécifiques du forum et votre contenu actuel.
+            </p>
+            
+            <div style={{ 
+              background: "rgba(0,0,0,0.2)", 
+              padding: "1rem", 
+              borderRadius: "8px", 
+              fontSize: "0.75rem", 
+              maxHeight: "150px", 
+              overflowY: "auto", 
+              border: "1px solid var(--glass-border)",
+              fontFamily: "monospace",
+              color: "var(--text-secondary)"
+            }}>
+              {aiPrompt}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+              <button type="button" onClick={copyAIPrompt} className="widget-button" style={{ width: "100%", justifyContent: "center" }}>
+                Copier le prompt
+              </button>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                <button type="button" onClick={() => openAI("https://gemini.google.com/app")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem" }}>
+                  <Sparkles size={14} /> Gemini
+                </button>
+                <button type="button" onClick={() => openAI("https://claude.ai/new")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem" }}>
+                  <Bot size={14} /> Claude
+                </button>
+              </div>
+              <button type="button" onClick={() => openAI("https://chatgpt.com")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", width: "100%", justifyContent: "center" }}>
+                Ouvrir ChatGPT
+              </button>
+            </div>
+            
+            <p style={{ fontSize: "0.75rem", fontStyle: "italic", textAlign: "center", color: "var(--text-muted)", margin: 0 }}>
+              Le prompt sera automatiquement copié dans votre presse-papier à l'ouverture de l'I.A.
+            </p>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
