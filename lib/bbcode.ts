@@ -212,18 +212,27 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     });
   }
 
-  // 11. Replace Smileys
+  // 11. Gallery [gallery]URL1,URL2,URL3[/gallery]
+  while (/\[gallery(?:=(\d))?\]([\s\S]*?)\[\/gallery\]/i.test(html)) {
+    html = html.replace(/\[gallery(?:=(\d))?\]([\s\S]*?)\[\/gallery\]/i, (match, cols, content) => {
+      const urls = content.trim().split(/[\n,]/).map((u: string) => u.trim()).filter((u: string) => u);
+      const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${url}" alt="Gallery" loading="lazy" /></div>`).join("");
+      return `<div class="bb-gallery">${images}</div>`;
+    });
+  }
+
+  // 12. Replace Smileys
   Object.entries(smileysMap).forEach(([textFace, emoji]) => {
     const escapedTextFace = textFace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(^|\\s)${escapedTextFace}(?=\\s|$)`, 'g');
     html = html.replace(regex, `$1${emoji}`);
   });
   
-  // 12. Clean up newlines between block-level tags to avoid redundant <br /> gaps
+  // 13. Clean up newlines between block-level tags to avoid redundant <br /> gaps
   html = html.replace(/(<\/div>|<\/ul>|<\/table>|<\/details>|<\/blockquote>|<\/section>|<hr.*?>)\s*\n/gi, '$1');
   html = html.replace(/\n\s*(<div|<ul|<table|<details|<blockquote|<section|<hr)/gi, '$1');
 
-  // 13. Replace Newlines with <br />
+  // 14. Replace Newlines with <br />
   html = html.replace(/\r\n|\r|\n/g, "<br />");
 
   return html;

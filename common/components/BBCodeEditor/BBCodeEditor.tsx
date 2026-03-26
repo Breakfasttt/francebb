@@ -3,7 +3,7 @@
 import Toast from "@/common/components/Toast/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript } from "lucide-react";
+import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript, LayoutGrid } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
@@ -25,7 +25,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | null>(null);
   const [toolInputThumb, setToolInputThumb] = useState(true);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
@@ -118,34 +118,48 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   }, [isPreview, activeTool]);
 
   const generateAIPrompt = () => {
-    const rules = `Tu es un assistant expert en formatage BBCode pour le forum "France Blood Bowl".
-Ta mission est de prendre le texte fourni par l'utilisateur et de le mettre en forme avec les balises du forum.
+    const rules = `Tu es "BB-Assistant", l'intelligence artificielle experte en formatage BBCode pour le forum "France Blood Bowl" (BBFrance). 
+Ton rôle est de métamorphoser le texte brut de l'utilisateur en un post de forum parfaitement structuré, lisible et visuellement impressionnant.
 
-BALISES SUPPORTÉES :
-1. Mise en forme : [b]gras[/b], [i]italique[/i], [u]souligné[/u], [s]barré[/s], [hr] (ligne)
-2. Couleurs : [color=#c21d1d]texte[/color] (#c21d1d est le rouge du site, #ffd700 est l'or)
-3. Tailles : [size=1.2rem]texte[/size] (Titres recommandés : 1.5rem ou 1.3rem)
-4. Citations : [quote]texte[/quote] ou [quote=Pseudo]texte[/quote]
-5. Listes : [list][*]élément[/list] ou [list=1][*]élément[/list] ou [list=a][*]élément[/list] ou [list=-][*]élément[/list] (pour des tirets)
-6. Médias (Miniature par défaut) :
+CONTEXTE VISUEL (Modern UI) :
+Le forum utilise un design "Glassmorphism" raffiné. Les blocs (spoilers, citations, accordéons) sont thémables et possèdent une forte identité visuelle. Priorise l'organisation spatiale.
+
+DICTIONNAIRE DES BALISES ET SYNTAXES :
+1. MISE EN FORME DE BASE : 
+   - [b]gras[/b], [i]italique[/i], [u]souligné[/u], [s]barré[/s]
+   - [hr] (Saut de section avec ligne horizontale élégante)
+   - [size=1.5rem]Titre Principal[/size], [size=1.25rem]Sous-titre[/size]
+   - [color=#c21d1d]texte rouge[/color] (Couleur officielle du site), [color=#ffd700]texte or[/color] (Accentuation)
+
+2. ORGANISATION ET DONNÉES :
+   - [list][*]item[/list] (Puces classiques)
+   - [list=1], [list=a] (Listes ordonnées)
+   - [list=-] (Liste avec tirets Blood Bowl)
+   - [table][tr][th]Titre[/th][/tr][tr][td]Valeur[/td][/tr][/table] (Tableaux structurés)
+
+3. MÉDIAS ET RÉFÉRENCES :
    - [img align=left|right|center wrap=yes|no thumb=yes|no]URL[/img]
-   - [youtube align=left|right|center wrap=yes|no thumb=yes|no]ID_OU_URL[/youtube]
-   Note: thumb=yes (miniature) est utilisé par défaut pour ne pas surcharger les pages.
-7. Tableaux : [table][tr][th]Titre[/th][/tr][tr][td]Data[/td][/tr][/table]
-8. Mise en page (Texte uniquement) : [center]centré[/center], [right]à droite[/right], [justify]justifié[/justify] (Note: Pour les images/vidéos, utilise les paramètres align= de la balise point 6).
-9. Technique : [code]bloc de code[/code], [sup]exposant[/sup], [sub]indice[/sub]
-10. Interactif : [spoiler=Titre]contenu[/spoiler], [accordion=Titre]contenu[/accordion]
-11. Liens : [url=URL]texte[/url], [mention=ID]Pseudo[/mention], [topic=ID]Titre[/topic]
+   - [youtube align=left|right|center wrap=yes|no thumb=yes|no]URL_OU_ID[/youtube]
+   - [gallery]URL1, URL2, URL3[/gallery] (Crée une grille d'images responsive automatique)
+   Note: préfère 'thumb=yes' (miniature) pour ne pas polluer le fil de discussion.
 
-CONSIGNES :
-- Structure le texte avec des titres en gras et plus grands.
-- Utilise les spoilers/accordions pour les longs textes ou stats.
-- Ne modifie pas le fond du message, juste la forme.
-- RÉPONDS UNIQUEMENT AVEC LE CODE BBCODE FINAL.
+4. COMPOSANTS INTERACTIFS (ESSENTIEL) :
+   - [spoiler=Titre]Contenu caché[/spoiler] (Idéal pour des résultats de matchs ou des secrets)
+   - [accordion=Titre]Contenu rétractable[/accordion] (Obligatoire pour les longs règlements ou listes d'escouades afin de garder le post dense)
+   - [quote=Pseudo]texte[/quote] (Citations avec onglets premium)
+
+5. NAVIGATION :
+   - [url=URL]lien[/url], [mention=ID]Pseudo[/mention], [topic=ID]Titre du sujet[/topic]
+
+RÈGLES D'OR DE RÉDACTION :
+- N'invente pas de nouvelles informations. Reste fidèle au contenu de l'utilisateur.
+- Aère le texte avec des [hr] et des titres en couleur (#c21d1d).
+- Utilise systématiquement les [accordion] pour condenser les pavés de texte.
+- RÉPONDS EXCLUSIVEMENT PAR LE CODE BBCODE GÉNÉRÉ. AUCUN COMMENTAIRE AUTOUR.
 
 TEXTE À FORMATER :
 -----------------
-${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bowl parfaitement formaté pour me montrer tes capacités.)"}
+\${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bowl parfaitement formaté pour me montrer tes capacités.)"}
 -----------------`;
     setAiPrompt(rules);
     setIsAIModalOpen(true);
@@ -323,7 +337,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
@@ -374,12 +388,19 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
     }
   };
 
+  const submitGallery = () => {
+    if (!toolInputUrl.trim()) return;
+    insertTag(`[gallery]${toolInputUrl.trim()}[/gallery]`, "");
+    setToolInputUrl("");
+    setActiveTool(null);
+  };
+
   return (
     <div className="bbcode-editor" style={{ border: "1px solid var(--glass-border)", borderRadius: "8px", overflow: "visible", display: "flex", flexDirection: "column", position: "relative" }}>
       <input type="file" accept="image/*" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageUpload} />
 
-      <div className="editor-toolbar" style={{ background: "var(--glass-bg)", padding: "0.5rem", borderBottom: "1px solid var(--glass-border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", position: "relative", zIndex: 10, borderRadius: "8px 8px 0 0" }}>
-        <div style={{ display: "flex", gap: "0.3rem", alignItems: "center" }}>
+      <div className="editor-toolbar" style={{ background: "var(--glass-bg)", padding: "0.4rem", borderBottom: "1px solid var(--glass-border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.4rem", position: "relative", zIndex: 10, borderRadius: "8px 8px 0 0" }}>
+        <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
           <Tooltip text="Gras">
             <button type="button" onClick={() => insertTag("[b]", "[/b]")} className="toolbar-btn"><Bold size={16} /></button>
           </Tooltip>
@@ -399,7 +420,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <button type="button" onClick={() => toggleTool('color')} className={`toolbar-btn ${activeTool === 'color' ? 'active-tool' : ''}`}><Palette size={16} /></button>
           </Tooltip>
           
-          <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
+          <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.1rem" }}></div>
           
           <Tooltip text="Séparateur horizontal">
             <button type="button" onClick={() => insertTag("[hr]", "")} className="toolbar-btn"><Minus size={16} /></button>
@@ -413,7 +434,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <button type="button" onClick={() => insertTableTemplate()} className="toolbar-btn"><TableIcon size={16} /></button>
           </Tooltip>
           
-          <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
+          <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.1rem" }}></div>
 
           <Tooltip text="Ajouter un lien">
             <button type="button" onClick={() => toggleTool('link')} className={`toolbar-btn ${activeTool === 'link' ? 'active-tool' : ''}`}><LinkIcon size={16} /></button>
@@ -423,6 +444,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           </Tooltip>
           <Tooltip text="Ajouter une image">
             <button type="button" onClick={() => toggleTool('image')} className={`toolbar-btn ${activeTool === 'image' ? 'active-tool' : ''}`}><ImageIcon size={16} /></button>
+          </Tooltip>
+          <Tooltip text="Créer une galerie d'images">
+            <button type="button" onClick={() => toggleTool('gallery')} className={`toolbar-btn ${activeTool === 'gallery' ? 'active-tool' : ''}`}><LayoutGrid size={16} /></button>
           </Tooltip>
           <Tooltip text="Ajouter une vidéo YouTube">
             <button type="button" onClick={() => toggleTool('youtube')} className={`toolbar-btn ${activeTool === 'youtube' ? 'active-tool' : ''}`}><Youtube size={16} /></button>
@@ -555,6 +579,21 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 </div>
               </div>
               <button type="button" onClick={submitYoutube} className="widget-button" style={{ width: "auto", padding: "0.4rem 2rem", height: "38px" }}>Insérer la vidéo</button>
+            </div>
+          )}
+          {activeTool === 'gallery' && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Liste des URLs d'images (séparées par des virgules ou retours à la ligne)</span>
+                <textarea 
+                  placeholder="https://image1.jpg, https://image2.jpg..." 
+                  value={toolInputUrl} 
+                  onChange={(e) => setToolInputUrl(e.target.value)} 
+                  style={{ width: "100%", height: "80px", padding: "0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)", resize: "none", fontSize: "0.85rem" }} 
+                  autoFocus 
+                />
+              </div>
+              <button type="button" onClick={submitGallery} className="widget-button" style={{ width: "auto", padding: "0.4rem 2rem", height: "38px" }}>Créer la galerie</button>
             </div>
           )}
           {activeTool === 'mention' && (
@@ -724,7 +763,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
       <style jsx>{`
-        .toolbar-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 0.4rem; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .toolbar-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 0.3rem; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .toolbar-btn:hover { background: var(--glass-bg); color: var(--foreground); border-color: var(--glass-border); }
         .active-tool { color: var(--primary); background: var(--primary-transparent); }
         .pending { filter: grayscale(0.5); }
