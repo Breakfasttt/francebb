@@ -87,7 +87,7 @@ export default async function RootLayout({
                 <Link
                   href="/administration"
                   title="Administration"
-                  style={{ color: 'var(--foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
                   <Settings size={22} />
                 </Link>
@@ -96,7 +96,7 @@ export default async function RootLayout({
                 <Link
                   href="/moderation"
                   title="Modération"
-                  style={{ color: 'var(--foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+                  style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
                 >
                   <ShieldAlert size={22} />
                 </Link>
@@ -109,7 +109,7 @@ export default async function RootLayout({
                     position: 'relative',
                     display: 'flex',
                     alignItems: 'center',
-                    color: 'var(--foreground)',
+                    color: 'var(--header-foreground)',
                     textDecoration: 'none'
                   }}
                 >
@@ -149,17 +149,17 @@ export default async function RootLayout({
             padding: '0.6rem',
             textAlign: 'center',
             fontSize: '0.75rem',
-            color: 'var(--text-muted)',
-            borderTop: '1px solid var(--glass-border)',
+            color: 'var(--header-foreground)',
+            borderTop: '1px solid var(--accent)',
             background: 'var(--footer-bg)',
             backdropFilter: 'blur(10px)',
             zIndex: 1000
           }}>
-            <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: 'var(--text-secondary)', transition: 'color 0.2s' }} className="footer-link">
+            <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: 'var(--header-foreground)', opacity: 0.8, transition: 'opacity 0.2s' }} className="footer-link">
               Mentions légales
             </Link>
             {' • '}
-            <span style={{ fontStyle: 'italic' }}>
+            <span style={{ fontStyle: 'italic', opacity: 0.7 }}>
               Ce site a été entièrement conçu avec l'aide de l'intelligence artificielle
             </span>
           </footer>

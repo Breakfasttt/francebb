@@ -1,5 +1,7 @@
 "use client";
+
 import Link from "next/link";
+import "./SignInButton.css";
 
 interface SignInButtonProps {
   user?: {
@@ -16,35 +18,33 @@ export function SignInButton({ user }: SignInButtonProps) {
     window.location.reload();
   };
 
-  const handleConnect = () => {
-    document.cookie = `simulated_user_id=; path=/; max-age=0`;
-    window.location.reload();
-  };
-
   if (!user) {
     return (
-      <Link href="/auth/login" className="btn-primary" style={{ textDecoration: 'none' }}>
-        Se connecter
+      <Link href="/auth/login" className="btn-login" style={{ textDecoration: 'none' }}>
+        Connexion
       </Link>
     );
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-      <a href="/profile" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', color: 'inherit' }}>
-        {user.image && (
+    <div className="signin-container">
+      <Link href="/profile" className="user-capsule">
+        {user.image ? (
           <img
             src={user.image}
             alt="Avatar"
-            style={{ width: '32px', height: '32px', borderRadius: '50%' }}
+            className="user-avatar"
           />
+        ) : (
+          <div className="user-avatar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem' }}>
+             {user.name?.[0]?.toUpperCase() || 'J'}
+          </div>
         )}
-        <span>{user.name || "Joueur"}</span>
-      </a>
+        <span className="user-name">{user.name || "Joueur"}</span>
+      </Link>
       <button
         onClick={handleDisconnect}
-        className="btn-primary"
-        style={{ background: '#333' }}
+        className="btn-logout"
       >
         Déconnexion
       </button>

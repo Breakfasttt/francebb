@@ -1,10 +1,21 @@
 import { prisma } from "../lib/prisma";
 
 async function main() {
-  const tournaments = await prisma.tournament.findMany({
-    include: { topic: true }
+  const count = await prisma.tournament.count();
+  const next = await prisma.tournament.findMany({
+    where: {
+      date: {
+        gte: new Date(),
+      },
+    },
+    orderBy: {
+      date: 'asc',
+    },
+    take: 3,
   });
-  console.log("Tournaments found:", tournaments.map(t => ({ id: t.id, name: t.name, topicId: t.topic?.id })));
+
+  console.log("Total tournaments in DB:", count);
+  console.log("Next events fetched for home page:", JSON.stringify(next, null, 2));
 }
 
-main();
+main().catch(console.error).finally(() => prisma.$disconnect());
