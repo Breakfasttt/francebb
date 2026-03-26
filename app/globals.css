@@ -255,7 +255,7 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem; /* Réduction du padding pour resserrer la hauteur */
   background: var(--nav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
