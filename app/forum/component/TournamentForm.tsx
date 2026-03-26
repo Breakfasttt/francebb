@@ -434,6 +434,13 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
         }
 
         .admin-input:focus { border-color: var(--primary); background: var(--background); }
+        
+        /* Style spécifique pour les options des select pour assurer la lisibilité sur tous les thèmes */
+        .admin-input option {
+          background-color: var(--background);
+          color: var(--foreground);
+        }
+
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
         
         .checkbox-box-admin {

@@ -1,11 +1,13 @@
 .tournament-summary-card {
-  background: rgba(255, 215, 0, 0.05);
+  background: var(--primary-transparent);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--primary);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--glass-shadow);
+  color: var(--foreground);
 }
 
 .summary-header {
@@ -13,34 +15,35 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  border-bottom: 1px solid var(--glass-border);
   padding-bottom: 1rem;
 }
 
 .trophy-icon {
   background: var(--accent);
-  color: black;
+  color: var(--header-foreground); /* Blanc/Parchemin sur le bleu/rouge */
   width: 44px;
   height: 44px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 4px 15px var(--btn-shadow);
 }
 
 .header-text h2 {
   margin: 0 !important;
-  font-size: 1.2rem;
-  color: var(--accent);
+  font-size: 1.25rem;
+  color: var(--foreground);
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-weight: 800;
 }
 
 .header-text p {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 
 .summary-grid {
@@ -91,18 +94,22 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.85rem;
-  padding: 0.4rem 0.8rem;
+  padding: 0.4rem 1rem;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
 }
 
 .option.available {
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  color: var(--success);
+  border-color: var(--success);
+  background: rgba(var(--success-rgb), 0.1);
+  font-weight: 700;
 }
 
 .option.unavailable {
   color: var(--text-muted);
-  opacity: 0.6;
+  opacity: 0.5;
   border: 1px solid var(--glass-border);
+  text-decoration: line-through;
 }

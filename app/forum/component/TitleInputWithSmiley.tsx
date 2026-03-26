@@ -58,12 +58,22 @@ export default function TitleInputWithSmiley({
           value={titleValue}
           onChange={(e) => setTitleValue(e.target.value)}
           placeholder="Ex: Rechercher des joueurs, Stratégies Elfes..."
-          style={{ flex: 1, padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white', fontSize: '1rem', height: '100%', minHeight: '45px' }}
+          style={{ 
+            flex: 1, 
+            padding: '0.8rem', 
+            background: 'var(--glass-bg, rgba(0,0,0,0.03))', 
+            border: '1px solid var(--glass-border)', 
+            borderRadius: '8px', 
+            color: 'var(--foreground)', 
+            fontSize: '1rem', 
+            height: '100%', 
+            minHeight: '45px' 
+          }}
         />
       </div>
 
       {isSmileyOpen && (
-        <div className="active-tool-panel" style={{ background: "rgba(0,0,0,0.3)", padding: "1rem", border: "1px solid var(--glass-border)", borderRadius: "8px" }}>
+        <div className="active-tool-panel" style={{ background: "var(--card-bg)", padding: "1rem", border: "1px solid var(--glass-border)", borderRadius: "8px" }}>
           <SmileyGrid onSelect={handleSmileySelect} />
         </div>
       )}
@@ -73,14 +83,14 @@ export default function TitleInputWithSmiley({
         <div style={{ 
           marginTop: '0.2rem', 
           padding: '0.8rem 1rem', 
-          background: 'rgba(0,0,0,0.2)', 
+          background: 'var(--primary-transparent)', 
           borderRadius: '8px', 
-          color: '#ccc',
+          color: 'var(--foreground)',
           fontSize: '1.2rem',
           fontWeight: 'bold',
           borderLeft: '4px solid var(--primary)'
         }}>
-          <span style={{ fontSize: '0.8rem', color: '#888', display: 'block', marginBottom: '0.2rem', fontWeight: 'normal' }}>Aperçu du titre :</span>
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem', fontWeight: 'normal' }}>Aperçu du titre :</span>
           <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(titleValue) }} />
         </div>
       )}
