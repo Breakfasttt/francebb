@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus } from "lucide-react";
 import { auth } from "@/auth";
 
@@ -20,32 +21,8 @@ export default async function Home() {
   return (
     <main className="container" style={{ padding: '0.5rem 1rem' }}>
       <section className="hero" style={{ padding: '0.5rem 0.5rem 0 0.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h1 style={{ 
-            fontSize: '3rem', 
-            fontWeight: 900, 
-            letterSpacing: '-1px',
-            background: 'linear-gradient(135deg, #002395 0%, #f0f1f2 50%, #ED2939 100%)', 
-            WebkitBackgroundClip: 'text', 
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            color: 'transparent',
-            margin: '0 0 0.5rem 0',
-            filter: 'drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
-          }}>
-            FRANCE BLOOD BOWL
-          </h1>
-          <p style={{ 
-            fontSize: '1.1rem', 
-            color: 'var(--text-secondary)', 
-            maxWidth: '600px', 
-            margin: '0',
-            lineHeight: 1.4,
-            fontWeight: 500
-          }}>
-            L'arène ultime des coachs francophones.<br/>
-            <span style={{ color: 'var(--accent)' }}>Tournois professionnels, ligues et carnage garanti.</span>
-          </p>
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <SiteLogo scale={1.1} />
         </div>
         
         {/* LIGNE 1 */}

@@ -8,7 +8,9 @@ import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Mail, ShieldAlert, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import SiteLogo from '@/common/components/SiteLogo/SiteLogo';
 import { Toaster } from "react-hot-toast";
+import { Suspense } from 'react';
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import "./globals.css";
 
@@ -79,14 +81,7 @@ export default async function RootLayout({
             },
           }} />
           <nav className="nav">
-            <Link href="/" className="logo" style={{
-              background: 'linear-gradient(135deg, #002395 0%, #f0f1f2 50%, #ED2939 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              color: 'transparent',
-              filter: 'drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))'
-            }}>France<span> Blood Bowl</span></Link>
+            <SiteLogo scale={0.6} />
             <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
               {isAdmin && (
                 <Link
