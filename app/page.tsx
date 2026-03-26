@@ -25,12 +25,13 @@ export default async function Home() {
             fontSize: '3rem', 
             fontWeight: 900, 
             letterSpacing: '-1px',
-            background: 'linear-gradient(135deg, #002395 0%, #ffffff 50%, #ED2939 100%)', 
+            background: 'linear-gradient(135deg, #002395 0%, #f0f1f2 50%, #ED2939 100%)', 
             WebkitBackgroundClip: 'text', 
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             color: 'transparent',
-            margin: '0 0 0.5rem 0'
+            margin: '0 0 0.5rem 0',
+            filter: 'drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
           }}>
             FRANCE BLOOD BOWL
           </h1>
