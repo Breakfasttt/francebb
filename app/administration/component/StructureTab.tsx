@@ -621,24 +621,26 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           display: flex; gap: 1rem; flex-wrap: wrap;
           margin-bottom: 1.5rem;
           padding: 0.6rem 1rem;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
           border-radius: 8px;
           font-size: 0.72rem;
-          color: #eee;
+          color: var(--text-secondary);
         }
         .struct-legend span { display: flex; align-items: center; gap: 0.35rem; }
 
         /* ---- Category Block ---- */
         .category-block {
-          background: linear-gradient(135deg, rgba(25,25,35,0.95), rgba(20,20,30,0.98));
-          border: 1px solid rgba(194,29,29,0.35);
+          background: var(--card-bg);
+          backdrop-filter: blur(10px);
+          border: 1px solid var(--glass-border);
           border-radius: 16px;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+          box-shadow: var(--glass-shadow);
           transition: border-color 0.2s;
           position: relative;
+          color: var(--foreground);
         }
-        .category-block:hover { border-color: var(--primary); z-index: 5; }
+        .category-block:hover { border-color: var(--primary); z-index: 5; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
         .category-header {
           display: flex; align-items: center; padding: 0.9rem 1.2rem;
           background: var(--glass-bg);
@@ -647,33 +649,33 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           border-radius: 16px 16px 0 0;
         }
         .cat-title-container { flex: 1; display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
-        .cat-title { margin: 0; font-size: 1rem; color: white; font-weight: 700; }
+        .cat-title { margin: 0; font-size: 1rem; color: var(--foreground); font-weight: 700; }
 
         /* ---- Forum Block ---- */
         .forum-block {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.07);
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
           border-radius: 10px;
           transition: background 0.2s, border-color 0.2s;
           position: relative;
         }
         .forum-block:hover { 
-          background: rgba(255,255,255,0.06); 
-          border-color: rgba(255,255,255,0.14);
+          background: var(--primary-transparent); 
+          border-color: var(--primary);
           z-index: 30;
         }
         .forum-block.level-2 {
-          background: rgba(255,255,255,0.02);
-          border-color: rgba(255,255,255,0.05);
+          background: var(--glass-bg);
+          border-color: var(--glass-border);
           margin-left: 1.2rem;
-          border-left: 2px solid rgba(194,29,29,0.25);
+          border-left: 2px solid var(--primary);
           border-radius: 6px;
         }
         .forum-block.level-3 {
-          background: rgba(0,0,0,0.1);
-          border-color: rgba(255,255,255,0.04);
+          background: var(--glass-bg);
+          border-color: var(--glass-border);
           margin-left: 2.4rem;
-          border-left: 2px solid rgba(194,29,29,0.15);
+          border-left: 2px solid var(--accent);
           border-radius: 4px;
         }
         .forum-block.drag-ghost {
@@ -686,13 +688,13 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         .forum-title-container { flex: 1; display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
         .forum-title-container strong { color: var(--foreground); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .forum-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
-        .sub-forums-container { padding: 0.6rem 0.8rem 0.8rem; background: rgba(0,0,0,0.15); }
+        .sub-forums-container { padding: 0.6rem 0.8rem 0.8rem; background: var(--glass-bg); }
 
         /* ---- Boutons de niveau ---- */
         .level-btn {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: #888;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          color: var(--text-muted);
           cursor: pointer;
           border-radius: 5px;
           padding: 0.3rem 0.4rem;
@@ -700,17 +702,18 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           transition: all 0.2s;
           font-size: 0;
         }
-        .level-btn:hover { background: rgba(194,29,29,0.15); border-color: rgba(194,29,29,0.4); color: var(--primary); }
+        .level-btn:hover { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); }
 
         /* ---- Drag Handle ---- */
         .drag-handle {
           cursor: grab; padding: 0.2rem;
-          color: rgba(255,255,255,0.18);
-          transition: color 0.2s; flex-shrink: 0;
+          color: var(--text-muted);
+          opacity: 0.5;
+          transition: all 0.2s; flex-shrink: 0;
           display: flex; align-items: center;
         }
-        .drag-handle:hover { color: rgba(255,255,255,0.55); }
-        .drag-handle:active { cursor: grabbing; color: white; }
+        .drag-handle:hover { color: var(--foreground); opacity: 1; }
+        .drag-handle:active { cursor: grabbing; color: var(--primary); }
 
         /* ---- Badges ---- */
         .badge-role { font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; }
@@ -719,50 +722,53 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
 
         /* ---- Add Buttons ---- */
         .add-forum-btn {
-          background: rgba(194,29,29,0.05); border: 1px dashed rgba(194,29,29,0.3);
-          color: rgba(255,255,255,0.45); width: 100%; padding: 0.5rem;
+          background: var(--primary-transparent); border: 1px dashed var(--primary);
+          color: var(--primary); width: 100%; padding: 0.5rem;
           border-radius: 8px; cursor: pointer; display: flex; align-items: center;
           justify-content: center; gap: 0.4rem; margin-top: 0.5rem; font-size: 0.8rem;
           transition: all 0.2s;
+          font-weight: 600;
         }
-        .add-forum-btn:hover { background: rgba(194,29,29,0.1); border-color: rgba(194,29,29,0.55); color: white; }
+        .add-forum-btn:hover { background: var(--primary); border-style: solid; color: var(--header-foreground); }
         .expand-btn {
-          background: none; border: none; color: #888; cursor: pointer;
+          background: none; border: none; color: var(--text-secondary); cursor: pointer;
           display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem;
           padding: 0.25rem 0.5rem; border-radius: 5px; transition: all 0.2s; white-space: nowrap;
         }
-        .expand-btn:hover { color: white; background: rgba(255,255,255,0.07); }
+        .expand-btn:hover { color: var(--foreground); background: var(--primary-transparent); }
 
         /* ---- UI Buttons ---- */
         .action-button { display: inline-flex; align-items: center; gap: 0.4rem; justify-content: center; font-weight: 700; cursor: pointer; border-radius: 8px; border: none; transition: all 0.2s; font-size: 0.87rem; }
         .action-button:disabled { opacity: 0.5; cursor: not-allowed; }
         .primary-btn { padding: 0.65rem 1.2rem; background: var(--primary); color: white; }
         .primary-btn:hover:not(:disabled) { filter: brightness(1.15); transform: translateY(-1px); }
-        .secondary-btn { padding: 0.45rem 0.8rem; background: rgba(255,255,255,0.05); color: #ccc; border: 1px solid rgba(255,255,255,0.1); font-weight: 600; }
-        .secondary-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); color: white; }
+        .secondary-btn { padding: 0.45rem 0.8rem; background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); font-weight: 600; }
+        .secondary-btn:hover:not(:disabled) { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); }
         .danger-btn { padding: 0.65rem 1.2rem; background: #dc2626; color: white; }
         .danger-btn:hover:not(:disabled) { background: #b91c1c; }
         .icon-btn { padding: 0.3rem 0.5rem; font-size: 0.8rem; border-radius: 5px; }
 
         /* ---- Side Panel ---- */
         .side-panel {
-          width: 300px; flex-shrink: 0;
-          background: rgba(15,15,25,0.98);
-          border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 1.4rem;
+          width: 320px; flex-shrink: 0;
+          background: var(--card-bg);
+          backdrop-filter: blur(15px);
+          border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.4rem;
           position: sticky; top: 1rem; align-self: flex-start;
           display: flex; flex-direction: column; gap: 1.1rem;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+          color: var(--foreground);
         }
         .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .panel-header h4 { margin: 0; color: white; font-size: 1rem; line-height: 1.3; }
-        .panel-type-badge { font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(194,29,29,0.2); color: var(--primary); border: 1px solid rgba(194,29,29,0.3); display: block; margin-top: 4px; }
-        .close-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #888; font-size: 1.1rem; line-height: 1; cursor: pointer; border-radius: 6px; padding: 0.25rem 0.55rem; transition: all 0.2s; flex-shrink: 0; margin-left: 0.5rem; }
-        .close-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+        .panel-header h4 { margin: 0; color: var(--foreground); font-size: 1.1rem; font-weight: 800; line-height: 1.3; }
+        .panel-type-badge { font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.08em; background: var(--primary-transparent); color: var(--primary); border: 1px solid var(--primary); display: inline-block; margin-top: 4px; }
+        .close-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-muted); font-size: 1.1rem; line-height: 1; cursor: pointer; border-radius: 6px; padding: 0.25rem 0.55rem; transition: all 0.2s; flex-shrink: 0; margin-left: 0.5rem; }
+        .close-btn:hover { color: var(--foreground); background: var(--primary-transparent); }
         .panel-field { display: flex; flex-direction: column; gap: 0.35rem; }
-        .panel-field label { color: rgba(255,255,255,0.65); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .panel-field p { margin: 0; font-size: 0.74rem; color: #555; }
-        .default-input { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0.65rem 0.85rem; border-radius: 8px; width: 100%; font-family: inherit; font-size: 0.87rem; transition: border-color 0.2s; box-sizing: border-box; }
-        .default-input:focus { outline: none; border-color: var(--primary); }
+        .panel-field label { color: var(--text-secondary); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .panel-field p { margin: 0; font-size: 0.74rem; color: var(--text-muted); }
+        .default-input { background: var(--secondary-bg, rgba(0,0,0,0.05)); border: 1px solid var(--glass-border); color: var(--foreground); padding: 0.65rem 0.85rem; border-radius: 8px; width: 100%; font-family: inherit; font-size: 0.87rem; transition: all 0.2s; box-sizing: border-box; }
+        .default-input:focus { outline: none; border-color: var(--primary); background: var(--background); }
         .full-width { width: 100%; }
         .panel-footer { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); }
       `}</style>
