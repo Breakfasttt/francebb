@@ -198,7 +198,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Résumé du tournoi si applicable */}
             {topic.tournament && (
-              <>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <TournamentSummary tournament={topic.tournament} />
                 <RegistrationModule
                   tournament={topic.tournament}
@@ -206,7 +206,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   isOrganizer={!!isTournamentOrganizer}
                   isCommissioner={!!isTournamentCommissaire}
                 />
-              </>
+              </div>
             )}
 
             {/* Premier message persistant pour les tournois (si page > 1) */}

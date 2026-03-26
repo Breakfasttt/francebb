@@ -5,7 +5,7 @@
   border: 1px solid var(--primary);
   border-radius: 16px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0; /* Suppression du margin pour resserrer avec le module d'inscription */
   box-shadow: var(--glass-shadow);
   color: var(--foreground);
 }
