@@ -24,22 +24,24 @@ export default function ForumBreadcrumbs({ items }: ForumBreadcrumbsProps) {
         </li>
         
         {items.map((item, index) => (
-          <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <ChevronRight size={14} style={{ color: '#666' }} />
+          <li key={index} style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', padding: '0 0.4rem' }}>
+              <ChevronRight size={14} style={{ color: 'var(--text-muted)', opacity: 0.6 }} />
+            </div>
             {item.href ? (
               <Link 
                 href={item.href} 
                 style={{ 
-                  color: item.isCategory ? '#aaa' : 'var(--primary)', 
+                  color: item.isCategory ? 'var(--text-muted)' : 'var(--primary)', 
                   textDecoration: 'none',
                   pointerEvents: item.isCategory ? 'none' : 'auto',
-                  fontWeight: item.isCategory ? 400 : 500
+                  fontWeight: item.isCategory ? 400 : 600
                 }}
                 dangerouslySetInnerHTML={{ __html: parseInlineBBCode(item.label) }}
               />
             ) : (
               <span 
-                style={{ color: '#ddd', fontWeight: 500 }}
+                style={{ color: 'var(--foreground)', fontWeight: 600, opacity: 0.9 }}
                 dangerouslySetInnerHTML={{ __html: parseInlineBBCode(item.label) }}
               />
             )}

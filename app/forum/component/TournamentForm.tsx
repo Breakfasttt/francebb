@@ -151,7 +151,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               border: '1px solid var(--glass-border)' 
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-                <div style={{ background: 'var(--accent)', color: 'black', padding: '10px', borderRadius: '10px' }}>
+                <div style={{ background: 'var(--accent)', color: 'var(--header-foreground)', padding: '10px', borderRadius: '10px' }}>
                     <Trophy size={28} />
                 </div>
                 <div>
@@ -420,15 +420,20 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
         .admin-input {
           width: 100%;
           padding: 0.9rem 1rem;
-          background: var(--glass-bg);
+          background: rgba(0, 0, 0, 0.03); /* Background subtil pour ressortir sur le parchemin */
           border: 1px solid var(--glass-border);
           border-radius: 10px;
           color: var(--foreground);
           font-size: 1rem;
           outline: none;
-          transition: border-color 0.2s;
+          transition: all 0.2s;
         }
-        .admin-input:focus { border-color: var(--accent); }
+        [data-theme='nehekhara'] .admin-input, 
+        [data-theme='naf'] .admin-input { 
+          background: rgba(255, 255, 255, 0.05); 
+        }
+
+        .admin-input:focus { border-color: var(--primary); background: var(--background); }
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
         
         .checkbox-box-admin {
@@ -447,12 +452,14 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           color: var(--text-muted);
           transition: all 0.2s;
         }
+        
+        /* État coché : suit l'accent du thème (Or pour NAF/FBB, Navy pour Saison 3) */
         .checkbox-box-admin input:checked + .box-content {
-           background: rgba(255, 215, 0, 0.05);
-           border-color: var(--accent);
-           color: var(--accent);
+           background: var(--primary-transparent);
+           border-color: var(--primary);
+           color: var(--foreground);
            transform: translateY(-2px);
-           box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+           box-shadow: 0 4px 15px var(--btn-shadow);
         }
       `}</style>
     </form>

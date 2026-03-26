@@ -53,9 +53,9 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
             <button type="submit" className="widget-button" style={{ 
               width: '100%', 
               background: isTournament ? 'var(--accent)' : 'var(--primary)', 
-              color: isTournament ? 'black' : 'white',
+              color: 'var(--header-foreground)',
               padding: '1rem', 
-              fontSize: '1rem', 
+              fontSize: '1.1rem', 
               justifyContent: 'center',
               fontWeight: 800,
               boxShadow: isTournament ? '0 4px 15px rgba(255, 215, 0, 0.2)' : '0 4px 15px rgba(194, 29, 29, 0.3)'

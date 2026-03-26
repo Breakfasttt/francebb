@@ -18,6 +18,12 @@ export default async function Home() {
     take: 3
   });
 
+  // Trouver le premier forum de type "tournoi" pour le bouton "Créer"
+  const tournamentForum = await prisma.forum.findFirst({
+    where: { isTournamentForum: true },
+    select: { id: true }
+  });
+
   return (
     <main className="container" style={{ padding: '0.5rem 1rem' }}>
       <section className="hero" style={{ padding: '0.5rem 0.5rem 0 0.5rem' }}>
@@ -43,8 +49,9 @@ export default async function Home() {
               <Shield size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
               <div style={{ fontSize: '1rem' }}>Ligues</div>
             </Link>
-            <Link href={isAuth ? "/league/create" : "/auth/login?callback=/league/create"} className="action-card-mini" style={{ padding: '0.5rem' }}>
-              <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
+            {/* On ne garde que si on a un module ligue ou autre, sinon on cache */}
+            <Link href={isAuth ? "/forum" : "/auth/login?callback=/forum"} className="action-card-mini" style={{ padding: '0.5rem' }}>
+              <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Rejoindre</span>
             </Link>
           </div>
 
@@ -53,9 +60,11 @@ export default async function Home() {
               <Trophy size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
               <div style={{ fontSize: '1rem' }}>Tournois</div>
             </Link>
-            <Link href={isAuth ? "/forum/new-tournament?forumId=cmn6amj3t000us4pexd764iy1" : "/auth/login?callback=/forum/new-tournament?forumId=cmn6amj3t000us4pexd764iy1"} className="action-card-mini" style={{ padding: '0.5rem' }}>
-              <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
-            </Link>
+            {tournamentForum && (
+              <Link href={isAuth ? `/forum/new-tournament?forumId=${tournamentForum.id}` : `/auth/login?callback=/forum/new-tournament?forumId=${tournamentForum.id}`} className="action-card-mini" style={{ padding: '0.5rem' }}>
+                <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Créer</span>
+              </Link>
+            )}
           </div>
         </div>
 
