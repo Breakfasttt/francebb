@@ -115,10 +115,28 @@ Vercel est l'endroit où votre site sera "hébergé" et accessible via une adres
 
 ---
 
+## 🌍 Phase 5 : Lier votre Nom de Domaine (Optionnel)
+
+Si vous ne voulez pas de l'adresse par défaut `...vercel.app`, vous pouvez utiliser votre propre nom de domaine (ex: `bbfrance.fr`).
+
+1.  **Acheter un domaine** : Si vous n'en avez pas, achetez-le chez un fournisseur (ex: **OVH**, **Gandi**, **Namecheap**).
+2.  **Sur Vercel** : Allez dans votre projet > **Settings** > **Domains**.
+3.  Tapez votre nom de domaine et cliquez sur **Add**.
+4.  Vercel vous donnera des **records DNS** (généralement un `A record` ou un `CNAME`).
+5.  **Sur votre fournisseur (ex: OVH)** : Copiez les valeurs données par Vercel dans la zone DNS de votre domaine. 
+    *   *Attendez quelques minutes (parfois quelques heures) que le "SSL" se valide sur Vercel.*
+6.  **MISE À JOUR CRITIQUE** : Une fois le domaine actif, n'oubliez pas de retourner dans l'onglet **Environment Variables** de Vercel pour changer :
+    *   `NEXTAUTH_URL` : Mettez votre nouveau domaine (`https://votredomaine.fr`).
+    *   `NEXT_PUBLIC_SITE_URL` : Mettez votre nouveau domaine.
+    *   *Redéployez ensuite l'application pour que le changement soit pris en compte.*
+
+---
+
 ## 🆘 Aide : Les erreurs courantes
 
 *   **"Prisma Client could not be initialized"** : Vérifiez que votre `DATABASE_URL` sur Vercel contient bien le `?authToken=...` à la fin.
 *   **"Invalid AUTH_SECRET"** : Assurez-vous que cette variable est bien présente dans Vercel, avec au moins 32 caractères.
+*   **"Invalid redirection URL"** (NextAuth) : C'est souvent parce que `NEXTAUTH_URL` n'est pas exactement la même que l'adresse dans votre navigateur.
 *   **Le site est blanc / Erreur 500** : Allez dans l'onglet **"Logs"** sur Vercel pour lire l'erreur en rouge.
 
 ---
