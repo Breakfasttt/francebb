@@ -51,6 +51,15 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
     html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
   }
+  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) {
+    // Basic protection/sanitization: ensure size is alphanumeric/unit-based
+    const match = html.match(/\[size=(.*?)\]/i);
+    const size = match ? match[1].replace(/[^a-zA-Z0-9.%-]/g, "") : "";
+    html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, `<span style="font-size: ${size}; line-height: 1.2;">$1</span>`);
+  }
+  
+  // Horizontal Rule
+  html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0; clear: both;' />");
   while (/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i.test(html)) {
     html = html.replace(
       /\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i,
@@ -129,27 +138,66 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   });
 
   // 4. Replace Images
-
-  // 4. Replace Images
   html = html.replace(
-    /\[img\](.*?)\[\/img\]/gi,
-    "<img src=\"$1\" alt=\"Image\" style=\"max-width:100%; border-radius:8px; display:block; margin:0.5rem 0;\" loading=\"lazy\" />"
+    /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?\](.*?)\[\/img\]/gi,
+    (match, align, wrap, url) => {
+      let style = "max-width:100%; border-radius:8px;";
+      const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
+      
+      if (isWrap) {
+        if (align === "left") style += " float: left; margin: 0.5rem 1rem 0.5rem 0;";
+        else if (align === "right") style += " float: right; margin: 0.5rem 0 0.5rem 1rem;";
+        else style += " display: block; margin: 1rem auto;"; // center never wraps
+      } else {
+        if (align === "left") style += " display: block; margin: 1rem 0; margin-right: auto;";
+        else if (align === "right") style += " display: block; margin: 1rem 0; margin-left: auto;";
+        else style += " display: block; margin: 1rem auto;";
+      }
+      
+      return `<img src="${url}" alt="Image" style="${style}" loading="lazy" />`;
+    }
   );
 
   // 5. Replace YouTube Videos
+  const youtubeWrapper = (id: string, align?: string, wrap?: string) => {
+    let style = "position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:8px;";
+    let outerStyle = "margin: 1.5rem 0; clear: both;";
+    const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
+    
+    if (isWrap) {
+      if (align === "left") {
+        outerStyle = "float: left; width: 45%; margin: 0.5rem 1.5rem 0.5rem 0;";
+      } else if (align === "right") {
+        outerStyle = "float: right; width: 45%; margin: 0.5rem 0 0.5rem 1.5rem;";
+      } else {
+        outerStyle = "max-width: 800px; margin: 1.5rem auto;";
+      }
+    } else {
+      if (align === "left") {
+        outerStyle = "max-width: 800px; margin: 1.5rem 0; margin-right: auto;";
+      } else if (align === "right") {
+        outerStyle = "max-width: 800px; margin: 1.5rem 0; margin-left: auto;";
+      } else {
+        outerStyle = "max-width: 800px; margin: 1.5rem auto;";
+      }
+    }
+
+    return `<div style="${outerStyle}"><div style="${style}"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
+  };
+
   html = html.replace(
-    /\[youtube\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi,
-    "<div style=\"position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin:1rem 0; border-radius:8px;\"><iframe src=\"https://www.youtube.com/embed/$1\" style=\"position:absolute; top:0; left:0; width:100%; height:100%;\" frameborder=\"0\" allowfullscreen></iframe></div>"
+    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi,
+    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
   );
   
-  // also support [youtube]URL[/youtube]
+  // also support [youtube]URL[/youtube] with optional align/wrap
   html = html.replace(
-    /\[youtube\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
-    "<div style=\"position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin:1rem 0; border-radius:8px;\"><iframe src=\"https://www.youtube.com/embed/$1\" style=\"position:absolute; top:0; left:0; width:100%; height:100%;\" frameborder=\"0\" allowfullscreen></iframe></div>"
+    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
+    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
   );
   html = html.replace(
-    /\[youtube\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
-    "<div style=\"position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin:1rem 0; border-radius:8px;\"><iframe src=\"https://www.youtube.com/embed/$1\" style=\"position:absolute; top:0; left:0; width:100%; height:100%;\" frameborder=\"0\" allowfullscreen></iframe></div>"
+    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
+    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
   );
 
   // 6. Replace Smileys
@@ -201,10 +249,14 @@ export function parseInlineBBCode(text: string): string {
   while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
     html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
   }
+  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) {
+    html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, "<span>$1</span>");
+  }
 
   // Strip block/media tags completely so user sees just the raw text or nothing
-  html = html.replace(/\[img\].*?\[\/img\]/gi, "📸 Image");
-  html = html.replace(/\[youtube\].*?\[\/youtube\]/gi, "🎥 Vidéo");
+  html = html.replace(/\[hr\]/gi, " --- ");
+  html = html.replace(/\[img(?: align=(?:left|right|center))?\].*?\[\/img\]/gi, "📸 Image");
+  html = html.replace(/\[youtube(?: align=(?:left|right|center))?\].*?\[\/youtube\]/gi, "🎥 Vidéo");
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2"); // Strip link, keep text
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2"); // Keep just the text and an icon
