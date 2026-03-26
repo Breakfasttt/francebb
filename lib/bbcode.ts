@@ -58,161 +58,172 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, `<span style="font-size: ${size}; line-height: 1.2;">$1</span>`);
   }
   
+  // Alignment blocks
+  while (/\[center\]((?:(?!\[center\])[\s\S])*?)\[\/center\]/i.test(html)) {
+    html = html.replace(/\[center\]((?:(?!\[center\])[\s\S])*?)\[\/center\]/i, "<div style='text-align: center;'>$1</div>");
+  }
+  while (/\[right\]((?:(?!\[right\])[\s\S])*?)\[\/right\]/i.test(html)) {
+    html = html.replace(/\[right\]((?:(?!\[right\])[\s\S])*?)\[\/right\]/i, "<div style='text-align: right;'>$1</div>");
+  }
+  while (/\[justify\]((?:(?!\[justify\])[\s\S])*?)\[\/justify\]/i.test(html)) {
+    html = html.replace(/\[justify\]((?:(?!\[justify\])[\s\S])*?)\[\/justify\]/i, "<div style='text-align: justify;'>$1</div>");
+  }
+
+  // Code blocks
+  while (/\[code\]((?:(?!\[code\])[\s\S])*?)\[\/code\]/i.test(html)) {
+    html = html.replace(/\[code\]((?:(?!\[code\])[\s\S])*?)\[\/code\]/i, "<pre style='background: rgba(0,0,0,0.35); padding: 1rem; border-radius: 8px; border: 1px solid var(--glass-border); font-family: monospace; white-space: pre-wrap; color: var(--text-secondary); margin: 1rem 0; font-size: 0.85rem;'>$1</pre>");
+  }
+
+  // Sub/Sup
+  while (/\[sup\]((?:(?!\[sup\])[\s\S])*?)\[\/sup\]/i.test(html)) {
+    html = html.replace(/\[sup\]((?:(?!\[sup\])[\s\S])*?)\[\/sup\]/i, "<sup>$1</sup>");
+  }
+  while (/\[sub\]((?:(?!\[sub\])[\s\S])*?)\[\/sub\]/i.test(html)) {
+    html = html.replace(/\[sub\]((?:(?!\[sub\])[\s\S])*?)\[\/sub\]/i, "<sub>$1</sub>");
+  }
+  
   // Horizontal Rule
-  html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1.5rem 0; clear: both;' />");
-  while (/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i.test(html)) {
-    html = html.replace(
-      /\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/i,
-      `<div class="bb-quote-wrapper" style="margin: 1.5rem 0; display: flex; flex-direction: column;">
-        <div style="display: flex; position: relative; z-index: 1;">
-          <div style="background: var(--primary); color: var(--header-foreground); padding: 0.3rem 0.8rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 6px 6px 0 0; letter-spacing: 0.5px;">
-            Citation
-          </div>
-        </div>
-        <blockquote style='border-left:4px solid var(--primary); border-top: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); color: var(--text-secondary); background: var(--glass-bg); padding:1rem; margin:0; border-radius: 0 8px 8px 8px; font-style: italic;'>
-          $1
-        </blockquote>
-      </div>`
-    );
-  }
+  html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0; clear: both;' />");
 
-  // Spoilers
-  while (/\[spoiler\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i.test(html)) {
-    html = html.replace(/\[spoiler\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i, 
-      '<details class="bb-spoiler"><summary>Spoiler (cliquez pour afficher)</summary><div class="bb-spoiler-content">$1</div></details>');
-  }
-  while (/\[spoiler=(.*?)\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i.test(html)) {
-    html = html.replace(/\[spoiler=(.*?)\]((?:(?!\[spoiler\])[\s\S])*?)\[\/spoiler\]/i, 
-      '<details class="bb-spoiler"><summary>Spoiler: $1</summary><div class="bb-spoiler-content">$2</div></details>');
-  }
+  // 3. Spoilers (Body-First structure for persistent size)
+  html = html.replace(/\[spoiler(?:=(.*?))?\]([\s\S]*?)\[\/spoiler\]/gi, (match, title, content) => {
+    const trimmedContent = content.trim();
+    return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box" onclick="this.classList.add('revealed')"><div class="bb-spoiler-body">${trimmedContent}<button class="bb-spoiler-rehide" title="Recouvrir le bloc" onclick="event.stopPropagation(); this.closest('.bb-spoiler-box').classList.remove('revealed');">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
+  });
 
-  // Accordions
+  // 4. Accordions
   while (/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i.test(html)) {
-    html = html.replace(/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i, 
-      '<details class="bb-accordion"><summary>$1</summary><section class="bb-accordion-content">$2</section></details>');
+    html = html.replace(/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i, (match, title, content) => {
+      const trimmed = content.trim();
+      return `<details class="bb-accordion"><summary>${title}</summary><section class="bb-accordion-content">${trimmed}</section></details>`;
+    });
   }
 
-  // 3. Replace Links
-  // [url=https://example.com]text[/url]
-  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$2</a>");
-  // [url]https://example.com[/url]
-  html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
-  
-  // Topic Links — [topic=ID]text[/topic]
-  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
-  // [url]https://example.com[/url]
-  html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
-  
-  // @Mentions — [mention=UserID]Username[/mention]
-  html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
-
-  // Quotes — [quote=UserID|PostID]content[/quote]
-  html = html.replace(/\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, content) => {
+  // 5. Quotes (Unified Tabbed Design)
+  html = html.replace(/\[quote(?:=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*))?\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, content) => {
     let quoteContent = '';
-    
     if (postId && postStatusMap && postStatusMap[postId]) {
       const status = postStatusMap[postId];
       if (status.isDeleted) {
-        quoteContent = `<div style="border-left: 4px solid var(--text-muted); background: var(--glass-bg); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-muted); text-align: center; border: 1px solid var(--glass-border);">Ce message a était supprimé par son auteur</div>`;
+        quoteContent = `<div style="text-align: center; color: var(--text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
       } else if (status.isModerated) {
-        quoteContent = `<div style="border-left: 4px solid var(--danger); background: var(--primary-transparent); padding: 1.5rem; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--danger); text-align: center; border: 1px solid var(--danger);">Le contenu de ce message a été masqué par la modération.</div>`;
+        quoteContent = `<div style="text-align: center; color: var(--danger); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
       }
     }
-
-    if (!quoteContent) {
-      quoteContent = `<div style="border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 1rem; border-radius: 0 8px 8px 8px; font-style: italic; margin: 0; border-top: 1px solid var(--glass-border); border-right: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); color: var(--text-secondary);"><div>${content}</div></div>`;
+    const displayContent = (quoteContent || content).trim();
+    const tabs = [];
+    tabs.push(`<div style="background: var(--primary); color: var(--header-foreground); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--primary); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
+    if (userId) {
+      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="/profile?id=${userId}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${userId}</a></div>`);
     }
-
-    return `<div class="bb-quote-wrapper" style="margin: 1.5rem 0; display: flex; flex-direction: column;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1;">
-        <div style="display: flex; gap: 4px;">
-          <div style="background: var(--primary); color: var(--header-foreground); padding: 0.3rem 0.8rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 6px 6px 0 0; letter-spacing: 0.5px;">Citation</div>
-          <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.3rem 0.8rem; font-size: 0.7rem; border-radius: 6px 6px 0 0; font-weight: 600;">
-            Par <a href="/profile?id=${userId}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${userId}</a>
-          </div>
-        </div>
-        ${postId ? `<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.3rem 0.8rem; font-size: 0.7rem; border-radius: 6px 6px 0 0;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>` : ""}
-      </div>
-      ${quoteContent}
-    </div>`;
+    if (postId) {
+      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
+    }
+    return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--glass-border); border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-secondary); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
   });
 
-  // 4. Replace Images
+  // 6. Links
+  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$2</a>");
+  html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
+  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
+  html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
+
+  // 7. Replace Images
   html = html.replace(
-    /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?\](.*?)\[\/img\]/gi,
-    (match, align, wrap, url) => {
+    /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\](.*?)\[\/img\]/gi,
+    (match, align, wrap, thumb, url) => {
+      const isThumb = thumb !== "no";
       let style = "max-width:100%; border-radius:8px;";
+      if (isThumb) style += " max-width: 400px; max-height: 250px; object-fit: contain;";
       const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
-      
       if (isWrap) {
-        if (align === "left") style += " float: left; margin: 0.5rem 1rem 0.5rem 0;";
-        else if (align === "right") style += " float: right; margin: 0.5rem 0 0.5rem 1rem;";
-        else style += " display: block; margin: 1rem auto;"; // center never wraps
+        if (align === "left") style += " float: left; margin: 0.3rem 1rem 0.3rem 0;";
+        else if (align === "right") style += " float: right; margin: 0.3rem 0 0.3rem 1rem;";
+        else style += " display: block; margin: 0.8rem auto;";
       } else {
-        if (align === "left") style += " display: block; margin: 1rem 0; margin-right: auto;";
-        else if (align === "right") style += " display: block; margin: 1rem 0; margin-left: auto;";
-        else style += " display: block; margin: 1rem auto;";
+        if (align === "left") style += " display: block; margin: 0.8rem 0; margin-right: auto;";
+        else if (align === "right") style += " display: block; margin: 0.8rem 0; margin-left: auto;";
+        else style += " display: block; margin: 0.8rem auto;";
       }
-      
       return `<img src="${url}" alt="Image" style="${style}" loading="lazy" />`;
     }
   );
 
-  // 5. Replace YouTube Videos
-  const youtubeWrapper = (id: string, align?: string, wrap?: string) => {
+  // 8. Replace YouTube Videos
+  const youtubeWrapper = (id: string, align?: string, wrap?: string, thumb?: string) => {
+    const isThumb = thumb !== "no";
     let style = "position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:8px;";
-    let outerStyle = "margin: 1.5rem 0; clear: both;";
+    let outerStyle = `margin: 1rem 0; clear: both; width: 100%; max-width: ${isThumb ? '480px' : '800px'};`;
     const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
-    
     if (isWrap) {
-      if (align === "left") {
-        outerStyle = "float: left; width: 45%; margin: 0.5rem 1.5rem 0.5rem 0;";
-      } else if (align === "right") {
-        outerStyle = "float: right; width: 45%; margin: 0.5rem 0 0.5rem 1.5rem;";
-      } else {
-        outerStyle = "max-width: 800px; margin: 1.5rem auto;";
-      }
+      if (align === "left") outerStyle = `float: left; width: 45%; max-width: ${isThumb ? '350px' : '45%'}; margin: 0.3rem 1.2rem 0.3rem 0;`;
+      else if (align === "right") outerStyle = `float: right; width: 45%; max-width: ${isThumb ? '350px' : '45%'}; margin: 0.3rem 0 0.3rem 1.2rem;`;
+      else outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem auto;`;
     } else {
-      if (align === "left") {
-        outerStyle = "max-width: 800px; margin: 1.5rem 0; margin-right: auto;";
-      } else if (align === "right") {
-        outerStyle = "max-width: 800px; margin: 1.5rem 0; margin-left: auto;";
-      } else {
-        outerStyle = "max-width: 800px; margin: 1.5rem auto;";
-      }
+      if (align === "left") outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem 0; margin-right: auto;`;
+      else if (align === "right") outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem 0; margin-left: auto;`;
+      else outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem auto;`;
     }
-
     return `<div style="${outerStyle}"><div style="${style}"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
   };
 
-  html = html.replace(
-    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi,
-    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
-  );
-  
-  // also support [youtube]URL[/youtube] with optional align/wrap
-  html = html.replace(
-    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
-    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
-  );
-  html = html.replace(
-    /\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi,
-    (match, align, wrap, id) => youtubeWrapper(id, align, wrap)
-  );
+  html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
+  html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
+  html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
 
-  // 6. Replace Smileys
-  // We use word boundaries or space boundaries to not accidentally replace chars inside words if not careful,
-  // but for things like :) it's safer to just replace them if they are common.
-  // Actually, let's just do a simple replacement for the mapped smileys.
+  // 9. Lists [list] and [*]
+  const parseListItems = (content: string) => {
+    let items = content.trim();
+    if (items.startsWith("[*]")) items = items.substring(3);
+    return items.split(/\[\*\]/gi).map(item => `<li>${item.trim()}</li>`).join("");
+  };
+
+  while (/\[list\]([\s\S]*?)\[\/list\]/i.test(html)) {
+    html = html.replace(/\[list\]([\s\S]*?)\[\/list\]/i, (match, content) => {
+      const cleanContent = content.replace(/\r\n|\r|\n/g, "");
+      return `<ul style="margin: 0.8rem 0; padding-left: 1.5rem; list-style-type: disc;">${parseListItems(cleanContent)}</ul>`;
+    });
+  }
+  while (/\[list=(-|1|a|i)\]([\s\S]*?)\[\/list\]/i.test(html)) {
+    html = html.replace(/\[list=(-|1|a|i)\]([\s\S]*?)\[\/list\]/i, (match, type, content) => {
+      let listStyle = "decimal"; let tag = "ol";
+      if (type === "-") { listStyle = "dash"; tag = "ul"; }
+      else if (type === "a") listStyle = "lower-alpha";
+      else if (type === "i") listStyle = "lower-roman";
+      const cleanContent = content.replace(/\r\n|\r|\n/g, "");
+      return `<${tag} style="margin: 0.8rem 0; padding-left: 1.5rem; list-style-type: ${listStyle};">${parseListItems(cleanContent)}</${tag}>`;
+    });
+  }
+
+  // 10. Tables [table], [tr], [td], [th]
+  while (/\[td\]((?:(?!\[td\])[\s\S])*?)\[\/td\]/i.test(html)) {
+    html = html.replace(/\[td\]((?:(?!\[td\])[\s\S])*?)\[\/td\]/i, "<td style='padding: 0.8rem; border: 1px solid var(--glass-border); vertical-align: top; color: var(--foreground);'>$1</td>");
+  }
+  while (/\[th\]((?:(?!\[th\])[\s\S])*?)\[\/th\]/i.test(html)) {
+    html = html.replace(/\[th\]((?:(?!\[th\])[\s\S])*?)\[\/th\]/i, "<th style='padding: 0.8rem; border: 1px solid var(--glass-border); background: var(--primary-transparent); color: var(--accent); font-weight: 800; text-align: left;'>$1</th>");
+  }
+  while (/\[tr\]((?:(?!\[tr\])[\s\S])*?)\[\/tr\]/i.test(html)) {
+    html = html.replace(/\[tr\]((?:(?!\[tr\])[\s\S])*?)\[\/tr\]/i, "<tr style='transition: background 0.2s;'>$1</tr>");
+  }
+  while (/\[table\]([\s\S]*?)\[\/table\]/i.test(html)) {
+    html = html.replace(/\[table\]([\s\S]*?)\[\/table\]/i, (match, content) => {
+      const cleanContent = content.replace(/\r\n|\r|\n/g, "");
+      return `<div style="overflow-x: auto; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--glass-border);"><table style="width: 100%; border-collapse: collapse; background: var(--card-bg); font-size: 0.9rem;">${cleanContent}</table></div>`;
+    });
+  }
+
+  // 11. Replace Smileys
   Object.entries(smileysMap).forEach(([textFace, emoji]) => {
-    // Escape regex chars in the text face
     const escapedTextFace = textFace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    // Replace standalone smileys or smileys with spaces
     const regex = new RegExp(`(^|\\s)${escapedTextFace}(?=\\s|$)`, 'g');
     html = html.replace(regex, `$1${emoji}`);
   });
+  
+  // 12. Clean up newlines between block-level tags to avoid redundant <br /> gaps
+  html = html.replace(/(<\/div>|<\/ul>|<\/table>|<\/details>|<\/blockquote>|<\/section>|<hr.*?>)\s*\n/gi, '$1');
+  html = html.replace(/\n\s*(<div|<ul|<table|<details|<blockquote|<section|<hr)/gi, '$1');
 
-  // 7. Replace Newlines with <br />
+  // 13. Replace Newlines with <br />
   html = html.replace(/\r\n|\r|\n/g, "<br />");
 
   return html;
@@ -220,57 +231,30 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
 
 /**
  * A simplified BBCode parser for inline elements only (titles, breadcrumbs).
- * Strips out block elements or media to prevent layout breaking.
  */
 export function parseInlineBBCode(text: string): string {
   if (!text) return "";
-
-  // 1. Escape basic HTML tags
-  let html = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-  // 2. Replace basic inline formatting
-  while (/\[b\]((?:(?!\[b\])[\s\S])*?)\[\/b\]/i.test(html)) {
-    html = html.replace(/\[b\]((?:(?!\[b\])[\s\S])*?)\[\/b\]/i, "<strong>$1</strong>");
-  }
-  while (/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i.test(html)) {
-    html = html.replace(/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i, "<em>$1</em>");
-  }
-  while (/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i.test(html)) {
-    html = html.replace(/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i, "<u>$1</u>");
-  }
-  while (/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i.test(html)) {
-    html = html.replace(/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i, "<s>$1</s>");
-  }
-  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
-    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
-  }
-  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) {
-    html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, "<span>$1</span>");
-  }
-
-  // Strip block/media tags completely so user sees just the raw text or nothing
+  let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  while (/\[b\]((?:(?!\[b\])[\s\S])*?)\[\/b\]/i.test(html)) { html = html.replace(/\[b\]((?:(?!\[b\])[\s\S])*?)\[\/b\]/i, "<strong>$1</strong>"); }
+  while (/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i.test(html)) { html = html.replace(/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i, "<em>$1</em>"); }
+  while (/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i.test(html)) { html = html.replace(/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i, "<u>$1</u>"); }
+  while (/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i.test(html)) { html = html.replace(/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i, "<s>$1</s>"); }
+  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) { html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>"); }
+  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) { html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, "<span>$1</span>"); }
   html = html.replace(/\[hr\]/gi, " --- ");
   html = html.replace(/\[img(?: align=(?:left|right|center))?\].*?\[\/img\]/gi, "📸 Image");
   html = html.replace(/\[youtube(?: align=(?:left|right|center))?\].*?\[\/youtube\]/gi, "🎥 Vidéo");
-  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2"); // Strip link, keep text
+  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2");
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
-  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2"); // Keep just the text and an icon
+  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2");
   html = html.replace(/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/gi, "« $1 »");
   html = html.replace(/\[spoiler\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler");
   html = html.replace(/\[spoiler=(.*?)\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler: $1");
   html = html.replace(/\[accordion=(.*?)\](.*?)\[\/accordion\]/gi, "📋 Accordion: $1");
-
-  // 3. Replace Smileys
   Object.entries(smileysMap).forEach(([textFace, emoji]) => {
     const escapedTextFace = textFace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(^|\\s)${escapedTextFace}(?=\\s|$)`, 'g');
     html = html.replace(regex, `$1${emoji}`);
   });
-
   return html;
 }

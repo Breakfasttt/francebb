@@ -33,7 +33,7 @@ export default function EditPostForm({ postId, initialContent }: { postId: strin
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div style={{ background: 'rgba(26, 26, 32, 0.4)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
+      <div style={{ background: 'var(--card-bg)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
         <BBCodeEditor 
           name="content" 
           defaultValue={initialContent} 

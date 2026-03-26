@@ -317,39 +317,37 @@
 }
 
 /* BBCode Spoiler & Accordion Styles */
-.bb-spoiler,
+/* Accordion Styling (Thémable et Lisible) */
 .bb-accordion {
-  margin: 1.5rem 0;
+  margin: 0.8rem 0;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
+  background: var(--card-bg);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 6px solid var(--primary);
 }
 
-.bb-spoiler summary,
 .bb-accordion summary {
   padding: 1rem 1.4rem;
   cursor: pointer;
-  background: var(--nav-bg-dark, rgba(0, 0, 0, 0.1));
+  background: var(--glass-bg);
   font-weight: 700;
   list-style: none;
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 1rem;
-  color: var(--header-foreground);
+  color: var(--foreground);
   user-select: none;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   position: relative;
 }
 
-.bb-spoiler summary::-webkit-details-marker,
 .bb-accordion summary::-webkit-details-marker {
   display: none;
 }
 
-.bb-spoiler summary::before,
 .bb-accordion summary::before {
   content: "→";
   font-family: monospace;
@@ -359,24 +357,21 @@
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.bb-spoiler[open] summary::before,
 .bb-accordion[open] summary::before {
   transform: rotate(90deg);
 }
 
-.bb-spoiler summary:hover,
 .bb-accordion summary:hover {
-  background: var(--primary);
-  color: var(--header-foreground);
+  background: var(--primary-transparent);
+  color: var(--accent);
 }
 
-.bb-spoiler-content,
 .bb-accordion-content {
-  padding: 1.5rem;
+  padding: 0.8rem 1.2rem;
   color: var(--text-secondary);
   line-height: 1.7;
   border-top: 1px solid var(--glass-border);
-  background: var(--glass-bg);
+  background: transparent;
   animation: slideDownIn 0.3s ease-out;
 }
 
@@ -392,16 +387,142 @@
   }
 }
 
-/* Specific styling for Spoiler */
-.bb-spoiler {
-  border-left: 4px solid var(--text-muted);
+/* Specific styling for Spoiler (Architecture Corps + Cache cliquable) */
+.bb-spoiler-wrapper {
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
-.bb-spoiler summary {
-  color: var(--text-secondary);
+.bb-spoiler-header {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
 }
 
-/* Specific styling for Accordion */
+.bb-spoiler-header::before {
+  content: "⚠️";
+  font-size: 0.9rem;
+}
+
+.bb-spoiler-box {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 80px;
+}
+
+.bb-spoiler-body {
+  padding: 1rem 1.2rem;
+  padding-bottom: 2.5rem; /* Espace pour le bouton */
+  color: var(--foreground);
+  background: var(--input-bg);
+  box-shadow: inset 0 2px 20px rgba(0,0,0,0.2);
+  /* Le contenu est là mais invisible et flou */
+  opacity: 0;
+  filter: blur(40px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+  transform: scale(0.98);
+}
+
+.bb-spoiler-box.revealed .bb-spoiler-body {
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.bb-spoiler-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px dashed var(--primary);
+  border-radius: 11px;
+  margin: 1px;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+  /* Grain léger thémable */
+  background-image: radial-gradient(var(--glass-border) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+.bb-spoiler-box.revealed .bb-spoiler-mask {
+  /* Animation Thanos Snap (Dissolution) */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.15);
+  filter: blur(30px) brightness(1.5);
+  pointer-events: none;
+}
+
+.bb-spoiler-mask-text {
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 950;
+  transition: none; /* Retrait de l'animation au survol */
+}
+
+.bb-spoiler-rehide {
+  position: absolute;
+  bottom: 0.8rem;
+  right: 1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 20;
+}
+
+.bb-spoiler-rehide:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Specific styling for Accordion (Thémable et Lisible) */
 .bb-accordion {
-  border-left: 4px solid var(--primary);
+  border-left: 6px solid var(--primary);
+  background: var(--card-bg);
+}
+
+.bb-accordion summary {
+  color: var(--foreground);
+  background: var(--glass-bg);
+}
+
+.bb-accordion summary:hover {
+  background: var(--primary-transparent);
+  color: var(--accent);
+}
+
+.bb-accordion-content {
+  background: transparent;
+  color: var(--text-secondary);
 }

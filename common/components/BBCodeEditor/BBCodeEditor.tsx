@@ -3,7 +3,7 @@
 import Toast from "@/common/components/Toast/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot } from "lucide-react";
+import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
@@ -25,7 +25,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | null>(null);
+  const [toolInputThumb, setToolInputThumb] = useState(true);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
   const [toolInputAlign, setToolInputAlign] = useState<"center" | "left" | "right">("center");
@@ -125,12 +126,16 @@ BALISES SUPPORTÉES :
 2. Couleurs : [color=#c21d1d]texte[/color] (#c21d1d est le rouge du site, #ffd700 est l'or)
 3. Tailles : [size=1.2rem]texte[/size] (Titres recommandés : 1.5rem ou 1.3rem)
 4. Citations : [quote]texte[/quote] ou [quote=Pseudo]texte[/quote]
-5. Listes : [list][*]élément[/list]
-6. Médias :
-   - [img align=left|right|center wrap=yes|no]URL[/img]
-   - [youtube align=left|right|center wrap=yes|no]ID_OU_URL[/youtube]
-7. Interactif : [spoiler=Titre]contenu[/spoiler], [accordion=Titre]contenu[/accordion]
-8. Liens : [url=URL]texte[/url], [mention=ID]Pseudo[/mention], [topic=ID]Titre[/topic]
+5. Listes : [list][*]élément[/list] ou [list=1][*]élément[/list] ou [list=a][*]élément[/list] ou [list=-][*]élément[/list] (pour des tirets)
+6. Médias (Miniature par défaut) :
+   - [img align=left|right|center wrap=yes|no thumb=yes|no]URL[/img]
+   - [youtube align=left|right|center wrap=yes|no thumb=yes|no]ID_OU_URL[/youtube]
+   Note: thumb=yes (miniature) est utilisé par défaut pour ne pas surcharger les pages.
+7. Tableaux : [table][tr][th]Titre[/th][/tr][tr][td]Data[/td][/tr][/table]
+8. Mise en page (Texte uniquement) : [center]centré[/center], [right]à droite[/right], [justify]justifié[/justify] (Note: Pour les images/vidéos, utilise les paramètres align= de la balise point 6).
+9. Technique : [code]bloc de code[/code], [sup]exposant[/sup], [sub]indice[/sub]
+10. Interactif : [spoiler=Titre]contenu[/spoiler], [accordion=Titre]contenu[/accordion]
+11. Liens : [url=URL]texte[/url], [mention=ID]Pseudo[/mention], [topic=ID]Titre[/topic]
 
 CONSIGNES :
 - Structure le texte avec des titres en gras et plus grands.
@@ -209,6 +214,18 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
     setActiveTool(null);
   };
 
+  const insertListTag = (type: string) => {
+    const start = type ? `[list=${type}]\n[*] ` : `[list]\n[*] `;
+    insertTag(start, `\n[/list]`);
+    setActiveTool(null);
+  };
+
+  const insertTableTemplate = () => {
+    const template = `[table]\n[tr]\n[th]Header 1[/th]\n[th]Header 2[/th]\n[/tr]\n[tr]\n[td]Cell 1[/td]\n[td]Cell 2[/td]\n[/tr]\n[/table]`;
+    insertTag(template, "");
+    setActiveTool(null);
+  };
+
   const submitLink = () => {
     if (toolInputUrl) {
       if (!textareaRef.current) return;
@@ -274,9 +291,10 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
       let tag = "[youtube";
       if (toolInputAlign !== "center") tag += ` align=${toolInputAlign}`;
       if (toolInputAlign !== "center") tag += ` wrap=${toolInputWrap ? "yes" : "no"}`;
+      if (!toolInputThumb) tag += ` thumb=no`;
       tag += `]${toolInputUrl}[/youtube]`;
       insertTag(tag, "");
-      setToolInputUrl(""); setToolInputAlign("center"); setToolInputWrap(false); setActiveTool(null);
+      setToolInputUrl(""); setToolInputAlign("center"); setToolInputWrap(false); setToolInputThumb(true); setActiveTool(null);
     }
   };
 
@@ -285,9 +303,10 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
       let tag = "[img";
       if (toolInputAlign !== "center") tag += ` align=${toolInputAlign}`;
       if (toolInputAlign !== "center") tag += ` wrap=${toolInputWrap ? "yes" : "no"}`;
+      if (!toolInputThumb) tag += ` thumb=no`;
       tag += `]${toolInputUrl}[/img]`;
       insertTag(tag, "");
-      setToolInputUrl(""); setToolInputAlign("center"); setToolInputWrap(false); setActiveTool(null);
+      setToolInputUrl(""); setToolInputAlign("center"); setToolInputWrap(false); setToolInputThumb(true); setActiveTool(null);
     }
   };
 
@@ -304,12 +323,12 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
       setActiveTool(tool);
-      setToolInputUrl(""); setToolInputText(""); setToolInputAlign("center");
+      setToolInputUrl(""); setToolInputText(""); setToolInputAlign("center"); setToolInputThumb(true);
       setTopicQuery(""); setTopicResults([]); setSelectedTopic(null);
       setMentionQuery(""); setMentionResults([]);
       if ((tool === 'link' || tool === 'topic' || tool === 'spoiler' || tool === 'accordion') && textareaRef.current) {
@@ -336,12 +355,14 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
         let tag = "[img";
         if (toolInputAlign !== "center") tag += ` align=${toolInputAlign}`;
         if (toolInputAlign !== "center") tag += ` wrap=${toolInputWrap ? "yes" : "no"}`;
+        if (!toolInputThumb) tag += " thumb=no";
         tag += `]${data.data.url}[/img]`;
         insertTag(tag, "");
         setActiveTool(null);
         setToolInputAlign("center");
         setToolInputWrap(false);
-        showToast("Image insérée avec succès !", "success");
+        showToast("Image uploadée avec succès !", "success");
+        setToolInputThumb(true);
       } else {
         showToast(`Erreur ImgBB: ${data.error?.message || "Requête rejetée"}`, "error");
       }
@@ -384,6 +405,14 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <button type="button" onClick={() => insertTag("[hr]", "")} className="toolbar-btn"><Minus size={16} /></button>
           </Tooltip>
           
+          <Tooltip text="Liste">
+            <button type="button" onClick={() => toggleTool('list')} className={`toolbar-btn ${activeTool === 'list' ? 'active-tool' : ''}`}><List size={16} /></button>
+          </Tooltip>
+          
+          <Tooltip text="Tableau">
+            <button type="button" onClick={() => insertTableTemplate()} className="toolbar-btn"><TableIcon size={16} /></button>
+          </Tooltip>
+          
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
 
           <Tooltip text="Ajouter un lien">
@@ -409,6 +438,15 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           </Tooltip>
           <Tooltip text="Accordéon (Détails)">
             <button type="button" onClick={() => toggleTool('accordion')} className={`toolbar-btn ${activeTool === 'accordion' ? 'active-tool' : ''}`}><ChevronDown size={16} /></button>
+          </Tooltip>
+          <Tooltip text="Bloc de code">
+            <button type="button" onClick={() => insertTag("[code]", "[/code]")} className="toolbar-btn"><Code size={16} /></button>
+          </Tooltip>
+          <Tooltip text="Alignement du texte">
+            <button type="button" onClick={() => toggleTool('align')} className={`toolbar-btn ${activeTool === 'align' ? 'active-tool' : ''}`}><AlignCenter size={16} /></button>
+          </Tooltip>
+          <Tooltip text="Typographie (Exposant/Indice)">
+            <button type="button" onClick={() => toggleTool('typo')} className={`toolbar-btn ${activeTool === 'typo' ? 'active-tool' : ''}`}><Superscript size={14} /></button>
           </Tooltip>
           
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
@@ -487,6 +525,19 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                     </div>
                   </div>
 
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Miniature</span>
+                    <Tooltip text={toolInputThumb ? "Taille réduite (recommandé)" : "Taille réelle"}>
+                      <button 
+                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)} 
+                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`} 
+                        style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
+                      >
+                        <Bot size={16} />
+                      </button>
+                    </Tooltip>
+                  </div>
+
                   {toolInputAlign !== "center" && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Habillage</span>
@@ -543,6 +594,19 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                     </div>
                   </div>
 
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Miniature</span>
+                    <Tooltip text={toolInputThumb ? "Taille réduite (recommandé)" : "Taille réelle"}>
+                      <button 
+                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)} 
+                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`} 
+                        style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
+                      >
+                        <Bot size={16} />
+                      </button>
+                    </Tooltip>
+                  </div>
+
                   {toolInputAlign !== "center" && (
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Habillage</span>
@@ -593,6 +657,48 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <input type="text" placeholder="Titre accordéon..." value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
               <button type="button" onClick={submitAccordion} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+            </div>
+          )}
+          {activeTool === 'list' && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, marginRight: "0.5rem", textTransform: "uppercase" }}>Style de liste :</span>
+              {[
+                { v: "", t: "Points (•)", i: List },
+                { v: "-", t: "Tirets (-)", i: List },
+                { v: "1", t: "Numéros (1.)", i: ListOrdered },
+                { v: "a", t: "Lettres (a.)", i: ListOrdered }
+              ].map(ls => (
+                <button key={ls.v} type="button" onClick={() => insertListTag(ls.v)} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <ls.i size={14} /> {ls.t}
+                </button>
+              ))}
+            </div>
+          )}
+          {activeTool === 'align' && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, marginRight: "0.5rem", textTransform: "uppercase" }}>Alignement :</span>
+              {[
+                { v: "center", t: "Centre", i: AlignCenter },
+                { v: "right", t: "Droite", i: AlignRight },
+                { v: "justify", t: "Justifié", i: AlignJustify }
+              ].map(al => (
+                <button key={al.v} type="button" onClick={() => { insertTag(`[${al.v}]`, `[/${al.v}]`); setActiveTool(null); }} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <al.i size={14} /> {al.t}
+                </button>
+              ))}
+            </div>
+          )}
+          {activeTool === 'typo' && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, marginRight: "0.5rem", textTransform: "uppercase" }}>Style de texte :</span>
+              {[
+                { v: "sup", t: "Exposant", i: Superscript },
+                { v: "sub", t: "Indice", i: Subscript }
+              ].map(ty => (
+                <button key={ty.v} type="button" onClick={() => { insertTag(`[${ty.v}]`, `[/${ty.v}]`); setActiveTool(null); }} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <ty.i size={14} /> {ty.t}
+                </button>
+              ))}
             </div>
           )}
           {activeTool === 'smileys' && <SmileyGrid onSelect={handleSmileySelect} />}
