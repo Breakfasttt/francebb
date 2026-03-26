@@ -8,7 +8,7 @@ const globalForPrisma = global as unknown as {
 };
 
 const config = {
-  url: process.env.DATABASE_URL || "file:d:/devperso/antigravity/bbfrance/dev.db",
+  url: process.env.DATABASE_URL || "file:./dev.db",
 };
 console.log(`[PRISMA] Utilisation de la base : ${config.url}`);
 const adapter = new PrismaLibSql(config);

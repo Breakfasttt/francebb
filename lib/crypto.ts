@@ -3,7 +3,7 @@ import crypto from "crypto";
 const ALGORITHM = "aes-256-gcm";
 const KEY_LENGTH = 32;
 const IV_LENGTH = 12; // GCM recommended IV length
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "bbfrance_default_secret_encryption_key_32_chars_long!!";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "";
 
 /**
  * Chiffre un texte en utilisant AES-256-GCM

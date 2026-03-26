@@ -132,4 +132,7 @@ Respecter les notices de dépréciation.
 - si tu dois faire des logs, redirige la sortie vers un fichier `logs/` à la racine du projet
 - supprime logs et scripts qui ne sont plus utile à la fin de ton travail/analyse
 
+## déploiement
+- De temps en temps, met a jour le fichier README.md (en français) avec les explications de comment déployer et setup le projet.
+
 <!-- END:nextjs-agent-rules -->

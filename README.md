@@ -1,167 +1,207 @@
 # 🏈 France Blood Bowl — BBFrance
 
-La plateforme de référence pour les **tournois de Blood Bowl en France**.
+La plateforme de référence pour la communauté **Blood Bowl en France**. Centrée sur les tournois, l'échange et la gestion de profil pour tous les coachs français.
 
-BBFrance permet aux joueurs et organisateurs de se retrouver autour des tournois, d'échanger sur le forum communautaire et de gérer leur profil de joueur.
+---
+
+## 🎯 But du Projet
+
+BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à simplifier la vie des joueurs (recherche de tournois, inscriptions, échanges) et des organisateurs (gestion des participants, communication). La plateforme combine un forum communautaire riche avec un système de gestion de tournois moderne et performant.
 
 ---
 
 ## ✨ Fonctionnalités
 
-- 🏆 **Tournois** — listing, détail, format, dates, prix d'entrée
-- 💬 **Forum** — catégories, sous-forums, topics, BBCode, citations, recherche, modération
-- 📬 **Messagerie privée** — conversations entre membres, compteur de non-lus
-- 👤 **Profil utilisateur** — avatar, nom, historique
-- 🛡️ **Rôles** — SUPERADMIN, ADMIN, CONSEIL_ORGA, MODERATOR, ORGA, COACH
-- 🔨 **Modération** — ban, archivage, suppression de posts/topics
+### 🏆 Gestion des Tournois
+- **Inscriptions Multi-modes** — Inscription individuelle ou par équipe (Team Mode).
+- **Zones de Validation** — Gestion dynamique des pré-inscriptions, des validés et de la liste d'attente.
+- **Mercenaires & Commissaires** — Inscription en tant que mercenaire pour compléter des équipes ou gestion par des commissaires dédiés.
+- **Détails Complets** — Format (Resurrection/Évolutif), dates, lieux (intégration Google Maps), tarifs, éditions (BB20, BB3, BB7) et plateformes.
+- **Lien Forum** — Chaque tournoi peut être lié à un topic dédié pour centraliser les discussions.
+
+### 💬 Communauté & Forum
+- **Structure Hiérarchisée** — Catégories, forums et sous-forums pour une organisation claire.
+- **Richesse d'Édition** — Support complet du BBCode, citations, et sticky topics/posts.
+- **Interactions** — Réactions aux messages via emojis et système de mentions (@user).
+- **Suivi Intelligent** — Marqueurs de messages non-lus et recherche globale performante.
+
+### 👤 Profils & Social
+- **Identité du Coach** — Profils avec numéro NAF, région, ligue et signature personnalisée.
+- **Cosmétique** — Cadres d'avatars dynamiques selon le prestige ou le rôle.
+- **Messagerie Privée** — Système de conversations privées avec notifications en temps réel et compteur de messages non-lus.
+
+### 🛡️ Administration & Sécurité
+- **Rôles (RBAC)** — Système granulaire de permissions (SUPERADMIN, ADMIN, MODERATOR, RTC, CHEF_LIGUE, COACH).
+- **Modération** — Outils complets pour bannir, archiver, déplacer ou supprimer des contenus.
+- **Configuration** — Panneau d'administration pour gérer les données de référence et les paramètres du site.
 
 ---
 
-## 🛠️ Stack technique
+## 🛠️ Stack Technique
 
-| Technologie | Rôle |
-|---|---|
-| [Next.js 16](https://nextjs.org) | Framework React fullstack (App Router) |
-| [React 19](https://react.dev) | UI |
-| [TypeScript](https://www.typescriptlang.org) | Typage statique |
-| [Prisma 7](https://www.prisma.io) | ORM / gestion de la base de données |
-| [LibSQL](https://github.com/tursodatabase/libsql) | Base de données SQLite compatible edge |
-| [NextAuth v5](https://authjs.dev) | Authentification |
-| [Tailwind CSS](https://tailwindcss.com) | (via classes inline) Styles |
-| [Lucide React](https://lucide.dev) | Icônes |
-| [date-fns](https://date-fns.org) | Manipulation de dates |
-| [react-hot-toast](https://react-hot-toast.com) | Notifications |
+- **Framework** : [Next.js 16](https://nextjs.org) (App Router)
+- **Langage** : [TypeScript](https://www.typescriptlang.org)
+- **Base de Données** : [LibSQL](https://github.com/tursodatabase/libsql) (compatible SQLite) via [Prisma 7](https://www.prisma.io)
+- **Authentification** : [NextAuth v5](https://authjs.dev)
+- **Style** : Vanilla CSS & Tailwind (variables CSS prioritaires)
+- **Composants** : [React 19](https://react.dev), [Lucide React](https://lucide.dev)
+- **Notifications** : [react-hot-toast](https://react-hot-toast.com)
 
 ---
 
-## 🚀 Installation en local
+## 🚀 Développement & Compilation
 
-### Prérequis
+### Configuration de l'environnement
 
-- Node.js 20+
-- npm / yarn / pnpm
+1. **Cloner le projet** :
+   ```bash
+   git clone https://github.com/Breakfasttt/francebb.git
+   cd francebb
+   ```
 
-### 1. Cloner le repo
+2. **Installer les dépendances** :
+   ```bash
+   npm install
+   ```
 
-```bash
-git clone https://github.com/Breakfasttt/francebb.git
-cd francebb
-```
+3. **Variables d'environnement** (`.env`) :
+   ```env
+   DATABASE_URL="file:./dev.db"
+   AUTH_SECRET="votre-secret-tres-long"
+   ```
 
-### 2. Installer les dépendances
+### Initialisation & Lancement
 
-```bash
-npm install
-```
+1. **Préparer la base de données** :
+   ```bash
+   npx prisma migrate dev
+   ```
 
-### 3. Configurer les variables d'environnement
+2. **Lancer le serveur de développement** :
+   ```bash
+   npm run dev
+   ```
 
-Copier le fichier d'exemple et le remplir :
-
-```bash
-cp .env.example .env
-```
-
-Contenu minimal du `.env` :
-
-```env
-DATABASE_URL="file:./dev.db"
-AUTH_SECRET="une-chaine-aleatoire-longue-et-secrete"
-```
-
-### 4. Initialiser la base de données
-
-```bash
-npx prisma migrate dev
-```
-
-### 5. Lancer le serveur de développement
-
-```bash
-npm run dev
-```
-
-L'application est disponible sur [http://localhost:3000](http://localhost:3000).
+3. **Accès** : [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 🏗️ Déploiement en production
+## 🌐 Déploiement & Setup (Détaillé)
 
-### Option A — Vercel (recommandé)
+### ☁️ Option 1 : Architecture Moderne (Vercel + Turso) — Recommandé
 
-Vercel est la plateforme officielle de Next.js, le déploiement y est natif.
+C'est la méthode idéale pour une application "edge-ready" avec une latence minimale.
 
-1. Pousser le code sur GitHub
-2. Importer le projet sur [vercel.com](https://vercel.com)
-3. Renseigner les variables d'environnement dans **Settings → Environment Variables** :
+#### 1. Préparer la Base de Données (Turso)
+- Créez un compte sur [Turso.tech](https://turso.tech).
+- Installez le CLI Turso et créez une base : `turso db create bbfrance-db`.
+- Récupérez l'URL : `turso db show bbfrance-db --url`.
+- Récupérez un token d'accès : `turso db tokens create bbfrance-db`.
 
-```
-DATABASE_URL=libsql://votre-base.turso.io?authToken=xxx
-AUTH_SECRET=votre-secret
-NEXTAUTH_URL=https://votre-domaine.vercel.app
-```
+#### 2. Configurer Vercel
+- Importez votre repo GitHub sur [Vercel](https://vercel.com).
+- Dans **Settings > Environment Variables**, ajoutez :
+  - `DATABASE_URL` : `libsql://votre-db-url.turso.io?authToken=votre-token`
+  - `AUTH_SECRET` : Générez-le avec `openssl rand -base64 32`.
+  - `NEXTAUTH_URL` : L'URL de votre site (ex: `https://bbfrance.vercel.app`).
 
-> 💡 En production, remplacer la base SQLite locale par [Turso](https://turso.tech) (LibSQL hébergé, compatible Prisma).
+#### 3. Déployer
+- Vercel exécutera automatiquement `npm run build`. Le client Prisma sera généré pour l'adaptateur LibSQL.
 
-4. Déployer — Vercel lance automatiquement `npm run build`
+---
 
-### Option B — VPS (Railway, Render, serveur dédié)
+### 🏠 Option 2 : Self-Hosted (VPS / Serveur dédié) — Indépendant
 
-1. Builder l'application :
+Si vous souhaitez héberger vous-même votre base de données et votre application sur votre propre serveur.
 
+#### 1. Pré-requis sur le serveur
+Assurez-vous d'avoir installé :
+- **Node.js 20+**
+- **PM2** (`npm install -g pm2`) pour la gestion du processus.
+- **Nginx** pour le reverse proxy.
+
+#### 2. Déploiement étape par étape
+1. **Cloner et Installer** :
+   ```bash
+   git clone https://github.com/Breakfasttt/francebb.git /var/www/bbfrance
+   cd /var/www/bbfrance
+   npm install --production=false
+   ```
+
+2. **Configuration** : Créez un fichier `.env` à la racine :
+   ```env
+   # Pour SQLite local, on utilise une URL de fichier simple
+   DATABASE_URL="file:./prisma/prod.db"
+   AUTH_SECRET="un-secret-tres-long-et-aleatoire"
+   NEXTAUTH_URL="https://votre-domaine.com"
+   PORT=3000
+   ```
+
+3. **Génération & Migration** :
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+4. **Build & Start** :
+   ```bash
+   npm run build
+   # Tester le lancement
+   npm start
+   ```
+
+#### 3. Automatisation avec PM2
+Pour que l'application tourne en tâche de fond et redémarre en cas de crash :
 ```bash
-npm run build
+pm2 start "npm start" --name bbfrance
+pm2 save
+pm2 startup
 ```
 
-2. Lancer en production :
+#### 4. Configuration Nginx (Reverse Proxy)
+```nginx
+server {
+    listen 80;
+    server_name votre-domaine.com;
 
-```bash
-npm start
-```
-
-3. Configurer un reverse proxy (nginx, Caddy) pour exposer le port 3000
-
-4. Gérer les variables d'environnement via le dashboard de votre hébergeur ou un fichier `.env` sur le serveur (jamais commité)
-
-### Build et vérification
-
-```bash
-# Vérifier les erreurs TypeScript et lint
-npm run lint
-
-# Builder pour la production
-npm run build
-
-# Lancer en mode production
-npm start
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
 ```
 
 ---
 
-## 📁 Structure du projet
+### 🐳 Option 3 : Déploiement via Docker (Auto-Hébergé complet)
 
-```
-├── app/                    # Pages et routes (App Router)
-│   ├── api/                # API Routes Next.js
-│   ├── forum/              # Pages du forum
-│   ├── profile/            # Page profil
-│   └── tournaments/        # Pages tournois
-├── components/             # Composants React réutilisables
-│   └── forum/              # Composants spécifiques au forum
-├── lib/                    # Utilitaires (bbcode, prisma, roles...)
-├── prisma/                 # Schéma et migrations Prisma
-├── auth.ts                 # Configuration de l'authentification
-└── public/                 # Assets statiques
+Pour une isolation totale et une base SQLite persistante.
+
+1. **Création du Dockerfile** (si absent) : Utilisez une image Node Alpine.
+2. **Volume** : Montez un volume pour persister le fichier `./prisma/prod.db`.
+3. **Environment** : Passez les variables via un fichier `.env` ou via votre orchestration (Docker Compose).
+
+Exemple rapide de `docker-compose.yml` :
+```yaml
+services:
+  bbfrance:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/prisma/data
+    environment:
+      - DATABASE_URL=file:/app/prisma/data/prod.db
+      - AUTH_SECRET=${AUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
 ```
 
 ---
 
-## 🤝 Contribution
+## 📄 Licence & Contribution
 
-Les contributions sont les bienvenues. Pour toute modification importante, ouvrir une issue en premier pour discuter des changements envisagés.
-
----
-
-## 📄 Licence
-
-Projet privé — tous droits réservés.
+Projet privé — Tous droits réservés.
+Les contributions doivent faire l'objet d'une demande préalable via une issue.
