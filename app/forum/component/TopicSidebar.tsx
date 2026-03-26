@@ -187,10 +187,10 @@ export default function TopicSidebar({
           {/* 2. Topic Actions Block */}
           <div className="sidebar-widget topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '0.85rem', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <h3 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Sujet
               </h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#666', fontSize: '0.75rem', fontWeight: 600 }} title={`${views.toLocaleString("fr-FR")} vues`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600 }} title={`${views.toLocaleString("fr-FR")} vues`}>
                  <Eye size={13} />
                  <span>{views.toLocaleString("fr-FR")}</span>
               </div>
@@ -199,10 +199,10 @@ export default function TopicSidebar({
             {(isLocked || isForumLocked) && (
               <div style={{ 
                 padding: '0.8rem', 
-                background: 'rgba(239, 68, 68, 0.1)', 
-                border: '1px solid rgba(239, 68, 68, 0.2)', 
+                background: 'rgba(var(--danger-rgb, 158, 29, 29), 0.1)', 
+                border: '1px solid var(--danger)', 
                 borderRadius: '8px',
-                color: '#ef4444',
+                color: 'var(--danger)',
                 fontSize: '0.75rem',
                 fontWeight: 600,
                 display: 'flex',
@@ -216,7 +216,7 @@ export default function TopicSidebar({
 
             {(!(isLocked || isForumLocked) || isModerator) && (
               <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
-                className="widget-button" style={{ background: 'var(--primary)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
+                className="widget-button" style={{ background: 'var(--primary)', color: 'var(--header-foreground)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
                 <MessageSquare size={16} /><span>Répondre</span>
               </button>
             )}
@@ -229,8 +229,8 @@ export default function TopicSidebar({
                 style={{
                   textAlign: 'left',
                   padding: '8px 12px',
-                  borderColor: isFollowing ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
-                  color: isFollowing ? 'var(--accent)' : 'white',
+                  borderColor: isFollowing ? 'var(--accent)' : 'var(--glass-border)',
+                  color: isFollowing ? 'var(--accent)' : 'var(--foreground)',
                 }}
               >
                 <Bookmark size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
@@ -266,15 +266,15 @@ export default function TopicSidebar({
 
             {/* Moderator Actions */}
             {isModerator && (
-              <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.65rem', color: '#555', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
+              <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
                 
                 
                 <button 
                   onClick={handleTogglePin}
                   disabled={isPending}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', color: isPinned ? '#eab308' : 'white', padding: '8px 12px' }}
+                  style={{ textAlign: 'left', color: isPinned ? 'var(--unread-marker)' : 'var(--foreground)', padding: '8px 12px' }}
                 >
                   {isPinned ? <PinOff size={16} /> : <Pin size={16} />}
                   <span>{isPinned ? "Désépingler" : "Épingler"}</span>
@@ -298,8 +298,8 @@ export default function TopicSidebar({
                   style={{ 
                     textAlign: 'left', 
                     padding: '8px 12px',
-                    borderColor: isArchived ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
-                    color: isArchived ? 'var(--accent)' : 'white'
+                    borderColor: isArchived ? 'var(--accent)' : 'var(--glass-border)',
+                    color: isArchived ? 'var(--accent)' : 'var(--foreground)'
                   }}
                 >
                   <Eye size={16} style={{ opacity: isArchived ? 1 : 0.7 }} />
@@ -316,7 +316,7 @@ export default function TopicSidebar({
                   onClick={() => setShowDeleteModal(true)}
                   disabled={isPending}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', color: '#ff6666', padding: '8px 12px' }}
+                  style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
                 >
                   <Trash2 size={16} />
                   <span>Supprimer sujet</span>
@@ -329,18 +329,18 @@ export default function TopicSidebar({
 
       <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet">
         <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <p style={{ marginBottom: '1rem', color: 'white', fontSize: '1.1rem' }}>
+          <p style={{ marginBottom: '1rem', color: 'var(--foreground)', fontSize: '1.1rem' }}>
             Supprimer le sujet : <br/>
             <strong style={{ color: 'var(--primary)' }}>{topicTitle}</strong> ?
           </p>
           <div style={{ 
-            background: 'rgba(224, 68, 68, 0.1)', 
-            border: '1px solid rgba(224, 68, 68, 0.2)', 
+            background: 'var(--primary-transparent)', 
+            border: '1px solid var(--primary)', 
             padding: '1rem', 
             borderRadius: '8px', 
             marginBottom: '1.5rem' 
           }}>
-            <p style={{ margin: 0, color: '#ff6666', fontSize: '0.9rem' }}>
+            <p style={{ margin: 0, color: 'var(--danger)', fontSize: '0.9rem' }}>
               <strong>Attention :</strong> Tous les messages seront définitivement supprimés.<br/>
               L'action est irréversible.
             </p>
