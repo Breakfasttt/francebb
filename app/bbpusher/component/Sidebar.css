@@ -1,0 +1,69 @@
+.tool-sidebar {
+  width: 280px;
+  background: var(--card-bg);
+  border-right: 1px solid var(--glass-border);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  backdrop-filter: blur(10px);
+  z-index: 50;
+}
+
+.sidebar-section h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.team-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+  border-left: 4px solid #ccc;
+}
+
+.team-stat.blue {
+  border-left-color: #3b82f6;
+}
+
+.team-stat.red {
+  border-left-color: #ef4444;
+}
+
+.team-ident {
+  font-weight: 700;
+}
+
+.count {
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.instructions ul {
+  padding-left: 1.2rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.instructions li {
+  margin-bottom: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+  .tool-sidebar {
+    position: absolute;
+    left: -280px;
+    transition: left 0.3s;
+  }
+  
+  /* Logique de toggle sidebar omise ici pour simplification, 
+     mais on pourrait l'ajouter avec un bouton */
+}

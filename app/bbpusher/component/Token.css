@@ -1,0 +1,83 @@
+.token-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+  transition: transform 0.1s, box-shadow 0.1s;
+  z-index: 100;
+  background: #fff;
+  pointer-events: auto !important;
+}
+
+.token-container:active {
+  cursor: grabbing;
+}
+
+.token-container.blue {
+  background: #3b82f6;
+  border-color: #1d4ed8;
+}
+
+.token-container.red {
+  background: #ef4444;
+  border-color: #b91c1c;
+}
+
+.token-container.ball {
+  background: #fbbf24;
+  border-color: #d97706;
+  border-radius: 40% 60% 40% 60%;
+  transform: rotate(-15deg);
+}
+
+.token-container.prone {
+  transform: rotate(90deg) scale(0.9);
+  opacity: 0.8;
+  border-style: dashed;
+}
+
+.token-container.stunned {
+  transform: rotate(180deg) scale(0.85);
+  opacity: 0.6;
+  filter: grayscale(0.5);
+  border-style: dotted;
+}
+
+.token-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.token-number {
+  font-weight: 900;
+  color: #fff;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.token-status-icon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--background);
+  border-radius: 50%;
+  padding: 2px;
+  display: flex;
+  color: var(--accent);
+}
+
+.token-container.overlay {
+  cursor: grabbing;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  transform: scale(1.1);
+  z-index: 1000;
+}
