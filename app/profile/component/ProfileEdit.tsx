@@ -416,13 +416,13 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
 
       <style jsx>{`
             .upload-btn.dicebear-btn {
-                background: rgba(255, 255, 255, 0.05);
-                color: #aaa;
+                background: var(--glass-bg);
+                color: var(--text-muted);
                 padding: 0 10px;
             }
             .upload-btn.dicebear-btn:hover {
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
+                background: var(--glass-border);
+                color: var(--foreground);
             }
             .sparkles-btn {
                 color: var(--accent) !important;
@@ -431,7 +431,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             .avatar-studio-box {
               display: flex;
               gap: 2.5rem;
-              background: rgba(0,0,0,0.2);
+              background: var(--card-bg);
               padding: 2rem;
               border-radius: 16px;
               border: 1px solid var(--glass-border);
@@ -446,7 +446,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
               justify-content: center;
               gap: 1rem;
               padding-right: 2.5rem;
-              border-right: 1px solid rgba(255,255,255,0.05);
+              border-right: 1px solid var(--glass-border);
             }
 
             .studio-controls-pane {
@@ -474,7 +474,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             .gen-preview {
                 display: flex;
                 justify-content: center;
-                background: rgba(0,0,0,0.2);
+                background: var(--glass-bg);
                 padding: 1rem;
                 border-radius: 12px;
             }
@@ -531,7 +531,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             }
             .btn-save {
                 background: var(--primary);
-                color: white;
+                color: var(--header-foreground);
                 border: none;
                 padding: 1rem 2rem;
                 border-radius: 8px;
@@ -579,7 +579,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 2.5rem;
-          background: rgba(0,0,0,0.18);
+          background: var(--card-bg);
           padding: 2rem;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
@@ -627,9 +627,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           transition: all 0.2s;
         }
         .upload-btn:hover:not(:disabled) {
-          background: rgba(255,255,255,0.1);
-          color: white;
-          border-color: #888;
+          background: var(--glass-border);
+          color: var(--foreground);
         }
         .animate-spin {
           animation: spin 1s linear infinite;
