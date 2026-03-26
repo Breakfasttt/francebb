@@ -90,23 +90,10 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 
 ### ☁️ Option 1 : Architecture Moderne (Vercel + Turso) — Recommandé
 
-C'est la méthode idéale pour une application "edge-ready" avec une latence minimale.
+C'est la méthode idéale pour une application "edge-ready" avec une latence minimale. 
 
-#### 1. Préparer la Base de Données (Turso)
-- Créez un compte sur [Turso.tech](https://turso.tech).
-- Installez le CLI Turso et créez une base : `turso db create bbfrance-db`.
-- Récupérez l'URL : `turso db show bbfrance-db --url`.
-- Récupérez un token d'accès : `turso db tokens create bbfrance-db`.
-
-#### 2. Configurer Vercel
-- Importez votre repo GitHub sur [Vercel](https://vercel.com).
-- Dans **Settings > Environment Variables**, ajoutez :
-  - `DATABASE_URL` : `libsql://votre-db-url.turso.io?authToken=votre-token`
-  - `AUTH_SECRET` : Générez-le avec `openssl rand -base64 32`.
-  - `NEXTAUTH_URL` : L'URL de votre site (ex: `https://bbfrance.vercel.app`).
-
-#### 3. Déployer
-- Vercel exécutera automatiquement `npm run build`. Le client Prisma sera généré pour l'adaptateur LibSQL.
+> [!TIP]
+> **[👉 Suivez le Guide de Déploiement Détaillé (DEPLOY.md)](./DEPLOY.md)** pour une installation pas à pas (configuration de la base Turso, variables d'environnement Vercel et migration du schéma).
 
 ---
 
