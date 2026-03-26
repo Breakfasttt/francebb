@@ -11,23 +11,22 @@ const config = {
   url: process.env.DATABASE_URL || "file:./dev.db",
 };
 console.log(`[PRISMA] Utilisation de la base : ${config.url}`);
-const adapter = new PrismaLibSql(config);
+const getPrismaClient = () => {
+  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v14") {
+    return globalForPrisma.prisma;
+  }
 
-// Forcer la remise à zéro du cache global pour le nouveau client custom
-// v8: cleaned up Topic.isDeleted, using Post.isDeleted
-// Force reset for new Tournament fields (endDate, commissaires) + Registration Module
-if (globalForPrisma.prisma && globalForPrisma.prismaVersion !== "v14") {
-  console.log("[PRISMA] Resetting global cache to v14 (Tournament Registration Module)");
-  globalForPrisma.prisma = undefined as any;
-}
+  console.log(`[PRISMA] Initialisation du client (Base: ${config.url})`);
+  const adapter = new PrismaLibSql(config);
+  const client = new PrismaClient({ adapter });
 
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter });
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = client;
+    globalForPrisma.prismaVersion = "v14";
+  }
+  return client;
+};
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-  globalForPrisma.prismaVersion = "v14";
-}
+export const prisma = getPrismaClient();
 
 // v3: added Category, Forum, Topic, Post models
