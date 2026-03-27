@@ -154,7 +154,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
             name="content"
             placeholder="Écrivez votre message..."
             defaultValue=""
-            rows={4}
+            rows={6}
             onChange={(val) => setContent(val)}
           />
           <div className="reply-actions">
@@ -297,9 +297,9 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           color: #ef4444;
           background: rgba(239, 68, 68, 0.1);
         }
-        .reply-box {
-          padding: 1.5rem;
-          background: rgba(255, 255, 255, 0.03);
+        :global(.reply-box) {
+          padding: 1.5rem !important;
+          background: rgba(255, 255, 255, 0.03) !important;
         }
         .reply-actions {
           display: flex;
@@ -335,16 +335,16 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           flex-direction: column;
           gap: 1.5rem;
         }
-        .message-item {
+        :global(.message-item) {
           display: flex;
-          padding: 1.5rem;
+          padding: 1.5rem !important;
           gap: 1.5rem;
-          background: rgba(255, 255, 255, 0.02);
-          border-left: 2px solid transparent;
+          background: rgba(255, 255, 255, 0.02) !important;
+          border-left: 2px solid transparent !important;
         }
-        .message-item.is-self {
-          background: rgba(255, 255, 255, 0.04);
-          border-left-color: var(--primary);
+        :global(.message-item.is-self) {
+          background: rgba(255, 255, 255, 0.04) !important;
+          border-left-color: var(--primary) !important;
         }
         .message-sidebar {
           width: 80px;

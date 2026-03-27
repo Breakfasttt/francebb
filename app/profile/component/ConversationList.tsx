@@ -242,7 +242,7 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           border-color: var(--primary);
           box-shadow: 0 0 0 4px rgba(194, 29, 29, 0.1);
         }
-        .search-results {
+        :global(.search-results) {
           position: absolute;
           top: 100%;
           left: 0;
@@ -330,22 +330,22 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           flex-direction: column;
           gap: 1rem;
         }
-        .conversation-card {
+        :global(.conversation-card) {
           display: flex;
           align-items: center;
-          padding: 1.5rem;
+          padding: 1.5rem !important;
           gap: 1.5rem;
           cursor: pointer;
           transition: all 0.2s;
           position: relative;
         }
-        .conversation-card:hover {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--primary);
+        :global(.conversation-card:hover) {
+          background: rgba(255, 255, 255, 0.04) !important;
+          border-color: var(--primary) !important;
           transform: translateX(5px);
         }
-        .conversation-card.has-unread {
-          border-left: 4px solid var(--primary);
+        :global(.conversation-card.has-unread) {
+          border-left: 4px solid var(--primary) !important;
         }
         .conv-user-img {
           position: relative;

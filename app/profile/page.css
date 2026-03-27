@@ -1,6 +1,7 @@
 .profile-page-container {
   padding-top: 2rem;
   padding-bottom: 4rem;
+  max-width: 1400px !important; /* On élargit la page pour plus de confort */
 }
 
 
@@ -17,7 +18,7 @@
 
 .profile-content-layout {
   display: flex;
-  gap: 3.5rem; /* Augmenté pour laisser la place aux onglets sans chevauchement */
+  gap: 4.5rem; /* Augmenté pour éviter tout chevauchement avec les onglets dockés */
   align-items: flex-start;
   margin-top: 2rem;
 }
@@ -333,7 +334,7 @@
 .profile-sidebar-wrapper {
   display: flex;
   flex-direction: column;
-  width: 255px;
+  width: 210px; /* Réduit encore pour laisser plus de place au contenu principal */
   flex-shrink: 0;
   position: sticky;
   top: 6.5rem;
