@@ -1,0 +1,26 @@
+/* Thème Nehekhara — sombre, ambre doré, inspiré Tomb Kings */
+[data-theme='nehekhara'] {
+  --background: #0b0e14; /* Deep Charcoal/Modern Black */
+  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%);
+  --foreground: #f1f5f9;
+  --primary: #d97706; /* Amber Gold (Tomb Kings inspiration) */
+  --primary-hover: #b45309;
+  --secondary: #1e293b;
+  --accent: #115e59; /* Modern Teal/Nil Green */
+  --card-bg: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(217, 119, 6, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --nav-bg: rgba(11, 14, 20, 0.95);
+  --footer-bg: rgba(2, 6, 23, 0.98);
+  --text-muted: #64748b;
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(15, 23, 42, 0.5);
+  --btn-shadow: rgba(217, 119, 6, 0.2);
+  --unread-marker: #fbbf24;
+  --primary-transparent: rgba(217, 119, 6, 0.15);
+  --category-header-bg: rgba(217, 119, 6, 0.12);
+  --admin-bg: rgba(17, 94, 89, 0.05); /* Teal for admin */
+  --admin-border: rgba(17, 94, 89, 0.3);
+  --danger: #ef4444;
+  --success: #39ff14;
+}

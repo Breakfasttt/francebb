@@ -1,0 +1,28 @@
+/* Thème par défaut — Dark / FF (France Football) */
+/* Appliqué via :root, utilisé quand aucun [data-theme] n'est défini */
+:root {
+  --background: #0a0a0c;
+  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
+  --foreground: #f0f0f5;
+  --primary: #c21d1d;
+  --primary-hover: #e02424;
+  --secondary: #1a1a20;
+  --accent: #ffd700;
+  --card-bg: rgba(26, 26, 32, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --nav-bg: rgba(10, 10, 12, 0.85);
+  --footer-bg: rgba(10, 10, 12, 0.95);
+  --text-muted: #888;
+  --text-secondary: #aaa;
+  --glass-bg: rgba(26, 26, 32, 0.4);
+  --btn-shadow: rgba(194, 29, 29, 0.4);
+  --unread-marker: #ffd700;
+  --primary-transparent: rgba(194, 29, 29, 0.2);
+  --category-header-bg: rgba(194, 29, 29, 0.15);
+  --admin-bg: rgba(194, 29, 29, 0.05);
+  --admin-border: rgba(194, 29, 29, 0.3);
+  --danger: #ff4444;
+  --success: #22c55e;
+  --header-foreground: var(--foreground);
+}

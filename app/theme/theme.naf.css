@@ -1,0 +1,27 @@
+/* Thème NAF — sombre, bleu navy + jaune étoile, couleurs officielles NAF */
+[data-theme='naf'] {
+  --background: #011b33; /* Deep NAF Navy */
+  --bg-gradient: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
+  --foreground: #f1f5f9;
+  --primary: #fac710; /* NAF Star Yellow */
+  --primary-hover: #d9ad0d;
+  --secondary: #002b5c;
+  --accent: #ffffff; /* Stars White */
+  --card-bg: rgba(0, 43, 93, 0.35);
+  --glass-border: rgba(250, 199, 16, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  --nav-bg: rgba(1, 27, 51, 0.95);
+  --footer-bg: rgba(1, 15, 30, 0.98);
+  --text-muted: #748ba7;
+  --text-secondary: #a0b2c7;
+  --glass-bg: rgba(1, 43, 93, 0.4);
+  --btn-shadow: rgba(250, 199, 16, 0.15);
+  --unread-marker: #fac710;
+  --primary-transparent: rgba(250, 199, 16, 0.15);
+  --category-header-bg: rgba(1, 43, 93, 0.5);
+  --admin-bg: rgba(250, 199, 16, 0.05);
+  --admin-border: rgba(250, 199, 16, 0.3);
+  --danger: #ef4444;
+  --success: #39ff14;
+  --header-foreground: #ffffff;
+}

@@ -1,192 +1,8 @@
-:root {
-  /* Default Theme (Dark) / FF Theme */
-  --background: #0a0a0c;
-  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
-  --foreground: #f0f0f5;
-  --primary: #c21d1d;
-  --primary-hover: #e02424;
-  --secondary: #1a1a20;
-  --accent: #ffd700;
-  --card-bg: rgba(26, 26, 32, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --nav-bg: rgba(10, 10, 12, 0.85);
-  --footer-bg: rgba(10, 10, 12, 0.95);
-  --text-muted: #888;
-  --text-secondary: #aaa;
-  --glass-bg: rgba(26, 26, 32, 0.4);
-  --btn-shadow: rgba(194, 29, 29, 0.4);
-  --unread-marker: #ffd700;
-  --primary-transparent: rgba(194, 29, 29, 0.2);
-  --category-header-bg: rgba(194, 29, 29, 0.15);
-  --admin-bg: rgba(194, 29, 29, 0.05);
-  --admin-border: rgba(194, 29, 29, 0.3);
-  --danger: #ff4444;
-  --success: #22c55e;
-  --header-foreground: var(--foreground);
-}
+/* Fichier CSS global — styles partagés sur toutes les pages */
+/* Les thèmes sont définis dans app/theme/ */
+/* Les styles spécifiques à une page sont dans app/[page]/page.css */
 
-[data-theme='light'] {
-  --background: #f0f1f4; /* Soft grey-white */
-  --bg-gradient: linear-gradient(135deg, #f0f1f4 0%, #d8dae0 100%);
-  --foreground: #1c1c21;
-  --primary: #c21d1d;
-  --primary-hover: #a11818;
-  --secondary: #d1d5db; /* Slightly darker secondary for contrast */
-  --accent: #b8860b; /* Bronze/Alt Gold */
-  --card-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.25);
-  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
-  --nav-bg: rgba(240, 241, 244, 0.95);
-  --footer-bg: rgba(240, 241, 244, 0.98);
-  --text-muted: #4b5563;
-  --text-secondary: #374151;
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --btn-shadow: rgba(0, 0, 0, 0.1);
-  --unread-marker: #8b4513; /* Darker Bronze for unread */
-  --primary-transparent: rgba(194, 29, 29, 0.12);
-  --category-header-bg: rgba(194, 29, 29, 0.08);
-  --admin-bg: rgba(0, 0, 0, 0.03);
-  --admin-border: rgba(0, 0, 0, 0.15);
-  --danger: #b91c1c;
-  --success: #15803d;
-  --header-foreground: #ffffff;
-}
-
-[data-theme='blood'] {
-  --background: #120000;
-  --bg-gradient: radial-gradient(circle at 50% 50%, #3a0000 0%, #0a0000 100%);
-  --foreground: #fdeaea;
-  --primary: #ff0000;
-  --primary-hover: #cc0000;
-  --secondary: #2d0a0a;
-  --accent: #ff4d4d;
-  --card-bg: rgba(50, 0, 0, 0.5);
-  --glass-border: rgba(255, 0, 0, 0.25);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-  --nav-bg: rgba(20, 0, 0, 0.92);
-  --footer-bg: rgba(15, 0, 0, 0.98);
-  --text-muted: #b07070;
-  --text-secondary: #e0a0a0;
-  --glass-bg: rgba(30, 0, 0, 0.5);
-  --btn-shadow: rgba(255, 0, 0, 0.15);
-  --unread-marker: #ff4d4d;
-  --primary-transparent: rgba(255, 0, 0, 0.2);
-  --category-header-bg: rgba(120, 0, 0, 0.4);
-  --admin-bg: rgba(100, 0, 0, 0.1);
-  --admin-border: rgba(255, 0, 0, 0.3);
-  --danger: #ff0000;
-  --success: #39ff14;
-  --header-foreground: var(--foreground);
-}
-
-[data-theme='malpierre'] {
-  --background: #020a02;
-  --bg-gradient: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
-  --foreground: #e6ffe6;
-  --primary: #0a4d0a; /* Dark Warpstone Green */
-  --primary-hover: #0d610d;
-  --secondary: #0c250c;
-  --accent: #9bff70;
-  --card-bg: rgba(0, 30, 5, 0.45);
-  --glass-border: rgba(57, 255, 20, 0.25);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-  --nav-bg: rgba(2, 10, 2, 0.92);
-  --footer-bg: rgba(1, 5, 1, 0.98);
-  --text-muted: #5bb35b;
-  --text-secondary: #8cfc00;
-  --glass-bg: rgba(0, 25, 0, 0.5);
-  --btn-shadow: rgba(57, 255, 20, 0.12);
-  --unread-marker: #39ff14;
-  --primary-transparent: rgba(10, 77, 10, 0.35);
-  --category-header-bg: rgba(10, 50, 10, 0.5);
-  --admin-bg: rgba(10, 77, 10, 0.08);
-  --admin-border: rgba(57, 255, 20, 0.3);
-  --danger: #ff4444;
-  --success: #39ff14;
-  --header-foreground: var(--foreground);
-}
-
-[data-theme='nehekhara'] {
-  --background: #0b0e14; /* Deep Charcoal/Modern Black */
-  --bg-gradient: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%);
-  --foreground: #f1f5f9;
-  --primary: #d97706; /* Amber Gold (Tomb Kings inspiration) */
-  --primary-hover: #b45309;
-  --secondary: #1e293b;
-  --accent: #115e59; /* Modern Teal/Nil Green */
-  --card-bg: rgba(15, 23, 42, 0.8);
-  --glass-border: rgba(217, 119, 6, 0.25);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-  --nav-bg: rgba(11, 14, 20, 0.95);
-  --footer-bg: rgba(2, 6, 23, 0.98);
-  --text-muted: #64748b;
-  --text-secondary: #94a3b8;
-  --glass-bg: rgba(15, 23, 42, 0.5);
-  --btn-shadow: rgba(217, 119, 6, 0.2);
-  --unread-marker: #fbbf24;
-  --primary-transparent: rgba(217, 119, 6, 0.15);
-  --category-header-bg: rgba(217, 119, 6, 0.12);
-  --admin-bg: rgba(17, 94, 89, 0.05); /* Teal for admin */
-  --admin-border: rgba(17, 94, 89, 0.3);
-  --danger: #ef4444;
-  --success: #39ff14;
-}
-
-[data-theme='saison3'] {
-  --background: #efebdd; /* Stony Parchment */
-  --bg-gradient: linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%);
-  --foreground: #1a110a; /* Dark Rulebook Text */
-  --primary: #9e1d1d; /* Imperial Red for Buttons */
-  --primary-hover: #801717;
-  --secondary: #004175; /* Rulebook Navy */
-  --accent: #004175; /* Navy for clean headers */
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 65, 117, 0.25);
-  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
-  --nav-bg: #9e1d1d; /* Solid Imperial Red Nav */
-  --footer-bg: #1a110a;
-  --text-muted: #5d4d42;
-  --text-secondary: #2d2016;
-  --glass-bg: rgba(0, 65, 117, 0.06); /* Light Navy Wash instead of White */
-  --btn-shadow: rgba(158, 29, 29, 0.2);
-  --unread-marker: #e11d48; /* High-Visibility Blood Red for Markers */
-  --primary-transparent: rgba(158, 29, 29, 0.1);
-  --category-header-bg: #004175; /* Navy Header from Player Cards */
-  --admin-bg: rgba(158, 29, 29, 0.05); 
-  --admin-border: rgba(158, 29, 29, 0.4);
-  --danger: #9e1d1d;
-  --success: #15803d;
-  --header-foreground: #f2efe1;
-  --category-hover-bg: rgba(0, 30, 60, 0.3);
-}
-
-[data-theme='naf'] {
-  --background: #011b33; /* Deep NAF Navy */
-  --bg-gradient: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
-  --foreground: #f1f5f9;
-  --primary: #fac710; /* NAF Star Yellow */
-  --primary-hover: #d9ad0d;
-  --secondary: #002b5c;
-  --accent: #ffffff; /* Stars White */
-  --card-bg: rgba(0, 43, 93, 0.35);
-  --glass-border: rgba(250, 199, 16, 0.25);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-  --nav-bg: rgba(1, 27, 51, 0.95);
-  --footer-bg: rgba(1, 15, 30, 0.98);
-  --text-muted: #748ba7;
-  --text-secondary: #a0b2c7;
-  --glass-bg: rgba(1, 43, 93, 0.4);
-  --btn-shadow: rgba(250, 199, 16, 0.15);
-  --unread-marker: #fac710;
-  --primary-transparent: rgba(250, 199, 16, 0.15);
-  --category-header-bg: rgba(1, 43, 93, 0.5);
-  --admin-bg: rgba(250, 199, 16, 0.05);
-  --admin-border: rgba(250, 199, 16, 0.3);
-  --danger: #ef4444;
-  --success: #39ff14;
-  --header-foreground: #ffffff;
-}
+@import './theme/themes.css';
 
 * {
   box-sizing: border-box;
@@ -416,11 +232,6 @@ label {
   padding-left: 1rem;
 }
 
-/* Tournaments Page Styles */
-.tournaments-container {
-  padding-top: 1rem;
-}
-
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -437,208 +248,14 @@ label {
   color: var(--primary) !important;
 }
 
-.search-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-.results-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.tournament-row {
-  background: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: 0.2s;
-}
-
-.tournament-row:hover {
-  background: var(--glass-bg);
-  border-color: var(--primary);
-}
-
-.t-main-info {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.t-game-badges {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: center;
-  min-width: 110px;
-}
-
-.t-badge {
-  background: var(--primary);
-  color: var(--foreground);
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  font-weight: 800;
-  font-size: 0.75rem;
-  width: 100%;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.t-format-badge {
-  background: var(--glass-border);
-  border: 1px solid var(--glass-border);
-  color: var(--text-secondary);
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  width: 100%;
-  white-space: nowrap;
-}
-
-.t-icons {
-  display: flex;
-  gap: 1rem;
-  color: var(--accent);
-}
-
-.icon-highlight {
-  filter: drop-shadow(0 0 5px var(--btn-shadow));
-}
-
-.t-title-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.t-details h3 {
-  font-size: 1.3rem;
-  margin: 0;
-}
-
-.t-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  white-space: nowrap;
-}
-
-.t-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
-.t-stats {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-}
-
-.stat-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--foreground);
-  white-space: nowrap;
-}
-
 select option {
   background-color: var(--secondary);
   color: var(--foreground);
 }
 
-.active-filters-box {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.applied-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  align-items: center;
-}
-
-.filter-tag {
-  background: rgba(194, 29, 29, 0.2);
-  border: 1px solid var(--primary);
-  color: var(--foreground);
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.filter-tag button {
-  background: transparent;
-  border: none;
-  color: #ffaaaa;
-  cursor: pointer;
-  font-weight: 800;
-  padding: 0 2px;
-}
-
-.stat-price {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.view-btn {
-  background: var(--primary);
-  color: var(--foreground);
-  padding: 0.6rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 700;
-  transition: 0.2s;
-}
-
-.view-btn:hover {
-  background: var(--primary-hover);
-  transform: scale(1.05);
-}
-
-.no-results p {
-  color: var(--text-muted);
-}
-
 /* ==========================================================================
    RESPONSIVE DESIGN (MOBILE)
    ========================================================================== */
-
-@media (max-width: 1024px) {
-  .search-layout {
-    grid-template-columns: 1fr;
-  }
-}
 
 @media (max-width: 768px) {
   .nav {
@@ -678,23 +295,6 @@ select option {
     gap: 1rem;
   }
 
-  .tournament-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
-
-  .t-stats {
-    width: 100%;
-    justify-content: space-between;
-    padding-top: 1rem;
-    border-top: 1px solid var(--glass-border);
-  }
-
-  .t-main-info {
-    width: 100%;
-  }
-
   footer {
     padding-bottom: 2rem !important;
     /* Pour laisser de la place au mobile browser chrome */
@@ -708,42 +308,6 @@ select option {
   .action-card {
     width: 100%;
   }
-
-  /* Profile Edit Specific */
-  .form-row-box,
-  .avatar-studio-box {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-    padding: 1rem !important;
-  }
-
-  .studio-preview-pane {
-    border-right: none !important;
-    padding-right: 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 1.5rem;
-  }
-
-  .form-group.full-width {
-    grid-column: auto !important;
-  }
-
-  .avatar-input-group {
-    flex-direction: column;
-  }
-
-  .avatar-input-group input {
-    width: 100%;
-  }
-
-  .avatar-studio-box {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Forum Specific refinements */
-  .forum-item {
-    padding: 1rem !important;
-  }
 }
 
 @media (max-width: 480px) {
@@ -751,17 +315,7 @@ select option {
     font-size: 1.8rem;
   }
 
-  .t-stats {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
   .logo {
     font-size: 1.2rem;
-  }
-
-  .t-game-badges {
-    min-width: 80px;
   }
 }

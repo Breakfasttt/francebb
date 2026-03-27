@@ -1,0 +1,234 @@
+/* Styles spécifiques à la page Tournois (app/tournaments/page.tsx) */
+
+.tournaments-container {
+  padding-top: 1rem;
+}
+
+.search-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tournament-row {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.tournament-row:hover {
+  background: var(--glass-bg);
+  border-color: var(--primary);
+}
+
+.t-main-info {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.t-game-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  min-width: 110px;
+}
+
+.t-badge {
+  background: var(--primary);
+  color: var(--foreground);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.t-format-badge {
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.t-icons {
+  display: flex;
+  gap: 1rem;
+  color: var(--accent);
+}
+
+.icon-highlight {
+  filter: drop-shadow(0 0 5px var(--btn-shadow));
+}
+
+.t-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.t-details h3 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.t-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.t-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.t-stats {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.active-filters-box {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.applied-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.filter-tag {
+  background: rgba(194, 29, 29, 0.2);
+  border: 1px solid var(--primary);
+  color: var(--foreground);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-tag button {
+  background: transparent;
+  border: none;
+  color: #ffaaaa;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0 2px;
+}
+
+.stat-price {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.view-btn {
+  background: var(--primary);
+  color: var(--foreground);
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.view-btn:hover {
+  background: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+.no-results p {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   RESPONSIVE — Tournois
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .search-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tournament-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .t-stats {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  .t-main-info {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .t-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .t-game-badges {
+    min-width: 80px;
+  }
+}

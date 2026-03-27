@@ -1,0 +1,10 @@
+/* Fichier principal d'import des thèmes CSS du site */
+/* Importer ce fichier une seule fois dans globals.css */
+
+@import './theme.default.css';
+@import './theme.light.css';
+@import './theme.blood.css';
+@import './theme.malpierre.css';
+@import './theme.nehekhara.css';
+@import './theme.saison3.css';
+@import './theme.naf.css';

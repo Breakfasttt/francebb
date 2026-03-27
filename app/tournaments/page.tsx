@@ -1,3 +1,4 @@
+import "./page.css";
 import { prisma } from "@/lib/prisma";
 import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
 import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch, ArrowLeft } from "lucide-react";

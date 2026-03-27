@@ -1,0 +1,27 @@
+/* Thème Light — clair, gris doux */
+[data-theme='light'] {
+  --background: #f0f1f4; /* Soft grey-white */
+  --bg-gradient: linear-gradient(135deg, #f0f1f4 0%, #d8dae0 100%);
+  --foreground: #1c1c21;
+  --primary: #c21d1d;
+  --primary-hover: #a11818;
+  --secondary: #d1d5db; /* Slightly darker secondary for contrast */
+  --accent: #b8860b; /* Bronze/Alt Gold */
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.25);
+  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
+  --nav-bg: rgba(240, 241, 244, 0.95);
+  --footer-bg: rgba(240, 241, 244, 0.98);
+  --text-muted: #4b5563;
+  --text-secondary: #374151;
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --btn-shadow: rgba(0, 0, 0, 0.1);
+  --unread-marker: #8b4513; /* Darker Bronze for unread */
+  --primary-transparent: rgba(194, 29, 29, 0.12);
+  --category-header-bg: rgba(194, 29, 29, 0.08);
+  --admin-bg: rgba(0, 0, 0, 0.03);
+  --admin-border: rgba(0, 0, 0, 0.15);
+  --danger: #b91c1c;
+  --success: #15803d;
+  --header-foreground: #ffffff;
+}

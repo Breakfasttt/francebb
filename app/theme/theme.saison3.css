@@ -1,0 +1,28 @@
+/* Thème Saison 3 — clair, parchment/navy, style officiel Blood Bowl */
+[data-theme='saison3'] {
+  --background: #efebdd; /* Stony Parchment */
+  --bg-gradient: linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%);
+  --foreground: #1a110a; /* Dark Rulebook Text */
+  --primary: #9e1d1d; /* Imperial Red for Buttons */
+  --primary-hover: #801717;
+  --secondary: #004175; /* Rulebook Navy */
+  --accent: #004175; /* Navy for clean headers */
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 65, 117, 0.25);
+  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
+  --nav-bg: #9e1d1d; /* Solid Imperial Red Nav */
+  --footer-bg: #1a110a;
+  --text-muted: #5d4d42;
+  --text-secondary: #2d2016;
+  --glass-bg: rgba(0, 65, 117, 0.06); /* Light Navy Wash instead of White */
+  --btn-shadow: rgba(158, 29, 29, 0.2);
+  --unread-marker: #e11d48; /* High-Visibility Blood Red for Markers */
+  --primary-transparent: rgba(158, 29, 29, 0.1);
+  --category-header-bg: #004175; /* Navy Header from Player Cards */
+  --admin-bg: rgba(158, 29, 29, 0.05); 
+  --admin-border: rgba(158, 29, 29, 0.4);
+  --danger: #9e1d1d;
+  --success: #15803d;
+  --header-foreground: #f2efe1;
+  --category-hover-bg: rgba(0, 30, 60, 0.3);
+}

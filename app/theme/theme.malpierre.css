@@ -1,0 +1,27 @@
+/* Thème Malpierre — sombre, vert warpstone, inspiré Skaven */
+[data-theme='malpierre'] {
+  --background: #020a02;
+  --bg-gradient: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
+  --foreground: #e6ffe6;
+  --primary: #0a4d0a; /* Dark Warpstone Green */
+  --primary-hover: #0d610d;
+  --secondary: #0c250c;
+  --accent: #9bff70;
+  --card-bg: rgba(0, 30, 5, 0.45);
+  --glass-border: rgba(57, 255, 20, 0.25);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  --nav-bg: rgba(2, 10, 2, 0.92);
+  --footer-bg: rgba(1, 5, 1, 0.98);
+  --text-muted: #5bb35b;
+  --text-secondary: #8cfc00;
+  --glass-bg: rgba(0, 25, 0, 0.5);
+  --btn-shadow: rgba(57, 255, 20, 0.12);
+  --unread-marker: #39ff14;
+  --primary-transparent: rgba(10, 77, 10, 0.35);
+  --category-header-bg: rgba(10, 50, 10, 0.5);
+  --admin-bg: rgba(10, 77, 10, 0.08);
+  --admin-border: rgba(57, 255, 20, 0.3);
+  --danger: #ff4444;
+  --success: #39ff14;
+  --header-foreground: var(--foreground);
+}
