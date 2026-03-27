@@ -3,6 +3,24 @@
 .hero {
   text-align: center;
   padding: 2rem 1rem;
+  position: relative;
+}
+
+.logo-straddle-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1100;
+  margin-top: -3.5rem; /* On tire vers le haut pour chevaucher le header */
+  margin-bottom: 2rem;
+  pointer-events: none; /* Désactive toute interaction dont le hover */
+}
+
+/* On s'assure que le lien interne n'a pas non plus d'effet */
+.logo-straddle-container .site-logo-link {
+  pointer-events: none;
+  transform: none !important;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) !important;
 }
 
 .hero h1 {

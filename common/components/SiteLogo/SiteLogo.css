@@ -1,68 +1,25 @@
-.badge-structure {
-  display: flex;
-  align-items: center;
-  position: relative;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+/*
+  Style pour le nouveau logo image.
+*/
+.site-logo-link {
+  display: block;
   text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.logo-box {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1.8px solid #002b5c;
-  background-color: white;
-  z-index: 10;
-  flex-shrink: 0;
+.site-logo-link:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 15px rgba(194, 29, 29, 0.45));
+}
+
+.logo-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 4px rgba(0,43,92,0.35); /* Blur interne plus puissant */
+  /* L'image gère sa propre hauteur via props */
 }
 
-.logo-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.capsule-text {
-  background: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: -20px; /* Émerge du logo */
-  border-radius: 0 16px 16px 0;
-  border: 1.8px solid #002b5c;
-  border-left: none;
-  z-index: 5;
-  box-shadow: 4px 4px 15px rgba(0,0,0,0.05), inset 0 0 4px rgba(0,43,92,0.35);
-}
-
-.text-row {
-  width: 100%;
-  text-align: justify;
-  text-align-last: justify;
-  text-justify: inter-character;
-  line-height: 0.9;
-}
-
-.france {
-  font-weight: 950;
-  background: linear-gradient(135deg, #002b5c 0%, #0a4c95 50%, #002b5c 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  transform: scaleY(1.05); /* Légère correction verticale pour l'effet d'optique */
-}
-
-.bb {
-  font-weight: 800;
-  margin-top: 2px;
-  background: linear-gradient(135deg, #a71d1d 0%, #ED2939 50%, #a71d1d 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+.logo-image {
+  /* Filtre premium pour faire ressortir le rouge et le doré */
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }

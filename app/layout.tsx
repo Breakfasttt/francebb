@@ -2,16 +2,13 @@ import { auth } from "@/auth";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
-import { SignInButton } from "@/common/components/SignInButton/SignInButton";
 import { prisma } from "@/lib/prisma";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
-import { Mail, ShieldAlert, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import SiteLogo from '@/common/components/SiteLogo/SiteLogo';
 import { Toaster } from "react-hot-toast";
-import { Suspense } from 'react';
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
+import Navbar from "@/common/components/Navbar/Navbar";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -80,68 +77,18 @@ export default async function RootLayout({
               backdropFilter: 'blur(10px)',
             },
           }} />
-          <nav className="nav">
-            <SiteLogo scale={0.6} />
-            <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-              {isAdmin && (
-                <Link
-                  href="/administration"
-                  title="Administration"
-                  style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-                >
-                  <Settings size={22} />
-                </Link>
-              )}
-              {isMod && (
-                <Link
-                  href="/moderation"
-                  title="Modération"
-                  style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
-                >
-                  <ShieldAlert size={22} />
-                </Link>
-              )}
-              {session?.user && (
-                <a
-                  href="/profile?tab=pm"
-                  title={`${unreadCount} message(s) non lu(s)`}
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: 'var(--header-foreground)',
-                    textDecoration: 'none'
-                  }}
-                >
-                  <Mail size={22} />
-                  {unreadCount > 0 && (
-                    <span style={{
-                      position: 'absolute',
-                      top: '-8px',
-                      right: '-10px',
-                      background: 'var(--primary)',
-                      color: 'white',
-                      borderRadius: '50%',
-                      width: '18px',
-                      height: '18px',
-                      fontSize: '0.65rem',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      lineHeight: 1
-                    }}>
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </a>
-              )}
-              <SignInButton user={session?.user} />
-            </div>
-          </nav>
+          
+          <Navbar 
+            session={session} 
+            isAdmin={isAdmin} 
+            isMod={isMod} 
+            unreadCount={unreadCount} 
+          />
+
           <main style={{ flex: 1, width: '100%', paddingBottom: '3rem' }}>
             {children}
           </main>
+          
           <footer style={{
             position: 'fixed',
             bottom: 0,

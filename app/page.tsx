@@ -31,10 +31,10 @@ export default async function Home() {
   });
 
   return (
-    <main className="container" style={{ padding: '0.5rem 1rem' }}>
-      <section className="hero" style={{ padding: '0.5rem 0.5rem 0 0.5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <SiteLogo scale={1.1} />
+    <main className="container" style={{ padding: '0.5rem 1rem', position: 'relative' }}>
+      <section className="hero" style={{ padding: '0.5rem 0.5rem 0 0.5rem', position: 'relative' }}>
+        <div className="logo-straddle-container">
+          <SiteLogo scale={1.8} />
         </div>
         
         {/* LIGNE 1 */}
