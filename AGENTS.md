@@ -24,47 +24,29 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 ## STRUCTURE DU PROJET :
 ```
 bbfrance/
+├── .agents/                      # Instructions et compétences de l'IA
+│   └── skills/                   # Guides techniques (ex: ui-components)
 ├── app/                          # Next.js App Router
+│   ├── (auth)/                   # Routes d'authentification
 │   ├── admin/                    # Pages administration
 │   ├── api/                      # API routes (auth, forum, user)
-│   ├── banned/                   # Page utilisateur banni
-│   ├── forum/                    # Feature forum (pages + actions serveur)
-│   │   ├── actions.ts            # Server Actions du forum
-│   │   ├── component/            #Composants propres au forum
-│   │   ├── new-forum/
-│   │   ├── new-topic/
-│   │   ├── post/[id]/
-│   │   ├── topic/[id]/
-│   │   ├── search/
-│   │   └── unread/
-│   ├── membres/                  # Liste des membres
-│   │   └── component/            # Composants propres a la page membres
-│   ├── profile/                  # Profil utilisateur + messages privés
-│   │   └── component/            # Composants propres a la page profiles
-│   ├── moderation/               # Page pour la modération
-│   │   └── component/            # Composants propres a la page moderation
-│   ├── administration/           # Page pour l'administration
-│   │   └── component/            # Composants propres a la page administration
-│   ├── ligue/                    # Page pour les ligues
-│   │   └── component/            # Composants propres a la page ligue
-│   ├── bbowltools/               # Page pour les liens.outils utiles pour blood bowl
-│   │   └── component/            # Composants propres a la page bbowltools
-│   ├── articles/                 # Page pour les articles libres d'accès créér par les membres
-│   │   └── component/            # Composants propres a la page articles
-│   └── tournaments/              # Tournois
-│   │   └── component/            # Composants propres a la page tournois
-├── common/                       # les trucs commun a toutes les pages
-│   └── components/               # Composants globaux (Modal, Toast, etc.) réutilisables partout
-├── lib/                          # Utilitaires partagés
-│   ├── prisma.ts                 # Instance Prisma
+│   ├── forum/                    # Feature forum
+│   │   ├── actions.ts / component/
+│   ├── profile/                  # Profil + Messagerie Privée
+│   │   ├── actions.ts / component/
+│   ├── tournaments/              # Gestion des tournois
+│   ├── theme/                    # Définition des thèmes CSS (variables)
+│   └── globals.css               # Styles globaux et imports thèmes
+├── common/                       # Ressources partagées
+│   ├── components/               # Composants globaux réutilisables
+│   └── types/                    # Types TypeScript globaux
+├── lib/                          # Logique métier et config
+│   ├── prisma.ts                 # Client Prisma
 │   ├── bbcode.ts                 # Parser BBCode
-│   ├── roles.ts                  # Gestion des rôles
-│   └── siteConfig.ts             # Config globale du site
-├── prisma/
-│   ├── schema.prisma             # Schéma de la base de données
-│   └── migrations/               # Historique des migrations
-├── styles/                       # CSS global
-└── auth.ts                       # Config next-auth
+│   └── roles.ts                  # RBAC (Rôles)
+├── prisma/                       # Schéma et migrations
+├── public/                       # Assets statiques (Smileys, etc.)
+└── styles/                       # CSS de base
 ```
 
 Si un dossier n'existe pas. crée le
@@ -110,14 +92,15 @@ Si un dossier n'existe pas. crée le
 - Toujours vérifier la session auth avant toute action serveur
 - Vérifier le rôle utilisateur pour les actions admin/modo
 
-## DESIGN :
-- Couleur primaire : #c21d1d (rouge)
-- Accent : #ffd700 (or)
-- Cartes en glassmorphism avec backdrop-filter blur
+## DESIGN & UI :
+- Avant de créer un composant, **consulte SYSTEMATIQUEMENT** : `.agents/skills/ui-components/SKILL.md`
+- Couleur primaire : #c21d1d (rouge) | Accent : #ffd700 (or)
+- Cartes en glassmorphism avec backdrop-filter blur (utiliser `PremiumCard`)
 - Border-radius 16px pour les cartes, 8px pour les boutons
-- Toujours utiliser les variables CSS (--primary, --accent, --glass-border, --card-bg)
-- Ne jamais écrire de couleurs en dur, toujours passer par les variables CSS
-- Lucide React pour toutes les icônes, jamais d'autres librairies d'icônes
+- **THÈMES** : Ne jamais écrire de couleurs en dur. 
+  - Utiliser les variables CSS (`--primary`, `--accent`, `--glass-border`, `--card-bg`).
+  - Les thèmes sont définis dans `app/theme/theme.[nom].css`.
+- Lucide React pour toutes les icônes, jamais d'autres librairies.
 
 ## IMPORTANT — VERSION NEXT.JS :
 Cette version contient des breaking changes — les APIs, conventions et structure de fichiers
