@@ -166,8 +166,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         />
 
         <div className="profile-edit-layout-rows">
-          {/* 1. Avatar */}
-          <div className="full-width avatar-studio-box">
+          {/* Avatar Section */}
+          <div className="avatar-studio-box">
             <div className="studio-preview-pane">
               <UserAvatar
                 image={formData.image}
@@ -189,30 +189,17 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                     placeholder="https://..."
                     style={{ flex: 1 }}
                   />
-                  <button
-                    type="button"
-                    className="upload-btn dicebear-btn"
-                    onClick={handleRandomAvatar}
-                    title="Aléatoire"
-                  >
-                    <Dices size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    className="upload-btn dicebear-btn sparkles-btn"
-                    onClick={() => setIsGeneratorOpen(true)}
-                    title="Personnaliser"
-                  >
-                    <Sparkles size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    className="upload-btn"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploading}
-                  >
-                    {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                  </button>
+                  <div className="btn-group-avatar">
+                      <button type="button" className="upload-btn-icon" onClick={handleRandomAvatar} title="Aléatoire">
+                        <Dices size={16} />
+                      </button>
+                      <button type="button" className="upload-btn-icon sparkles" onClick={() => setIsGeneratorOpen(true)} title="Personnaliser">
+                        <Sparkles size={16} />
+                      </button>
+                      <button type="button" className="upload-btn-icon" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                        {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                      </button>
+                  </div>
                 </div>
               </div>
 
@@ -227,8 +214,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             </div>
           </div>
 
-          {/* 2. Account Info */}
-          <div className="form-row-box">
+          {/* Info Section */}
+          <div className="form-row-grid">
             <div className="form-group">
               <label>Pseudo</label>
               <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
@@ -255,119 +242,46 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             </div>
           </div>
 
-          {/* 3. Forum Signature */}
-          <div className="form-row-box no-bg">
-            <div className="form-group full-width">
-              <label>Signature du forum (250 car. max)</label>
-              <BBCodeEditor
-                name="signature"
-                defaultValue={user.signature || ""}
-                maxLength={250}
-                rows={4}
-                onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
-              />
-            </div>
+          {/* Signature Section */}
+          <div className="form-group full-width-group">
+            <label>Signature du forum (250 car. max)</label>
+            <BBCodeEditor
+              name="signature"
+              defaultValue={user.signature || ""}
+              maxLength={250}
+              rows={4}
+              onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
+            />
           </div>
 
-          {/* 4. Appearance */}
-          <div className="form-row-box theme-section-box">
-            <div className="form-group full-width">
-              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Palette size={16} /> Apparence du site
-              </label>
-              <div className="theme-grid" style={{ marginTop: '0.5rem' }}>
-                <button
-                  type="button"
-                  className={`theme-card ${currentTheme === 'dark' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('dark')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview dark"></div>
-                  <div className="theme-info">
-                    <Moon size={14} />
-                    <span>Sombre</span>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  className={`theme-card ${currentTheme === 'light' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('light')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview light"></div>
-                  <div className="theme-info">
-                    <Sun size={14} />
-                    <span>Clair</span>
-                  </div>
-                </button>
-
-                <button 
-                  type="button"
-                  className={`theme-card ${currentTheme === 'blood' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('blood')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview blood"></div>
-                  <div className="theme-info">
-                    <Droplets size={14} />
-                    <span>Blood</span>
-                  </div>
-                </button>
-
-                <button 
-                  type="button"
-                  className={`theme-card ${currentTheme === 'malpierre' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('malpierre')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview malpierre"></div>
-                  <div className="theme-info">
-                    <Sparkles size={14} />
-                    <span>Malpierre</span>
-                  </div>
-                </button>
-
-                <button 
-                  type="button"
-                  className={`theme-card ${currentTheme === 'nehekhara' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('nehekhara')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview nehekhara"></div>
-                  <div className="theme-info">
-                    <Sparkles size={14} />
-                    <span>Néhékhara (Sables & Ambre)</span>
-                  </div>
-                </button>
-
-                <button 
-                  type="button"
-                  className={`theme-card ${currentTheme === 'saison3' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('saison3')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview saison3"></div>
-                  <div className="theme-info">
-                    <Sparkles size={14} />
-                    <span>Saison 3 (Legends 2025)</span>
-                  </div>
-                </button>
-
-                <button 
-                  type="button"
-                  className={`theme-card ${currentTheme === 'naf' ? 'active' : ''}`}
-                  onClick={() => handleThemeChange('naf')}
-                  disabled={isUpdatingTheme}
-                >
-                  <div className="theme-preview naf"></div>
-                  <div className="theme-info">
-                    <Sparkles size={14} />
-                    <span>NAF (Navy & Gold)</span>
-                  </div>
-                </button>
-              </div>
-            </div>
+          {/* Appearance Section */}
+          <div className="appearance-box">
+             <label className="section-label-inner"><Palette size={16} /> Apparence du site</label>
+             <div className="theme-grid">
+               {[
+                 { id: 'dark', label: 'Sombre', icon: <Moon size={14} /> },
+                 { id: 'light', label: 'Clair', icon: <Sun size={14} /> },
+                 { id: 'blood', label: 'Blood', icon: <Droplets size={14} /> },
+                 { id: 'malpierre', label: 'Malpierre', icon: <Sparkles size={14} /> },
+                 { id: 'nehekhara', label: 'Néhékhara', icon: <Sparkles size={14} /> },
+                 { id: 'saison3', label: 'Saison 3', icon: <Sparkles size={14} /> },
+                 { id: 'naf', label: 'NAF', icon: <Sparkles size={14} /> },
+               ].map(t => (
+                 <button
+                   key={t.id}
+                   type="button"
+                   className={`theme-card ${currentTheme === t.id ? 'active' : ''}`}
+                   onClick={() => handleThemeChange(t.id)}
+                   disabled={isUpdatingTheme}
+                 >
+                   <div className={`theme-preview ${t.id}`}></div>
+                   <div className="theme-info">
+                     {t.icon}
+                     <span>{t.label}</span>
+                   </div>
+                 </button>
+               ))}
+             </div>
           </div>
         </div>
 
@@ -389,24 +303,13 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           <div className="gen-preview">
             <img src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`} alt="Preview" />
           </div>
-
           <div className="gen-field">
             <label>Seed (Texte de génération)</label>
-            <input
-              type="text"
-              value={genSeed}
-              onChange={(e) => setGenSeed(e.target.value)}
-              placeholder="Ex: votre pseudo"
-            />
+            <input type="text" value={genSeed} onChange={(e) => setGenSeed(e.target.value)} placeholder="Ex: votre pseudo" />
           </div>
-
           <div className="gen-styles-grid">
             {DICEBEAR_STYLES.map(style => (
-              <button
-                key={style.id}
-                className={`style-item ${genStyle === style.id ? 'active' : ''}`}
-                onClick={() => setGenStyle(style.id)}
-              >
+              <button key={style.id} className={`style-item ${genStyle === style.id ? 'active' : ''}`} onClick={() => setGenStyle(style.id)}>
                 <img src={`https://api.dicebear.com/7.x/${style.id}/svg?seed=preview`} alt={style.label} />
                 <span>{style.label}</span>
               </button>
@@ -415,311 +318,133 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         </div>
       </Modal>
 
-      <style jsx>{`
-            .upload-btn.dicebear-btn {
-                background: var(--glass-bg);
-                color: var(--text-muted);
-                padding: 0 10px;
-            }
-            .upload-btn.dicebear-btn:hover {
-                background: var(--glass-border);
-                color: var(--foreground);
-            }
-            .sparkles-btn {
-                color: var(--accent) !important;
-            }
-
-            .avatar-studio-box {
-              display: flex;
-              gap: 2.5rem;
-              background: var(--card-bg);
-              padding: 2rem;
-              border-radius: 16px;
-              border: 1px solid var(--glass-border);
-              margin-bottom: 0.5rem;
-            }
-
-            .studio-preview-pane {
-              flex-shrink: 0;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              gap: 1rem;
-              padding-right: 2.5rem;
-              border-right: 1px solid var(--glass-border);
-            }
-
-            .studio-controls-pane {
-              flex: 1;
-              display: flex;
-              flex-direction: column;
-              gap: 1.5rem;
-              justify-content: center;
-            }
-
-            .preview-label {
-              font-size: 0.65rem;
-              text-transform: uppercase;
-              letter-spacing: 0.12em;
-              color: var(--text-muted);
-              font-weight: 900;
-            }
-            
-            .avatar-gen-modal {
-                display: flex;
-                flex-direction: column;
-                gap: 1.5rem;
-                padding: 0.5rem;
-            }
-            .gen-preview {
-                display: flex;
-                justify-content: center;
-                background: var(--glass-bg);
-                padding: 1rem;
-                border-radius: 12px;
-            }
-            .gen-preview img {
-                width: 120px;
-                height: 120px;
-                border-radius: 12px;
-                background: white;
-            }
-            .gen-field {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-            .gen-field label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-            .gen-field input {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                padding: 0.8rem;
-                border-radius: 8px;
-                color: var(--foreground);
-                outline: none;
-            }
-            .gen-styles-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
-            .style-item {
-                background: rgba(255,255,255,0.03);
-                border: 2px solid transparent;
-                padding: 8px;
-                border-radius: 8px;
-                cursor: pointer;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 6px;
-                transition: all 0.2s;
-            }
-            .style-item img { width: 40px; height: 40px; border-radius: 4px; background: white; }
-            .style-item span { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
-            .style-item:hover { background: rgba(255,255,255,0.08); }
-            .style-item.active {
-                border-color: var(--accent);
-                background: rgba(255, 215, 0, 0.05);
-            }
-            .style-item.active span { color: var(--accent); }
-            
-            .form-actions-edit {
-                margin-top: 0;
-                display: flex;
-                justify-content: center;
-            }
-            .btn-save {
-                background: var(--primary);
-                color: var(--header-foreground);
-                border: none;
-                padding: 1rem 2rem;
-                border-radius: 8px;
-                font-size: 1rem;
-                font-weight: 700;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
-            .btn-save:hover:not(:disabled) {
-                background: #d42020;
-                transform: translateY(-2px);
-                box-shadow: 0 10px 20px rgba(194, 29, 29, 0.3);
-            }
-            .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
-        `}</style>
-
       {toast && (
         <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}
 
       <style jsx>{`
         .profile-edit-container {
-          padding: 1.5rem 2rem;
+          padding: 2rem;
         }
         .section-title {
           margin: 0 0 2rem 0;
           font-size: 1.2rem;
           color: var(--foreground);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
         }
         .profile-edit-form {
           display: flex;
           flex-direction: column;
-          gap: 0.8rem;
-          max-width: 900px;
-          margin: 0 auto;
-          width: 100%;
+          gap: 2rem;
         }
         .profile-edit-layout-rows {
           display: flex;
           flex-direction: column;
-          gap: 1.5rem;
-          width: 100%;
-        }
-        .form-row-box, .avatar-studio-box {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2.5rem;
-          background: var(--card-bg);
-          padding: 2rem;
-          border-radius: 16px;
-          border: 1px solid var(--glass-border);
-          width: 100%;
-        }
-        .form-row-box.no-bg {
-          background: transparent;
-          border: none;
-          padding: 0;
+          gap: 2rem;
         }
         .avatar-studio-box {
-          grid-template-columns: 180px 1fr;
+          display: grid;
+          grid-template-columns: 200px 1fr;
+          gap: 2rem;
+          padding-bottom: 2rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .form-group {
+        .studio-preview-pane {
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          align-items: center;
+          gap: 1rem;
+          padding-right: 2rem;
+          border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .form-group.full-width {
-          grid-column: span 2;
-        }
-        .form-group label {
-          font-size: 0.8rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          color: var(--text-secondary);
-          letter-spacing: 0.05em;
+        .preview-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; }
+        .studio-controls-pane {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          justify-content: center;
         }
         .avatar-input-group {
           display: flex;
           gap: 0.5rem;
         }
-        .upload-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.8rem 1.2rem;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          color: var(--text-secondary);
-          cursor: pointer;
-          font-weight: 600;
-          font-size: 0.85rem;
-          transition: all 0.2s;
+        .btn-group-avatar { display: flex; gap: 0.4rem; }
+        .upload-btn-icon {
+          display: flex; align-items: center; justify-content: center;
+          width: 40px; height: 40px; border-radius: 8px;
+          background: var(--input-bg); border: 1px solid var(--glass-border);
+          color: var(--text-muted); cursor: pointer; transition: all 0.2s;
         }
-        .upload-btn:hover:not(:disabled) {
-          background: var(--glass-border);
-          color: var(--foreground);
+        .upload-btn-icon:hover { background: var(--glass-border); color: var(--foreground); }
+        .upload-btn-icon.sparkles { color: var(--accent); }
+
+        .form-row-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
         }
-        .animate-spin {
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+        .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
+        .form-group label {
+          font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+          color: var(--text-muted); letter-spacing: 0.05em;
         }
         input, select {
-          padding: 0.8rem 1rem;
-          border-radius: 8px;
-          border: 1px solid var(--glass-border);
-          background: var(--glass-bg);
-          color: var(--foreground);
-          font-size: 0.95rem;
-          outline: none;
+          padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--glass-border);
+          background: var(--input-bg); color: var(--foreground); font-size: 0.95rem;
           transition: border-color 0.2s;
         }
-        input:focus, select:focus {
-          border-color: var(--primary);
-        }
-        .btn-primary {
-          padding: 1rem;
-          border-radius: 8px;
-          background: var(--primary);
-          color: white;
-          border: none;
-          font-weight: 700;
-          cursor: pointer;
-          transition: transform 0.2s, background 0.2s;
-        }
-        .btn-primary:hover {
-          background: #d42222;
-        }
-        .btn-primary:active {
-          transform: translateY(1px);
-        }
-        .btn-primary:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
+        input:focus, select:focus { border-color: var(--primary); outline: none; }
 
+        .appearance-box {
+          padding-top: 1rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .section-label-inner {
+          display: flex; align-items: center; gap: 0.6rem;
+          font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+          color: var(--text-muted); margin-bottom: 1rem;
+        }
         .theme-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
           gap: 1rem;
-          width: 100%;
         }
         .theme-card {
-          background: rgba(255, 255, 255, 0.03);
+          background: rgba(255, 255, 255, 0.02);
           border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          padding: 0.8rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-          color: var(--foreground);
-          text-align: left;
+          border-radius: 12px; padding: 0.8rem;
+          cursor: pointer; transition: all 0.2s ease;
+          display: flex; flex-direction: column; gap: 0.8rem;
+          color: var(--foreground); text-align: left;
         }
-        .theme-card:hover:not(:disabled) {
-          background: rgba(255, 255, 255, 0.06);
-          border-color: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
+        .theme-card:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
+        .theme-card.active { border-color: var(--primary); background: rgba(194, 29, 29, 0.05); }
+        .theme-preview { height: 40px; border-radius: 6px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
+        .theme-preview.dark { background: #0a0a0c; }
+        .theme-preview.light { background: #f0f1f4; }
+        .theme-preview.blood { background: #120000; }
+        .theme-preview.malpierre { background: #020a02; }
+        .theme-preview.nehekhara { background: #0b0e14; }
+        .theme-preview.saison3 { background: #9e1d1d; }
+        .theme-preview.naf { background: #012b5d; }
+        .theme-info { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.85rem; }
+
+        .form-actions-edit { display: flex; justify-content: flex-end; margin-top: 1rem; }
+        .btn-save {
+          background: var(--primary); color: white; border: none;
+          padding: 1rem 2.5rem; border-radius: 8px; font-size: 0.9rem;
+          font-weight: 700; cursor: pointer; transition: all 0.2s;
         }
-        .theme-card.active {
-          background: rgba(194, 29, 29, 0.1);
-          border-color: var(--primary);
-          box-shadow: 0 0 15px rgba(194, 29, 29, 0.2);
-        }
-        .theme-preview {
-          height: 40px;
-          border-radius: 6px;
-          width: 100%;
-        }
-        .theme-preview.dark { background: #0a0a0c; border: 1px solid #1a1a20; }
-        .theme-preview.light { background: #f0f1f4; border: 1px solid #dee2e6; }
-        .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #ff0000 100%); }
-        .theme-preview.malpierre { background: linear-gradient(135deg, #020a02 0%, #39ff14 100%); }
-        .theme-preview.nehekhara { background: linear-gradient(135deg, #0b0e14 0%, #d97706 100%); }
-        .theme-preview.saison3 { background: linear-gradient(135deg, #9e1d1d 0%, #efebdd 100%); }
-        .theme-preview.naf { background: linear-gradient(135deg, #012b5d 0%, #fac710 100%); }
-        
-        .theme-info {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          font-weight: 600;
-          font-size: 0.85rem;
+        .btn-save:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(194, 29, 29, 0.3); }
+
+        .animate-spin { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+          .avatar-studio-box { grid-template-columns: 1fr; }
+          .studio-preview-pane { border-right: none; padding-right: 0; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+          .form-row-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </PremiumCard>

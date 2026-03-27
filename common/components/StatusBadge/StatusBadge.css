@@ -1,0 +1,79 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.badge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Rôles Spécifiques */
+.status-badge.admin {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(194, 29, 29, 0.3);
+}
+
+.status-badge.moderator {
+  background: var(--accent);
+  color: #000;
+  border-color: #ffd700;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+}
+
+.status-badge.coach {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--foreground);
+  border-color: var(--glass-border);
+}
+
+.status-badge.banned {
+  background: #ef4444;
+  color: white;
+  border-color: #f87171;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Statuts Génériques */
+.status-badge.success {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  border-color: #22c55e;
+}
+
+.status-badge.warning {
+  background: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+  border-color: #eab308;
+}
+
+.status-badge.info {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.status-badge.accent {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+.status-badge.default {
+  background: var(--glass-bg);
+  color: var(--text-muted);
+  border-color: var(--glass-border);
+}

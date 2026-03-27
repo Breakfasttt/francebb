@@ -2,9 +2,11 @@
 
 import { toggleBanUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
+import StatItem from "@/common/components/StatItem/StatItem";
+import TabSystem from "@/common/components/TabSystem/TabSystem";
 import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -50,7 +52,7 @@ export default function ProfileSidebar({
     });
   };
 
-  const navItems = isOwnProfile ? [
+  const navItems = (isOwnProfile ? [
     { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
@@ -60,7 +62,7 @@ export default function ProfileSidebar({
   ] : [
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     ...(user.nafNumber ? [{ id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> }] : []),
-  ];
+  ]).map(item => ({ ...item }));
 
   const regionLabels: Record<string, string> = {
     "IDF": "R1 - Île-de-France",
@@ -72,9 +74,23 @@ export default function ProfileSidebar({
 
   return (
     <div className="profile-sidebar-wrapper">
-      <PremiumCard className="profile-summary-box">
+      <PremiumCard className="profile-summary-box" noOverflow>
+        {user.isBanned && (
+           <StatusBadge variant="banned" className="banned-badge" icon={<Ban size={12} />}>
+             Banni
+           </StatusBadge>
+        )}
 
-        <div className="profile-avatar-container" id="profile-avatar-debug">
+        {/* TabSystem DOCKÉ À DROITE */}
+        <TabSystem 
+          items={navItems}
+          activeTab={activeTab}
+          onTabChange={handleTabClick}
+          variant="docked-sidebar"
+          showLabels={false}
+        />
+
+        <div className="profile-avatar-container">
           <UserAvatar 
             image={user.image} 
             name={user.name} 
@@ -85,71 +101,55 @@ export default function ProfileSidebar({
           />
         </div>
 
-        <h2 className="profile-name">{user.name}</h2>
-        <p className="profile-role">{user.role || "COACH"}</p>
+        <div className="profile-summary-header">
+          <h2 className="profile-name">{user.name}</h2>
+          <span className="profile-role-plain">
+            {user.role || "COACH"}
+          </span>
+        </div>
 
         <div className="profile-stats-grid">
-          <div className="stat-item">
-            <span className="stat-label">NAF</span>
-            <span className="stat-value">
-              {user.nafNumber ? (
+           <StatItem 
+              variant="vertical"
+              label="NAF" 
+              value={user.nafNumber ? (
                 <a
                   href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }}
                 >
                   {user.nafNumber}
                 </a>
-              ) : "—"}
-            </span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">Messages</span>
-            <span className="stat-value">{postCount}</span>
-          </div>
+              ) : "—"} 
+           />
+           <StatItem variant="vertical" label="Messages" value={postCount} />
         </div>
 
         {(user.region || user.league) && (
-          <div className="profile-info-list">
-            {user.region && (
-              <div className="info-item">
-                <MapPin size={16} />
-                <span>{regionLabels[user.region] || user.region}</span>
-              </div>
-            )}
-            {user.league && (
-              <div className="info-item">
-                <Shield size={16} />
-                <span>{user.league}</span>
-              </div>
-            )}
+          <div className="profile-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', marginTop: '1rem' }}>
+             {user.region && (
+               <StatItem variant="horizontal" label="Région" value={regionLabels[user.region] || user.region} icon={<MapPin size={16} />} />
+             )}
+             {user.league && (
+               <StatItem variant="horizontal" label="Ligue" value={user.league} icon={<Shield size={16} />} />
+             )}
           </div>
         )}
 
         {!isOwnProfile && (
-          <div className="profile-actions">
+          <div className="profile-actions-column">
             {onContact && (
-              <button
-                onClick={onContact}
-                className="action-button primary-btn full-width"
-              >
-                <MessageSquare size={16} />
-                <span>Message privé</span>
+              <button onClick={onContact} className="action-button primary-btn">
+                <MessageSquare size={16} /> <span>Message privé</span>
               </button>
             )}
-            <button
-              onClick={() => setShowReportModal(true)}
-              className="action-button secondary-btn full-width"
-            >
-              <AlertTriangle size={16} />
-              <span>Signaler</span>
+            <button onClick={() => setShowReportModal(true)} className="action-button secondary-btn">
+              <AlertTriangle size={16} /> <span>Signaler</span>
             </button>
-
             {isModerator && (
               <button
                 onClick={() => setShowBanModal(true)}
-                className={`action-button full-width ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
+                className={`action-button ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
                 disabled={isPending}
               >
                 {user.isBanned ? <UserCheck size={16} /> : <Ban size={16} />}
@@ -158,20 +158,6 @@ export default function ProfileSidebar({
             )}
           </div>
         )}
-
-        {/* Floating Icons Navigation (Docked on the right edge) */}
-        <div className="profile-floating-nav">
-          {navItems.map((item) => (
-            <Tooltip key={item.id} text={item.label} position="right">
-              <button
-                onClick={() => handleTabClick(item.id)}
-                className={`nav-icon-item ${activeTab === item.id ? 'active' : ''}`}
-              >
-                {item.icon}
-              </button>
-            </Tooltip>
-          ))}
-        </div>
       </PremiumCard>
 
       <Modal
@@ -179,181 +165,18 @@ export default function ProfileSidebar({
         onClose={() => setShowBanModal(false)}
         onConfirm={handleToggleBan}
         title={user.isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
-        message={user.isBanned
-          ? `Voulez-vous vraiment débannir ${user.name} ?`
-          : `Voulez-vous vraiment bannir ${user.name} ? Il ne pourra plus poster sur le forum.`
-        }
+        message={user.isBanned ? `Voulez-vous vraiment débannir ${user.name} ?` : `Voulez-vous vraiment bannir ${user.name} ?`}
       />
 
       <Modal
         isOpen={showReportModal}
         onClose={() => setShowReportModal(false)}
-        onConfirm={() => setShowReportModal(false)} // Simulation for now
+        onConfirm={() => setShowReportModal(false)}
         title="Signaler le profil"
-        message={`Voulez-vous vraiment signaler le profil de ${user.name} aux modérateurs ?`}
+        message={`Voulez-vous vraiment signaler le profil de ${user.name} ?`}
       />
 
-      <style jsx>{`
-        .profile-sidebar-wrapper {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          width: 300px;
-          flex-shrink: 0;
-          position: sticky;
-          top: 6.5rem;
-          align-self: flex-start;
-        }
-        .profile-summary-box {
-          position: relative;
-          padding: 2rem 1.25rem 1.25rem 1.25rem;
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 255px;
-          z-index: 2;
-          border-top-right-radius: 0;
-        }
-        .banned-badge {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          background: #ef4444;
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 0.7rem;
-          font-weight: 800;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-        }
-        .profile-avatar-container {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 2rem;
-        }
-        .profile-name {
-          margin: 0;
-          font-size: 1.5rem;
-          letter-spacing: -0.02em;
-        }
-        .profile-role {
-          margin: 0.2rem 0 1.5rem 0;
-          font-size: 0.8rem;
-          color: var(--primary);
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-        .profile-stats-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          width: 100%;
-          gap: 1rem;
-          margin-bottom: 1rem;
-          padding-bottom: 1rem;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .stat-item {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-        .stat-label {
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          color: var(--text-muted);
-          font-weight: 800;
-        }
-        .stat-value {
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: var(--foreground);
-        }
-        .profile-info-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-          width: 100%;
-          margin-bottom: 0.4rem;
-        }
-        .info-item {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-        }
-        .profile-actions {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-          width: 100%;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 1.2rem;
-          margin-top: 0.8rem;
-        }
-        .action-button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          padding: 0.6rem;
-          border-radius: 8px;
-          font-size: 0.85rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .full-width { width: 100%; }
-        .primary-btn { background: var(--primary); color: white; border: none; }
-        .secondary-btn { background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); }
-        .success-btn { background: #22c55e; color: white; border: none; }
-        .danger-btn { background: #ef4444; color: white; border: none; }
-        
-        .profile-floating-nav {
-          position: absolute;
-          left: 254px;
-          top: -1px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 6px;
-          padding: 10px 0;
-          width: 46px;
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(12px);
-          border: 1px solid var(--glass-border);
-          border-left: none;
-          border-radius: 0 12px 12px 0;
-          box-shadow: 12px 0 30px rgba(0,0,0,0.3);
-          z-index: 1;
-        }
-        .nav-icon-item {
-          width: 36px;
-          height: 36px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 8px;
-          background: transparent;
-          border: none;
-          color: var(--text-muted);
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .nav-icon-item:hover {
-          background: var(--glass-bg);
-          color: var(--foreground);
-        }
-        .nav-icon-item.active {
-          background: var(--primary-transparent);
-          color: var(--primary);
-        }
-      `}</style>
+      {/* Les styles sont maintenant dans app/profile/page.css pour garantir leur application globale */}
     </div>
   );
 }

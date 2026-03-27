@@ -6,6 +6,11 @@
   border-radius: 16px;
   box-shadow: var(--glass-shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.premium-card.overflow-visible {
+  overflow: visible !important;
 }
 
 .premium-card.hover-effect:hover {

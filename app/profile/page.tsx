@@ -18,6 +18,7 @@ import ProfilePM from "@/app/profile/component/ProfilePM";
 import ProfileSettings from "@/app/profile/component/ProfileSettings";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
+import Pagination from "@/common/components/Pagination/Pagination";
 import "./page.css";
 
 type ProfileTab = "followed" | "activity" | "edit" | "palmares" | "pm" | "settings";
@@ -185,25 +186,15 @@ export default function ProfilePage() {
                       ))}
                     </div>
 
+import Pagination from "@/common/components/Pagination/Pagination";
+...
                     {followedTotalPages > 1 && (
-                      <div className="pagination" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '1rem', alignItems: 'center' }}>
-                        <button 
-                          disabled={followedPage === 1 || followedLoading} 
-                          onClick={() => loadFollowedTopics(followedPage - 1)}
-                          className="btn-pagination"
-                        >
-                          Précédent
-                        </button>
-                        <span style={{ fontSize: '0.9rem', color: '#666' }}>
-                          Page {followedPage} / {followedTotalPages}
-                        </span>
-                        <button 
-                          disabled={followedPage === followedTotalPages || followedLoading} 
-                          onClick={() => loadFollowedTopics(followedPage + 1)}
-                          className="btn-pagination"
-                        >
-                          Suivant
-                        </button>
+                      <div style={{ marginTop: '2rem' }}>
+                        <Pagination 
+                          currentPage={followedPage}
+                          totalPages={followedTotalPages}
+                          onPageChange={loadFollowedTopics}
+                        />
                       </div>
                     )}
                   </>

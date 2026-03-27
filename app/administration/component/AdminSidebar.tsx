@@ -2,6 +2,7 @@
 
 import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 
 export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
 
@@ -12,73 +13,46 @@ interface AdminSidebarProps {
 }
 
 export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = false }: AdminSidebarProps) {
+  const standardTabs: TabItem[] = [
+    { id: "general", label: "Paramètres Généraux", icon: <Globe size={18} /> },
+    { id: "roles", label: "Liste des Rôles", icon: <ShieldCheck size={18} /> },
+    { id: "coachs", label: "Rôles des Membres", icon: <Users size={18} /> },
+    { id: "structure", label: "Structure du Forum", icon: <LayoutList size={18} /> },
+    { id: "reference", label: "Données de Référence", icon: <Database size={18} /> },
+  ];
+
+  const adminTabs: TabItem[] = [
+    { id: "backup", label: "Sauvegardes (BDD)", icon: <DatabaseBackup size={18} /> },
+    { id: "reset", label: "Zone de Danger", icon: <OctagonAlert size={18} /> },
+  ];
+
   return (
     <PremiumCard as="aside" className="profile-sidebar-wrapper">
-      <h2 style={{ fontSize: '1.2rem', margin: '0 0 1.5rem 0', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <h2 className="sidebar-title">
         Tableau de bord
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <button
-          onClick={() => onTabChange("general")}
-          className={`action-button full-width ${activeTab === "general" ? 'primary-btn' : 'secondary-btn'}`}
-          style={{ justifyContent: 'flex-start' }}
-        >
-          <Globe size={18} /> <span>Paramètres Généraux</span>
-        </button>
-        <button
-          onClick={() => onTabChange("roles")}
-          className={`action-button full-width ${activeTab === "roles" ? 'primary-btn' : 'secondary-btn'}`}
-          style={{ justifyContent: 'flex-start' }}
-        >
-          <ShieldCheck size={18} /> <span>Liste des Rôles</span>
-        </button>
-        <button
-          onClick={() => onTabChange("coachs")}
-          className={`action-button full-width ${activeTab === "coachs" ? 'primary-btn' : 'secondary-btn'}`}
-          style={{ justifyContent: 'flex-start' }}
-        >
-          <Users size={18} /> <span>Rôles des Membres</span>
-        </button>
-        <button
-          onClick={() => onTabChange("structure")}
-          className={`action-button full-width ${activeTab === "structure" ? 'primary-btn' : 'secondary-btn'}`}
-          style={{ justifyContent: 'flex-start' }}
-        >
-          <LayoutList size={18} /> <span>Structure du Forum</span>
-        </button>
-        <button
-          onClick={() => onTabChange("reference")}
-          className={`action-button full-width ${activeTab === "reference" ? 'primary-btn' : 'secondary-btn'}`}
-          style={{ justifyContent: 'flex-start' }}
-        >
-          <Database size={18} /> <span>Données de Référence</span>
-        </button>
-      </div>
+      <TabSystem 
+        items={standardTabs}
+        activeTab={activeTab}
+        onTabChange={(id) => onTabChange(id as AdminTab)}
+        orientation="vertical"
+        variant="sidebar"
+      />
 
       {isSuperAdmin && (
         <>
-          <div style={{ margin: '2rem 0 1.5rem 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}></div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <button
-              onClick={() => onTabChange("backup")}
-              className={`action-button full-width ${activeTab === "backup" ? 'primary-btn' : 'secondary-btn'}`}
-              style={{ justifyContent: 'flex-start' }}
-            >
-              <DatabaseBackup size={18} /> <span>Sauvegardes (BDD)</span>
-            </button>
-            <button
-              onClick={() => onTabChange("reset")}
-              className={`action-button full-width ${activeTab === "reset" ? 'danger-btn' : 'secondary-btn'}`}
-              style={{ justifyContent: 'flex-start', ...(activeTab !== "reset" && { color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.3)' }) }}
-            >
-              <OctagonAlert size={18} /> <span>Zone de Danger</span>
-            </button>
-          </div>
+          <div className="sidebar-separator"></div>
+          <TabSystem 
+            items={adminTabs}
+            activeTab={activeTab}
+            onTabChange={(id) => onTabChange(id as AdminTab)}
+            orientation="vertical"
+            variant="sidebar"
+            className="admin-tabs"
+          />
         </>
       )}
-
 
       <style jsx>{`
         .profile-sidebar-wrapper {
@@ -91,37 +65,26 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
           top: 6.5rem;
           align-self: flex-start;
         }
-        .action-button {
+        .sidebar-title {
+          font-size: 1.2rem;
+          margin: 0 0 1.5rem 0;
+          color: var(--primary);
           display: flex;
           align-items: center;
-          gap: 0.8rem;
-          padding: 0.8rem 1rem;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.2s;
+          gap: 0.5rem;
         }
-        .full-width { width: 100%; }
-        .primary-btn { 
-          background: rgba(194, 29, 29, 0.2); 
-          color: var(--primary); 
-          border: 1px solid var(--primary); 
+        .sidebar-separator {
+          margin: 1.5rem 0;
+          border-top: 1px solid rgba(255,255,255,0.05);
         }
-        .secondary-btn { 
-          background: rgba(255,255,255,0.02); 
-          color: #888; 
-          border: 1px solid var(--glass-border); 
+        :global(.admin-tabs .tab-item.active) {
+            border-color: #ef4444;
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
         }
-        .secondary-btn:hover { 
-          background: rgba(255,255,255,0.05); 
-          color: #ccc; 
-        }
-        .danger-btn { 
-          background: #ef4444; 
-          color: white; 
-          border: 1px solid #ef4444; 
-          box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        :global(.admin-tabs .tab-item:not(.active)) {
+            color: #ef4444;
+            opacity: 0.7;
         }
       `}</style>
     </PremiumCard>

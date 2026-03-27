@@ -8,6 +8,7 @@ import { Mail, Ban, Trash2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 
 interface Props {
   users: any[];
@@ -181,15 +182,17 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
                 <td style={{ padding: '1rem' }}>
                   <Link href={`/spy/${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
                     {user.image && <img src={user.image} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />}
-                    <span style={{ fontWeight: 600, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
-                      {user.name} {user.isBanned && "(Banni)"}
+                    <span style={{ fontWeight: 600, transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                      {user.name} {user.isBanned && <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>}
                     </span>
                   </Link>
                 </td>
                 <td style={{ padding: '1rem' }}>
-                  <span className={`role-badge role-${user.role.toLowerCase().replace('_', '-')}`}>
+                  <StatusBadge 
+                    variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
+                  >
                     {getRoleLabel(user.role)}
-                  </span>
+                  </StatusBadge>
                 </td>
                 <td style={{ padding: '1rem', color: '#888' }}>
                   {user.nafNumber ? (
