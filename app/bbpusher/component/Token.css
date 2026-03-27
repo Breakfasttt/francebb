@@ -14,12 +14,10 @@
 .token-container:active { cursor: grabbing; }
 .token-container.overlay { cursor: grabbing; transform: scale(1.1) !important; z-index: 9999; }
 
-/* FIX: Empecher le scroll des fosses et le "décallage" vers la gauche */
 .token-container.dragging-source {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
-  /* On garde la taille exacte pour ne pas que la grille s'effondre */
 }
 
 .player-token {
@@ -39,7 +37,24 @@
   transform-origin: center center;
 }
 
-.token-visual { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+.token-visual { 
+  width: 100%; height: 100%; 
+  display: flex; align-items: center; justify-content: center; 
+  position: relative; 
+}
+
+/* Base portion that rotates when prone/stunned */
+.token-base {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.token-container.prone .token-base,
+.token-container.stunned .token-base {
+  transform: rotate(90deg);
+  opacity: 0.8;
+}
 
 .token-number {
   color: #fff;
@@ -50,8 +65,7 @@
 }
 
 .ball-token {
-  width: 38px;
-  height: 38px;
+  width: 38px; height: 38px;
   background: transparent;
   z-index: 50;
   cursor: grab;
@@ -67,47 +81,59 @@
   50% { transform: translateY(-4px); }
 }
 
-/* -- Player Status -- */
-.token-container.prone .token-inner { rotate: 90deg; opacity: 0.8; }
-.token-container.stunned .token-inner { rotate: 90deg; opacity: 0.6; }
+/* -- Player Status Overlay (Always stays upright) -- */
+.status-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.token-container.stunned { opacity: 0.85; }
 
 .stars-animation {
   position: absolute;
-  top: -15px;
-  width: 100%;
+  top: -18px;
+  left: 0; right: 0;
   display: flex;
   justify-content: center;
   gap: 4px;
 }
 
-.star { color: #ffd700; animation: spin 2s infinite linear; }
+.star { color: #ffd700; animation: spin 2s infinite linear; filter: drop-shadow(0 0 3px rgba(0,0,0,0.5)); }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.floating-icon {
+.floating-icon, .floating-icon-large {
   position: absolute;
   top: -24px;
   color: #fff;
   filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
   animation: float 1s infinite alternate ease-in-out;
-  z-index: 100;
+}
+
+.floating-icon-large {
+  top: -30px;
 }
 
 @keyframes float { from { transform: translateY(0); } to { transform: translateY(-5px); } }
 
-.bite-anim { color: #facc15; animation: bite 0.5s infinite alternate; }
-@keyframes bite { from { scale: 1; opacity: 1; } to { scale: 1.3; opacity: 0.8; } }
+.bite-anim { color: #ffeb3b; animation: biteGlow 0.5s infinite alternate; }
+@keyframes biteGlow { from { filter: drop-shadow(0 0 2px #ffeb3b); } to { filter: drop-shadow(0 0 8px #ffeb3b); } }
 
-.croque-anim { color: #ff4444; animation: croque 0.3s infinite alternate; }
-@keyframes croque { from { transform: scale(1) rotate(-10deg); } to { transform: scale(1.2) rotate(10deg); } }
+.croque-anim { color: #fff; filter: drop-shadow(0 0 5px #ff4444); animation: croqueMove 0.4s infinite alternate; }
+@keyframes croqueMove { from { transform: translateY(0); } to { transform: translateY(-3px); } }
 
 /* Carried Ball Overlay */
 .carried-ball-overlay {
   position: absolute;
   top: -12px;
   right: -12px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,5));
   animation: floatSmall 1.5s infinite alternate ease-in-out;
-  z-index: 1000;
+  z-index: 300;
 }
 
 @keyframes floatSmall {

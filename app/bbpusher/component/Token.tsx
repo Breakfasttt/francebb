@@ -3,9 +3,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { TokenData, ToolType } from "../page";
 import { 
   HelpCircle, 
-  Skull, 
-  Star,
-  Waves
+  Star
 } from "lucide-react";
 import "./Token.css";
 
@@ -38,7 +36,6 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
     pointerEvents: (isBall && isCarried && activeTool === 'select') ? 'none' : (isDragging && !isOverlay ? 'none' : 'auto')
   };
 
-  // IMPORTANT: Only counter-rotate if we are NOT an overlay (portal is not rotated)
   const visualStyle: React.CSSProperties = {
     transform: isOverlay ? 'none' : `rotate(${-rotation}deg)`,
   };
@@ -58,7 +55,9 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
           </div>
         ) : (
           <div className="token-visual">
-            {token.number && <span className="token-number">{token.number}</span>}
+            <div className="token-base">
+               {token.number && <span className="token-number">{token.number}</span>}
+            </div>
             
             <div className="status-overlay">
               {token.status === 'stunned' && (
@@ -68,11 +67,10 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
                 </div>
               )}
               {token.status === 'bonehead' && <HelpCircle className="floating-icon" size={16} />}
-              {token.status === 'stupid' && <Waves className="floating-icon bite-anim" size={16} />}
-              {token.status === 'fourchette' && <Skull className="floating-icon croque-anim" size={16} />}
+              {token.status === 'stupid' && <FangsIcon className="floating-icon bite-anim" size={16} />}
+              {token.status === 'fourchette' && <ForkIcon className="floating-icon-large croque-anim" size={24} />}
             </div>
 
-            {/* BALL OVERLAY (When dragging or normally carrying) */}
             {hasBall && (
               <div className="carried-ball-overlay">
                 <BallGraphic size={16} />
@@ -85,13 +83,33 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
   );
 };
 
+function ForkIcon({ className, size = 16 }: { className?: string, size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 2v6a4 4 0 0 0 4 4h4a4 4 0 0 0 4-4V2"/>
+      <path d="M12 12v10"/>
+      <path d="M10 2v4"/>
+      <path d="M14 2v4"/>
+    </svg>
+  );
+}
+
+function FangsIcon({ className, size = 16 }: { className?: string, size?: number }) {
+  return (
+    <svg width={size * 1.5} height={size} viewBox="0 0 32 24" fill="currentColor" className={className}>
+      <path d="M2 4C2 4 6 8 16 8C26 8 30 4 30 4V10C30 10 26 9 16 9C6 9 2 10 2 10V4Z" fillOpacity="0.4" />
+      <path d="M6 5L9 17L12 5H6Z" />
+      <path d="M20 5L23 17L26 5H20Z" />
+      <path d="M2 3H30V7H2V3Z" />
+    </svg>
+  );
+}
+
 function BallGraphic({ size = 24 }: { size?: number }) {
   const h = Math.round(size * 0.83);
   return (
     <svg width={size} height={h} viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 1.5C15.5 1.5 18 5 18 10C18 15 15.5 18.5 12 18.5C8.5 18.5 6 15 6 10C6 5 8.5 1.5 12 1.5Z" fill="#8B4513" stroke="white" strokeWidth="1.5"/>
-      <path d="M6 10H18" stroke="white" strokeWidth="1" strokeDasharray="2 2"/>
-      <path d="M10 5V15M14 5V15" stroke="white" strokeWidth="1"/>
+      <path d="M12 1.5C15.5 1.5 18 5 18 10C18 15 15.5 18.5 12 18.5C8.5 18.5 6 15 6 10C6 5 8.5 1.5 12 1.5Z" fill="#8B4513" stroke="white" strokeWidth="1.5"/><path d="M6 10H18" stroke="white" strokeWidth="1" strokeDasharray="2 2"/><path d="M10 5V15M14 5V15" stroke="white" strokeWidth="1"/>
     </svg>
   );
 }
