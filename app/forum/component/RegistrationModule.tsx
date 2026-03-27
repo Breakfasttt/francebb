@@ -9,17 +9,16 @@ import { useState, useTransition } from "react";
 import { 
   Users, UserPlus, UserMinus, 
   CheckCircle2, Clock, ListOrdered, 
-  ChevronDown, ChevronUp, ChevronRight,
+  ChevronDown, ChevronUp,
   Plus, AlertCircle
 } from "lucide-react";
 import "./RegistrationModule.css";
 import toast from "react-hot-toast";
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { 
   joinTournament, 
   leaveTournament, 
-  updateRegistrationStatus,
-  deleteTeam,
-  toggleMercenary
+  updateRegistrationStatus
 } from "../actions";
 
 interface RegistrationModuleProps {
@@ -32,6 +31,20 @@ interface RegistrationModuleProps {
 export default function RegistrationModule({ tournament, currentUser, isOrganizer, isCommissioner }: RegistrationModuleProps) {
   const [isPending, startTransition] = useTransition();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    action: () => Promise<any>;
+    isDanger?: boolean;
+    label?: string;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    action: async () => {},
+  });
+
   const canManage = isOrganizer || isCommissioner;
 
   // -- Inscription Individuelle --
@@ -45,74 +58,97 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
     });
   };
 
+  const openConfirm = (title: string, message: string, action: () => Promise<any>, isDanger = false, label = "Confirmer") => {
+    setConfirmConfig({ isOpen: true, title, message, action, isDanger, label });
+  };
+
   const handleLeave = () => {
-    if (window.confirm("Voulez-vous vraiment annuler votre inscription ?")) {
-      startTransition(async () => {
+    openConfirm(
+      "Désinscription",
+      "Voulez-vous vraiment annuler votre inscription à ce tournoi ?",
+      async () => {
         const res = await leaveTournament(tournament.id);
         if (res.success) toast.success("Désinscription effectuée");
         else toast.error(res.error || "Erreur");
-      });
-    }
+      },
+      true,
+      "Quitter le tournoi"
+    );
   };
 
   const totalInscrits = (tournament.registrations?.length || 0) + (tournament.teams?.length || 0);
 
   return (
-    <div className={`registration-module ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}>
-      <div className="registration-bar">
-        <button 
-          className="registration-toggle-btn"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          <div className="toggle-info">
-            <Users size={18} />
-            <span>Gestion des Inscriptions</span>
-            <span className="badge-count">{totalInscrits}</span>
-          </div>
-          {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </button>
+    <>
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        onClose={() => setConfirmConfig({ ...confirmConfig, isOpen: false })}
+        onConfirm={async () => {
+          startTransition(async () => {
+            await confirmConfig.action();
+            setConfirmConfig({ ...confirmConfig, isOpen: false });
+          });
+        }}
+        isDanger={confirmConfig.isDanger}
+        confirmLabel={confirmConfig.label}
+      />
 
-        {/* Bouton d'action principal - Toujours visible pour les coachs (même les admins) */}
-        {currentUser && (
-          <div className="quick-user-action">
-            {tournament.isTeam ? (
-              // Mode Équipe
-              <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
-                <Plus size={16} /> Inscrire une équipe
-              </button>
-            ) : (
-              // Mode Individuel
-              !isRegistered ? (
-                <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
-                  <UserPlus size={16} /> Me pré-inscrire
+      <div className={`registration-module ${isExpanded ? 'is-expanded' : 'is-collapsed'}`}>
+        <div className="registration-bar">
+          <button 
+            className="registration-toggle-btn" 
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            <div className="toggle-info">
+              <Users size={18} />
+              <span>Gestion des Inscriptions</span>
+              <span className="badge-count">{totalInscrits}</span>
+            </div>
+            {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          </button>
+
+          {/* Bouton d'action principal */}
+          {currentUser && (
+            <div className="quick-user-action">
+              {tournament.isTeam ? (
+                <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
+                  <Plus size={16} /> Inscrire une équipe
                 </button>
               ) : (
-                <button className="reg-btn danger mini" onClick={handleLeave} disabled={isPending}>
-                  <UserMinus size={16} /> Annuler
-                </button>
-              )
+                !isRegistered ? (
+                  <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
+                    <UserPlus size={16} /> Me pré-inscrire
+                  </button>
+                ) : (
+                  <button className="reg-btn danger mini" onClick={handleLeave} disabled={isPending}>
+                    <UserMinus size={16} /> Annuler
+                  </button>
+                )
+              )}
+            </div>
+          )}
+        </div>
+
+        {isExpanded && (
+          <div className="registration-content">
+            {tournament.isTeam ? (
+              <TeamRegistrationMode 
+                tournament={tournament} 
+                currentUser={currentUser} 
+                canManage={canManage}
+              />
+            ) : (
+              <IndividualRegistrationMode 
+                tournament={tournament} 
+                canManage={canManage}
+              />
             )}
           </div>
         )}
       </div>
-
-      {isExpanded && (
-        <div className="registration-content">
-          {tournament.isTeam ? (
-            <TeamRegistrationMode 
-              tournament={tournament} 
-              currentUser={currentUser} 
-              canManage={canManage}
-            />
-          ) : (
-            <IndividualRegistrationMode 
-              tournament={tournament} 
-              canManage={canManage}
-            />
-          )}
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
@@ -124,33 +160,14 @@ function IndividualRegistrationMode({ tournament, canManage }: any) {
 
   return (
     <div className="registration-sections">
-      <RegistrationSection 
-        title="Pré-inscriptions" 
-        items={preReg} 
-        status="PRE_REGISTERED"
-        canManage={canManage}
-        icon={<Clock size={14} />}
-      />
-      <RegistrationSection 
-        title="Validées" 
-        items={registered} 
-        status="REGISTERED"
-        canManage={canManage}
-        icon={<CheckCircle2 size={14} />}
-        showPayment
-      />
-      <RegistrationSection 
-        title="Liste d'attente" 
-        items={waiting} 
-        status="WAITING_LIST"
-        canManage={canManage}
-        icon={<AlertCircle size={14} />}
-      />
+      <RegistrationSection title="Pré-inscriptions" items={preReg} status="PRE_REGISTERED" canManage={canManage} icon={<Clock size={14} />} />
+      <RegistrationSection title="Validées" items={registered} status="REGISTERED" canManage={canManage} icon={<CheckCircle2 size={14} />} showPayment />
+      <RegistrationSection title="Liste d'attente" items={waiting} status="WAITING_LIST" canManage={canManage} icon={<AlertCircle size={14} />} />
     </div>
   );
 }
 
-function TeamRegistrationMode({ tournament, currentUser, canManage }: any) {
+function TeamRegistrationMode({ tournament, canManage }: any) {
   const preRegTeams = (tournament.teams || []).filter((t: any) => t.status === "PRE_REGISTERED");
   const registeredTeams = (tournament.teams || []).filter((t: any) => t.status === "REGISTERED");
   const waitingTeams = (tournament.teams || []).filter((t: any) => t.status === "WAITING_LIST");
@@ -179,20 +196,14 @@ function TeamRegistrationMode({ tournament, currentUser, canManage }: any) {
   );
 }
 
-function RegistrationSection({ title, items, status, type = "PLAYER", canManage, icon, showPayment }: any) {
+function RegistrationSection({ title, items, type = "PLAYER", canManage, icon, showPayment }: any) {
   return (
     <div className="registration-section">
       <h4 className="section-title">{icon} {title} ({items.length})</h4>
       <div className="items-list">
         {items.length === 0 && <div className="empty-text">Aucun</div>}
         {items.map((item: any) => (
-          <RegistrationItem 
-            key={item.id} 
-            item={item} 
-            type={type} 
-            canManage={canManage} 
-            showPayment={showPayment}
-          />
+          <RegistrationItem key={item.id} item={item} type={type} canManage={canManage} showPayment={showPayment} />
         ))}
       </div>
     </div>
@@ -210,12 +221,14 @@ function RegistrationItem({ item, type, canManage, showPayment }: any) {
     });
   };
 
-  const handlePaymentChange = (e: any) => {
-    updateRegistrationStatus({
-      type,
-      id: item.id,
-      status: item.status,
-      paymentStatus: e.target.value
+  const handlePaymentStatus = (e: any) => {
+    startTransition(async () => {
+      await updateRegistrationStatus({
+        type,
+        id: item.id,
+        status: item.status,
+        paymentStatus: e.target.value
+      });
     });
   };
 
@@ -244,7 +257,8 @@ function RegistrationItem({ item, type, canManage, showPayment }: any) {
               <select 
                 className="mini-select"
                 defaultValue={item.paymentStatus}
-                onChange={handlePaymentChange}
+                onChange={handlePaymentStatus}
+                disabled={isPending}
               >
                 <option value="NOT_PAID">En attente</option>
                 <option value="PAID">Payé</option>
@@ -255,13 +269,13 @@ function RegistrationItem({ item, type, canManage, showPayment }: any) {
 
             <div className="move-buttons">
               {item.status !== "REGISTERED" && (
-                <button title="Valider l'inscription" onClick={() => moveStatus("REGISTERED")} className="btn-icon success"><CheckCircle2 size={14} /></button>
+                <button title="Valider" onClick={() => moveStatus("REGISTERED")} className="btn-icon success"><CheckCircle2 size={14} /></button>
               )}
               {item.status !== "PRE_REGISTERED" && (
-                <button title="Remettre en pré-inscription" onClick={() => moveStatus("PRE_REGISTERED")} className="btn-icon neutral"><Clock size={14} /></button>
+                <button title="Pré-inscription" onClick={() => moveStatus("PRE_REGISTERED")} className="btn-icon neutral"><Clock size={14} /></button>
               )}
               {item.status !== "WAITING_LIST" && (
-                <button title="Mettre en liste d'attente" onClick={() => moveStatus("WAITING_LIST")} className="btn-icon warning"><ListOrdered size={14} /></button>
+                <button title="Attente" onClick={() => moveStatus("WAITING_LIST")} className="btn-icon warning"><ListOrdered size={14} /></button>
               )}
             </div>
           </>

@@ -50,7 +50,14 @@ interface TopicSidebarProps {
   isTournament?: boolean;
   tournamentId?: string;
   canEditTournament?: boolean;
+  isFinished?: boolean;
+  isCancelled?: boolean;
 }
+
+import { Shield, CheckCircle, XCircle } from "lucide-react";
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import { finishTournament, cancelTournament } from "@/app/tournaments/actions";
+import toast from "react-hot-toast";
 
 export default function TopicSidebar({ 
   topicId, 
@@ -70,7 +77,9 @@ export default function TopicSidebar({
   isArchived = false,
   isTournament = false,
   tournamentId,
-  canEditTournament = false
+  canEditTournament = false,
+  isFinished = false,
+  isCancelled = false
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -81,12 +90,62 @@ export default function TopicSidebar({
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    action: () => Promise<any>;
+    isDanger?: boolean;
+    label?: string;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    action: async () => {},
+  });
+
   const handleEditTitleClick = () => {
     if (isTournament && tournamentId) {
       router.push(`/forum/edit-tournament/${tournamentId}`);
     } else {
       setShowEditTitleModal(true);
     }
+  };
+
+  const openConfirm = (title: string, message: string, action: () => Promise<any>, isDanger = false, label = "Confirmer") => {
+    setConfirmConfig({ isOpen: true, title, message, action, isDanger, label });
+  };
+
+  const handleFinish = () => {
+    openConfirm(
+      "Terminer le tournoi",
+      "Voulez-vous marquer ce tournoi comme TERMINÉ ? Cela coupera les inscriptions et le marquera comme passé.",
+      async () => {
+        const res = await finishTournament(tournamentId!);
+        if (res?.success) {
+          toast.success("Tournoi terminé !");
+          router.refresh();
+        }
+      },
+      false,
+      "Terminer"
+    );
+  };
+
+  const handleCancel = () => {
+    openConfirm(
+      "Annuler le tournoi",
+      "🚨 ATTENTION : Voulez-vous vraiment ANNULER ce tournoi ? Cette action est définitive.",
+      async () => {
+        const res = await cancelTournament(tournamentId!);
+        if (res?.success) {
+          toast.success("Tournoi annulé");
+          router.refresh();
+        }
+      },
+      true,
+      "Annuler le tournoi"
+    );
   };
 
 
@@ -174,6 +233,21 @@ export default function TopicSidebar({
 
   return (
     <aside className="forum-sidebar">
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        onClose={() => setConfirmConfig({ ...confirmConfig, isOpen: false })}
+        onConfirm={async () => {
+          startTransition(async () => {
+            await confirmConfig.action();
+            setConfirmConfig({ ...confirmConfig, isOpen: false });
+          });
+        }}
+        isDanger={confirmConfig.isDanger}
+        confirmLabel={confirmConfig.label}
+      />
+      
       <div className="sidebar-sticky-inner">
         <div className="sidebar-widget-container">
           
@@ -243,14 +317,14 @@ export default function TopicSidebar({
               </button>
             )}
 
-            {(isTournament ? canEditTournament : canEditTitle) && (
+            {!isTournament && canEditTitle && (
               <button 
                 onClick={handleEditTitleClick}
                 className="widget-button secondary-btn" 
                 style={{ textAlign: 'left', padding: '8px 12px' }}
               >
                 <Type size={16} />
-                <span>{isTournament ? "Modifier le tournoi" : "Modifier le titre"}</span>
+                <span>Modifier le titre</span>
               </button>
             )}
 
@@ -263,11 +337,48 @@ export default function TopicSidebar({
               <ChevronsDown size={16} /><span>Dernier message</span>
             </a>
 
-
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="widget-button secondary-btn" style={{ textAlign: 'left', padding: '8px 12px' }}>
               <ArrowUp size={16} /><span>Haut de page</span>
             </button>
+
+            {/* 3. Tournament Administration Section */}
+            {isTournament && canEditTournament && !isFinished && !isCancelled && (
+              <div style={{ marginTop: '0.4rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <h3 style={{ margin: '0 0 0.2rem 0', fontSize: '0.85rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Shield size={14} /> Gestion Tournoi
+                </h3>
+                
+                <button 
+                  onClick={handleEditTitleClick}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', padding: '8px 12px' }}
+                >
+                  <Type size={16} />
+                  <span>Modifier le tournoi</span>
+                </button>
+
+                <button 
+                  onClick={handleFinish}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', padding: '8px 12px' }}
+                >
+                  <CheckCircle size={16} />
+                  <span>Terminer le tournoi</span>
+                </button>
+
+                <button 
+                  onClick={handleCancel}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
+                >
+                  <XCircle size={16} />
+                  <span>Annuler le tournoi</span>
+                </button>
+              </div>
+            )}
 
             {/* Moderator Actions */}
             {isModerator && (

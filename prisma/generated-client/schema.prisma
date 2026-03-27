@@ -118,11 +118,13 @@ model Tournament {
   gameEdition    String? // e.g., "BB20", "BB3", "BB7"
   platform       String? @default("Tabletop")
 
-  isNAF Boolean @default(false)
-  isCDF Boolean @default(false)
-  isCGO Boolean @default(false)
-  isTGE Boolean @default(false)
-  isTSC Boolean @default(false)
+  isNAF       Boolean @default(false)
+  isCDF       Boolean @default(false)
+  isCGO       Boolean @default(false)
+  isTGE       Boolean @default(false)
+  isTSC       Boolean @default(false)
+  isFinished  Boolean @default(false)
+  isCancelled Boolean @default(false)
 
   organizerId String
   organizer   User   @relation(fields: [organizerId], references: [id])

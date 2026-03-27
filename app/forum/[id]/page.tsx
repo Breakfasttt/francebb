@@ -40,7 +40,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
               author: true,
               topicViews: {
                 where: { userId: userId || "" }
-              }
+              },
+              tournament: true
             }
           }
         }
@@ -76,7 +77,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
       },
       topicViews: {
         where: { userId: userId || "" }
-      }
+      },
+      tournament: true
     }
   });
 
@@ -148,7 +150,14 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                   <div className="forum-last-post">
                     {lastTopic ? (
                       <>
-                        <span className="last-post-title" style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)' }}>{lastTopic.title}</span>
+                        <span className="last-post-title" style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
+                          {lastTopic.title}
+                          {lastTopic.tournament && (
+                            <span className={`status-badge-inline ${lastTopic.tournament.isCancelled ? 'cancelled' : lastTopic.tournament.isFinished ? 'finished' : (new Date(lastTopic.tournament.date) < new Date() ? 'past' : '')}`}>
+                              {lastTopic.tournament.isCancelled ? 'Annulé' : lastTopic.tournament.isFinished ? 'Terminé' : (new Date(lastTopic.tournament.date) < new Date() ? 'Passé' : '')}
+                            </span>
+                          )}
+                        </span>
                         <span className="last-post-meta">
                           Par <strong>{lastTopic.author.name}</strong>
                           <br />
@@ -199,6 +208,19 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                     <FileText size={16} style={{ color: topicHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
                   )}
                   <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+                  
+                  {topic.tournament && (
+                    <>
+                      {topic.tournament.isCancelled ? (
+                        <span className="status-badge-inline cancelled">Annulé</span>
+                      ) : topic.tournament.isFinished ? (
+                        <span className="status-badge-inline finished">Terminé</span>
+                      ) : new Date(topic.tournament.date) < new Date() ? (
+                        <span className="status-badge-inline past">Passé</span>
+                      ) : null}
+                    </>
+                  )}
+
                   {topic.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
                   {topicHasNew && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
                 </h3>

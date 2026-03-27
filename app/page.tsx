@@ -138,7 +138,16 @@ export default async function Home() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
                   <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                 </div>
-                <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, color: 'var(--text-secondary)' }}>{t.description}</p>
+                <p style={{ 
+                  fontSize: '0.85rem', 
+                  display: '-webkit-box', 
+                  WebkitLineClamp: 2, 
+                  lineClamp: 2,
+                  WebkitBoxOrient: 'vertical', 
+                  overflow: 'hidden', 
+                  margin: 0, 
+                  color: 'var(--text-secondary)' 
+                }}>{t.description}</p>
               </PremiumCard>
             ))
           ) : (

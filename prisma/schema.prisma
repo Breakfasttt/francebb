@@ -123,6 +123,8 @@ model Tournament {
   isCGO               Boolean  @default(false)
   isTGE               Boolean  @default(false)
   isTSC               Boolean  @default(false)
+  isFinished          Boolean  @default(false)
+  isCancelled         Boolean  @default(false)
 
   organizerId         String
   organizer           User     @relation(fields: [organizerId], references: [id])

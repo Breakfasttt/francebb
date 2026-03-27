@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
+import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
   "01": "Ain", "02": "Aisne", "03": "Allier", "04": "Alpes-de-Haute-Provence", "05": "Hautes-Alpes", "06": "Alpes-Maritimes", "07": "Ardeche", "08": "Ardennes", "09": "Ariege", "10": "Aube", "11": "Aude", "12": "Aveyron", "13": "Bouches-du-Rhone", "14": "Calvados", "15": "Cantal", "16": "Charente", "17": "Charente-Maritime", "18": "Cher", "19": "Correze", "2A": "Corse-du-Sud", "2B": "Haute-Corse", "21": "Cote-d'Or", "22": "Cotes-d'Armor", "23": "Creuse", "24": "Dordogne", "25": "Doubs", "26": "Drome", "27": "Eure", "28": "Eure-et-Loir", "29": "Finistere", "30": "Gard", "31": "Haute-Garonne", "32": "Gers", "33": "Gironde", "34": "Herault", "35": "Ille-et-Vilaine", "36": "Indre", "37": "Indre-et-Loire", "38": "Isere", "39": "Jura", "40": "Landes", "41": "Loir-et-Cher", "42": "Loire", "43": "Haute-Loire", "44": "Loire-Atlantique", "45": "Loiret", "46": "Lot", "47": "Lot-et-Garonne", "48": "Lozere", "49": "Maine-et-Loire", "50": "Manche", "51": "Marne", "52": "Haute-Marne", "53": "Mayenne", "54": "Meurthe-et-Moselle", "55": "Meuse", "56": "Morbihan", "57": "Moselle", "58": "Nievre", "59": "Nord", "60": "Oise", "61": "Orne", "62": "Pas-de-Calais", "63": "Puy-de-Dome", "64": "Pyrenees-Atlantiques", "65": "Hautes-Pyrenees", "66": "Pyrenees-Orientales", "67": "Bas-Rhin", "68": "Haut-Rhin", "69": "Rhone", "70": "Haute-Saone", "71": "Saone-et-Loire", "72": "Sarthe", "73": "Savoie", "74": "Haute-Savoie", "75": "Paris", "76": "Seine-Maritime", "77": "Seine-et-Marne", "78": "Yvelines", "79": "Deux-Sevres", "80": "Somme", "81": "Tarn", "82": "Tarn-et-Garonne", "83": "Var", "84": "Vaucluse", "85": "Vendee", "86": "Vienne", "87": "Haute-Vienne", "88": "Vosges", "89": "Yonne", "90": "Territoire de Belfort", "91": "Essonne", "92": "Hauts-de-Seine", "93": "Seine-Saint-Denis", "94": "Val-de-Marne", "95": "Val-d'Oise"
@@ -129,12 +130,19 @@ export default function TournamentFilterSidebar() {
       filters: [
         { name: "maxPrice", label: "Prix max (€)", type: "number" },
       ]
+    },
+    {
+      title: "Visibilité",
+      icon: <Clock size={18} />,
+      filters: [
+        { name: "history", label: "Voir les tournois passés / annulés", type: "checkbox" },
+      ]
     }
   ];
 
   return (
     <div className="filter-sidebar">
-      <button className="reset-btn" onClick={() => router.push("/tournaments")}>Réinitialiser tous les filtres</button>
+      <button className="reset-btn" onClick={() => router.push("/tournaments")}>Réinitialiser filtres</button>
 
       <div className="search-box">
         <Search size={18} className="search-icon" />
@@ -193,126 +201,6 @@ export default function TournamentFilterSidebar() {
           </div>
         </div>
       ))}
-
-      {/* Reset button removed from here */}
-
-      <style jsx>{`
-        .filter-sidebar {
-          background: var(--card-bg);
-          backdrop-filter: blur(10px);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          padding: 1.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          height: fit-content;
-        }
-
-        .search-box {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .search-icon {
-          position: absolute;
-          left: 1rem;
-          color: var(--text-muted);
-        }
-
-        .search-box input {
-          width: 100%;
-          padding: 0.8rem 1rem 0.8rem 2.8rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          color: var(--foreground);
-          outline: none;
-        }
-
-        .filter-section {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-
-        .section-header {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          color: var(--accent);
-          font-weight: 700;
-          text-transform: uppercase;
-          font-size: 0.85rem;
-          letter-spacing: 1px;
-        }
-
-        .section-content {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-        }
-
-        .filter-item {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
-        }
-
-        .filter-item label {
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-        }
-
-        .filter-item select, .filter-item input[type="number"] {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 6px;
-          padding: 0.5rem;
-          color: var(--foreground);
-          outline: none;
-        }
-
-        .checkbox-label {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          cursor: pointer;
-          color: var(--foreground);
-        }
-
-        .checkbox-label input {
-          width: 18px;
-          height: 18px;
-          accent-color: var(--primary);
-        }
-
-        .reset-btn {
-          margin-bottom: 0.5rem;
-          padding: 0.8rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--text-secondary);
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          font-size: 0.85rem;
-          font-weight: 600;
-        }
-
-        .reset-btn:hover {
-          background: rgba(255,50,50,0.1);
-          border-color: rgba(255,50,50,0.2);
-          color: #ff5555;
-        }
-
-        .filter-item input[type="number"]:focus {
-          border-color: var(--primary);
-          background: var(--glass-bg);
-          filter: brightness(1.2);
-        }
-      `}</style>
     </div>
   );
 }

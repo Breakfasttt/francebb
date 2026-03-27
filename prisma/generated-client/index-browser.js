@@ -197,6 +197,8 @@ exports.Prisma.TournamentScalarFieldEnum = {
   isCGO: 'isCGO',
   isTGE: 'isTGE',
   isTSC: 'isTSC',
+  isFinished: 'isFinished',
+  isCancelled: 'isCancelled',
   organizerId: 'organizerId'
 };
 

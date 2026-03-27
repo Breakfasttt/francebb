@@ -32,6 +32,8 @@ interface TournamentSummaryProps {
     isCGO: boolean;
     isTGE: boolean;
     isTSC: boolean;
+    isFinished: boolean;
+    isCancelled: boolean;
   };
 }
 
@@ -67,6 +69,15 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
         <div className="header-text" style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'space-between', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                {tournament.isCancelled ? (
+                    <span style={{ background: '#c21d1d', color: 'white', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '4px', fontWeight: 900, letterSpacing: '1px', boxShadow: '0 0 15px rgba(194, 29, 29, 0.4)' }}>
+                        ANNULÉ
+                    </span>
+                ) : tournament.isFinished ? (
+                    <span style={{ background: '#444', color: '#ccc', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '4px', fontWeight: 900, letterSpacing: '1px', border: '1px solid #555' }}>
+                        TERMINÉ
+                    </span>
+                ) : null}
                 <h2 style={{ margin: 0 }}>Détails du Tournoi</h2>
             </div>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>

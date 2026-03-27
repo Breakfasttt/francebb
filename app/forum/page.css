@@ -564,3 +564,54 @@
   background: transparent;
   color: var(--text-secondary);
 }
+
+/* Tournaments Status Badges for Lists */
+.status-badge-inline {
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 0.1rem 0.6rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  line-height: 1;
+  vertical-align: middle;
+  height: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.status-badge-inline.cancelled {
+  background: #c21d1d;
+  color: white;
+  animation: heartbeat 2s infinite ease-in-out;
+  box-shadow: 0 0 10px rgba(194, 29, 29, 0.4);
+}
+
+.status-badge-inline.finished {
+  background: #444;
+  color: #ccc;
+  border: 1px solid #555;
+}
+
+.status-badge-inline.past {
+  background: rgba(255, 255, 255, 0.05);
+  color: #888;
+  border: 1px solid var(--glass-border);
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.1); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  70% { transform: scale(1); }
+}
+
+.forum-info h3 {
+  flex-wrap: wrap; /* Allows badges to wrap on small screens */
+  align-items: center;
+}

@@ -281,6 +281,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           isTournament={!!topic.tournament}
           tournamentId={topic.tournament?.id}
           canEditTournament={canEditTournament}
+          isFinished={topic.tournament?.isFinished || false}
+          isCancelled={topic.tournament?.isCancelled || false}
         />
       </div>
     </main>

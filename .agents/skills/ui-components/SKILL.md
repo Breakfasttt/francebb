@@ -96,3 +96,7 @@ Toutes les couleurs et effets doivent utiliser les variables CSS définies dans 
   - `--glass-border` : Bordure translucide adaptative.
   - `--card-bg` : Fond des cartes.
   - `--foreground` / `--text-muted` : Couleurs de texte.
+
+  ##  Confirmation utilisateur
+
+  Quand il y a besoin d'avoir une confirmation de l'utilisateur, il faut utiliser le composant `ConfirmModal`. ou 'Modal' . N'utilise jamais les alertes natives de javascript.

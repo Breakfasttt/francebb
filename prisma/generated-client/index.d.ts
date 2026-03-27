@@ -8319,6 +8319,8 @@ export namespace Prisma {
     isCGO: boolean | null
     isTGE: boolean | null
     isTSC: boolean | null
+    isFinished: boolean | null
+    isCancelled: boolean | null
     organizerId: string | null
   }
 
@@ -8357,6 +8359,8 @@ export namespace Prisma {
     isCGO: boolean | null
     isTGE: boolean | null
     isTSC: boolean | null
+    isFinished: boolean | null
+    isCancelled: boolean | null
     organizerId: string | null
   }
 
@@ -8395,6 +8399,8 @@ export namespace Prisma {
     isCGO: number
     isTGE: number
     isTSC: number
+    isFinished: number
+    isCancelled: number
     organizerId: number
     _all: number
   }
@@ -8457,6 +8463,8 @@ export namespace Prisma {
     isCGO?: true
     isTGE?: true
     isTSC?: true
+    isFinished?: true
+    isCancelled?: true
     organizerId?: true
   }
 
@@ -8495,6 +8503,8 @@ export namespace Prisma {
     isCGO?: true
     isTGE?: true
     isTSC?: true
+    isFinished?: true
+    isCancelled?: true
     organizerId?: true
   }
 
@@ -8533,6 +8543,8 @@ export namespace Prisma {
     isCGO?: true
     isTGE?: true
     isTSC?: true
+    isFinished?: true
+    isCancelled?: true
     organizerId?: true
     _all?: true
   }
@@ -8658,6 +8670,8 @@ export namespace Prisma {
     isCGO: boolean
     isTGE: boolean
     isTSC: boolean
+    isFinished: boolean
+    isCancelled: boolean
     organizerId: string
     _count: TournamentCountAggregateOutputType | null
     _avg: TournamentAvgAggregateOutputType | null
@@ -8715,6 +8729,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
@@ -8760,6 +8776,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -8799,6 +8817,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -8838,10 +8858,12 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "organizerId", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
@@ -8903,6 +8925,8 @@ export namespace Prisma {
       isCGO: boolean
       isTGE: boolean
       isTSC: boolean
+      isFinished: boolean
+      isCancelled: boolean
       organizerId: string
     }, ExtArgs["result"]["tournament"]>
     composites: {}
@@ -9367,6 +9391,8 @@ export namespace Prisma {
     readonly isCGO: FieldRef<"Tournament", 'Boolean'>
     readonly isTGE: FieldRef<"Tournament", 'Boolean'>
     readonly isTSC: FieldRef<"Tournament", 'Boolean'>
+    readonly isFinished: FieldRef<"Tournament", 'Boolean'>
+    readonly isCancelled: FieldRef<"Tournament", 'Boolean'>
     readonly organizerId: FieldRef<"Tournament", 'String'>
   }
     
@@ -28782,6 +28808,8 @@ export namespace Prisma {
     isCGO: 'isCGO',
     isTGE: 'isTGE',
     isTSC: 'isTSC',
+    isFinished: 'isFinished',
+    isCancelled: 'isCancelled',
     organizerId: 'organizerId'
   };
 
@@ -29445,6 +29473,8 @@ export namespace Prisma {
     isCGO?: BoolFilter<"Tournament"> | boolean
     isTGE?: BoolFilter<"Tournament"> | boolean
     isTSC?: BoolFilter<"Tournament"> | boolean
+    isFinished?: BoolFilter<"Tournament"> | boolean
+    isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
@@ -29489,6 +29519,8 @@ export namespace Prisma {
     isCGO?: SortOrder
     isTGE?: SortOrder
     isTSC?: SortOrder
+    isFinished?: SortOrder
+    isCancelled?: SortOrder
     organizerId?: SortOrder
     organizer?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
@@ -29536,6 +29568,8 @@ export namespace Prisma {
     isCGO?: BoolFilter<"Tournament"> | boolean
     isTGE?: BoolFilter<"Tournament"> | boolean
     isTSC?: BoolFilter<"Tournament"> | boolean
+    isFinished?: BoolFilter<"Tournament"> | boolean
+    isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
@@ -29580,6 +29614,8 @@ export namespace Prisma {
     isCGO?: SortOrder
     isTGE?: SortOrder
     isTSC?: SortOrder
+    isFinished?: SortOrder
+    isCancelled?: SortOrder
     organizerId?: SortOrder
     _count?: TournamentCountOrderByAggregateInput
     _avg?: TournamentAvgOrderByAggregateInput
@@ -29626,6 +29662,8 @@ export namespace Prisma {
     isCGO?: BoolWithAggregatesFilter<"Tournament"> | boolean
     isTGE?: BoolWithAggregatesFilter<"Tournament"> | boolean
     isTSC?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isFinished?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    isCancelled?: BoolWithAggregatesFilter<"Tournament"> | boolean
     organizerId?: StringWithAggregatesFilter<"Tournament"> | string
   }
 
@@ -31156,6 +31194,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -31199,6 +31239,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
@@ -31242,6 +31284,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -31285,6 +31329,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -31328,6 +31374,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
   }
 
@@ -31366,6 +31414,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TournamentUncheckedUpdateManyInput = {
@@ -31403,6 +31453,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -33028,6 +33080,8 @@ export namespace Prisma {
     isCGO?: SortOrder
     isTGE?: SortOrder
     isTSC?: SortOrder
+    isFinished?: SortOrder
+    isCancelled?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -33077,6 +33131,8 @@ export namespace Prisma {
     isCGO?: SortOrder
     isTGE?: SortOrder
     isTSC?: SortOrder
+    isFinished?: SortOrder
+    isCancelled?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -33115,6 +33171,8 @@ export namespace Prisma {
     isCGO?: SortOrder
     isTGE?: SortOrder
     isTSC?: SortOrder
+    isFinished?: SortOrder
+    isCancelled?: SortOrder
     organizerId?: SortOrder
   }
 
@@ -36434,6 +36492,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -36476,6 +36536,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -36859,6 +36921,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -36901,6 +36965,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -37125,6 +37191,8 @@ export namespace Prisma {
     isCGO?: BoolFilter<"Tournament"> | boolean
     isTGE?: BoolFilter<"Tournament"> | boolean
     isTSC?: BoolFilter<"Tournament"> | boolean
+    isFinished?: BoolFilter<"Tournament"> | boolean
+    isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
   }
 
@@ -38538,6 +38606,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -38580,6 +38650,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -38804,6 +38876,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -38846,6 +38920,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -41104,6 +41180,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -41146,6 +41224,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
@@ -41279,6 +41359,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -41321,6 +41403,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -41444,6 +41528,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -41486,6 +41572,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
@@ -41638,6 +41726,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -41680,6 +41770,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -42035,6 +42127,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -42077,6 +42171,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
     organizerId: string
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
@@ -42210,6 +42306,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -42252,6 +42350,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -42395,6 +42495,8 @@ export namespace Prisma {
     isCGO?: boolean
     isTGE?: boolean
     isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
   }
 
   export type TopicCreateManyAuthorInput = {
@@ -42618,6 +42720,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -42660,6 +42764,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -42702,6 +42808,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TopicUpdateWithoutAuthorInput = {
@@ -43045,6 +43153,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -43087,6 +43197,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -43129,6 +43241,8 @@ export namespace Prisma {
     isCGO?: BoolFieldUpdateOperationsInput | boolean
     isTGE?: BoolFieldUpdateOperationsInput | boolean
     isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
