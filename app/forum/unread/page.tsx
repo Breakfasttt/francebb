@@ -1,5 +1,7 @@
-import { ArrowLeft, Clock, MessageSquare, Trophy } from "lucide-react";
+import { MessageSquare, Clock, CheckCircle2, Inbox, Trophy } from "lucide-react";
 import Link from "next/link";
+import Pagination from "@/common/components/Pagination/Pagination";
+import toast from "react-hot-toast";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { parseInlineBBCode } from "@/lib/bbcode";

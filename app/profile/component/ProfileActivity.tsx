@@ -5,6 +5,8 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ArrowRight, Clock, FileText, MessageSquare } from "lucide-react";
 import Link from "next/link";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import EmptyState from "@/common/components/EmptyState/EmptyState";
 
 interface ProfileActivityProps {
   activities: any[];
@@ -13,7 +15,7 @@ interface ProfileActivityProps {
 
 export default function ProfileActivity({ activities, userName }: ProfileActivityProps) {
   return (
-    <div className="premium-card profile-activity-card-global fade-in">
+    <PremiumCard className="profile-activity-card-global fade-in">
       <div className="activity-box-header">
         <MessageSquare size={20} className="header-icon" />
         <h3 className="activity-box-title">Activité récente du forum</h3>
@@ -21,15 +23,18 @@ export default function ProfileActivity({ activities, userName }: ProfileActivit
 
       <div className="profile-activity-list">
         {activities.length === 0 ? (
-          <div className="no-activity-container">
-            <FileText size={32} />
-            <p>Aucune activité récente trouvée pour <strong>{userName}</strong>.</p>
-          </div>
+          <EmptyState 
+            variant="ghost"
+            icon={<FileText size={32} />}
+            title="Aucune activité"
+            description={`Aucune activité récente trouvée pour ${userName}.`}
+          />
         ) : activities.map((post) => (
-          <Link
+          <PremiumCard
+            as={Link}
             key={post.id}
             href={`/forum/topic/${post.topicId}#post-${post.id}`}
-            className="premium-card activity-item"
+            className="activity-item"
           >
             <div className="activity-header">
               <div className="activity-icon-container">
@@ -52,9 +57,9 @@ export default function ProfileActivity({ activities, userName }: ProfileActivit
             <div className="view-more">
               <span>Voir le sujet <ArrowRight size={14} /></span>
             </div>
-          </Link>
+          </PremiumCard>
         ))}
       </div>
-    </div>
+    </PremiumCard>
   );
 }

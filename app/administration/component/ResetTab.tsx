@@ -5,6 +5,7 @@ import { OctagonAlert, Trash2, TriangleAlert } from "lucide-react";
 import { resetDatabase } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
 import toast from "react-hot-toast";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export default function ResetTab() {
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +35,7 @@ export default function ResetTab() {
   };
 
   return (
-    <div className="premium-card fade-in" style={{ padding: '2rem', border: '1px solid rgba(239,68,68,0.3)' }}>
+    <PremiumCard className="fade-in" style={{ padding: '2rem', border: '1px solid rgba(239,68,68,0.3)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', color: '#ef4444' }}>
         <OctagonAlert size={32} />
         <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Zone de Danger Absolu</h3>
@@ -247,6 +248,6 @@ export default function ResetTab() {
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

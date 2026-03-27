@@ -48,22 +48,33 @@ export async function resetDatabase(phrase: string) {
   }
 }
 
-export async function searchCoaches(query: string = "") {
+export async function searchCoaches(query: string = "", page: number = 1, pageSize: number = 20) {
   const session = await auth();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
-    return [];
+    return { users: [], totalPages: 0 };
   }
 
-  const users = await prisma.user.findMany({
-    where: {
-      name: { contains: query }
-    },
-    take: 50,
-    orderBy: { name: "asc" }
-  });
+  const skip = (page - 1) * pageSize;
 
-  return users;
+  const [users, totalCount] = await Promise.all([
+    prisma.user.findMany({
+      where: {
+        name: { contains: query }
+      },
+      take: pageSize,
+      skip,
+      orderBy: { name: "asc" }
+    }),
+    prisma.user.count({ 
+      where: { name: { contains: query } } 
+    })
+  ]);
+
+  return { 
+    users, 
+    totalPages: Math.ceil(totalCount / pageSize) 
+  };
 }
 
 export async function updateCoachRole(targetUserId: string, newRole: string) {

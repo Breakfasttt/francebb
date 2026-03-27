@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Mail, Ban, Trash2, CheckCircle2 } from "lucide-react";
 import toast from "react-hot-toast";
 import Modal from "@/common/components/Modal/Modal";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface Props {
   users: any[];
@@ -133,7 +134,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
   });
 
   return (
-    <div className="premium-card" style={{ padding: '1.5rem', overflowX: 'auto' }}>
+    <PremiumCard className="members-table-card fade-in">
       <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
         <input 
           type="text" 
@@ -420,6 +421,6 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
         .role-orga { background: #10b981; color: white; }
         .role-coach { background: #4b5563; color: white; }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

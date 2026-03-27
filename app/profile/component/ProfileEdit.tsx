@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useTheme } from "next-themes";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -152,7 +153,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
   };
 
   return (
-    <div className="premium-card profile-edit-container fade-in">
+    <PremiumCard className="profile-edit-container fade-in">
       <h3 className="section-title">Éditer mon profil</h3>
 
       <form onSubmit={handleSubmit} className="profile-edit-form">
@@ -721,6 +722,6 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           font-size: 0.85rem;
         }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

@@ -3,6 +3,7 @@
 */
 import Link from "next/link";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { BookOpen, Map, HelpCircle, Layout, ExternalLink } from "lucide-react";
 import "./page.css";
 
@@ -42,7 +43,7 @@ export default function RessourcesPage() {
 
       <section className="tools-grid">
         {tools.map((tool) => (
-          <div key={tool.id} className={`tool-card premium-card ${tool.disabled ? 'disabled' : 'hover-effect'}`}>
+          <PremiumCard key={tool.id} className={`tool-card ${tool.disabled ? 'disabled' : 'hover-effect'}`}>
             {tool.badge && <span className="tool-badge">{tool.badge}</span>}
             <div className="tool-icon">{tool.icon}</div>
             <div className="tool-content">
@@ -56,11 +57,11 @@ export default function RessourcesPage() {
                 </Link>
               )}
             </div>
-          </div>
+          </PremiumCard>
         ))}
       </section>
 
-      <section className="help-section premium-card">
+      <PremiumCard className="help-section">
         <div className="help-content">
           <HelpCircle size={40} className="help-icon" />
           <div>
@@ -69,7 +70,7 @@ export default function RessourcesPage() {
           </div>
         </div>
         <a href="#" className="btn-primary">Rejoindre le Discord</a>
-      </section>
+      </PremiumCard>
     </main>
   );
 }

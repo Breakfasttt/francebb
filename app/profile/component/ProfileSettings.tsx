@@ -1,5 +1,6 @@
 import { useTransition, useState } from "react";
 import { ShieldAlert, Trash2, Mail, LogOut, KeyRound } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { deleteAccount } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
 import toast from "react-hot-toast";
@@ -28,7 +29,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
   };
 
   return (
-    <div className="premium-card profile-settings-view fade-in">
+    <PremiumCard className="profile-settings-view fade-in">
       <div className="section-header-pm" style={{ marginBottom: '2rem' }}>
         <ShieldAlert size={20} className="header-icon" />
         <h3 className="activity-box-title">Gestion du compte & Sécurité</h3>
@@ -237,6 +238,6 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           cursor: not-allowed;
         }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

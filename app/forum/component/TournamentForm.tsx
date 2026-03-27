@@ -9,6 +9,7 @@ import {
   Shield, Utensils, BedDouble, Sun, Map, Save, Globe
 } from "lucide-react";
 import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 
 interface TournamentFormProps {
@@ -135,7 +136,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       
       <div className="forum-layout">
         <div className="forum-main-content">
-          <div className="premium-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <PremiumCard style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             
             <div className="form-group">
               <label htmlFor="title" style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
@@ -404,7 +405,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 rows={18}
               />
             </div>
-          </div>
+          </PremiumCard>
         </div>
 
         <CreateTopicSidebar 

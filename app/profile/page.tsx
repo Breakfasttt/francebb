@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ArrowLeft, Trophy, Bookmark, Clock, ArrowRight } from "lucide-react";
@@ -140,7 +141,7 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "followed" && (
-            <div className="premium-card followed-topics-full-view fade-in">
+            <PremiumCard className="followed-topics-full-view fade-in">
               <div className="section-header-pm">
                 <Bookmark size={20} className="header-icon" />
                 <h3 className="activity-box-title">Mes Sujets suivis</h3>
@@ -155,10 +156,11 @@ export default function ProfilePage() {
                   <>
                     <div className="profile-activity-list">
                       {followedTopics.map((t) => (
-                        <Link
+                        <PremiumCard
+                          as={Link}
                           key={t.id}
                           href={`/forum/topic/${t.id}`}
-                          className={`premium-card activity-item ${t.isUnread ? 'is-unread' : ''}`}
+                          className={`activity-item ${t.isUnread ? 'is-unread' : ''}`}
                         >
                           <div className="activity-header">
                             <div className="activity-icon-container">
@@ -179,7 +181,7 @@ export default function ProfilePage() {
                           <div className="view-more">
                             <span>Voir le sujet <ArrowRight size={14} /></span>
                           </div>
-                        </Link>
+                        </PremiumCard>
                       ))}
                     </div>
 
@@ -207,7 +209,7 @@ export default function ProfilePage() {
                   </>
                 )}
               </div>
-            </div>
+            </PremiumCard>
           )}
 
           {activeTab === "edit" && (
@@ -215,11 +217,11 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "palmares" && (
-            <div className="premium-card empty-state fade-in">
+            <PremiumCard className="empty-state fade-in">
               <Trophy size={48} />
               <h3>Palmarès NAF</h3>
               <p>Cette fonctionnalité sera prochainement synchronisée avec votre profil NAF.</p>
-            </div>
+            </PremiumCard>
           )}
 
           {activeTab === "pm" && (

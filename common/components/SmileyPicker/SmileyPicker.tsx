@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Smile } from "lucide-react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface SmileyPickerProps {
   onSelect: (code: string) => void;
@@ -37,8 +38,8 @@ export default function SmileyPicker({ onSelect }: SmileyPickerProps) {
       </button>
 
       {isOpen && (
-        <div
-          className="smiley-dropdown premium-card"
+        <PremiumCard
+          className="smiley-dropdown"
           style={{
             position: "absolute",
             top: "100%",
@@ -62,7 +63,7 @@ export default function SmileyPicker({ onSelect }: SmileyPickerProps) {
             onSelect(code);
             setIsOpen(false);
           }} />
-        </div>
+        </PremiumCard>
       )}
     </div>
   );

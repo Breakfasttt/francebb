@@ -1,6 +1,7 @@
 "use client";
 
 import { X, AlertTriangle, Loader2 } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
       zIndex: 1000,
       padding: '2rem'
     }}>
-      <div className="premium-card" style={{ maxWidth: '400px', width: '100%', padding: '2rem', position: 'relative', textAlign: 'center' }}>
+      <PremiumCard style={{ maxWidth: '400px', width: '100%', padding: '2rem', position: 'relative', textAlign: 'center' }}>
         <div style={{ 
           width: '60px', 
           height: '60px', 
@@ -68,7 +69,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
             {confirmLabel}
           </button>
         </div>
-      </div>
+      </PremiumCard>
     </div>
   );
 }

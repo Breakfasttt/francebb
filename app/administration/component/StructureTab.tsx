@@ -18,6 +18,7 @@ import {
   getForumStructure, reorderCategories, reorderForums,
   updateCategory, updateForum
 } from "../actionsStructure";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import {
   closestCenter, DndContext, DragEndEvent, DragOverlay,
@@ -422,7 +423,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
   };
 
   return (
-    <div className="premium-card fade-in" style={{ padding: '2rem', display: 'flex', gap: '2rem', position: 'relative' }}>
+    <PremiumCard className="fade-in" style={{ padding: '2rem', display: 'flex', gap: '2rem', position: 'relative' }}>
 
       <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}
         title={`Supprimer ${editingType === 'Category' ? 'la catégorie' : 'le forum'} "${editingItem?.name}" ?`}
@@ -772,6 +773,6 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         .full-width { width: 100%; }
         .panel-footer { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

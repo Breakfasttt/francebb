@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
 import { Save, Loader2, Globe, Link as LinkIcon } from "lucide-react";
 import { toast } from "react-hot-toast";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export default function GeneralTab() {
   const [discordInvite, setDiscordInvite] = useState("");
@@ -44,7 +45,7 @@ export default function GeneralTab() {
   }
 
   return (
-    <div className="premium-card" style={{ padding: "2.5rem" }}>
+    <PremiumCard style={{ padding: "2.5rem" }}>
       <header style={{ marginBottom: "2.5rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "1.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <div style={{ background: "var(--primary-transparent)", color: "var(--primary)", padding: "0.8rem", borderRadius: "12px" }}>
@@ -198,6 +199,6 @@ export default function GeneralTab() {
           filter: grayscale(0.5);
         }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

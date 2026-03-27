@@ -7,6 +7,8 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import EmptyState from "@/common/components/EmptyState/EmptyState";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import { getUserActivity, getUserStats, startConversation } from "@/app/profile/actions";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
@@ -122,11 +124,11 @@ export default function SpyProfilePage() {
           )}
 
           {activeTab === "palmares" && (
-            <div className="premium-card empty-state fade-in">
-              <Trophy size={48} />
-              <h3>Palmarès NAF</h3>
-              <p>Ce coach n'a pas encore de palmarès enregistré.</p>
-            </div>
+            <EmptyState 
+              icon={<Trophy size={48} />}
+              title="Palmarès NAF"
+              description="Ce coach n'a pas encore de palmarès enregistré."
+            />
           )}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import SidebarPagination from "@/app/forum/component/SidebarPagination";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 interface UnreadSidebarProps {
   currentPage: number;
@@ -11,9 +11,11 @@ export default function UnreadSidebar({ currentPage, totalPages }: UnreadSidebar
       <div className="sidebar-sticky-inner">
         <div className="sidebar-widget-container">
           {totalPages > 1 && (
-            <SidebarPagination 
+            <Pagination 
               currentPage={currentPage}
               totalPages={totalPages}
+              variant="sidebar"
+              baseUrl="/forum/unread"
             />
           )}
         </div>

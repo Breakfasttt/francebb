@@ -4,6 +4,7 @@ import { useState } from "react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
 import { MessageSquare, Loader2 } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export default function QuickReply({ topicId, onReplySuccess }: { topicId: string; onReplySuccess?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,7 +27,7 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
 
   return (
     <div id="quick-reply-area" className="quick-reply" style={{ marginTop: '3rem' }}>
-      <div className="premium-card" style={{ padding: '2rem' }}>
+      <PremiumCard style={{ padding: '2rem' }}>
         <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.7rem' }}>
           <MessageSquare size={20} className="text-secondary" />
           Réponse
@@ -63,7 +64,7 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
             Envoyer ma réponse
           </button>
         </div>
-      </div>
+      </PremiumCard>
     </div>
   );
 }

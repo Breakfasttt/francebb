@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, User, Pencil } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
@@ -94,7 +95,7 @@ export default async function EditPostPage({
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {latestPosts.map((latest) => (
-                <div key={latest.id} className={`premium-card ${latest.id === id ? 'is-editing' : ''}`} style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr', opacity: latest.id === id ? 0.5 : 1, border: latest.id === id ? '1px dashed var(--primary)' : '1px solid var(--glass-border)' }}>
+                <PremiumCard key={latest.id} className={latest.id === id ? 'is-editing' : ''} style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr', opacity: latest.id === id ? 0.5 : 1, border: latest.id === id ? '1px dashed var(--primary)' : '1px solid var(--glass-border)' }}>
                   <div style={{ borderRight: '1px solid var(--glass-border)', paddingRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                     {latest.author.image ? (
                       <img src={latest.author.image} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
@@ -112,7 +113,7 @@ export default async function EditPostPage({
                     style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--text-muted)', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
                     dangerouslySetInnerHTML={{ __html: parseBBCode(latest.content, quoteStatusMap) }}
                   />
-                </div>
+                </PremiumCard>
               ))}
             </div>
           </div>

@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { Search, Plus, MessageSquare, AlertCircle, Inbox, ChevronLeft, ChevronRight, Bell } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import EmptyState from "@/common/components/EmptyState/EmptyState";
+import Pagination from "@/common/components/Pagination/Pagination";
 import { getConversations, startConversation, searchUsersForPm } from "@/app/profile/actions";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -102,7 +105,7 @@ export default function ConversationList({ onSelectConversation, initialRecipien
         </div>
         
         {searchResults.length > 0 && (
-          <div className="search-results premium-card">
+          <PremiumCard className="search-results">
             {searchResults.map(user => (
               <div key={user.id} className="search-result-item">
                 <div className="user-info">
@@ -127,7 +130,7 @@ export default function ConversationList({ onSelectConversation, initialRecipien
                 </button>
               </div>
             ))}
-          </div>
+          </PremiumCard>
         )}
       </div>
 
@@ -137,11 +140,11 @@ export default function ConversationList({ onSelectConversation, initialRecipien
         {loading ? (
           <div className="loading-state">Chargement...</div>
         ) : conversations.length === 0 ? (
-          <div className="empty-state premium-card">
-            <MessageSquare size={48} />
-            <p>Aucune conversation en cours.</p>
-            <p className="sub-text">Recherchez un profil ci-dessus pour commencer à discuter.</p>
-          </div>
+          <EmptyState 
+            icon={<MessageSquare size={48} />}
+            title="Aucune conversation"
+            description="Recherchez un profil ci-dessus pour commencer à discuter."
+          />
         ) : (
           <div className="conversation-grid">
             {conversations.map(conv => {
@@ -149,9 +152,9 @@ export default function ConversationList({ onSelectConversation, initialRecipien
               const unreadCount = conv._count.messages;
 
               return (
-                <div 
+                <PremiumCard 
                   key={conv.id} 
-                  className={`conversation-card premium-card ${unreadCount > 0 ? 'has-unread' : ''}`}
+                  className={`conversation-card ${unreadCount > 0 ? 'has-unread' : ''}`}
                   onClick={() => onSelectConversation(conv.id)}
                 >
                   <div className="conv-user-img">
@@ -173,22 +176,18 @@ export default function ConversationList({ onSelectConversation, initialRecipien
                   </div>
                   
                   <ChevronRight size={18} className="arrow-icon" />
-                </div>
+                </PremiumCard>
               );
             })}
           </div>
         )}
 
         {totalPages > 1 && (
-          <div className="pagination">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
-              <ChevronLeft size={16} /> Précédent
-            </button>
-            <span>Page {page} sur {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
-              Suivant <ChevronRight size={16} />
-            </button>
-          </div>
+          <Pagination 
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p)}
+          />
         )}
       </div>
 

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus } from "lucide-react";
 import { auth } from "@/auth";
@@ -128,7 +129,7 @@ export default async function Home() {
         <div className="grid">
           {nextTournaments.length > 0 ? (
             nextTournaments.map((t: any) => (
-              <div key={t.id} className="premium-card hover-effect" style={{ padding: '1rem' }}>
+              <PremiumCard key={t.id} hoverEffect style={{ padding: '1rem' }}>
                 <div className="tournament-badge" style={{ display: 'inline-block', fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>À VENIR</div>
                 <h3 style={{ marginTop: '0.5rem', fontSize: '1.1rem' }}>{t.name}</h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
@@ -138,7 +139,7 @@ export default async function Home() {
                   <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                 </div>
                 <p style={{ fontSize: '0.85rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', margin: 0, color: 'var(--text-secondary)' }}>{t.description}</p>
-              </div>
+              </PremiumCard>
             ))
           ) : (
             <p style={{ color: 'var(--text-muted)' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>

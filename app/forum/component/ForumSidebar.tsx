@@ -15,7 +15,7 @@ import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
 import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
-import SidebarPagination from "@/app/forum/component/SidebarPagination";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 const POSTS_PER_PAGE = 20;
 
@@ -57,9 +57,11 @@ export default async function ForumSidebar({
         <div className="sidebar-widget-container">
           {/* 1. Pages Block (Forum / Search) */}
           {(totalPages && totalPages > 1) && (
-            <SidebarPagination 
+            <Pagination 
               currentPage={currentPage || 1}
               totalPages={totalPages}
+              variant="sidebar"
+              baseUrl={forumId ? `/forum/${forumId}` : undefined}
             />
           )}
 

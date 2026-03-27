@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, User } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
@@ -100,7 +101,7 @@ export default async function ReplyPage({
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {latestPosts.map((post) => (
-                <div key={post.id} className="premium-card" style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr' }}>
+                <PremiumCard key={post.id} style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '150px 1fr' }}>
                   <div style={{ borderRight: '1px solid rgba(255,255,255,0.05)', paddingRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                     {post.author.image ? (
                       <img src={post.author.image} alt="" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
@@ -115,7 +116,7 @@ export default async function ReplyPage({
                     style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--text-secondary)', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
                     dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap) }}
                   />
-                </div>
+                </PremiumCard>
               ))}
             </div>
           </div>

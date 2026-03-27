@@ -1,10 +1,11 @@
 "use client";
 
 import { DatabaseBackup, Download } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export default function BackupTab() {
   return (
-    <div className="premium-card fade-in" style={{ padding: '2rem' }}>
+    <PremiumCard className="fade-in" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <DatabaseBackup size={32} color="#22c55e" />
         <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Sauvegarde de la Base de Données</h3>
@@ -43,6 +44,6 @@ export default function BackupTab() {
         <Download size={20} />
         TÉLÉCHARGER L'ARCHIVE (dev.db)
       </a>
-    </div>
+    </PremiumCard>
   );
 }

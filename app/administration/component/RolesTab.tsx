@@ -6,6 +6,7 @@ import { getAllRoles, createCustomRole, deleteCustomRole, reorderRoles } from ".
 import { getRolePower, UserRole } from "@/lib/roles";
 import toast from "react-hot-toast";
 import Modal from "@/common/components/Modal/Modal";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import {
   DndContext,
@@ -221,7 +222,7 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
   };
 
   return (
-    <div className="premium-card fade-in" style={{ padding: '2rem' }}>
+    <PremiumCard className="fade-in" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <ShieldCheck size={28} color="var(--primary)" />
         <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Configuration des Rôles</h3>
@@ -344,6 +345,6 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
           </div>
         </Modal>
       )}
-    </div>
+    </PremiumCard>
   );
 }

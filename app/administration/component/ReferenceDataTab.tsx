@@ -9,6 +9,7 @@ import {
   deleteReferenceData 
 } from "../actions";
 import toast from "react-hot-toast";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface ReferenceData {
   id: string;
@@ -149,7 +150,7 @@ export default function ReferenceDataTab() {
       </div>
 
       {isCreating && (
-        <div className="premium-card creation-form-overlay" style={{ background: 'rgba(0,0,0,0.4)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--accent)', marginBottom: '2rem', borderStyle: 'dashed' }}>
+        <PremiumCard className="creation-form-overlay" style={{ background: 'rgba(0,0,0,0.4)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--accent)', marginBottom: '2rem', borderStyle: 'dashed' }}>
           <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--accent)' }}>Ajouter une nouvelle donnée</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 80px', gap: '1rem', alignItems: 'end' }}>
             <div className="form-group-admin">
@@ -191,7 +192,7 @@ export default function ReferenceDataTab() {
                 {isPending ? "Création..." : "Créer la donnée"}
              </button>
           </div>
-        </div>
+        </PremiumCard>
       )}
 
       {Object.keys(groupedData).sort().map(group => (

@@ -1,6 +1,7 @@
 "use client";
 
 import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
 
@@ -12,7 +13,7 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = false }: AdminSidebarProps) {
   return (
-    <aside className="premium-card profile-sidebar-wrapper">
+    <PremiumCard as="aside" className="profile-sidebar-wrapper">
       <h2 style={{ fontSize: '1.2rem', margin: '0 0 1.5rem 0', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         Tableau de bord
       </h2>
@@ -123,6 +124,6 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
           box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
         }
       `}</style>
-    </aside>
+    </PremiumCard>
   );
 }

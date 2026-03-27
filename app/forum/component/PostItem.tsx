@@ -2,6 +2,7 @@ import { parseBBCode } from "@/lib/bbcode";
 import { Mail, MapPin, Shield, Trophy, User } from "lucide-react";
 import Link from "next/link";
 import React from 'react';
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
 import SharePostButton from "./SharePostButton";
@@ -36,9 +37,9 @@ const PostItem: React.FC<PostItemProps> = ({
   firstPostId
 }) => {
   return (
-    <div
+    <PremiumCard
       id={`post-${post.id}`}
-      className={`premium-card forum-post-card ${isFirstPostAlwaysVisible ? 'first-post-highlight' : ''}`}
+      className={`forum-post-card ${isFirstPostAlwaysVisible ? 'first-post-highlight' : ''}`}
       style={{
         display: 'grid',
         gridTemplateColumns: '200px 1fr',
@@ -263,7 +264,7 @@ const PostItem: React.FC<PostItemProps> = ({
           </>
         )}
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 

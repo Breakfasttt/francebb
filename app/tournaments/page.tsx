@@ -3,9 +3,13 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
 import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
-import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch } from "lucide-react";
 import Link from "next/link";
 import ActiveFilters from "@/app/tournaments/component/ActiveFilters";
+import EmptyState from "@/common/components/EmptyState/EmptyState";
+import { Search, MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -88,7 +92,7 @@ export default async function TournamentsPage({
           <ActiveFilters currentSort={sort} />
           
           {tournaments.length > 0 ? (
-            <div className="results-grid">
+            <PremiumCard className="fade-in">
               {tournaments.map((t: any) => (
                 <div key={t.id} className="tournament-row hover-effect">
                   <div className="t-main-info">
@@ -124,12 +128,13 @@ export default async function TournamentsPage({
                   </div>
                 </div>
               ))}
-            </div>
+            </PremiumCard>
           ) : (
-            <div className="no-results premium-card">
-              <h3>Aucun résultat trouvé</h3>
-              <p>Essayez de modifier vos filtres pour trouver ce que vous cherchez.</p>
-            </div>
+            <EmptyState 
+              icon={<Search size={48} />}
+              title="Aucun résultat trouvé"
+              description="Essayez de modifier vos filtres pour trouver ce que vous cherchez."
+            />
           )}
         </section>
       </div>

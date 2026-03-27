@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, ShieldAlert, Loader2 } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface ModerationModalProps {
   isOpen: boolean;
@@ -46,7 +47,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
       zIndex: 1000,
       padding: '2rem'
     }}>
-      <div className="premium-card" style={{ maxWidth: '500px', width: '100%', padding: '2rem', position: 'relative' }}>
+      <PremiumCard style={{ maxWidth: '500px', width: '100%', padding: '2rem', position: 'relative' }}>
         <button 
           onClick={onClose}
           style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#888', cursor: 'pointer' }}
@@ -99,7 +100,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
             </button>
           </div>
         </form>
-      </div>
+      </PremiumCard>
     </div>
   );
 }

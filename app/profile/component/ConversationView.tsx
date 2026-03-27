@@ -3,11 +3,13 @@
 import { deleteConversation, getConversationMessages, sendPrivateMessage } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AlertTriangle, Archive, Clock, Inbox, Send, User } from "lucide-react";
+import Pagination from "@/common/components/Pagination/Pagination";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -145,7 +147,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         </p>
       </div>
 
-      <div className="reply-box premium-card">
+      <PremiumCard className="reply-box">
         <form onSubmit={handleSendMessage}>
           <BBCodeEditor
             key={editorKey}
@@ -162,14 +164,14 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
             </button>
           </div>
         </form>
-      </div>
+      </PremiumCard>
 
       <div className="messages-list">
         {loading && messages.length === 0 ? (
           <div className="loading-state">Chargement des messages...</div>
         ) : (
           messages.map((msg) => (
-            <div key={msg.id} className={`message-item premium-card ${msg.authorId === session?.user?.id ? 'is-self' : ''}`}>
+            <PremiumCard key={msg.id} className={`message-item ${msg.authorId === session?.user?.id ? 'is-self' : ''}`}>
               <div className="message-sidebar">
                 {msg.author.image ? (
                   <img src={msg.author.image} alt={msg.author.name} className="author-avatar" />
@@ -189,18 +191,18 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                   dangerouslySetInnerHTML={{ __html: parseInlineBBCode(msg.content) }}
                 />
               </div>
-            </div>
+            </PremiumCard>
           ))
         )}
       </div>
 
       {
         totalPages > 1 && (
-          <div className="pagination">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="btn-pagination">Précédent</button>
-            <span>Page {page} sur {totalPages}</span>
-            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)} className="btn-pagination">Suivant</button>
-          </div>
+          <Pagination 
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p)}
+          />
         )
       }
 
@@ -415,6 +417,6 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           cursor: not-allowed;
         }
       `}</style>
-    </div >
+    </div>
   );
 }

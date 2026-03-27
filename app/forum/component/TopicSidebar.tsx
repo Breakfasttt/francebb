@@ -26,7 +26,7 @@ import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic, isFollowingTo
 import Modal from "@/common/components/Modal/Modal";
 import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
-import SidebarPagination from "@/app/forum/component/SidebarPagination";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 import LockButton from "@/app/forum/component/LockButton";
 
@@ -177,10 +177,12 @@ export default function TopicSidebar({
         <div className="sidebar-widget-container">
           
           {/* 1. Pages Block */}
-          {totalPages > 1 && (
-            <SidebarPagination 
-              currentPage={currentPage}
+          {(totalPages && totalPages > 1) && (
+            <Pagination 
+              currentPage={currentPage || 1}
               totalPages={totalPages}
+              variant="sidebar"
+              baseUrl={`/forum/topic/${topicId}`}
             />
           )}
 

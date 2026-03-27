@@ -4,6 +4,7 @@ import { toggleBanUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -71,7 +72,7 @@ export default function ProfileSidebar({
 
   return (
     <div className="profile-sidebar-wrapper">
-      <div className="premium-card profile-summary-box">
+      <PremiumCard className="profile-summary-box">
 
         <div className="profile-avatar-container" id="profile-avatar-debug">
           <UserAvatar 
@@ -171,7 +172,7 @@ export default function ProfileSidebar({
             </Tooltip>
           ))}
         </div>
-      </div>
+      </PremiumCard>
 
       <Modal
         isOpen={showBanModal}

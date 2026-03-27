@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { Ban } from "lucide-react";
 import Link from "next/link";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +25,7 @@ export default async function BannedPage() {
 
   return (
     <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-      <div className="premium-card" style={{ maxWidth: '600px', width: '100%', padding: '3rem 2rem', textAlign: 'center' }}>
+      <PremiumCard style={{ maxWidth: '600px', width: '100%', padding: '3rem 2rem', textAlign: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
           <div style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '1rem', borderRadius: '50%', color: '#ef4444' }}>
             <Ban size={48} />
@@ -49,7 +50,7 @@ export default async function BannedPage() {
         >
           Retour à l'accueil
         </Link>
-      </div>
+      </PremiumCard>
     </div>
   );
 }

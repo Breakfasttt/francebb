@@ -2,10 +2,12 @@
 
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { getRolePower, UserRole } from "@/lib/roles";
-import { Search, ShieldAlert, Users } from "lucide-react";
+import { Search, Mail, Ban, ShieldCheck, UserCheck, ShieldOff, MoreHorizontal, UserX, AlertTriangle, Users, ShieldAlert } from "lucide-react";
+import Pagination from "@/common/components/Pagination/Pagination";
 import { useEffect, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { getAllRoles, searchCoaches, updateCoachRole } from "../actions";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 interface CoachsTabProps {
   currentUserRole: UserRole;
@@ -19,6 +21,10 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   const [isPending, startTransition] = useTransition();
 
   const [dbRoles, setDbRoles] = useState<any[]>([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const usersPerPage = 10; // Define how many users per page
 
   const myPower = getRolePower(currentUserRole);
 
@@ -37,20 +43,27 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
     setDbRoles(rolesData);
   };
 
-  const loadUsers = async (searchQuery: string) => {
+  const loadUsers = async (searchQuery: string, page: number = 1) => {
     setIsLoading(true);
-    const data = await searchCoaches(searchQuery);
-    setUsers(data);
+    const data = await searchCoaches(searchQuery, page, usersPerPage);
+    setUsers(data.users);
+    setTotalPages(data.totalPages);
+    setCurrentPage(page);
     setIsLoading(false);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
+    const newQuery = e.target.value;
+    setQuery(newQuery);
     // Debounce simple
     const timeout = setTimeout(() => {
-      loadUsers(e.target.value);
+      loadUsers(newQuery, 1); // Reset to first page on new search
     }, 500);
     return () => clearTimeout(timeout);
+  };
+
+  const handlePageChange = (page: number) => {
+    loadUsers(query, page);
   };
 
   const handleRoleChange = (userId: string, newRole: string) => {
@@ -58,7 +71,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
       const res = await updateCoachRole(userId, newRole);
       if (res.success) {
         toast.success("Rôle mis à jour");
-        loadUsers(query);
+        loadUsers(query, currentPage); // Reload current page to reflect changes
       } else {
         toast.error(res.error || "Erreur lors de la mise à jour");
       }
@@ -66,7 +79,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   };
 
   return (
-    <div className="premium-card fade-in" style={{ padding: '2rem' }}>
+    <PremiumCard className="fade-in" style={{ padding: '2rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <Users size={28} color="var(--primary)" />
         <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Rôles des Membres</h3>
@@ -237,6 +250,6 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           color: #666;
         }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

@@ -3,6 +3,7 @@ import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import Pagination from "@/common/components/Pagination/Pagination";
 import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
@@ -25,16 +26,9 @@ function getDescendantForumIds(allForums: any[], rootId: string): string[] {
 function highlightKeyword(text: string, query: string) {
   if (!query) return parseBBCode(text, {});
   
-  // Basic highlight: just parse BBCode then wrap the keyword found in the string in a span
-  const html = parseBBCode(text, {});
-  // this is a simple string replace for visual purpose, real implementation requires parsing text nodes to avoid breaking HTML.
-  // We'll use a regex that matches outside HTML tags if possible, or just parse BBCode and trust simple queries.
-  // Considering this is a simple forum, we'll strip HTML tags, find the snippet, and highlight it.
-  
   const stripped = text.replace(/\[.*?\]/g, ""); // strip bbcode
   const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi");
   
-  // Extract a snippet around the first match
   const matchIndex = stripped.search(new RegExp(query, "i"));
   if (matchIndex === -1) return stripped.substring(0, 200) + "...";
   
@@ -90,10 +84,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     topic: { isArchived: false }
   };
   
-  // Modérateur or not
   const isMod = isModerator(session?.user?.role);
   if (!isMod) {
-    whereClause.isModerated = false; // Hide moderated posts for normal users in search
+    whereClause.isModerated = false;
   }
 
   if (q) {
@@ -117,7 +110,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   }
 
   if (forumId) {
-    // Need to find all descendant forums
     const allForumsFlat = await prisma.forum.findMany({ select: { id: true, parentForumId: true } });
     const targetForumIds = getDescendantForumIds(allForumsFlat, forumId);
     
@@ -130,7 +122,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   let posts: any[] = [];
   let totalMatches = 0;
 
-  // Execute Search Only if there's a param or query
   const hasPerformedSearch = !!params.q || !!params.author || !!params.forumId;
   
   if (hasPerformedSearch) {
@@ -243,19 +234,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             )}
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
-            <div className="pagination" style={{ marginTop: "2rem", display: "flex", justifyContent: "center", gap: "0.5rem" }}>
-              {Array.from({ length: totalPages }).map((_, i) => (
-                <Link
-                  key={i}
-                  href={`/forum/search?q=${q}&forumId=${forumId}&author=${authorQuery}&date=${dateStr}&sortBy=${sortBy}&page=${i + 1}`}
-                  className={`page-link ${page === i + 1 ? "active" : ""}`}
-                >
-                  {i + 1}
-                </Link>
-              ))}
-            </div>
+            <Pagination 
+              currentPage={page}
+              totalPages={totalPages}
+              baseUrl={`/forum/search?q=${q}&forumId=${forumId}&author=${authorQuery}&date=${dateStr}&sortBy=${sortBy}`}
+            />
           )}
         </div>
       )}
