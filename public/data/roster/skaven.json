@@ -1,0 +1,86 @@
+{
+  "name": "Skaven",
+  "roster": [
+    {
+      "name": "Clanrat Lineman",
+      "qty": "0-16",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "ASM",
+      "cost": 50000
+    },
+    {
+      "name": "Skaven Thrower",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "2+",
+      "av": "8+",
+      "skills": [
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "GP",
+      "secondary": "ASM",
+      "cost": 85000
+    },
+    {
+      "name": "Gutter Runner",
+      "qty": "0-4",
+      "ma": "9",
+      "st": "2",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Dodge"
+      ],
+      "primary": "A",
+      "secondary": "GSM",
+      "cost": 85000
+    },
+    {
+      "name": "Skaven Blitzer",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Block"
+      ],
+      "primary": "G",
+      "secondary": "ASM",
+      "cost": 90000
+    },
+    {
+      "name": "Rat Ogre",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "4+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Animal Savagery",
+        "Frenzy",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Prehensile Tail"
+      ],
+      "primary": "F",
+      "secondary": "ASM",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Underworld Deeps"
+  ]
+}

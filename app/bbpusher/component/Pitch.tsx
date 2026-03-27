@@ -13,6 +13,7 @@ interface PitchProps {
   onDrawUpdate: (drawings: DrawingPath[]) => void;
   rotation: number;
   finalScale: number;
+  showTooltips?: boolean;
 }
 
 const Pitch: React.FC<PitchProps> = ({ 
@@ -23,7 +24,8 @@ const Pitch: React.FC<PitchProps> = ({
   drawings,
   onDrawUpdate,
   rotation,
-  finalScale
+  finalScale,
+  showTooltips
 }) => {
   const COLS = 26;
   const ROWS = 15;
@@ -41,6 +43,7 @@ const Pitch: React.FC<PitchProps> = ({
         <Square 
           key={`${x}-${y}`} x={x} y={y} onClick={() => onSquareClick(x, y)} 
           tokens={tokensAtPos} allTokens={tokens} activeTool={activeTool} rotation={rotation}
+          showTooltips={showTooltips}
         />
       );
     }
@@ -133,9 +136,10 @@ const Pitch: React.FC<PitchProps> = ({
 interface SquareProps {
   x: number; y: number; onClick: () => void;
   tokens: TokenData[]; allTokens: TokenData[]; activeTool: ToolType; rotation: number;
+  showTooltips?: boolean;
 }
 
-const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation }) => {
+const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips }) => {
   const { setNodeRef, isOver } = useDroppable({ id: `${x}-${y}` });
   const isEndZone = x === 0 || x === 25;
   const isWideZoneLine = (y === 3 || y === 10) && (x > 0 && x < 25);
@@ -149,7 +153,7 @@ const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activ
           const carriedBall = allTokens.find(t => t.type === 'ball' && t.attachedToId === token.id);
           return (
             <div key={token.id} className="token-wrapper">
-              <Token token={token} activeTool={activeTool} rotation={rotation} hasBall={!!carriedBall} />
+              <Token token={token} activeTool={activeTool} rotation={rotation} hasBall={!!carriedBall} showTooltip={showTooltips} />
             </div>
           );
         })}

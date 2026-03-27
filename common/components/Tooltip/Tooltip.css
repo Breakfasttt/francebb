@@ -5,18 +5,18 @@
 
 .tooltip-bubble {
   position: absolute;
-  background: rgba(0, 0, 0, 0.9);
+  background: #000;
   color: white;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
   pointer-events: none;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  animation: tooltipFadeIn 0.2s ease-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+  border: 1.5px solid var(--accent);
+  animation: tooltipFadeIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-top {

@@ -59,9 +59,10 @@
 .token-number {
   color: #fff;
   font-weight: 900;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-shadow: 0 0 4px rgba(0,0,0,0.8);
   pointer-events: none;
+  text-transform: uppercase;
 }
 
 .ball-token {
@@ -139,4 +140,97 @@
 @keyframes floatSmall {
   from { transform: translateY(0); }
   to { transform: translateY(-4px); }
+}
+
+/* -- Token Stats Hover -- */
+/* -- Token Stats Hover (Portal Version) -- */
+.token-stats-hover.portal-tooltip {
+  position: fixed;
+  background: #11111a;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 100000; /* Over everything */
+  pointer-events: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.2);
+  white-space: nowrap;
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-name-full {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.player-cost-badge {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #000;
+  background: var(--accent);
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.stat-row {
+  display: flex;
+  gap: 6px;
+}
+
+.stat-val {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.stat-labels {
+  display: flex;
+  gap: 6px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-labels span, .stat-labels span {
+  flex: 1;
+  text-align: center;
+}
+
+.tooltip-skills {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  color: var(--accent);
+  max-width: 200px;
+  white-space: normal;
+  text-align: center;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.token-container.overlay .token-stats-hover {
+  display: none !important;
 }

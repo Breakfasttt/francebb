@@ -1,0 +1,72 @@
+{
+  "name": "Elven Union",
+  "roster": [
+    {
+      "name": "Elf Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Fumblerooski"
+      ],
+      "primary": "GA",
+      "secondary": "F",
+      "cost": 65000
+    },
+    {
+      "name": "Elf Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "8+",
+      "skills": [
+        "Pass",
+        "Hail Mary Pass"
+      ],
+      "primary": "GAP",
+      "secondary": "F",
+      "cost": 75000
+    },
+    {
+      "name": "Elf Catcher",
+      "qty": "0-4",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Catch",
+        "Nerves of Steel",
+        "Diving Catch"
+      ],
+      "primary": "GA",
+      "secondary": "F",
+      "cost": 100000
+    },
+    {
+      "name": "Elf Blitzer",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Side Step"
+      ],
+      "primary": "GA",
+      "secondary": "FP",
+      "cost": 115000
+    }
+  ],
+  "specialRules": [
+    "Elf Kingdom League"
+  ]
+}

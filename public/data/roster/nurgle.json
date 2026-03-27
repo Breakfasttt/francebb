@@ -1,0 +1,79 @@
+{
+  "name": "Nurgle Team",
+  "roster": [
+    {
+      "name": "Rotter Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Decay",
+        "Plague Ridden"
+      ],
+      "primary": "G",
+      "secondary": "AMS",
+      "cost": 40000
+    },
+    {
+      "name": "Bloater",
+      "qty": "0-4",
+      "ma": "4",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Disturbing Presence",
+        "Foul Appearance",
+        "Plague Ridden",
+        "Regeneration",
+        "Stand Firm",
+        "Unsteady"
+      ],
+      "primary": "GS",
+      "secondary": "AM",
+      "cost": 110000
+    },
+    {
+      "name": "Pestigor",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Horns",
+        "Plague Ridden",
+        "Regeneration",
+        "Steady Footing",
+        "Thick Skull"
+      ],
+      "primary": "GSM",
+      "secondary": "A",
+      "cost": 70000
+    },
+    {
+      "name": "Rotspawn",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Disturbing Presence",
+        "Foul Appearance",
+        "Loner (4+)",
+        "Mighty Blow",
+        "Pick-me-up"
+      ],
+      "primary": "S",
+      "secondary": "AGM",
+      "cost": 140000
+    }
+  ]
+}

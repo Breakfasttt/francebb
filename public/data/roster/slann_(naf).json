@@ -1,0 +1,78 @@
+{
+  "name": "Slann (NAF)",
+  "roster": [
+    {
+      "name": "Slann Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Diving Tackle",
+        "Leap",
+        "Very Long Legs"
+      ],
+      "primary": "GA",
+      "secondary": "SF",
+      "cost": 60000
+    },
+    {
+      "name": "Slann Catcher",
+      "qty": "0-4",
+      "ma": "7",
+      "st": "2",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Diving Catch",
+        "Leap",
+        "Very Long Legs"
+      ],
+      "primary": "GA",
+      "secondary": "SF",
+      "cost": 80000
+    },
+    {
+      "name": "Slann Blitzer",
+      "qty": "0-4",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Diving Tackle",
+        "Leap",
+        "Very Long Legs"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 120000
+    },
+    {
+      "name": "Kroxigor",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "5+",
+      "pa": "-",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Prehensile Tail",
+        "Thick Skull"
+      ],
+      "primary": "F",
+      "secondary": "ASG",
+      "cost": 140000
+    }
+  ],
+  "specialRules": [
+    "Lustrian Super-league"
+  ]
+}

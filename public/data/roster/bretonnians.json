@@ -1,0 +1,71 @@
+{
+  "name": "Bretonnian Team",
+  "roster": [
+    {
+      "name": "Squire",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Wrestle"
+      ],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 50000
+    },
+    {
+      "name": "Knight Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Dauntless",
+        "Nerves of Steel",
+        "Pass"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 80000
+    },
+    {
+      "name": "Knight Catcher",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Catch",
+        "Dauntless",
+        "Nerves of Steel"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 85000
+    },
+    {
+      "name": "Grail Knight",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Block",
+        "Dauntless",
+        "Steady Footing"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 95000
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "name": "Humans",
+  "roster": [
+    {
+      "name": "Human Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "ASF",
+      "cost": 50000
+    },
+    {
+      "name": "Halfling Hopeful",
+      "qty": "0-3",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 30000
+    },
+    {
+      "name": "Human Catcher",
+      "qty": "0-4",
+      "ma": "8",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Catch",
+        "Dodge"
+      ],
+      "primary": "GA",
+      "secondary": "SFP",
+      "cost": 75000
+    },
+    {
+      "name": "Human Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "GP",
+      "secondary": "ASF",
+      "cost": 75000
+    },
+    {
+      "name": "Human Blitzer",
+      "qty": "0-4",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Tackle"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 85000
+    },
+    {
+      "name": "Ogre",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "ASGP",
+      "cost": 140000
+    }
+  ],
+  "specialRules": [
+    "Old World Classic"
+  ]
+}

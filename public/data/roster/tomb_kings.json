@@ -1,0 +1,73 @@
+{
+  "name": "Tomb Kings Team",
+  "roster": [
+    {
+      "name": "Skeleton Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "8+",
+      "skills": [
+        "Regeneration",
+        "Thick Skull"
+      ],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 40000
+    },
+    {
+      "name": "Tomb Guardian",
+      "qty": "0-4",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Brawler",
+        "Decay",
+        "Regeneration"
+      ],
+      "primary": "S",
+      "secondary": "AG",
+      "cost": 115000
+    },
+    {
+      "name": "Anointed Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "4+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Regeneration",
+        "Sure Hands",
+        "Thick Skull"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 65000
+    },
+    {
+      "name": "Anointed Blitzer",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Regeneration",
+        "Thick Skull"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 85000
+    }
+  ]
+}

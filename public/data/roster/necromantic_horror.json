@@ -1,0 +1,96 @@
+{
+  "name": "Necromantic Horror",
+  "roster": [
+    {
+      "name": "Zombie",
+      "qty": "0-16",
+      "ma": "4",
+      "st": "3",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Fork",
+        "Unstable",
+        "Regeneration"
+      ],
+      "primary": "SG",
+      "secondary": "AF",
+      "cost": 40000
+    },
+    {
+      "name": "Ghoul Runner",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Regeneration"
+      ],
+      "primary": "AG",
+      "secondary": "SPF",
+      "cost": 75000
+    },
+    {
+      "name": "Wraith",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Foul Appearance",
+        "No Hands",
+        "Regeneration",
+        "Side Step"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 85000
+    },
+    {
+      "name": "Flesh Golem",
+      "qty": "0-2",
+      "ma": "4",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Regeneration",
+        "Stand Firm",
+        "Thick Skull",
+        "Unstable"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 110000
+    },
+    {
+      "name": "Werewolf",
+      "qty": "0-2",
+      "ma": "8",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Claws",
+        "Frenzy",
+        "Regeneration"
+      ],
+      "primary": "AG",
+      "secondary": "SPF",
+      "cost": 120000
+    }
+  ],
+  "specialRules": [
+    "Masters of Undeath",
+    "Sylvanian Spot"
+  ]
+}

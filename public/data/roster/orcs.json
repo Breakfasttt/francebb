@@ -1,0 +1,109 @@
+{
+  "name": "Orcs",
+  "roster": [
+    {
+      "name": "Orc Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "ASF",
+      "cost": 50000
+    },
+    {
+      "name": "Goblin",
+      "qty": "0-4",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "SGP",
+      "cost": 40000
+    },
+    {
+      "name": "Orc Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "GP",
+      "secondary": "ASF",
+      "cost": 75000
+    },
+    {
+      "name": "Orc Blitzer",
+      "qty": "0-4",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Block",
+        "Punt"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 85000
+    },
+    {
+      "name": "Big Un Blocker",
+      "qty": "0-4",
+      "ma": "5",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Mighty Blow (+1)",
+        "Taunt",
+        "Thick Skull",
+        "Unstable"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 95000
+    },
+    {
+      "name": "Trained Troll",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Loner (4+)",
+        "Always Hungry",
+        "Really Stupid",
+        "Mighty Blow (+1)",
+        "Projectile Vomit",
+        "Regeneration",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 115000
+    }
+  ],
+  "specialRules": [
+    "Badlands Brawl"
+  ]
+}

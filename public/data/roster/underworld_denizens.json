@@ -1,0 +1,151 @@
+{
+  "name": "Underworld Denizens",
+  "roster": [
+    {
+      "name": "Underworld Goblin Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "ASM",
+      "secondary": "GPF",
+      "cost": 40000
+    },
+    {
+      "name": "Underworld Snotling",
+      "qty": "0-6",
+      "ma": "5",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "Insignificant",
+        "Right Stuff",
+        "Stunty",
+        "Side Step",
+        "Titchy"
+      ],
+      "primary": "ASM",
+      "secondary": "G",
+      "cost": 15000
+    },
+    {
+      "name": "Clanrat",
+      "qty": "0-3",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Animosity (Goblins)"
+      ],
+      "primary": "SGM",
+      "secondary": "AF",
+      "cost": 50000
+    },
+    {
+      "name": "Underworld Skaven Thrower",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "2+",
+      "av": "8+",
+      "skills": [
+        "Animosity (Goblins)",
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "GMP",
+      "secondary": "ASF",
+      "cost": 80000
+    },
+    {
+      "name": "Gutter Runner",
+      "qty": "0-1",
+      "ma": "9",
+      "st": "2",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Animosity (Goblins)",
+        "Dodge",
+        "Stab"
+      ],
+      "primary": "ASGM",
+      "secondary": "F",
+      "cost": 85000
+    },
+    {
+      "name": "Underworld Skaven Blitzer",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Animosity (Goblins)",
+        "Block",
+        "Strip Ball"
+      ],
+      "primary": "GMF",
+      "secondary": "AS",
+      "cost": 90000
+    },
+    {
+      "name": "Underworld Troll",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Always Hungry",
+        "Loner (4+)",
+        "Projectile Vomit",
+        "Mighty Blow (+1)",
+        "Really Stupid",
+        "Regeneration",
+        "Throw Team-Mate"
+      ],
+      "primary": "MF",
+      "secondary": "GAP",
+      "cost": 115000
+    },
+    {
+      "name": "Underworld Rat Ogre",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Animal Savagery",
+        "Frenzy",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Prehensile Tail"
+      ],
+      "primary": "MF",
+      "secondary": "GA",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Bribery and Corruption"
+  ]
+}

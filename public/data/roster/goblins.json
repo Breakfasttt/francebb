@@ -1,0 +1,136 @@
+{
+  "name": "Goblins",
+  "roster": [
+    {
+      "name": "Goblin Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "AS",
+      "secondary": "GFP",
+      "cost": 40000
+    },
+    {
+      "name": "Goblin Bombardier",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Bombardier",
+        "Dodge",
+        "Secret Weapon",
+        "Stunty"
+      ],
+      "primary": "AS",
+      "secondary": "GFP",
+      "cost": 45000
+    },
+    {
+      "name": "Goblin Fanatic",
+      "qty": "0-2",
+      "ma": "3",
+      "st": "7",
+      "ag": "3+",
+      "pa": "-",
+      "av": "8+",
+      "skills": [
+        "Ball & Chain",
+        "No Hands",
+        "Secret Weapon",
+        "Stunty"
+      ],
+      "primary": "S",
+      "secondary": "GAF",
+      "cost": 70000
+    },
+    {
+      "name": "Goblin Looney",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Chainsaw",
+        "No Hands",
+        "Secret Weapon",
+        "Stunty"
+      ],
+      "primary": "AS",
+      "secondary": "GFP",
+      "cost": 40000
+    },
+    {
+      "name": "Goblin Pogoer",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Jump Up",
+        "Pogo Stick",
+        "Stunty"
+      ],
+      "primary": "AS",
+      "secondary": "GFP",
+      "cost": 75000
+    },
+    {
+      "name": "'Ooligan",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Disturbing Presence",
+        "Dodge",
+        "Foul Appearance",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "AS",
+      "secondary": "GFP",
+      "cost": 65000
+    },
+    {
+      "name": "Trained Troll",
+      "qty": "0-2",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Always Hungry",
+        "Really Stupid",
+        "Mighty Blow (+1)",
+        "Throw Team-Mate",
+        "Projectile Vomit",
+        "Regeneration"
+      ],
+      "primary": "MF",
+      "secondary": "GAP",
+      "cost": 115000
+    }
+  ],
+  "specialRules": [
+    "Bribery and Corruption"
+  ]
+}

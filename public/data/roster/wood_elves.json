@@ -1,0 +1,89 @@
+{
+  "name": "Wood Elf Team",
+  "roster": [
+    {
+      "name": "Wood Elf Lineman",
+      "qty": "0-12",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 65000
+    },
+    {
+      "name": "Wood Elf Thrower",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "8+",
+      "skills": [
+        "Pass",
+        "Safe Pair of Hands"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 85000
+    },
+    {
+      "name": "Wood Elf Catcher",
+      "qty": "0-2",
+      "ma": "8",
+      "st": "2",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Catch",
+        "Dodge",
+        "Sprint"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 90000
+    },
+    {
+      "name": "Wardancer",
+      "qty": "0-2",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Block",
+        "Dodge",
+        "Leap"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 130000
+    },
+    {
+      "name": "Loren Forest Treeman",
+      "qty": "0-1",
+      "ma": "2",
+      "st": "6",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Loner (4+)",
+        "Mighty Blow",
+        "Stand Firm",
+        "Strong Arm",
+        "Take Root",
+        "Thick Skull",
+        "Throw Team-mate"
+      ],
+      "primary": "S",
+      "secondary": "AG",
+      "cost": 120000
+    }
+  ]
+}

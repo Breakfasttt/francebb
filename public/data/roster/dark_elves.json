@@ -1,0 +1,83 @@
+{
+  "name": "Dark Elf Team",
+  "roster": [
+    {
+      "name": "Dark Elf Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 70000
+    },
+    {
+      "name": "Runner",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dump-off",
+        "Punt"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 80000
+    },
+    {
+      "name": "Assassin",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Hit and Run",
+        "Shadowing",
+        "Stab"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 90000
+    },
+    {
+      "name": "Blitzer",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Block"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 105000
+    },
+    {
+      "name": "Witch Elf",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Frenzy",
+        "Jump Up"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 110000
+    }
+  ]
+}

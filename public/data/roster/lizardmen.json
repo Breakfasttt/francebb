@@ -1,0 +1,74 @@
+{
+  "name": "Lizardmen",
+  "roster": [
+    {
+      "name": "Skink Runner",
+      "qty": "0-12",
+      "ma": "8",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "SGPF",
+      "cost": 60000
+    },
+    {
+      "name": "Chameleon Skink",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "On the Ball",
+        "Shadowing",
+        "Stunty"
+      ],
+      "primary": "AP",
+      "secondary": "SG",
+      "cost": 70000
+    },
+    {
+      "name": "Saurus Blocker",
+      "qty": "0-6",
+      "ma": "6",
+      "st": "4",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 85000
+    },
+    {
+      "name": "Kroxigor",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Prehensile Tail",
+        "Thick Skull"
+      ],
+      "primary": "F",
+      "secondary": "ASG",
+      "cost": 140000
+    }
+  ],
+  "specialRules": [
+    "Lustrian Super-league"
+  ]
+}

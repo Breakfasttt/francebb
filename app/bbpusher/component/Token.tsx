@@ -5,6 +5,7 @@ import {
   HelpCircle, 
   Star
 } from "lucide-react";
+import { createPortal } from "react-dom";
 import "./Token.css";
 
 interface TokenProps {
@@ -13,11 +14,45 @@ interface TokenProps {
   activeTool?: ToolType;
   rotation?: number; // Pitch rotation
   hasBall?: boolean; // If this player is carrying a ball
+  showTooltip?: boolean; // Global toggle
 }
 
-const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 0, hasBall }) => {
+const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 0, hasBall, showTooltip = true }) => {
   const isBall = token.type === 'ball';
   const isCarried = !!token.attachedToId;
+  
+  // Custom Initials Logic
+  const getInitials = (name: string) => {
+    if (!name) return "";
+    const words = name.split(/\s+/);
+    if (words.length === 1) return name.substring(0, 1).toUpperCase();
+    return words.map(word => word[0]).join("").toUpperCase();
+  };
+
+  const initial = token.playerInfo ? getInitials(token.playerInfo.name) : (token.number?.toString() || "");
+  
+  // Tooltip position state
+  const [tooltipPos, setTooltipPos] = React.useState<{ x: number, y: number } | null>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    if (isOverlay || !token.playerInfo) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTooltipPos({ 
+      x: rect.left + rect.width / 2, 
+      y: rect.top 
+    });
+  };
+
+  const handleMouseLeave = () => setTooltipPos(null);
+
+  // Formatter pour le prix
+  const formatCost = (cost: any) => {
+    if (!cost || cost === 0) return "Variable";
+    const num = parseInt(cost.toString().replace(/[^0-9]/g, ''));
+    if (isNaN(num)) return cost;
+    return `${Math.floor(num / 1000)}k`;
+  };
   
   // Drag restriction logic
   let canDrag = true;
@@ -42,11 +77,16 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
 
   return (
     <div 
-      ref={setNodeRef} 
+      ref={(node) => {
+        setNodeRef(node);
+        (containerRef as any).current = node;
+      }} 
       style={style} 
-      className={`token-container ${token.type} ${token.status} ${isOverlay ? 'overlay' : ''} ${isDragging && !isOverlay ? 'dragging-source' : ''} ${isBall ? 'ball-token' : 'player-token'}`}
+      className={`token-container ${token.type} ${token.status} ${token.location} ${isOverlay ? 'overlay' : ''} ${isDragging && !isOverlay ? 'dragging-source' : ''} ${isBall ? 'ball-token' : 'player-token'}`}
       {...listeners} 
       {...attributes}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="token-inner" style={visualStyle}>
         {isBall ? (
@@ -56,8 +96,44 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
         ) : (
           <div className="token-visual">
             <div className="token-base">
-               {token.number && <span className="token-number">{token.number}</span>}
+               {token.playerInfo?.name === "Star Player" ? (
+                 <Star size={24} fill="#ffd700" color="#ffd700" strokeWidth={3} className="star-icon" />
+               ) : (
+                 initial && <span className="token-number">{initial}</span>
+               )}
             </div>
+
+            {showTooltip && tooltipPos && token.playerInfo && createPortal(
+              <div 
+                className="token-stats-hover portal-tooltip" 
+                style={{ 
+                  left: `${tooltipPos.x}px`, 
+                  top: `${tooltipPos.y - 12}px`,
+                  transform: 'translateX(-50%) translateY(-100%)'
+                }}
+              >
+                <div className="tooltip-header">
+                  <span className="player-name-full">{token.playerInfo.name}</span>
+                  <span className="player-cost-badge">{formatCost(token.playerInfo.cost)}</span>
+                </div>
+                <div className="stat-row">
+                  <span className="stat-val">{token.playerInfo.ma}</span>
+                  <span className="stat-val">{token.playerInfo.st}</span>
+                  <span className="stat-val">{token.playerInfo.ag}</span>
+                  <span className="stat-val">{token.playerInfo.pa}</span>
+                  <span className="stat-val">{token.playerInfo.av}</span>
+                </div>
+                <div className="stat-labels">
+                  <span>MA</span><span>ST</span><span>AG</span><span>PA</span><span>AR</span>
+                </div>
+                {token.playerInfo.skills && token.playerInfo.skills.length > 0 && (
+                  <div className="tooltip-skills">
+                    {token.playerInfo.skills.join(', ')}
+                  </div>
+                )}
+              </div>,
+              document.body
+            )}
             
             <div className="status-overlay">
               {token.status === 'stunned' && (

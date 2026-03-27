@@ -1,0 +1,99 @@
+{
+  "name": "Chaos Chosen",
+  "roster": [
+    {
+      "name": "Beastman Runner",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Horns",
+        "Thick Skull"
+      ],
+      "primary": "GM",
+      "secondary": "ASFP",
+      "cost": 55000
+    },
+    {
+      "name": "Chaos Chosen Warrior",
+      "qty": "0-4",
+      "ma": "5",
+      "st": "4",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Arm Bar"
+      ],
+      "primary": "GFM",
+      "secondary": "AS",
+      "cost": 100000
+    },
+    {
+      "name": "Chaos Troll",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Always Hungry",
+        "Loner (4+)",
+        "Projectile Vomit",
+        "Mighty Blow (+1)",
+        "Really Stupid",
+        "Regeneration",
+        "Throw Team-Mate"
+      ],
+      "primary": "FM",
+      "secondary": "GAP",
+      "cost": 115000
+    },
+    {
+      "name": "Chaos Ogre",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Thick Skull",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Throw Team-Mate"
+      ],
+      "primary": "FM",
+      "secondary": "GA",
+      "cost": 140000
+    },
+    {
+      "name": "Chaos Minotaur",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Loner (4+)",
+        "Frenzy",
+        "Horns",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Unchanelled Fury"
+      ],
+      "primary": "FM",
+      "secondary": "GA",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Favoured of..."
+  ]
+}

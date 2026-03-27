@@ -1,0 +1,64 @@
+{
+  "name": "Black Orcs",
+  "roster": [
+    {
+      "name": "Goblin Bruiser",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty",
+        "Thick Skull"
+      ],
+      "primary": "AS",
+      "secondary": "GPF",
+      "cost": 45000
+    },
+    {
+      "name": "Black Orc",
+      "qty": "0-6",
+      "ma": "4",
+      "st": "4",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Brawler",
+        "Grab"
+      ],
+      "primary": "GF",
+      "secondary": "AS",
+      "cost": 90000
+    },
+    {
+      "name": "Trained Troll",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Loner (4+)",
+        "Always Hungry",
+        "Really Stupid",
+        "Mighty Blow (+1)",
+        "Projectile Vomit",
+        "Regeneration",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 115000
+    }
+  ],
+  "specialRules": [
+    "Bribery and Corruption",
+    "Badlands Brawl"
+  ]
+}

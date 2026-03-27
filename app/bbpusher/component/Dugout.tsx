@@ -8,9 +8,10 @@ interface DugoutProps {
   team: 'blue' | 'red';
   tokens: TokenData[];
   activeId: string | null;
+  showTooltips?: boolean;
 }
 
-const Dugout: React.FC<DugoutProps> = ({ team, tokens, activeId }) => {
+const Dugout: React.FC<DugoutProps> = ({ team, tokens, activeId, showTooltips }) => {
   const zones: { id: TokenData['location']; label: string }[] = [
     { id: 'reserve', label: 'Réserves' },
     { id: 'ko', label: 'K.O.' },
@@ -29,6 +30,7 @@ const Dugout: React.FC<DugoutProps> = ({ team, tokens, activeId }) => {
             zone={zone} 
             tokens={tokens.filter(t => t.location === zone.id)} 
             activeId={activeId}
+            showTooltips={showTooltips}
           />
         ))}
       </div>
@@ -41,9 +43,10 @@ interface ZoneProps {
   zone: { id: TokenData['location']; label: string };
   tokens: TokenData[];
   activeId: string | null;
+  showTooltips?: boolean;
 }
 
-const DugoutZone: React.FC<ZoneProps> = ({ team, zone, tokens, activeId }) => {
+const DugoutZone: React.FC<ZoneProps> = ({ team, zone, tokens, activeId, showTooltips }) => {
   const { setNodeRef, isOver } = useDroppable({
     id: `dugout-${team}-${zone.id}`,
   });
@@ -60,7 +63,7 @@ const DugoutZone: React.FC<ZoneProps> = ({ team, zone, tokens, activeId }) => {
             opacity: token.id === activeId ? 0 : 1,
             visibility: token.id === activeId ? 'hidden' : 'visible' 
           }}>
-            <Token token={token} />
+            <Token token={token} showTooltip={showTooltips} />
           </div>
         ))}
       </div>

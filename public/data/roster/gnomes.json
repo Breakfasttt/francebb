@@ -1,0 +1,98 @@
+{
+  "name": "Gnomes",
+  "roster": [
+    {
+      "name": "Gnome Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Jump Up",
+        "Right Stuff",
+        "Stunty",
+        "Wrestle"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 40000
+    },
+    {
+      "name": "Wood Fox",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "2",
+      "ag": "2+",
+      "pa": "-",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "My Ball",
+        "Side Step",
+        "Stunty"
+      ],
+      "primary": "-",
+      "secondary": "A",
+      "cost": 50000
+    },
+    {
+      "name": "Gnome Illusionist",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "7+",
+      "skills": [
+        "Jump Up",
+        "Stunty",
+        "Trickster",
+        "Wrestle"
+      ],
+      "primary": "AP",
+      "secondary": "SG",
+      "cost": 50000
+    },
+    {
+      "name": "Gnome Beastmaster",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Guard",
+        "Jump Up",
+        "Stunty",
+        "Wrestle"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 55000
+    },
+    {
+      "name": "Altern Forest Treeman",
+      "qty": "0-2",
+      "ma": "2",
+      "st": "6",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Mighty Blow (+1)",
+        "Stand Firm",
+        "Strong Arm",
+        "Take Root",
+        "Thick Skull",
+        "Throw Team-Mate",
+        "Timmm-ber!"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 120000
+    }
+  ]
+}

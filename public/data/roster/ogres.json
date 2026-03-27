@@ -1,0 +1,65 @@
+{
+  "name": "Ogres",
+  "roster": [
+    {
+      "name": "Gnoblar Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty",
+        "Side Step",
+        "Titchy"
+      ],
+      "primary": "AS",
+      "secondary": "G",
+      "cost": 15000
+    },
+    {
+      "name": "Ogre Blocker",
+      "qty": "0-5",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "ASGP",
+      "cost": 140000
+    },
+    {
+      "name": "Ogre Punter",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Kick Team-Mate"
+      ],
+      "primary": "PF",
+      "secondary": "ASG",
+      "cost": 145000
+    }
+  ],
+  "specialRules": [
+    "Badlands Brawl",
+    "Old World Classic",
+    "Cheap Gits"
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "name": "Chaos Renegades",
+  "roster": [
+    {
+      "name": "Renegade Human Lineman",
+      "qty": "0-12",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Animosity (All)"
+      ],
+      "primary": "SGM",
+      "secondary": "AF",
+      "cost": 50000
+    },
+    {
+      "name": "Renegade Human Thrower",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Animosity (All)",
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "SGMP",
+      "secondary": "AF",
+      "cost": 75000
+    },
+    {
+      "name": "Renegade Goblin",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Animosity (All)",
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "ASM",
+      "secondary": "GP",
+      "cost": 40000
+    },
+    {
+      "name": "Renegade Orc",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Animosity (All)"
+      ],
+      "primary": "SGM",
+      "secondary": "AF",
+      "cost": 50000
+    },
+    {
+      "name": "Renegade Skaven",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Animosity (All)"
+      ],
+      "primary": "GSM",
+      "secondary": "AF",
+      "cost": 50000
+    },
+    {
+      "name": "Renegade Dark Elf",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Animosity (All)"
+      ],
+      "primary": "SGAM",
+      "secondary": "F",
+      "cost": 65000
+    },
+    {
+      "name": "Renegade Troll",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Always Hungry",
+        "Loner (4+)",
+        "Projectile Vomit",
+        "Mighty Blow (+1)",
+        "Really Stupid",
+        "Regeneration",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "GAMP",
+      "cost": 115000
+    },
+    {
+      "name": "Renegade Ogre",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Throw Team-Mate"
+      ],
+      "primary": "F",
+      "secondary": "GAM",
+      "cost": 140000
+    },
+    {
+      "name": "Renegade Minotaur",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Loner (4+)",
+        "Frenzy",
+        "Horns",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Unchanelled Fury"
+      ],
+      "primary": "F",
+      "secondary": "GAM",
+      "cost": 150000
+    },
+    {
+      "name": "Renegade Rat Ogre",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Animal Savagery",
+        "Frenzy",
+        "Loner (4+)",
+        "Mighty Blow (+1)",
+        "Prehensile Tail"
+      ],
+      "primary": "F",
+      "secondary": "GAM",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Favoured of..."
+  ]
+}

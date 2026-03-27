@@ -1,0 +1,112 @@
+{
+  "name": "Chaos Dwarfs",
+  "roster": [
+    {
+      "name": "Hobgoblin Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [],
+      "primary": "S",
+      "secondary": "GFA",
+      "cost": 40000
+    },
+    {
+      "name": "Sneaky Stabber",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "8+",
+      "skills": [
+        "Shadowing",
+        "Stab"
+      ],
+      "primary": "SG",
+      "secondary": "FA",
+      "cost": 60000
+    },
+    {
+      "name": "Chaos Dwarf Blocker",
+      "qty": "0-4",
+      "ma": "4",
+      "st": "3",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Block",
+        "Iron Skin",
+        "Thick Skull"
+      ],
+      "primary": "GF",
+      "secondary": "ASM",
+      "cost": 70000
+    },
+    {
+      "name": "Forgeflame",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Brawler",
+        "Fire Breath",
+        "Disturbing Presence",
+        "Thick Skull"
+      ],
+      "primary": "GF",
+      "secondary": "AM",
+      "cost": 80000
+    },
+    {
+      "name": "Bull Centaur",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Sprint",
+        "Sure Feet",
+        "Thick Skull",
+        "Unstable"
+      ],
+      "primary": "GF",
+      "secondary": "ASM",
+      "cost": 130000
+    },
+    {
+      "name": "Chaos Dwarf Minotaur",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Loner (4+)",
+        "Frenzy",
+        "Horns",
+        "Mighty Blow (+1)",
+        "Thick Skull",
+        "Unchanelled Fury"
+      ],
+      "primary": "MF",
+      "secondary": "GA",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Favoured of Hashut",
+    "Chaos Clash",
+    "Badlands Brawl"
+  ]
+}

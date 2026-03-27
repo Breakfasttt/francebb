@@ -1,0 +1,129 @@
+{
+  "name": "Snotlings",
+  "roster": [
+    {
+      "name": "Snotling Lineman",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty",
+        "Side Step",
+        "Titchy",
+        "Insignificant"
+      ],
+      "primary": "AS",
+      "secondary": "G",
+      "cost": 15000
+    },
+    {
+      "name": "Fun-Hoppa",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "Spring-Heeled",
+        "Stunty",
+        "Right Stuff",
+        "Side Step"
+      ],
+      "primary": "AS",
+      "secondary": "G",
+      "cost": 20000
+    },
+    {
+      "name": "Stilty Runna",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty",
+        "Side Step",
+        "Sprint"
+      ],
+      "primary": "AS",
+      "secondary": "G",
+      "cost": 20000
+    },
+    {
+      "name": "Fungus Flinga",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "1",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "6+",
+      "skills": [
+        "Bombardier",
+        "Dodge",
+        "Secret Weapon",
+        "Stunty",
+        "Side Step",
+        "Right Stuff",
+        "Titchy"
+      ],
+      "primary": "APS",
+      "secondary": "G",
+      "cost": 30000
+    },
+    {
+      "name": "Snotling Pump Wagon",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "5",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Dirty Player (+1)",
+        "Really Stupid",
+        "Juggernaut",
+        "Mighty Blow (+1)",
+        "Stand Firm"
+      ],
+      "primary": "SF",
+      "secondary": "AG",
+      "cost": 100000
+    },
+    {
+      "name": "Trained Troll",
+      "qty": "0-2",
+      "ma": "4",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Always Hungry",
+        "Really Stupid",
+        "Mighty Blow (+1)",
+        "Throw Team-Mate",
+        "Projectile Vomit",
+        "Regeneration"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 115000
+    }
+  ],
+  "specialRules": [
+    "Bribery and Corruption",
+    "Underworld Challenge",
+    "Cheap Gits",
+    "Swarming"
+  ]
+}

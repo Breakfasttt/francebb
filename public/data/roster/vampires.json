@@ -1,0 +1,94 @@
+{
+  "name": "Vampires",
+  "roster": [
+    {
+      "name": "Thrall Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AF",
+      "cost": 40000
+    },
+    {
+      "name": "Vampire Runner",
+      "qty": "0-2",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Hypnotic Gaze",
+        "Regeneration",
+        "Blood Lust (2+)"
+      ],
+      "primary": "AG",
+      "secondary": "FP",
+      "cost": 100000
+    },
+    {
+      "name": "Vampire Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "4",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Hypnotic Gaze",
+        "Regeneration",
+        "Blood Lust (2+)"
+      ],
+      "primary": "AGP",
+      "secondary": "F",
+      "cost": 110000
+    },
+    {
+      "name": "Vampire Blitzer",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "4",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Juggernaut",
+        "Hypnotic Gaze",
+        "Regeneration",
+        "Blood Lust (3+)"
+      ],
+      "primary": "AGF",
+      "secondary": "-",
+      "cost": 110000
+    },
+    {
+      "name": "Vargheist",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Frenzy",
+        "Claws",
+        "Regeneration",
+        "Blood Lust (3+)",
+        "Loner (4+)"
+      ],
+      "primary": "F",
+      "secondary": "AG",
+      "cost": 150000
+    }
+  ],
+  "specialRules": [
+    "Masters of Undeath",
+    "Sylvanian Spot"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "name": "High Elves",
+  "roster": [
+    {
+      "name": "High Elf Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AFP",
+      "cost": 70000
+    },
+    {
+      "name": "High Elf Thrower",
+      "qty": "0-2",
+      "ma": "6",
+      "st": "3",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Safe Pass"
+      ],
+      "primary": "GP",
+      "secondary": "AF",
+      "cost": 100000
+    },
+    {
+      "name": "High Elf Catcher",
+      "qty": "0-4",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Catch",
+        "Dodge"
+      ],
+      "primary": "GA",
+      "secondary": "FP",
+      "cost": 90000
+    },
+    {
+      "name": "High Elf Blitzer",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Block"
+      ],
+      "primary": "GA",
+      "secondary": "FP",
+      "cost": 100000
+    }
+  ]
+}

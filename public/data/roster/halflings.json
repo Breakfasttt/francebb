@@ -1,0 +1,84 @@
+{
+  "name": "Halflings",
+  "roster": [
+    {
+      "name": "Halfling Hopeful",
+      "qty": "0-16",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty",
+        "Insignificant"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 30000
+    },
+    {
+      "name": "Hefty Halfling",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Fend",
+        "Sure Hands",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 50000
+    },
+    {
+      "name": "Halfling Catcher",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Catch",
+        "Dodge",
+        "Diving Catch",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 50000
+    },
+    {
+      "name": "Altern Forest Treeman",
+      "qty": "0-2",
+      "ma": "2",
+      "st": "6",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Mighty Blow (+1)",
+        "Stand Firm",
+        "Strong Arm",
+        "Take Root",
+        "Thick Skull",
+        "Throw Team-Mate",
+        "Timmm-ber!"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 120000
+    }
+  ],
+  "specialRules": [
+    "Halfling Master Chef"
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "name": "Old World Alliance Team",
+  "roster": [
+    {
+      "name": "Old World Human Lineman",
+      "qty": "0-16",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [],
+      "primary": "G",
+      "secondary": "AS",
+      "cost": 50000
+    },
+    {
+      "name": "Old World Halfling Hopefuls",
+      "qty": "0-3",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Dodge",
+        "Right Stuff",
+        "Stunty"
+      ],
+      "primary": "A",
+      "secondary": "GS",
+      "cost": 30000
+    },
+    {
+      "name": "Old World Dwarf Lineman",
+      "qty": "0-3",
+      "ma": "4",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Block",
+        "Defensive",
+        "Thick Skull"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 70000
+    },
+    {
+      "name": "Old World Human Thrower",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Pass",
+        "Sure Hands"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 75000
+    },
+    {
+      "name": "Old World Human Catcher",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Catch",
+        "Dodge"
+      ],
+      "primary": "GA",
+      "secondary": "S",
+      "cost": 75000
+    },
+    {
+      "name": "Old World Dwarf Runner",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Sprint",
+        "Sure Hands",
+        "Thick Skull"
+      ],
+      "primary": "GP",
+      "secondary": "AS",
+      "cost": 80000
+    },
+    {
+      "name": "Old World Human Blitzer",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Tackle"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 85000
+    },
+    {
+      "name": "Old World Dwarf Troll Slayer",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Block",
+        "Dauntless",
+        "Frenzy",
+        "Hatred (Troll)",
+        "Thick Skull"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 95000
+    },
+    {
+      "name": "Old World Dwarf Blitzer",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Block",
+        "Diving Tackle",
+        "Tackle",
+        "Thick Skull"
+      ],
+      "primary": "GS",
+      "secondary": "A",
+      "cost": 100000
+    },
+    {
+      "name": "Altern Forest Treeman",
+      "qty": "0-1",
+      "ma": "2",
+      "st": "6",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Mighty Blow",
+        "Stand Firm",
+        "Strong Arm",
+        "Take Root",
+        "Thick Skull",
+        "Throw Team-mate",
+        "Timmm-ber!"
+      ],
+      "primary": "S",
+      "secondary": "AG",
+      "cost": 120000
+    },
+    {
+      "name": "Ogre",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Bone Head",
+        "Loner (3+)",
+        "Mighty Blow",
+        "Thick Skull",
+        "Throw Team-mate"
+      ],
+      "primary": "S",
+      "secondary": "AG",
+      "cost": 140000
+    }
+  ]
+}
