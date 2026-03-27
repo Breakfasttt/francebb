@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
@@ -154,9 +155,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div className="forum-container fade-in">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: "1000px", margin: "0 auto 3rem auto" }}>
-        <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/forum" title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 className="forum-title" style={{ margin: 0 }}>Recherche Avancée</h1>
           <p className="forum-description" style={{ marginTop: "0.5rem" }}>Trouvez exactement ce que vous cherchez parmi tous les forums.</p>

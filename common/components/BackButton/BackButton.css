@@ -1,0 +1,23 @@
+/* Standard project back button - Style BBPusher uniformisé */
+.back-button {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--header-foreground);
+  transform: translateX(-3px);
+  box-shadow: 0 4px 12px var(--btn-shadow);
+}

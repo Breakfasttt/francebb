@@ -1,7 +1,8 @@
 import "./page.css";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { prisma } from "@/lib/prisma";
 import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
-import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch, ArrowLeft } from "lucide-react";
+import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch } from "lucide-react";
 import Link from "next/link";
 import ActiveFilters from "@/app/tournaments/component/ActiveFilters";
 import { auth } from "@/auth";
@@ -73,9 +74,7 @@ export default async function TournamentsPage({
   return (
     <main className="container tournaments-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/" className="back-button" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/" style={{ position: 'absolute', left: 0 }} />
         <h1 style={{ margin: 0 }}>Tous les Tournois</h1>
       </header>
 

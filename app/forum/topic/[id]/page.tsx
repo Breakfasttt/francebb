@@ -12,6 +12,7 @@ import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { notFound, redirect } from "next/navigation";
 import "../../page.css";
 
@@ -174,9 +175,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     <main className="container forum-container">
       <MarkAsRead topicId={id} />
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <Link href={`/forum/${topic.forumId}`} className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href={`/forum/${topic.forumId}`} title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <span style={{ color: 'var(--accent)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />
           <h1 style={{ margin: '0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center', color: 'var(--primary)' }}>

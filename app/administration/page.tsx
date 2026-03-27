@@ -4,6 +4,7 @@ import { getRolePower, ROLE_POWER } from "@/lib/roles";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
@@ -69,9 +70,7 @@ export default function AdministrationPage() {
   return (
     <main className="container admin-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 className="page-title"><span>Administration</span></h1>
           <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>

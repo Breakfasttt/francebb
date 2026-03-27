@@ -35,6 +35,7 @@ import {
   Pencil
 } from "lucide-react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { toast } from "react-hot-toast";
 
 import Tooltip from "@/common/components/Tooltip/Tooltip";
@@ -385,7 +386,7 @@ export default function BBPusherPage() {
     <main className={`bbpusher-page ${isFullscreen ? 'fullscreen' : ''}`}>
       <header className="tool-header">
         <div className="header-left">
-          <Link href="/ressources" className="back-button" title="Retour"><ArrowLeft size={20} /></Link>
+          <BackButton href="/ressources" title="Retour" />
           <div className="title-group">
             <h1 className="title-modern">BB<span>Pusher</span></h1>
           </div>

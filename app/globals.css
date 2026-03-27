@@ -130,29 +130,7 @@ label {
   font-weight: bold;
 }
 
-.back-button {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--glass-border);
-  border: 1px solid var(--glass-border);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--foreground);
-  transition: all 0.2s ease;
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  flex-shrink: 0;
-}
 
-.back-button:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: var(--header-foreground);
-  transform: scale(1.1);
-  box-shadow: 0 0 15px var(--btn-shadow);
-}
 
 .action-buttons {
   display: flex;

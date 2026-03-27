@@ -42,25 +42,7 @@
   align-items: center; 
 }
 
-/* Standard project back button */
-.back-button {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  color: var(--foreground);
-  transition: all 0.2s ease;
-}
-.back-button:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
-  transform: translateX(-3px);
-}
+
 
 .title-group { display: flex; align-items: center; }
 .title-modern { 

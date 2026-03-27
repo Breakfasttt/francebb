@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { ArrowLeft, Trophy, Bookmark, Clock, ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -116,9 +117,7 @@ export default function ProfilePage() {
   return (
     <main className="container profile-page-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 className="page-title">Mon Compte</h1>
           <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>

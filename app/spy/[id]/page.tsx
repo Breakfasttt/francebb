@@ -3,6 +3,7 @@
 import { ArrowLeft, Trophy } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -97,9 +98,7 @@ export default function SpyProfilePage() {
   return (
     <main className="container profile-page-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 className="page-title">Profil de <span>{user.name}</span></h1>
           <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>

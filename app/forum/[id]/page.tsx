@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Trophy, Lock as LockIcon } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound } from "next/navigation";
@@ -95,9 +96,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   return (
     <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/forum" title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0, color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'center' }}>
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />

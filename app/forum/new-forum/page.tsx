@@ -3,6 +3,7 @@ import { isModerator } from "@/lib/roles";
 import { ArrowLeft } from "lucide-react";
 import "../page.css";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { redirect } from "next/navigation";
 import { createForum, getCategories, getAllForums } from "../actions";
 import NewForumForm from "./component/NewForumForm";
@@ -23,9 +24,7 @@ export default async function NewForumPage({ searchParams }: { searchParams: Pro
   return (
     <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/forum" className="back-button" title="Retour au forum" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/forum" title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Créer un <span>nouveau forum</span></h1>
           <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Ajoutez une nouvelle section ou un sous-forum à la communauté</p>

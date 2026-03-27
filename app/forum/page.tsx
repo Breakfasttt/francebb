@@ -4,6 +4,7 @@ import "./page.css";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import ForumCategory from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
 import { redirect } from "next/navigation";
@@ -58,9 +59,7 @@ export default async function ForumPage() {
   return (
     <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <Link href="/" className="back-button" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', margin: 0 }}>Le Forum France <span>Blood Bowl</span></h1>
           <p style={{ color: '#888', margin: 0 }}>L'espace de discussion de la communauté Blood Bowl française</p>

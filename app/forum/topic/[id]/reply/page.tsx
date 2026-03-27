@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Clock, User } from "lucide-react";
 import Link from "next/link";
+import BackButton from "@/common/components/BackButton/BackButton";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
@@ -73,9 +74,7 @@ export default async function ReplyPage({
   return (
     <main className="container forum-container">
       <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <Link href={`/forum/topic/${id}`} className="back-button" title="Retour au sujet" style={{ position: 'absolute', left: 0 }}>
-          <ArrowLeft size={20} />
-        </Link>
+        <BackButton href={`/forum/topic/${id}`} title="Retour au sujet" style={{ position: 'absolute', left: 0 }} />
         <div style={{ textAlign: 'center' }}>
           <h1 style={{ margin: 0 }}>Répondre au <span>sujet</span></h1>
           <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></p>
