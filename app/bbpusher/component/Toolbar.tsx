@@ -1,11 +1,10 @@
-import React from "react";
-import { TokenType } from "../page";
-import { User, Users, Goal, Eraser, MousePointer2 } from "lucide-react";
+import { ToolType } from "../page";
+import { User, Users, Goal, Eraser, MousePointer2, RefreshCcw } from "lucide-react";
 import "./Toolbar.css";
 
 interface ToolbarProps {
-  activeTool: TokenType | 'select' | 'eraser';
-  onSelect: (tool: TokenType | 'select' | 'eraser') => void;
+  activeTool: ToolType;
+  onSelect: (tool: ToolType) => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ activeTool, onSelect }) => {
@@ -14,6 +13,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ activeTool, onSelect }) => {
     { id: 'blue', icon: <User size={24} color="#3b82f6" />, label: 'Joueur Bleu' },
     { id: 'red', icon: <User size={24} color="#ef4444" />, label: 'Joueur Rouge' },
     { id: 'ball', icon: <Goal size={24} color="#fbbf24" />, label: 'Ballon' },
+    { id: 'status', icon: <RefreshCcw size={24} color="var(--accent)" />, label: 'État (Cliquez sur joueur)' },
     { id: 'eraser', icon: <Eraser size={24} />, label: 'Gomme' },
   ];
 

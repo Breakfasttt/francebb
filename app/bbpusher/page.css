@@ -51,19 +51,38 @@
 
 .header-right {
   display: flex;
-  gap: 0.8rem;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tool-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 0.5rem;
 }
 
 .tool-btn {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  color: var(--foreground);
-  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
@@ -100,6 +119,17 @@
   padding: 2rem;
   overflow: auto;
   background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a0c 100%);
+  transition: all 0.5s ease;
+}
+
+.vertical-mode .pitch-container {
+  min-height: 1400px;
+  min-width: 850px;
+  padding: 100px 50px;
+}
+
+.vertical-mode .pitch-wrapper {
+  /* No extra styles needed on the wrapper as it rotates on center center */
 }
 
 @media (max-width: 768px) {

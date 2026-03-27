@@ -1,23 +1,30 @@
 import React from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { TokenData } from "../page";
+import { TokenData, ToolType } from "../page";
 import { Footprints, CircleOff, Skull } from "lucide-react";
 import "./Token.css";
 
 interface TokenProps {
   token: TokenData;
   isOverlay?: boolean;
+  activeTool?: ToolType;
 }
 
-const Token: React.FC<TokenProps> = ({ token, isOverlay }) => {
+const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool }) => {
+  const isStatusMode = activeTool === 'status';
+
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: token.id,
+    disabled: isOverlay || isStatusMode
   });
 
-  const style = transform ? {
+  const style: React.CSSProperties = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
     opacity: isDragging ? 0.3 : 1,
-  } : undefined;
+    pointerEvents: isStatusMode ? 'none' : 'auto',
+  } : {
+    pointerEvents: isStatusMode ? 'none' : 'auto',
+  };
 
   return (
     <div 

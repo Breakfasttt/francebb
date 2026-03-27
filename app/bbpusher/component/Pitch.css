@@ -5,6 +5,12 @@
   border-radius: 8px;
   box-shadow: 0 0 40px rgba(0,0,0,0.5);
   user-select: none;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center center;
+}
+
+.pitch-wrapper.is-vertical {
+  transform: rotate(90deg);
 }
 
 .pitch-grid {
@@ -29,12 +35,29 @@
   cursor: crosshair;
 }
 
+.square-token-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.token-wrapper {
+  position: absolute;
+  pointer-events: auto;
+}
+
 .pitch-square:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
 .pitch-square.drag-over {
-  background: rgba(var(--accent-rgb), 0.3) !important;
+  background: rgba(255, 215, 0, 0.3) !important;
   box-shadow: inset 0 0 10px var(--accent);
 }
 
@@ -77,8 +100,17 @@
 }
 
 .line-center {
+  left: 50%;
   background: var(--accent);
   width: 4px;
+}
+
+.line-ez-left {
+  left: 50px; /* 1 square */
+}
+
+.line-ez-right {
+  right: 50px; /* 1 square */
 }
 
 @media (max-width: 1400px) {
