@@ -16,6 +16,7 @@ import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
 import Pagination from "@/common/components/Pagination/Pagination";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 const POSTS_PER_PAGE = 20;
 
@@ -57,12 +58,14 @@ export default async function ForumSidebar({
         <div className="sidebar-widget-container">
           {/* 1. Pages Block (Forum / Search) */}
           {(totalPages && totalPages > 1) && (
-            <Pagination 
-              currentPage={currentPage || 1}
-              totalPages={totalPages}
-              variant="sidebar"
-              baseUrl={forumId ? `/forum/${forumId}` : undefined}
-            />
+            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
+              <Pagination 
+                currentPage={currentPage || 1}
+                totalPages={totalPages}
+                variant="sidebar"
+                baseUrl={forumId ? `/forum/${forumId}` : undefined}
+              />
+            </PremiumCard>
           )}
 
           {/* Messages Privés */}

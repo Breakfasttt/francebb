@@ -1,9 +1,10 @@
 /*
   Composant de pagination générique et unifié.
-  Supporte la navigation par liens (href) ou par callback (onPageChange).
+  Offre un comportement "fixe" (nombre de slots constant) et un champ de saisie directe.
 */
+"use client";
+
 import React from 'react';
-import Link from 'next/link';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import './Pagination.css';
 
@@ -11,154 +12,135 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange?: (page: number) => void;
-  baseUrl?: string; // Si fourni, utilise des liens <Link href={`${baseUrl}?page=${page}`} />
-  queryParam?: string; // 'page' par défaut
+  baseUrl?: string; 
+  queryParam?: string; 
   className?: string;
-  showFirstLast?: boolean;
   variant?: 'default' | 'sidebar';
-  showGoto?: boolean;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
   baseUrl,
   queryParam = 'page',
   className = '',
-  showFirstLast = true,
-  variant = 'default',
-  showGoto = false
-}) => {
-  const [gotoValue, setGotoValue] = React.useState('');
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  variant = 'default'
+}: PaginationProps) {
+  
+  const [inputValue, setInputValue] = React.useState(currentPage.toString());
+
+  // On synchronise l'input avec la page actuelle si elle change par clic
+  React.useEffect(() => {
+    setInputValue(currentPage.toString());
+  }, [currentPage]);
 
   if (totalPages <= 1) return null;
 
   const navigateToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) {
+    const target = Math.min(Math.max(1, page), totalPages);
+    if (target !== currentPage) {
       if (onPageChange) {
-        onPageChange(page);
+        onPageChange(target);
       } else if (baseUrl) {
         const separator = baseUrl.includes('?') ? '&' : '?';
-        window.location.assign(`${baseUrl}${separator}${queryParam}=${page}`);
+        window.location.assign(`${baseUrl}${separator}${queryParam}=${target}`);
       }
+    } else {
+        // Si c'est la même page, on reset l'input au cas où
+        setInputValue(currentPage.toString());
     }
   };
 
-  const handleGotoKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      const page = parseInt(gotoValue, 10);
+      const page = parseInt(inputValue, 10);
       if (!isNaN(page)) {
         navigateToPage(page);
       }
-      setGotoValue('');
-      inputRef.current?.blur();
     }
   };
 
-  const renderPageButton = (page: number | string, label?: React.ReactNode, type: 'page' | 'nav' = 'page') => {
-    const isPageNum = typeof page === 'number';
-    const isActive = isPageNum && page === currentPage;
-    const isDisabled = isPageNum && (page < 1 || page > totalPages);
-    
-    const pageNum = isPageNum ? page : 1;
-    const content = label || page;
+  // Logique de génération à nombre de slots fixe (5 slots pour les numéros)
+  const renderFixedPages = () => {
+    const slots: (number | string)[] = [];
 
-    const commonProps = {
-      className: `pagination-item ${type} ${isActive ? 'active' : ''} ${isDisabled ? 'disabled' : ''}`,
-      onClick: (e: React.MouseEvent) => {
-        if (!baseUrl) e.preventDefault();
-        navigateToPage(pageNum);
-      },
-      title: isPageNum ? `Page ${page}` : undefined
-    };
-
-    const separator = baseUrl?.includes('?') ? '&' : '?';
-    const href = baseUrl ? `${baseUrl}${separator}${queryParam}=${pageNum}` : '#';
-
-    if (baseUrl && !isDisabled) {
-      return (
-        <Link key={`${type}-${page}`} href={href} {...commonProps}>
-          {content}
-        </Link>
-      );
-    }
-
-    return (
-      <button key={`${type}-${page}`} type="button" disabled={isDisabled || isActive} {...commonProps}>
-        {content}
-      </button>
-    );
-  };
-
-  // Logique de génération des numéros de pages (compacte)
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    const delta = 1; // Nombre de pages autour de la page courante
-
-    for (let i = 1; i <= totalPages; i++) {
-      if (
-        i === 1 || 
-        i === totalPages || 
-        (i >= currentPage - delta && i <= currentPage + delta)
-      ) {
-        pages.push(i);
-      } else if (
-        (i === currentPage - delta - 1) || 
-        (i === currentPage + delta + 1)
-      ) {
-        pages.push('...');
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) slots.push(i);
+    } else {
+      if (currentPage <= 2) {
+        slots.push(1, 2, 3, '...', totalPages);
+      } 
+      else if (currentPage >= totalPages - 1) {
+        slots.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
+      }
+      else {
+        slots.push(1, '...', currentPage, '...', totalPages);
       }
     }
 
-    return [...new Set(pages)];
+    return slots.map((page, index) => {
+      if (page === '...') {
+        return <span key={`ell-${index}`} className="pagination-ellipsis">...</span>;
+      }
+
+      const isCurrent = page === currentPage;
+      
+      return (
+        <button
+          key={`page-${page}`}
+          onClick={() => navigateToPage(page as number)}
+          className={`pagination-item ${isCurrent ? 'active' : ''}`}
+          disabled={isCurrent}
+        >
+          {page}
+        </button>
+      );
+    });
+  };
+
+  const NavButton = ({ page, icon: Icon, type }: { page: number, icon: any, type: string }) => {
+    const isDisabled = (type === 'prev' || type === 'first') ? currentPage <= 1 : currentPage >= totalPages;
+    return (
+      <button
+        onClick={() => navigateToPage(page)}
+        className={`pagination-item nav-btn ${type} ${isDisabled ? 'disabled' : ''}`}
+        disabled={isDisabled}
+        title={type}
+      >
+        <Icon size={variant === 'sidebar' ? 12 : 16} />
+      </button>
+    );
   };
 
   return (
     <nav className={`pagination-container ${variant} ${className}`} aria-label="Pagination">
       {variant === 'sidebar' && (
-        <div className="pagination-header">
-          <span className="pagination-title">Pages</span>
+        <div className="pagination-header-sidebar">
+          <span className="pagination-label">Pages</span>
           <div className="pagination-goto">
             <input
-              ref={inputRef}
               type="text"
-              placeholder={currentPage.toString()}
-              value={gotoValue}
-              onChange={(e) => setGotoValue(e.target.value.replace(/[^0-9]/g, ''))}
-              onKeyDown={handleGotoKeyDown}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value.replace(/[^0-9]/g, ''))}
+              onKeyDown={handleKeyDown}
               className="pagination-input"
+              onBlur={() => setInputValue(currentPage.toString())}
             />
             <span className="pagination-total">/ {totalPages}</span>
           </div>
         </div>
       )}
+
       <div className="pagination-list">
-        {showFirstLast && renderPageButton(1, <ChevronsLeft size={variant === 'sidebar' ? 14 : 16} />, 'nav')}
-        {renderPageButton(Math.max(1, currentPage - 1), <ChevronLeft size={variant === 'sidebar' ? 14 : 16} />, 'nav')}
-
-        {variant !== 'sidebar' && (
-          <div className="pagination-numbers">
-            {getPageNumbers().map((p, i) => (
-              p === '...' 
-                ? <span key={`ellipsis-${i}`} className="pagination-ellipsis">...</span>
-                : renderPageButton(p as number)
-            ))}
-          </div>
-        )}
-
-        {variant === 'sidebar' && (
-          <div className="pagination-numbers sidebar-mode">
-             {renderPageButton(currentPage)}
-          </div>
-        )}
-
-        {renderPageButton(Math.min(totalPages, currentPage + 1), <ChevronRight size={variant === 'sidebar' ? 14 : 16} />, 'nav')}
-        {showFirstLast && renderPageButton(totalPages, <ChevronsRight size={variant === 'sidebar' ? 14 : 16} />, 'nav')}
+        <NavButton page={1} icon={ChevronsLeft} type="first" />
+        <NavButton page={Math.max(1, currentPage - 1)} icon={ChevronLeft} type="prev" />
+        <div className="pagination-numbers">
+          {renderFixedPages()}
+        </div>
+        <NavButton page={Math.min(totalPages, currentPage + 1)} icon={ChevronRight} type="next" />
+        <NavButton page={totalPages} icon={ChevronsRight} type="last" />
       </div>
     </nav>
   );
-};
-
-export default Pagination;
+}

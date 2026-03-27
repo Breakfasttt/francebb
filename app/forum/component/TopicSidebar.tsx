@@ -27,6 +27,7 @@ import Modal from "@/common/components/Modal/Modal";
 import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
 import Pagination from "@/common/components/Pagination/Pagination";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import LockButton from "@/app/forum/component/LockButton";
 
@@ -178,12 +179,14 @@ export default function TopicSidebar({
           
           {/* 1. Pages Block */}
           {(totalPages && totalPages > 1) && (
-            <Pagination 
-              currentPage={currentPage || 1}
-              totalPages={totalPages}
-              variant="sidebar"
-              baseUrl={`/forum/topic/${topicId}`}
-            />
+            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
+              <Pagination 
+                currentPage={currentPage || 1}
+                totalPages={totalPages}
+                variant="sidebar"
+                baseUrl={`/forum/topic/${topicId}`}
+              />
+            </PremiumCard>
           )}
 
           {/* 2. Topic Actions Block */}
