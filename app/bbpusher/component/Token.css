@@ -1,83 +1,116 @@
 .token-container {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 3px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-  transition: transform 0.1s, box-shadow 0.1s;
-  z-index: 100;
-  background: #fff;
-  pointer-events: auto !important;
+  transition: box-shadow 0.2s, transform 0.2s;
+  user-select: none;
+  touch-action: none;
 }
 
-.token-container:active {
-  cursor: grabbing;
+.token-container:active { cursor: grabbing; }
+.token-container.overlay { cursor: grabbing; transform: scale(1.1) !important; z-index: 9999; }
+
+/* FIX: Empecher le scroll des fosses et le "décallage" vers la gauche */
+.token-container.dragging-source {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  /* On garde la taille exacte pour ne pas que la grille s'effondre */
 }
 
-.token-container.blue {
-  background: #3b82f6;
-  border-color: #1d4ed8;
+.player-token {
+  border: 3px solid #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  background: #333;
 }
 
-.token-container.red {
-  background: #ef4444;
-  border-color: #b91c1c;
-}
+.player-token.blue { border-color: #3b82f6; background-color: #1e40af; }
+.player-token.red { border-color: #ef4444; background-color: #991b1b; }
 
-.token-container.ball {
-  background: #fbbf24;
-  border-color: #d97706;
-  border-radius: 40% 60% 40% 60%;
-  transform: rotate(-15deg);
-}
-
-.token-container.prone {
-  transform: rotate(90deg) scale(0.9);
-  opacity: 0.8;
-  border-style: dashed;
-}
-
-.token-container.stunned {
-  transform: rotate(180deg) scale(0.85);
-  opacity: 0.6;
-  filter: grayscale(0.5);
-  border-style: dotted;
-}
-
-.token-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+.token-inner { 
+  width: 100%; height: 100%; 
+  display: flex; align-items: center; justify-content: center; 
   position: relative;
+  transition: transform 0.4s ease;
+  transform-origin: center center;
 }
+
+.token-visual { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
 
 .token-number {
-  font-weight: 900;
   color: #fff;
-  font-size: 14px;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  font-weight: 900;
+  font-size: 1.2rem;
+  text-shadow: 0 0 4px rgba(0,0,0,0.8);
+  pointer-events: none;
 }
 
-.token-status-icon {
+.ball-token {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  z-index: 50;
+  cursor: grab;
+}
+
+.ball-icon {
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+  animation: bounceBall 2s infinite ease-in-out;
+}
+
+@keyframes bounceBall {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* -- Player Status -- */
+.token-container.prone .token-inner { rotate: 90deg; opacity: 0.8; }
+.token-container.stunned .token-inner { rotate: 90deg; opacity: 0.6; }
+
+.stars-animation {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background: var(--background);
-  border-radius: 50%;
-  padding: 2px;
+  top: -15px;
+  width: 100%;
   display: flex;
-  color: var(--accent);
+  justify-content: center;
+  gap: 4px;
 }
 
-.token-container.overlay {
-  cursor: grabbing;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  transform: scale(1.1);
+.star { color: #ffd700; animation: spin 2s infinite linear; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.floating-icon {
+  position: absolute;
+  top: -24px;
+  color: #fff;
+  filter: drop-shadow(0 0 5px rgba(0,0,0,0.8));
+  animation: float 1s infinite alternate ease-in-out;
+  z-index: 100;
+}
+
+@keyframes float { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+
+.bite-anim { color: #facc15; animation: bite 0.5s infinite alternate; }
+@keyframes bite { from { scale: 1; opacity: 1; } to { scale: 1.3; opacity: 0.8; } }
+
+.croque-anim { color: #ff4444; animation: croque 0.3s infinite alternate; }
+@keyframes croque { from { transform: scale(1) rotate(-10deg); } to { transform: scale(1.2) rotate(10deg); } }
+
+/* Carried Ball Overlay */
+.carried-ball-overlay {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  animation: floatSmall 1.5s infinite alternate ease-in-out;
   z-index: 1000;
+}
+
+@keyframes floatSmall {
+  from { transform: translateY(0); }
+  to { transform: translateY(-4px); }
 }

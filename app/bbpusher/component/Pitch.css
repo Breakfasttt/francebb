@@ -3,25 +3,31 @@
   background: #1a3a1a;
   border: 4px solid #fff;
   border-radius: 8px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  box-shadow: 0 0 60px rgba(0,0,0,0.6);
   user-select: none;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-origin: center center;
-}
-
-.pitch-wrapper.is-vertical {
-  transform: rotate(90deg);
+  width: 1308px;
+  height: 758px;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0; /* Important for scale() and scroll containers */
 }
 
 .pitch-grid {
-  width: 1300px; /* 26 * 50px */
-  height: 750px; /* 15 * 50px */
+  width: 1300px;
+  height: 750px;
   position: relative;
   background-image: 
-    linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
   background-size: 50px 50px;
 }
+
+.draw-layer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 200; pointer-events: none;
+}
+.draw-layer.active { pointer-events: auto; cursor: crosshair; }
 
 .pitch-square {
   width: 50px;
@@ -31,103 +37,47 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: background 0.2s;
-  cursor: crosshair;
 }
 
-.square-token-container {
+.pitch-square.ez { background: rgba(194, 29, 29, 0.2); }
+
+/* Integrated Wide Zone Lines - Match EZ thickness */
+.pitch-square.wide-line::after {
+  content: "";
   position: absolute;
-  top: 0;
+  bottom: -1px;
   left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 5;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
 }
 
-.token-wrapper {
+.pitch-line {
   position: absolute;
-  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 6;
 }
 
-.pitch-square:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+.line-center { left: 50%; top: 0; bottom: 0; width: 4px; background: var(--accent); transform: translateX(-50%); }
+
+/* Match grid lines exactly and ensure consistent 3px thickness */
+.line-ez-left { left: 49px; top: 0; bottom: 0; width: 3px; }
+.line-ez-right { left: 1249px; top: 0; bottom: 0; width: 3px; }
 
 .pitch-square.drag-over {
   background: rgba(255, 215, 0, 0.3) !important;
   box-shadow: inset 0 0 10px var(--accent);
 }
 
-.pitch-square.ez {
-  background: rgba(194, 29, 29, 0.15);
-}
-
-.square-pos {
-  font-size: 8px;
-  color: rgba(255, 255, 255, 0.1);
-  position: absolute;
-  top: 2px;
-  left: 2px;
-}
-
-.token-on-pitch {
+.square-token-container {
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  pointer-events: none;
 }
 
-.pitch-overlays {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.pitch-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.6);
-  z-index: 5;
-}
-
-.line-center {
-  left: 50%;
-  background: var(--accent);
-  width: 4px;
-}
-
-.line-ez-left {
-  left: 50px; /* 1 square */
-}
-
-.line-ez-right {
-  right: 50px; /* 1 square */
-}
-
-@media (max-width: 1400px) {
-  .pitch-wrapper {
-    transform-origin: top left;
-    transform: scale(0.8);
-  }
-}
-
-@media (max-width: 1024px) {
-  .pitch-wrapper {
-    transform: scale(0.6);
-  }
-}
-
-@media (max-width: 768px) {
-  .pitch-wrapper {
-    transform: scale(0.4);
-  }
-}
+.token-wrapper { position: absolute; pointer-events: auto; }
