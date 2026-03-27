@@ -486,9 +486,11 @@ TEXTE À FORMATER :
         </div>
 
         <div>
-          <button type="button" onClick={() => setIsPreview(!isPreview)} className={`widget-button ${isPreview ? "active" : "secondary-btn"}`} style={{ padding: "0.4rem 0.8rem", height: "auto", fontSize: "0.85rem" }}>
-            {isPreview ? <><EyeOff size={16} /> Fermer l'aperçu</> : <><Eye size={16} /> Aperçu</>}
-          </button>
+          <Tooltip text={isPreview ? "Fermer l'aperçu" : "Aperçu"}>
+            <button type="button" onClick={() => setIsPreview(!isPreview)} className={`widget-button ${isPreview ? "active" : "secondary-btn"}`} style={{ padding: "0.4rem 0.8rem", height: "auto", fontSize: "0.85rem" }}>
+              {isPreview ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </Tooltip>
         </div>
       </div>
 

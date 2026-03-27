@@ -1,7 +1,6 @@
 .profile-page-container {
   padding-top: 2rem;
   padding-bottom: 4rem;
-  max-width: 1400px !important; /* On élargit la page pour plus de confort */
 }
 
 
@@ -334,7 +333,7 @@
 .profile-sidebar-wrapper {
   display: flex;
   flex-direction: column;
-  width: 210px; /* Réduit encore pour laisser plus de place au contenu principal */
+  width: 230px; /* Réduit pour plus de compacité */
   flex-shrink: 0;
   position: sticky;
   top: 6.5rem;

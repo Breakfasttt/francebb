@@ -323,8 +323,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
       )}
 
       <style jsx>{`
-        .profile-edit-container {
-          padding: 2rem;
+        :global(.profile-edit-container) {
+          padding: 2rem !important;
         }
         .section-title {
           margin: 0 0 2rem 0;

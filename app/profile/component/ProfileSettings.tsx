@@ -107,11 +107,8 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
       />
 
       <style jsx>{`
-        .profile-settings-view {
-          padding: 2rem;
-          background: var(--card-bg);
-          border-radius: 16px;
-          border: 1px solid var(--glass-border);
+        :global(.profile-settings-view) {
+          padding: 2rem !important;
         }
         .section-header-pm {
           display: flex;
@@ -129,6 +126,9 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
         }
         .settings-section {
           margin-bottom: 3.5rem;
+        }
+        .settings-section:last-of-type {
+          margin-bottom: 0;
         }
         .settings-subtitle {
           display: flex;
