@@ -100,26 +100,7 @@ label {
   padding: 2rem;
 }
 
-.hero {
-  text-align: center;
-  padding: 2rem 1rem;
-}
 
-.hero h1 {
-  font-size: 2.8rem;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(to right, var(--foreground), var(--text-muted));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
 
 .tournament-badge {
   background: var(--primary);
@@ -132,28 +113,7 @@ label {
 
 
 
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-}
 
-.action-card {
-  padding: 1.2rem;
-  min-width: 200px;
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--foreground);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
 .widget-button {
   display: flex;
@@ -195,12 +155,7 @@ label {
   border-color: var(--text-muted);
 }
 
-.action-card:hover {
-  background: var(--primary);
-  border-color: var(--primary);
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 10px 25px var(--btn-shadow);
-}
+
 
 .section-title {
   font-size: 1.5rem;
@@ -264,34 +219,18 @@ select option {
     font-size: 2rem;
   }
 
-  .hero h1 {
-    font-size: 2.2rem;
-  }
 
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
 
   footer {
     padding-bottom: 2rem !important;
     /* Pour laisser de la place au mobile browser chrome */
   }
 
-  .action-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
 
-  .action-card {
-    width: 100%;
-  }
 }
 
 @media (max-width: 480px) {
-  .hero h1 {
-    font-size: 1.8rem;
-  }
+
 
   .logo {
     font-size: 1.2rem;

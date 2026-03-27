@@ -3,6 +3,7 @@ import { isModerator } from "@/lib/roles";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import "../../page.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
@@ -81,13 +82,12 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
 
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <BackButton href={`/forum/topic/${tournament.topic.id}`} title="Retour au sujet" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0 }}>Modifier le <span>tournoi</span></h1>
-          <p style={{ color: '#aaa', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.topic.title) }} /></p>
-        </div>
-      </header>
+      <PageHeader
+        title={<>Modifier le <span>tournoi</span></>}
+        subtitle={<>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.topic.title) }} /></>}
+        backHref={`/forum/topic/${tournament.topic.id}`}
+        backTitle="Retour au sujet"
+      />
  
       <ForumBreadcrumbs items={breadcrumbs} />
 

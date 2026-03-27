@@ -5,6 +5,7 @@ import { isModerator, UserRole } from "@/lib/roles";
 import MembersTable from "@/app/membres/component/MembersTable";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ArrowLeft, Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -40,13 +41,16 @@ export default async function MembersPage() {
 
   return (
     <main className="container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Users size={32} className="text-secondary" />
-          <h1 style={{ margin: 0 }}>Membres</h1>
-        </div>
-      </header>
+      <PageHeader
+        title={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Users size={32} className="text-secondary" />
+            <span>Membres</span>
+          </div>
+        }
+        backHref="/"
+        backTitle="Retour à l'accueil"
+      />
 
       <MembersTable users={allUsers} currentUserRole={me.role as UserRole} currentUserId={session.user.id} />
     </main>

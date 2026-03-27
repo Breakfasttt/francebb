@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Clock, User, Pencil } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
@@ -69,13 +70,12 @@ export default async function EditPostPage({
 
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <BackButton href={`/forum/topic/${post.topicId}`} title="Retour au sujet" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0, fontSize: '2.5rem', color: 'var(--primary)' }}>Modifier mon message</h1>
-          <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0' }}>Sujet : <strong style={{ color: 'var(--accent)' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }} /></p>
-        </div>
-      </header>
+      <PageHeader
+        title={<span style={{ color: 'var(--primary)' }}>Modifier mon message</span>}
+        subtitle={<>Sujet : <strong style={{ color: 'var(--accent)' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }} /></>}
+        backHref={`/forum/topic/${post.topicId}`}
+        backTitle="Retour au sujet"
+      />
  
       <ForumBreadcrumbs items={breadcrumbs} />
 

@@ -5,6 +5,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
@@ -69,15 +70,12 @@ export default function AdministrationPage() {
 
   return (
     <main className="container admin-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 className="page-title"><span>Administration</span></h1>
-          <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>
-            Gestion avancée de la plateforme
-          </p>
-        </div>
-      </header>
+      <PageHeader 
+        title={<><span>Administration</span></>}
+        subtitle="Gestion avancée de la plateforme"
+        backHref="/"
+        backTitle="Retour à l'accueil"
+      />
 
       <div className="admin-content-layout">
         <AdminSidebar activeTab={activeTab} onTabChange={handleTabChange} isSuperAdmin={isSuperAdmin} />

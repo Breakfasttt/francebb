@@ -1,5 +1,6 @@
 import "./page.css";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
 import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
 import { MapPin, Calendar, Users, Trophy, ChevronDown, Bed, Pizza, Sparkles, GitBranch } from "lucide-react";
@@ -73,10 +74,10 @@ export default async function TournamentsPage({
 
   return (
     <main className="container tournaments-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <BackButton href="/" style={{ position: 'absolute', left: 0 }} />
-        <h1 style={{ margin: 0 }}>Tous les Tournois</h1>
-      </header>
+      <PageHeader 
+        title="Tous les Tournois" 
+        backHref="/" 
+      />
 
       <div className="search-layout">
         <aside className="sidebar-wrapper">

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Clock, User } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { notFound, redirect } from "next/navigation";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
@@ -73,13 +74,12 @@ export default async function ReplyPage({
 
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <BackButton href={`/forum/topic/${id}`} title="Retour au sujet" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0 }}>Répondre au <span>sujet</span></h1>
-          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></p>
-        </div>
-      </header>
+      <PageHeader
+        title={<>Répondre au <span>sujet</span></>}
+        subtitle={<>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} /></>}
+        backHref={`/forum/topic/${id}`}
+        backTitle="Retour au sujet"
+      />
 
       <ForumBreadcrumbs items={breadcrumbs} />
  

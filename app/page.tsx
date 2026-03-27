@@ -3,6 +3,7 @@ import Link from "next/link";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus } from "lucide-react";
 import { auth } from "@/auth";
+import "./page.css";
 
 export default async function Home() {
   const session = await auth();
@@ -144,60 +145,6 @@ export default async function Home() {
           )}
         </div>
       </section>
-      
-      <style>{`
-        .action-card-mini {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0.5rem;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          color: var(--accent);
-          cursor: pointer;
-          transition: all 0.2s;
-          text-decoration: none;
-        }
-        .action-card-mini:hover {
-          background: var(--primary-transparent);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px var(--btn-shadow);
-          border-color: var(--primary);
-        }
-        .action-card-mini span {
-          font-size: 0.8rem;
-          margin-left: 0.4rem;
-          font-weight: 600;
-        }
-
-        .discord-cta {
-          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-          text-decoration: none;
-        }
-
-        .discord-cta:hover {
-          transform: translateY(-5px) scale(1.02);
-          background: #4752C4 !important; /* Discord Blurple Darker */
-          box-shadow: 0 10px 20px rgba(88, 101, 242, 0.4);
-        }
-
-        .discord-glow {
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-          pointer-events: none;
-          transition: opacity 0.3s;
-          opacity: 0;
-        }
-
-        .discord-cta:hover .discord-glow {
-          opacity: 1;
-        }
-      `}</style>
     </main>
   );
 }

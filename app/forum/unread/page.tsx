@@ -1,6 +1,7 @@
 import { ArrowLeft, Clock, MessageSquare, Trophy } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
 import UnreadSidebar from "./component/UnreadSidebar";
@@ -20,13 +21,12 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
 
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <BackButton href="/forum" title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0 }}>Messages <span>non lus</span></h1>
-          <p style={{ color: 'var(--text-secondary)', margin: '0.5rem 0 0' }}>Liste des sujets ayant de nouvelles activités depuis votre dernière visite</p>
-        </div>
-      </header>
+      <PageHeader
+        title={<>Messages <span>non lus</span></>}
+        subtitle="Liste des sujets ayant de nouvelles activités depuis votre dernière visite"
+        backHref="/forum"
+        backTitle="Retour au forum"
+      />
 
       <div className="forum-layout" style={totalPages > 1 ? {} : { gridTemplateColumns: '1fr' }}>
         <div className="forum-main-content">

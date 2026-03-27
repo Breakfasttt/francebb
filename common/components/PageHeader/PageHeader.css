@@ -1,0 +1,95 @@
+.page-header-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
+  width: 100%;
+  min-height: 48px; /* Assure que le bouton retour a de la place même sans titre énorme */
+}
+
+/* Le wrapper gère le positionnement pour ne pas écraser le transform: translateX du bouton au hover */
+.page-header-back-wrapper {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.page-header-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.page-header-title {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* Pour les mises en couleur de mots (ex: Nouveau <span>sujet</span>) */
+.page-header-title span {
+  color: var(--accent);
+}
+
+.page-header-subtitle {
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+}
+
+/* Container pour des boutons d'actions additionnels sur la droite */
+.page-header-actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .page-header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .page-header-back-wrapper {
+    position: static;
+    transform: none;
+  }
+  
+  .page-header-content {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .page-header-title {
+    font-size: 2rem;
+    justify-content: flex-start;
+  }
+
+  .page-header-actions {
+    position: static;
+    transform: none;
+    justify-content: flex-start;
+    width: 100%;
+  }
+}

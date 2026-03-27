@@ -1,0 +1,135 @@
+/* app/page.css - Styles spécifiques à la landing page */
+
+.hero {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, var(--foreground), var(--text-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.action-card {
+  padding: 1.2rem;
+  min-width: 200px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--foreground);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.action-card:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 10px 25px var(--btn-shadow);
+}
+
+.action-card-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.action-card-mini:hover {
+  background: var(--primary-transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--btn-shadow);
+  border-color: var(--primary);
+}
+
+.action-card-mini span {
+  font-size: 0.8rem;
+  margin-left: 0.4rem;
+  font-weight: 600;
+}
+
+.discord-cta {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+}
+
+.discord-cta:hover {
+  transform: translateY(-5px) scale(1.02);
+  background: #4752C4 !important; /* Discord Blurple Darker */
+  box-shadow: 0 10px 20px rgba(88, 101, 242, 0.4);
+}
+
+.discord-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.discord-cta:hover .discord-glow {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .action-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+}

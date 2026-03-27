@@ -2,6 +2,7 @@
   Page Hub pour les ressources et outils.
 */
 import Link from "next/link";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { BookOpen, Map, HelpCircle, Layout, ExternalLink } from "lucide-react";
 import "./page.css";
 
@@ -34,12 +35,10 @@ export default function RessourcesPage() {
 
   return (
     <main className="container ressources-container">
-      <header className="page-header">
-        <div>
-          <h1>Ressources</h1>
-          <p className="subtitle">Outils et guides pour les coachs de Blood Bowl France</p>
-        </div>
-      </header>
+      <PageHeader
+        title="Ressources"
+        subtitle="Outils et guides pour les coachs de Blood Bowl France"
+      />
 
       <section className="tools-grid">
         {tools.map((tool) => (

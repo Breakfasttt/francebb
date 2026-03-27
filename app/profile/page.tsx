@@ -5,6 +5,7 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ArrowLeft, Trophy, Bookmark, Clock, ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -116,15 +117,12 @@ export default function ProfilePage() {
 
   return (
     <main className="container profile-page-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '3rem' }}>
-        <BackButton href="/" title="Retour à l'accueil" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 className="page-title">Mon Compte</h1>
-          <p style={{ color: '#888', margin: '0.5rem 0 0 0' }}>
-            Gérez vos informations et votre activité
-          </p>
-        </div>
-      </header>
+      <PageHeader
+        title="Mon Compte"
+        subtitle="Gérez vos informations et votre activité"
+        backHref="/"
+        backTitle="Retour à l'accueil"
+      />
 
       <div className="profile-content-layout">
         <ProfileSidebar 

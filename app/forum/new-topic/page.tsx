@@ -3,6 +3,7 @@ import { isModerator } from "@/lib/roles";
 import { ArrowLeft, MessageSquarePlus } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import "../page.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
@@ -53,13 +54,12 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
 
   return (
     <main className="container forum-container">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <BackButton href={`/forum/${forumId}`} title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ margin: 0, fontSize: '2.5rem', color: 'var(--primary)' }}>Nouveau sujet</h1>
-          <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0' }}>Dans le forum : <strong style={{ color: 'var(--accent)' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></p>
-        </div>
-      </header>
+      <PageHeader
+        title={<span style={{ color: 'var(--primary)' }}>Nouveau sujet</span>}
+        subtitle={<>Dans le forum : <strong style={{ color: 'var(--accent)' }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></>}
+        backHref={`/forum/${forumId}`}
+        backTitle="Retour au forum"
+      />
  
       <ForumBreadcrumbs items={breadcrumbs} />
 

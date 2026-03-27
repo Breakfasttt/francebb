@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
@@ -154,13 +155,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="forum-container fade-in">
-      <header className="page-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: "1000px", margin: "0 auto 3rem auto" }}>
-        <BackButton href="/forum" title="Retour au forum" style={{ position: 'absolute', left: 0 }} />
-        <div style={{ textAlign: 'center' }}>
-          <h1 className="forum-title" style={{ margin: 0 }}>Recherche Avancée</h1>
-          <p className="forum-description" style={{ marginTop: "0.5rem" }}>Trouvez exactement ce que vous cherchez parmi tous les forums.</p>
-        </div>
-      </header>
+      <PageHeader
+        title="Recherche Avancée"
+        subtitle="Trouvez exactement ce que vous cherchez parmi tous les forums."
+        backHref="/forum"
+        backTitle="Retour au forum"
+        style={{ maxWidth: "1000px", margin: "0 auto 3rem auto" }}
+      />
 
       <SearchForm 
         initialQuery={q} 
