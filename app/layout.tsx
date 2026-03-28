@@ -85,7 +85,7 @@ export default async function RootLayout({
             unreadCount={unreadCount} 
           />
 
-          <main style={{ flex: 1, width: '100%', paddingBottom: '3rem' }}>
+          <main className="main-layout-wrapper">
             {children}
           </main>
           
