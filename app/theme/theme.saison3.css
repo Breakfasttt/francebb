@@ -25,4 +25,10 @@
   --success: #15803d;
   --header-foreground: #f2efe1;
   --category-hover-bg: rgba(0, 30, 60, 0.3);
+  --theme-overlay: rgba(255, 255, 255, 0.15);
+  --nav-btn-bg: rgba(255, 255, 255, 0.08);
+  --nav-btn-hover-bg: rgba(255, 255, 255, 0.2);
+  --nav-btn-border: rgba(242, 239, 225, 0.35);
+  --nav-btn-color: #f2efe1;
+  --badge-text: #f2efe1;
 }

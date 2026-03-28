@@ -10,10 +10,10 @@
   gap: 0.6rem;
   padding: 0 12px 0 6px;
   height: 40px; /* Hauteur fixe partagée */
-  background: rgba(255, 255, 255, 0.1);
-  border: 1.5px solid var(--header-foreground);
+  background: var(--nav-btn-bg);
+  border: 1.5px solid var(--nav-btn-border);
   border-radius: 50px;
-  color: var(--header-foreground);
+  color: var(--nav-btn-color);
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -22,7 +22,7 @@
 
 .user-capsule:hover {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--nav-btn-hover-bg);
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
@@ -52,9 +52,9 @@
 }
 
 .btn-login {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--header-foreground);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--theme-overlay);
+  color: var(--nav-btn-color);
+  border: 1px solid var(--nav-btn-border);
   height: 40px;
   padding: 0 1.5rem;
   font-size: 0.85rem;
@@ -67,9 +67,9 @@
 }
 
 .btn-logout {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--header-foreground);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: var(--theme-overlay);
+  color: var(--nav-btn-color);
+  border: 1px solid var(--nav-btn-border);
   height: 40px; /* Alignement parfait */
   padding: 0 1.2rem;
   font-size: 0.8rem;

@@ -63,7 +63,4 @@
   white-space: nowrap;
 }
 
-/* Hover effects */
-.premium-card:hover .stat-value {
-  color: var(--accent);
-}
+/* Hover effects removed to prevent unintended color changes on card hover */

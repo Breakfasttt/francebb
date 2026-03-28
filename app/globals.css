@@ -69,6 +69,26 @@ label {
   box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Profondeur pour casser le côté "flat" */
 }
 
+.nav-icon-capsule {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--nav-btn-bg);
+  border: 1.5px solid var(--nav-btn-border);
+  border-radius: 50%;
+  color: var(--nav-btn-color);
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.nav-icon-capsule:hover {
+  transform: translateY(-2px);
+  background: var(--nav-btn-hover-bg);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 800;

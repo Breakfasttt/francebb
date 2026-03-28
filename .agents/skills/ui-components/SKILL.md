@@ -100,3 +100,17 @@ Toutes les couleurs et effets doivent utiliser les variables CSS définies dans 
   ##  Confirmation utilisateur
 
   Quand il y a besoin d'avoir une confirmation de l'utilisateur, il faut utiliser le composant `ConfirmModal`. ou 'Modal' . N'utilise jamais les alertes natives de javascript.
+
+## 🎨 Glossaire des Thèmes et Nomenclature
+
+Pour assurer la cohérence visuelle, les variables de thème (CSS variables) doivent suivre une nomenclature claire et descriptive. 
+
+### Règles de nommage :
+- **Variables de base** : `--background`, `--foreground`, `--primary`, `--accent`.
+- **Variables de composants** : `--nav-bg`, `--card-bg`, `--footer-bg`.
+- **Variables de texte spécifiques** : `--header-foreground` (texte sur couleur primaire/fond de header), `--text-muted` (texte secondaire), `--text-secondary`.
+- **Variables d'états/ overlays** : `--theme-overlay` (fond translucide adaptatif), `--nav-btn-bg` (fond bouton navbar), `--category-hover-bg`.
+
+**Règle de clarté** : Si vous devez ajouter une nouvelle variable de thème, assurez-vous qu'elle soit nommée de manière explicite pour indiquer clairement son impact visuel dans l'UI (ex: préférer `--nav-btn-hover-bg` à `--nav-h-bg`).
+
+**Règle ABSOLUE** : Ne jamais utiliser de couleurs codées en dur (`#fff`, `black`, `rgba(0,0,0,0.1)`) dans les styles. Utiliser systématiquement une variable de thème pour que l'interface s'adapte instantanément au changement de thème utilisateur.

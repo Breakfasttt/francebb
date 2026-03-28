@@ -24,4 +24,11 @@
   --danger: #b91c1c;
   --success: #15803d;
   --header-foreground: #ffffff;
+  --category-hover-bg: rgba(0, 0, 0, 0.05);
+  --theme-overlay: rgba(0, 0, 0, 0.08);
+  --nav-btn-bg: rgba(0, 0, 0, 0.05);
+  --nav-btn-hover-bg: rgba(0, 0, 0, 0.12);
+  --nav-btn-border: rgba(0, 0, 0, 0.25);
+  --nav-btn-color: #1c1c21;
+  --badge-text: #ffffff;
 }

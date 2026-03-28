@@ -23,4 +23,12 @@
   --admin-border: rgba(17, 94, 89, 0.3);
   --danger: #ef4444;
   --success: #39ff14;
+  --header-foreground: var(--foreground);
+  --category-hover-bg: rgba(217, 119, 6, 0.2);
+  --theme-overlay: rgba(255, 255, 255, 0.15);
+  --nav-btn-bg: rgba(255, 255, 255, 0.08);
+  --nav-btn-hover-bg: rgba(255, 255, 255, 0.2);
+  --nav-btn-border: rgba(217, 119, 6, 0.45);
+  --nav-btn-color: #ffffff;
+  --badge-text: #ffffff;
 }

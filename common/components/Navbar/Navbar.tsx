@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount })
           <Link
             href="/administration"
             title="Administration"
-            style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+            className="nav-icon-capsule"
           >
             <Settings size={22} />
           </Link>
@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount })
           <Link
             href="/moderation"
             title="Modération"
-            style={{ color: 'var(--header-foreground)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}
+            className="nav-icon-capsule"
           >
             <ShieldAlert size={22} />
           </Link>
@@ -50,22 +50,17 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount })
           <a
             href="/profile?tab=pm"
             title={`${unreadCount} message(s) non lu(s)`}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              color: 'var(--header-foreground)',
-              textDecoration: 'none'
-            }}
+            className="nav-icon-capsule"
+            style={{ position: 'relative' }}
           >
             <Mail size={22} />
             {unreadCount > 0 && (
               <span style={{
                 position: 'absolute',
-                top: '-8px',
-                right: '-10px',
+                top: '-5px',
+                right: '-5px',
                 background: 'var(--primary)',
-                color: 'white',
+                color: 'var(--badge-text)',
                 borderRadius: '50%',
                 width: '18px',
                 height: '18px',

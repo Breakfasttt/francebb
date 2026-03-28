@@ -3,25 +3,32 @@
   --background: #011b33; /* Deep NAF Navy */
   --bg-gradient: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
   --foreground: #f1f5f9;
-  --primary: #fac710; /* NAF Star Yellow */
-  --primary-hover: #d9ad0d;
+  --primary: #e6b000; /* NAF Golden Yellow — better contrast with white, but we'll use navy text */
+  --primary-hover: #c99a00;
   --secondary: #002b5c;
   --accent: #ffffff; /* Stars White */
   --card-bg: rgba(0, 43, 93, 0.35);
-  --glass-border: rgba(250, 199, 16, 0.25);
+  --glass-border: rgba(230, 176, 0, 0.25);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
   --nav-bg: rgba(1, 27, 51, 0.95);
   --footer-bg: rgba(1, 15, 30, 0.98);
   --text-muted: #748ba7;
   --text-secondary: #a0b2c7;
   --glass-bg: rgba(1, 43, 93, 0.4);
-  --btn-shadow: rgba(250, 199, 16, 0.15);
-  --unread-marker: #fac710;
-  --primary-transparent: rgba(250, 199, 16, 0.15);
+  --btn-shadow: rgba(230, 176, 0, 0.15);
+  --unread-marker: #e6b000;
+  --primary-transparent: rgba(230, 176, 0, 0.15);
   --category-header-bg: rgba(1, 43, 93, 0.5);
-  --admin-bg: rgba(250, 199, 16, 0.05);
-  --admin-border: rgba(250, 199, 16, 0.3);
+  --admin-bg: rgba(230, 176, 0, 0.05);
+  --admin-border: rgba(230, 176, 0, 0.3);
   --danger: #ef4444;
   --success: #39ff14;
-  --header-foreground: #ffffff;
+  --header-foreground: #011b33; /* Deep Navy text on yellow buttons */
+  --category-hover-bg: rgba(1, 43, 93, 0.6);
+  --theme-overlay: rgba(255, 255, 255, 0.2);
+  --nav-btn-bg: rgba(255, 255, 255, 0.12);
+  --nav-btn-hover-bg: rgba(255, 255, 255, 0.25);
+  --nav-btn-border: rgba(255, 255, 255, 0.45);
+  --nav-btn-color: #ffffff;
+  --badge-text: #011b33;
 }

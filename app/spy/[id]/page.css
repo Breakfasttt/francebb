@@ -226,7 +226,7 @@
   margin: 0;
   font-size: 1.35rem !important; /* Un peu plus petit */
   font-weight: 800;
-  color: #fff;
+  color: var(--foreground);
   text-align: center;
   line-height: 1.2;
 }

@@ -326,6 +326,14 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         :global(.profile-edit-container) {
           padding: 2rem !important;
         }
+        .profile-name {
+          margin: 0;
+          font-size: 1.6rem;
+          font-weight: 800;
+          color: var(--foreground);
+          text-align: center;
+          line-height: 1.2;
+        }
         .section-title {
           margin: 0 0 2rem 0;
           font-size: 1.2rem;
@@ -420,19 +428,19 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         }
         .theme-card:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
         .theme-card.active { border-color: var(--primary); background: rgba(194, 29, 29, 0.05); }
-        .theme-preview { height: 40px; border-radius: 6px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
-        .theme-preview.dark { background: #0a0a0c; }
-        .theme-preview.light { background: #f0f1f4; }
-        .theme-preview.blood { background: #120000; }
-        .theme-preview.malpierre { background: #020a02; }
-        .theme-preview.nehekhara { background: #0b0e14; }
-        .theme-preview.saison3 { background: #9e1d1d; }
-        .theme-preview.naf { background: #012b5d; }
+        .theme-preview { height: 48px; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
+        .theme-preview.dark { background: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 50%, #c21d1d 100%); }
+        .theme-preview.light { background: linear-gradient(135deg, #f0f1f4 0%, #ffffff 50%, #c21d1d 100%); }
+        .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #4a0000 50%, #ff0000 100%); }
+        .theme-preview.malpierre { background: linear-gradient(135deg, #020a02 0%, #082508 50%, #39ff14 100%); }
+        .theme-preview.nehekhara { background: linear-gradient(135deg, #0b0e14 0%, #115e59 50%, #d97706 100%); }
+        .theme-preview.saison3 { background: linear-gradient(135deg, #efebdd 0%, #004175 50%, #9e1d1d 100%); }
+        .theme-preview.naf { background: linear-gradient(135deg, #011b33 0%, #024b8a 50%, #fac710 100%); }
         .theme-info { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.85rem; }
 
         .form-actions-edit { display: flex; justify-content: flex-end; margin-top: 1rem; }
         .btn-save {
-          background: var(--primary); color: white; border: none;
+          background: var(--primary); color: var(--header-foreground); border: none;
           padding: 1rem 2.5rem; border-radius: 8px; font-size: 0.9rem;
           font-weight: 700; cursor: pointer; transition: all 0.2s;
         }
