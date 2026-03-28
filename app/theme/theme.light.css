@@ -31,4 +31,10 @@
   --nav-btn-border: rgba(0, 0, 0, 0.25);
   --nav-btn-color: #1c1c21;
   --badge-text: #ffffff;
+
+  /* Home Page Specifics */
+  --home-card-bg: rgba(255, 255, 254, 0.85);
+  --home-card-border: rgba(0, 0, 0, 0.15);
+  --home-mini-btn-bg: rgba(0, 0, 0, 0.05);
+  --home-mini-btn-color: var(--primary);
 }

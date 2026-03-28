@@ -58,8 +58,8 @@
   justify-content: center;
   padding: 1rem 0.6rem;
   min-height: 145px;
-  background: var(--glass-bg);
-  border: 1px solid var(--nav-btn-border);
+  background: var(--home-card-bg) !important;
+  border: 1px solid var(--home-card-border);
   border-radius: 16px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -71,6 +71,27 @@
   border-color: var(--primary);
   transform: translateY(-8px);
   box-shadow: 0 15px 35px var(--btn-shadow);
+}
+
+.action-card.discord-cta {
+  background: #5865F2 !important; /* DISCORD BLURPLE ACCORDING TO GUIDELINES */
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  position: relative;
+  overflow: hidden;
+  color: white !important;
+}
+
+.action-card.discord-cta:hover {
+  background: #4752C4 !important; /* DARKER BLURPLE FOR HOVER */
+  border-color: #4752C4 !important;
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(88, 101, 242, 0.4);
+}
+
+.action-card.discord-cta .discord-text,
+.action-card.discord-cta .icon-white {
+  color: white !important;
+  fill: white !important;
 }
 
 .card-title-row {
@@ -109,10 +130,10 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
-  background: var(--nav-btn-bg);
+  background: var(--home-mini-btn-bg) !important;
   border: 1px solid var(--nav-btn-border);
   border-radius: 10px;
-  color: var(--accent);
+  color: var(--home-mini-btn-color) !important;
   text-decoration: none;
   font-size: 0.75rem;
   font-weight: 800;
@@ -183,6 +204,7 @@
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   overflow: visible !important;
+  background: var(--home-card-bg) !important;
 }
 
 .tournament-home-card:hover {
@@ -234,15 +256,15 @@
 }
 
 .random-article-wrapper {
-  background: var(--glass-bg);
+  background: var(--home-card-bg) !important;
   border-radius: 16px;
   padding: 1.2rem;
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--home-card-border);
   display: flex;
   flex-direction: column;
   height: 120px !important;
   min-height: 120px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }

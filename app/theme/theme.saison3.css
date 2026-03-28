@@ -31,4 +31,10 @@
   --nav-btn-border: rgba(242, 239, 225, 0.35);
   --nav-btn-color: #f2efe1;
   --badge-text: #f2efe1;
+
+  /* Home Page Specifics - Contrast Fixes */
+  --home-card-bg: rgba(0, 65, 117, 0.08); /* Délimitations Navy sur Parchemin */
+  --home-card-border: rgba(0, 65, 117, 0.25);
+  --home-mini-btn-bg: rgba(255, 255, 255, 0.6);
+  --home-mini-btn-color: #004175;
 }
