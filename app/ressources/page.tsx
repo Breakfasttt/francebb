@@ -39,6 +39,8 @@ export default function RessourcesPage() {
       <PageHeader
         title="Ressources"
         subtitle="Outils et guides pour les coachs de Blood Bowl France"
+        backHref="/"
+        backTitle="Retour à l'accueil"
       />
 
       <section className="tools-grid">
