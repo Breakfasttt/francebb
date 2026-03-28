@@ -67,6 +67,10 @@ model User {
   followedTopics          TopicFollow[]
   commissairesTournaments Tournament[]     @relation("TournamentCommissaires")
 
+  articles          Article[]
+  articleReactions  ArticleReaction[]
+  moderatedArticles Article[]         @relation("ModeratedArticles")
+
   theme String @default("dark") // dark, light, blood
 
   tournamentRegistrations TournamentRegistration[]
@@ -387,4 +391,44 @@ model TournamentMercenary {
 model SiteSetting {
   key   String @id
   value String
+}
+
+model Article {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  tags      ArticleTag[]
+  reactions ArticleReaction[]
+
+  isModerated      Boolean @default(false)
+  moderationReason String?
+  moderatedBy      String?
+  moderator        User?   @relation("ModeratedArticles", fields: [moderatedBy], references: [id])
+}
+
+model ArticleTag {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  articles Article[]
+}
+
+model ArticleReaction {
+  id        String   @id @default(cuid())
+  emoji     String
+  createdAt DateTime @default(now())
+
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, userId, emoji])
+  @@index([articleId])
 }

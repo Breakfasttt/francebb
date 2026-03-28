@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Système d'onglets flexible.
  * Supporte les modes vertical (sidebar), horizontal, et "docked" (profil).

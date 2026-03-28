@@ -7,7 +7,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import StatItem from "@/common/components/StatItem/StatItem";
 import TabSystem from "@/common/components/TabSystem/TabSystem";
-import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon } from "lucide-react";
+import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
@@ -54,12 +54,14 @@ export default function ProfileSidebar({
 
   const navItems = (isOwnProfile ? [
     { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
+    { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
     { id: "settings", label: "Gérer mon compte", icon: <Shield size={18} /> },
   ] : [
+    { id: "articles", label: "Articles", icon: <FileText size={18} /> },
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     ...(user.nafNumber ? [{ id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> }] : []),
   ]).map(item => ({ ...item }));

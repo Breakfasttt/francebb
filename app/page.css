@@ -144,10 +144,48 @@
   .action-card {
     width: 100%;
   }
+
+  .home-content-split {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 1.8rem;
   }
+}
+
+.home-content-split {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2rem;
+  margin-top: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.see-all-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.2rem;
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.see-all-link:hover {
+  background: var(--primary-transparent);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }

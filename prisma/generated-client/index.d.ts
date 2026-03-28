@@ -123,6 +123,21 @@ export type TournamentMercenary = $Result.DefaultSelection<Prisma.$TournamentMer
  * 
  */
 export type SiteSetting = $Result.DefaultSelection<Prisma.$SiteSettingPayload>
+/**
+ * Model Article
+ * 
+ */
+export type Article = $Result.DefaultSelection<Prisma.$ArticlePayload>
+/**
+ * Model ArticleTag
+ * 
+ */
+export type ArticleTag = $Result.DefaultSelection<Prisma.$ArticleTagPayload>
+/**
+ * Model ArticleReaction
+ * 
+ */
+export type ArticleReaction = $Result.DefaultSelection<Prisma.$ArticleReactionPayload>
 
 /**
  * Enums
@@ -497,6 +512,36 @@ export class PrismaClient<
     * ```
     */
   get siteSetting(): Prisma.SiteSettingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.article`: Exposes CRUD operations for the **Article** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Articles
+    * const articles = await prisma.article.findMany()
+    * ```
+    */
+  get article(): Prisma.ArticleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.articleTag`: Exposes CRUD operations for the **ArticleTag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ArticleTags
+    * const articleTags = await prisma.articleTag.findMany()
+    * ```
+    */
+  get articleTag(): Prisma.ArticleTagDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.articleReaction`: Exposes CRUD operations for the **ArticleReaction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ArticleReactions
+    * const articleReactions = await prisma.articleReaction.findMany()
+    * ```
+    */
+  get articleReaction(): Prisma.ArticleReactionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -952,7 +997,10 @@ export namespace Prisma {
     TournamentTeam: 'TournamentTeam',
     TournamentTeamMember: 'TournamentTeamMember',
     TournamentMercenary: 'TournamentMercenary',
-    SiteSetting: 'SiteSetting'
+    SiteSetting: 'SiteSetting',
+    Article: 'Article',
+    ArticleTag: 'ArticleTag',
+    ArticleReaction: 'ArticleReaction'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -968,7 +1016,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting"
+      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2600,6 +2648,228 @@ export namespace Prisma {
           }
         }
       }
+      Article: {
+        payload: Prisma.$ArticlePayload<ExtArgs>
+        fields: Prisma.ArticleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArticleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArticleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          findFirst: {
+            args: Prisma.ArticleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArticleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          findMany: {
+            args: Prisma.ArticleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>[]
+          }
+          create: {
+            args: Prisma.ArticleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          createMany: {
+            args: Prisma.ArticleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArticleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>[]
+          }
+          delete: {
+            args: Prisma.ArticleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          update: {
+            args: Prisma.ArticleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          deleteMany: {
+            args: Prisma.ArticleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArticleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArticleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>[]
+          }
+          upsert: {
+            args: Prisma.ArticleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticlePayload>
+          }
+          aggregate: {
+            args: Prisma.ArticleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArticle>
+          }
+          groupBy: {
+            args: Prisma.ArticleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArticleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArticleCountArgs<ExtArgs>
+            result: $Utils.Optional<ArticleCountAggregateOutputType> | number
+          }
+        }
+      }
+      ArticleTag: {
+        payload: Prisma.$ArticleTagPayload<ExtArgs>
+        fields: Prisma.ArticleTagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArticleTagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArticleTagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          findFirst: {
+            args: Prisma.ArticleTagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArticleTagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          findMany: {
+            args: Prisma.ArticleTagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>[]
+          }
+          create: {
+            args: Prisma.ArticleTagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          createMany: {
+            args: Prisma.ArticleTagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArticleTagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>[]
+          }
+          delete: {
+            args: Prisma.ArticleTagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          update: {
+            args: Prisma.ArticleTagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArticleTagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArticleTagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArticleTagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArticleTagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleTagPayload>
+          }
+          aggregate: {
+            args: Prisma.ArticleTagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArticleTag>
+          }
+          groupBy: {
+            args: Prisma.ArticleTagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArticleTagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArticleTagCountArgs<ExtArgs>
+            result: $Utils.Optional<ArticleTagCountAggregateOutputType> | number
+          }
+        }
+      }
+      ArticleReaction: {
+        payload: Prisma.$ArticleReactionPayload<ExtArgs>
+        fields: Prisma.ArticleReactionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArticleReactionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArticleReactionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          findFirst: {
+            args: Prisma.ArticleReactionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArticleReactionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          findMany: {
+            args: Prisma.ArticleReactionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>[]
+          }
+          create: {
+            args: Prisma.ArticleReactionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          createMany: {
+            args: Prisma.ArticleReactionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArticleReactionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>[]
+          }
+          delete: {
+            args: Prisma.ArticleReactionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          update: {
+            args: Prisma.ArticleReactionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArticleReactionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArticleReactionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArticleReactionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArticleReactionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArticleReactionPayload>
+          }
+          aggregate: {
+            args: Prisma.ArticleReactionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArticleReaction>
+          }
+          groupBy: {
+            args: Prisma.ArticleReactionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArticleReactionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArticleReactionCountArgs<ExtArgs>
+            result: $Utils.Optional<ArticleReactionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2730,6 +3000,9 @@ export namespace Prisma {
     tournamentTeamMember?: TournamentTeamMemberOmit
     tournamentMercenary?: TournamentMercenaryOmit
     siteSetting?: SiteSettingOmit
+    article?: ArticleOmit
+    articleTag?: ArticleTagOmit
+    articleReaction?: ArticleReactionOmit
   }
 
   /* Types for Logging */
@@ -2825,6 +3098,9 @@ export namespace Prisma {
     postReactions: number
     followedTopics: number
     commissairesTournaments: number
+    articles: number
+    articleReactions: number
+    moderatedArticles: number
     tournamentRegistrations: number
     captainTeams: number
     teamMemberships: number
@@ -2847,6 +3123,9 @@ export namespace Prisma {
     postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
     followedTopics?: boolean | UserCountOutputTypeCountFollowedTopicsArgs
     commissairesTournaments?: boolean | UserCountOutputTypeCountCommissairesTournamentsArgs
+    articles?: boolean | UserCountOutputTypeCountArticlesArgs
+    articleReactions?: boolean | UserCountOutputTypeCountArticleReactionsArgs
+    moderatedArticles?: boolean | UserCountOutputTypeCountModeratedArticlesArgs
     tournamentRegistrations?: boolean | UserCountOutputTypeCountTournamentRegistrationsArgs
     captainTeams?: boolean | UserCountOutputTypeCountCaptainTeamsArgs
     teamMemberships?: boolean | UserCountOutputTypeCountTeamMembershipsArgs
@@ -2967,6 +3246,27 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCommissairesTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TournamentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountArticleReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleReactionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountModeratedArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleWhereInput
   }
 
   /**
@@ -3306,6 +3606,77 @@ export namespace Prisma {
    */
   export type TournamentTeamCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TournamentTeamMemberWhereInput
+  }
+
+
+  /**
+   * Count Type ArticleCountOutputType
+   */
+
+  export type ArticleCountOutputType = {
+    tags: number
+    reactions: number
+  }
+
+  export type ArticleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tags?: boolean | ArticleCountOutputTypeCountTagsArgs
+    reactions?: boolean | ArticleCountOutputTypeCountReactionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleCountOutputType
+     */
+    select?: ArticleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleTagWhereInput
+  }
+
+  /**
+   * ArticleCountOutputType without action
+   */
+  export type ArticleCountOutputTypeCountReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleReactionWhereInput
+  }
+
+
+  /**
+   * Count Type ArticleTagCountOutputType
+   */
+
+  export type ArticleTagCountOutputType = {
+    articles: number
+  }
+
+  export type ArticleTagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    articles?: boolean | ArticleTagCountOutputTypeCountArticlesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ArticleTagCountOutputType without action
+   */
+  export type ArticleTagCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTagCountOutputType
+     */
+    select?: ArticleTagCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ArticleTagCountOutputType without action
+   */
+  export type ArticleTagCountOutputTypeCountArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleWhereInput
   }
 
 
@@ -5799,6 +6170,9 @@ export namespace Prisma {
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    articles?: boolean | User$articlesArgs<ExtArgs>
+    articleReactions?: boolean | User$articleReactionsArgs<ExtArgs>
+    moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     tournamentRegistrations?: boolean | User$tournamentRegistrationsArgs<ExtArgs>
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
@@ -5877,6 +6251,9 @@ export namespace Prisma {
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     followedTopics?: boolean | User$followedTopicsArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    articles?: boolean | User$articlesArgs<ExtArgs>
+    articleReactions?: boolean | User$articleReactionsArgs<ExtArgs>
+    moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     tournamentRegistrations?: boolean | User$tournamentRegistrationsArgs<ExtArgs>
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
@@ -5909,6 +6286,9 @@ export namespace Prisma {
       postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
       followedTopics: Prisma.$TopicFollowPayload<ExtArgs>[]
       commissairesTournaments: Prisma.$TournamentPayload<ExtArgs>[]
+      articles: Prisma.$ArticlePayload<ExtArgs>[]
+      articleReactions: Prisma.$ArticleReactionPayload<ExtArgs>[]
+      moderatedArticles: Prisma.$ArticlePayload<ExtArgs>[]
       tournamentRegistrations: Prisma.$TournamentRegistrationPayload<ExtArgs>[]
       captainTeams: Prisma.$TournamentTeamPayload<ExtArgs>[]
       teamMemberships: Prisma.$TournamentTeamMemberPayload<ExtArgs>[]
@@ -6339,6 +6719,9 @@ export namespace Prisma {
     postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     followedTopics<T extends User$followedTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$followedTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commissairesTournaments<T extends User$commissairesTournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commissairesTournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    articles<T extends User$articlesArgs<ExtArgs> = {}>(args?: Subset<T, User$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    articleReactions<T extends User$articleReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$articleReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderatedArticles<T extends User$moderatedArticlesArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatedArticlesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournamentRegistrations<T extends User$tournamentRegistrationsArgs<ExtArgs> = {}>(args?: Subset<T, User$tournamentRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     captainTeams<T extends User$captainTeamsArgs<ExtArgs> = {}>(args?: Subset<T, User$captainTeamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamMemberships<T extends User$teamMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7161,6 +7544,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * User.articles
+   */
+  export type User$articlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    where?: ArticleWhereInput
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    cursor?: ArticleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * User.articleReactions
+   */
+  export type User$articleReactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    where?: ArticleReactionWhereInput
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    cursor?: ArticleReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleReactionScalarFieldEnum | ArticleReactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.moderatedArticles
+   */
+  export type User$moderatedArticlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    where?: ArticleWhereInput
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    cursor?: ArticleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
   }
 
   /**
@@ -28706,6 +29161,3307 @@ export namespace Prisma {
 
 
   /**
+   * Model Article
+   */
+
+  export type AggregateArticle = {
+    _count: ArticleCountAggregateOutputType | null
+    _min: ArticleMinAggregateOutputType | null
+    _max: ArticleMaxAggregateOutputType | null
+  }
+
+  export type ArticleMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authorId: string | null
+    isModerated: boolean | null
+    moderationReason: string | null
+    moderatedBy: string | null
+  }
+
+  export type ArticleMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    authorId: string | null
+    isModerated: boolean | null
+    moderationReason: string | null
+    moderatedBy: string | null
+  }
+
+  export type ArticleCountAggregateOutputType = {
+    id: number
+    title: number
+    content: number
+    createdAt: number
+    updatedAt: number
+    authorId: number
+    isModerated: number
+    moderationReason: number
+    moderatedBy: number
+    _all: number
+  }
+
+
+  export type ArticleMinAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
+  }
+
+  export type ArticleMaxAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
+  }
+
+  export type ArticleCountAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+    authorId?: true
+    isModerated?: true
+    moderationReason?: true
+    moderatedBy?: true
+    _all?: true
+  }
+
+  export type ArticleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Article to aggregate.
+     */
+    where?: ArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Articles to fetch.
+     */
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Articles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Articles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Articles
+    **/
+    _count?: true | ArticleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArticleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArticleMaxAggregateInputType
+  }
+
+  export type GetArticleAggregateType<T extends ArticleAggregateArgs> = {
+        [P in keyof T & keyof AggregateArticle]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArticle[P]>
+      : GetScalarType<T[P], AggregateArticle[P]>
+  }
+
+
+
+
+  export type ArticleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleWhereInput
+    orderBy?: ArticleOrderByWithAggregationInput | ArticleOrderByWithAggregationInput[]
+    by: ArticleScalarFieldEnum[] | ArticleScalarFieldEnum
+    having?: ArticleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArticleCountAggregateInputType | true
+    _min?: ArticleMinAggregateInputType
+    _max?: ArticleMaxAggregateInputType
+  }
+
+  export type ArticleGroupByOutputType = {
+    id: string
+    title: string
+    content: string
+    createdAt: Date
+    updatedAt: Date
+    authorId: string
+    isModerated: boolean
+    moderationReason: string | null
+    moderatedBy: string | null
+    _count: ArticleCountAggregateOutputType | null
+    _min: ArticleMinAggregateOutputType | null
+    _max: ArticleMaxAggregateOutputType | null
+  }
+
+  type GetArticleGroupByPayload<T extends ArticleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArticleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArticleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArticleGroupByOutputType[P]>
+            : GetScalarType<T[P], ArticleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArticleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Article$tagsArgs<ExtArgs>
+    reactions?: boolean | Article$reactionsArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+    _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["article"]>
+
+  export type ArticleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+  }, ExtArgs["result"]["article"]>
+
+  export type ArticleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+  }, ExtArgs["result"]["article"]>
+
+  export type ArticleSelectScalar = {
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    authorId?: boolean
+    isModerated?: boolean
+    moderationReason?: boolean
+    moderatedBy?: boolean
+  }
+
+  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy", ExtArgs["result"]["article"]>
+  export type ArticleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Article$tagsArgs<ExtArgs>
+    reactions?: boolean | Article$reactionsArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+    _count?: boolean | ArticleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ArticleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+  }
+  export type ArticleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | Article$moderatorArgs<ExtArgs>
+  }
+
+  export type $ArticlePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Article"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+      tags: Prisma.$ArticleTagPayload<ExtArgs>[]
+      reactions: Prisma.$ArticleReactionPayload<ExtArgs>[]
+      moderator: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      content: string
+      createdAt: Date
+      updatedAt: Date
+      authorId: string
+      isModerated: boolean
+      moderationReason: string | null
+      moderatedBy: string | null
+    }, ExtArgs["result"]["article"]>
+    composites: {}
+  }
+
+  type ArticleGetPayload<S extends boolean | null | undefined | ArticleDefaultArgs> = $Result.GetResult<Prisma.$ArticlePayload, S>
+
+  type ArticleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArticleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArticleCountAggregateInputType | true
+    }
+
+  export interface ArticleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Article'], meta: { name: 'Article' } }
+    /**
+     * Find zero or one Article that matches the filter.
+     * @param {ArticleFindUniqueArgs} args - Arguments to find a Article
+     * @example
+     * // Get one Article
+     * const article = await prisma.article.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArticleFindUniqueArgs>(args: SelectSubset<T, ArticleFindUniqueArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Article that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArticleFindUniqueOrThrowArgs} args - Arguments to find a Article
+     * @example
+     * // Get one Article
+     * const article = await prisma.article.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArticleFindUniqueOrThrowArgs>(args: SelectSubset<T, ArticleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Article that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleFindFirstArgs} args - Arguments to find a Article
+     * @example
+     * // Get one Article
+     * const article = await prisma.article.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArticleFindFirstArgs>(args?: SelectSubset<T, ArticleFindFirstArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Article that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleFindFirstOrThrowArgs} args - Arguments to find a Article
+     * @example
+     * // Get one Article
+     * const article = await prisma.article.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArticleFindFirstOrThrowArgs>(args?: SelectSubset<T, ArticleFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Articles that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Articles
+     * const articles = await prisma.article.findMany()
+     * 
+     * // Get first 10 Articles
+     * const articles = await prisma.article.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const articleWithIdOnly = await prisma.article.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArticleFindManyArgs>(args?: SelectSubset<T, ArticleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Article.
+     * @param {ArticleCreateArgs} args - Arguments to create a Article.
+     * @example
+     * // Create one Article
+     * const Article = await prisma.article.create({
+     *   data: {
+     *     // ... data to create a Article
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArticleCreateArgs>(args: SelectSubset<T, ArticleCreateArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Articles.
+     * @param {ArticleCreateManyArgs} args - Arguments to create many Articles.
+     * @example
+     * // Create many Articles
+     * const article = await prisma.article.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArticleCreateManyArgs>(args?: SelectSubset<T, ArticleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Articles and returns the data saved in the database.
+     * @param {ArticleCreateManyAndReturnArgs} args - Arguments to create many Articles.
+     * @example
+     * // Create many Articles
+     * const article = await prisma.article.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Articles and only return the `id`
+     * const articleWithIdOnly = await prisma.article.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArticleCreateManyAndReturnArgs>(args?: SelectSubset<T, ArticleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Article.
+     * @param {ArticleDeleteArgs} args - Arguments to delete one Article.
+     * @example
+     * // Delete one Article
+     * const Article = await prisma.article.delete({
+     *   where: {
+     *     // ... filter to delete one Article
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArticleDeleteArgs>(args: SelectSubset<T, ArticleDeleteArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Article.
+     * @param {ArticleUpdateArgs} args - Arguments to update one Article.
+     * @example
+     * // Update one Article
+     * const article = await prisma.article.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArticleUpdateArgs>(args: SelectSubset<T, ArticleUpdateArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Articles.
+     * @param {ArticleDeleteManyArgs} args - Arguments to filter Articles to delete.
+     * @example
+     * // Delete a few Articles
+     * const { count } = await prisma.article.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArticleDeleteManyArgs>(args?: SelectSubset<T, ArticleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Articles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Articles
+     * const article = await prisma.article.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArticleUpdateManyArgs>(args: SelectSubset<T, ArticleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Articles and returns the data updated in the database.
+     * @param {ArticleUpdateManyAndReturnArgs} args - Arguments to update many Articles.
+     * @example
+     * // Update many Articles
+     * const article = await prisma.article.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Articles and only return the `id`
+     * const articleWithIdOnly = await prisma.article.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArticleUpdateManyAndReturnArgs>(args: SelectSubset<T, ArticleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Article.
+     * @param {ArticleUpsertArgs} args - Arguments to update or create a Article.
+     * @example
+     * // Update or create a Article
+     * const article = await prisma.article.upsert({
+     *   create: {
+     *     // ... data to create a Article
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Article we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArticleUpsertArgs>(args: SelectSubset<T, ArticleUpsertArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Articles.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleCountArgs} args - Arguments to filter Articles to count.
+     * @example
+     * // Count the number of Articles
+     * const count = await prisma.article.count({
+     *   where: {
+     *     // ... the filter for the Articles we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArticleCountArgs>(
+      args?: Subset<T, ArticleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArticleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Article.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArticleAggregateArgs>(args: Subset<T, ArticleAggregateArgs>): Prisma.PrismaPromise<GetArticleAggregateType<T>>
+
+    /**
+     * Group by Article.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArticleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArticleGroupByArgs['orderBy'] }
+        : { orderBy?: ArticleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArticleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArticleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Article model
+   */
+  readonly fields: ArticleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Article.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArticleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tags<T extends Article$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Article$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reactions<T extends Article$reactionsArgs<ExtArgs> = {}>(args?: Subset<T, Article$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderator<T extends Article$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, Article$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Article model
+   */
+  interface ArticleFieldRefs {
+    readonly id: FieldRef<"Article", 'String'>
+    readonly title: FieldRef<"Article", 'String'>
+    readonly content: FieldRef<"Article", 'String'>
+    readonly createdAt: FieldRef<"Article", 'DateTime'>
+    readonly updatedAt: FieldRef<"Article", 'DateTime'>
+    readonly authorId: FieldRef<"Article", 'String'>
+    readonly isModerated: FieldRef<"Article", 'Boolean'>
+    readonly moderationReason: FieldRef<"Article", 'String'>
+    readonly moderatedBy: FieldRef<"Article", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Article findUnique
+   */
+  export type ArticleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which Article to fetch.
+     */
+    where: ArticleWhereUniqueInput
+  }
+
+  /**
+   * Article findUniqueOrThrow
+   */
+  export type ArticleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which Article to fetch.
+     */
+    where: ArticleWhereUniqueInput
+  }
+
+  /**
+   * Article findFirst
+   */
+  export type ArticleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which Article to fetch.
+     */
+    where?: ArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Articles to fetch.
+     */
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Articles.
+     */
+    cursor?: ArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Articles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Articles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Articles.
+     */
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * Article findFirstOrThrow
+   */
+  export type ArticleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which Article to fetch.
+     */
+    where?: ArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Articles to fetch.
+     */
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Articles.
+     */
+    cursor?: ArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Articles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Articles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Articles.
+     */
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * Article findMany
+   */
+  export type ArticleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter, which Articles to fetch.
+     */
+    where?: ArticleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Articles to fetch.
+     */
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Articles.
+     */
+    cursor?: ArticleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Articles from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Articles.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Articles.
+     */
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * Article create
+   */
+  export type ArticleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Article.
+     */
+    data: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
+  }
+
+  /**
+   * Article createMany
+   */
+  export type ArticleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Articles.
+     */
+    data: ArticleCreateManyInput | ArticleCreateManyInput[]
+  }
+
+  /**
+   * Article createManyAndReturn
+   */
+  export type ArticleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * The data used to create many Articles.
+     */
+    data: ArticleCreateManyInput | ArticleCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Article update
+   */
+  export type ArticleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Article.
+     */
+    data: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
+    /**
+     * Choose, which Article to update.
+     */
+    where: ArticleWhereUniqueInput
+  }
+
+  /**
+   * Article updateMany
+   */
+  export type ArticleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Articles.
+     */
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyInput>
+    /**
+     * Filter which Articles to update
+     */
+    where?: ArticleWhereInput
+    /**
+     * Limit how many Articles to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Article updateManyAndReturn
+   */
+  export type ArticleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * The data used to update Articles.
+     */
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyInput>
+    /**
+     * Filter which Articles to update
+     */
+    where?: ArticleWhereInput
+    /**
+     * Limit how many Articles to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Article upsert
+   */
+  export type ArticleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Article to update in case it exists.
+     */
+    where: ArticleWhereUniqueInput
+    /**
+     * In case the Article found by the `where` argument doesn't exist, create a new Article with this data.
+     */
+    create: XOR<ArticleCreateInput, ArticleUncheckedCreateInput>
+    /**
+     * In case the Article was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArticleUpdateInput, ArticleUncheckedUpdateInput>
+  }
+
+  /**
+   * Article delete
+   */
+  export type ArticleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    /**
+     * Filter which Article to delete.
+     */
+    where: ArticleWhereUniqueInput
+  }
+
+  /**
+   * Article deleteMany
+   */
+  export type ArticleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Articles to delete
+     */
+    where?: ArticleWhereInput
+    /**
+     * Limit how many Articles to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Article.tags
+   */
+  export type Article$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    where?: ArticleTagWhereInput
+    orderBy?: ArticleTagOrderByWithRelationInput | ArticleTagOrderByWithRelationInput[]
+    cursor?: ArticleTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleTagScalarFieldEnum | ArticleTagScalarFieldEnum[]
+  }
+
+  /**
+   * Article.reactions
+   */
+  export type Article$reactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    where?: ArticleReactionWhereInput
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    cursor?: ArticleReactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleReactionScalarFieldEnum | ArticleReactionScalarFieldEnum[]
+  }
+
+  /**
+   * Article.moderator
+   */
+  export type Article$moderatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Article without action
+   */
+  export type ArticleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ArticleTag
+   */
+
+  export type AggregateArticleTag = {
+    _count: ArticleTagCountAggregateOutputType | null
+    _min: ArticleTagMinAggregateOutputType | null
+    _max: ArticleTagMaxAggregateOutputType | null
+  }
+
+  export type ArticleTagMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type ArticleTagMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type ArticleTagCountAggregateOutputType = {
+    id: number
+    name: number
+    _all: number
+  }
+
+
+  export type ArticleTagMinAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type ArticleTagMaxAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type ArticleTagCountAggregateInputType = {
+    id?: true
+    name?: true
+    _all?: true
+  }
+
+  export type ArticleTagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleTag to aggregate.
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleTags to fetch.
+     */
+    orderBy?: ArticleTagOrderByWithRelationInput | ArticleTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArticleTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ArticleTags
+    **/
+    _count?: true | ArticleTagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArticleTagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArticleTagMaxAggregateInputType
+  }
+
+  export type GetArticleTagAggregateType<T extends ArticleTagAggregateArgs> = {
+        [P in keyof T & keyof AggregateArticleTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArticleTag[P]>
+      : GetScalarType<T[P], AggregateArticleTag[P]>
+  }
+
+
+
+
+  export type ArticleTagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleTagWhereInput
+    orderBy?: ArticleTagOrderByWithAggregationInput | ArticleTagOrderByWithAggregationInput[]
+    by: ArticleTagScalarFieldEnum[] | ArticleTagScalarFieldEnum
+    having?: ArticleTagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArticleTagCountAggregateInputType | true
+    _min?: ArticleTagMinAggregateInputType
+    _max?: ArticleTagMaxAggregateInputType
+  }
+
+  export type ArticleTagGroupByOutputType = {
+    id: string
+    name: string
+    _count: ArticleTagCountAggregateOutputType | null
+    _min: ArticleTagMinAggregateOutputType | null
+    _max: ArticleTagMaxAggregateOutputType | null
+  }
+
+  type GetArticleTagGroupByPayload<T extends ArticleTagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArticleTagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArticleTagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArticleTagGroupByOutputType[P]>
+            : GetScalarType<T[P], ArticleTagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArticleTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    articles?: boolean | ArticleTag$articlesArgs<ExtArgs>
+    _count?: boolean | ArticleTagCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["articleTag"]>
+
+  export type ArticleTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["articleTag"]>
+
+  export type ArticleTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["articleTag"]>
+
+  export type ArticleTagSelectScalar = {
+    id?: boolean
+    name?: boolean
+  }
+
+  export type ArticleTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["articleTag"]>
+  export type ArticleTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    articles?: boolean | ArticleTag$articlesArgs<ExtArgs>
+    _count?: boolean | ArticleTagCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ArticleTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ArticleTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ArticleTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ArticleTag"
+    objects: {
+      articles: Prisma.$ArticlePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+    }, ExtArgs["result"]["articleTag"]>
+    composites: {}
+  }
+
+  type ArticleTagGetPayload<S extends boolean | null | undefined | ArticleTagDefaultArgs> = $Result.GetResult<Prisma.$ArticleTagPayload, S>
+
+  type ArticleTagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArticleTagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArticleTagCountAggregateInputType | true
+    }
+
+  export interface ArticleTagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArticleTag'], meta: { name: 'ArticleTag' } }
+    /**
+     * Find zero or one ArticleTag that matches the filter.
+     * @param {ArticleTagFindUniqueArgs} args - Arguments to find a ArticleTag
+     * @example
+     * // Get one ArticleTag
+     * const articleTag = await prisma.articleTag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArticleTagFindUniqueArgs>(args: SelectSubset<T, ArticleTagFindUniqueArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ArticleTag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArticleTagFindUniqueOrThrowArgs} args - Arguments to find a ArticleTag
+     * @example
+     * // Get one ArticleTag
+     * const articleTag = await prisma.articleTag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArticleTagFindUniqueOrThrowArgs>(args: SelectSubset<T, ArticleTagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleTag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagFindFirstArgs} args - Arguments to find a ArticleTag
+     * @example
+     * // Get one ArticleTag
+     * const articleTag = await prisma.articleTag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArticleTagFindFirstArgs>(args?: SelectSubset<T, ArticleTagFindFirstArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleTag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagFindFirstOrThrowArgs} args - Arguments to find a ArticleTag
+     * @example
+     * // Get one ArticleTag
+     * const articleTag = await prisma.articleTag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArticleTagFindFirstOrThrowArgs>(args?: SelectSubset<T, ArticleTagFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ArticleTags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ArticleTags
+     * const articleTags = await prisma.articleTag.findMany()
+     * 
+     * // Get first 10 ArticleTags
+     * const articleTags = await prisma.articleTag.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const articleTagWithIdOnly = await prisma.articleTag.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArticleTagFindManyArgs>(args?: SelectSubset<T, ArticleTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ArticleTag.
+     * @param {ArticleTagCreateArgs} args - Arguments to create a ArticleTag.
+     * @example
+     * // Create one ArticleTag
+     * const ArticleTag = await prisma.articleTag.create({
+     *   data: {
+     *     // ... data to create a ArticleTag
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArticleTagCreateArgs>(args: SelectSubset<T, ArticleTagCreateArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ArticleTags.
+     * @param {ArticleTagCreateManyArgs} args - Arguments to create many ArticleTags.
+     * @example
+     * // Create many ArticleTags
+     * const articleTag = await prisma.articleTag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArticleTagCreateManyArgs>(args?: SelectSubset<T, ArticleTagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ArticleTags and returns the data saved in the database.
+     * @param {ArticleTagCreateManyAndReturnArgs} args - Arguments to create many ArticleTags.
+     * @example
+     * // Create many ArticleTags
+     * const articleTag = await prisma.articleTag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ArticleTags and only return the `id`
+     * const articleTagWithIdOnly = await prisma.articleTag.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArticleTagCreateManyAndReturnArgs>(args?: SelectSubset<T, ArticleTagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ArticleTag.
+     * @param {ArticleTagDeleteArgs} args - Arguments to delete one ArticleTag.
+     * @example
+     * // Delete one ArticleTag
+     * const ArticleTag = await prisma.articleTag.delete({
+     *   where: {
+     *     // ... filter to delete one ArticleTag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArticleTagDeleteArgs>(args: SelectSubset<T, ArticleTagDeleteArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ArticleTag.
+     * @param {ArticleTagUpdateArgs} args - Arguments to update one ArticleTag.
+     * @example
+     * // Update one ArticleTag
+     * const articleTag = await prisma.articleTag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArticleTagUpdateArgs>(args: SelectSubset<T, ArticleTagUpdateArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ArticleTags.
+     * @param {ArticleTagDeleteManyArgs} args - Arguments to filter ArticleTags to delete.
+     * @example
+     * // Delete a few ArticleTags
+     * const { count } = await prisma.articleTag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArticleTagDeleteManyArgs>(args?: SelectSubset<T, ArticleTagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ArticleTags
+     * const articleTag = await prisma.articleTag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArticleTagUpdateManyArgs>(args: SelectSubset<T, ArticleTagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleTags and returns the data updated in the database.
+     * @param {ArticleTagUpdateManyAndReturnArgs} args - Arguments to update many ArticleTags.
+     * @example
+     * // Update many ArticleTags
+     * const articleTag = await prisma.articleTag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ArticleTags and only return the `id`
+     * const articleTagWithIdOnly = await prisma.articleTag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArticleTagUpdateManyAndReturnArgs>(args: SelectSubset<T, ArticleTagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ArticleTag.
+     * @param {ArticleTagUpsertArgs} args - Arguments to update or create a ArticleTag.
+     * @example
+     * // Update or create a ArticleTag
+     * const articleTag = await prisma.articleTag.upsert({
+     *   create: {
+     *     // ... data to create a ArticleTag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ArticleTag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArticleTagUpsertArgs>(args: SelectSubset<T, ArticleTagUpsertArgs<ExtArgs>>): Prisma__ArticleTagClient<$Result.GetResult<Prisma.$ArticleTagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ArticleTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagCountArgs} args - Arguments to filter ArticleTags to count.
+     * @example
+     * // Count the number of ArticleTags
+     * const count = await prisma.articleTag.count({
+     *   where: {
+     *     // ... the filter for the ArticleTags we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArticleTagCountArgs>(
+      args?: Subset<T, ArticleTagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArticleTagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ArticleTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArticleTagAggregateArgs>(args: Subset<T, ArticleTagAggregateArgs>): Prisma.PrismaPromise<GetArticleTagAggregateType<T>>
+
+    /**
+     * Group by ArticleTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleTagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArticleTagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArticleTagGroupByArgs['orderBy'] }
+        : { orderBy?: ArticleTagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArticleTagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArticleTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ArticleTag model
+   */
+  readonly fields: ArticleTagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ArticleTag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArticleTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    articles<T extends ArticleTag$articlesArgs<ExtArgs> = {}>(args?: Subset<T, ArticleTag$articlesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ArticleTag model
+   */
+  interface ArticleTagFieldRefs {
+    readonly id: FieldRef<"ArticleTag", 'String'>
+    readonly name: FieldRef<"ArticleTag", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ArticleTag findUnique
+   */
+  export type ArticleTagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleTag to fetch.
+     */
+    where: ArticleTagWhereUniqueInput
+  }
+
+  /**
+   * ArticleTag findUniqueOrThrow
+   */
+  export type ArticleTagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleTag to fetch.
+     */
+    where: ArticleTagWhereUniqueInput
+  }
+
+  /**
+   * ArticleTag findFirst
+   */
+  export type ArticleTagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleTag to fetch.
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleTags to fetch.
+     */
+    orderBy?: ArticleTagOrderByWithRelationInput | ArticleTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleTags.
+     */
+    cursor?: ArticleTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleTags.
+     */
+    distinct?: ArticleTagScalarFieldEnum | ArticleTagScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleTag findFirstOrThrow
+   */
+  export type ArticleTagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleTag to fetch.
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleTags to fetch.
+     */
+    orderBy?: ArticleTagOrderByWithRelationInput | ArticleTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleTags.
+     */
+    cursor?: ArticleTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleTags.
+     */
+    distinct?: ArticleTagScalarFieldEnum | ArticleTagScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleTag findMany
+   */
+  export type ArticleTagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleTags to fetch.
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleTags to fetch.
+     */
+    orderBy?: ArticleTagOrderByWithRelationInput | ArticleTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ArticleTags.
+     */
+    cursor?: ArticleTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleTags.
+     */
+    distinct?: ArticleTagScalarFieldEnum | ArticleTagScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleTag create
+   */
+  export type ArticleTagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ArticleTag.
+     */
+    data: XOR<ArticleTagCreateInput, ArticleTagUncheckedCreateInput>
+  }
+
+  /**
+   * ArticleTag createMany
+   */
+  export type ArticleTagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ArticleTags.
+     */
+    data: ArticleTagCreateManyInput | ArticleTagCreateManyInput[]
+  }
+
+  /**
+   * ArticleTag createManyAndReturn
+   */
+  export type ArticleTagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * The data used to create many ArticleTags.
+     */
+    data: ArticleTagCreateManyInput | ArticleTagCreateManyInput[]
+  }
+
+  /**
+   * ArticleTag update
+   */
+  export type ArticleTagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ArticleTag.
+     */
+    data: XOR<ArticleTagUpdateInput, ArticleTagUncheckedUpdateInput>
+    /**
+     * Choose, which ArticleTag to update.
+     */
+    where: ArticleTagWhereUniqueInput
+  }
+
+  /**
+   * ArticleTag updateMany
+   */
+  export type ArticleTagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ArticleTags.
+     */
+    data: XOR<ArticleTagUpdateManyMutationInput, ArticleTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleTags to update
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * Limit how many ArticleTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleTag updateManyAndReturn
+   */
+  export type ArticleTagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * The data used to update ArticleTags.
+     */
+    data: XOR<ArticleTagUpdateManyMutationInput, ArticleTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleTags to update
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * Limit how many ArticleTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleTag upsert
+   */
+  export type ArticleTagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ArticleTag to update in case it exists.
+     */
+    where: ArticleTagWhereUniqueInput
+    /**
+     * In case the ArticleTag found by the `where` argument doesn't exist, create a new ArticleTag with this data.
+     */
+    create: XOR<ArticleTagCreateInput, ArticleTagUncheckedCreateInput>
+    /**
+     * In case the ArticleTag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArticleTagUpdateInput, ArticleTagUncheckedUpdateInput>
+  }
+
+  /**
+   * ArticleTag delete
+   */
+  export type ArticleTagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+    /**
+     * Filter which ArticleTag to delete.
+     */
+    where: ArticleTagWhereUniqueInput
+  }
+
+  /**
+   * ArticleTag deleteMany
+   */
+  export type ArticleTagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleTags to delete
+     */
+    where?: ArticleTagWhereInput
+    /**
+     * Limit how many ArticleTags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleTag.articles
+   */
+  export type ArticleTag$articlesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Article
+     */
+    select?: ArticleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Article
+     */
+    omit?: ArticleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleInclude<ExtArgs> | null
+    where?: ArticleWhereInput
+    orderBy?: ArticleOrderByWithRelationInput | ArticleOrderByWithRelationInput[]
+    cursor?: ArticleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArticleScalarFieldEnum | ArticleScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleTag without action
+   */
+  export type ArticleTagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleTag
+     */
+    select?: ArticleTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleTag
+     */
+    omit?: ArticleTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleTagInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ArticleReaction
+   */
+
+  export type AggregateArticleReaction = {
+    _count: ArticleReactionCountAggregateOutputType | null
+    _min: ArticleReactionMinAggregateOutputType | null
+    _max: ArticleReactionMaxAggregateOutputType | null
+  }
+
+  export type ArticleReactionMinAggregateOutputType = {
+    id: string | null
+    emoji: string | null
+    createdAt: Date | null
+    articleId: string | null
+    userId: string | null
+  }
+
+  export type ArticleReactionMaxAggregateOutputType = {
+    id: string | null
+    emoji: string | null
+    createdAt: Date | null
+    articleId: string | null
+    userId: string | null
+  }
+
+  export type ArticleReactionCountAggregateOutputType = {
+    id: number
+    emoji: number
+    createdAt: number
+    articleId: number
+    userId: number
+    _all: number
+  }
+
+
+  export type ArticleReactionMinAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    articleId?: true
+    userId?: true
+  }
+
+  export type ArticleReactionMaxAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    articleId?: true
+    userId?: true
+  }
+
+  export type ArticleReactionCountAggregateInputType = {
+    id?: true
+    emoji?: true
+    createdAt?: true
+    articleId?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type ArticleReactionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleReaction to aggregate.
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleReactions to fetch.
+     */
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArticleReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ArticleReactions
+    **/
+    _count?: true | ArticleReactionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArticleReactionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArticleReactionMaxAggregateInputType
+  }
+
+  export type GetArticleReactionAggregateType<T extends ArticleReactionAggregateArgs> = {
+        [P in keyof T & keyof AggregateArticleReaction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArticleReaction[P]>
+      : GetScalarType<T[P], AggregateArticleReaction[P]>
+  }
+
+
+
+
+  export type ArticleReactionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArticleReactionWhereInput
+    orderBy?: ArticleReactionOrderByWithAggregationInput | ArticleReactionOrderByWithAggregationInput[]
+    by: ArticleReactionScalarFieldEnum[] | ArticleReactionScalarFieldEnum
+    having?: ArticleReactionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArticleReactionCountAggregateInputType | true
+    _min?: ArticleReactionMinAggregateInputType
+    _max?: ArticleReactionMaxAggregateInputType
+  }
+
+  export type ArticleReactionGroupByOutputType = {
+    id: string
+    emoji: string
+    createdAt: Date
+    articleId: string
+    userId: string
+    _count: ArticleReactionCountAggregateOutputType | null
+    _min: ArticleReactionMinAggregateOutputType | null
+    _max: ArticleReactionMaxAggregateOutputType | null
+  }
+
+  type GetArticleReactionGroupByPayload<T extends ArticleReactionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArticleReactionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArticleReactionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArticleReactionGroupByOutputType[P]>
+            : GetScalarType<T[P], ArticleReactionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArticleReactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    articleId?: boolean
+    userId?: boolean
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["articleReaction"]>
+
+  export type ArticleReactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    articleId?: boolean
+    userId?: boolean
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["articleReaction"]>
+
+  export type ArticleReactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    articleId?: boolean
+    userId?: boolean
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["articleReaction"]>
+
+  export type ArticleReactionSelectScalar = {
+    id?: boolean
+    emoji?: boolean
+    createdAt?: boolean
+    articleId?: boolean
+    userId?: boolean
+  }
+
+  export type ArticleReactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "emoji" | "createdAt" | "articleId" | "userId", ExtArgs["result"]["articleReaction"]>
+  export type ArticleReactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ArticleReactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ArticleReactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    article?: boolean | ArticleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ArticleReactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ArticleReaction"
+    objects: {
+      article: Prisma.$ArticlePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      emoji: string
+      createdAt: Date
+      articleId: string
+      userId: string
+    }, ExtArgs["result"]["articleReaction"]>
+    composites: {}
+  }
+
+  type ArticleReactionGetPayload<S extends boolean | null | undefined | ArticleReactionDefaultArgs> = $Result.GetResult<Prisma.$ArticleReactionPayload, S>
+
+  type ArticleReactionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArticleReactionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArticleReactionCountAggregateInputType | true
+    }
+
+  export interface ArticleReactionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArticleReaction'], meta: { name: 'ArticleReaction' } }
+    /**
+     * Find zero or one ArticleReaction that matches the filter.
+     * @param {ArticleReactionFindUniqueArgs} args - Arguments to find a ArticleReaction
+     * @example
+     * // Get one ArticleReaction
+     * const articleReaction = await prisma.articleReaction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArticleReactionFindUniqueArgs>(args: SelectSubset<T, ArticleReactionFindUniqueArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ArticleReaction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArticleReactionFindUniqueOrThrowArgs} args - Arguments to find a ArticleReaction
+     * @example
+     * // Get one ArticleReaction
+     * const articleReaction = await prisma.articleReaction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArticleReactionFindUniqueOrThrowArgs>(args: SelectSubset<T, ArticleReactionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleReaction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionFindFirstArgs} args - Arguments to find a ArticleReaction
+     * @example
+     * // Get one ArticleReaction
+     * const articleReaction = await prisma.articleReaction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArticleReactionFindFirstArgs>(args?: SelectSubset<T, ArticleReactionFindFirstArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArticleReaction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionFindFirstOrThrowArgs} args - Arguments to find a ArticleReaction
+     * @example
+     * // Get one ArticleReaction
+     * const articleReaction = await prisma.articleReaction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArticleReactionFindFirstOrThrowArgs>(args?: SelectSubset<T, ArticleReactionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ArticleReactions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ArticleReactions
+     * const articleReactions = await prisma.articleReaction.findMany()
+     * 
+     * // Get first 10 ArticleReactions
+     * const articleReactions = await prisma.articleReaction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const articleReactionWithIdOnly = await prisma.articleReaction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArticleReactionFindManyArgs>(args?: SelectSubset<T, ArticleReactionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ArticleReaction.
+     * @param {ArticleReactionCreateArgs} args - Arguments to create a ArticleReaction.
+     * @example
+     * // Create one ArticleReaction
+     * const ArticleReaction = await prisma.articleReaction.create({
+     *   data: {
+     *     // ... data to create a ArticleReaction
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArticleReactionCreateArgs>(args: SelectSubset<T, ArticleReactionCreateArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ArticleReactions.
+     * @param {ArticleReactionCreateManyArgs} args - Arguments to create many ArticleReactions.
+     * @example
+     * // Create many ArticleReactions
+     * const articleReaction = await prisma.articleReaction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArticleReactionCreateManyArgs>(args?: SelectSubset<T, ArticleReactionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ArticleReactions and returns the data saved in the database.
+     * @param {ArticleReactionCreateManyAndReturnArgs} args - Arguments to create many ArticleReactions.
+     * @example
+     * // Create many ArticleReactions
+     * const articleReaction = await prisma.articleReaction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ArticleReactions and only return the `id`
+     * const articleReactionWithIdOnly = await prisma.articleReaction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArticleReactionCreateManyAndReturnArgs>(args?: SelectSubset<T, ArticleReactionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ArticleReaction.
+     * @param {ArticleReactionDeleteArgs} args - Arguments to delete one ArticleReaction.
+     * @example
+     * // Delete one ArticleReaction
+     * const ArticleReaction = await prisma.articleReaction.delete({
+     *   where: {
+     *     // ... filter to delete one ArticleReaction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArticleReactionDeleteArgs>(args: SelectSubset<T, ArticleReactionDeleteArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ArticleReaction.
+     * @param {ArticleReactionUpdateArgs} args - Arguments to update one ArticleReaction.
+     * @example
+     * // Update one ArticleReaction
+     * const articleReaction = await prisma.articleReaction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArticleReactionUpdateArgs>(args: SelectSubset<T, ArticleReactionUpdateArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ArticleReactions.
+     * @param {ArticleReactionDeleteManyArgs} args - Arguments to filter ArticleReactions to delete.
+     * @example
+     * // Delete a few ArticleReactions
+     * const { count } = await prisma.articleReaction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArticleReactionDeleteManyArgs>(args?: SelectSubset<T, ArticleReactionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ArticleReactions
+     * const articleReaction = await prisma.articleReaction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArticleReactionUpdateManyArgs>(args: SelectSubset<T, ArticleReactionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArticleReactions and returns the data updated in the database.
+     * @param {ArticleReactionUpdateManyAndReturnArgs} args - Arguments to update many ArticleReactions.
+     * @example
+     * // Update many ArticleReactions
+     * const articleReaction = await prisma.articleReaction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ArticleReactions and only return the `id`
+     * const articleReactionWithIdOnly = await prisma.articleReaction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArticleReactionUpdateManyAndReturnArgs>(args: SelectSubset<T, ArticleReactionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ArticleReaction.
+     * @param {ArticleReactionUpsertArgs} args - Arguments to update or create a ArticleReaction.
+     * @example
+     * // Update or create a ArticleReaction
+     * const articleReaction = await prisma.articleReaction.upsert({
+     *   create: {
+     *     // ... data to create a ArticleReaction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ArticleReaction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArticleReactionUpsertArgs>(args: SelectSubset<T, ArticleReactionUpsertArgs<ExtArgs>>): Prisma__ArticleReactionClient<$Result.GetResult<Prisma.$ArticleReactionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ArticleReactions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionCountArgs} args - Arguments to filter ArticleReactions to count.
+     * @example
+     * // Count the number of ArticleReactions
+     * const count = await prisma.articleReaction.count({
+     *   where: {
+     *     // ... the filter for the ArticleReactions we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArticleReactionCountArgs>(
+      args?: Subset<T, ArticleReactionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArticleReactionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ArticleReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArticleReactionAggregateArgs>(args: Subset<T, ArticleReactionAggregateArgs>): Prisma.PrismaPromise<GetArticleReactionAggregateType<T>>
+
+    /**
+     * Group by ArticleReaction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArticleReactionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArticleReactionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArticleReactionGroupByArgs['orderBy'] }
+        : { orderBy?: ArticleReactionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArticleReactionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArticleReactionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ArticleReaction model
+   */
+  readonly fields: ArticleReactionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ArticleReaction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArticleReactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    article<T extends ArticleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ArticleDefaultArgs<ExtArgs>>): Prisma__ArticleClient<$Result.GetResult<Prisma.$ArticlePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ArticleReaction model
+   */
+  interface ArticleReactionFieldRefs {
+    readonly id: FieldRef<"ArticleReaction", 'String'>
+    readonly emoji: FieldRef<"ArticleReaction", 'String'>
+    readonly createdAt: FieldRef<"ArticleReaction", 'DateTime'>
+    readonly articleId: FieldRef<"ArticleReaction", 'String'>
+    readonly userId: FieldRef<"ArticleReaction", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ArticleReaction findUnique
+   */
+  export type ArticleReactionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleReaction to fetch.
+     */
+    where: ArticleReactionWhereUniqueInput
+  }
+
+  /**
+   * ArticleReaction findUniqueOrThrow
+   */
+  export type ArticleReactionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleReaction to fetch.
+     */
+    where: ArticleReactionWhereUniqueInput
+  }
+
+  /**
+   * ArticleReaction findFirst
+   */
+  export type ArticleReactionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleReaction to fetch.
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleReactions to fetch.
+     */
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleReactions.
+     */
+    cursor?: ArticleReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleReactions.
+     */
+    distinct?: ArticleReactionScalarFieldEnum | ArticleReactionScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleReaction findFirstOrThrow
+   */
+  export type ArticleReactionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleReaction to fetch.
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleReactions to fetch.
+     */
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArticleReactions.
+     */
+    cursor?: ArticleReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleReactions.
+     */
+    distinct?: ArticleReactionScalarFieldEnum | ArticleReactionScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleReaction findMany
+   */
+  export type ArticleReactionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter, which ArticleReactions to fetch.
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArticleReactions to fetch.
+     */
+    orderBy?: ArticleReactionOrderByWithRelationInput | ArticleReactionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ArticleReactions.
+     */
+    cursor?: ArticleReactionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArticleReactions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArticleReactions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArticleReactions.
+     */
+    distinct?: ArticleReactionScalarFieldEnum | ArticleReactionScalarFieldEnum[]
+  }
+
+  /**
+   * ArticleReaction create
+   */
+  export type ArticleReactionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ArticleReaction.
+     */
+    data: XOR<ArticleReactionCreateInput, ArticleReactionUncheckedCreateInput>
+  }
+
+  /**
+   * ArticleReaction createMany
+   */
+  export type ArticleReactionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ArticleReactions.
+     */
+    data: ArticleReactionCreateManyInput | ArticleReactionCreateManyInput[]
+  }
+
+  /**
+   * ArticleReaction createManyAndReturn
+   */
+  export type ArticleReactionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * The data used to create many ArticleReactions.
+     */
+    data: ArticleReactionCreateManyInput | ArticleReactionCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArticleReaction update
+   */
+  export type ArticleReactionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ArticleReaction.
+     */
+    data: XOR<ArticleReactionUpdateInput, ArticleReactionUncheckedUpdateInput>
+    /**
+     * Choose, which ArticleReaction to update.
+     */
+    where: ArticleReactionWhereUniqueInput
+  }
+
+  /**
+   * ArticleReaction updateMany
+   */
+  export type ArticleReactionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ArticleReactions.
+     */
+    data: XOR<ArticleReactionUpdateManyMutationInput, ArticleReactionUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleReactions to update
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * Limit how many ArticleReactions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleReaction updateManyAndReturn
+   */
+  export type ArticleReactionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * The data used to update ArticleReactions.
+     */
+    data: XOR<ArticleReactionUpdateManyMutationInput, ArticleReactionUncheckedUpdateManyInput>
+    /**
+     * Filter which ArticleReactions to update
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * Limit how many ArticleReactions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArticleReaction upsert
+   */
+  export type ArticleReactionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ArticleReaction to update in case it exists.
+     */
+    where: ArticleReactionWhereUniqueInput
+    /**
+     * In case the ArticleReaction found by the `where` argument doesn't exist, create a new ArticleReaction with this data.
+     */
+    create: XOR<ArticleReactionCreateInput, ArticleReactionUncheckedCreateInput>
+    /**
+     * In case the ArticleReaction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArticleReactionUpdateInput, ArticleReactionUncheckedUpdateInput>
+  }
+
+  /**
+   * ArticleReaction delete
+   */
+  export type ArticleReactionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+    /**
+     * Filter which ArticleReaction to delete.
+     */
+    where: ArticleReactionWhereUniqueInput
+  }
+
+  /**
+   * ArticleReaction deleteMany
+   */
+  export type ArticleReactionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArticleReactions to delete
+     */
+    where?: ArticleReactionWhereInput
+    /**
+     * Limit how many ArticleReactions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArticleReaction without action
+   */
+  export type ArticleReactionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArticleReaction
+     */
+    select?: ArticleReactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArticleReaction
+     */
+    omit?: ArticleReactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArticleReactionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -29019,6 +32775,40 @@ export namespace Prisma {
   export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
 
 
+  export const ArticleScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    content: 'content',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    authorId: 'authorId',
+    isModerated: 'isModerated',
+    moderationReason: 'moderationReason',
+    moderatedBy: 'moderatedBy'
+  };
+
+  export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+  export const ArticleTagScalarFieldEnum: {
+    id: 'id',
+    name: 'name'
+  };
+
+  export type ArticleTagScalarFieldEnum = (typeof ArticleTagScalarFieldEnum)[keyof typeof ArticleTagScalarFieldEnum]
+
+
+  export const ArticleReactionScalarFieldEnum: {
+    id: 'id',
+    emoji: 'emoji',
+    createdAt: 'createdAt',
+    articleId: 'articleId',
+    userId: 'userId'
+  };
+
+  export type ArticleReactionScalarFieldEnum = (typeof ArticleReactionScalarFieldEnum)[keyof typeof ArticleReactionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -29269,6 +33059,9 @@ export namespace Prisma {
     postReactions?: PostReactionListRelationFilter
     followedTopics?: TopicFollowListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    articles?: ArticleListRelationFilter
+    articleReactions?: ArticleReactionListRelationFilter
+    moderatedArticles?: ArticleListRelationFilter
     tournamentRegistrations?: TournamentRegistrationListRelationFilter
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
@@ -29306,6 +33099,9 @@ export namespace Prisma {
     postReactions?: PostReactionOrderByRelationAggregateInput
     followedTopics?: TopicFollowOrderByRelationAggregateInput
     commissairesTournaments?: TournamentOrderByRelationAggregateInput
+    articles?: ArticleOrderByRelationAggregateInput
+    articleReactions?: ArticleReactionOrderByRelationAggregateInput
+    moderatedArticles?: ArticleOrderByRelationAggregateInput
     tournamentRegistrations?: TournamentRegistrationOrderByRelationAggregateInput
     captainTeams?: TournamentTeamOrderByRelationAggregateInput
     teamMemberships?: TournamentTeamMemberOrderByRelationAggregateInput
@@ -29346,6 +33142,9 @@ export namespace Prisma {
     postReactions?: PostReactionListRelationFilter
     followedTopics?: TopicFollowListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    articles?: ArticleListRelationFilter
+    articleReactions?: ArticleReactionListRelationFilter
+    moderatedArticles?: ArticleListRelationFilter
     tournamentRegistrations?: TournamentRegistrationListRelationFilter
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
@@ -30771,6 +34570,189 @@ export namespace Prisma {
     value?: StringWithAggregatesFilter<"SiteSetting"> | string
   }
 
+  export type ArticleWhereInput = {
+    AND?: ArticleWhereInput | ArticleWhereInput[]
+    OR?: ArticleWhereInput[]
+    NOT?: ArticleWhereInput | ArticleWhereInput[]
+    id?: StringFilter<"Article"> | string
+    title?: StringFilter<"Article"> | string
+    content?: StringFilter<"Article"> | string
+    createdAt?: DateTimeFilter<"Article"> | Date | string
+    updatedAt?: DateTimeFilter<"Article"> | Date | string
+    authorId?: StringFilter<"Article"> | string
+    isModerated?: BoolFilter<"Article"> | boolean
+    moderationReason?: StringNullableFilter<"Article"> | string | null
+    moderatedBy?: StringNullableFilter<"Article"> | string | null
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: ArticleTagListRelationFilter
+    reactions?: ArticleReactionListRelationFilter
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ArticleOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
+    author?: UserOrderByWithRelationInput
+    tags?: ArticleTagOrderByRelationAggregateInput
+    reactions?: ArticleReactionOrderByRelationAggregateInput
+    moderator?: UserOrderByWithRelationInput
+  }
+
+  export type ArticleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ArticleWhereInput | ArticleWhereInput[]
+    OR?: ArticleWhereInput[]
+    NOT?: ArticleWhereInput | ArticleWhereInput[]
+    title?: StringFilter<"Article"> | string
+    content?: StringFilter<"Article"> | string
+    createdAt?: DateTimeFilter<"Article"> | Date | string
+    updatedAt?: DateTimeFilter<"Article"> | Date | string
+    authorId?: StringFilter<"Article"> | string
+    isModerated?: BoolFilter<"Article"> | boolean
+    moderationReason?: StringNullableFilter<"Article"> | string | null
+    moderatedBy?: StringNullableFilter<"Article"> | string | null
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: ArticleTagListRelationFilter
+    reactions?: ArticleReactionListRelationFilter
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type ArticleOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrderInput | SortOrder
+    moderatedBy?: SortOrderInput | SortOrder
+    _count?: ArticleCountOrderByAggregateInput
+    _max?: ArticleMaxOrderByAggregateInput
+    _min?: ArticleMinOrderByAggregateInput
+  }
+
+  export type ArticleScalarWhereWithAggregatesInput = {
+    AND?: ArticleScalarWhereWithAggregatesInput | ArticleScalarWhereWithAggregatesInput[]
+    OR?: ArticleScalarWhereWithAggregatesInput[]
+    NOT?: ArticleScalarWhereWithAggregatesInput | ArticleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Article"> | string
+    title?: StringWithAggregatesFilter<"Article"> | string
+    content?: StringWithAggregatesFilter<"Article"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
+    authorId?: StringWithAggregatesFilter<"Article"> | string
+    isModerated?: BoolWithAggregatesFilter<"Article"> | boolean
+    moderationReason?: StringNullableWithAggregatesFilter<"Article"> | string | null
+    moderatedBy?: StringNullableWithAggregatesFilter<"Article"> | string | null
+  }
+
+  export type ArticleTagWhereInput = {
+    AND?: ArticleTagWhereInput | ArticleTagWhereInput[]
+    OR?: ArticleTagWhereInput[]
+    NOT?: ArticleTagWhereInput | ArticleTagWhereInput[]
+    id?: StringFilter<"ArticleTag"> | string
+    name?: StringFilter<"ArticleTag"> | string
+    articles?: ArticleListRelationFilter
+  }
+
+  export type ArticleTagOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    articles?: ArticleOrderByRelationAggregateInput
+  }
+
+  export type ArticleTagWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: ArticleTagWhereInput | ArticleTagWhereInput[]
+    OR?: ArticleTagWhereInput[]
+    NOT?: ArticleTagWhereInput | ArticleTagWhereInput[]
+    articles?: ArticleListRelationFilter
+  }, "id" | "name">
+
+  export type ArticleTagOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    _count?: ArticleTagCountOrderByAggregateInput
+    _max?: ArticleTagMaxOrderByAggregateInput
+    _min?: ArticleTagMinOrderByAggregateInput
+  }
+
+  export type ArticleTagScalarWhereWithAggregatesInput = {
+    AND?: ArticleTagScalarWhereWithAggregatesInput | ArticleTagScalarWhereWithAggregatesInput[]
+    OR?: ArticleTagScalarWhereWithAggregatesInput[]
+    NOT?: ArticleTagScalarWhereWithAggregatesInput | ArticleTagScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ArticleTag"> | string
+    name?: StringWithAggregatesFilter<"ArticleTag"> | string
+  }
+
+  export type ArticleReactionWhereInput = {
+    AND?: ArticleReactionWhereInput | ArticleReactionWhereInput[]
+    OR?: ArticleReactionWhereInput[]
+    NOT?: ArticleReactionWhereInput | ArticleReactionWhereInput[]
+    id?: StringFilter<"ArticleReaction"> | string
+    emoji?: StringFilter<"ArticleReaction"> | string
+    createdAt?: DateTimeFilter<"ArticleReaction"> | Date | string
+    articleId?: StringFilter<"ArticleReaction"> | string
+    userId?: StringFilter<"ArticleReaction"> | string
+    article?: XOR<ArticleScalarRelationFilter, ArticleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ArticleReactionOrderByWithRelationInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    article?: ArticleOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ArticleReactionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    articleId_userId_emoji?: ArticleReactionArticleIdUserIdEmojiCompoundUniqueInput
+    AND?: ArticleReactionWhereInput | ArticleReactionWhereInput[]
+    OR?: ArticleReactionWhereInput[]
+    NOT?: ArticleReactionWhereInput | ArticleReactionWhereInput[]
+    emoji?: StringFilter<"ArticleReaction"> | string
+    createdAt?: DateTimeFilter<"ArticleReaction"> | Date | string
+    articleId?: StringFilter<"ArticleReaction"> | string
+    userId?: StringFilter<"ArticleReaction"> | string
+    article?: XOR<ArticleScalarRelationFilter, ArticleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "articleId_userId_emoji">
+
+  export type ArticleReactionOrderByWithAggregationInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+    _count?: ArticleReactionCountOrderByAggregateInput
+    _max?: ArticleReactionMaxOrderByAggregateInput
+    _min?: ArticleReactionMinOrderByAggregateInput
+  }
+
+  export type ArticleReactionScalarWhereWithAggregatesInput = {
+    AND?: ArticleReactionScalarWhereWithAggregatesInput | ArticleReactionScalarWhereWithAggregatesInput[]
+    OR?: ArticleReactionScalarWhereWithAggregatesInput[]
+    NOT?: ArticleReactionScalarWhereWithAggregatesInput | ArticleReactionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ArticleReaction"> | string
+    emoji?: StringWithAggregatesFilter<"ArticleReaction"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ArticleReaction"> | Date | string
+    articleId?: StringWithAggregatesFilter<"ArticleReaction"> | string
+    userId?: StringWithAggregatesFilter<"ArticleReaction"> | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -30953,6 +34935,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -30989,6 +34974,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -31025,6 +35013,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -31061,6 +35052,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -32538,6 +36532,189 @@ export namespace Prisma {
     value?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ArticleCreateInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    author: UserCreateNestedOneWithoutArticlesInput
+    tags?: ArticleTagCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionCreateNestedManyWithoutArticleInput
+    moderator?: UserCreateNestedOneWithoutModeratedArticlesInput
+  }
+
+  export type ArticleUncheckedCreateInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    tags?: ArticleTagUncheckedCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionUncheckedCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    author?: UserUpdateOneRequiredWithoutArticlesNestedInput
+    tags?: ArticleTagUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUpdateManyWithoutArticleNestedInput
+    moderator?: UserUpdateOneWithoutModeratedArticlesNestedInput
+  }
+
+  export type ArticleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ArticleTagUncheckedUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleCreateManyInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+  }
+
+  export type ArticleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ArticleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ArticleTagCreateInput = {
+    id?: string
+    name: string
+    articles?: ArticleCreateNestedManyWithoutTagsInput
+  }
+
+  export type ArticleTagUncheckedCreateInput = {
+    id?: string
+    name: string
+    articles?: ArticleUncheckedCreateNestedManyWithoutTagsInput
+  }
+
+  export type ArticleTagUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    articles?: ArticleUpdateManyWithoutTagsNestedInput
+  }
+
+  export type ArticleTagUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    articles?: ArticleUncheckedUpdateManyWithoutTagsNestedInput
+  }
+
+  export type ArticleTagCreateManyInput = {
+    id?: string
+    name: string
+  }
+
+  export type ArticleTagUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleTagUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionCreateInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    article: ArticleCreateNestedOneWithoutReactionsInput
+    user: UserCreateNestedOneWithoutArticleReactionsInput
+  }
+
+  export type ArticleReactionUncheckedCreateInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    articleId: string
+    userId: string
+  }
+
+  export type ArticleReactionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: ArticleUpdateOneRequiredWithoutReactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutArticleReactionsNestedInput
+  }
+
+  export type ArticleReactionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionCreateManyInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    articleId: string
+    userId: string
+  }
+
+  export type ArticleReactionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArticleReactionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -32828,6 +37005,18 @@ export namespace Prisma {
     none?: TopicFollowWhereInput
   }
 
+  export type ArticleListRelationFilter = {
+    every?: ArticleWhereInput
+    some?: ArticleWhereInput
+    none?: ArticleWhereInput
+  }
+
+  export type ArticleReactionListRelationFilter = {
+    every?: ArticleReactionWhereInput
+    some?: ArticleReactionWhereInput
+    none?: ArticleReactionWhereInput
+  }
+
   export type TournamentRegistrationListRelationFilter = {
     every?: TournamentRegistrationWhereInput
     some?: TournamentRegistrationWhereInput
@@ -32893,6 +37082,14 @@ export namespace Prisma {
   }
 
   export type TopicFollowOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArticleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArticleReactionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33860,6 +38057,102 @@ export namespace Prisma {
     value?: SortOrder
   }
 
+  export type ArticleTagListRelationFilter = {
+    every?: ArticleTagWhereInput
+    some?: ArticleTagWhereInput
+    none?: ArticleTagWhereInput
+  }
+
+  export type ArticleTagOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArticleCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
+  }
+
+  export type ArticleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
+  }
+
+  export type ArticleMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    authorId?: SortOrder
+    isModerated?: SortOrder
+    moderationReason?: SortOrder
+    moderatedBy?: SortOrder
+  }
+
+  export type ArticleTagCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ArticleTagMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ArticleTagMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ArticleScalarRelationFilter = {
+    is?: ArticleWhereInput
+    isNot?: ArticleWhereInput
+  }
+
+  export type ArticleReactionArticleIdUserIdEmojiCompoundUniqueInput = {
+    articleId: string
+    userId: string
+    emoji: string
+  }
+
+  export type ArticleReactionCountOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ArticleReactionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type ArticleReactionMinOrderByAggregateInput = {
+    id?: SortOrder
+    emoji?: SortOrder
+    createdAt?: SortOrder
+    articleId?: SortOrder
+    userId?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -34018,6 +38311,27 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
+  export type ArticleCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput> | ArticleCreateWithoutAuthorInput[] | ArticleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutAuthorInput | ArticleCreateOrConnectWithoutAuthorInput[]
+    createMany?: ArticleCreateManyAuthorInputEnvelope
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
+  export type ArticleReactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput> | ArticleReactionCreateWithoutUserInput[] | ArticleReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutUserInput | ArticleReactionCreateOrConnectWithoutUserInput[]
+    createMany?: ArticleReactionCreateManyUserInputEnvelope
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+  }
+
+  export type ArticleCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput> | ArticleCreateWithoutModeratorInput[] | ArticleUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutModeratorInput | ArticleCreateOrConnectWithoutModeratorInput[]
+    createMany?: ArticleCreateManyModeratorInputEnvelope
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
   export type TournamentRegistrationCreateNestedManyWithoutUserInput = {
     create?: XOR<TournamentRegistrationCreateWithoutUserInput, TournamentRegistrationUncheckedCreateWithoutUserInput> | TournamentRegistrationCreateWithoutUserInput[] | TournamentRegistrationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TournamentRegistrationCreateOrConnectWithoutUserInput | TournamentRegistrationCreateOrConnectWithoutUserInput[]
@@ -34148,6 +38462,27 @@ export namespace Prisma {
     create?: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput> | TournamentCreateWithoutCommissairesInput[] | TournamentUncheckedCreateWithoutCommissairesInput[]
     connectOrCreate?: TournamentCreateOrConnectWithoutCommissairesInput | TournamentCreateOrConnectWithoutCommissairesInput[]
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
+  export type ArticleUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput> | ArticleCreateWithoutAuthorInput[] | ArticleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutAuthorInput | ArticleCreateOrConnectWithoutAuthorInput[]
+    createMany?: ArticleCreateManyAuthorInputEnvelope
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
+  export type ArticleReactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput> | ArticleReactionCreateWithoutUserInput[] | ArticleReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutUserInput | ArticleReactionCreateOrConnectWithoutUserInput[]
+    createMany?: ArticleReactionCreateManyUserInputEnvelope
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+  }
+
+  export type ArticleUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput> | ArticleCreateWithoutModeratorInput[] | ArticleUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutModeratorInput | ArticleCreateOrConnectWithoutModeratorInput[]
+    createMany?: ArticleCreateManyModeratorInputEnvelope
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
   }
 
   export type TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput = {
@@ -34403,6 +38738,48 @@ export namespace Prisma {
     update?: TournamentUpdateWithWhereUniqueWithoutCommissairesInput | TournamentUpdateWithWhereUniqueWithoutCommissairesInput[]
     updateMany?: TournamentUpdateManyWithWhereWithoutCommissairesInput | TournamentUpdateManyWithWhereWithoutCommissairesInput[]
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
+  export type ArticleUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput> | ArticleCreateWithoutAuthorInput[] | ArticleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutAuthorInput | ArticleCreateOrConnectWithoutAuthorInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutAuthorInput | ArticleUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: ArticleCreateManyAuthorInputEnvelope
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutAuthorInput | ArticleUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutAuthorInput | ArticleUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+  }
+
+  export type ArticleReactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput> | ArticleReactionCreateWithoutUserInput[] | ArticleReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutUserInput | ArticleReactionCreateOrConnectWithoutUserInput[]
+    upsert?: ArticleReactionUpsertWithWhereUniqueWithoutUserInput | ArticleReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ArticleReactionCreateManyUserInputEnvelope
+    set?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    disconnect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    delete?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    update?: ArticleReactionUpdateWithWhereUniqueWithoutUserInput | ArticleReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ArticleReactionUpdateManyWithWhereWithoutUserInput | ArticleReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+  }
+
+  export type ArticleUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput> | ArticleCreateWithoutModeratorInput[] | ArticleUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutModeratorInput | ArticleCreateOrConnectWithoutModeratorInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutModeratorInput | ArticleUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ArticleCreateManyModeratorInputEnvelope
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutModeratorInput | ArticleUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutModeratorInput | ArticleUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
   }
 
   export type TournamentRegistrationUpdateManyWithoutUserNestedInput = {
@@ -34668,6 +39045,48 @@ export namespace Prisma {
     update?: TournamentUpdateWithWhereUniqueWithoutCommissairesInput | TournamentUpdateWithWhereUniqueWithoutCommissairesInput[]
     updateMany?: TournamentUpdateManyWithWhereWithoutCommissairesInput | TournamentUpdateManyWithWhereWithoutCommissairesInput[]
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput> | ArticleCreateWithoutAuthorInput[] | ArticleUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutAuthorInput | ArticleCreateOrConnectWithoutAuthorInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutAuthorInput | ArticleUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: ArticleCreateManyAuthorInputEnvelope
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutAuthorInput | ArticleUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutAuthorInput | ArticleUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+  }
+
+  export type ArticleReactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput> | ArticleReactionCreateWithoutUserInput[] | ArticleReactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutUserInput | ArticleReactionCreateOrConnectWithoutUserInput[]
+    upsert?: ArticleReactionUpsertWithWhereUniqueWithoutUserInput | ArticleReactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ArticleReactionCreateManyUserInputEnvelope
+    set?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    disconnect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    delete?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    update?: ArticleReactionUpdateWithWhereUniqueWithoutUserInput | ArticleReactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ArticleReactionUpdateManyWithWhereWithoutUserInput | ArticleReactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput> | ArticleCreateWithoutModeratorInput[] | ArticleUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutModeratorInput | ArticleCreateOrConnectWithoutModeratorInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutModeratorInput | ArticleUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ArticleCreateManyModeratorInputEnvelope
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutModeratorInput | ArticleUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutModeratorInput | ArticleUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
   }
 
   export type TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput = {
@@ -35836,6 +40255,182 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMercenaryStatusInput, UserUpdateWithoutMercenaryStatusInput>, UserUncheckedUpdateWithoutMercenaryStatusInput>
   }
 
+  export type UserCreateNestedOneWithoutArticlesInput = {
+    create?: XOR<UserCreateWithoutArticlesInput, UserUncheckedCreateWithoutArticlesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutArticlesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ArticleTagCreateNestedManyWithoutArticlesInput = {
+    create?: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput> | ArticleTagCreateWithoutArticlesInput[] | ArticleTagUncheckedCreateWithoutArticlesInput[]
+    connectOrCreate?: ArticleTagCreateOrConnectWithoutArticlesInput | ArticleTagCreateOrConnectWithoutArticlesInput[]
+    connect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+  }
+
+  export type ArticleReactionCreateNestedManyWithoutArticleInput = {
+    create?: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput> | ArticleReactionCreateWithoutArticleInput[] | ArticleReactionUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutArticleInput | ArticleReactionCreateOrConnectWithoutArticleInput[]
+    createMany?: ArticleReactionCreateManyArticleInputEnvelope
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutModeratedArticlesInput = {
+    create?: XOR<UserCreateWithoutModeratedArticlesInput, UserUncheckedCreateWithoutModeratedArticlesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratedArticlesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ArticleTagUncheckedCreateNestedManyWithoutArticlesInput = {
+    create?: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput> | ArticleTagCreateWithoutArticlesInput[] | ArticleTagUncheckedCreateWithoutArticlesInput[]
+    connectOrCreate?: ArticleTagCreateOrConnectWithoutArticlesInput | ArticleTagCreateOrConnectWithoutArticlesInput[]
+    connect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+  }
+
+  export type ArticleReactionUncheckedCreateNestedManyWithoutArticleInput = {
+    create?: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput> | ArticleReactionCreateWithoutArticleInput[] | ArticleReactionUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutArticleInput | ArticleReactionCreateOrConnectWithoutArticleInput[]
+    createMany?: ArticleReactionCreateManyArticleInputEnvelope
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutArticlesNestedInput = {
+    create?: XOR<UserCreateWithoutArticlesInput, UserUncheckedCreateWithoutArticlesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutArticlesInput
+    upsert?: UserUpsertWithoutArticlesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutArticlesInput, UserUpdateWithoutArticlesInput>, UserUncheckedUpdateWithoutArticlesInput>
+  }
+
+  export type ArticleTagUpdateManyWithoutArticlesNestedInput = {
+    create?: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput> | ArticleTagCreateWithoutArticlesInput[] | ArticleTagUncheckedCreateWithoutArticlesInput[]
+    connectOrCreate?: ArticleTagCreateOrConnectWithoutArticlesInput | ArticleTagCreateOrConnectWithoutArticlesInput[]
+    upsert?: ArticleTagUpsertWithWhereUniqueWithoutArticlesInput | ArticleTagUpsertWithWhereUniqueWithoutArticlesInput[]
+    set?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    disconnect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    delete?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    connect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    update?: ArticleTagUpdateWithWhereUniqueWithoutArticlesInput | ArticleTagUpdateWithWhereUniqueWithoutArticlesInput[]
+    updateMany?: ArticleTagUpdateManyWithWhereWithoutArticlesInput | ArticleTagUpdateManyWithWhereWithoutArticlesInput[]
+    deleteMany?: ArticleTagScalarWhereInput | ArticleTagScalarWhereInput[]
+  }
+
+  export type ArticleReactionUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput> | ArticleReactionCreateWithoutArticleInput[] | ArticleReactionUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutArticleInput | ArticleReactionCreateOrConnectWithoutArticleInput[]
+    upsert?: ArticleReactionUpsertWithWhereUniqueWithoutArticleInput | ArticleReactionUpsertWithWhereUniqueWithoutArticleInput[]
+    createMany?: ArticleReactionCreateManyArticleInputEnvelope
+    set?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    disconnect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    delete?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    update?: ArticleReactionUpdateWithWhereUniqueWithoutArticleInput | ArticleReactionUpdateWithWhereUniqueWithoutArticleInput[]
+    updateMany?: ArticleReactionUpdateManyWithWhereWithoutArticleInput | ArticleReactionUpdateManyWithWhereWithoutArticleInput[]
+    deleteMany?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+  }
+
+  export type UserUpdateOneWithoutModeratedArticlesNestedInput = {
+    create?: XOR<UserCreateWithoutModeratedArticlesInput, UserUncheckedCreateWithoutModeratedArticlesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratedArticlesInput
+    upsert?: UserUpsertWithoutModeratedArticlesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModeratedArticlesInput, UserUpdateWithoutModeratedArticlesInput>, UserUncheckedUpdateWithoutModeratedArticlesInput>
+  }
+
+  export type ArticleTagUncheckedUpdateManyWithoutArticlesNestedInput = {
+    create?: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput> | ArticleTagCreateWithoutArticlesInput[] | ArticleTagUncheckedCreateWithoutArticlesInput[]
+    connectOrCreate?: ArticleTagCreateOrConnectWithoutArticlesInput | ArticleTagCreateOrConnectWithoutArticlesInput[]
+    upsert?: ArticleTagUpsertWithWhereUniqueWithoutArticlesInput | ArticleTagUpsertWithWhereUniqueWithoutArticlesInput[]
+    set?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    disconnect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    delete?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    connect?: ArticleTagWhereUniqueInput | ArticleTagWhereUniqueInput[]
+    update?: ArticleTagUpdateWithWhereUniqueWithoutArticlesInput | ArticleTagUpdateWithWhereUniqueWithoutArticlesInput[]
+    updateMany?: ArticleTagUpdateManyWithWhereWithoutArticlesInput | ArticleTagUpdateManyWithWhereWithoutArticlesInput[]
+    deleteMany?: ArticleTagScalarWhereInput | ArticleTagScalarWhereInput[]
+  }
+
+  export type ArticleReactionUncheckedUpdateManyWithoutArticleNestedInput = {
+    create?: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput> | ArticleReactionCreateWithoutArticleInput[] | ArticleReactionUncheckedCreateWithoutArticleInput[]
+    connectOrCreate?: ArticleReactionCreateOrConnectWithoutArticleInput | ArticleReactionCreateOrConnectWithoutArticleInput[]
+    upsert?: ArticleReactionUpsertWithWhereUniqueWithoutArticleInput | ArticleReactionUpsertWithWhereUniqueWithoutArticleInput[]
+    createMany?: ArticleReactionCreateManyArticleInputEnvelope
+    set?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    disconnect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    delete?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    connect?: ArticleReactionWhereUniqueInput | ArticleReactionWhereUniqueInput[]
+    update?: ArticleReactionUpdateWithWhereUniqueWithoutArticleInput | ArticleReactionUpdateWithWhereUniqueWithoutArticleInput[]
+    updateMany?: ArticleReactionUpdateManyWithWhereWithoutArticleInput | ArticleReactionUpdateManyWithWhereWithoutArticleInput[]
+    deleteMany?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+  }
+
+  export type ArticleCreateNestedManyWithoutTagsInput = {
+    create?: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput> | ArticleCreateWithoutTagsInput[] | ArticleUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutTagsInput | ArticleCreateOrConnectWithoutTagsInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
+  export type ArticleUncheckedCreateNestedManyWithoutTagsInput = {
+    create?: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput> | ArticleCreateWithoutTagsInput[] | ArticleUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutTagsInput | ArticleCreateOrConnectWithoutTagsInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+  }
+
+  export type ArticleUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput> | ArticleCreateWithoutTagsInput[] | ArticleUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutTagsInput | ArticleCreateOrConnectWithoutTagsInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutTagsInput | ArticleUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutTagsInput | ArticleUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutTagsInput | ArticleUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput> | ArticleCreateWithoutTagsInput[] | ArticleUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ArticleCreateOrConnectWithoutTagsInput | ArticleCreateOrConnectWithoutTagsInput[]
+    upsert?: ArticleUpsertWithWhereUniqueWithoutTagsInput | ArticleUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    disconnect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    delete?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
+    update?: ArticleUpdateWithWhereUniqueWithoutTagsInput | ArticleUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: ArticleUpdateManyWithWhereWithoutTagsInput | ArticleUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+  }
+
+  export type ArticleCreateNestedOneWithoutReactionsInput = {
+    create?: XOR<ArticleCreateWithoutReactionsInput, ArticleUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReactionsInput
+    connect?: ArticleWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutArticleReactionsInput = {
+    create?: XOR<UserCreateWithoutArticleReactionsInput, UserUncheckedCreateWithoutArticleReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutArticleReactionsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ArticleUpdateOneRequiredWithoutReactionsNestedInput = {
+    create?: XOR<ArticleCreateWithoutReactionsInput, ArticleUncheckedCreateWithoutReactionsInput>
+    connectOrCreate?: ArticleCreateOrConnectWithoutReactionsInput
+    upsert?: ArticleUpsertWithoutReactionsInput
+    connect?: ArticleWhereUniqueInput
+    update?: XOR<XOR<ArticleUpdateToOneWithWhereWithoutReactionsInput, ArticleUpdateWithoutReactionsInput>, ArticleUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutArticleReactionsNestedInput = {
+    create?: XOR<UserCreateWithoutArticleReactionsInput, UserUncheckedCreateWithoutArticleReactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutArticleReactionsInput
+    upsert?: UserUpsertWithoutArticleReactionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutArticleReactionsInput, UserUpdateWithoutArticleReactionsInput>, UserUncheckedUpdateWithoutArticleReactionsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -36116,6 +40711,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -36151,6 +40749,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -36202,6 +40803,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -36237,6 +40841,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -36272,6 +40879,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -36307,6 +40917,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -36358,6 +40971,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -36393,6 +41009,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -36979,6 +41598,99 @@ export namespace Prisma {
     create: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput>
   }
 
+  export type ArticleCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    tags?: ArticleTagCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionCreateNestedManyWithoutArticleInput
+    moderator?: UserCreateNestedOneWithoutModeratedArticlesInput
+  }
+
+  export type ArticleUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    tags?: ArticleTagUncheckedCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionUncheckedCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleCreateOrConnectWithoutAuthorInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type ArticleCreateManyAuthorInputEnvelope = {
+    data: ArticleCreateManyAuthorInput | ArticleCreateManyAuthorInput[]
+  }
+
+  export type ArticleReactionCreateWithoutUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    article: ArticleCreateNestedOneWithoutReactionsInput
+  }
+
+  export type ArticleReactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    articleId: string
+  }
+
+  export type ArticleReactionCreateOrConnectWithoutUserInput = {
+    where: ArticleReactionWhereUniqueInput
+    create: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type ArticleReactionCreateManyUserInputEnvelope = {
+    data: ArticleReactionCreateManyUserInput | ArticleReactionCreateManyUserInput[]
+  }
+
+  export type ArticleCreateWithoutModeratorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    author: UserCreateNestedOneWithoutArticlesInput
+    tags?: ArticleTagCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    tags?: ArticleTagUncheckedCreateNestedManyWithoutArticlesInput
+    reactions?: ArticleReactionUncheckedCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleCreateOrConnectWithoutModeratorInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ArticleCreateManyModeratorInputEnvelope = {
+    data: ArticleCreateManyModeratorInput | ArticleCreateManyModeratorInput[]
+  }
+
   export type TournamentRegistrationCreateWithoutUserInput = {
     id?: string
     status?: $Enums.RegistrationStatus
@@ -37516,6 +42228,80 @@ export namespace Prisma {
     data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCommissairesInput>
   }
 
+  export type ArticleUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: ArticleWhereUniqueInput
+    update: XOR<ArticleUpdateWithoutAuthorInput, ArticleUncheckedUpdateWithoutAuthorInput>
+    create: XOR<ArticleCreateWithoutAuthorInput, ArticleUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type ArticleUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: ArticleWhereUniqueInput
+    data: XOR<ArticleUpdateWithoutAuthorInput, ArticleUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type ArticleUpdateManyWithWhereWithoutAuthorInput = {
+    where: ArticleScalarWhereInput
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type ArticleScalarWhereInput = {
+    AND?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+    OR?: ArticleScalarWhereInput[]
+    NOT?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
+    id?: StringFilter<"Article"> | string
+    title?: StringFilter<"Article"> | string
+    content?: StringFilter<"Article"> | string
+    createdAt?: DateTimeFilter<"Article"> | Date | string
+    updatedAt?: DateTimeFilter<"Article"> | Date | string
+    authorId?: StringFilter<"Article"> | string
+    isModerated?: BoolFilter<"Article"> | boolean
+    moderationReason?: StringNullableFilter<"Article"> | string | null
+    moderatedBy?: StringNullableFilter<"Article"> | string | null
+  }
+
+  export type ArticleReactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: ArticleReactionWhereUniqueInput
+    update: XOR<ArticleReactionUpdateWithoutUserInput, ArticleReactionUncheckedUpdateWithoutUserInput>
+    create: XOR<ArticleReactionCreateWithoutUserInput, ArticleReactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type ArticleReactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: ArticleReactionWhereUniqueInput
+    data: XOR<ArticleReactionUpdateWithoutUserInput, ArticleReactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ArticleReactionUpdateManyWithWhereWithoutUserInput = {
+    where: ArticleReactionScalarWhereInput
+    data: XOR<ArticleReactionUpdateManyMutationInput, ArticleReactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ArticleReactionScalarWhereInput = {
+    AND?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+    OR?: ArticleReactionScalarWhereInput[]
+    NOT?: ArticleReactionScalarWhereInput | ArticleReactionScalarWhereInput[]
+    id?: StringFilter<"ArticleReaction"> | string
+    emoji?: StringFilter<"ArticleReaction"> | string
+    createdAt?: DateTimeFilter<"ArticleReaction"> | Date | string
+    articleId?: StringFilter<"ArticleReaction"> | string
+    userId?: StringFilter<"ArticleReaction"> | string
+  }
+
+  export type ArticleUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: ArticleWhereUniqueInput
+    update: XOR<ArticleUpdateWithoutModeratorInput, ArticleUncheckedUpdateWithoutModeratorInput>
+    create: XOR<ArticleCreateWithoutModeratorInput, ArticleUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ArticleUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: ArticleWhereUniqueInput
+    data: XOR<ArticleUpdateWithoutModeratorInput, ArticleUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type ArticleUpdateManyWithWhereWithoutModeratorInput = {
+    where: ArticleScalarWhereInput
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutModeratorInput>
+  }
+
   export type TournamentRegistrationUpsertWithWhereUniqueWithoutUserInput = {
     where: TournamentRegistrationWhereUniqueInput
     update: XOR<TournamentRegistrationUpdateWithoutUserInput, TournamentRegistrationUncheckedUpdateWithoutUserInput>
@@ -37655,6 +42441,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -37690,6 +42479,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -37767,6 +42559,9 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -37802,6 +42597,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -37932,6 +42730,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -37967,6 +42768,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -38450,6 +43254,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -38485,6 +43292,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -38741,6 +43551,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -38776,6 +43589,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -38995,6 +43811,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -39030,6 +43849,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39095,6 +43917,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -39130,6 +43955,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39247,6 +44075,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -39282,6 +44113,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39344,6 +44178,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -39379,6 +44216,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39430,6 +44270,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -39465,6 +44308,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39505,6 +44351,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -39540,6 +44389,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39616,6 +44468,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -39651,6 +44506,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39697,6 +44555,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -39732,6 +44593,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39808,6 +44672,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -39843,6 +44710,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -39925,6 +44795,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -39960,6 +44833,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -39995,6 +44871,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40030,6 +44909,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -40118,6 +45000,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -40153,6 +45038,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -40264,6 +45152,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40299,6 +45190,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -40339,6 +45233,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40374,6 +45271,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -40464,6 +45364,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -40499,6 +45402,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -40545,6 +45451,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -40580,6 +45489,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -40648,6 +45560,9 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40683,6 +45598,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -40773,6 +45691,9 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -40808,6 +45729,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -40843,6 +45767,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40878,6 +45805,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -40938,6 +45868,9 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -40973,6 +45906,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -41061,6 +45997,9 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -41096,6 +46035,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -41268,6 +46210,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
@@ -41303,6 +46248,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
@@ -41453,6 +46401,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
@@ -41488,6 +46439,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
@@ -41616,6 +46570,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
@@ -41651,6 +46608,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
@@ -41820,6 +46780,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
@@ -41855,6 +46818,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
@@ -41933,6 +46899,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
@@ -41968,6 +46937,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
@@ -42052,6 +47024,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
@@ -42087,6 +47062,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
@@ -42215,6 +47193,9 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
@@ -42250,6 +47231,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
@@ -42400,6 +47384,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -42435,9 +47422,709 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutArticlesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutArticlesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutArticlesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutArticlesInput, UserUncheckedCreateWithoutArticlesInput>
+  }
+
+  export type ArticleTagCreateWithoutArticlesInput = {
+    id?: string
+    name: string
+  }
+
+  export type ArticleTagUncheckedCreateWithoutArticlesInput = {
+    id?: string
+    name: string
+  }
+
+  export type ArticleTagCreateOrConnectWithoutArticlesInput = {
+    where: ArticleTagWhereUniqueInput
+    create: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput>
+  }
+
+  export type ArticleReactionCreateWithoutArticleInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutArticleReactionsInput
+  }
+
+  export type ArticleReactionUncheckedCreateWithoutArticleInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type ArticleReactionCreateOrConnectWithoutArticleInput = {
+    where: ArticleReactionWhereUniqueInput
+    create: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ArticleReactionCreateManyArticleInputEnvelope = {
+    data: ArticleReactionCreateManyArticleInput | ArticleReactionCreateManyArticleInput[]
+  }
+
+  export type UserCreateWithoutModeratedArticlesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutModeratedArticlesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutModeratedArticlesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutModeratedArticlesInput, UserUncheckedCreateWithoutModeratedArticlesInput>
+  }
+
+  export type UserUpsertWithoutArticlesInput = {
+    update: XOR<UserUpdateWithoutArticlesInput, UserUncheckedUpdateWithoutArticlesInput>
+    create: XOR<UserCreateWithoutArticlesInput, UserUncheckedCreateWithoutArticlesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutArticlesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutArticlesInput, UserUncheckedUpdateWithoutArticlesInput>
+  }
+
+  export type UserUpdateWithoutArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ArticleTagUpsertWithWhereUniqueWithoutArticlesInput = {
+    where: ArticleTagWhereUniqueInput
+    update: XOR<ArticleTagUpdateWithoutArticlesInput, ArticleTagUncheckedUpdateWithoutArticlesInput>
+    create: XOR<ArticleTagCreateWithoutArticlesInput, ArticleTagUncheckedCreateWithoutArticlesInput>
+  }
+
+  export type ArticleTagUpdateWithWhereUniqueWithoutArticlesInput = {
+    where: ArticleTagWhereUniqueInput
+    data: XOR<ArticleTagUpdateWithoutArticlesInput, ArticleTagUncheckedUpdateWithoutArticlesInput>
+  }
+
+  export type ArticleTagUpdateManyWithWhereWithoutArticlesInput = {
+    where: ArticleTagScalarWhereInput
+    data: XOR<ArticleTagUpdateManyMutationInput, ArticleTagUncheckedUpdateManyWithoutArticlesInput>
+  }
+
+  export type ArticleTagScalarWhereInput = {
+    AND?: ArticleTagScalarWhereInput | ArticleTagScalarWhereInput[]
+    OR?: ArticleTagScalarWhereInput[]
+    NOT?: ArticleTagScalarWhereInput | ArticleTagScalarWhereInput[]
+    id?: StringFilter<"ArticleTag"> | string
+    name?: StringFilter<"ArticleTag"> | string
+  }
+
+  export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
+    where: ArticleReactionWhereUniqueInput
+    update: XOR<ArticleReactionUpdateWithoutArticleInput, ArticleReactionUncheckedUpdateWithoutArticleInput>
+    create: XOR<ArticleReactionCreateWithoutArticleInput, ArticleReactionUncheckedCreateWithoutArticleInput>
+  }
+
+  export type ArticleReactionUpdateWithWhereUniqueWithoutArticleInput = {
+    where: ArticleReactionWhereUniqueInput
+    data: XOR<ArticleReactionUpdateWithoutArticleInput, ArticleReactionUncheckedUpdateWithoutArticleInput>
+  }
+
+  export type ArticleReactionUpdateManyWithWhereWithoutArticleInput = {
+    where: ArticleReactionScalarWhereInput
+    data: XOR<ArticleReactionUpdateManyMutationInput, ArticleReactionUncheckedUpdateManyWithoutArticleInput>
+  }
+
+  export type UserUpsertWithoutModeratedArticlesInput = {
+    update: XOR<UserUpdateWithoutModeratedArticlesInput, UserUncheckedUpdateWithoutModeratedArticlesInput>
+    create: XOR<UserCreateWithoutModeratedArticlesInput, UserUncheckedCreateWithoutModeratedArticlesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutModeratedArticlesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutModeratedArticlesInput, UserUncheckedUpdateWithoutModeratedArticlesInput>
+  }
+
+  export type UserUpdateWithoutModeratedArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ArticleCreateWithoutTagsInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    author: UserCreateNestedOneWithoutArticlesInput
+    reactions?: ArticleReactionCreateNestedManyWithoutArticleInput
+    moderator?: UserCreateNestedOneWithoutModeratedArticlesInput
+  }
+
+  export type ArticleUncheckedCreateWithoutTagsInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    reactions?: ArticleReactionUncheckedCreateNestedManyWithoutArticleInput
+  }
+
+  export type ArticleCreateOrConnectWithoutTagsInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput>
+  }
+
+  export type ArticleUpsertWithWhereUniqueWithoutTagsInput = {
+    where: ArticleWhereUniqueInput
+    update: XOR<ArticleUpdateWithoutTagsInput, ArticleUncheckedUpdateWithoutTagsInput>
+    create: XOR<ArticleCreateWithoutTagsInput, ArticleUncheckedCreateWithoutTagsInput>
+  }
+
+  export type ArticleUpdateWithWhereUniqueWithoutTagsInput = {
+    where: ArticleWhereUniqueInput
+    data: XOR<ArticleUpdateWithoutTagsInput, ArticleUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type ArticleUpdateManyWithWhereWithoutTagsInput = {
+    where: ArticleScalarWhereInput
+    data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutTagsInput>
+  }
+
+  export type ArticleCreateWithoutReactionsInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    author: UserCreateNestedOneWithoutArticlesInput
+    tags?: ArticleTagCreateNestedManyWithoutArticlesInput
+    moderator?: UserCreateNestedOneWithoutModeratedArticlesInput
+  }
+
+  export type ArticleUncheckedCreateWithoutReactionsInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    tags?: ArticleTagUncheckedCreateNestedManyWithoutArticlesInput
+  }
+
+  export type ArticleCreateOrConnectWithoutReactionsInput = {
+    where: ArticleWhereUniqueInput
+    create: XOR<ArticleCreateWithoutReactionsInput, ArticleUncheckedCreateWithoutReactionsInput>
+  }
+
+  export type UserCreateWithoutArticleReactionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutArticleReactionsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    league?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutArticleReactionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutArticleReactionsInput, UserUncheckedCreateWithoutArticleReactionsInput>
+  }
+
+  export type ArticleUpsertWithoutReactionsInput = {
+    update: XOR<ArticleUpdateWithoutReactionsInput, ArticleUncheckedUpdateWithoutReactionsInput>
+    create: XOR<ArticleCreateWithoutReactionsInput, ArticleUncheckedCreateWithoutReactionsInput>
+    where?: ArticleWhereInput
+  }
+
+  export type ArticleUpdateToOneWithWhereWithoutReactionsInput = {
+    where?: ArticleWhereInput
+    data: XOR<ArticleUpdateWithoutReactionsInput, ArticleUncheckedUpdateWithoutReactionsInput>
+  }
+
+  export type ArticleUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    author?: UserUpdateOneRequiredWithoutArticlesNestedInput
+    tags?: ArticleTagUpdateManyWithoutArticlesNestedInput
+    moderator?: UserUpdateOneWithoutModeratedArticlesNestedInput
+  }
+
+  export type ArticleUncheckedUpdateWithoutReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ArticleTagUncheckedUpdateManyWithoutArticlesNestedInput
+  }
+
+  export type UserUpsertWithoutArticleReactionsInput = {
+    update: XOR<UserUpdateWithoutArticleReactionsInput, UserUncheckedUpdateWithoutArticleReactionsInput>
+    create: XOR<UserCreateWithoutArticleReactionsInput, UserUncheckedCreateWithoutArticleReactionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutArticleReactionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutArticleReactionsInput, UserUncheckedUpdateWithoutArticleReactionsInput>
+  }
+
+  export type UserUpdateWithoutArticleReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutArticleReactionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    league?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -42593,6 +48280,35 @@ export namespace Prisma {
 
   export type TopicFollowCreateManyUserInput = {
     topicId: string
+  }
+
+  export type ArticleCreateManyAuthorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+  }
+
+  export type ArticleReactionCreateManyUserInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    articleId: string
+  }
+
+  export type ArticleCreateManyModeratorInput = {
+    id?: string
+    title: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
   }
 
   export type TournamentRegistrationCreateManyUserInput = {
@@ -43246,6 +48962,101 @@ export namespace Prisma {
     organizerId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ArticleUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ArticleTagUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUpdateManyWithoutArticleNestedInput
+    moderator?: UserUpdateOneWithoutModeratedArticlesNestedInput
+  }
+
+  export type ArticleUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ArticleTagUncheckedUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ArticleReactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    article?: ArticleUpdateOneRequiredWithoutReactionsNestedInput
+  }
+
+  export type ArticleReactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    articleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    author?: UserUpdateOneRequiredWithoutArticlesNestedInput
+    tags?: ArticleTagUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ArticleTagUncheckedUpdateManyWithoutArticlesNestedInput
+    reactions?: ArticleReactionUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type TournamentRegistrationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumRegistrationStatusFieldUpdateOperationsInput | $Enums.RegistrationStatus
@@ -43392,6 +49203,9 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -43427,6 +49241,9 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -43910,6 +49727,9 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
@@ -43945,6 +49765,9 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
@@ -43985,6 +49808,87 @@ export namespace Prisma {
   export type TournamentTeamMemberUncheckedUpdateManyWithoutTeamInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionCreateManyArticleInput = {
+    id?: string
+    emoji: string
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type ArticleTagUpdateWithoutArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleTagUncheckedUpdateWithoutArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleTagUncheckedUpdateManyWithoutArticlesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutArticleReactionsNestedInput
+  }
+
+  export type ArticleReactionUncheckedUpdateWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleReactionUncheckedUpdateManyWithoutArticleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ArticleUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    author?: UserUpdateOneRequiredWithoutArticlesNestedInput
+    reactions?: ArticleReactionUpdateManyWithoutArticleNestedInput
+    moderator?: UserUpdateOneWithoutModeratedArticlesNestedInput
+  }
+
+  export type ArticleUncheckedUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    reactions?: ArticleReactionUncheckedUpdateManyWithoutArticleNestedInput
+  }
+
+  export type ArticleUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

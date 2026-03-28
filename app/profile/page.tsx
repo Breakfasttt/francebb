@@ -16,12 +16,13 @@ import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
 import ProfilePM from "@/app/profile/component/ProfilePM";
 import ProfileSettings from "@/app/profile/component/ProfileSettings";
+import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import Pagination from "@/common/components/Pagination/Pagination";
 import "./page.css";
 
-type ProfileTab = "followed" | "activity" | "edit" | "palmares" | "pm" | "settings";
+type ProfileTab = "followed" | "articles" | "activity" | "edit" | "palmares" | "pm" | "settings";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -54,6 +55,7 @@ export default function ProfilePage() {
 
   const sanitizeTab = (tab: string | null): ProfileTab => {
     if (tab === "edit") return "edit";
+    if (tab === "articles") return "articles";
     if (tab === "palmares") return "palmares";
     if (tab === "pm") return "pm";
     if (tab === "activity") return "activity";
@@ -141,6 +143,10 @@ export default function ProfilePage() {
             <ProfileActivity activities={activities} userName={user.name} />
           )}
 
+          {activeTab === "articles" && (
+            <ProfileArticles userId={user.id} isOwnProfile={true} />
+          )}
+
           {activeTab === "followed" && (
             <PremiumCard className="followed-topics-full-view fade-in">
               <div className="section-header-pm">
@@ -186,8 +192,6 @@ export default function ProfilePage() {
                       ))}
                     </div>
 
-import Pagination from "@/common/components/Pagination/Pagination";
-...
                     {followedTotalPages > 1 && (
                       <div style={{ marginTop: '2rem' }}>
                         <Pagination 

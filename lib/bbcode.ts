@@ -267,3 +267,27 @@ export function parseInlineBBCode(text: string): string {
   });
   return html;
 }
+
+/**
+ * Removes all BBCode tags to get raw text for snippets.
+ */
+export function stripBBCode(text: string): string {
+  if (!text) return "";
+  
+  // Replace [img] and [youtube] with placeholders or empty
+  let plain = text
+    .replace(/\[img(?:.*?)\](.*?)\[\/img\]/gi, "")
+    .replace(/\[youtube(?:.*?)\](.*?)\[\/youtube\]/gi, "");
+    
+  // Replace tags with content
+  plain = plain.replace(/\[(?:.*?)\]/gi, "");
+  
+  // Replace smileys with their emoji equivalent
+  Object.entries(smileysMap).forEach(([textFace, emoji]) => {
+    const escapedTextFace = textFace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(^|\\s)${escapedTextFace}(?=\\s|$)`, 'g');
+    plain = plain.replace(regex, `$1${emoji}`);
+  });
+
+  return plain.trim();
+}

@@ -13,9 +13,10 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { getUserActivity, getUserStats, startConversation } from "@/app/profile/actions";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
+import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import "./page.css";
 
-type ProfileTab = "activity" | "palmares";
+type ProfileTab = "activity" | "palmares" | "articles";
 
 export default function SpyProfilePage() {
   const { data: session, status } = useSession();
@@ -33,6 +34,7 @@ export default function SpyProfilePage() {
 
   const sanitizeTab = (tab: string | null): ProfileTab => {
     if (tab === "palmares") return "palmares";
+    if (tab === "articles") return "articles";
     return "activity";
   };
 
@@ -121,6 +123,10 @@ export default function SpyProfilePage() {
         <div className="profile-main-content">
           {activeTab === "activity" && (
             <ProfileActivity activities={activities} userName={user.name} />
+          )}
+
+          {activeTab === "articles" && (
+            <ProfileArticles userId={user.id} isOwnProfile={false} />
           )}
 
           {activeTab === "palmares" && (

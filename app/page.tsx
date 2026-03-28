@@ -2,8 +2,9 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
-import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus } from "lucide-react";
+import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText } from "lucide-react";
 import { auth } from "@/auth";
+import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
 
 export default async function Home() {
@@ -17,7 +18,8 @@ export default async function Home() {
     orderBy: {
       date: 'asc'
     },
-    take: 3
+    take: 3,
+    include: { topic: true }
   });
 
   const discordInvite = await prisma.siteSetting.findUnique({
@@ -29,6 +31,17 @@ export default async function Home() {
     where: { isTournamentForum: true },
     select: { id: true }
   });
+
+  // Récupérer un article aléatoire
+  const articlesCount = await prisma.article.count();
+  const randomArticle = articlesCount > 0 
+    ? await prisma.article.findMany({
+        take: 1,
+        skip: Math.floor(Math.random() * articlesCount),
+        include: { author: true, tags: true }
+      })
+    : [];
+  const selectedArticle = randomArticle[0];
 
   return (
     <main className="container" style={{ padding: '0.5rem 1rem', position: 'relative' }}>
@@ -55,7 +68,6 @@ export default async function Home() {
               <Shield size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
               <div style={{ fontSize: '1rem' }}>Ligues</div>
             </Link>
-            {/* On ne garde que si on a un module ligue ou autre, sinon on cache */}
             <Link href={isAuth ? "/forum" : "/auth/login?callback=/forum"} className="action-card-mini" style={{ padding: '0.5rem' }}>
               <Plus size={16} /> <span style={{ fontSize: '0.8rem' }}>Rejoindre</span>
             </Link>
@@ -72,29 +84,34 @@ export default async function Home() {
               </Link>
             )}
           </div>
+
+          <Link href={isAuth ? "/forum" : "/auth/login?callback=/forum"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <MessageSquare size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Forum</div>
+          </Link>
         </div>
 
         {/* LIGNE 2 */}
         <div className="action-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
           gap: '1rem',
           margin: '0 auto 1.5rem auto',
           maxWidth: '850px'
         }}>
-          <Link href={isAuth ? "/forum" : "/auth/login?callback=/forum"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
-            <MessageSquare size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
-            <div style={{ fontSize: '1rem' }}>Forum</div>
-          </Link>
-
-          <Link href={isAuth ? "/membres" : "/auth/login?callback=/membres"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
-            <Users size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
-            <div style={{ fontSize: '1rem' }}>Membres</div>
+          <Link href={isAuth ? "/articles" : "/auth/login?callback=/articles"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <FileText size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Articles</div>
           </Link>
 
           <Link href="/ressources" className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
             <BookOpen size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
             <div style={{ fontSize: '1rem' }}>Ressources</div>
+          </Link>
+
+          <Link href={isAuth ? "/membres" : "/auth/login?callback=/membres"} className="action-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1.2rem 1rem' }}>
+            <Users size={30} style={{ marginBottom: '0.5rem', color: 'var(--accent)' }} />
+            <div style={{ fontSize: '1rem' }}>Membres</div>
           </Link>
 
           <a 
@@ -124,34 +141,53 @@ export default async function Home() {
         </div>
       </section>
 
-      <section style={{ marginTop: '0.5rem', paddingBottom: '2rem' }}>
-        <h2 className="section-title" style={{ marginBottom: '0.8rem', fontSize: '1.2rem' }}>Prochains Événements</h2>
-        <div className="grid">
-          {nextTournaments.length > 0 ? (
-            nextTournaments.map((t: any) => (
-              <PremiumCard key={t.id} hoverEffect style={{ padding: '1rem' }}>
-                <div className="tournament-badge" style={{ display: 'inline-block', fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>À VENIR</div>
-                <h3 style={{ marginTop: '0.5rem', fontSize: '1.1rem' }}>{t.name}</h3>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
-                  <MapPin size={14} /> {t.location}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', margin: '0.4rem 0', fontSize: '0.85rem' }}>
-                  <Calendar size={14} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
-                </div>
-                <p style={{ 
-                  fontSize: '0.85rem', 
-                  display: '-webkit-box', 
-                  WebkitLineClamp: 2, 
-                  lineClamp: 2,
-                  WebkitBoxOrient: 'vertical', 
-                  overflow: 'hidden', 
-                  margin: 0, 
-                  color: 'var(--text-secondary)' 
-                }}>{t.description}</p>
-              </PremiumCard>
-            ))
+      <section className="home-content-split">
+        <div className="events-column">
+          <h2 className="section-title" style={{ marginBottom: '1.2rem', fontSize: '1.4rem' }}>Prochains Tournois</h2>
+          <div className="events-grid">
+            {nextTournaments.length > 0 ? (
+              nextTournaments.map((t: any) => (
+                <PremiumCard 
+                  key={t.id} 
+                  as={t.topic ? Link : 'div'} 
+                  href={t.topic ? `/forum/topic/${t.topic.id}` : undefined}
+                  hoverEffect 
+                  style={{ padding: '1rem', height: '100%', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div className="tournament-badge" style={{ alignSelf: 'flex-start', fontSize: '0.65rem', padding: '0.15rem 0.4rem' }}>À VENIR</div>
+                  <h3 style={{ marginTop: '0.5rem', fontSize: '1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', margin: '0.3rem 0', fontSize: '0.8rem' }}>
+                    <MapPin size={12} /> <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.location}</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', margin: '0.3rem 0', fontSize: '0.8rem' }}>
+                    <Calendar size={12} /> {new Date(t.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
+                  </div>
+                </PremiumCard>
+              ))
+            ) : (
+              <p style={{ color: 'var(--text-muted)' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>
+            )}
+          </div>
+          <Link href="/tournaments" className="see-all-link">
+            Voir tout l'agenda
+          </Link>
+        </div>
+
+        <div className="article-column">
+          <h2 className="section-title" style={{ marginBottom: '1.2rem', fontSize: '1.4rem' }}>Chronique Aléatoire</h2>
+          {selectedArticle ? (
+            <div data-article-random>
+              {/* On importe le composant ArticleCard ici pour garder la cohérence */}
+              <ArticleCard article={selectedArticle} />
+              <Link href="/articles" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.9rem', textDecoration: 'none' }}>
+                Accéder à tous les articles →
+              </Link>
+            </div>
           ) : (
-            <p style={{ color: 'var(--text-muted)' }}>Aucun tournoi prévu pour le moment. Revenez bientôt !</p>
+            <PremiumCard style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', opacity: 0.6 }}>
+              <FileText size={40} style={{ marginBottom: '1rem', opacity: 0.3 }} />
+              <p>Aucun article publié pour le moment.</p>
+            </PremiumCard>
           )}
         </div>
       </section>

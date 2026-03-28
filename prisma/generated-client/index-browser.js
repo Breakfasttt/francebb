@@ -354,6 +354,31 @@ exports.Prisma.SiteSettingScalarFieldEnum = {
   value: 'value'
 };
 
+exports.Prisma.ArticleScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authorId: 'authorId',
+  isModerated: 'isModerated',
+  moderationReason: 'moderationReason',
+  moderatedBy: 'moderatedBy'
+};
+
+exports.Prisma.ArticleTagScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.ArticleReactionScalarFieldEnum = {
+  id: 'id',
+  emoji: 'emoji',
+  createdAt: 'createdAt',
+  articleId: 'articleId',
+  userId: 'userId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -399,7 +424,10 @@ exports.Prisma.ModelName = {
   TournamentTeam: 'TournamentTeam',
   TournamentTeamMember: 'TournamentTeamMember',
   TournamentMercenary: 'TournamentMercenary',
-  SiteSetting: 'SiteSetting'
+  SiteSetting: 'SiteSetting',
+  Article: 'Article',
+  ArticleTag: 'ArticleTag',
+  ArticleReaction: 'ArticleReaction'
 };
 
 /**
