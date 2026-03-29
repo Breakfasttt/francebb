@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
-import { getUserActivity, getUserStats, startConversation } from "@/app/profile/actions";
+import { getUserActivity, getUserStats, startConversation, getBlockedUsersIds } from "@/app/profile/actions";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
@@ -31,6 +31,7 @@ export default function SpyProfilePage() {
   const [stats, setStats] = useState({ postCount: 0 });
   const [activities, setActivities] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<ProfileTab>("activity");
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const sanitizeTab = (tab: string | null): ProfileTab => {
     if (tab === "palmares") return "palmares";
@@ -60,6 +61,12 @@ export default function SpyProfilePage() {
         setStats(userStats);
         const userActivities = await getUserActivity(id);
         setActivities(userActivities);
+
+        // Fetch block status if logged in
+        if (session?.user?.id) {
+          const blockedIds = await getBlockedUsersIds();
+          setIsBlocked(blockedIds.includes(id));
+        }
       } catch (error) {
         console.error("Error fetching spy profile data:", error);
       } finally {
@@ -118,6 +125,7 @@ export default function SpyProfilePage() {
           onTabChange={(tab) => setActiveTab(tab as ProfileTab)}
           isModerator={isModerator}
           onContact={handleContact}
+          isBlockedInitial={isBlocked}
         />
 
         <div className="profile-main-content">

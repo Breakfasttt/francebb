@@ -1,16 +1,16 @@
 "use client";
 
-import { toggleBanUser } from "@/app/profile/actions";
+import { toggleBanUser, toggleBlockUser } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import StatItem from "@/common/components/StatItem/StatItem";
 import TabSystem from "@/common/components/TabSystem/TabSystem";
-import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText } from "lucide-react";
+import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText, UserX } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 
 interface ProfileSidebarProps {
   user: any;
@@ -20,6 +20,7 @@ interface ProfileSidebarProps {
   onTabChange: (tab: string) => void;
   isModerator?: boolean;
   onContact?: () => void;
+  isBlockedInitial?: boolean;
 }
 
 export default function ProfileSidebar({
@@ -29,11 +30,18 @@ export default function ProfileSidebar({
   activeTab,
   onTabChange,
   isModerator = false,
-  onContact
+  onContact,
+  isBlockedInitial = false
 }: ProfileSidebarProps) {
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(isBlockedInitial);
+
+  useEffect(() => {
+    setIsBlocked(isBlockedInitial);
+  }, [isBlockedInitial]);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -53,12 +61,26 @@ export default function ProfileSidebar({
     });
   };
 
+  const handleToggleBlock = () => {
+    startTransition(async () => {
+      try {
+        const res = await toggleBlockUser(user.id);
+        setIsBlocked(res.isBlocked);
+        setShowBlockModal(false);
+      } catch (err: any) {
+        alert(err.message);
+        setShowBlockModal(false);
+      }
+    });
+  };
+
   const navItems = (isOwnProfile ? [
     { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
+    { id: "blocked", label: "Utilisateurs bloqués", icon: <UserX size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
     { id: "settings", label: "Gérer mon compte", icon: <Shield size={18} /> },
   ] : [
@@ -201,6 +223,13 @@ export default function ProfileSidebar({
             <button onClick={() => setShowReportModal(true)} className="action-button secondary-btn">
               <AlertTriangle size={16} /> <span>Signaler</span>
             </button>
+            <button 
+              onClick={() => setShowBlockModal(true)} 
+              className={`action-button ${isBlocked ? 'success-btn' : 'secondary-btn highlight'}`}
+              disabled={isPending}
+            >
+              <UserX size={16} /> <span>{isBlocked ? "Débloquer" : "Bloquer"}</span>
+            </button>
             {isModerator && (
               <button
                 onClick={() => setShowBanModal(true)}
@@ -229,6 +258,16 @@ export default function ProfileSidebar({
         onConfirm={() => setShowReportModal(false)}
         title="Signaler le profil"
         message={`Voulez-vous vraiment signaler le profil de ${user.name} ?`}
+      />
+
+      <Modal
+        isOpen={showBlockModal}
+        onClose={() => setShowBlockModal(false)}
+        onConfirm={handleToggleBlock}
+        title={isBlocked ? "Débloquer l'utilisateur" : "Bloquer l'utilisateur"}
+        message={isBlocked 
+          ? `Voulez-vous vraiment débloquer ${user.name} ? Ses messages seront de nouveau visibles.` 
+          : `Voulez-vous vraiment bloquer ${user.name} ? Ses messages seront masqués et il ne pourra plus vous contacter.`}
       />
 
       {/* Les styles sont maintenant dans app/profile/page.css pour garantir leur application globale */}

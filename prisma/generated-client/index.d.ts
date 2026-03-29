@@ -29,6 +29,11 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Block
+ * 
+ */
+export type Block = $Result.DefaultSelection<Prisma.$BlockPayload>
+/**
  * Model VerificationToken
  * 
  */
@@ -327,6 +332,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.block`: Exposes CRUD operations for the **Block** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Blocks
+    * const blocks = await prisma.block.findMany()
+    * ```
+    */
+  get block(): Prisma.BlockDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.verificationToken`: Exposes CRUD operations for the **VerificationToken** model.
@@ -994,6 +1009,7 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     User: 'User',
+    Block: 'Block',
     VerificationToken: 'VerificationToken',
     Tournament: 'Tournament',
     Category: 'Category',
@@ -1032,7 +1048,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1255,6 +1271,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Block: {
+        payload: Prisma.$BlockPayload<ExtArgs>
+        fields: Prisma.BlockFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.BlockFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.BlockFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          findFirst: {
+            args: Prisma.BlockFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.BlockFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          findMany: {
+            args: Prisma.BlockFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          create: {
+            args: Prisma.BlockCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          createMany: {
+            args: Prisma.BlockCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.BlockCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          delete: {
+            args: Prisma.BlockDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          update: {
+            args: Prisma.BlockUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          deleteMany: {
+            args: Prisma.BlockDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.BlockUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.BlockUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>[]
+          }
+          upsert: {
+            args: Prisma.BlockUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$BlockPayload>
+          }
+          aggregate: {
+            args: Prisma.BlockAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateBlock>
+          }
+          groupBy: {
+            args: Prisma.BlockGroupByArgs<ExtArgs>
+            result: $Utils.Optional<BlockGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.BlockCountArgs<ExtArgs>
+            result: $Utils.Optional<BlockCountAggregateOutputType> | number
           }
         }
       }
@@ -3071,6 +3161,7 @@ export namespace Prisma {
     account?: AccountOmit
     session?: SessionOmit
     user?: UserOmit
+    block?: BlockOmit
     verificationToken?: VerificationTokenOmit
     tournament?: TournamentOmit
     category?: CategoryOmit
@@ -3199,6 +3290,8 @@ export namespace Prisma {
     ligues: number
     ownedLigues: number
     commissaireLigues: number
+    blocks: number
+    blockedBy: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3227,6 +3320,8 @@ export namespace Prisma {
     ligues?: boolean | UserCountOutputTypeCountLiguesArgs
     ownedLigues?: boolean | UserCountOutputTypeCountOwnedLiguesArgs
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
+    blocks?: boolean | UserCountOutputTypeCountBlocksArgs
+    blockedBy?: boolean | UserCountOutputTypeCountBlockedByArgs
   }
 
   // Custom InputTypes
@@ -3413,6 +3508,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCommissaireLiguesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LigueWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBlocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlockWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBlockedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlockWhereInput
   }
 
 
@@ -6364,6 +6473,8 @@ export namespace Prisma {
     ligues?: boolean | User$liguesArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
+    blocks?: boolean | User$blocksArgs<ExtArgs>
+    blockedBy?: boolean | User$blockedByArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6451,6 +6562,8 @@ export namespace Prisma {
     ligues?: boolean | User$liguesArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
+    blocks?: boolean | User$blocksArgs<ExtArgs>
+    blockedBy?: boolean | User$blockedByArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6489,6 +6602,8 @@ export namespace Prisma {
       ligues: Prisma.$LiguePayload<ExtArgs>[]
       ownedLigues: Prisma.$LiguePayload<ExtArgs>[]
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
+      blocks: Prisma.$BlockPayload<ExtArgs>[]
+      blockedBy: Prisma.$BlockPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6926,6 +7041,8 @@ export namespace Prisma {
     ligues<T extends User$liguesArgs<ExtArgs> = {}>(args?: Subset<T, User$liguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ownedLigues<T extends User$ownedLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    blocks<T extends User$blocksArgs<ExtArgs> = {}>(args?: Subset<T, User$blocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    blockedBy<T extends User$blockedByArgs<ExtArgs> = {}>(args?: Subset<T, User$blockedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7988,6 +8105,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.blocks
+   */
+  export type User$blocksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    where?: BlockWhereInput
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    cursor?: BlockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * User.blockedBy
+   */
+  export type User$blockedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    where?: BlockWhereInput
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    cursor?: BlockWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8003,6 +8168,1049 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Block
+   */
+
+  export type AggregateBlock = {
+    _count: BlockCountAggregateOutputType | null
+    _min: BlockMinAggregateOutputType | null
+    _max: BlockMaxAggregateOutputType | null
+  }
+
+  export type BlockMinAggregateOutputType = {
+    blockerId: string | null
+    blockedId: string | null
+    createdAt: Date | null
+  }
+
+  export type BlockMaxAggregateOutputType = {
+    blockerId: string | null
+    blockedId: string | null
+    createdAt: Date | null
+  }
+
+  export type BlockCountAggregateOutputType = {
+    blockerId: number
+    blockedId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type BlockMinAggregateInputType = {
+    blockerId?: true
+    blockedId?: true
+    createdAt?: true
+  }
+
+  export type BlockMaxAggregateInputType = {
+    blockerId?: true
+    blockedId?: true
+    createdAt?: true
+  }
+
+  export type BlockCountAggregateInputType = {
+    blockerId?: true
+    blockedId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type BlockAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Block to aggregate.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Blocks
+    **/
+    _count?: true | BlockCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: BlockMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: BlockMaxAggregateInputType
+  }
+
+  export type GetBlockAggregateType<T extends BlockAggregateArgs> = {
+        [P in keyof T & keyof AggregateBlock]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateBlock[P]>
+      : GetScalarType<T[P], AggregateBlock[P]>
+  }
+
+
+
+
+  export type BlockGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlockWhereInput
+    orderBy?: BlockOrderByWithAggregationInput | BlockOrderByWithAggregationInput[]
+    by: BlockScalarFieldEnum[] | BlockScalarFieldEnum
+    having?: BlockScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: BlockCountAggregateInputType | true
+    _min?: BlockMinAggregateInputType
+    _max?: BlockMaxAggregateInputType
+  }
+
+  export type BlockGroupByOutputType = {
+    blockerId: string
+    blockedId: string
+    createdAt: Date
+    _count: BlockCountAggregateOutputType | null
+    _min: BlockMinAggregateOutputType | null
+    _max: BlockMaxAggregateOutputType | null
+  }
+
+  type GetBlockGroupByPayload<T extends BlockGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<BlockGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof BlockGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], BlockGroupByOutputType[P]>
+            : GetScalarType<T[P], BlockGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type BlockSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    blockerId?: boolean
+    blockedId?: boolean
+    createdAt?: boolean
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    blockerId?: boolean
+    blockedId?: boolean
+    createdAt?: boolean
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    blockerId?: boolean
+    blockedId?: boolean
+    createdAt?: boolean
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["block"]>
+
+  export type BlockSelectScalar = {
+    blockerId?: boolean
+    blockedId?: boolean
+    createdAt?: boolean
+  }
+
+  export type BlockOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"blockerId" | "blockedId" | "createdAt", ExtArgs["result"]["block"]>
+  export type BlockInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BlockIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type BlockIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    blocker?: boolean | UserDefaultArgs<ExtArgs>
+    blocked?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $BlockPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Block"
+    objects: {
+      blocker: Prisma.$UserPayload<ExtArgs>
+      blocked: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      blockerId: string
+      blockedId: string
+      createdAt: Date
+    }, ExtArgs["result"]["block"]>
+    composites: {}
+  }
+
+  type BlockGetPayload<S extends boolean | null | undefined | BlockDefaultArgs> = $Result.GetResult<Prisma.$BlockPayload, S>
+
+  type BlockCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<BlockFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: BlockCountAggregateInputType | true
+    }
+
+  export interface BlockDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Block'], meta: { name: 'Block' } }
+    /**
+     * Find zero or one Block that matches the filter.
+     * @param {BlockFindUniqueArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends BlockFindUniqueArgs>(args: SelectSubset<T, BlockFindUniqueArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Block that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {BlockFindUniqueOrThrowArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends BlockFindUniqueOrThrowArgs>(args: SelectSubset<T, BlockFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Block that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindFirstArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends BlockFindFirstArgs>(args?: SelectSubset<T, BlockFindFirstArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Block that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindFirstOrThrowArgs} args - Arguments to find a Block
+     * @example
+     * // Get one Block
+     * const block = await prisma.block.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends BlockFindFirstOrThrowArgs>(args?: SelectSubset<T, BlockFindFirstOrThrowArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Blocks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Blocks
+     * const blocks = await prisma.block.findMany()
+     * 
+     * // Get first 10 Blocks
+     * const blocks = await prisma.block.findMany({ take: 10 })
+     * 
+     * // Only select the `blockerId`
+     * const blockWithBlockerIdOnly = await prisma.block.findMany({ select: { blockerId: true } })
+     * 
+     */
+    findMany<T extends BlockFindManyArgs>(args?: SelectSubset<T, BlockFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Block.
+     * @param {BlockCreateArgs} args - Arguments to create a Block.
+     * @example
+     * // Create one Block
+     * const Block = await prisma.block.create({
+     *   data: {
+     *     // ... data to create a Block
+     *   }
+     * })
+     * 
+     */
+    create<T extends BlockCreateArgs>(args: SelectSubset<T, BlockCreateArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Blocks.
+     * @param {BlockCreateManyArgs} args - Arguments to create many Blocks.
+     * @example
+     * // Create many Blocks
+     * const block = await prisma.block.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends BlockCreateManyArgs>(args?: SelectSubset<T, BlockCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Blocks and returns the data saved in the database.
+     * @param {BlockCreateManyAndReturnArgs} args - Arguments to create many Blocks.
+     * @example
+     * // Create many Blocks
+     * const block = await prisma.block.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Blocks and only return the `blockerId`
+     * const blockWithBlockerIdOnly = await prisma.block.createManyAndReturn({
+     *   select: { blockerId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends BlockCreateManyAndReturnArgs>(args?: SelectSubset<T, BlockCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Block.
+     * @param {BlockDeleteArgs} args - Arguments to delete one Block.
+     * @example
+     * // Delete one Block
+     * const Block = await prisma.block.delete({
+     *   where: {
+     *     // ... filter to delete one Block
+     *   }
+     * })
+     * 
+     */
+    delete<T extends BlockDeleteArgs>(args: SelectSubset<T, BlockDeleteArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Block.
+     * @param {BlockUpdateArgs} args - Arguments to update one Block.
+     * @example
+     * // Update one Block
+     * const block = await prisma.block.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends BlockUpdateArgs>(args: SelectSubset<T, BlockUpdateArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Blocks.
+     * @param {BlockDeleteManyArgs} args - Arguments to filter Blocks to delete.
+     * @example
+     * // Delete a few Blocks
+     * const { count } = await prisma.block.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends BlockDeleteManyArgs>(args?: SelectSubset<T, BlockDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Blocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Blocks
+     * const block = await prisma.block.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends BlockUpdateManyArgs>(args: SelectSubset<T, BlockUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Blocks and returns the data updated in the database.
+     * @param {BlockUpdateManyAndReturnArgs} args - Arguments to update many Blocks.
+     * @example
+     * // Update many Blocks
+     * const block = await prisma.block.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Blocks and only return the `blockerId`
+     * const blockWithBlockerIdOnly = await prisma.block.updateManyAndReturn({
+     *   select: { blockerId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends BlockUpdateManyAndReturnArgs>(args: SelectSubset<T, BlockUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Block.
+     * @param {BlockUpsertArgs} args - Arguments to update or create a Block.
+     * @example
+     * // Update or create a Block
+     * const block = await prisma.block.upsert({
+     *   create: {
+     *     // ... data to create a Block
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Block we want to update
+     *   }
+     * })
+     */
+    upsert<T extends BlockUpsertArgs>(args: SelectSubset<T, BlockUpsertArgs<ExtArgs>>): Prisma__BlockClient<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Blocks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockCountArgs} args - Arguments to filter Blocks to count.
+     * @example
+     * // Count the number of Blocks
+     * const count = await prisma.block.count({
+     *   where: {
+     *     // ... the filter for the Blocks we want to count
+     *   }
+     * })
+    **/
+    count<T extends BlockCountArgs>(
+      args?: Subset<T, BlockCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], BlockCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Block.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends BlockAggregateArgs>(args: Subset<T, BlockAggregateArgs>): Prisma.PrismaPromise<GetBlockAggregateType<T>>
+
+    /**
+     * Group by Block.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {BlockGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends BlockGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: BlockGroupByArgs['orderBy'] }
+        : { orderBy?: BlockGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, BlockGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBlockGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Block model
+   */
+  readonly fields: BlockFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Block.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__BlockClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    blocker<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    blocked<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Block model
+   */
+  interface BlockFieldRefs {
+    readonly blockerId: FieldRef<"Block", 'String'>
+    readonly blockedId: FieldRef<"Block", 'String'>
+    readonly createdAt: FieldRef<"Block", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Block findUnique
+   */
+  export type BlockFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block findUniqueOrThrow
+   */
+  export type BlockFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block findFirst
+   */
+  export type BlockFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Blocks.
+     */
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block findFirstOrThrow
+   */
+  export type BlockFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Block to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Blocks.
+     */
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block findMany
+   */
+  export type BlockFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter, which Blocks to fetch.
+     */
+    where?: BlockWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Blocks to fetch.
+     */
+    orderBy?: BlockOrderByWithRelationInput | BlockOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Blocks.
+     */
+    cursor?: BlockWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Blocks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Blocks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Blocks.
+     */
+    distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * Block create
+   */
+  export type BlockCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Block.
+     */
+    data: XOR<BlockCreateInput, BlockUncheckedCreateInput>
+  }
+
+  /**
+   * Block createMany
+   */
+  export type BlockCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Blocks.
+     */
+    data: BlockCreateManyInput | BlockCreateManyInput[]
+  }
+
+  /**
+   * Block createManyAndReturn
+   */
+  export type BlockCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * The data used to create many Blocks.
+     */
+    data: BlockCreateManyInput | BlockCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Block update
+   */
+  export type BlockUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Block.
+     */
+    data: XOR<BlockUpdateInput, BlockUncheckedUpdateInput>
+    /**
+     * Choose, which Block to update.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block updateMany
+   */
+  export type BlockUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Blocks.
+     */
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyInput>
+    /**
+     * Filter which Blocks to update
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Block updateManyAndReturn
+   */
+  export type BlockUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * The data used to update Blocks.
+     */
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyInput>
+    /**
+     * Filter which Blocks to update
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Block upsert
+   */
+  export type BlockUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Block to update in case it exists.
+     */
+    where: BlockWhereUniqueInput
+    /**
+     * In case the Block found by the `where` argument doesn't exist, create a new Block with this data.
+     */
+    create: XOR<BlockCreateInput, BlockUncheckedCreateInput>
+    /**
+     * In case the Block was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<BlockUpdateInput, BlockUncheckedUpdateInput>
+  }
+
+  /**
+   * Block delete
+   */
+  export type BlockDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
+    /**
+     * Filter which Block to delete.
+     */
+    where: BlockWhereUniqueInput
+  }
+
+  /**
+   * Block deleteMany
+   */
+  export type BlockDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Blocks to delete
+     */
+    where?: BlockWhereInput
+    /**
+     * Limit how many Blocks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Block without action
+   */
+  export type BlockDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Block
+     */
+    select?: BlockSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Block
+     */
+    omit?: BlockOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlockInclude<ExtArgs> | null
   }
 
 
@@ -34179,6 +35387,15 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const BlockScalarFieldEnum: {
+    blockerId: 'blockerId',
+    blockedId: 'blockedId',
+    createdAt: 'createdAt'
+  };
+
+  export type BlockScalarFieldEnum = (typeof BlockScalarFieldEnum)[keyof typeof BlockScalarFieldEnum]
+
+
   export const VerificationTokenScalarFieldEnum: {
     identifier: 'identifier',
     token: 'token',
@@ -34752,6 +35969,8 @@ export namespace Prisma {
     ligues?: LigueListRelationFilter
     ownedLigues?: LigueListRelationFilter
     commissaireLigues?: LigueListRelationFilter
+    blocks?: BlockListRelationFilter
+    blockedBy?: BlockListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -34796,6 +36015,8 @@ export namespace Prisma {
     ligues?: LigueOrderByRelationAggregateInput
     ownedLigues?: LigueOrderByRelationAggregateInput
     commissaireLigues?: LigueOrderByRelationAggregateInput
+    blocks?: BlockOrderByRelationAggregateInput
+    blockedBy?: BlockOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -34843,6 +36064,8 @@ export namespace Prisma {
     ligues?: LigueListRelationFilter
     ownedLigues?: LigueListRelationFilter
     commissaireLigues?: LigueListRelationFilter
+    blocks?: BlockListRelationFilter
+    blockedBy?: BlockListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -34885,6 +36108,55 @@ export namespace Prisma {
     theme?: StringWithAggregatesFilter<"User"> | string
     equipe?: StringNullableWithAggregatesFilter<"User"> | string | null
     ligueCustom?: StringNullableWithAggregatesFilter<"User"> | string | null
+  }
+
+  export type BlockWhereInput = {
+    AND?: BlockWhereInput | BlockWhereInput[]
+    OR?: BlockWhereInput[]
+    NOT?: BlockWhereInput | BlockWhereInput[]
+    blockerId?: StringFilter<"Block"> | string
+    blockedId?: StringFilter<"Block"> | string
+    createdAt?: DateTimeFilter<"Block"> | Date | string
+    blocker?: XOR<UserScalarRelationFilter, UserWhereInput>
+    blocked?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type BlockOrderByWithRelationInput = {
+    blockerId?: SortOrder
+    blockedId?: SortOrder
+    createdAt?: SortOrder
+    blocker?: UserOrderByWithRelationInput
+    blocked?: UserOrderByWithRelationInput
+  }
+
+  export type BlockWhereUniqueInput = Prisma.AtLeast<{
+    blockerId_blockedId?: BlockBlockerIdBlockedIdCompoundUniqueInput
+    AND?: BlockWhereInput | BlockWhereInput[]
+    OR?: BlockWhereInput[]
+    NOT?: BlockWhereInput | BlockWhereInput[]
+    blockerId?: StringFilter<"Block"> | string
+    blockedId?: StringFilter<"Block"> | string
+    createdAt?: DateTimeFilter<"Block"> | Date | string
+    blocker?: XOR<UserScalarRelationFilter, UserWhereInput>
+    blocked?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "blockerId_blockedId">
+
+  export type BlockOrderByWithAggregationInput = {
+    blockerId?: SortOrder
+    blockedId?: SortOrder
+    createdAt?: SortOrder
+    _count?: BlockCountOrderByAggregateInput
+    _max?: BlockMaxOrderByAggregateInput
+    _min?: BlockMinOrderByAggregateInput
+  }
+
+  export type BlockScalarWhereWithAggregatesInput = {
+    AND?: BlockScalarWhereWithAggregatesInput | BlockScalarWhereWithAggregatesInput[]
+    OR?: BlockScalarWhereWithAggregatesInput[]
+    NOT?: BlockScalarWhereWithAggregatesInput | BlockScalarWhereWithAggregatesInput[]
+    blockerId?: StringWithAggregatesFilter<"Block"> | string
+    blockedId?: StringWithAggregatesFilter<"Block"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Block"> | Date | string
   }
 
   export type VerificationTokenWhereInput = {
@@ -36775,6 +38047,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -36818,6 +38092,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUpdateInput = {
@@ -36861,6 +38137,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -36904,6 +38182,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -36957,6 +38237,46 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type BlockCreateInput = {
+    createdAt?: Date | string
+    blocker: UserCreateNestedOneWithoutBlocksInput
+    blocked: UserCreateNestedOneWithoutBlockedByInput
+  }
+
+  export type BlockUncheckedCreateInput = {
+    blockerId: string
+    blockedId: string
+    createdAt?: Date | string
+  }
+
+  export type BlockUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    blocker?: UserUpdateOneRequiredWithoutBlocksNestedInput
+    blocked?: UserUpdateOneRequiredWithoutBlockedByNestedInput
+  }
+
+  export type BlockUncheckedUpdateInput = {
+    blockerId?: StringFieldUpdateOperationsInput | string
+    blockedId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockCreateManyInput = {
+    blockerId: string
+    blockedId: string
+    createdAt?: Date | string
+  }
+
+  export type BlockUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockUncheckedUpdateManyInput = {
+    blockerId?: StringFieldUpdateOperationsInput | string
+    blockedId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VerificationTokenCreateInput = {
@@ -39048,6 +40368,12 @@ export namespace Prisma {
     none?: LigueWhereInput
   }
 
+  export type BlockListRelationFilter = {
+    every?: BlockWhereInput
+    some?: BlockWhereInput
+    none?: BlockWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -39117,6 +40443,10 @@ export namespace Prisma {
   }
 
   export type LigueOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BlockOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -39194,6 +40524,29 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type BlockBlockerIdBlockedIdCompoundUniqueInput = {
+    blockerId: string
+    blockedId: string
+  }
+
+  export type BlockCountOrderByAggregateInput = {
+    blockerId?: SortOrder
+    blockedId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BlockMaxOrderByAggregateInput = {
+    blockerId?: SortOrder
+    blockedId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BlockMinOrderByAggregateInput = {
+    blockerId?: SortOrder
+    blockedId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
@@ -40458,6 +41811,20 @@ export namespace Prisma {
     connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
   }
 
+  export type BlockCreateNestedManyWithoutBlockerInput = {
+    create?: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput> | BlockCreateWithoutBlockerInput[] | BlockUncheckedCreateWithoutBlockerInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockerInput | BlockCreateOrConnectWithoutBlockerInput[]
+    createMany?: BlockCreateManyBlockerInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
+  export type BlockCreateNestedManyWithoutBlockedInput = {
+    create?: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput> | BlockCreateWithoutBlockedInput[] | BlockUncheckedCreateWithoutBlockedInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockedInput | BlockCreateOrConnectWithoutBlockedInput[]
+    createMany?: BlockCreateManyBlockedInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -40628,6 +41995,20 @@ export namespace Prisma {
     create?: XOR<LigueCreateWithoutCommissairesInput, LigueUncheckedCreateWithoutCommissairesInput> | LigueCreateWithoutCommissairesInput[] | LigueUncheckedCreateWithoutCommissairesInput[]
     connectOrCreate?: LigueCreateOrConnectWithoutCommissairesInput | LigueCreateOrConnectWithoutCommissairesInput[]
     connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+  }
+
+  export type BlockUncheckedCreateNestedManyWithoutBlockerInput = {
+    create?: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput> | BlockCreateWithoutBlockerInput[] | BlockUncheckedCreateWithoutBlockerInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockerInput | BlockCreateOrConnectWithoutBlockerInput[]
+    createMany?: BlockCreateManyBlockerInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
+  export type BlockUncheckedCreateNestedManyWithoutBlockedInput = {
+    create?: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput> | BlockCreateWithoutBlockedInput[] | BlockUncheckedCreateWithoutBlockedInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockedInput | BlockCreateOrConnectWithoutBlockedInput[]
+    createMany?: BlockCreateManyBlockedInputEnvelope
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -40995,6 +42376,34 @@ export namespace Prisma {
     deleteMany?: LigueScalarWhereInput | LigueScalarWhereInput[]
   }
 
+  export type BlockUpdateManyWithoutBlockerNestedInput = {
+    create?: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput> | BlockCreateWithoutBlockerInput[] | BlockUncheckedCreateWithoutBlockerInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockerInput | BlockCreateOrConnectWithoutBlockerInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutBlockerInput | BlockUpsertWithWhereUniqueWithoutBlockerInput[]
+    createMany?: BlockCreateManyBlockerInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutBlockerInput | BlockUpdateWithWhereUniqueWithoutBlockerInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutBlockerInput | BlockUpdateManyWithWhereWithoutBlockerInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type BlockUpdateManyWithoutBlockedNestedInput = {
+    create?: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput> | BlockCreateWithoutBlockedInput[] | BlockUncheckedCreateWithoutBlockedInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockedInput | BlockCreateOrConnectWithoutBlockedInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutBlockedInput | BlockUpsertWithWhereUniqueWithoutBlockedInput[]
+    createMany?: BlockCreateManyBlockedInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutBlockedInput | BlockUpdateWithWhereUniqueWithoutBlockedInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutBlockedInput | BlockUpdateManyWithWhereWithoutBlockedInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -41340,6 +42749,62 @@ export namespace Prisma {
     update?: LigueUpdateWithWhereUniqueWithoutCommissairesInput | LigueUpdateWithWhereUniqueWithoutCommissairesInput[]
     updateMany?: LigueUpdateManyWithWhereWithoutCommissairesInput | LigueUpdateManyWithWhereWithoutCommissairesInput[]
     deleteMany?: LigueScalarWhereInput | LigueScalarWhereInput[]
+  }
+
+  export type BlockUncheckedUpdateManyWithoutBlockerNestedInput = {
+    create?: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput> | BlockCreateWithoutBlockerInput[] | BlockUncheckedCreateWithoutBlockerInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockerInput | BlockCreateOrConnectWithoutBlockerInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutBlockerInput | BlockUpsertWithWhereUniqueWithoutBlockerInput[]
+    createMany?: BlockCreateManyBlockerInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutBlockerInput | BlockUpdateWithWhereUniqueWithoutBlockerInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutBlockerInput | BlockUpdateManyWithWhereWithoutBlockerInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type BlockUncheckedUpdateManyWithoutBlockedNestedInput = {
+    create?: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput> | BlockCreateWithoutBlockedInput[] | BlockUncheckedCreateWithoutBlockedInput[]
+    connectOrCreate?: BlockCreateOrConnectWithoutBlockedInput | BlockCreateOrConnectWithoutBlockedInput[]
+    upsert?: BlockUpsertWithWhereUniqueWithoutBlockedInput | BlockUpsertWithWhereUniqueWithoutBlockedInput[]
+    createMany?: BlockCreateManyBlockedInputEnvelope
+    set?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    disconnect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    delete?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+    update?: BlockUpdateWithWhereUniqueWithoutBlockedInput | BlockUpdateWithWhereUniqueWithoutBlockedInput[]
+    updateMany?: BlockUpdateManyWithWhereWithoutBlockedInput | BlockUpdateManyWithWhereWithoutBlockedInput[]
+    deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutBlocksInput = {
+    create?: XOR<UserCreateWithoutBlocksInput, UserUncheckedCreateWithoutBlocksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBlocksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutBlockedByInput = {
+    create?: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBlockedByInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutBlocksNestedInput = {
+    create?: XOR<UserCreateWithoutBlocksInput, UserUncheckedCreateWithoutBlocksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBlocksInput
+    upsert?: UserUpsertWithoutBlocksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBlocksInput, UserUpdateWithoutBlocksInput>, UserUncheckedUpdateWithoutBlocksInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBlockedByNestedInput = {
+    create?: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBlockedByInput
+    upsert?: UserUpsertWithoutBlockedByInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBlockedByInput, UserUpdateWithoutBlockedByInput>, UserUncheckedUpdateWithoutBlockedByInput>
   }
 
   export type UserCreateNestedOneWithoutTournamentsInput = {
@@ -43125,6 +44590,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -43167,6 +44634,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -43225,6 +44694,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -43267,6 +44738,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -43309,6 +44782,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -43351,6 +44826,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -43409,6 +44886,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -43451,6 +44930,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -44373,6 +45854,44 @@ export namespace Prisma {
     create: XOR<LigueCreateWithoutCommissairesInput, LigueUncheckedCreateWithoutCommissairesInput>
   }
 
+  export type BlockCreateWithoutBlockerInput = {
+    createdAt?: Date | string
+    blocked: UserCreateNestedOneWithoutBlockedByInput
+  }
+
+  export type BlockUncheckedCreateWithoutBlockerInput = {
+    blockedId: string
+    createdAt?: Date | string
+  }
+
+  export type BlockCreateOrConnectWithoutBlockerInput = {
+    where: BlockWhereUniqueInput
+    create: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput>
+  }
+
+  export type BlockCreateManyBlockerInputEnvelope = {
+    data: BlockCreateManyBlockerInput | BlockCreateManyBlockerInput[]
+  }
+
+  export type BlockCreateWithoutBlockedInput = {
+    createdAt?: Date | string
+    blocker: UserCreateNestedOneWithoutBlocksInput
+  }
+
+  export type BlockUncheckedCreateWithoutBlockedInput = {
+    blockerId: string
+    createdAt?: Date | string
+  }
+
+  export type BlockCreateOrConnectWithoutBlockedInput = {
+    where: BlockWhereUniqueInput
+    create: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput>
+  }
+
+  export type BlockCreateManyBlockedInputEnvelope = {
+    data: BlockCreateManyBlockedInput | BlockCreateManyBlockedInput[]
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -45067,6 +46586,431 @@ export namespace Prisma {
     data: XOR<LigueUpdateManyMutationInput, LigueUncheckedUpdateManyWithoutCommissairesInput>
   }
 
+  export type BlockUpsertWithWhereUniqueWithoutBlockerInput = {
+    where: BlockWhereUniqueInput
+    update: XOR<BlockUpdateWithoutBlockerInput, BlockUncheckedUpdateWithoutBlockerInput>
+    create: XOR<BlockCreateWithoutBlockerInput, BlockUncheckedCreateWithoutBlockerInput>
+  }
+
+  export type BlockUpdateWithWhereUniqueWithoutBlockerInput = {
+    where: BlockWhereUniqueInput
+    data: XOR<BlockUpdateWithoutBlockerInput, BlockUncheckedUpdateWithoutBlockerInput>
+  }
+
+  export type BlockUpdateManyWithWhereWithoutBlockerInput = {
+    where: BlockScalarWhereInput
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyWithoutBlockerInput>
+  }
+
+  export type BlockScalarWhereInput = {
+    AND?: BlockScalarWhereInput | BlockScalarWhereInput[]
+    OR?: BlockScalarWhereInput[]
+    NOT?: BlockScalarWhereInput | BlockScalarWhereInput[]
+    blockerId?: StringFilter<"Block"> | string
+    blockedId?: StringFilter<"Block"> | string
+    createdAt?: DateTimeFilter<"Block"> | Date | string
+  }
+
+  export type BlockUpsertWithWhereUniqueWithoutBlockedInput = {
+    where: BlockWhereUniqueInput
+    update: XOR<BlockUpdateWithoutBlockedInput, BlockUncheckedUpdateWithoutBlockedInput>
+    create: XOR<BlockCreateWithoutBlockedInput, BlockUncheckedCreateWithoutBlockedInput>
+  }
+
+  export type BlockUpdateWithWhereUniqueWithoutBlockedInput = {
+    where: BlockWhereUniqueInput
+    data: XOR<BlockUpdateWithoutBlockedInput, BlockUncheckedUpdateWithoutBlockedInput>
+  }
+
+  export type BlockUpdateManyWithWhereWithoutBlockedInput = {
+    where: BlockScalarWhereInput
+    data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyWithoutBlockedInput>
+  }
+
+  export type UserCreateWithoutBlocksInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+  }
+
+  export type UserUncheckedCreateWithoutBlocksInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+  }
+
+  export type UserCreateOrConnectWithoutBlocksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBlocksInput, UserUncheckedCreateWithoutBlocksInput>
+  }
+
+  export type UserCreateWithoutBlockedByInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+  }
+
+  export type UserUncheckedCreateWithoutBlockedByInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+  }
+
+  export type UserCreateOrConnectWithoutBlockedByInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
+  }
+
+  export type UserUpsertWithoutBlocksInput = {
+    update: XOR<UserUpdateWithoutBlocksInput, UserUncheckedUpdateWithoutBlocksInput>
+    create: XOR<UserCreateWithoutBlocksInput, UserUncheckedCreateWithoutBlocksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBlocksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBlocksInput, UserUncheckedUpdateWithoutBlocksInput>
+  }
+
+  export type UserUpdateWithoutBlocksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBlocksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+  }
+
+  export type UserUpsertWithoutBlockedByInput = {
+    update: XOR<UserUpdateWithoutBlockedByInput, UserUncheckedUpdateWithoutBlockedByInput>
+    create: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBlockedByInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBlockedByInput, UserUncheckedUpdateWithoutBlockedByInput>
+  }
+
+  export type UserUpdateWithoutBlockedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBlockedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+  }
+
   export type UserCreateWithoutTournamentsInput = {
     id?: string
     name?: string | null
@@ -45107,6 +47051,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -45149,6 +47095,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -45233,6 +47181,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -45275,6 +47225,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -45455,6 +47407,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -45497,6 +47451,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -46037,6 +47993,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -46079,6 +48037,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -46346,6 +48306,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -46388,6 +48350,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -46618,6 +48582,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -46660,6 +48626,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -46732,6 +48700,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -46774,6 +48744,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -46898,6 +48870,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -46940,6 +48914,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -47009,6 +48985,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -47051,6 +49029,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -47109,6 +49089,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -47151,6 +49133,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -47198,6 +49182,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -47240,6 +49226,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -47323,6 +49311,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -47365,6 +49355,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUpsertWithoutUser2ConversationsInput = {
@@ -47418,6 +49410,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -47460,6 +49454,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -47543,6 +49539,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -47585,6 +49583,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -47674,6 +49674,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -47716,6 +49718,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -47758,6 +49762,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -47800,6 +49806,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -47895,6 +49903,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -47937,6 +49947,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -48055,6 +50067,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -48097,6 +50111,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -48144,6 +50160,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -48186,6 +50204,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -48283,6 +50303,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -48325,6 +50347,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -48378,6 +50402,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -48420,6 +50446,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type PostCreateWithoutReactionsInput = {
@@ -48495,6 +50523,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -48537,6 +50567,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -48634,6 +50666,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -48676,6 +50710,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -48718,6 +50754,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -48760,6 +50798,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -48827,6 +50867,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -48869,6 +50911,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -48964,6 +51008,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -49006,6 +51052,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TopicUpsertWithoutFollowsInput = {
@@ -49188,6 +51236,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -49230,6 +51280,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -49391,6 +51443,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -49433,6 +51487,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TournamentCreateWithoutTeamsInput = {
@@ -49572,6 +51628,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -49614,6 +51672,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -49794,6 +51854,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -49836,6 +51898,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TournamentTeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
@@ -49921,6 +51985,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -49963,6 +52029,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -50054,6 +52122,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -50096,6 +52166,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type TournamentCreateWithoutMercenariesInput = {
@@ -50235,6 +52307,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -50277,6 +52351,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -50438,6 +52514,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -50480,6 +52558,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateWithoutArticlesInput = {
@@ -50522,6 +52602,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -50564,6 +52646,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -50649,6 +52733,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -50691,6 +52777,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -50792,6 +52880,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -50834,6 +52924,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type ArticleTagUpsertWithWhereUniqueWithoutArticlesInput = {
@@ -50927,6 +53019,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -50969,6 +53063,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type LigueUpsertWithoutArticlesInput = {
@@ -51146,6 +53242,8 @@ export namespace Prisma {
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -51188,6 +53286,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -51287,6 +53387,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -51329,6 +53431,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserCreateWithoutOwnedLiguesInput = {
@@ -51371,6 +53475,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -51413,6 +53519,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -51460,6 +53568,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -51502,6 +53612,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -51689,6 +53801,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -51731,6 +53845,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -51789,6 +53905,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -51831,6 +53949,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCommissaireLiguesInput = {
@@ -52130,6 +54250,16 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type BlockCreateManyBlockerInput = {
+    blockedId: string
+    createdAt?: Date | string
+  }
+
+  export type BlockCreateManyBlockedInput = {
+    blockerId: string
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -53125,6 +55255,36 @@ export namespace Prisma {
     creatorId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type BlockUpdateWithoutBlockerInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    blocked?: UserUpdateOneRequiredWithoutBlockedByNestedInput
+  }
+
+  export type BlockUncheckedUpdateWithoutBlockerInput = {
+    blockedId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockUncheckedUpdateManyWithoutBlockerInput = {
+    blockedId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockUpdateWithoutBlockedInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    blocker?: UserUpdateOneRequiredWithoutBlocksNestedInput
+  }
+
+  export type BlockUncheckedUpdateWithoutBlockedInput = {
+    blockerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BlockUncheckedUpdateManyWithoutBlockedInput = {
+    blockerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TournamentRegistrationCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -53190,6 +55350,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -53232,6 +55394,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -53724,6 +55888,8 @@ export namespace Prisma {
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -53766,6 +55932,8 @@ export namespace Prisma {
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -53986,6 +56154,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -54028,6 +56198,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -54264,6 +56436,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -54306,6 +56480,8 @@ export namespace Prisma {
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {

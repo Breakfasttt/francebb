@@ -12,7 +12,7 @@ const config = {
 };
 console.log(`[PRISMA] Utilisation de la base : ${config.url}`);
 const getPrismaClient = () => {
-  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v15") {
+  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v16") {
     return globalForPrisma.prisma;
   }
 
@@ -22,7 +22,7 @@ const getPrismaClient = () => {
 
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;
-    globalForPrisma.prismaVersion = "v15";
+    globalForPrisma.prismaVersion = "v16";
   }
   return client;
 };

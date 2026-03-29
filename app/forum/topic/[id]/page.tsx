@@ -10,6 +10,7 @@ import { auth } from "@/auth";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
+import { getBlockedUsersIds } from "@/app/profile/actions";
 import { ArrowLeft, Lock as LockIcon } from "lucide-react";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
@@ -27,6 +28,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   const session = await auth();
   const currentUserId = session?.user?.id;
+
+  // Récupérer les blocages de l'utilisateur courant
+  const blockedUserIds = await getBlockedUsersIds();
 
   // Jump to first unread post if no specific page is requested
   if (!pageStr && currentUserId) {
@@ -223,6 +227,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 safeCurrentPage={safeCurrentPage}
                 regionLabels={regionLabels}
                 isFirstPostAlwaysVisible={true}
+                isBlocked={blockedUserIds.includes(firstPostForTournament.authorId)}
               />
             )}
 
@@ -241,6 +246,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 isTournament={!!topic.tournament}
                 tournamentId={topic.tournament?.id}
                 firstPostId={topic.posts[0]?.id}
+                isBlocked={blockedUserIds.includes(post.authorId)}
               />
             ))}
           </div>

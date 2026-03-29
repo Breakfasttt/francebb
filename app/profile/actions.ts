@@ -61,6 +61,73 @@ export async function toggleBanUser(userId: string) {
   return { success: true };
 }
 
+export async function toggleBlockUser(blockedId: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non connecté");
+  if (session.user.id === blockedId) throw new Error("Vous ne pouvez pas vous bloquer vous-même");
+
+  // Vérifier si la cible est un staff (ADMIN/MODO)
+  const targetUser = await prisma.user.findUnique({
+    where: { id: blockedId },
+    select: { role: true }
+  });
+
+  if (targetUser && (targetUser.role === "ADMIN" || targetUser.role === "MODERATOR" || targetUser.role === "SUPERADMIN")) {
+    throw new Error("Vous ne pouvez pas bloquer un membre de l'équipe (Administrateur/Modérateur)");
+  }
+
+  const existingBlock = await prisma.block.findUnique({
+    where: { blockerId_blockedId: { blockerId: session.user.id, blockedId } }
+  });
+
+  if (existingBlock) {
+    await prisma.block.delete({
+      where: { blockerId_blockedId: { blockerId: session.user.id, blockedId } }
+    });
+  } else {
+    await prisma.block.create({
+      data: { blockerId: session.user.id, blockedId }
+    });
+  }
+
+  revalidatePath(`/spy/${blockedId}`);
+  revalidatePath("/profile");
+  return { success: true, isBlocked: !existingBlock };
+}
+
+export async function getBlockedUsersIds() {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+
+  const blocks = await prisma.block.findMany({
+    where: { blockerId: session.user.id },
+    select: { blockedId: true }
+  });
+
+  return blocks.map(b => b.blockedId);
+}
+
+export async function getBlockedUsers() {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+
+  const blocked = await prisma.block.findMany({
+    where: { blockerId: session.user.id },
+    include: {
+      blocked: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          role: true
+        }
+      }
+    }
+  });
+
+  return blocked.map(b => b.blocked);
+}
+
 export async function getUserStats(userId: string) {
   const postCount = await prisma.post.count({
     where: { authorId: userId, isDeleted: false }
@@ -115,7 +182,10 @@ export async function getConversations(page = 1) {
       OR: [
         { user1Id: userId, user1DeletedAt: null },
         { user2Id: userId, user2DeletedAt: null }
-      ]
+      ],
+      // Exclure les conversations avec des utilisateurs bloqués
+      user1: { blockedBy: { none: { blockerId: userId } } },
+      user2: { blockedBy: { none: { blockerId: userId } } }
     },
     orderBy: { updatedAt: "desc" },
     skip,
@@ -232,6 +302,20 @@ export async function startConversation(recipientId: string) {
   if (!userId) throw new Error("Non autorisé");
   if (userId === recipientId) throw new Error("Vous ne pouvez pas démarrer une conversation avec vous-même");
 
+  // Vérifier les blocages
+  const isBlocked = await prisma.block.findFirst({
+    where: {
+      OR: [
+        { blockerId: userId, blockedId: recipientId },
+        { blockerId: recipientId, blockedId: userId }
+      ]
+    }
+  });
+
+  if (isBlocked) {
+    throw new Error("Impossible de contacter ce membre (blocage actif)");
+  }
+
   // Sort participant IDs to match @@unique([user1Id, user2Id])
   const [u1, u2] = [userId, recipientId].sort();
 
@@ -297,7 +381,22 @@ export async function sendPrivateMessage(conversationId: string, content: string
     throw new Error("Conversation introuvable");
   }
 
-    const encryptedContent = encrypt(content);
+  // Vérifier les blocages
+  const recipientId = conversation.user1Id === userId ? conversation.user2Id : conversation.user1Id;
+  const isBlocked = await prisma.block.findFirst({
+    where: {
+      OR: [
+        { blockerId: userId, blockedId: recipientId },
+        { blockerId: recipientId, blockedId: userId }
+      ]
+    }
+  });
+
+  if (isBlocked) {
+    throw new Error("Envoi impossible (un des membres est bloqué)");
+  }
+
+  const encryptedContent = encrypt(content);
   
   const message = await prisma.privateMessage.create({
     data: {
@@ -362,7 +461,10 @@ export async function searchUsersForPm(query: string) {
   const users = await prisma.user.findMany({
     where: {
       name: { contains: query },
-      id: { not: session.user.id }
+      id: { not: session.user.id },
+      // Exclure ceux qu'on a bloqué ou qui nous ont bloqué
+      blockedBy: { none: { blockerId: session.user.id } },
+      blocks: { none: { blockedId: session.user.id } }
     },
     take: 10,
     select: {

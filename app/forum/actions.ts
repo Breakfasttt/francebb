@@ -1109,7 +1109,11 @@ export async function searchUsersAction(query: string) {
         { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
         { email: { contains: query.toLowerCase() } }
       ],
-      isBanned: false
+      isBanned: false,
+      id: { not: session.user.id },
+      // Exclure ceux qu'on a bloqué ou qui nous ont bloqué
+      blockedBy: { none: { blockerId: session.user.id } },
+      blocks: { none: { blockedId: session.user.id } }
     },
     select: {
       id: true,

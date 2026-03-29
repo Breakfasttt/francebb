@@ -17,12 +17,13 @@ import ProfileEdit from "@/app/profile/component/ProfileEdit";
 import ProfilePM from "@/app/profile/component/ProfilePM";
 import ProfileSettings from "@/app/profile/component/ProfileSettings";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
+import ProfileBlockedUsers from "@/app/profile/component/ProfileBlockedUsers";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import Pagination from "@/common/components/Pagination/Pagination";
 import "./page.css";
 
-type ProfileTab = "followed" | "articles" | "activity" | "edit" | "palmares" | "pm" | "settings";
+type ProfileTab = "followed" | "articles" | "activity" | "edit" | "palmares" | "pm" | "settings" | "blocked";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -60,6 +61,7 @@ export default function ProfilePage() {
     if (tab === "pm") return "pm";
     if (tab === "activity") return "activity";
     if (tab === "settings") return "settings";
+    if (tab === "blocked") return "blocked";
     return "followed";
   };
 
@@ -221,6 +223,10 @@ export default function ProfilePage() {
 
           {activeTab === "pm" && (
             <ProfilePM />
+          )}
+
+          {activeTab === "blocked" && (
+            <ProfileBlockedUsers />
           )}
 
           {activeTab === "settings" && (

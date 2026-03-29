@@ -157,6 +157,12 @@ exports.Prisma.UserScalarFieldEnum = {
   ligueCustom: 'ligueCustom'
 };
 
+exports.Prisma.BlockScalarFieldEnum = {
+  blockerId: 'blockerId',
+  blockedId: 'blockedId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.VerificationTokenScalarFieldEnum = {
   identifier: 'identifier',
   token: 'token',
@@ -427,6 +433,7 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   User: 'User',
+  Block: 'Block',
   VerificationToken: 'VerificationToken',
   Tournament: 'Tournament',
   Category: 'Category',

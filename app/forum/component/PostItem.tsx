@@ -1,7 +1,9 @@
+"use client";
+
 import { parseBBCode } from "@/lib/bbcode";
-import { Mail, MapPin, Shield, Trophy, User } from "lucide-react";
+import { Mail, MapPin, Shield, Trophy, User, Eye, EyeOff, Info, ShieldAlert } from "lucide-react";
 import Link from "next/link";
-import React from 'react';
+import React, { useState } from 'react';
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
@@ -20,6 +22,7 @@ interface PostItemProps {
   isTournament?: boolean;
   tournamentId?: string;
   firstPostId?: string;
+  isBlocked?: boolean;
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -34,8 +37,11 @@ const PostItem: React.FC<PostItemProps> = ({
   isFirstPostAlwaysVisible = false,
   isTournament = false,
   tournamentId,
-  firstPostId
+  firstPostId,
+  isBlocked = false
 }) => {
+  const [isRevealed, setIsRevealed] = useState(false);
+
   return (
     <PremiumCard
       id={`post-${post.id}`}
@@ -208,7 +214,99 @@ const PostItem: React.FC<PostItemProps> = ({
             fontStyle: 'italic',
             textAlign: 'center'
           }}>
-            Ce message a été supprimé par son auteur
+          Ce message a été supprimé par son auteur
+          </div>
+        ) : isBlocked && !isRevealed ? (
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: '16px',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '1.5rem',
+            boxShadow: 'var(--glass-shadow)',
+            position: 'relative',
+            overflow: 'hidden',
+            margin: '1rem 0'
+          }}>
+            {/* Background Icon Watermark */}
+            <div style={{ position: 'absolute', top: '-15%', right: '-10%', opacity: 0.03, transform: 'rotate(-15deg)', pointerEvents: 'none' }}>
+              <ShieldAlert size={180} />
+            </div>
+
+            <div style={{ 
+              padding: '1.2rem', 
+              borderRadius: '50%', 
+              background: 'rgba(var(--primary-rgb), 0.1)', 
+              color: 'var(--primary)',
+              boxShadow: '0 0 30px rgba(var(--primary-rgb), 0.15)',
+              border: '1px solid var(--primary-transparent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <EyeOff size={32} strokeWidth={2.5} />
+            </div>
+            
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <h4 style={{ 
+                margin: 0, 
+                fontWeight: 800, 
+                color: 'var(--foreground)', 
+                fontSize: '1.2rem', 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.08em' 
+              }}>
+                Utilisateur bloqué : {post.author.name}
+              </h4>
+              <p style={{ 
+                margin: '0.8rem 0 0 0', 
+                fontSize: '0.95rem', 
+                color: 'var(--text-muted)', 
+                lineHeight: 1.6,
+                maxWidth: '500px'
+              }}>
+                Ce contenu est masqué car vous avez bloqué cet utilisateur. <br/>
+                Vous pouvez le gérer dans votre <Link href="/profile" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'underline' }}>gestion de compte</Link>.
+              </p>
+            </div>
+
+            <button 
+              onClick={() => setIsRevealed(true)}
+              className="widget-button secondary-btn"
+              style={{ 
+                marginTop: '0.5rem', 
+                width: 'auto', 
+                padding: '0.8rem 2.2rem',
+                fontSize: '0.8rem',
+                fontWeight: 900,
+                letterSpacing: '0.12em',
+                background: 'var(--glass-bg)',
+                border: '1px solid var(--glass-border)',
+                color: 'var(--foreground)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.8rem',
+                textTransform: 'uppercase',
+                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)';
+                e.currentTarget.style.borderColor = 'var(--primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'var(--glass-border)';
+              }}
+            >
+              <Eye size={18} /> <span>Afficher le message</span>
+            </button>
           </div>
         ) : (
           <>
@@ -234,6 +332,28 @@ const PostItem: React.FC<PostItemProps> = ({
                 {post.isModerated && (
                   <div style={{ fontSize: '0.7rem', color: 'var(--primary)', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 700 }}>
                     [Contenu original visible par vous seul et les modérateurs]
+                  </div>
+                )}
+                {isBlocked && isRevealed && (
+                  <div style={{ 
+                    fontSize: '0.75rem', 
+                    color: 'var(--primary)', 
+                    marginBottom: '1rem', 
+                    padding: '0.4rem 0.8rem', 
+                    background: 'rgba(var(--primary-rgb), 0.1)', 
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontWeight: 700
+                  }}>
+                    <Info size={12} /> AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)
+                    <button 
+                      onClick={() => setIsRevealed(false)} 
+                      style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.65rem' }}
+                    >
+                      Masquer à nouveau
+                    </button>
                   </div>
                 )}
                 <div
