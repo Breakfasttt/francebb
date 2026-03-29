@@ -439,7 +439,9 @@ export async function deleteAccount() {
             signature: null,
             nafNumber: null,
             region: null,
-            ligueId: null,
+            ligues: { set: [] },
+            ownedLigues: { set: [] },
+            commissaireLigues: { set: [] },
             ligueCustom: null,
             avatarFrame: "auto"
           }

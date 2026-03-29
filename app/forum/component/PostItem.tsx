@@ -90,7 +90,7 @@ const PostItem: React.FC<PostItemProps> = ({
             {post.author.role || 'COACH'}
           </div>
 
-          {(post.author.nafNumber || post.author.region || post.author.league) && (
+          {(post.author.nafNumber || post.author.region || (post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom || post.author.equipe) && (
             <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               {post.author.nafNumber && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
@@ -105,19 +105,34 @@ const PostItem: React.FC<PostItemProps> = ({
                   </a>
                 </div>
               )}
+              {post.author.equipe && (
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', fontWeight: 600 }}>
+                  <Trophy size={11} color="var(--accent)" /> {post.author.equipe}
+                </div>
+              )}
               {post.author.region && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
                   <MapPin size={12} color="#3b82f6" /> {regionLabels[post.author.region] || post.author.region}
                 </div>
               )}
-              {(post.author.ligue || post.author.ligueCustom) && (
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
-                  <Shield size={12} color="#22c55e" /> 
-                  {post.author.ligue ? (
-                    <Link href={`/ligue/${post.author.ligue.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                      {post.author.ligue.name}
-                    </Link>
-                  ) : post.author.ligueCustom}
+              {((post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom) && (
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'flex-start', gap: '0.4rem', justifyContent: 'center' }}>
+                  <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} /> 
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center' }}>
+                    {post.author.ligues?.map((ligue: any) => (
+                      <Link 
+                        key={ligue.id} 
+                        href={`/ligue/${ligue.id}`} 
+                        title={ligue.name}
+                        style={{ color: 'var(--foreground)', textDecoration: 'none', fontWeight: 600, background: 'rgba(34, 197, 94, 0.1)', padding: '0 4px', borderRadius: '4px' }}
+                      >
+                        {ligue.acronym || ligue.name}
+                      </Link>
+                    ))}
+                    {post.author.ligueCustom && (
+                      <span style={{ fontStyle: 'italic', opacity: 0.8 }}>{post.author.ligueCustom}</span>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

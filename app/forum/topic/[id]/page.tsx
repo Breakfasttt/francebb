@@ -102,13 +102,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             }
           }
         },
-        author: { include: { ligue: true } },
+        author: { include: { ligues: true } },
         posts: {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
           skip,
           take: POSTS_PER_PAGE,
           include: {
-            author: { include: { ligue: true } },
+            author: { include: { ligues: true } },
             moderator: true,
             reactions: true
           }
@@ -136,7 +136,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       where: { topicId: id },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
       include: {
-        author: { include: { ligue: true } },
+        author: { include: { ligues: true } },
         moderator: true,
         reactions: true
       }
