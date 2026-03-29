@@ -35,7 +35,7 @@
   justify-content: center;
   align-items: stretch;
   gap: 0.8rem;
-  max-width: 1100px;
+  max-width: 1200px; /* Augmenté pour 5 colonnes */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -43,12 +43,13 @@
 }
 
 .action-grid-row.top-row {
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 .action-grid-row.bottom-row {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
 }
+
 
 .action-card {
   flex: 1;

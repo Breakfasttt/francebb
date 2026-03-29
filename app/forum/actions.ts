@@ -484,17 +484,36 @@ export async function createTopic(formData: FormData) {
 
     const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
 
+    // Géocodage automatique
+    const tAddress = formData.get("tAddress") as string;
+    const tVille = formData.get("tVille") as string;
+    let lat = null, lng = null;
+    try {
+      const gRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${tAddress || ""} ${tVille || ""}`.trim())}&format=json&limit=1`, {
+        headers: { "User-Agent": "BBFrance-App" }
+      });
+      const gData = await gRes.json();
+      if (gData && gData.length > 0) {
+        lat = parseFloat(gData[0].lat);
+        lng = parseFloat(gData[0].lon);
+      }
+    } catch (e) {
+      console.error("Tournament geocoding error:", e);
+    }
+
     tournamentData = {
       name: title,
       date: startDate,
       endDate: endDate,
-      location: formData.get("tAddress") as string || "Lieu non précisé",
-      address: formData.get("tAddress") as string,
+      location: tAddress || "Lieu non précisé",
+      address: tAddress,
       gmapsUrl: formData.get("tGmapsUrl") as string,
-      ville: formData.get("tVille") as string,
+      ville: tVille,
       departement: formData.get("tDept") as string,
       region: formData.get("tRegion") as string,
       regionNAF: formData.get("tRegionNAF") as string,
+      lat,
+      lng,
       maxParticipants: parseInt(formData.get("tMax") as string) || null,
       isTeam: formData.get("isTeam") === "on",
       coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,

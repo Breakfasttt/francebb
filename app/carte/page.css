@@ -1,0 +1,41 @@
+.carte-page-fixed {
+  height: calc(100vh - 100px); /* Ajustement pour donner plus d'air au footer */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.5rem 2rem 3rem 2rem; /* Augmentation du padding bottom */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.carte-content-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Important pour flex-grow avec overflow */
+  margin-top: 1rem;
+}
+
+/* Surcharge des styles du CarteClient pour le mode fixed */
+.carte-client-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.map-view-leaflet {
+  flex: 1 !important;
+  height: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .carte-page-fixed {
+    padding: 1rem;
+    height: auto;
+    overflow: visible;
+  }
+  .map-view-leaflet {
+    height: 50vh !important;
+  }
+}

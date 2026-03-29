@@ -2,20 +2,36 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
-import { Save, Loader2, Globe, Link as LinkIcon } from "lucide-react";
+import { Save, Loader2, Globe, Link as LinkIcon, Video, Youtube, Map } from "lucide-react";
 import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 export default function GeneralTab() {
   const [discordInvite, setDiscordInvite] = useState("");
+  const [twitchChannels, setTwitchChannels] = useState("");
+  const [youtubeChannels, setYoutubeChannels] = useState("");
+  const [youtubeApiKey, setYoutubeApiKey] = useState("");
+  const [googleMapsApiKey, setGoogleMapsApiKey] = useState("");
+  
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     async function loadSettings() {
       try {
-        const invite = await getSiteSetting("discord_invite");
+        const [invite, twitch, youtube, yApiKey, gMapsKey] = await Promise.all([
+          getSiteSetting("discord_invite"),
+          getSiteSetting("twitch_channels"),
+          getSiteSetting("youtube_channels"),
+          getSiteSetting("youtube_api_key"),
+          getSiteSetting("google_maps_api_key"),
+        ]);
+        
         setDiscordInvite(invite || "");
+        setTwitchChannels(twitch || "");
+        setYoutubeChannels(youtube || "");
+        setYoutubeApiKey(yApiKey || "");
+        setGoogleMapsApiKey(gMapsKey || "");
       } catch (error) {
         console.error("Failed to load settings:", error);
       } finally {
@@ -27,11 +43,17 @@ export default function GeneralTab() {
 
   const handleSave = () => {
     startTransition(async () => {
-      const res = await updateSiteSetting("discord_invite", discordInvite);
-      if (res.success) {
+      try {
+        await Promise.all([
+          updateSiteSetting("discord_invite", discordInvite),
+          updateSiteSetting("twitch_channels", twitchChannels),
+          updateSiteSetting("youtube_channels", youtubeChannels),
+          updateSiteSetting("youtube_api_key", youtubeApiKey),
+          updateSiteSetting("google_maps_api_key", googleMapsApiKey),
+        ]);
         toast.success("Paramètres mis à jour !");
-      } else {
-        toast.error(res.error || "Erreur lors de la mise à jour");
+      } catch (err) {
+        toast.error("Erreur lors de la mise à jour");
       }
     });
   };
@@ -63,18 +85,17 @@ export default function GeneralTab() {
       </header>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
-        {/* Discord Invite Section */}
+        {/* Discord Section */}
         <section className="settings-section">
           <div className="section-header">
             <div className="icon-badge">
               <LinkIcon size={18} />
             </div>
             <div>
-              <h4 className="section-title">Lien d'invitation Discord</h4>
-              <p className="section-desc">L'URL d'invitation pour rejoindre la communauté officielle.</p>
+              <h4 className="section-title">Communauté Discord</h4>
+              <p className="section-desc">L'URL d'invitation pour rejoindre le serveur.</p>
             </div>
           </div>
-
           <div className="input-wrapper">
             <input
               type="text"
@@ -84,8 +105,85 @@ export default function GeneralTab() {
               className="premium-input-field"
             />
           </div>
-          <div className="info-box">
-            <p>Ce lien sera utilisé pour le bouton d'accueil et les communications automatiques.</p>
+        </section>
+
+        {/* Media Section */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+          <section className="settings-section">
+            <div className="section-header">
+              <div className="icon-badge">
+                <Video size={18} />
+              </div>
+              <div>
+                <h4 className="section-title">Streams Twitch</h4>
+                <p className="section-desc">Chaînes à surveiller (séparées par des virgules).</p>
+              </div>
+            </div>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                value={twitchChannels}
+                onChange={(e) => setTwitchChannels(e.target.value)}
+                placeholder="bloody_owl, fumbll_network..."
+                className="premium-input-field"
+              />
+            </div>
+          </section>
+
+          <section className="settings-section">
+            <div className="section-header">
+              <div className="icon-badge">
+                <Youtube size={18} />
+              </div>
+              <div>
+                <h4 className="section-title">Chaînes YouTube</h4>
+                <p className="section-desc">IDs des chaînes pour les vidéos (séparés par des virgules).</p>
+              </div>
+            </div>
+            <div className="input-wrapper">
+              <input
+                type="text"
+                value={youtubeChannels}
+                onChange={(e) => setYoutubeChannels(e.target.value)}
+                placeholder="UC_x5XG1OV2P6uWXO-..."
+                className="premium-input-field"
+              />
+            </div>
+          </section>
+        </div>
+
+        {/* API Keys Section */}
+        <section className="settings-section">
+          <div className="section-header">
+            <div className="icon-badge">
+              <Map size={18} />
+            </div>
+            <div>
+              <h4 className="section-title">Clés API Externes</h4>
+              <p className="section-desc">Nécessaires pour les fonctionnalités Media et Carte.</p>
+            </div>
+          </div>
+          <div className="input-wrapper" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div>
+              <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>Google Maps API Key</label>
+              <input
+                type="password"
+                value={googleMapsApiKey}
+                onChange={(e) => setGoogleMapsApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="premium-input-field"
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>YouTube Data API Key</label>
+              <input
+                type="password"
+                value={youtubeApiKey}
+                onChange={(e) => setYoutubeApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="premium-input-field"
+              />
+            </div>
           </div>
         </section>
 
@@ -105,7 +203,7 @@ export default function GeneralTab() {
       <style jsx>{`
         .settings-section {
           background: var(--glass-bg);
-          padding: 2rem;
+          padding: 1.5rem;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
           transition: all 0.3s ease;
@@ -118,7 +216,7 @@ export default function GeneralTab() {
           display: flex;
           align-items: center;
           gap: 1rem;
-          marginBottom: 1.5rem;
+          margin-bottom: 0.5rem;
         }
         .icon-badge {
           background: var(--primary-transparent);
@@ -131,55 +229,42 @@ export default function GeneralTab() {
         }
         .section-title {
           margin: 0;
-          fontSize: 1.1rem;
+          font-size: 1rem;
           color: var(--foreground);
           font-weight: 700;
         }
         .section-desc {
           margin: 0;
-          fontSize: 0.85rem;
+          font-size: 0.8rem;
           color: var(--text-muted);
         }
         .input-wrapper {
-          marginTop: 1.5rem;
+          margin-top: 1rem;
         }
         .premium-input-field {
           width: 100%;
-          background: var(--glass-bg);
+          background: var(--card-bg);
           border: 1px solid var(--glass-border);
-          padding: 1rem 1.2rem;
-          border-radius: 12px;
+          padding: 0.8rem 1.2rem;
+          border-radius: 10px;
           color: var(--foreground);
-          font-size: 1rem;
+          font-size: 0.95rem;
           transition: all 0.2s ease;
         }
         .premium-input-field:focus {
           outline: none;
           border-color: var(--primary);
-          box-shadow: 0 0 0 4px var(--primary-transparent);
-        }
-        .info-box {
-          marginTop: 1rem;
-          background: rgba(var(--primary-rgb, 194, 29, 29), 0.03);
-          padding: 0.8rem 1rem;
-          border-radius: 8px;
-          border-left: 3px solid var(--primary);
-        }
-        .info-box p {
-          margin: 0;
-          fontSize: 0.8rem;
-          color: var(--text-muted);
-          font-style: italic;
+          box-shadow: 0 0 0 3px var(--primary-transparent);
         }
         .action-btn-save {
           display: flex;
           align-items: center;
           gap: 0.8rem;
-          padding: 1rem 2rem;
+          padding: 0.8rem 1.8rem;
           background: var(--primary);
-          color: var(--header-foreground);
+          color: white;
           border: none;
-          border-radius: 12px;
+          border-radius: 10px;
           font-weight: 700;
           cursor: pointer;
           transition: all 0.2s ease;
@@ -202,3 +287,4 @@ export default function GeneralTab() {
     </PremiumCard>
   );
 }
+

@@ -6,6 +6,28 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 
+async function geocode(ville: string, address: string) {
+  try {
+    const query = `${address} ${ville}`.trim();
+    if (!query) return { lat: null, lng: null };
+
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`, {
+      headers: { "User-Agent": "BBFrance-App" }
+    });
+    const data = await res.json();
+    
+    if (data && data.length > 0) {
+      return { 
+        lat: parseFloat(data[0].lat), 
+        lng: parseFloat(data[0].lon) 
+      };
+    }
+  } catch (e) {
+    console.error("Geocoding error:", e);
+  }
+  return { lat: null, lng: null };
+}
+
 /**
  * Crée une nouvelle ligue.
  */
@@ -29,6 +51,9 @@ export async function createLigue(formData: FormData) {
     throw new Error("Le nom et l'acronyme sont obligatoires.");
   }
 
+  // Géocodage automatique
+  const { lat, lng } = await geocode(ville, address);
+
   const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
 
   const ligue = await prisma.ligue.create({
@@ -42,6 +67,8 @@ export async function createLigue(formData: FormData) {
       ville,
       address,
       gmapsUrl,
+      lat,
+      lng,
       creatorId: session.user.id,
       commissaires: {
         connect: commissaireIds.map(id => ({ id }))

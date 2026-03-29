@@ -162,6 +162,9 @@ model Tournament {
   ligueId             String?
   ligue               Ligue?   @relation("LigueTournaments", fields: [ligueId], references: [id])
   ligueCustom         String?
+
+  lat                 Float?
+  lng                 Float?
 }
 
 model Category {
@@ -482,4 +485,7 @@ model Ligue {
   tournaments     Tournament[] @relation("LigueTournaments")
   articles        Article[]    @relation("LigueArticles")
   members         User[]       @relation("LigueMembers")
+
+  lat             Float?
+  lng             Float?
 }

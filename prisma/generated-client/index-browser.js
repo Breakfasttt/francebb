@@ -208,7 +208,9 @@ exports.Prisma.TournamentScalarFieldEnum = {
   isCancelled: 'isCancelled',
   organizerId: 'organizerId',
   ligueId: 'ligueId',
-  ligueCustom: 'ligueCustom'
+  ligueCustom: 'ligueCustom',
+  lat: 'lat',
+  lng: 'lng'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -403,7 +405,9 @@ exports.Prisma.LigueScalarFieldEnum = {
   description: 'description',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  creatorId: 'creatorId'
+  creatorId: 'creatorId',
+  lat: 'lat',
+  lng: 'lng'
 };
 
 exports.Prisma.SortOrder = {

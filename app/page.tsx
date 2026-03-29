@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
-import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText } from "lucide-react";
+import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText, MonitorPlay, Award, Map } from "lucide-react";
 import { auth } from "@/auth";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
@@ -58,6 +58,11 @@ export default async function Home() {
               <div className="card-text large">Jouer à<br />Blood Bowl !</div>
             </Link>
 
+            <Link href="/forum" className="action-card">
+              <MessageSquare size={24} className="icon-accent" />
+              <div className="card-text">Forum</div>
+            </Link>
+
             <div className="card-stack">
               <Link href="/ligues" className="action-card flex-1">
                 <Shield size={24} className="icon-accent" />
@@ -80,14 +85,18 @@ export default async function Home() {
               )}
             </div>
 
-            <Link href="/forum" className="action-card">
-              <MessageSquare size={24} className="icon-accent" />
-              <div className="card-text">Forum</div>
+            <Link href="/carte" className="action-card">
+              <Map size={24} className="icon-accent" />
+              <div className="card-text">La Carte</div>
             </Link>
           </div>
 
           {/* LIGNE 2 */}
           <div className="action-grid-row bottom-row">
+            <Link href="/classement" className="action-card">
+              <Award size={24} className="icon-accent" />
+              <div className="card-text">Coupe de France</div>
+            </Link>
             <Link href="/articles" className="action-card">
               <FileText size={24} className="icon-accent" />
               <div className="card-text">Articles</div>
@@ -96,9 +105,9 @@ export default async function Home() {
               <BookOpen size={24} className="icon-accent" />
               <div className="card-text">Ressources</div>
             </Link>
-            <Link href={isAuth ? "/membres" : "/auth/login?callback=/membres"} className="action-card">
-              <Users size={24} className="icon-accent" />
-              <div className="card-text">Membres</div>
+            <Link href="/media" className="action-card">
+              <MonitorPlay size={24} className="icon-accent" />
+              <div className="card-text">Vidéo & Stream</div>
             </Link>
             <a 
               href={discordInvite?.value || "#"} 
@@ -114,6 +123,8 @@ export default async function Home() {
             </a>
           </div>
         </section>
+
+
 
         <section className="home-content-split">
           <div className="column events-column">

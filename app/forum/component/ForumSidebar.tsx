@@ -6,7 +6,7 @@ import {
   getSubForumCount
 } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Trophy, Lock as LockIcon } from "lucide-react";
+import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Trophy, Users, Lock as LockIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
@@ -104,10 +104,15 @@ export default async function ForumSidebar({
           )}
 
           {/* Recherche Avancée */}
-          <div className="sidebar-widget search-widget">
+          <div className="sidebar-widget search-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button" style={{ background: 'var(--glass-bg)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>
               <Search size={18} />
               <span>Recherche avancée</span>
+            </Link>
+            
+            <Link href="/membres" className="widget-button secondary-btn">
+              <Users size={18} />
+              <span>Les membres</span>
             </Link>
           </div>
 
