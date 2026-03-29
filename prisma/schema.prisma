@@ -77,9 +77,9 @@ model User {
   teamMemberships         TournamentTeamMember[]
   mercenaryStatus         TournamentMercenary[]
 
-  ligueId         String?
-  ligue           Ligue?    @relation("LigueMembers", fields: [ligueId], references: [id])
-  ligueCustom     String?   // For backward compatibility or non-indexed leagues
+  equipe          String?   // Nom de l'équipe (max 100 char)
+  ligues          Ligue[]   @relation("LigueMembers")
+  ligueCustom     String?   // Pour la rétrocompatibilité ou les ligues non référencées
   ownedLigues     Ligue[]   @relation("LigueCreator")
   commissaireLigues Ligue[] @relation("LigueCommissaires")
 }

@@ -1,4 +1,5 @@
-.ligue-search-container {
+.ligue-search-container,
+.multi-ligue-search-container {
   position: relative;
   width: 100%;
 }

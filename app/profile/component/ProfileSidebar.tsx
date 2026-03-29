@@ -128,22 +128,65 @@ export default function ProfileSidebar({
            <StatItem variant="vertical" label="Messages" value={postCount} />
         </div>
 
-        {(user.region || user.ligue || user.ligueCustom) && (
+        {(user.region || user.equipe || (user.ligues && user.ligues.length > 0) || user.ligueCustom) && (
           <div className="profile-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', marginTop: '1rem' }}>
              {user.region && (
                <StatItem variant="horizontal" label="Région" value={regionLabels[user.region] || user.region} icon={<MapPin size={16} />} />
              )}
-             {(user.ligue || user.ligueCustom) && (
-               <StatItem 
-                 variant="horizontal" 
-                 label="Ligue" 
-                 value={user.ligue ? (
-                   <Link href={`/ligue/${user.ligue.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                     {user.ligue.name}
-                   </Link>
-                 ) : user.ligueCustom} 
-                 icon={<Shield size={16} />} 
-               />
+             {user.equipe && (
+               <StatItem variant="horizontal" label="Équipe" value={user.equipe} icon={<Trophy size={16} />} />
+             )}
+             
+             {((user.ligues && user.ligues.length > 0) || user.ligueCustom) && (
+               <div className="stat-item-container horizontal" style={{ alignItems: 'flex-start' }}>
+                 <span className="stat-icon" style={{ marginTop: '2px' }}><Shield size={16} /></span>
+                 <div className="stat-content" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '6px' }}>
+                   <span className="stat-label">Ligues</span>
+                   <div className="multi-ligue-display" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                     {/* Ligues référencées */}
+                     {user.ligues?.map((ligue: any) => (
+                       <Link 
+                         key={ligue.id} 
+                         href={`/ligue/${ligue.id}`} 
+                         title={ligue.name}
+                         style={{ 
+                           fontSize: '0.7rem', 
+                           background: 'var(--primary-transparent)', 
+                           color: 'var(--primary)', 
+                           padding: '0.2rem 0.6rem', 
+                           borderRadius: '6px', 
+                           textDecoration: 'none',
+                           fontWeight: 800,
+                           border: '1px solid var(--primary)',
+                           whiteSpace: 'nowrap'
+                         }}
+                       >
+                         {ligue.acronym || ligue.name}
+                       </Link>
+                     ))}
+                     
+                     {/* Ligues personnalisées */}
+                     {user.ligueCustom?.split(',').map((s: string) => s.trim()).filter(Boolean).map((custom: string, idx: number) => (
+                       <span 
+                         key={`custom-${idx}`}
+                         style={{ 
+                           fontSize: '0.7rem', 
+                           background: 'rgba(255, 255, 255, 0.05)', 
+                           color: 'var(--text-muted)', 
+                           padding: '0.2rem 0.6rem', 
+                           borderRadius: '6px', 
+                           fontWeight: 700,
+                           border: '1px solid var(--glass-border)',
+                           fontStyle: 'italic',
+                           whiteSpace: 'nowrap'
+                         }}
+                       >
+                         {custom}
+                       </span>
+                     ))}
+                   </div>
+                 </div>
+               </div>
              )}
           </div>
         )}

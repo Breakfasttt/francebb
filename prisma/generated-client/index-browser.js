@@ -153,7 +153,7 @@ exports.Prisma.UserScalarFieldEnum = {
   banReason: 'banReason',
   avatarFrame: 'avatarFrame',
   theme: 'theme',
-  ligueId: 'ligueId',
+  equipe: 'equipe',
   ligueCustom: 'ligueCustom'
 };
 

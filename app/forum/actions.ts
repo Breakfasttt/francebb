@@ -1103,7 +1103,12 @@ export async function searchUsersAction(query: string) {
 
   const users = await prisma.user.findMany({
     where: {
-      name: { contains: query },
+      OR: [
+        { name: { contains: query } },
+        { name: { contains: query.toLowerCase() } },
+        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
+        { email: { contains: query.toLowerCase() } }
+      ],
       isBanned: false
     },
     select: {

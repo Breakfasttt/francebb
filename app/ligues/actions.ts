@@ -176,7 +176,10 @@ export async function searchLiguesAction(query: string) {
     where: {
       OR: [
         { name: { contains: query } },
-        { acronym: { contains: query } }
+        { name: { contains: query.toLowerCase() } },
+        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
+        { acronym: { contains: query } },
+        { acronym: { contains: query.toUpperCase() } }
       ]
     },
     take: 10,

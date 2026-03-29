@@ -3196,6 +3196,7 @@ export namespace Prisma {
     captainTeams: number
     teamMemberships: number
     mercenaryStatus: number
+    ligues: number
     ownedLigues: number
     commissaireLigues: number
   }
@@ -3223,6 +3224,7 @@ export namespace Prisma {
     captainTeams?: boolean | UserCountOutputTypeCountCaptainTeamsArgs
     teamMemberships?: boolean | UserCountOutputTypeCountTeamMembershipsArgs
     mercenaryStatus?: boolean | UserCountOutputTypeCountMercenaryStatusArgs
+    ligues?: boolean | UserCountOutputTypeCountLiguesArgs
     ownedLigues?: boolean | UserCountOutputTypeCountOwnedLiguesArgs
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
   }
@@ -3390,6 +3392,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountMercenaryStatusArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TournamentMercenaryWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLiguesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LigueWhereInput
   }
 
   /**
@@ -6109,7 +6118,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string | null
-    ligueId: string | null
+    equipe: string | null
     ligueCustom: string | null
   }
 
@@ -6127,7 +6136,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string | null
-    ligueId: string | null
+    equipe: string | null
     ligueCustom: string | null
   }
 
@@ -6145,7 +6154,7 @@ export namespace Prisma {
     banReason: number
     avatarFrame: number
     theme: number
-    ligueId: number
+    equipe: number
     ligueCustom: number
     _all: number
   }
@@ -6165,7 +6174,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
-    ligueId?: true
+    equipe?: true
     ligueCustom?: true
   }
 
@@ -6183,7 +6192,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
-    ligueId?: true
+    equipe?: true
     ligueCustom?: true
   }
 
@@ -6201,7 +6210,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
-    ligueId?: true
+    equipe?: true
     ligueCustom?: true
     _all?: true
   }
@@ -6292,7 +6301,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string
-    ligueId: string | null
+    equipe: string | null
     ligueCustom: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -6327,7 +6336,7 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
-    ligueId?: boolean
+    equipe?: boolean
     ligueCustom?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -6352,7 +6361,7 @@ export namespace Prisma {
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
     mercenaryStatus?: boolean | User$mercenaryStatusArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
+    ligues?: boolean | User$liguesArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -6372,10 +6381,9 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
-    ligueId?: boolean
+    equipe?: boolean
     ligueCustom?: boolean
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6392,10 +6400,9 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
-    ligueId?: boolean
+    equipe?: boolean
     ligueCustom?: boolean
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -6412,11 +6419,11 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
-    ligueId?: boolean
+    equipe?: boolean
     ligueCustom?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "ligueId" | "ligueCustom", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -6441,18 +6448,16 @@ export namespace Prisma {
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
     mercenaryStatus?: boolean | User$mercenaryStatusArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
+    ligues?: boolean | User$liguesArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
   }
   export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     roleConfig?: boolean | User$roleConfigArgs<ExtArgs>
-    ligue?: boolean | User$ligueArgs<ExtArgs>
   }
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6481,7 +6486,7 @@ export namespace Prisma {
       captainTeams: Prisma.$TournamentTeamPayload<ExtArgs>[]
       teamMemberships: Prisma.$TournamentTeamMemberPayload<ExtArgs>[]
       mercenaryStatus: Prisma.$TournamentMercenaryPayload<ExtArgs>[]
-      ligue: Prisma.$LiguePayload<ExtArgs> | null
+      ligues: Prisma.$LiguePayload<ExtArgs>[]
       ownedLigues: Prisma.$LiguePayload<ExtArgs>[]
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
     }
@@ -6499,7 +6504,7 @@ export namespace Prisma {
       banReason: string | null
       avatarFrame: string | null
       theme: string
-      ligueId: string | null
+      equipe: string | null
       ligueCustom: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -6918,7 +6923,7 @@ export namespace Prisma {
     captainTeams<T extends User$captainTeamsArgs<ExtArgs> = {}>(args?: Subset<T, User$captainTeamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamMemberships<T extends User$teamMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mercenaryStatus<T extends User$mercenaryStatusArgs<ExtArgs> = {}>(args?: Subset<T, User$mercenaryStatusArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentMercenaryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    ligue<T extends User$ligueArgs<ExtArgs> = {}>(args?: Subset<T, User$ligueArgs<ExtArgs>>): Prisma__LigueClient<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    ligues<T extends User$liguesArgs<ExtArgs> = {}>(args?: Subset<T, User$liguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ownedLigues<T extends User$ownedLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -6963,7 +6968,7 @@ export namespace Prisma {
     readonly banReason: FieldRef<"User", 'String'>
     readonly avatarFrame: FieldRef<"User", 'String'>
     readonly theme: FieldRef<"User", 'String'>
-    readonly ligueId: FieldRef<"User", 'String'>
+    readonly equipe: FieldRef<"User", 'String'>
     readonly ligueCustom: FieldRef<"User", 'String'>
   }
     
@@ -7911,9 +7916,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.ligue
+   * User.ligues
    */
-  export type User$ligueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$liguesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Ligue
      */
@@ -7927,6 +7932,11 @@ export namespace Prisma {
      */
     include?: LigueInclude<ExtArgs> | null
     where?: LigueWhereInput
+    orderBy?: LigueOrderByWithRelationInput | LigueOrderByWithRelationInput[]
+    cursor?: LigueWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LigueScalarFieldEnum | LigueScalarFieldEnum[]
   }
 
   /**
@@ -34162,7 +34172,7 @@ export namespace Prisma {
     banReason: 'banReason',
     avatarFrame: 'avatarFrame',
     theme: 'theme',
-    ligueId: 'ligueId',
+    equipe: 'equipe',
     ligueCustom: 'ligueCustom'
   };
 
@@ -34714,7 +34724,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
-    ligueId?: StringNullableFilter<"User"> | string | null
+    equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
@@ -34739,7 +34749,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
     mercenaryStatus?: TournamentMercenaryListRelationFilter
-    ligue?: XOR<LigueNullableScalarRelationFilter, LigueWhereInput> | null
+    ligues?: LigueListRelationFilter
     ownedLigues?: LigueListRelationFilter
     commissaireLigues?: LigueListRelationFilter
   }
@@ -34758,7 +34768,7 @@ export namespace Prisma {
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
-    ligueId?: SortOrderInput | SortOrder
+    equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
@@ -34783,7 +34793,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamOrderByRelationAggregateInput
     teamMemberships?: TournamentTeamMemberOrderByRelationAggregateInput
     mercenaryStatus?: TournamentMercenaryOrderByRelationAggregateInput
-    ligue?: LigueOrderByWithRelationInput
+    ligues?: LigueOrderByRelationAggregateInput
     ownedLigues?: LigueOrderByRelationAggregateInput
     commissaireLigues?: LigueOrderByRelationAggregateInput
   }
@@ -34805,7 +34815,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
-    ligueId?: StringNullableFilter<"User"> | string | null
+    equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
@@ -34830,7 +34840,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
     mercenaryStatus?: TournamentMercenaryListRelationFilter
-    ligue?: XOR<LigueNullableScalarRelationFilter, LigueWhereInput> | null
+    ligues?: LigueListRelationFilter
     ownedLigues?: LigueListRelationFilter
     commissaireLigues?: LigueListRelationFilter
   }, "id" | "email">
@@ -34849,7 +34859,7 @@ export namespace Prisma {
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
-    ligueId?: SortOrderInput | SortOrder
+    equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -34873,7 +34883,7 @@ export namespace Prisma {
     banReason?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatarFrame?: StringNullableWithAggregatesFilter<"User"> | string | null
     theme?: StringWithAggregatesFilter<"User"> | string
-    ligueId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    equipe?: StringNullableWithAggregatesFilter<"User"> | string | null
     ligueCustom?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
@@ -36737,6 +36747,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -36761,7 +36772,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -36780,7 +36791,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -36804,6 +36815,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -36821,6 +36833,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -36845,7 +36858,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -36864,7 +36877,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -36888,6 +36901,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -36906,7 +36920,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
   }
 
@@ -36923,6 +36937,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -36940,7 +36955,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -38591,7 +38606,7 @@ export namespace Prisma {
     commissaires?: UserCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentCreateNestedManyWithoutLigueInput
     articles?: ArticleCreateNestedManyWithoutLigueInput
-    members?: UserCreateNestedManyWithoutLigueInput
+    members?: UserCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUncheckedCreateInput = {
@@ -38611,7 +38626,7 @@ export namespace Prisma {
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutLigueInput
     articles?: ArticleUncheckedCreateNestedManyWithoutLigueInput
-    members?: UserUncheckedCreateNestedManyWithoutLigueInput
+    members?: UserUncheckedCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUpdateInput = {
@@ -38631,7 +38646,7 @@ export namespace Prisma {
     commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUpdateManyWithoutLigueNestedInput
     articles?: ArticleUpdateManyWithoutLigueNestedInput
-    members?: UserUpdateManyWithoutLigueNestedInput
+    members?: UserUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateInput = {
@@ -38651,7 +38666,7 @@ export namespace Prisma {
     commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
-    members?: UserUncheckedUpdateManyWithoutLigueNestedInput
+    members?: UserUncheckedUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueCreateManyInput = {
@@ -39027,11 +39042,6 @@ export namespace Prisma {
     none?: TournamentMercenaryWhereInput
   }
 
-  export type LigueNullableScalarRelationFilter = {
-    is?: LigueWhereInput | null
-    isNot?: LigueWhereInput | null
-  }
-
   export type LigueListRelationFilter = {
     every?: LigueWhereInput
     some?: LigueWhereInput
@@ -39124,7 +39134,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
-    ligueId?: SortOrder
+    equipe?: SortOrder
     ligueCustom?: SortOrder
   }
 
@@ -39142,7 +39152,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
-    ligueId?: SortOrder
+    equipe?: SortOrder
     ligueCustom?: SortOrder
   }
 
@@ -39160,7 +39170,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
-    ligueId?: SortOrder
+    equipe?: SortOrder
     ligueCustom?: SortOrder
   }
 
@@ -39240,6 +39250,11 @@ export namespace Prisma {
     every?: UserWhereInput
     some?: UserWhereInput
     none?: UserWhereInput
+  }
+
+  export type LigueNullableScalarRelationFilter = {
+    is?: LigueWhereInput | null
+    isNot?: LigueWhereInput | null
   }
 
   export type UserOrderByRelationAggregateInput = {
@@ -40424,10 +40439,10 @@ export namespace Prisma {
     connect?: TournamentMercenaryWhereUniqueInput | TournamentMercenaryWhereUniqueInput[]
   }
 
-  export type LigueCreateNestedOneWithoutMembersInput = {
-    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput
-    connect?: LigueWhereUniqueInput
+  export type LigueCreateNestedManyWithoutMembersInput = {
+    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput> | LigueCreateWithoutMembersInput[] | LigueUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput | LigueCreateOrConnectWithoutMembersInput[]
+    connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
   }
 
   export type LigueCreateNestedManyWithoutCreatorInput = {
@@ -40594,6 +40609,12 @@ export namespace Prisma {
     connectOrCreate?: TournamentMercenaryCreateOrConnectWithoutUserInput | TournamentMercenaryCreateOrConnectWithoutUserInput[]
     createMany?: TournamentMercenaryCreateManyUserInputEnvelope
     connect?: TournamentMercenaryWhereUniqueInput | TournamentMercenaryWhereUniqueInput[]
+  }
+
+  export type LigueUncheckedCreateNestedManyWithoutMembersInput = {
+    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput> | LigueCreateWithoutMembersInput[] | LigueUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput | LigueCreateOrConnectWithoutMembersInput[]
+    connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
   }
 
   export type LigueUncheckedCreateNestedManyWithoutCreatorInput = {
@@ -40934,14 +40955,17 @@ export namespace Prisma {
     deleteMany?: TournamentMercenaryScalarWhereInput | TournamentMercenaryScalarWhereInput[]
   }
 
-  export type LigueUpdateOneWithoutMembersNestedInput = {
-    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput>
-    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput
-    upsert?: LigueUpsertWithoutMembersInput
-    disconnect?: LigueWhereInput | boolean
-    delete?: LigueWhereInput | boolean
-    connect?: LigueWhereUniqueInput
-    update?: XOR<XOR<LigueUpdateToOneWithWhereWithoutMembersInput, LigueUpdateWithoutMembersInput>, LigueUncheckedUpdateWithoutMembersInput>
+  export type LigueUpdateManyWithoutMembersNestedInput = {
+    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput> | LigueCreateWithoutMembersInput[] | LigueUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput | LigueCreateOrConnectWithoutMembersInput[]
+    upsert?: LigueUpsertWithWhereUniqueWithoutMembersInput | LigueUpsertWithWhereUniqueWithoutMembersInput[]
+    set?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    disconnect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    delete?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    update?: LigueUpdateWithWhereUniqueWithoutMembersInput | LigueUpdateWithWhereUniqueWithoutMembersInput[]
+    updateMany?: LigueUpdateManyWithWhereWithoutMembersInput | LigueUpdateManyWithWhereWithoutMembersInput[]
+    deleteMany?: LigueScalarWhereInput | LigueScalarWhereInput[]
   }
 
   export type LigueUpdateManyWithoutCreatorNestedInput = {
@@ -41276,6 +41300,19 @@ export namespace Prisma {
     update?: TournamentMercenaryUpdateWithWhereUniqueWithoutUserInput | TournamentMercenaryUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TournamentMercenaryUpdateManyWithWhereWithoutUserInput | TournamentMercenaryUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TournamentMercenaryScalarWhereInput | TournamentMercenaryScalarWhereInput[]
+  }
+
+  export type LigueUncheckedUpdateManyWithoutMembersNestedInput = {
+    create?: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput> | LigueCreateWithoutMembersInput[] | LigueUncheckedCreateWithoutMembersInput[]
+    connectOrCreate?: LigueCreateOrConnectWithoutMembersInput | LigueCreateOrConnectWithoutMembersInput[]
+    upsert?: LigueUpsertWithWhereUniqueWithoutMembersInput | LigueUpsertWithWhereUniqueWithoutMembersInput[]
+    set?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    disconnect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    delete?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    connect?: LigueWhereUniqueInput | LigueWhereUniqueInput[]
+    update?: LigueUpdateWithWhereUniqueWithoutMembersInput | LigueUpdateWithWhereUniqueWithoutMembersInput[]
+    updateMany?: LigueUpdateManyWithWhereWithoutMembersInput | LigueUpdateManyWithWhereWithoutMembersInput[]
+    deleteMany?: LigueScalarWhereInput | LigueScalarWhereInput[]
   }
 
   export type LigueUncheckedUpdateManyWithoutCreatorNestedInput = {
@@ -42649,10 +42686,9 @@ export namespace Prisma {
     connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
   }
 
-  export type UserCreateNestedManyWithoutLigueInput = {
-    create?: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput> | UserCreateWithoutLigueInput[] | UserUncheckedCreateWithoutLigueInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutLigueInput | UserCreateOrConnectWithoutLigueInput[]
-    createMany?: UserCreateManyLigueInputEnvelope
+  export type UserCreateNestedManyWithoutLiguesInput = {
+    create?: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput> | UserCreateWithoutLiguesInput[] | UserUncheckedCreateWithoutLiguesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutLiguesInput | UserCreateOrConnectWithoutLiguesInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -42676,10 +42712,9 @@ export namespace Prisma {
     connect?: ArticleWhereUniqueInput | ArticleWhereUniqueInput[]
   }
 
-  export type UserUncheckedCreateNestedManyWithoutLigueInput = {
-    create?: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput> | UserCreateWithoutLigueInput[] | UserUncheckedCreateWithoutLigueInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutLigueInput | UserCreateOrConnectWithoutLigueInput[]
-    createMany?: UserCreateManyLigueInputEnvelope
+  export type UserUncheckedCreateNestedManyWithoutLiguesInput = {
+    create?: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput> | UserCreateWithoutLiguesInput[] | UserUncheckedCreateWithoutLiguesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutLiguesInput | UserCreateOrConnectWithoutLiguesInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
@@ -42732,17 +42767,16 @@ export namespace Prisma {
     deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
   }
 
-  export type UserUpdateManyWithoutLigueNestedInput = {
-    create?: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput> | UserCreateWithoutLigueInput[] | UserUncheckedCreateWithoutLigueInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutLigueInput | UserCreateOrConnectWithoutLigueInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutLigueInput | UserUpsertWithWhereUniqueWithoutLigueInput[]
-    createMany?: UserCreateManyLigueInputEnvelope
+  export type UserUpdateManyWithoutLiguesNestedInput = {
+    create?: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput> | UserCreateWithoutLiguesInput[] | UserUncheckedCreateWithoutLiguesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutLiguesInput | UserCreateOrConnectWithoutLiguesInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutLiguesInput | UserUpsertWithWhereUniqueWithoutLiguesInput[]
     set?: UserWhereUniqueInput | UserWhereUniqueInput[]
     disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutLigueInput | UserUpdateWithWhereUniqueWithoutLigueInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutLigueInput | UserUpdateManyWithWhereWithoutLigueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutLiguesInput | UserUpdateWithWhereUniqueWithoutLiguesInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutLiguesInput | UserUpdateManyWithWhereWithoutLiguesInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -42787,17 +42821,16 @@ export namespace Prisma {
     deleteMany?: ArticleScalarWhereInput | ArticleScalarWhereInput[]
   }
 
-  export type UserUncheckedUpdateManyWithoutLigueNestedInput = {
-    create?: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput> | UserCreateWithoutLigueInput[] | UserUncheckedCreateWithoutLigueInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutLigueInput | UserCreateOrConnectWithoutLigueInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutLigueInput | UserUpsertWithWhereUniqueWithoutLigueInput[]
-    createMany?: UserCreateManyLigueInputEnvelope
+  export type UserUncheckedUpdateManyWithoutLiguesNestedInput = {
+    create?: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput> | UserCreateWithoutLiguesInput[] | UserUncheckedCreateWithoutLiguesInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutLiguesInput | UserCreateOrConnectWithoutLiguesInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutLiguesInput | UserUpsertWithWhereUniqueWithoutLiguesInput[]
     set?: UserWhereUniqueInput | UserWhereUniqueInput[]
     disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
     delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutLigueInput | UserUpdateWithWhereUniqueWithoutLigueInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutLigueInput | UserUpdateManyWithWhereWithoutLigueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutLiguesInput | UserUpdateWithWhereUniqueWithoutLiguesInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutLiguesInput | UserUpdateManyWithWhereWithoutLiguesInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
@@ -43065,6 +43098,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -43088,7 +43122,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -43107,7 +43141,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -43130,6 +43164,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -43163,6 +43198,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -43186,7 +43222,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -43205,7 +43241,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -43228,6 +43264,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -43245,6 +43282,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
@@ -43268,7 +43306,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -43287,7 +43325,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
@@ -43310,6 +43348,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -43343,6 +43382,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
@@ -43366,7 +43406,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -43385,7 +43425,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
@@ -43408,6 +43448,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -44258,7 +44299,7 @@ export namespace Prisma {
     commissaires?: UserCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentCreateNestedManyWithoutLigueInput
     articles?: ArticleCreateNestedManyWithoutLigueInput
-    members?: UserCreateNestedManyWithoutLigueInput
+    members?: UserCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUncheckedCreateWithoutCreatorInput = {
@@ -44277,7 +44318,7 @@ export namespace Prisma {
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutLigueInput
     articles?: ArticleUncheckedCreateNestedManyWithoutLigueInput
-    members?: UserUncheckedCreateNestedManyWithoutLigueInput
+    members?: UserUncheckedCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueCreateOrConnectWithoutCreatorInput = {
@@ -44305,7 +44346,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutOwnedLiguesInput
     tournaments?: TournamentCreateNestedManyWithoutLigueInput
     articles?: ArticleCreateNestedManyWithoutLigueInput
-    members?: UserCreateNestedManyWithoutLigueInput
+    members?: UserCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUncheckedCreateWithoutCommissairesInput = {
@@ -44324,7 +44365,7 @@ export namespace Prisma {
     creatorId: string
     tournaments?: TournamentUncheckedCreateNestedManyWithoutLigueInput
     articles?: ArticleUncheckedCreateNestedManyWithoutLigueInput
-    members?: UserUncheckedCreateNestedManyWithoutLigueInput
+    members?: UserUncheckedCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueCreateOrConnectWithoutCommissairesInput = {
@@ -44959,69 +45000,20 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"TournamentMercenary"> | Date | string
   }
 
-  export type LigueUpsertWithoutMembersInput = {
+  export type LigueUpsertWithWhereUniqueWithoutMembersInput = {
+    where: LigueWhereUniqueInput
     update: XOR<LigueUpdateWithoutMembersInput, LigueUncheckedUpdateWithoutMembersInput>
     create: XOR<LigueCreateWithoutMembersInput, LigueUncheckedCreateWithoutMembersInput>
-    where?: LigueWhereInput
   }
 
-  export type LigueUpdateToOneWithWhereWithoutMembersInput = {
-    where?: LigueWhereInput
+  export type LigueUpdateWithWhereUniqueWithoutMembersInput = {
+    where: LigueWhereUniqueInput
     data: XOR<LigueUpdateWithoutMembersInput, LigueUncheckedUpdateWithoutMembersInput>
   }
 
-  export type LigueUpdateWithoutMembersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    acronym?: StringFieldUpdateOperationsInput | string
-    geographicalZone?: NullableStringFieldUpdateOperationsInput | string | null
-    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    departement?: NullableStringFieldUpdateOperationsInput | string | null
-    ville?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneRequiredWithoutOwnedLiguesNestedInput
-    commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
-    tournaments?: TournamentUpdateManyWithoutLigueNestedInput
-    articles?: ArticleUpdateManyWithoutLigueNestedInput
-  }
-
-  export type LigueUncheckedUpdateWithoutMembersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    acronym?: StringFieldUpdateOperationsInput | string
-    geographicalZone?: NullableStringFieldUpdateOperationsInput | string | null
-    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    departement?: NullableStringFieldUpdateOperationsInput | string | null
-    ville?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creatorId?: StringFieldUpdateOperationsInput | string
-    commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
-  }
-
-  export type LigueUpsertWithWhereUniqueWithoutCreatorInput = {
-    where: LigueWhereUniqueInput
-    update: XOR<LigueUpdateWithoutCreatorInput, LigueUncheckedUpdateWithoutCreatorInput>
-    create: XOR<LigueCreateWithoutCreatorInput, LigueUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type LigueUpdateWithWhereUniqueWithoutCreatorInput = {
-    where: LigueWhereUniqueInput
-    data: XOR<LigueUpdateWithoutCreatorInput, LigueUncheckedUpdateWithoutCreatorInput>
-  }
-
-  export type LigueUpdateManyWithWhereWithoutCreatorInput = {
+  export type LigueUpdateManyWithWhereWithoutMembersInput = {
     where: LigueScalarWhereInput
-    data: XOR<LigueUpdateManyMutationInput, LigueUncheckedUpdateManyWithoutCreatorInput>
+    data: XOR<LigueUpdateManyMutationInput, LigueUncheckedUpdateManyWithoutMembersInput>
   }
 
   export type LigueScalarWhereInput = {
@@ -45041,6 +45033,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Ligue"> | Date | string
     updatedAt?: DateTimeFilter<"Ligue"> | Date | string
     creatorId?: StringFilter<"Ligue"> | string
+  }
+
+  export type LigueUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: LigueWhereUniqueInput
+    update: XOR<LigueUpdateWithoutCreatorInput, LigueUncheckedUpdateWithoutCreatorInput>
+    create: XOR<LigueCreateWithoutCreatorInput, LigueUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type LigueUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: LigueWhereUniqueInput
+    data: XOR<LigueUpdateWithoutCreatorInput, LigueUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type LigueUpdateManyWithWhereWithoutCreatorInput = {
+    where: LigueScalarWhereInput
+    data: XOR<LigueUpdateManyMutationInput, LigueUncheckedUpdateManyWithoutCreatorInput>
   }
 
   export type LigueUpsertWithWhereUniqueWithoutCommissairesInput = {
@@ -45072,6 +45080,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -45095,7 +45104,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -45114,7 +45123,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -45137,6 +45146,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -45196,6 +45206,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -45219,7 +45230,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -45238,7 +45249,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -45261,6 +45272,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -45365,7 +45377,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutOwnedLiguesInput
     commissaires?: UserCreateNestedManyWithoutCommissaireLiguesInput
     articles?: ArticleCreateNestedManyWithoutLigueInput
-    members?: UserCreateNestedManyWithoutLigueInput
+    members?: UserCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUncheckedCreateWithoutTournamentsInput = {
@@ -45384,7 +45396,7 @@ export namespace Prisma {
     creatorId: string
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissaireLiguesInput
     articles?: ArticleUncheckedCreateNestedManyWithoutLigueInput
-    members?: UserUncheckedCreateNestedManyWithoutLigueInput
+    members?: UserUncheckedCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueCreateOrConnectWithoutTournamentsInput = {
@@ -45416,6 +45428,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -45439,7 +45452,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -45458,7 +45471,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -45481,6 +45494,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -45561,7 +45575,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
-    ligueId?: StringNullableFilter<"User"> | string | null
+    equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
   }
 
@@ -45640,7 +45654,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutOwnedLiguesNestedInput
     commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
     articles?: ArticleUpdateManyWithoutLigueNestedInput
-    members?: UserUpdateManyWithoutLigueNestedInput
+    members?: UserUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateWithoutTournamentsInput = {
@@ -45659,7 +45673,7 @@ export namespace Prisma {
     creatorId?: StringFieldUpdateOperationsInput | string
     commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
-    members?: UserUncheckedUpdateManyWithoutLigueNestedInput
+    members?: UserUncheckedUpdateManyWithoutLiguesNestedInput
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -45996,6 +46010,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -46019,7 +46034,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -46038,7 +46053,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -46061,6 +46076,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -46303,6 +46319,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -46326,7 +46343,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -46345,7 +46362,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -46368,6 +46385,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -46573,6 +46591,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -46596,7 +46615,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -46615,7 +46634,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -46638,6 +46657,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -46685,6 +46705,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -46708,7 +46729,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -46727,7 +46748,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -46750,6 +46771,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -46849,6 +46871,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -46872,7 +46895,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -46891,7 +46914,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -46914,6 +46937,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -46958,6 +46982,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -46981,7 +47006,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -47000,7 +47025,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47023,6 +47048,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -47056,6 +47082,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -47079,7 +47106,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -47098,7 +47125,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -47121,6 +47148,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -47143,6 +47171,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -47166,7 +47195,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -47185,7 +47214,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -47208,6 +47237,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -47266,6 +47296,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -47289,7 +47320,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -47308,7 +47339,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47331,6 +47362,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -47359,6 +47391,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -47382,7 +47415,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -47401,7 +47434,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47424,6 +47457,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -47482,6 +47516,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -47505,7 +47540,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -47524,7 +47559,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -47547,6 +47582,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -47611,6 +47647,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -47634,7 +47671,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -47653,7 +47690,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47676,6 +47713,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -47693,6 +47731,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -47716,7 +47755,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -47735,7 +47774,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -47758,6 +47797,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -47828,6 +47868,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -47851,7 +47892,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -47870,7 +47911,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -47893,6 +47934,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -47986,6 +48028,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -48009,7 +48052,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -48028,7 +48071,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -48051,6 +48094,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -48073,6 +48117,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -48096,7 +48141,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -48115,7 +48160,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -48138,6 +48183,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -48210,6 +48256,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -48233,7 +48280,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -48252,7 +48299,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -48275,6 +48322,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -48303,6 +48351,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -48326,7 +48375,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -48345,7 +48394,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -48368,6 +48417,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -48418,6 +48468,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -48441,7 +48492,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -48460,7 +48511,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -48483,6 +48534,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -48555,6 +48607,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -48578,7 +48631,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -48597,7 +48650,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -48620,6 +48673,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -48637,6 +48691,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -48660,7 +48715,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -48678,7 +48733,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -48702,6 +48757,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -48744,6 +48800,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -48767,7 +48824,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -48786,7 +48843,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -48809,6 +48866,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -48879,6 +48937,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -48902,7 +48961,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -48921,7 +48980,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -48944,6 +49003,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -49101,6 +49161,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -49124,7 +49185,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -49143,7 +49204,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -49166,6 +49227,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -49302,6 +49364,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -49325,7 +49388,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -49344,7 +49407,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -49367,6 +49430,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -49481,6 +49545,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -49504,7 +49569,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -49523,7 +49588,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -49546,6 +49611,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -49701,6 +49767,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -49724,7 +49791,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -49743,7 +49810,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -49766,6 +49833,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -49826,6 +49894,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -49849,7 +49918,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -49868,7 +49937,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -49891,6 +49960,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -49957,6 +50027,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -49980,7 +50051,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -49999,7 +50070,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -50022,6 +50093,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -50136,6 +50208,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -50159,7 +50232,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -50178,7 +50251,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -50201,6 +50274,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -50337,6 +50411,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -50360,7 +50435,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -50379,7 +50454,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -50402,6 +50477,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -50419,6 +50495,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -50442,7 +50519,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -50461,7 +50538,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -50484,6 +50561,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -50544,6 +50622,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -50567,7 +50646,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -50586,7 +50665,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -50609,6 +50688,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -50634,7 +50714,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutOwnedLiguesInput
     commissaires?: UserCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentCreateNestedManyWithoutLigueInput
-    members?: UserCreateNestedManyWithoutLigueInput
+    members?: UserCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueUncheckedCreateWithoutArticlesInput = {
@@ -50653,7 +50733,7 @@ export namespace Prisma {
     creatorId: string
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissaireLiguesInput
     tournaments?: TournamentUncheckedCreateNestedManyWithoutLigueInput
-    members?: UserUncheckedCreateNestedManyWithoutLigueInput
+    members?: UserUncheckedCreateNestedManyWithoutLiguesInput
   }
 
   export type LigueCreateOrConnectWithoutArticlesInput = {
@@ -50685,6 +50765,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -50708,7 +50789,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -50727,7 +50808,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -50750,6 +50831,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -50818,6 +50900,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -50841,7 +50924,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -50860,7 +50943,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -50883,6 +50966,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -50914,7 +50998,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutOwnedLiguesNestedInput
     commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUpdateManyWithoutLigueNestedInput
-    members?: UserUpdateManyWithoutLigueNestedInput
+    members?: UserUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateWithoutArticlesInput = {
@@ -50933,7 +51017,7 @@ export namespace Prisma {
     creatorId?: StringFieldUpdateOperationsInput | string
     commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
-    members?: UserUncheckedUpdateManyWithoutLigueNestedInput
+    members?: UserUncheckedUpdateManyWithoutLiguesNestedInput
   }
 
   export type ArticleCreateWithoutTagsInput = {
@@ -51035,6 +51119,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -51058,7 +51143,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
@@ -51077,7 +51162,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -51100,6 +51185,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -51174,6 +51260,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -51197,7 +51284,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -51216,7 +51303,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -51239,6 +51326,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -51256,6 +51344,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -51280,7 +51369,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
 
@@ -51298,7 +51387,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -51322,6 +51411,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
@@ -51343,6 +51433,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -51367,7 +51458,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    ligue?: LigueCreateNestedOneWithoutMembersInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
   }
 
@@ -51385,7 +51476,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -51409,6 +51500,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
   }
 
@@ -51557,7 +51649,7 @@ export namespace Prisma {
     data: ArticleCreateManyLigueInput | ArticleCreateManyLigueInput[]
   }
 
-  export type UserCreateWithoutLigueInput = {
+  export type UserCreateWithoutLiguesInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -51570,6 +51662,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -51598,7 +51691,7 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
   }
 
-  export type UserUncheckedCreateWithoutLigueInput = {
+  export type UserUncheckedCreateWithoutLiguesInput = {
     id?: string
     name?: string | null
     email?: string | null
@@ -51612,6 +51705,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    equipe?: string | null
     ligueCustom?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -51639,13 +51733,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
   }
 
-  export type UserCreateOrConnectWithoutLigueInput = {
+  export type UserCreateOrConnectWithoutLiguesInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput>
-  }
-
-  export type UserCreateManyLigueInputEnvelope = {
-    data: UserCreateManyLigueInput | UserCreateManyLigueInput[]
+    create: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput>
   }
 
   export type UserUpsertWithoutOwnedLiguesInput = {
@@ -51672,6 +51762,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -51696,7 +51787,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
 
@@ -51714,7 +51805,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -51738,6 +51829,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
@@ -51789,20 +51881,20 @@ export namespace Prisma {
     data: XOR<ArticleUpdateManyMutationInput, ArticleUncheckedUpdateManyWithoutLigueInput>
   }
 
-  export type UserUpsertWithWhereUniqueWithoutLigueInput = {
+  export type UserUpsertWithWhereUniqueWithoutLiguesInput = {
     where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutLigueInput, UserUncheckedUpdateWithoutLigueInput>
-    create: XOR<UserCreateWithoutLigueInput, UserUncheckedCreateWithoutLigueInput>
+    update: XOR<UserUpdateWithoutLiguesInput, UserUncheckedUpdateWithoutLiguesInput>
+    create: XOR<UserCreateWithoutLiguesInput, UserUncheckedCreateWithoutLiguesInput>
   }
 
-  export type UserUpdateWithWhereUniqueWithoutLigueInput = {
+  export type UserUpdateWithWhereUniqueWithoutLiguesInput = {
     where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutLigueInput, UserUncheckedUpdateWithoutLigueInput>
+    data: XOR<UserUpdateWithoutLiguesInput, UserUncheckedUpdateWithoutLiguesInput>
   }
 
-  export type UserUpdateManyWithWhereWithoutLigueInput = {
+  export type UserUpdateManyWithWhereWithoutLiguesInput = {
     where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutLigueInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutLiguesInput>
   }
 
   export type AccountCreateManyUserInput = {
@@ -52872,6 +52964,60 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LigueUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    acronym?: StringFieldUpdateOperationsInput | string
+    geographicalZone?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutOwnedLiguesNestedInput
+    commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
+    tournaments?: TournamentUpdateManyWithoutLigueNestedInput
+    articles?: ArticleUpdateManyWithoutLigueNestedInput
+  }
+
+  export type LigueUncheckedUpdateWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    acronym?: StringFieldUpdateOperationsInput | string
+    geographicalZone?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creatorId?: StringFieldUpdateOperationsInput | string
+    commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
+  }
+
+  export type LigueUncheckedUpdateManyWithoutMembersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    acronym?: StringFieldUpdateOperationsInput | string
+    geographicalZone?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    creatorId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type LigueUpdateWithoutCreatorInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -52888,7 +53034,7 @@ export namespace Prisma {
     commissaires?: UserUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUpdateManyWithoutLigueNestedInput
     articles?: ArticleUpdateManyWithoutLigueNestedInput
-    members?: UserUpdateManyWithoutLigueNestedInput
+    members?: UserUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateWithoutCreatorInput = {
@@ -52907,7 +53053,7 @@ export namespace Prisma {
     commissaires?: UserUncheckedUpdateManyWithoutCommissaireLiguesNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
-    members?: UserUncheckedUpdateManyWithoutLigueNestedInput
+    members?: UserUncheckedUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateManyWithoutCreatorInput = {
@@ -52941,7 +53087,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutOwnedLiguesNestedInput
     tournaments?: TournamentUpdateManyWithoutLigueNestedInput
     articles?: ArticleUpdateManyWithoutLigueNestedInput
-    members?: UserUpdateManyWithoutLigueNestedInput
+    members?: UserUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateWithoutCommissairesInput = {
@@ -52960,7 +53106,7 @@ export namespace Prisma {
     creatorId?: StringFieldUpdateOperationsInput | string
     tournaments?: TournamentUncheckedUpdateManyWithoutLigueNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutLigueNestedInput
-    members?: UserUncheckedUpdateManyWithoutLigueNestedInput
+    members?: UserUncheckedUpdateManyWithoutLiguesNestedInput
   }
 
   export type LigueUncheckedUpdateManyWithoutCommissairesInput = {
@@ -53017,6 +53163,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -53040,7 +53187,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -53059,7 +53206,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -53082,6 +53229,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -53100,7 +53248,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -53532,7 +53680,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
-    ligueId?: string | null
+    equipe?: string | null
     ligueCustom?: string | null
   }
 
@@ -53549,6 +53697,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -53572,7 +53721,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
@@ -53590,7 +53739,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -53614,6 +53763,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -53631,7 +53781,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -53796,23 +53946,6 @@ export namespace Prisma {
     ligueCustom?: string | null
   }
 
-  export type UserCreateManyLigueInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    ligueCustom?: string | null
-  }
-
   export type UserUpdateWithoutCommissaireLiguesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53826,6 +53959,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -53850,7 +53984,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    ligue?: LigueUpdateOneWithoutMembersNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
   }
 
@@ -53868,7 +54002,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -53892,6 +54026,7 @@ export namespace Prisma {
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
@@ -53909,7 +54044,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
-    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -54089,7 +54224,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserUpdateWithoutLigueInput = {
+  export type UserUpdateWithoutLiguesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54102,6 +54237,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -54130,7 +54266,7 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutLigueInput = {
+  export type UserUncheckedUpdateWithoutLiguesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54144,6 +54280,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -54171,7 +54308,7 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
   }
 
-  export type UserUncheckedUpdateManyWithoutLigueInput = {
+  export type UserUncheckedUpdateManyWithoutLiguesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54185,6 +54322,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
   }
 

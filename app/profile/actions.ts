@@ -14,7 +14,8 @@ export async function updateProfile(formData: FormData) {
   const image = formData.get("image") as string;
   const nafNumber = formData.get("nafNumber") as string;
   const region = formData.get("region") as string;
-  const ligueId = formData.get("ligueId") as string;
+  const equipe = formData.get("equipe") as string;
+  const ligueIds = formData.getAll("ligueIds") as string[];
   const ligueCustom = formData.get("ligueCustom") as string;
   const signature = formData.get("signature") as string;
   const avatarFrame = formData.get("avatarFrame") as string;
@@ -26,7 +27,10 @@ export async function updateProfile(formData: FormData) {
       image: image || undefined,
       nafNumber: nafNumber || null,
       region: region || null,
-      ligueId: ligueId || null,
+      equipe: (equipe || "").substring(0, 100) || null,
+      ligues: {
+        set: ligueIds.filter(id => id).map(id => ({ id }))
+      },
       ligueCustom: ligueCustom || null,
       signature: signature || null,
       avatarFrame: avatarFrame || "auto",

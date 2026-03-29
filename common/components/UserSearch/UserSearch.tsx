@@ -97,26 +97,26 @@ export default function UserSearch({
           onFocus={() => query.length >= 2 && setShowResults(true)}
         />
         {isLoading && <div style={{ position: 'absolute', right: '1rem', scale: '0.8' }}>⏳</div>}
-      </div>
 
-      {showResults && results.length > 0 && (
-        <div className="user-search-results">
-          {results.map(user => (
-            <div key={user.id} className="user-result-item" onClick={() => handleSelect(user)}>
-              <UserAvatar image={user.image} name={user.name || ""} size={32} selectedRank={user.avatarFrame} />
-              <span>{user.name}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {showResults && results.length === 0 && query.length >= 2 && !isLoading && (
-        <div className="user-search-results">
-          <div style={{ padding: '1rem', color: '#666', fontSize: '0.9rem', textAlign: 'center' }}>
-            Aucun utilisateur trouvé
+        {showResults && results.length > 0 && (
+          <div className="user-search-results">
+            {results.map(user => (
+              <div key={user.id} className="user-result-item" onClick={() => handleSelect(user)}>
+                <UserAvatar image={user.image} name={user.name || ""} size={32} selectedRank={user.avatarFrame} />
+                <span>{user.name}</span>
+              </div>
+            ))}
           </div>
-        </div>
-      )}
+        )}
+
+        {showResults && results.length === 0 && query.length >= 2 && !isLoading && (
+          <div className="user-search-results">
+            <div style={{ padding: '1rem', color: '#666', fontSize: '0.9rem', textAlign: 'center' }}>
+              Aucun utilisateur trouvé
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

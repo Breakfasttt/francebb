@@ -4,7 +4,6 @@
 }
 
 
-
 .page-title {
   margin: 0;
   font-size: 2.5rem;
@@ -343,7 +342,7 @@
 }
 
 .profile-summary-box {
-  padding: 3.5rem 1.5rem 2.5rem 1.5rem !important;
+  padding: 2.2rem 1.5rem 2.5rem 1.5rem !important;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -357,7 +356,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .profile-summary-header {
@@ -449,4 +448,17 @@
   .avatar-studio-box {
     grid-template-columns: 1fr !important;
   }
+}
+
+/* StatItem overrides for sidebar info list */
+.profile-info-list .stat-item-container .stat-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: normal;
+}
+
+.profile-info-list .stat-item-container .stat-label {
+  font-size: 0.65rem;
+  opacity: 0.9;
 }

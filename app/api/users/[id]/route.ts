@@ -17,13 +17,15 @@ export async function GET(
         role: true,
         nafNumber: true,
         region: true,
-        ligueId: true,
+        equipe: true,
         ligueCustom: true,
-        ligue: {
+        ligues: {
           select: {
             id: true,
             name: true,
-            acronym: true
+            acronym: true,
+            geographicalZone: true,
+            region: true
           }
         },
         signature: true,

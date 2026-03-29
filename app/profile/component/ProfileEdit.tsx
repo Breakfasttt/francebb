@@ -11,7 +11,7 @@ import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useTheme } from "next-themes";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
+import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -38,7 +38,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     image: user.image || "",
     nafNumber: user.nafNumber || "",
     region: user.region || "",
-    ligueId: user.ligueId || "",
+    equipe: user.equipe || "",
+    ligueIds: user.ligues?.map((l: any) => l.id) || [],
     ligueCustom: user.ligueCustom || "",
     signature: user.signature || "",
     avatarFrame: user.avatarFrame || "auto",
@@ -132,14 +133,17 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      // Les champs de ligue sont gérés par les inputs cachés du composant LigueSearch
-      // s'ils sont dans le DOM, mais ici on les prend du state
-      data.append(key, value);
-    });
+    const data = new FormData(e.currentTarget);
+    
+    // On peut encore merger avec le state si certains champs n'ont pas d'input (mais normalement on en rajoute)
+    // Par exemple, la signature est dans le state via le BBCodeEditor
+    data.set("signature", formData.signature);
+    // On s'assure que l'image est à jour
+    data.set("image", formData.image);
+    // On s'assure que le contour est à jour
+    data.set("avatarFrame", formData.avatarFrame);
 
     startTransition(async () => {
       try {
@@ -218,6 +222,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                   onSelect={(frame) => setFormData(prev => ({ ...prev, avatarFrame: frame }))}
                   postCount={postCount}
                 />
+                <input type="hidden" name="avatarFrame" value={formData.avatarFrame} />
               </div>
             </div>
           </div>
@@ -245,14 +250,27 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             </div>
 
             <div className="form-group">
-              <label>Ligue habituelle</label>
-              <LigueSearch 
-                initialCustom={user.ligueCustom}
-                placeholder="Ex: Ligue de Paris"
-                onChange={(lid, lcustom) => setFormData(prev => ({ ...prev, ligueId: lid || "", ligueCustom: lcustom || "" }))}
+              <label>Équipe Blood Bowl principale</label>
+              <input 
+                name="equipe" 
+                value={formData.equipe} 
+                onChange={handleChange} 
+                maxLength={100}
+                placeholder="Ex: The Greentide Raiders" 
               />
               <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                Recherchez une ligue existante ou saisissez-en une nouvelle.
+                Le nom de votre équipe fétiche (100 caractères max).
+              </p>
+            </div>
+
+            <div className="form-group full-width-group">
+              <label>Mes Ligues</label>
+              <MultiLigueSearch 
+                initialLigues={user.ligues}
+                initialCustom={user.ligueCustom}
+              />
+              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                Associez-vous à une ou plusieurs ligues référencées.
               </p>
             </div>
           </div>
@@ -411,6 +429,9 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .form-group label {
           font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
           color: var(--text-muted); letter-spacing: 0.05em;
+        }
+        .form-group.full-width-group {
+          grid-column: 1 / -1;
         }
         input, select {
           padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--glass-border);

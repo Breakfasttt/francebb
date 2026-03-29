@@ -114,6 +114,12 @@ export default function LigueSearch({
         </div>
       )}
 
+      {isLoading && (
+         <div className="ligue-search-results">
+           <div className="no-results">Recherche en cours...</div>
+         </div>
+      )}
+
       {showResults && results.length > 0 && (
         <div className="ligue-search-results">
           {results.map(ligue => (
@@ -131,7 +137,7 @@ export default function LigueSearch({
       {showResults && results.length === 0 && query.length >= 2 && !isLoading && (
         <div className="ligue-search-results">
           <div className="no-results">
-            Aucune ligue trouvée. Utilisez le texte saisi : &quot;{query}&quot;
+            Aucune ligue trouvée &quot;{query}&quot;.
           </div>
         </div>
       )}
