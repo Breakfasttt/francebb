@@ -1,3 +1,5 @@
+"use client";
+
 import { getReferenceDataAction, updateProfile, updateTheme } from "@/app/profile/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import Modal from "@/common/components/Modal/Modal";
@@ -9,6 +11,7 @@ import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useTheme } from "next-themes";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -35,7 +38,8 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
     image: user.image || "",
     nafNumber: user.nafNumber || "",
     region: user.region || "",
-    league: user.league || "",
+    ligueId: user.ligueId || "",
+    ligueCustom: user.ligueCustom || "",
     signature: user.signature || "",
     avatarFrame: user.avatarFrame || "auto",
   });
@@ -131,7 +135,11 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => data.append(key, value));
+    Object.entries(formData).forEach(([key, value]) => {
+      // Les champs de ligue sont gérés par les inputs cachés du composant LigueSearch
+      // s'ils sont dans le DOM, mais ici on les prend du state
+      data.append(key, value);
+    });
 
     startTransition(async () => {
       try {
@@ -237,8 +245,15 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
             </div>
 
             <div className="form-group">
-              <label>Ligue</label>
-              <input name="league" value={formData.league} onChange={handleChange} placeholder="Ex: Ligue de Paris" />
+              <label>Ligue habituelle</label>
+              <LigueSearch 
+                initialCustom={user.ligueCustom}
+                placeholder="Ex: Ligue de Paris"
+                onChange={(lid, lcustom) => setFormData(prev => ({ ...prev, ligueId: lid || "", ligueCustom: lcustom || "" }))}
+              />
+              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                Recherchez une ligue existante ou saisissez-en une nouvelle.
+              </p>
             </div>
           </div>
 

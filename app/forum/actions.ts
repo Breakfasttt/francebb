@@ -514,6 +514,8 @@ export async function createTopic(formData: FormData) {
       isCGO: formData.get("isCGO") === "on",
       isTGE: formData.get("isTGE") === "on",
       isTSC: formData.get("isTSC") === "on",
+      ligueId: formData.get("ligueId") as string || null,
+      ligueCustom: formData.get("ligueCustom") as string || null,
       organizerId: session.user.id,
       commissaires: {
         connect: commissaireIds.map(id => ({ id }))
@@ -1190,6 +1192,8 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     isCGO: formData.get("isCGO") === "on",
     isTGE: formData.get("isTGE") === "on",
     isTSC: formData.get("isTSC") === "on",
+    ligueId: formData.get("ligueId") as string || null,
+    ligueCustom: formData.get("ligueCustom") as string || null,
   };
 
   // Seul l'organisateur (ou modérateur) peut changer les commissaires

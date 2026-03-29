@@ -110,9 +110,14 @@ const PostItem: React.FC<PostItemProps> = ({
                   <MapPin size={12} color="#3b82f6" /> {regionLabels[post.author.region] || post.author.region}
                 </div>
               )}
-              {post.author.league && (
+              {(post.author.ligue || post.author.ligueCustom) && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
-                  <Shield size={12} color="#22c55e" /> {post.author.league}
+                  <Shield size={12} color="#22c55e" /> 
+                  {post.author.ligue ? (
+                    <Link href={`/ligue/${post.author.ligue.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                      {post.author.ligue.name}
+                    </Link>
+                  ) : post.author.ligueCustom}
                 </div>
               )}
             </div>

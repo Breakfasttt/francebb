@@ -17,6 +17,8 @@ export async function createArticle(formData: FormData) {
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const tagsString = formData.get("tags") as string;
+  const ligueId = formData.get("ligueId") as string;
+  const ligueCustom = formData.get("ligueCustom") as string;
 
   if (!title || !content) return { error: "Titre et contenu obligatoires" };
 
@@ -37,6 +39,8 @@ export async function createArticle(formData: FormData) {
             create: { name },
           })),
         },
+        ligueId: ligueId || null,
+        ligueCustom: ligueCustom || null,
       },
     });
 
@@ -69,6 +73,8 @@ export async function updateArticle(id: string, formData: FormData) {
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const tagsString = formData.get("tags") as string;
+  const ligueId = formData.get("ligueId") as string;
+  const ligueCustom = formData.get("ligueCustom") as string;
 
   const tagNames = tagsString
     ? tagsString.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
@@ -87,6 +93,8 @@ export async function updateArticle(id: string, formData: FormData) {
             create: { name },
           })),
         },
+        ligueId: ligueId || null,
+        ligueCustom: ligueCustom || null,
       },
     });
 

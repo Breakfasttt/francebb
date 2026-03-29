@@ -11,6 +11,7 @@ import {
 import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
+import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 
 interface TournamentFormProps {
   forumId: string;
@@ -53,6 +54,8 @@ interface TournamentFormProps {
     isCGO: boolean;
     isTGE: boolean;
     isTSC: boolean;
+    ligueId: string | null;
+    ligueCustom: string | null;
     commissaires: any[];
     topicId: string;
     firstPostId: string;
@@ -143,6 +146,21 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 Titre de l&apos;annonce (Nom du tournoi) *
               </label>
               <TitleInputWithSmiley initialValue={initialData?.name} />
+            </div>
+
+            <div className="form-group">
+              <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
+                Ligue Organisatrice (Optionnel)
+              </label>
+              <div style={{ padding: '1rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '12px' }}>
+                <LigueSearch 
+                  initialCustom={initialData?.ligueCustom}
+                  placeholder="Rechercher une ligue ou saisir un nom personnalisé..."
+                />
+                <p style={{ marginTop: '0.8rem', fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                   Laissez vide si le tournoi n&apos;est rattaché à aucune ligue spécifique.
+                </p>
+              </div>
             </div>
 
             <div style={{ 

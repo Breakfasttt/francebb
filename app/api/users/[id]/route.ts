@@ -17,7 +17,15 @@ export async function GET(
         role: true,
         nafNumber: true,
         region: true,
-        league: true,
+        ligueId: true,
+        ligueCustom: true,
+        ligue: {
+          select: {
+            id: true,
+            name: true,
+            acronym: true
+          }
+        },
         signature: true,
         isBanned: true,
         avatarFrame: true,

@@ -65,10 +65,10 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false}>
+        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false} enableColorScheme={false}>
+        <AuthProvider session={session}>
           <DebugAuthWidget />
         <BannedRedirect isBanned={isBanned} />
-        <AuthProvider session={session}>
           <Toaster position="bottom-right" toastOptions={{
             style: {
               background: 'var(--card-bg)',

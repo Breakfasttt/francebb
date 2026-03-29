@@ -48,7 +48,6 @@ model User {
 
   nafNumber   String?
   region      String? // IDF, Nord-Ouest, Nord-Est, Sud-Est, Sud-Ouest
-  league      String?
   signature   String?
   isBanned    Boolean @default(false)
   banReason   String?
@@ -77,6 +76,12 @@ model User {
   captainTeams            TournamentTeam[]         @relation("TeamCaptain")
   teamMemberships         TournamentTeamMember[]
   mercenaryStatus         TournamentMercenary[]
+
+  ligueId           String?
+  ligue             Ligue?  @relation("LigueMembers", fields: [ligueId], references: [id])
+  ligueCustom       String? // For backward compatibility or non-indexed leagues
+  ownedLigues       Ligue[] @relation("LigueCreator")
+  commissaireLigues Ligue[] @relation("LigueCommissaires")
 }
 
 model VerificationToken {
@@ -139,6 +144,10 @@ model Tournament {
   registrations TournamentRegistration[]
   teams         TournamentTeam[]
   mercenaries   TournamentMercenary[]
+
+  ligueId     String?
+  ligue       Ligue?  @relation("LigueTournaments", fields: [ligueId], references: [id])
+  ligueCustom String?
 }
 
 model Category {
@@ -410,6 +419,10 @@ model Article {
   moderationReason String?
   moderatedBy      String?
   moderator        User?   @relation("ModeratedArticles", fields: [moderatedBy], references: [id])
+
+  ligueId     String?
+  ligue       Ligue?  @relation("LigueArticles", fields: [ligueId], references: [id])
+  ligueCustom String?
 }
 
 model ArticleTag {
@@ -431,4 +444,28 @@ model ArticleReaction {
 
   @@unique([articleId, userId, emoji])
   @@index([articleId])
+}
+
+model Ligue {
+  id               String   @id @default(cuid())
+  name             String
+  acronym          String
+  geographicalZone String? // France telephone zones (matching COACH_REGION)
+  gmapsUrl         String?
+  region           String?
+  departement      String?
+  ville            String?
+  address          String?
+  description      String? // BBCode
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  creatorId String
+  creator   User   @relation("LigueCreator", fields: [creatorId], references: [id])
+
+  commissaires User[] @relation("LigueCommissaires")
+
+  tournaments Tournament[] @relation("LigueTournaments")
+  articles    Article[]    @relation("LigueArticles")
+  members     User[]       @relation("LigueMembers")
 }

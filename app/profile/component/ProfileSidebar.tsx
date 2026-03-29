@@ -9,6 +9,7 @@ import StatItem from "@/common/components/StatItem/StatItem";
 import TabSystem from "@/common/components/TabSystem/TabSystem";
 import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useState, useTransition } from "react";
 
 interface ProfileSidebarProps {
@@ -127,13 +128,22 @@ export default function ProfileSidebar({
            <StatItem variant="vertical" label="Messages" value={postCount} />
         </div>
 
-        {(user.region || user.league) && (
+        {(user.region || user.ligue || user.ligueCustom) && (
           <div className="profile-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', marginTop: '1rem' }}>
              {user.region && (
                <StatItem variant="horizontal" label="Région" value={regionLabels[user.region] || user.region} icon={<MapPin size={16} />} />
              )}
-             {user.league && (
-               <StatItem variant="horizontal" label="Ligue" value={user.league} icon={<Shield size={16} />} />
+             {(user.ligue || user.ligueCustom) && (
+               <StatItem 
+                 variant="horizontal" 
+                 label="Ligue" 
+                 value={user.ligue ? (
+                   <Link href={`/ligue/${user.ligue.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                     {user.ligue.name}
+                   </Link>
+                 ) : user.ligueCustom} 
+                 icon={<Shield size={16} />} 
+               />
              )}
           </div>
         )}

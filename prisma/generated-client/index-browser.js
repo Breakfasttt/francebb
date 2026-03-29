@@ -148,12 +148,13 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   nafNumber: 'nafNumber',
   region: 'region',
-  league: 'league',
   signature: 'signature',
   isBanned: 'isBanned',
   banReason: 'banReason',
   avatarFrame: 'avatarFrame',
-  theme: 'theme'
+  theme: 'theme',
+  ligueId: 'ligueId',
+  ligueCustom: 'ligueCustom'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
@@ -199,7 +200,9 @@ exports.Prisma.TournamentScalarFieldEnum = {
   isTSC: 'isTSC',
   isFinished: 'isFinished',
   isCancelled: 'isCancelled',
-  organizerId: 'organizerId'
+  organizerId: 'organizerId',
+  ligueId: 'ligueId',
+  ligueCustom: 'ligueCustom'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -363,7 +366,9 @@ exports.Prisma.ArticleScalarFieldEnum = {
   authorId: 'authorId',
   isModerated: 'isModerated',
   moderationReason: 'moderationReason',
-  moderatedBy: 'moderatedBy'
+  moderatedBy: 'moderatedBy',
+  ligueId: 'ligueId',
+  ligueCustom: 'ligueCustom'
 };
 
 exports.Prisma.ArticleTagScalarFieldEnum = {
@@ -377,6 +382,22 @@ exports.Prisma.ArticleReactionScalarFieldEnum = {
   createdAt: 'createdAt',
   articleId: 'articleId',
   userId: 'userId'
+};
+
+exports.Prisma.LigueScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  acronym: 'acronym',
+  geographicalZone: 'geographicalZone',
+  gmapsUrl: 'gmapsUrl',
+  region: 'region',
+  departement: 'departement',
+  ville: 'ville',
+  address: 'address',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  creatorId: 'creatorId'
 };
 
 exports.Prisma.SortOrder = {
@@ -427,7 +448,8 @@ exports.Prisma.ModelName = {
   SiteSetting: 'SiteSetting',
   Article: 'Article',
   ArticleTag: 'ArticleTag',
-  ArticleReaction: 'ArticleReaction'
+  ArticleReaction: 'ArticleReaction',
+  Ligue: 'Ligue'
 };
 
 /**

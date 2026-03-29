@@ -90,7 +90,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 captain: true
               }
             },
-            mercenaries: { include: { user: true } }
+            mercenaries: { include: { user: true } },
+            ligue: true
           }
         },
         forum: {
@@ -101,13 +102,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             }
           }
         },
-        author: true,
+        author: { include: { ligue: true } },
         posts: {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
           skip,
           take: POSTS_PER_PAGE,
           include: {
-            author: true,
+            author: { include: { ligue: true } },
             moderator: true,
             reactions: true
           }
@@ -135,7 +136,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       where: { topicId: id },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
       include: {
-        author: true,
+        author: { include: { ligue: true } },
         moderator: true,
         reactions: true
       }

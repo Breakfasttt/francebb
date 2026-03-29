@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trophy, Calendar, MapPin, Users, Coins, Info, CheckCircle2, XCircle, ExternalLink, Monitor, Shield, Layers } from 'lucide-react';
+import Link from 'next/link';
 import './TournamentSummary.css';
 
 interface TournamentSummaryProps {
@@ -34,6 +35,9 @@ interface TournamentSummaryProps {
     isTSC: boolean;
     isFinished: boolean;
     isCancelled: boolean;
+    ligueId?: string | null;
+    ligueCustom?: string | null;
+    ligue?: { id: string; name: string; acronym: string } | null;
   };
 }
 
@@ -94,6 +98,19 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             </div>
           </div>
           <p>{tournament.name}</p>
+          {(tournament.ligue || tournament.ligueCustom) && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.2rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <Shield size={12} color="var(--accent)" />
+              <span>Organisé par : </span>
+              {tournament.ligue ? (
+                <Link href={`/ligue/${tournament.ligue.id}`} style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none' }}>
+                  {tournament.ligue.name}
+                </Link>
+              ) : (
+                <span style={{ color: 'var(--foreground)', fontWeight: 700 }}>{tournament.ligueCustom}</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

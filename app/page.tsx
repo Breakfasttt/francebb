@@ -59,12 +59,12 @@ export default async function Home() {
             </Link>
 
             <div className="card-stack">
-              <Link href={isAuth ? "/league" : "/auth/login?callback=/league"} className="action-card flex-1">
+              <Link href="/ligues" className="action-card flex-1">
                 <Shield size={24} className="icon-accent" />
                 <div className="card-text">Ligues</div>
               </Link>
-              <Link href={isAuth ? "/league" : "/auth/login?callback=/league"} className="action-card-mini">
-                + Rejoindre
+              <Link href={isAuth ? "/ligues/create" : "/auth/login?callback=/ligues/create"} className="action-card-mini">
+                + Créer
               </Link>
             </div>
 

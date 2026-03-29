@@ -1,0 +1,42 @@
+.ligue-form { margin-top: 2rem; }
+.form-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; }
+@media (max-width: 1000px) { .form-layout { grid-template-columns: 1fr; } }
+
+.section-separator {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.5rem 0 0.5rem 0;
+  color: var(--accent);
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 1.5rem;
+}
+.section-separator h4 { margin: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; }
+
+.admin-input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  color: var(--foreground);
+  font-size: 1rem;
+  outline: none;
+}
+.form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; }
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--accent); color: var(--header-foreground); }
+.w-full { width: 100%; }

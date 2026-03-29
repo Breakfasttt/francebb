@@ -1,0 +1,162 @@
+.ligue-card {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.ligue-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ligue-badge {
+  padding: 0.4rem 0.8rem;
+  background: var(--accent);
+  color: var(--header-foreground);
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.ligue-shield-icon {
+  color: var(--accent);
+  opacity: 0.3;
+}
+
+.ligue-card-body {
+  flex: 1;
+}
+
+.ligue-card-name {
+  margin: 0 0 0.8rem 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.ligue-card-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+}
+
+.ligue-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ligue-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.ligue-card-stats {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.ligue-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.ligue-card-action {
+  color: var(--accent);
+}
+
+/* LIST VIEW STYLES */
+
+.ligue-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 2rem;
+  background: var(--glass-bg);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s;
+  margin-bottom: 1rem;
+}
+
+.ligue-list-item:hover {
+  border-color: var(--accent);
+  background: var(--background);
+  transform: translateX(5px);
+}
+
+.ligue-list-icon {
+  color: var(--accent);
+}
+
+.ligue-list-info {
+  flex: 1;
+}
+
+.ligue-list-title {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+.ligue-list-title:hover {
+  color: var(--primary);
+}
+
+.ligue-list-acronym {
+  color: var(--accent);
+  margin-left: 0.5rem;
+}
+
+.ligue-list-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.ligue-list-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.btn-detail-small {
+  padding: 0.6rem 1.2rem;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-detail-small:hover {
+  background: var(--accent);
+  color: var(--header-foreground);
+}

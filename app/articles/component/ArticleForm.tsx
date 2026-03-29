@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, X, Info } from "lucide-react";
+import { Save, X, Info, Shield } from "lucide-react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createArticle, updateArticle } from "@/app/articles/actions";
 import toast from "react-hot-toast";
+import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import "./ArticleForm.css";
 
 interface ArticleFormProps {
@@ -15,6 +16,8 @@ interface ArticleFormProps {
     title: string;
     content: string;
     tags: string[];
+    ligueId?: string | null;
+    ligueCustom?: string | null;
   };
   isEdit?: boolean;
 }
@@ -25,6 +28,8 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
   const [title, setTitle] = useState(initialData?.title || "");
   const [content, setContent] = useState(initialData?.content || "");
   const [tags, setTags] = useState(initialData?.tags.join(", ") || "");
+  const [ligueId, setLigueId] = useState(initialData?.ligueId || "");
+  const [ligueCustom, setLigueCustom] = useState(initialData?.ligueCustom || "");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +43,8 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
     formData.append("title", title);
     formData.append("content", content);
     formData.append("tags", tags);
+    formData.append("ligueId", ligueId);
+    formData.append("ligueCustom", ligueCustom);
 
     try {
       let result;
@@ -94,6 +101,21 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
           />
           <small className="form-info">
             <Info size={12} /> Les nouveaux tags seront créés automatiquement.
+          </small>
+        </div>
+
+        <div className="form-group">
+          <label>Ligue rattachée (Optionnel)</label>
+          <LigueSearch 
+            initialCustom={initialData?.ligueCustom}
+            placeholder="Rechercher une ligue..."
+            onChange={(lid, lcustom) => {
+              setLigueId(lid || "");
+              setLigueCustom(lcustom || "");
+            }}
+          />
+          <small className="form-info">
+            <Shield size={12} /> Liez cet article à une ligue spécifique.
           </small>
         </div>
 

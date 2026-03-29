@@ -27,14 +27,14 @@
   --category-hover-bg: rgba(217, 119, 6, 0.2);
   --theme-overlay: rgba(255, 255, 255, 0.15);
   --nav-btn-bg: rgba(255, 255, 255, 0.08);
-  --nav-btn-hover-bg: rgba(255, 255, 255, 0.2);
+  --nav-btn-hover-bg: rgba(217, 119, 6, 0.15);
   --nav-btn-border: rgba(217, 119, 6, 0.45);
-  --nav-btn-color: #1a1a20;
-  --badge-text: #1a1a20;
+  --nav-btn-color: #d97706;
+  --badge-text: #0b0e14;
 
   /* Home Page Specifics */
-  --home-card-bg: rgba(212, 175, 55, 0.08); /* Ancient Gold wash */
-  --home-card-border: rgba(139, 69, 19, 0.3);
-  --home-mini-btn-bg: rgba(255, 255, 255, 0.5);
-  --home-mini-btn-color: #8b4513;
+  --home-card-bg: rgba(217, 119, 6, 0.12);
+  --home-card-border: rgba(217, 119, 6, 0.35);
+  --home-mini-btn-bg: rgba(217, 119, 6, 0.15);
+  --home-mini-btn-color: #fbbf24;
 }
