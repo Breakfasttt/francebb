@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
-import { Save, Loader2, Globe, Link as LinkIcon, Video, Youtube, Map } from "lucide-react";
+import { Save, Loader2, Globe, Link as LinkIcon, Video, Youtube } from "lucide-react";
 import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
@@ -11,7 +11,6 @@ export default function GeneralTab() {
   const [twitchChannels, setTwitchChannels] = useState("");
   const [youtubeChannels, setYoutubeChannels] = useState("");
   const [youtubeApiKey, setYoutubeApiKey] = useState("");
-  const [googleMapsApiKey, setGoogleMapsApiKey] = useState("");
   
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -19,19 +18,17 @@ export default function GeneralTab() {
   useEffect(() => {
     async function loadSettings() {
       try {
-        const [invite, twitch, youtube, yApiKey, gMapsKey] = await Promise.all([
+        const [invite, twitch, youtube, yApiKey] = await Promise.all([
           getSiteSetting("discord_invite"),
           getSiteSetting("twitch_channels"),
           getSiteSetting("youtube_channels"),
           getSiteSetting("youtube_api_key"),
-          getSiteSetting("google_maps_api_key"),
         ]);
         
         setDiscordInvite(invite || "");
         setTwitchChannels(twitch || "");
         setYoutubeChannels(youtube || "");
         setYoutubeApiKey(yApiKey || "");
-        setGoogleMapsApiKey(gMapsKey || "");
       } catch (error) {
         console.error("Failed to load settings:", error);
       } finally {
@@ -49,7 +46,6 @@ export default function GeneralTab() {
           updateSiteSetting("twitch_channels", twitchChannels),
           updateSiteSetting("youtube_channels", youtubeChannels),
           updateSiteSetting("youtube_api_key", youtubeApiKey),
-          updateSiteSetting("google_maps_api_key", googleMapsApiKey),
         ]);
         toast.success("Paramètres mis à jour !");
       } catch (err) {
@@ -156,34 +152,22 @@ export default function GeneralTab() {
         <section className="settings-section">
           <div className="section-header">
             <div className="icon-badge">
-              <Map size={18} />
+              <Youtube size={18} />
             </div>
             <div>
               <h4 className="section-title">Clés API Externes</h4>
-              <p className="section-desc">Nécessaires pour les fonctionnalités Media et Carte.</p>
+              <p className="section-desc">Nécessaires pour les fonctionnalités Media (Stats YouTube).</p>
             </div>
           </div>
-          <div className="input-wrapper" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <div>
-              <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>Google Maps API Key</label>
-              <input
-                type="password"
-                value={googleMapsApiKey}
-                onChange={(e) => setGoogleMapsApiKey(e.target.value)}
-                placeholder="AIzaSy..."
-                className="premium-input-field"
-              />
-            </div>
-            <div>
-              <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>YouTube Data API Key</label>
-              <input
-                type="password"
-                value={youtubeApiKey}
-                onChange={(e) => setYoutubeApiKey(e.target.value)}
-                placeholder="AIzaSy..."
-                className="premium-input-field"
-              />
-            </div>
+          <div className="input-wrapper">
+            <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>YouTube Data API Key</label>
+            <input
+              type="password"
+              value={youtubeApiKey}
+              onChange={(e) => setYoutubeApiKey(e.target.value)}
+              placeholder="AIzaSy..."
+              className="premium-input-field"
+            />
           </div>
         </section>
 

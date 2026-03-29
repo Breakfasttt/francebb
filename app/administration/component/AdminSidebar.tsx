@@ -58,24 +58,34 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
         .profile-sidebar-wrapper {
           display: flex;
           flex-direction: column;
-          padding: 2rem;
-          width: 300px;
+          padding: 2.2rem 1.5rem;
+          width: 320px;
           flex-shrink: 0;
           position: sticky;
           top: 6.5rem;
           align-self: flex-start;
         }
         .sidebar-title {
-          font-size: 1.2rem;
-          margin: 0 0 1.5rem 0;
+          font-size: 1.1rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin: 0 0 2rem 0;
           color: var(--primary);
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          justify-content: center; /* Centrage du titre */
+          gap: 0.6rem;
+          font-weight: 800;
+          opacity: 0.9;
         }
         .sidebar-separator {
-          margin: 1.5rem 0;
-          border-top: 1px solid rgba(255,255,255,0.05);
+          margin: 2rem 0;
+          border-top: 1px solid var(--glass-border);
+          opacity: 0.3;
+        }
+        :global(.tab-system.sidebar.vertical) {
+          gap: 0.8rem; /* Plus d'espace entre les boutons */
+          padding: 0 0.5rem; /* Marge pour ne pas coller aux bords de la carte */
         }
         :global(.admin-tabs .tab-item.active) {
             border-color: #ef4444;
