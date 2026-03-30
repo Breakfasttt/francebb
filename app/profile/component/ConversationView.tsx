@@ -32,6 +32,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
   const [editorKey, setEditorKey] = useState(0);
   const [recipient, setRecipient] = useState<any>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   useEffect(() => {
     loadMessages();
@@ -109,11 +110,7 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 <Tooltip text="Signaler ce membre" position="bottom">
                   <button
                     className="icon-action-btn report-btn-small"
-                    onClick={() => {
-                      if (confirm(`Voulez-vous signaler ${recipient.name} ? (Le contenu de vos messages RESTERA PRIVÉ et ne sera pas partagé)`)) {
-                        toast.success("Signalement envoyé à l'équipe");
-                      }
-                    }}
+                    onClick={() => setIsReportModalOpen(true)}
                   >
                     <AlertTriangle size={14} />
                   </button>
@@ -134,6 +131,19 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         title="Archiver la conversation"
         message="Voulez-vous vraiment archiver cette conversation ? Elle disparaîtra de votre boîte de réception mais réapparaîtra si vous recevez un nouveau message."
         confirmLabel="Archiver"
+        isDanger={true}
+      />
+
+      <ConfirmModal
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        onConfirm={async () => {
+          toast.success("Signalement envoyé à l'équipe");
+          setIsReportModalOpen(false);
+        }}
+        title="Signaler un membre"
+        message={`Voulez-vous signaler ${recipient.name} ? (Le contenu de vos messages RESTERA PRIVÉ et ne sera pas partagé)`}
+        confirmLabel="Signaler"
         isDanger={true}
       />
 

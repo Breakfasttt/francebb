@@ -40,6 +40,7 @@ import { toast } from "react-hot-toast";
 
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import Modal from "@/common/components/Modal/Modal";
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pitch from "./component/Pitch";
 import Token from "./component/Token";
 import Dugout from "./component/Dugout";
@@ -104,6 +105,7 @@ export default function BBPusherPage() {
   const [drawings, setDrawings] = useState<DrawingPath[]>([]);
   const [history, setHistory] = useState<HistoryState[]>([]);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [blueRoster, setBlueRoster] = useState<RosterData | null>(null);
   const [redRoster, setRedRoster] = useState<RosterData | null>(null);
   const [rosters, setRosters] = useState<{name: string, file: string}[]>([]);
@@ -417,7 +419,7 @@ export default function BBPusherPage() {
                 {showTooltips ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
             </Tooltip>
-            <Tooltip text="Tout vider" position="bottom"><button className="tool-btn" onClick={() => { if (confirm("Tout vider ?")) { saveToHistory(tokens, drawings); setTokens([]); setDrawings([]); } }}><Trash2 size={18} /></button></Tooltip>
+            <Tooltip text="Tout vider" position="bottom"><button className="tool-btn" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} /></button></Tooltip>
             <Tooltip text="Plein écran" position="bottom"><button className={`tool-btn ${isFullscreen ? 'active' : ''}`} onClick={handleFullscreen}>{isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}</button></Tooltip>
             <Tooltip text="Partager" position="bottom"><button className="tool-btn share-btn" onClick={handleShare}><Share2 size={18} /></button></Tooltip>
             <div className="divider" />
@@ -461,6 +463,23 @@ export default function BBPusherPage() {
           .help-section p { font-size: 0.85rem; line-height: 1.4; opacity: 0.8; margin: 0; }
         `}</style>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isClearModalOpen}
+        onClose={() => setIsClearModalOpen(false)}
+        onConfirm={async () => {
+          saveToHistory(tokens, drawings);
+          setTokens([]);
+          setDrawings([]);
+          setIsClearModalOpen(false);
+          toast.success("Plateau tactique vidé");
+        }}
+        title="Tout vider"
+        message="Voulez-vous vraiment vider tout le plateau ? Cela effacera tous les joueurs et toutes les annotations."
+        confirmLabel="Tout vider"
+        isDanger={true}
+      />
++
 
       <div className="tool-layout">
         <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

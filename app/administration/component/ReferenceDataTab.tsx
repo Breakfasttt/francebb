@@ -10,6 +10,7 @@ import {
 } from "../actions";
 import toast from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 
 interface ReferenceData {
   id: string;
@@ -37,6 +38,8 @@ export default function ReferenceDataTab() {
     label: "",
     order: 0
   });
+
+  const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -81,8 +84,14 @@ export default function ReferenceDataTab() {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Voulez-vous vraiment supprimer cette donnée ?")) return;
+  const handleDelete = (id: string) => {
+    setDeleteItemId(id);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteItemId) return;
+    const id = deleteItemId;
+    setDeleteItemId(null);
 
     startTransition(async () => {
       const res = await deleteReferenceData(id);
@@ -254,6 +263,16 @@ export default function ReferenceDataTab() {
           </div>
         </section>
       ))}
+
+      <ConfirmModal
+        isOpen={!!deleteItemId}
+        onClose={() => setDeleteItemId(null)}
+        onConfirm={handleConfirmDelete}
+        title="Supprimer la donnée"
+        message="Voulez-vous vraiment supprimer cette donnée de référence ?"
+        confirmLabel="Supprimer"
+        isDanger={true}
+      />
 
       <style jsx>{`
         .form-group-admin {
