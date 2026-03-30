@@ -7,31 +7,9 @@ description: Guide des composants UI et de la hiérarchie du projet BBFrance
 
 Ce document sert de référence pour maintenir la cohérence visuelle à travers le projet. Avant de créer un nouvel élément UI, vérifiez toujours si un composant existant peut répondre au besoin.
 
-## 📁 Hiérarchie du Projet
+## 📁 Structure du Projet
+Pour comprendre l'organisation des dossiers et la localité des composants, consultez le skill : [Project Structure](../project-structure/SKILL.md).
 
-```text
-bbfrance/
-├── .agents/                      # Instructions et skills pour l'IA
-├── app/                          # Next.js App Router (Pages & API)
-│   ├── (auth)/                   # Routes d'authentification
-│   ├── [feature]/                # Pages par fonctionnalité (forum, profile, etc.)
-│   │   ├── component/            # Composants EXCLUSIFS à cette page
-│   │   ├── actions.ts            # Server Actions de la fonctionnalité
-│   │   ├── page.tsx / page.css   # Structure et style de la page
-│   ├── api/                      # API routes
-│   └── theme/                    # Définition des thèmes CSS
-├── common/                       # Ressources partagées
-│   ├── components/               # Composants UI RÉUTILISABLES (Atomiques)
-│   ├── types/                    # Types TypeScript globaux
-├── lib/                          # Utilitaires et configuration
-│   ├── prisma.ts                 # Instance client Prisma
-│   ├── bbcode.ts                 # Parser de messages
-│   └── roles.ts                  # Logique d'accès RBAC
-├── prisma/                       # Schéma et migrations DB
-├── public/                       # Assets statiques (Smileys, Images)
-├── scripts/                      # Scripts de maintenance/seed
-└── styles/                       # CSS global (variables de base)
-```
 
 ## 🧩 Composants Globaux (`common/components/`)
 
@@ -52,45 +30,58 @@ Badges de statut colorés.
 - **Variantes** : `primary`, `accent`, `danger`, `success`, `banned`.
 
 ### 📊 StatItem
-Affichage de données numériques ou textuelles.
-- **Usage** : Stats de profil (Messages, NAF), Stats de forum.
-- **Variantes** : `horizontal` (icône à gauche), `vertical` (valeur en gros).
+Affichage de données numériques ou textuelles (Messages, NAF, etc.).
 
 ### 🖼️ UserAvatar
-Widget avatar complet.
-- **Usage** : Partout où l'identité utilisateur est requise.
-- **Features** : Gestion automatique des cadres (`RankSelect`), indicateur de bannissement.
+Widget avatar complet. Gère les cadres (`RankSelect`) et les statuts.
 
 ### 📄 Pagination
-Système de navigation multipage.
-- **Usage** : Liste de topics, messages de topic, membres.
-- **Features** : Saisie directe du numéro, mode compact pour sidebar.
+Navigation multipage avec saisie directe du numéro de page.
 
-### 📝 BBCodeEditor
-Éditeur riche pour les messages.
-- **Usage** : Création de topics, réponses, messages privés.
-- **Features** : Barre d'outils, preview instantanée, sélecteur de smileys.
+### 📏 BBCodeEditor
+Éditeur riche pour les messages du forum et les MPs.
 
 ### 🔘 BackButton / PageHeader
-Standardisation du haut des pages.
-- **Usage** : Pour conserver une navigation cohérente (fil d'ariane, bouton retour).
+Standardisation du haut des pages (retour, fil d'ariane).
 
-## 📄 Composants Spécifiques notables
+### 🔔 Toast
+Notifications flottantes via `react-hot-toast`.
+
+### 🪟 Modal / ConfirmModal
+Fenêtres superposées. **Obligatoire** pour les actions critiques.
+
+### 💡 Tooltip
+Bulles d'informations au survol (Stats, icônes).
+
+### 🔍 Search (LigueSearch / UserSearch)
+Champs de recherche avec Autocomplete.
+
+### 🏜️ EmptyState
+Visuel par défaut si aucune donnée n'est trouvée.
+
+
+## 📄 Composants Spécifiques notables (Features)
 
 ### Forum (`app/forum/component/`)
-- **RegistrationModule** : Gestion complexe des inscriptions aux tournois (Solo/Team).
-- **TournamentForm** : Formulaire de création/édition de tournois.
-- **TopicSidebar** : Widget de gestion de sujet (Actions modérateur, saut de page).
+- **PostItem** : Rendu d'un message complet avec avatar du coach, signature et contenu BBCode.
+- **RegistrationModule** : Logique d'inscription aux tournois.
+- **TournamentForm** : Gestionnaire d'édition de tournoi complexe.
+- **ForumCategory** : Affichage d'une catégorie et ses sous-forums.
 
 ### Profile (`app/profile/component/`)
-- **ConversationView/List** : Système complet de messagerie privée.
-- **ProfileEdit/Settings** : Formulaires de gestion de compte.
+- **ConversationView / List** : Interface complète de la messagerie privée.
+- **ProfileEdit** : Formulaire multi-étapes de modification de profil.
+- **ProfileBlockedUsers** : Interface de gestion du blocage utilisateur.
 
 ## 🎨 Système de Thèmes
 
 Toutes les couleurs et effets doivent utiliser les variables CSS définies dans `app/theme/`.
 - **Thèmes disponibles** : `default`, `light`, `blood`, `malpierre`, `naf`, `nehekhara`, `saison3`.
-- **Variables clés** :
+- **Valeurs de référence** :
+  - **Primaire** : `#c21d1d` (rouge)
+  - **Accent** : `#ffd700` (or)
+  - **Radius** : `16px` (cartes/glass), `8px` (boutons/inputs)
+- **Variables Clés** :
   - `--primary` / `--primary-rgb` : Rouge dominant.
   - `--accent` : Or / Accentuation.
   - `--glass-border` : Bordure translucide adaptative.

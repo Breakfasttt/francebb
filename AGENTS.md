@@ -21,51 +21,10 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 - Ne jamais installer de nouvelles dépendances npm sans le mentionner explicitement
 
 
-## STRUCTURE DU PROJET :
-```
-bbfrance/
-├── .agents/                      # Instructions et compétences de l'IA
-│   └── skills/                   # Guides techniques (ex: ui-components)
-├── app/                          # Next.js App Router
-│   ├── (auth)/                   # Routes d'authentification
-│   ├── admin/                    # Pages administration
-│   ├── api/                      # API routes (auth, forum, user)
-│   ├── forum/                    # Feature forum
-│   │   ├── actions.ts / component/
-│   ├── profile/                  # Profil + Messagerie Privée
-│   │   ├── actions.ts / component/
-│   ├── tournaments/              # Gestion des tournois
-│   ├── theme/                    # Définition des thèmes CSS (variables)
-│   └── globals.css               # Styles globaux et imports thèmes
-├── common/                       # Ressources partagées
-│   ├── components/               # Composants globaux réutilisables
-│   └── types/                    # Types TypeScript globaux
-├── lib/                          # Logique métier et config
-│   ├── prisma.ts                 # Client Prisma
-│   ├── bbcode.ts                 # Parser BBCode
-│   └── roles.ts                  # RBAC (Rôles)
-├── prisma/                       # Schéma et migrations
-├── public/                       # Assets statiques (Smileys, etc.)
-└── styles/                       # CSS de base
-```
+## STRUCTURE & CONVENTIONS :
+- Avant toute création de fichier, page ou composant, **consulte SYSTEMATIQUEMENT** : `.agents/skills/project-structure/SKILL.md`
+- Respecter strictement l'arborescence, les conventions de nommage (`page.tsx` + `page.css`) et la localité des composants décrites dans ce guide.
 
-Si un dossier n'existe pas. crée le
-
-### Conventions des pages :
-- Les pages sont toujours constitué de 2 fichiers dédiés : `page.tsx` et `page.css` 
-- Si tu dois créé un répertoire d'une page que je n'avais pas prévu/pensé, crée le avec un dossier `component/` à l'intérieur.
-- le chemin vers la page est toujours `app/[nom-de-la-page]/page.tsx`
-- le chemin vers les composants d'une page est toujours `app/[nom-de-la-page]/component/`
-- le chemin vers les actions d'une page est toujours `app/[nom-de-la-page]/actions.ts`
-
-### ATOMICITÉ et Conventions de composants : 
-- Les composants réutilisables à travers tout le projet, quel que soit la page vont dans `common/components/[NomComposant]/` 
-- Les composants sont toujours constitué de 2 fichiers dédiés : `NomComposant.tsx` et `NomComposant.css` 
-  - Exemple : `common/components/UserAvatar/UserAvatar.tsx` + `UserAvatar.css`
-- Ne jamais créer de composant générique directement dans une page
-- Séparer au maximum les composants d'interface : un composant = un rôle précis
-- Les composants propres à une page restent dans le dossier de la page : `app/[nom-de-la-page]/component/` 
-- Ne jamais écrire un composant générique directement dans une page
 
 ## CONVENTIONS DU PROJET :
 - Toujours avoir un commentaire d'entête pour expliquer l'utilité du fichier
@@ -94,13 +53,9 @@ Si un dossier n'existe pas. crée le
 
 ## DESIGN & UI :
 - Avant de créer un composant, **consulte SYSTEMATIQUEMENT** : `.agents/skills/ui-components/SKILL.md`
-- Couleur primaire : #c21d1d (rouge) | Accent : #ffd700 (or)
-- Cartes en glassmorphism avec backdrop-filter blur (utiliser `PremiumCard`)
-- Border-radius 16px pour les cartes, 8px pour les boutons
-- **THÈMES** : Ne jamais écrire de couleurs en dur. 
-  - Utiliser les variables CSS (`--primary`, `--accent`, `--glass-border`, `--card-bg`).
-  - Les thèmes sont définis dans `app/theme/theme.[nom].css`.
-- Lucide React pour toutes les icônes, jamais d'autres librairies.
+- **THÈMES** : Ne jamais écrire de couleurs en dur. Utiliser les variables CSS.
+- **ICÔNES** : Lucide React exclusivement.
+- **UX** : Utiliser `PremiumCard` (Glassmorphism) et `Toast` pour les notifications.
 
 ## IMPORTANT — VERSION NEXT.JS :
 Cette version contient des breaking changes — les APIs, conventions et structure de fichiers
