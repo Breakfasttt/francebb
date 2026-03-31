@@ -383,12 +383,11 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           : await createCategory({ name: formName, description: formDesc, allowedRoles: formAllowedRoles });
       } else {
         if (editingItem) {
-          res = await updateForum(editingItem.id, { name: formName, description: formDesc, allowedRoles: formAllowedRoles, isTournamentForum: formIsTournament });
+          res = await updateForum(editingItem.id, { name: formName, description: formDesc, allowedRoles: formAllowedRoles });
         } else {
           const isCat = categories.some((c: any) => c.id === parentTargetId);
           res = await createForum({
             name: formName, description: formDesc, allowedRoles: formAllowedRoles,
-            isTournamentForum: formIsTournament,
             categoryId: isCat ? (parentTargetId ?? undefined) : undefined,
             parentForumId: !isCat ? (parentTargetId ?? undefined) : undefined,
           });
@@ -558,7 +557,8 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           <div className="panel-field">
             <label>Nom {editingType === 'Category' ? "de la Catégorie" : "du Forum"}</label>
             <input className="default-input" value={formName} onChange={e => setFormName(e.target.value)}
-              placeholder="Ex: Discussions Générales" disabled={isPending} />
+              placeholder="Ex: Discussions Générales" disabled={isPending || editingItem?.name === "Les tournois"} />
+            {editingItem?.name === "Les tournois" && <p style={{ color: 'var(--accent)', fontSize: '0.7rem', marginTop: '4px' }}>Ce forum est protégé et ne peut être renommé.</p>}
           </div>
 
           <div className="panel-field">
@@ -576,35 +576,21 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
             </select>
           </div>
 
-          {editingType === 'Forum' && (
-            <div className="panel-field">
-              <label>Options de forum</label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '0.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <input 
-                  type="checkbox" 
-                  id="chk-tournament"
-                  checked={formIsTournament} 
-                  onChange={e => setFormIsTournament(e.target.checked)}
-                  style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                />
-                <label htmlFor="chk-tournament" style={{ margin: 0, cursor: 'pointer', fontSize: '0.85rem' }}>
-                  Forum de tournoi
-                </label>
-              </div>
-              <p style={{ marginTop: '0.2rem', color: '#888' }}>
-                Active le type "Tournament Topic" et les icônes de trophées.
-              </p>
-            </div>
-          )}
+
 
           <div className="panel-footer">
             <button className="action-button primary-btn full-width" onClick={handleSave} disabled={isPending}>
               {isPending ? "Sauvegarde..." : "Enregistrer"}
             </button>
-            {editingItem && (
+            {editingItem && editingItem.name !== "Les tournois" && (
               <button className="action-button danger-btn full-width" onClick={handleDeleteItem} disabled={isPending}>
                 <Trash2 size={16} /> Supprimer (si vide)
               </button>
+            )}
+            {editingItem?.name === "Les tournois" && (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textAlign: 'center', marginTop: '0.5rem' }}>
+                Ce forum système ne peut pas être supprimé.
+              </p>
             )}
           </div>
         </div>

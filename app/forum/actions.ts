@@ -272,7 +272,6 @@ export async function createForum(formData: FormData) {
   const description = formData.get("description") as string;
   const categoryId = formData.get("categoryId") as string || null;
   const parentForumId = formData.get("parentForumId") as string || null;
-  const isTournamentForum = formData.get("isTournamentForum") === "on";
   const afterId = formData.get("afterId") as string;
 
   if (parentForumId) {
@@ -308,7 +307,7 @@ export async function createForum(formData: FormData) {
         categoryId: categoryId || undefined,
         parentForumId: parentForumId || undefined,
         order,
-        isTournamentForum,
+        isTournamentForum: false,
       }
     });
   });

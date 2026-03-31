@@ -141,19 +141,7 @@ export default function NewForumForm({
           </select>
         </div>
 
-        <div className="form-group" style={{ background: 'rgba(255,255,255,0.02)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--glass-border)' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', margin: 0 }}>
-            <input 
-              type="checkbox" 
-              name="isTournamentForum" 
-              style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-            />
-            <span style={{ fontWeight: 600 }}>Forum de tournoi</span>
-          </label>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem', marginLeft: '2.3rem' }}>
-            Active le type spécial "Tournament Topic", les champs de dates et l'icône de trophée pour ce forum.
-          </p>
-        </div>
+
 
         <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
           <button type="submit" className="widget-button" style={{ flex: 1, background: 'var(--primary)', border: 'none', color: 'white', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>

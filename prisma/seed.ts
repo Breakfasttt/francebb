@@ -298,6 +298,7 @@ async function main() {
           name: f.name,
           description: f.description,
           categoryId: category.id,
+          isTournamentForum: f.name === "Les tournois"
         }
       });
 

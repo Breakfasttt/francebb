@@ -104,7 +104,9 @@ export async function reorderCategories(orderedIds: string[]) {
 
 // ---------------- FORUM ACTIONS ----------------
 
-export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string, isTournamentForum?: boolean }) {
+const PROTECTED_FORUM_NAME = "Les tournois";
+
+export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string }) {
   const session = await auth();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
@@ -127,7 +129,7 @@ export async function createForum(data: { name: string, description: string, all
       allowedRoles: data.allowedRoles,
       categoryId: data.categoryId || null,
       parentForumId: data.parentForumId || null,
-      isTournamentForum: !!data.isTournamentForum,
+      isTournamentForum: false, // On ne peut plus taguer manuellement un forum tournoi
       order: newOrder
     }
   });
@@ -135,7 +137,7 @@ export async function createForum(data: { name: string, description: string, all
   return { success: true };
 }
 
-export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string, isTournamentForum?: boolean }) {
+export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string }) {
   const session = await auth();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
@@ -148,13 +150,17 @@ export async function updateForum(id: string, data: { name: string, description:
     }
   }
 
+  const forum = await prisma.forum.findUnique({ where: { id } });
+  if (forum?.name === PROTECTED_FORUM_NAME && data.name !== PROTECTED_FORUM_NAME) {
+    return { success: false, error: `Le forum "${PROTECTED_FORUM_NAME}" ne peut pas être renommé.` };
+  }
+
   await prisma.forum.update({
     where: { id },
     data: {
       name: data.name,
       description: data.description,
-      allowedRoles: data.allowedRoles,
-      isTournamentForum: data.isTournamentForum
+      allowedRoles: data.allowedRoles
     }
   });
   return { success: true };
@@ -166,6 +172,10 @@ export async function deleteForum(id: string) {
 
   const forum = await prisma.forum.findUnique({ where: { id }, include: { _count: { select: { subForums: true, topics: true } } } });
   if (!forum) return { success: false, error: "Forum introuvable." };
+
+  if (forum.name === PROTECTED_FORUM_NAME) {
+    return { success: false, error: `Le forum "${PROTECTED_FORUM_NAME}" est protégé et ne peut pas être supprimé.` };
+  }
 
   if (forum.allowedRoles === "ALL") {
     const publicForums = await prisma.forum.count({ where: { allowedRoles: "ALL", id: { not: id } } });
