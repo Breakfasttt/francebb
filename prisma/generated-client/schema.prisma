@@ -163,8 +163,9 @@ model Tournament {
   ligue       Ligue?  @relation("LigueTournaments", fields: [ligueId], references: [id])
   ligueCustom String?
 
-  lat Float?
-  lng Float?
+  lat                 Float?
+  lng                 Float?
+  registrationsLocked Boolean @default(false)
 }
 
 model Category {

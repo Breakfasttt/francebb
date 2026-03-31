@@ -109,22 +109,43 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
           </button>
 
+          {tournament.registrationsLocked && (
+            <div className="registration-locked-notice" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.4rem', 
+              fontSize: '0.75rem', 
+              color: 'var(--accent)', 
+              fontWeight: 700,
+              padding: '0 1rem',
+              textTransform: 'uppercase'
+            }}>
+              <AlertCircle size={14} /> Inscriptions Closes
+            </div>
+          )}
+
           {/* Bouton d'action principal */}
           {currentUser && (
             <div className="quick-user-action">
               {tournament.isTeam ? (
-                <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
-                  <Plus size={16} /> Inscrire une équipe
-                </button>
-              ) : (
-                !isRegistered ? (
-                  <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
-                    <UserPlus size={16} /> Me pré-inscrire
+                /* Équipe : Cacher le bouton si bloqué, sinon afficher le bouton d'inscription */
+                !tournament.registrationsLocked && (
+                  <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
+                    <Plus size={16} /> Inscrire une équipe
                   </button>
-                ) : (
+                )
+              ) : (
+                /* Individuel : Toujours montrer "Annuler" si déjà inscrit. Si non inscrit, cacher "Me pré-inscrire" si bloqué. */
+                isRegistered ? (
                   <button className="reg-btn danger mini" onClick={handleLeave} disabled={isPending}>
                     <UserMinus size={16} /> Annuler
                   </button>
+                ) : (
+                  !tournament.registrationsLocked && (
+                    <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
+                      <UserPlus size={16} /> Me pré-inscrire
+                    </button>
+                  )
                 )
               )}
             </div>

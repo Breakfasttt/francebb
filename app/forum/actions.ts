@@ -1288,6 +1288,7 @@ export async function joinTournament(tournamentId: string) {
   });
 
   if (!tournament) return { success: false, error: "Tournoi introuvable" };
+  if (tournament.registrationsLocked) return { success: false, error: "Les inscriptions sont fermées pour ce tournoi." };
 
   // Vérifier si déjà inscrit
   const existing = await prisma.tournamentRegistration.findUnique({
@@ -1362,6 +1363,11 @@ export async function toggleMercenary(tournamentId: string) {
       include: { topic: true }
     });
 
+    if (!tournament) return { success: false, error: "Tournoi introuvable" };
+    if (tournament.registrationsLocked && !existing) {
+      return { success: false, error: "Les inscriptions mercenaires sont fermées." };
+    }
+
     if (existing) {
       await prisma.tournamentMercenary.delete({
         where: { id: existing.id }
@@ -1393,6 +1399,7 @@ export async function createTeam(tournamentId: string, name: string, memberIds: 
   });
 
   if (!tournament) return { success: false, error: "Tournoi introuvable" };
+  if (tournament.registrationsLocked) return { success: false, error: "Les inscriptions sont fermées pour ce tournoi." };
 
   // Status
   const currentTotal = tournament.teams.length;
@@ -1558,3 +1565,42 @@ export async function findUsersSearch(query: string) {
   });
 }
 
+
+/**
+ * Verrouiller / Déverrouiller les inscriptions d'un tournoi
+ */
+export async function toggleTournamentRegistrations(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+
+  try {
+    const tournament = await prisma.tournament.findUnique({
+      where: { id: tournamentId },
+      include: { commissaires: true, topic: true }
+    });
+
+    if (!tournament) return { success: false, error: "Tournoi introuvable" };
+
+    const isOrganizer = tournament.organizerId === session.user.id;
+    const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+    const isLogMod = isModerator(session.user.role);
+
+    if (!isOrganizer && !isCommissaire && !isLogMod) {
+      return { success: false, error: "Action non autorisée" };
+    }
+
+    const updated = await prisma.tournament.update({
+      where: { id: tournamentId },
+      data: { registrationsLocked: !tournament.registrationsLocked }
+    });
+
+    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    
+    return { 
+      success: true, 
+      locked: updated.registrationsLocked 
+    };
+  } catch (e) {
+    return { success: false, error: "Erreur lors de la mise à jour" };
+  }
+}

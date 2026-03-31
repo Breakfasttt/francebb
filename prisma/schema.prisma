@@ -165,6 +165,7 @@ model Tournament {
 
   lat                 Float?
   lng                 Float?
+  registrationsLocked Boolean  @default(false)
 }
 
 model Category {

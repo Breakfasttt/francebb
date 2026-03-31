@@ -10266,6 +10266,7 @@ export namespace Prisma {
     ligueCustom: string | null
     lat: number | null
     lng: number | null
+    registrationsLocked: boolean | null
   }
 
   export type TournamentMaxAggregateOutputType = {
@@ -10310,6 +10311,7 @@ export namespace Prisma {
     ligueCustom: string | null
     lat: number | null
     lng: number | null
+    registrationsLocked: boolean | null
   }
 
   export type TournamentCountAggregateOutputType = {
@@ -10354,6 +10356,7 @@ export namespace Prisma {
     ligueCustom: number
     lat: number
     lng: number
+    registrationsLocked: number
     _all: number
   }
 
@@ -10426,6 +10429,7 @@ export namespace Prisma {
     ligueCustom?: true
     lat?: true
     lng?: true
+    registrationsLocked?: true
   }
 
   export type TournamentMaxAggregateInputType = {
@@ -10470,6 +10474,7 @@ export namespace Prisma {
     ligueCustom?: true
     lat?: true
     lng?: true
+    registrationsLocked?: true
   }
 
   export type TournamentCountAggregateInputType = {
@@ -10514,6 +10519,7 @@ export namespace Prisma {
     ligueCustom?: true
     lat?: true
     lng?: true
+    registrationsLocked?: true
     _all?: true
   }
 
@@ -10645,6 +10651,7 @@ export namespace Prisma {
     ligueCustom: string | null
     lat: number | null
     lng: number | null
+    registrationsLocked: boolean
     _count: TournamentCountAggregateOutputType | null
     _avg: TournamentAvgAggregateOutputType | null
     _sum: TournamentSumAggregateOutputType | null
@@ -10708,6 +10715,7 @@ export namespace Prisma {
     ligueCustom?: boolean
     lat?: boolean
     lng?: boolean
+    registrationsLocked?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
     commissaires?: boolean | Tournament$commissairesArgs<ExtArgs>
@@ -10760,6 +10768,7 @@ export namespace Prisma {
     ligueCustom?: boolean
     lat?: boolean
     lng?: boolean
+    registrationsLocked?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -10806,6 +10815,7 @@ export namespace Prisma {
     ligueCustom?: boolean
     lat?: boolean
     lng?: boolean
+    registrationsLocked?: boolean
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -10852,9 +10862,10 @@ export namespace Prisma {
     ligueCustom?: boolean
     lat?: boolean
     lng?: boolean
+    registrationsLocked?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
@@ -10927,6 +10938,7 @@ export namespace Prisma {
       ligueCustom: string | null
       lat: number | null
       lng: number | null
+      registrationsLocked: boolean
     }, ExtArgs["result"]["tournament"]>
     composites: {}
   }
@@ -11398,6 +11410,7 @@ export namespace Prisma {
     readonly ligueCustom: FieldRef<"Tournament", 'String'>
     readonly lat: FieldRef<"Tournament", 'Float'>
     readonly lng: FieldRef<"Tournament", 'Float'>
+    readonly registrationsLocked: FieldRef<"Tournament", 'Boolean'>
   }
     
 
@@ -35591,7 +35604,8 @@ export namespace Prisma {
     ligueId: 'ligueId',
     ligueCustom: 'ligueCustom',
     lat: 'lat',
-    lng: 'lng'
+    lng: 'lng',
+    registrationsLocked: 'registrationsLocked'
   };
 
   export type TournamentScalarFieldEnum = (typeof TournamentScalarFieldEnum)[keyof typeof TournamentScalarFieldEnum]
@@ -36397,6 +36411,7 @@ export namespace Prisma {
     ligueCustom?: StringNullableFilter<"Tournament"> | string | null
     lat?: FloatNullableFilter<"Tournament"> | number | null
     lng?: FloatNullableFilter<"Tournament"> | number | null
+    registrationsLocked?: BoolFilter<"Tournament"> | boolean
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
     commissaires?: UserListRelationFilter
@@ -36448,6 +36463,7 @@ export namespace Prisma {
     ligueCustom?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
+    registrationsLocked?: SortOrder
     organizer?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
     commissaires?: UserOrderByRelationAggregateInput
@@ -36502,6 +36518,7 @@ export namespace Prisma {
     ligueCustom?: StringNullableFilter<"Tournament"> | string | null
     lat?: FloatNullableFilter<"Tournament"> | number | null
     lng?: FloatNullableFilter<"Tournament"> | number | null
+    registrationsLocked?: BoolFilter<"Tournament"> | boolean
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
     commissaires?: UserListRelationFilter
@@ -36553,6 +36570,7 @@ export namespace Prisma {
     ligueCustom?: SortOrderInput | SortOrder
     lat?: SortOrderInput | SortOrder
     lng?: SortOrderInput | SortOrder
+    registrationsLocked?: SortOrder
     _count?: TournamentCountOrderByAggregateInput
     _avg?: TournamentAvgOrderByAggregateInput
     _max?: TournamentMaxOrderByAggregateInput
@@ -36605,6 +36623,7 @@ export namespace Prisma {
     ligueCustom?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     lat?: FloatNullableWithAggregatesFilter<"Tournament"> | number | null
     lng?: FloatNullableWithAggregatesFilter<"Tournament"> | number | null
+    registrationsLocked?: BoolWithAggregatesFilter<"Tournament"> | boolean
   }
 
   export type CategoryWhereInput = {
@@ -38540,6 +38559,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -38591,6 +38611,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -38638,6 +38659,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -38689,6 +38711,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -38738,6 +38761,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
   }
 
   export type TournamentUpdateManyMutationInput = {
@@ -38780,6 +38804,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TournamentUncheckedUpdateManyInput = {
@@ -38824,6 +38849,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CategoryCreateInput = {
@@ -40870,6 +40896,7 @@ export namespace Prisma {
     ligueCustom?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
+    registrationsLocked?: SortOrder
   }
 
   export type TournamentAvgOrderByAggregateInput = {
@@ -40927,6 +40954,7 @@ export namespace Prisma {
     ligueCustom?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
+    registrationsLocked?: SortOrder
   }
 
   export type TournamentMinOrderByAggregateInput = {
@@ -40971,6 +40999,7 @@ export namespace Prisma {
     ligueCustom?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
+    registrationsLocked?: SortOrder
   }
 
   export type TournamentSumOrderByAggregateInput = {
@@ -45283,6 +45312,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -45332,6 +45362,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -45720,6 +45751,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -45770,6 +45802,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
     teams?: TournamentTeamUncheckedCreateNestedManyWithoutTournamentInput
@@ -46288,6 +46321,7 @@ export namespace Prisma {
     ligueCustom?: StringNullableFilter<"Tournament"> | string | null
     lat?: FloatNullableFilter<"Tournament"> | number | null
     lng?: FloatNullableFilter<"Tournament"> | number | null
+    registrationsLocked?: BoolFilter<"Tournament"> | boolean
   }
 
   export type RoleConfigUpsertWithoutUsersInput = {
@@ -48449,6 +48483,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
@@ -48499,6 +48534,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
     teams?: TournamentTeamUncheckedCreateNestedManyWithoutTournamentInput
@@ -48745,6 +48781,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -48795,6 +48832,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
     teams?: TournamentTeamUncheckedUpdateManyWithoutTournamentNestedInput
@@ -51435,6 +51473,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -51485,6 +51524,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     teams?: TournamentTeamUncheckedCreateNestedManyWithoutTournamentInput
@@ -51640,6 +51680,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -51690,6 +51731,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     teams?: TournamentTeamUncheckedUpdateManyWithoutTournamentNestedInput
@@ -51835,6 +51877,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -51885,6 +51928,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -52059,6 +52103,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -52109,6 +52154,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -52522,6 +52568,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -52572,6 +52619,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -52727,6 +52775,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -52777,6 +52826,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -53995,6 +54045,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     organizer: UserCreateNestedOneWithoutTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
@@ -54044,6 +54095,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -54418,6 +54470,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
   }
 
   export type TopicCreateManyAuthorInput = {
@@ -54708,6 +54761,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -54757,6 +54811,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -54805,6 +54860,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TopicUpdateWithoutAuthorInput = {
@@ -55153,6 +55209,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
@@ -55203,6 +55260,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
     teams?: TournamentTeamUncheckedUpdateManyWithoutTournamentNestedInput
@@ -55251,6 +55309,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ArticleUpdateWithoutAuthorInput = {
@@ -56486,6 +56545,7 @@ export namespace Prisma {
     ligueCustom?: string | null
     lat?: number | null
     lng?: number | null
+    registrationsLocked?: boolean
   }
 
   export type ArticleCreateManyLigueInput = {
@@ -56648,6 +56708,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
@@ -56697,6 +56758,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -56745,6 +56807,7 @@ export namespace Prisma {
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ArticleUpdateWithoutLigueInput = {

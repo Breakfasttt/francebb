@@ -210,7 +210,8 @@ exports.Prisma.TournamentScalarFieldEnum = {
   ligueId: 'ligueId',
   ligueCustom: 'ligueCustom',
   lat: 'lat',
-  lng: 'lng'
+  lng: 'lng',
+  registrationsLocked: 'registrationsLocked'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {

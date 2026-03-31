@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
-import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic, isFollowingTopic, toggleFollowTopic } from "@/app/forum/actions";
+import { togglePinTopic, deleteTopicPermanent, toggleArchiveTopic, isFollowingTopic, toggleFollowTopic, toggleTournamentRegistrations } from "@/app/forum/actions";
 import Modal from "@/common/components/Modal/Modal";
 import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
@@ -52,6 +52,7 @@ interface TopicSidebarProps {
   canEditTournament?: boolean;
   isFinished?: boolean;
   isCancelled?: boolean;
+  registrationsLocked?: boolean;
 }
 
 import { Shield, CheckCircle, XCircle } from "lucide-react";
@@ -79,7 +80,8 @@ export default function TopicSidebar({
   tournamentId,
   canEditTournament = false,
   isFinished = false,
-  isCancelled = false
+  isCancelled = false,
+  registrationsLocked = false
 }: TopicSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -145,6 +147,23 @@ export default function TopicSidebar({
       },
       true,
       "Annuler le tournoi"
+    );
+  };
+
+  const handleToggleRegistrations = () => {
+    const actionLabel = registrationsLocked ? "réouvrir" : "bloquer";
+    openConfirm(
+      `${registrationsLocked ? 'Réouvrir' : 'Bloquer'} les inscriptions`,
+      `Voulez-vous vraiment ${actionLabel} les inscriptions pour ce tournoi ?`,
+      async () => {
+        const res = await toggleTournamentRegistrations(tournamentId!);
+        if (res?.success) {
+          toast.success(res.locked ? "Inscriptions bloquées" : "Inscriptions réouvertes");
+          router.refresh();
+        }
+      },
+      !registrationsLocked,
+      registrationsLocked ? "Réouvrir" : "Bloquer les inscriptions"
     );
   };
 
@@ -366,6 +385,16 @@ export default function TopicSidebar({
                 >
                   <CheckCircle size={16} />
                   <span>Terminer le tournoi</span>
+                </button>
+                
+                <button 
+                  onClick={handleToggleRegistrations}
+                  disabled={isPending}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', padding: '8px 12px', color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
+                >
+                  {registrationsLocked ? <Check size={16} /> : <LockIcon size={16} />}
+                  <span>{registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}</span>
                 </button>
 
                 <button 
