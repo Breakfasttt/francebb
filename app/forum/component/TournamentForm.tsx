@@ -6,12 +6,20 @@ import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { 
   Trophy, Calendar, MapPin, Users, Coins, Monitor, 
-  Shield, Utensils, BedDouble, Sun, Map, Save, Globe
+  Shield, Utensils, BedDouble, Sun, Map, Save, Globe, Check
 } from "lucide-react";
 import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
+import dynamic from "next/dynamic";
+import Modal from "@/common/components/Modal/Modal";
+
+const MapPicker = dynamic(() => import("./MapPicker"), { 
+  ssr: false,
+  loading: () => <div style={{ height: '300px', display: 'flex', alignItems: 'center', justifyItems: 'center', background: 'rgba(0,0,0,0.1)', borderRadius: '12px' }}>Chargement de la carte...</div>
+});
+
 
 interface TournamentFormProps {
   forumId: string;
@@ -61,6 +69,8 @@ interface TournamentFormProps {
     firstPostId: string;
     postContent: string;
     isOrganizer: boolean;
+    lat: number | null;
+    lng: number | null;
   };
 }
 
@@ -70,6 +80,11 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   const [commissaires, setCommissaires] = useState<any[]>(initialData?.commissaires ?? []);
   const [startDate, setStartDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "");
   const [endDate, setEndDate] = useState(initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "");
+  
+  const [lat, setLat] = useState<number | null>(initialData?.lat ?? null);
+  const [lng, setLng] = useState<number | null>(initialData?.lng ?? null);
+  const [address, setAddress] = useState(initialData?.address ?? "");
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   const handleNumericKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, allowDecimal = false) => {
     // Liste des touches spéciales autorisées
@@ -110,6 +125,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
 
   // On crée une version client-side de l'action pour injecter les IDs fixes en mode édition
   const formAction = async (formData: FormData) => {
+    console.log("CLIENT - forumAction formData keys:", Array.from(formData.keys()));
     if (isEdit && initialData) {
       await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
     } else {
@@ -136,6 +152,8 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   return (
     <form action={formAction}>
       <input type="hidden" name="forumId" value={forumId} />
+      <input type="hidden" name="tLat" value={lat ?? ""} />
+      <input type="hidden" name="tLng" value={lng ?? ""} />
       
       <div className="forum-layout">
         <div className="forum-main-content">
@@ -145,7 +163,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               <label htmlFor="title" style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
                 Titre de l&apos;annonce (Nom du tournoi) *
               </label>
-              <TitleInputWithSmiley initialValue={initialData?.name} />
+              <TitleInputWithSmiley name="title" initialValue={initialData?.name} />
             </div>
 
             <div className="form-group">
@@ -239,20 +257,35 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                   <input type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex: Lyon" className="admin-input" />
                 </div>
                 <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lieu / Adresse exacte (pour Google Maps)</label>
-                  <div style={{ position: 'relative' }}>
-                    <input type="text" name="tAddress" defaultValue={initialData?.address || ""} placeholder="Ex: 5 rue de la Paix, Paris" className="admin-input" 
-                           style={{ paddingLeft: '2.8rem' }} />
-                    <Map size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
+                  <label>Lieu / Adresse exacte</label>
+                  <div style={{ display: 'flex', gap: '0.8rem' }}>
+                    <div style={{ position: 'relative', flex: 1 }}>
+                      <input 
+                        type="text" 
+                        name="tAddress" 
+                        value={address} 
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Ex: 5 rue de la Paix, Paris" 
+                        className="admin-input" 
+                        style={{ paddingLeft: '2.8rem' }} 
+                      />
+                      <Map size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setIsMapModalOpen(true)}
+                      className="map-open-btn"
+                      title="Choisir sur la carte"
+                    >
+                      <Globe size={20} />
+                      <span>Choisir sur la carte</span>
+                    </button>
                   </div>
-                </div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lien Google Maps direct (Optionnel)</label>
-                  <div style={{ position: 'relative' }}>
-                    <input type="url" name="tGmapsUrl" defaultValue={initialData?.gmapsUrl || ""} placeholder="Ex: https://goo.gl/maps/..." className="admin-input" 
-                           style={{ paddingLeft: '2.8rem' }} />
-                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                  </div>
+                  {(lat && lng) && (
+                    <p style={{ fontSize: '0.75rem', color: 'var(--success, #22c55e)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                       <Check size={14} /> Localisation précise définie ({lat.toFixed(5)}, {lng.toFixed(5)})
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -418,6 +451,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               <BBCodeEditor
                 id="content"
                 name="content"
+                required={true}
                 defaultValue={initialData?.postContent}
                 placeholder="Détaillez ici votre tournoi, horaires, lots, etc. Le parser BBCode est disponible."
                 rows={18}
@@ -434,6 +468,29 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           isTournament={true}
         />
       </div>
+
+      <Modal
+        isOpen={isMapModalOpen}
+        onClose={() => setIsMapModalOpen(false)}
+        title="Localisation du tournoi"
+      >
+        <MapPicker 
+          initialCenter={lat && lng ? [lat, lng] : undefined}
+          initialSearch={address}
+          onSelect={(newLat, newLng, newAddress) => {
+            setLat(newLat);
+            setLng(newLng);
+            if (newAddress) {
+              // On nettoie un peu l'adresse de Nominatim qui est souvent trop longue
+              const parts = newAddress.split(',');
+              const shortAddress = parts.slice(0, 3).join(',').trim();
+              setAddress(shortAddress);
+            }
+            setIsMapModalOpen(false);
+          }}
+          onCancel={() => setIsMapModalOpen(false)}
+        />
+      </Modal>
 
       <style jsx>{`
         .admin-input {
@@ -486,6 +543,32 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
            color: var(--foreground);
            transform: translateY(-2px);
            box-shadow: 0 4px 15px var(--btn-shadow);
+        }
+
+        .map-open-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          color: var(--foreground);
+          padding: 0 1.2rem;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: 700;
+          transition: all 0.2s;
+          white-space: nowrap;
+        }
+
+        .map-open-btn:hover {
+          background: var(--primary-transparent);
+          border-color: var(--primary);
+          color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+          .map-open-btn span { display: none; }
+          .map-open-btn { padding: 0 1rem; }
         }
       `}</style>
     </form>

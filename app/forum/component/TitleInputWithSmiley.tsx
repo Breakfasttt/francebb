@@ -52,7 +52,7 @@ export default function TitleInputWithSmiley({
         <input
           type="text"
           id="title"
-          name="title"
+          name={name}
           required
           ref={inputRef}
           value={titleValue}

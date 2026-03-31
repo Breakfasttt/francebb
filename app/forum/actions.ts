@@ -455,8 +455,10 @@ export async function createTopic(formData: FormData) {
   const isSticky = formData.get("isSticky") === "on";
   const isLocked = formData.get("isLocked") === "on";
 
+  console.log("DEBUG - createTopic:", { title, content: content?.substring(0, 20), forumId });
+
   if (!title || !content || !forumId) {
-    throw new Error("Titre, contenu et forum sont obligatoires.");
+    throw new Error(`Titre, contenu et forum sont obligatoires. (Titre: ${!!title}, Contenu: ${!!content}, Forum: ${!!forumId})`);
   }
 
   // Vérifier si le forum est locké ou un forum de tournoi
@@ -483,21 +485,29 @@ export async function createTopic(formData: FormData) {
 
     const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
 
-    // Géocodage automatique
+    // Géocodage
     const tAddress = formData.get("tAddress") as string;
     const tVille = formData.get("tVille") as string;
-    let lat = null, lng = null;
-    try {
-      const gRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${tAddress || ""} ${tVille || ""}`.trim())}&format=json&limit=1`, {
-        headers: { "User-Agent": "BBFrance-App" }
-      });
-      const gData = await gRes.json();
-      if (gData && gData.length > 0) {
-        lat = parseFloat(gData[0].lat);
-        lng = parseFloat(gData[0].lon);
+    const tLatForm = formData.get("tLat") as string;
+    const tLngForm = formData.get("tLng") as string;
+    
+    let lat = tLatForm ? parseFloat(tLatForm) : null;
+    let lng = tLngForm ? parseFloat(tLngForm) : null;
+
+    // Si on n'a pas de coordonnées du formulaire, on tente un géocodage serveur
+    if (lat === null || lng === null) {
+      try {
+        const gRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${tAddress || ""} ${tVille || ""}`.trim())}&format=json&limit=1`, {
+          headers: { "User-Agent": "BBFrance-App" }
+        });
+        const gData = await gRes.json();
+        if (gData && gData.length > 0) {
+          lat = parseFloat(gData[0].lat);
+          lng = parseFloat(gData[0].lon);
+        }
+      } catch (e) {
+        console.error("Tournament geocoding error:", e);
       }
-    } catch (e) {
-      console.error("Tournament geocoding error:", e);
     }
 
     tournamentData = {
@@ -506,7 +516,7 @@ export async function createTopic(formData: FormData) {
       endDate: endDate,
       location: tAddress || "Lieu non précisé",
       address: tAddress,
-      gmapsUrl: formData.get("tGmapsUrl") as string,
+      gmapsUrl: null, // Plus utilisé
       ville: tVille,
       departement: formData.get("tDept") as string,
       region: formData.get("tRegion") as string,
@@ -1188,6 +1198,11 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
   const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
+  const tLatForm = formData.get("tLat") as string;
+  const tLngForm = formData.get("tLng") as string;
+  let lat = tLatForm ? parseFloat(tLatForm) : null;
+  let lng = tLngForm ? parseFloat(tLngForm) : null;
+
   // Mise à jour du tournoi
   const updateData: any = {
     name: title,
@@ -1195,11 +1210,13 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     endDate: endDate,
     location: formData.get("tAddress") as string || "Lieu non précisé",
     address: formData.get("tAddress") as string,
-    gmapsUrl: formData.get("tGmapsUrl") as string,
+    gmapsUrl: null, // Plus utilisé
     ville: formData.get("tVille") as string,
     departement: formData.get("tDept") as string,
     region: formData.get("tRegion") as string,
     regionNAF: formData.get("tRegionNAF") as string,
+    lat,
+    lng,
     maxParticipants: parseInt(formData.get("tMax") as string) || null,
     isTeam: formData.get("isTeam") === "on",
     coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,

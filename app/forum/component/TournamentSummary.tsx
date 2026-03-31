@@ -38,6 +38,8 @@ interface TournamentSummaryProps {
     ligueId?: string | null;
     ligueCustom?: string | null;
     ligue?: { id: string; name: string; acronym: string } | null;
+    lat?: number | null;
+    lng?: number | null;
   };
 }
 
@@ -61,8 +63,18 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
   // Construction de l'adresse pour Google Maps
   const displayAddress = tournament.address || tournament.location;
   const isActuallySpecified = displayAddress && displayAddress !== "Lieu non précisé";
-  const gmapsQuery = encodeURIComponent(`${displayAddress || ''} ${tournament.ville || ''} ${tournament.departement || ''}`.trim());
-  const gmapsUrl = tournament.gmapsUrl || `https://www.google.com/maps/search/?api=1&query=${gmapsQuery}`;
+  
+  // Si on a des coordonnées précises, on les utilise en priorité
+  let gmapsUrl = tournament.gmapsUrl;
+  if (!gmapsUrl && tournament.lat != null && tournament.lng != null) {
+    gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${tournament.lat},${tournament.lng}`;
+  }
+  
+  // Fallback sur la recherche textuelle
+  if (!gmapsUrl) {
+    const gmapsQuery = encodeURIComponent(`${displayAddress || ''} ${tournament.ville || ''} ${tournament.departement || ''}`.trim());
+    gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${gmapsQuery}`;
+  }
 
   return (
     <div className="tournament-summary-card">

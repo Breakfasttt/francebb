@@ -17,11 +17,12 @@ interface BBCodeEditorProps {
   rows?: number;
   maxLength?: number;
   onChange?: (value: string) => void;
+  required?: boolean;
 }
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
-export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange }: BBCodeEditorProps) {
+export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange, required }: BBCodeEditorProps) {
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -749,6 +750,7 @@ TEXTE À FORMATER :
       <div className="editor-content-area" style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column" }}>
         <textarea
           id={id} name={name} ref={textareaRef} value={content} onChange={(e) => handleContentChange(e.target.value)} placeholder={placeholder} rows={rows}
+          required={required}
           style={{ width: "100%", height: isPreview ? "200px" : "100%", padding: "1rem", background: "var(--glass-bg)", border: "none", color: "var(--foreground)", resize: "vertical", outline: "none", fontSize: "1rem", fontFamily: "inherit" }}
         />
         {isPreview && (
