@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trophy, Calendar, MapPin, Users, Coins, Info, CheckCircle2, XCircle, ExternalLink, Monitor, Shield, Layers } from 'lucide-react';
 import Link from 'next/link';
+import { parseInlineBBCode } from '@/lib/bbcode';
 import './TournamentSummary.css';
 
 interface TournamentSummaryProps {
@@ -94,7 +95,7 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
                         TERMINÉ
                     </span>
                 ) : null}
-                <h2 style={{ margin: 0 }}>Détails du Tournoi</h2>
+                <h2 style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.name) }} />
             </div>
             <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 {tournament.isTeam && (
@@ -109,7 +110,6 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
                 ))}
             </div>
           </div>
-          <p>{tournament.name}</p>
           {(tournament.ligue || tournament.ligueCustom) && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.2rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               <Shield size={12} color="var(--accent)" />
