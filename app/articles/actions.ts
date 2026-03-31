@@ -145,13 +145,22 @@ export async function toggleArticleReaction(articleId: string, emoji: string) {
 
   try {
     const existing = await prisma.articleReaction.findFirst({
-      where: { articleId, userId, emoji },
+      where: { articleId, userId },
     });
 
     if (existing) {
-      await prisma.articleReaction.delete({ where: { id: existing.id } });
+      if (existing.emoji === emoji) {
+        // Toggle off
+        await prisma.articleReaction.delete({ where: { id: existing.id } });
+      } else {
+        // Switch emoji
+        await prisma.articleReaction.update({
+          where: { id: existing.id },
+          data: { emoji },
+        });
+      }
     } else {
-      // Pour les articles, on autorise plusieurs emojis différents par personne (comme Slack/Discord)
+      // Add new
       await prisma.articleReaction.create({
         data: { articleId, userId, emoji },
       });
