@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X, ShieldAlert, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
@@ -14,8 +15,14 @@ interface ModerationModalProps {
 export default function ModerationModal({ isOpen, onClose, onConfirm, authorName }: ModerationModalProps) {
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +39,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
     }
   };
 
-  return (
+  return createPortal(
     <div style={{
       position: 'fixed',
       top: 0,
@@ -44,7 +51,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 1000,
+      zIndex: 2500, // Augmenté pour être au-dessus de tout
       padding: '2rem'
     }}>
       <PremiumCard style={{ maxWidth: '500px', width: '100%', padding: '2rem', position: 'relative' }}>
@@ -77,7 +84,8 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
                 borderRadius: '8px',
                 padding: '1rem',
                 color: 'white',
-                outline: 'none focus:border-var(--primary)'
+                outline: 'none',
+                resize: 'none'
               }}
             />
           </div>
@@ -101,6 +109,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
           </div>
         </form>
       </PremiumCard>
-    </div>
+    </div>,
+    document.body
   );
 }

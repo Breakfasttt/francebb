@@ -425,6 +425,7 @@ model Article {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  views     Int      @default(0)
   
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])

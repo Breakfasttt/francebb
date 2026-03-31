@@ -30734,8 +30734,18 @@ export namespace Prisma {
 
   export type AggregateArticle = {
     _count: ArticleCountAggregateOutputType | null
+    _avg: ArticleAvgAggregateOutputType | null
+    _sum: ArticleSumAggregateOutputType | null
     _min: ArticleMinAggregateOutputType | null
     _max: ArticleMaxAggregateOutputType | null
+  }
+
+  export type ArticleAvgAggregateOutputType = {
+    views: number | null
+  }
+
+  export type ArticleSumAggregateOutputType = {
+    views: number | null
   }
 
   export type ArticleMinAggregateOutputType = {
@@ -30744,6 +30754,7 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    views: number | null
     authorId: string | null
     isModerated: boolean | null
     moderationReason: string | null
@@ -30758,6 +30769,7 @@ export namespace Prisma {
     content: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    views: number | null
     authorId: string | null
     isModerated: boolean | null
     moderationReason: string | null
@@ -30772,6 +30784,7 @@ export namespace Prisma {
     content: number
     createdAt: number
     updatedAt: number
+    views: number
     authorId: number
     isModerated: number
     moderationReason: number
@@ -30782,12 +30795,21 @@ export namespace Prisma {
   }
 
 
+  export type ArticleAvgAggregateInputType = {
+    views?: true
+  }
+
+  export type ArticleSumAggregateInputType = {
+    views?: true
+  }
+
   export type ArticleMinAggregateInputType = {
     id?: true
     title?: true
     content?: true
     createdAt?: true
     updatedAt?: true
+    views?: true
     authorId?: true
     isModerated?: true
     moderationReason?: true
@@ -30802,6 +30824,7 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     updatedAt?: true
+    views?: true
     authorId?: true
     isModerated?: true
     moderationReason?: true
@@ -30816,6 +30839,7 @@ export namespace Prisma {
     content?: true
     createdAt?: true
     updatedAt?: true
+    views?: true
     authorId?: true
     isModerated?: true
     moderationReason?: true
@@ -30863,6 +30887,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ArticleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ArticleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ArticleMinAggregateInputType
@@ -30893,6 +30929,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ArticleCountAggregateInputType | true
+    _avg?: ArticleAvgAggregateInputType
+    _sum?: ArticleSumAggregateInputType
     _min?: ArticleMinAggregateInputType
     _max?: ArticleMaxAggregateInputType
   }
@@ -30903,6 +30941,7 @@ export namespace Prisma {
     content: string
     createdAt: Date
     updatedAt: Date
+    views: number
     authorId: string
     isModerated: boolean
     moderationReason: string | null
@@ -30910,6 +30949,8 @@ export namespace Prisma {
     ligueId: string | null
     ligueCustom: string | null
     _count: ArticleCountAggregateOutputType | null
+    _avg: ArticleAvgAggregateOutputType | null
+    _sum: ArticleSumAggregateOutputType | null
     _min: ArticleMinAggregateOutputType | null
     _max: ArticleMaxAggregateOutputType | null
   }
@@ -30934,6 +30975,7 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    views?: boolean
     authorId?: boolean
     isModerated?: boolean
     moderationReason?: boolean
@@ -30954,6 +30996,7 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    views?: boolean
     authorId?: boolean
     isModerated?: boolean
     moderationReason?: boolean
@@ -30971,6 +31014,7 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    views?: boolean
     authorId?: boolean
     isModerated?: boolean
     moderationReason?: boolean
@@ -30988,6 +31032,7 @@ export namespace Prisma {
     content?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    views?: boolean
     authorId?: boolean
     isModerated?: boolean
     moderationReason?: boolean
@@ -30996,7 +31041,7 @@ export namespace Prisma {
     ligueCustom?: boolean
   }
 
-  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "ligueId" | "ligueCustom", ExtArgs["result"]["article"]>
+  export type ArticleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "createdAt" | "updatedAt" | "views" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "ligueId" | "ligueCustom", ExtArgs["result"]["article"]>
   export type ArticleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     tags?: boolean | Article$tagsArgs<ExtArgs>
@@ -31031,6 +31076,7 @@ export namespace Prisma {
       content: string
       createdAt: Date
       updatedAt: Date
+      views: number
       authorId: string
       isModerated: boolean
       moderationReason: string | null
@@ -31470,6 +31516,7 @@ export namespace Prisma {
     readonly content: FieldRef<"Article", 'String'>
     readonly createdAt: FieldRef<"Article", 'DateTime'>
     readonly updatedAt: FieldRef<"Article", 'DateTime'>
+    readonly views: FieldRef<"Article", 'Int'>
     readonly authorId: FieldRef<"Article", 'String'>
     readonly isModerated: FieldRef<"Article", 'Boolean'>
     readonly moderationReason: FieldRef<"Article", 'String'>
@@ -35759,6 +35806,7 @@ export namespace Prisma {
     content: 'content',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    views: 'views',
     authorId: 'authorId',
     isModerated: 'isModerated',
     moderationReason: 'moderationReason',
@@ -37672,6 +37720,7 @@ export namespace Prisma {
     content?: StringFilter<"Article"> | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    views?: IntFilter<"Article"> | number
     authorId?: StringFilter<"Article"> | string
     isModerated?: BoolFilter<"Article"> | boolean
     moderationReason?: StringNullableFilter<"Article"> | string | null
@@ -37691,6 +37740,7 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    views?: SortOrder
     authorId?: SortOrder
     isModerated?: SortOrder
     moderationReason?: SortOrderInput | SortOrder
@@ -37713,6 +37763,7 @@ export namespace Prisma {
     content?: StringFilter<"Article"> | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    views?: IntFilter<"Article"> | number
     authorId?: StringFilter<"Article"> | string
     isModerated?: BoolFilter<"Article"> | boolean
     moderationReason?: StringNullableFilter<"Article"> | string | null
@@ -37732,6 +37783,7 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    views?: SortOrder
     authorId?: SortOrder
     isModerated?: SortOrder
     moderationReason?: SortOrderInput | SortOrder
@@ -37739,8 +37791,10 @@ export namespace Prisma {
     ligueId?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
     _count?: ArticleCountOrderByAggregateInput
+    _avg?: ArticleAvgOrderByAggregateInput
     _max?: ArticleMaxOrderByAggregateInput
     _min?: ArticleMinOrderByAggregateInput
+    _sum?: ArticleSumOrderByAggregateInput
   }
 
   export type ArticleScalarWhereWithAggregatesInput = {
@@ -37752,6 +37806,7 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"Article"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Article"> | Date | string
+    views?: IntWithAggregatesFilter<"Article"> | number
     authorId?: StringWithAggregatesFilter<"Article"> | string
     isModerated?: BoolWithAggregatesFilter<"Article"> | boolean
     moderationReason?: StringNullableWithAggregatesFilter<"Article"> | string | null
@@ -39857,6 +39912,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -39873,6 +39929,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -39889,6 +39946,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39905,6 +39963,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39921,6 +39980,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -39935,6 +39995,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39946,6 +40007,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -41613,6 +41675,7 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    views?: SortOrder
     authorId?: SortOrder
     isModerated?: SortOrder
     moderationReason?: SortOrder
@@ -41621,12 +41684,17 @@ export namespace Prisma {
     ligueCustom?: SortOrder
   }
 
+  export type ArticleAvgOrderByAggregateInput = {
+    views?: SortOrder
+  }
+
   export type ArticleMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    views?: SortOrder
     authorId?: SortOrder
     isModerated?: SortOrder
     moderationReason?: SortOrder
@@ -41641,12 +41709,17 @@ export namespace Prisma {
     content?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    views?: SortOrder
     authorId?: SortOrder
     isModerated?: SortOrder
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     ligueId?: SortOrder
     ligueCustom?: SortOrder
+  }
+
+  export type ArticleSumOrderByAggregateInput = {
+    views?: SortOrder
   }
 
   export type ArticleTagCountOrderByAggregateInput = {
@@ -45714,6 +45787,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -45729,6 +45803,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     moderatedBy?: string | null
@@ -45776,6 +45851,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -45791,6 +45867,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -46558,6 +46635,7 @@ export namespace Prisma {
     content?: StringFilter<"Article"> | string
     createdAt?: DateTimeFilter<"Article"> | Date | string
     updatedAt?: DateTimeFilter<"Article"> | Date | string
+    views?: IntFilter<"Article"> | number
     authorId?: StringFilter<"Article"> | string
     isModerated?: BoolFilter<"Article"> | boolean
     moderationReason?: StringNullableFilter<"Article"> | string | null
@@ -53372,6 +53450,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -53387,6 +53466,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -53423,6 +53503,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -53438,6 +53519,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -53562,6 +53644,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53577,6 +53660,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53982,6 +54066,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     ligueCustom?: string | null
@@ -53997,6 +54082,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -54436,6 +54522,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     isModerated?: boolean
     moderationReason?: string | null
     moderatedBy?: string | null
@@ -54456,6 +54543,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -55171,6 +55259,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55186,6 +55275,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55201,6 +55291,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55235,6 +55326,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55250,6 +55342,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55265,6 +55358,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56310,6 +56404,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56325,6 +56420,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56340,6 +56436,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56397,6 +56494,7 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    views?: number
     authorId: string
     isModerated?: boolean
     moderationReason?: string | null
@@ -56655,6 +56753,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56670,6 +56769,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56685,6 +56785,7 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null

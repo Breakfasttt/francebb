@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, AlertTriangle, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
@@ -14,9 +16,16 @@ interface ConfirmModalProps {
 }
 
 export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmLabel = "Confirmer", isDanger = false }: ConfirmModalProps) {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
+
+  return createPortal(
     <div style={{
       position: 'fixed',
       top: 0,
@@ -28,7 +37,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 1000,
+      zIndex: 2500,
       padding: '2rem'
     }}>
       <PremiumCard style={{ maxWidth: '400px', width: '100%', padding: '2rem', position: 'relative', textAlign: 'center' }}>
@@ -70,6 +79,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
           </button>
         </div>
       </PremiumCard>
-    </div>
+    </div>,
+    document.body
   );
 }

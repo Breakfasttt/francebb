@@ -7,9 +7,10 @@ import { parseBBCode } from "@/lib/bbcode";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Edit3, ShieldAlert, Flag, Clock, Calendar, User as UserIcon, Tag as TagIcon } from "lucide-react";
+import { Edit3, ShieldAlert, Flag, Clock, Calendar, Tag as TagIcon, Eye } from "lucide-react";
 import ArticleReactions from "@/app/articles/[id]/component/ArticleReactions";
 import DeleteArticleButton from "@/app/articles/[id]/component/DeleteArticleButton";
+import ModerateArticleButton from "@/app/articles/[id]/component/ModerateArticleButton";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
 import "./page.css";
@@ -24,6 +25,13 @@ export default async function ArticleDetailPage({
   const { id } = await params;
   const session = await auth();
   const sessionUser = session?.user as any;
+
+  // Incrémenter le compteur de vues
+  // On le fait avant de récupérer l'article pour avoir le chiffre à jour (ou presque)
+  await prisma.article.update({
+    where: { id },
+    data: { views: { increment: 1 } }
+  });
 
   const article = await prisma.article.findUnique({
     where: { id },
@@ -74,6 +82,10 @@ export default async function ArticleDetailPage({
               <Clock size={16} />
               <span>Publié le {formattedDate}</span>
             </div>
+            <div className="info-item">
+              <Eye size={16} />
+              <span>Vu {article.views} fois</span>
+            </div>
             {article.tags.length > 0 && (
               <div className="info-item tags-list">
                 <TagIcon size={16} />
@@ -97,9 +109,11 @@ export default async function ArticleDetailPage({
             )}
             
             {isMod && (
-              <Link href={`/articles/moderate/${article.id}`} className="action-button moderate">
-                <ShieldAlert size={18} /> Modérer
-              </Link>
+              <ModerateArticleButton 
+                articleId={article.id} 
+                isModerated={article.isModerated} 
+                authorName={article.author.name || "Inconnu"} 
+              />
             )}
 
             {sessionUser && !isAuthor && (
@@ -112,22 +126,66 @@ export default async function ArticleDetailPage({
 
         <article className="article-content-wrapper">
           {article.isModerated && (
-            <div className="moderation-notice">
-              <div className="notice-header">
+            <div className="moderation-notice" style={{ 
+              background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)', 
+              border: '1px solid var(--danger)', 
+              borderRadius: '12px', 
+              padding: '1.5rem', 
+              marginBottom: '2rem',
+              color: 'var(--danger)'
+            }}>
+              <div className="notice-header" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontWeight: 800, marginBottom: '0.5rem', textTransform: 'uppercase', fontSize: '0.9rem' }}>
                 <ShieldAlert size={20} />
-                <span>Message de la modération</span>
+                <span>Article modéré par l'équipe</span>
               </div>
-              <div className="notice-body">
-                {article.moderationReason || "Cet article a été modéré par un membre de l'équipe."}
-                {article.moderator && <div className="moderator-sig">Par {article.moderator.name}</div>}
+              <div className="notice-body" style={{ fontSize: '1rem', fontStyle: 'italic', fontVariant: 'normal' }}>
+                Raison : {article.moderationReason || "Cet article a été modéré par un membre de l'équipe."}
+                {article.moderator && <div className="moderator-sig" style={{ marginTop: '0.5rem', fontSize: '0.8rem', opacity: 0.8 }}>Par {article.moderator.name}</div>}
               </div>
             </div>
           )}
 
-          <div 
-            className="article-body bbcode-content" 
-            dangerouslySetInnerHTML={{ __html: parseBBCode(article.content) }} 
-          />
+          {(!article.isModerated || isMod || isAuthor) ? (
+            <div style={{ position: 'relative' }}>
+              {article.isModerated && (
+                <div style={{ 
+                  fontSize: '0.75rem', 
+                  color: 'var(--primary)', 
+                  marginBottom: '1rem', 
+                  textTransform: 'uppercase', 
+                  fontWeight: 700, 
+                  background: 'rgba(var(--primary-rgb), 0.1)', 
+                  padding: '4px 12px', 
+                  borderRadius: '4px',
+                  display: 'inline-block'
+                }}>
+                  [Contenu original visible par vous seul et les modérateurs]
+                </div>
+              )}
+              <div 
+                className="article-body bbcode-content" 
+                style={{ 
+                  opacity: article.isModerated ? 0.6 : 1,
+                  filter: article.isModerated ? 'grayscale(0.5)' : 'none',
+                  transition: 'all 0.3s'
+                }}
+                dangerouslySetInnerHTML={{ __html: parseBBCode(article.content) }} 
+              />
+            </div>
+          ) : (
+            <div style={{ 
+              background: 'rgba(0,0,0,0.2)', 
+              border: '1px dashed var(--glass-border)', 
+              borderRadius: '12px', 
+              padding: '4rem 2rem', 
+              textAlign: 'center', 
+              color: 'var(--text-muted)', 
+              fontStyle: 'italic',
+              fontSize: '1.1rem'
+            }}>
+              Le contenu de cet article a été masqué par la modération.
+            </div>
+          )}
 
           <ArticleReactions 
             articleId={article.id} 

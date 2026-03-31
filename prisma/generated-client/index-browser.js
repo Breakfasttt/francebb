@@ -371,6 +371,7 @@ exports.Prisma.ArticleScalarFieldEnum = {
   content: 'content',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  views: 'views',
   authorId: 'authorId',
   isModerated: 'isModerated',
   moderationReason: 'moderationReason',
