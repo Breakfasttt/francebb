@@ -147,40 +147,68 @@ const PostItem: React.FC<PostItemProps> = ({
           <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
             <Link
               href={`/spy/${post.author.id}`}
+              className="user-badge profil"
               style={{
-                padding: '0.35rem 0.6rem',
-                background: 'rgba(var(--accent-rgb, 255, 215, 0), 0.1)',
-                border: '1px solid var(--accent)',
-                borderRadius: '4px',
+                padding: '0.35rem 0.8rem',
+                background: 'rgba(var(--accent-rgb, 255, 215, 0), 0.08)',
+                border: '1.2px solid var(--accent)',
+                borderRadius: '6px',
                 color: 'var(--accent)',
                 fontSize: '0.65rem',
                 textDecoration: 'none',
-                fontWeight: 700,
+                fontWeight: 800,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.3rem'
+                gap: '0.4rem',
+                textTransform: 'uppercase',
+                transition: 'all 0.2s ease',
+                letterSpacing: '0.05em'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--accent)';
+                e.currentTarget.style.color = '#000';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(var(--accent-rgb, 255, 215, 0), 0.08)';
+                e.currentTarget.style.color = 'var(--accent)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <User size={10} /> PROFIL
+              <User size={11} strokeWidth={2.5} /> PROFIL
             </Link>
             {post.author.id !== currentUserId && (
               <Link
                 href={`/profile?tab=pm&recipientId=${post.author.id}`}
+                className="user-badge mp"
                 style={{
-                  padding: '0.35rem 0.6rem',
-                  background: 'rgba(var(--success-rgb, 34, 197, 94), 0.1)',
-                  border: '1px solid var(--success)',
-                  borderRadius: '4px',
+                  padding: '0.35rem 0.8rem',
+                  background: 'rgba(var(--success-rgb, 34, 197, 94), 0.08)',
+                  border: '1.2px solid var(--success)',
+                  borderRadius: '6px',
                   color: 'var(--success)',
                   fontSize: '0.65rem',
                   textDecoration: 'none',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.3rem'
+                  gap: '0.4rem',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.2s ease',
+                  letterSpacing: '0.05em'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--success)';
+                  e.currentTarget.style.color = 'white';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(var(--success-rgb, 34, 197, 94), 0.08)';
+                  e.currentTarget.style.color = 'var(--success)';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <Mail size={10} /> MP
+                <Mail size={11} strokeWidth={2.5} /> MP
               </Link>
             )}
           </div>

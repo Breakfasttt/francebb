@@ -37,4 +37,9 @@
   --home-card-border: rgba(0, 0, 0, 0.15);
   --home-mini-btn-bg: rgba(0, 0, 0, 0.05);
   --home-mini-btn-color: var(--primary);
+
+  /* RGB variants for transparency effects */
+  --accent-rgb: 184, 134, 11;
+  --success-rgb: 21, 128, 61;
+  --primary-rgb: 194, 29, 29;
 }
