@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
+import { logModerationAction } from "@/app/moderation/actions";
 
 export async function createArticle(formData: FormData) {
   const session = await auth();
@@ -127,6 +128,13 @@ export async function deleteArticle(id: string) {
   try {
     await prisma.article.delete({ where: { id } });
 
+    await logModerationAction(
+      "ARTICLE_DELETED",
+      id,
+      "ARTICLE",
+      `Suppression de l'article`
+    );
+
     revalidatePath("/articles");
     revalidatePath("/");
     
@@ -189,6 +197,13 @@ export async function moderateArticle(articleId: string, reason: string) {
       },
     });
 
+    await logModerationAction(
+      "ARTICLE_MODERATED",
+      articleId,
+      "ARTICLE",
+      `Article modéré. Raison : ${reason}`
+    );
+
     revalidatePath(`/articles/${articleId}`);
     return { success: true };
   } catch (error) {
@@ -211,6 +226,13 @@ export async function unmoderateArticle(articleId: string) {
         moderatedBy: null,
       },
     });
+
+    await logModerationAction(
+      "ARTICLE_UNMODERATED",
+      articleId,
+      "ARTICLE",
+      `Modération de l'article annulée`
+    );
 
     revalidatePath(`/articles/${articleId}`);
     return { success: true };

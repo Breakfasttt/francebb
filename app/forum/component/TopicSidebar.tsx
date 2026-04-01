@@ -18,7 +18,8 @@ import {
   Check,
   Eye,
   Bookmark,
-  Lock as LockIcon
+  Lock as LockIcon,
+  AlertTriangle
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -30,6 +31,7 @@ import Pagination from "@/common/components/Pagination/Pagination";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import LockButton from "@/app/forum/component/LockButton";
+import ReportModal from "@/common/components/ReportModal/ReportModal";
 
 interface TopicSidebarProps {
   topicId: string;
@@ -90,6 +92,7 @@ export default function TopicSidebar({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const [confirmConfig, setConfirmConfig] = useState<{
@@ -347,6 +350,17 @@ export default function TopicSidebar({
               </button>
             )}
 
+            {currentUserId && currentUserId !== authorId && (
+              <button 
+                onClick={() => setShowReportModal(true)}
+                className="widget-button secondary-btn" 
+                style={{ textAlign: 'left', padding: '8px 12px' }}
+              >
+                <AlertTriangle size={16} />
+                <span>Signaler</span>
+              </button>
+            )}
+
             <a 
               href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
               onClick={handleGoToLast}
@@ -499,6 +513,13 @@ export default function TopicSidebar({
 
       <MoveTopicModal isOpen={showMoveModal} onClose={() => setShowMoveModal(false)} topicId={topicId} allForums={allForums} />
       <EditTopicTitleModal isOpen={showEditTitleModal} onClose={() => setShowEditTitleModal(false)} topicId={topicId} initialTitle={topicTitle} />
+      <ReportModal 
+        isOpen={showReportModal} 
+        onClose={() => setShowReportModal(false)} 
+        targetId={topicId} 
+        targetType="TOPIC" 
+        itemTitle={topicTitle} 
+      />
     </aside>
   );
 }

@@ -11,6 +11,9 @@ import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useTransition, useEffect } from "react";
+import ProfileArticles from "@/app/profile/component/ProfileArticles";
+import ReportModal from "@/common/components/ReportModal/ReportModal";
+import "../page.css";
 
 interface ProfileSidebarProps {
   user: any;
@@ -35,6 +38,7 @@ export default function ProfileSidebar({
 }: ProfileSidebarProps) {
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
+  const [banReason, setBanReason] = useState("");
   const [showReportModal, setShowReportModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [isBlocked, setIsBlocked] = useState(isBlockedInitial);
@@ -55,9 +59,15 @@ export default function ProfileSidebar({
   };
 
   const handleToggleBan = () => {
+    if (!user.isBanned && !banReason.trim()) {
+      alert("Une raison est obligatoire pour bannir un utilisateur.");
+      return;
+    }
+
     startTransition(async () => {
-      await toggleBanUser(user.id);
+      await toggleBanUser(user.id, banReason.trim());
       setShowBanModal(false);
+      setBanReason("");
     });
   };
 
@@ -249,15 +259,44 @@ export default function ProfileSidebar({
         onClose={() => setShowBanModal(false)}
         onConfirm={handleToggleBan}
         title={user.isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
-        message={user.isBanned ? `Voulez-vous vraiment débannir ${user.name} ?` : `Voulez-vous vraiment bannir ${user.name} ?`}
-      />
+        variant={user.isBanned ? "primary" : "danger"}
+      >
+        <p style={{ marginBottom: user.isBanned ? '0' : '1.5rem' }}>
+          {user.isBanned 
+            ? `Voulez-vous vraiment débannir ${user.name} ?` 
+            : `Voulez-vous vraiment bannir ${user.name} ? Veuillez indiquer un motif.`}
+        </p>
 
-      <Modal
+        {!user.isBanned && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <label style={{ fontSize: '0.85rem', opacity: 0.7, fontWeight: 600 }}>Raison du bannissement</label>
+            <textarea
+              value={banReason}
+              onChange={(e) => setBanReason(e.target.value)}
+              placeholder="Ex: Spam, propos inappropriés..."
+              style={{
+                width: '100%',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid var(--glass-border)',
+                borderRadius: '8px',
+                padding: '0.8rem',
+                color: 'white',
+                minHeight: '80px',
+                outline: 'none',
+                resize: 'none'
+              }}
+              autoFocus
+            />
+          </div>
+        )}
+      </Modal>
+
+      <ReportModal 
         isOpen={showReportModal}
         onClose={() => setShowReportModal(false)}
-        onConfirm={() => setShowReportModal(false)}
-        title="Signaler le profil"
-        message={`Voulez-vous vraiment signaler le profil de ${user.name} ?`}
+        targetId={user.id}
+        targetType="USER"
+        itemTitle={user.name}
       />
 
       <Modal

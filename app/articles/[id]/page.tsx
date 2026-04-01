@@ -11,6 +11,7 @@ import { Edit3, ShieldAlert, Flag, Clock, Calendar, Tag as TagIcon, Eye } from "
 import ArticleReactions from "@/app/articles/[id]/component/ArticleReactions";
 import DeleteArticleButton from "@/app/articles/[id]/component/DeleteArticleButton";
 import ModerateArticleButton from "@/app/articles/[id]/component/ModerateArticleButton";
+import ReportArticleButton from "@/app/articles/[id]/component/ReportArticleButton";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
 import "./page.css";
@@ -117,9 +118,7 @@ export default async function ArticleDetailPage({
             )}
 
             {sessionUser && !isAuthor && (
-              <button className="action-button report">
-                <Flag size={18} /> Signaler l'article
-              </button>
+              <ReportArticleButton articleId={article.id} articleTitle={article.title} />
             )}
           </div>
         </aside>

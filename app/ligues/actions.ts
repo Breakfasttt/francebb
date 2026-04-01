@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
+import { logModerationAction } from "@/app/moderation/actions";
 
 async function geocode(ville: string, address: string) {
   try {
@@ -75,6 +76,13 @@ export async function createLigue(formData: FormData) {
       }
     }
   });
+
+  await logModerationAction(
+    "LIGUE_CREATED",
+    ligue.id,
+    "LIGUE",
+    `Création de la ligue : ${name} (${acronym})`
+  );
 
   revalidatePath("/ligues");
   redirect(`/ligue/${ligue.id}`);
@@ -162,6 +170,13 @@ export async function deleteLigue(id: string) {
   await prisma.ligue.delete({
     where: { id }
   });
+
+  await logModerationAction(
+    "LIGUE_DELETED",
+    id,
+    "LIGUE",
+    `Suppression de la ligue : ${ligue.name}`
+  );
 
   revalidatePath("/ligues");
   redirect("/ligues");

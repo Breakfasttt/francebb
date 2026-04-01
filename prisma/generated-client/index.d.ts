@@ -148,6 +148,16 @@ export type ArticleReaction = $Result.DefaultSelection<Prisma.$ArticleReactionPa
  * 
  */
 export type Ligue = $Result.DefaultSelection<Prisma.$LiguePayload>
+/**
+ * Model ModerationReport
+ * 
+ */
+export type ModerationReport = $Result.DefaultSelection<Prisma.$ModerationReportPayload>
+/**
+ * Model ModerationLog
+ * 
+ */
+export type ModerationLog = $Result.DefaultSelection<Prisma.$ModerationLogPayload>
 
 /**
  * Enums
@@ -572,6 +582,26 @@ export class PrismaClient<
     * ```
     */
   get ligue(): Prisma.LigueDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.moderationReport`: Exposes CRUD operations for the **ModerationReport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ModerationReports
+    * const moderationReports = await prisma.moderationReport.findMany()
+    * ```
+    */
+  get moderationReport(): Prisma.ModerationReportDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.moderationLog`: Exposes CRUD operations for the **ModerationLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ModerationLogs
+    * const moderationLogs = await prisma.moderationLog.findMany()
+    * ```
+    */
+  get moderationLog(): Prisma.ModerationLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1032,7 +1062,9 @@ export namespace Prisma {
     Article: 'Article',
     ArticleTag: 'ArticleTag',
     ArticleReaction: 'ArticleReaction',
-    Ligue: 'Ligue'
+    Ligue: 'Ligue',
+    ModerationReport: 'ModerationReport',
+    ModerationLog: 'ModerationLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1048,7 +1080,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3050,6 +3082,154 @@ export namespace Prisma {
           }
         }
       }
+      ModerationReport: {
+        payload: Prisma.$ModerationReportPayload<ExtArgs>
+        fields: Prisma.ModerationReportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ModerationReportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ModerationReportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          findFirst: {
+            args: Prisma.ModerationReportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ModerationReportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          findMany: {
+            args: Prisma.ModerationReportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>[]
+          }
+          create: {
+            args: Prisma.ModerationReportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          createMany: {
+            args: Prisma.ModerationReportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ModerationReportCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>[]
+          }
+          delete: {
+            args: Prisma.ModerationReportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          update: {
+            args: Prisma.ModerationReportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          deleteMany: {
+            args: Prisma.ModerationReportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ModerationReportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ModerationReportUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>[]
+          }
+          upsert: {
+            args: Prisma.ModerationReportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationReportPayload>
+          }
+          aggregate: {
+            args: Prisma.ModerationReportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateModerationReport>
+          }
+          groupBy: {
+            args: Prisma.ModerationReportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ModerationReportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ModerationReportCountArgs<ExtArgs>
+            result: $Utils.Optional<ModerationReportCountAggregateOutputType> | number
+          }
+        }
+      }
+      ModerationLog: {
+        payload: Prisma.$ModerationLogPayload<ExtArgs>
+        fields: Prisma.ModerationLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ModerationLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ModerationLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          findFirst: {
+            args: Prisma.ModerationLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ModerationLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          findMany: {
+            args: Prisma.ModerationLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          create: {
+            args: Prisma.ModerationLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          createMany: {
+            args: Prisma.ModerationLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ModerationLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          delete: {
+            args: Prisma.ModerationLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          update: {
+            args: Prisma.ModerationLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.ModerationLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ModerationLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ModerationLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.ModerationLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          aggregate: {
+            args: Prisma.ModerationLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateModerationLog>
+          }
+          groupBy: {
+            args: Prisma.ModerationLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ModerationLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ModerationLogCountArgs<ExtArgs>
+            result: $Utils.Optional<ModerationLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3185,6 +3365,8 @@ export namespace Prisma {
     articleTag?: ArticleTagOmit
     articleReaction?: ArticleReactionOmit
     ligue?: LigueOmit
+    moderationReport?: ModerationReportOmit
+    moderationLog?: ModerationLogOmit
   }
 
   /* Types for Logging */
@@ -3292,6 +3474,9 @@ export namespace Prisma {
     commissaireLigues: number
     blocks: number
     blockedBy: number
+    reportsMade: number
+    reportsResolved: number
+    moderationLogs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3322,6 +3507,9 @@ export namespace Prisma {
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
     blocks?: boolean | UserCountOutputTypeCountBlocksArgs
     blockedBy?: boolean | UserCountOutputTypeCountBlockedByArgs
+    reportsMade?: boolean | UserCountOutputTypeCountReportsMadeArgs
+    reportsResolved?: boolean | UserCountOutputTypeCountReportsResolvedArgs
+    moderationLogs?: boolean | UserCountOutputTypeCountModerationLogsArgs
   }
 
   // Custom InputTypes
@@ -3522,6 +3710,27 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountBlockedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BlockWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReportsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationReportWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReportsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationReportWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountModerationLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationLogWhereInput
   }
 
 
@@ -6475,6 +6684,9 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     blocks?: boolean | User$blocksArgs<ExtArgs>
     blockedBy?: boolean | User$blockedByArgs<ExtArgs>
+    reportsMade?: boolean | User$reportsMadeArgs<ExtArgs>
+    reportsResolved?: boolean | User$reportsResolvedArgs<ExtArgs>
+    moderationLogs?: boolean | User$moderationLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6564,6 +6776,9 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     blocks?: boolean | User$blocksArgs<ExtArgs>
     blockedBy?: boolean | User$blockedByArgs<ExtArgs>
+    reportsMade?: boolean | User$reportsMadeArgs<ExtArgs>
+    reportsResolved?: boolean | User$reportsResolvedArgs<ExtArgs>
+    moderationLogs?: boolean | User$moderationLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6604,6 +6819,9 @@ export namespace Prisma {
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
       blocks: Prisma.$BlockPayload<ExtArgs>[]
       blockedBy: Prisma.$BlockPayload<ExtArgs>[]
+      reportsMade: Prisma.$ModerationReportPayload<ExtArgs>[]
+      reportsResolved: Prisma.$ModerationReportPayload<ExtArgs>[]
+      moderationLogs: Prisma.$ModerationLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7043,6 +7261,9 @@ export namespace Prisma {
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     blocks<T extends User$blocksArgs<ExtArgs> = {}>(args?: Subset<T, User$blocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     blockedBy<T extends User$blockedByArgs<ExtArgs> = {}>(args?: Subset<T, User$blockedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reportsMade<T extends User$reportsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reportsResolved<T extends User$reportsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderationLogs<T extends User$moderationLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8150,6 +8371,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BlockScalarFieldEnum | BlockScalarFieldEnum[]
+  }
+
+  /**
+   * User.reportsMade
+   */
+  export type User$reportsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    where?: ModerationReportWhereInput
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    cursor?: ModerationReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModerationReportScalarFieldEnum | ModerationReportScalarFieldEnum[]
+  }
+
+  /**
+   * User.reportsResolved
+   */
+  export type User$reportsResolvedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    where?: ModerationReportWhereInput
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    cursor?: ModerationReportWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModerationReportScalarFieldEnum | ModerationReportScalarFieldEnum[]
+  }
+
+  /**
+   * User.moderationLogs
+   */
+  export type User$moderationLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    where?: ModerationLogWhereInput
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    cursor?: ModerationLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
   }
 
   /**
@@ -35486,6 +35779,2259 @@ export namespace Prisma {
 
 
   /**
+   * Model ModerationReport
+   */
+
+  export type AggregateModerationReport = {
+    _count: ModerationReportCountAggregateOutputType | null
+    _min: ModerationReportMinAggregateOutputType | null
+    _max: ModerationReportMaxAggregateOutputType | null
+  }
+
+  export type ModerationReportMinAggregateOutputType = {
+    id: string | null
+    reason: string | null
+    details: string | null
+    status: string | null
+    reporterId: string | null
+    targetId: string | null
+    targetType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    resolvedById: string | null
+    resolvedAt: Date | null
+  }
+
+  export type ModerationReportMaxAggregateOutputType = {
+    id: string | null
+    reason: string | null
+    details: string | null
+    status: string | null
+    reporterId: string | null
+    targetId: string | null
+    targetType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    resolvedById: string | null
+    resolvedAt: Date | null
+  }
+
+  export type ModerationReportCountAggregateOutputType = {
+    id: number
+    reason: number
+    details: number
+    status: number
+    reporterId: number
+    targetId: number
+    targetType: number
+    createdAt: number
+    updatedAt: number
+    resolvedById: number
+    resolvedAt: number
+    _all: number
+  }
+
+
+  export type ModerationReportMinAggregateInputType = {
+    id?: true
+    reason?: true
+    details?: true
+    status?: true
+    reporterId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+    updatedAt?: true
+    resolvedById?: true
+    resolvedAt?: true
+  }
+
+  export type ModerationReportMaxAggregateInputType = {
+    id?: true
+    reason?: true
+    details?: true
+    status?: true
+    reporterId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+    updatedAt?: true
+    resolvedById?: true
+    resolvedAt?: true
+  }
+
+  export type ModerationReportCountAggregateInputType = {
+    id?: true
+    reason?: true
+    details?: true
+    status?: true
+    reporterId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+    updatedAt?: true
+    resolvedById?: true
+    resolvedAt?: true
+    _all?: true
+  }
+
+  export type ModerationReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationReport to aggregate.
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationReports to fetch.
+     */
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ModerationReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ModerationReports
+    **/
+    _count?: true | ModerationReportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModerationReportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModerationReportMaxAggregateInputType
+  }
+
+  export type GetModerationReportAggregateType<T extends ModerationReportAggregateArgs> = {
+        [P in keyof T & keyof AggregateModerationReport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModerationReport[P]>
+      : GetScalarType<T[P], AggregateModerationReport[P]>
+  }
+
+
+
+
+  export type ModerationReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationReportWhereInput
+    orderBy?: ModerationReportOrderByWithAggregationInput | ModerationReportOrderByWithAggregationInput[]
+    by: ModerationReportScalarFieldEnum[] | ModerationReportScalarFieldEnum
+    having?: ModerationReportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModerationReportCountAggregateInputType | true
+    _min?: ModerationReportMinAggregateInputType
+    _max?: ModerationReportMaxAggregateInputType
+  }
+
+  export type ModerationReportGroupByOutputType = {
+    id: string
+    reason: string
+    details: string | null
+    status: string
+    reporterId: string
+    targetId: string
+    targetType: string
+    createdAt: Date
+    updatedAt: Date
+    resolvedById: string | null
+    resolvedAt: Date | null
+    _count: ModerationReportCountAggregateOutputType | null
+    _min: ModerationReportMinAggregateOutputType | null
+    _max: ModerationReportMaxAggregateOutputType | null
+  }
+
+  type GetModerationReportGroupByPayload<T extends ModerationReportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ModerationReportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModerationReportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModerationReportGroupByOutputType[P]>
+            : GetScalarType<T[P], ModerationReportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModerationReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    reporterId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationReport"]>
+
+  export type ModerationReportSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    reporterId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationReport"]>
+
+  export type ModerationReportSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    reporterId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationReport"]>
+
+  export type ModerationReportSelectScalar = {
+    id?: boolean
+    reason?: boolean
+    details?: boolean
+    status?: boolean
+    reporterId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    resolvedById?: boolean
+    resolvedAt?: boolean
+  }
+
+  export type ModerationReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "reason" | "details" | "status" | "reporterId" | "targetId" | "targetType" | "createdAt" | "updatedAt" | "resolvedById" | "resolvedAt", ExtArgs["result"]["moderationReport"]>
+  export type ModerationReportInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }
+  export type ModerationReportIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }
+  export type ModerationReportIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reporter?: boolean | UserDefaultArgs<ExtArgs>
+    resolvedBy?: boolean | ModerationReport$resolvedByArgs<ExtArgs>
+  }
+
+  export type $ModerationReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ModerationReport"
+    objects: {
+      reporter: Prisma.$UserPayload<ExtArgs>
+      resolvedBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      reason: string
+      details: string | null
+      status: string
+      reporterId: string
+      targetId: string
+      targetType: string
+      createdAt: Date
+      updatedAt: Date
+      resolvedById: string | null
+      resolvedAt: Date | null
+    }, ExtArgs["result"]["moderationReport"]>
+    composites: {}
+  }
+
+  type ModerationReportGetPayload<S extends boolean | null | undefined | ModerationReportDefaultArgs> = $Result.GetResult<Prisma.$ModerationReportPayload, S>
+
+  type ModerationReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ModerationReportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ModerationReportCountAggregateInputType | true
+    }
+
+  export interface ModerationReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ModerationReport'], meta: { name: 'ModerationReport' } }
+    /**
+     * Find zero or one ModerationReport that matches the filter.
+     * @param {ModerationReportFindUniqueArgs} args - Arguments to find a ModerationReport
+     * @example
+     * // Get one ModerationReport
+     * const moderationReport = await prisma.moderationReport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ModerationReportFindUniqueArgs>(args: SelectSubset<T, ModerationReportFindUniqueArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ModerationReport that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ModerationReportFindUniqueOrThrowArgs} args - Arguments to find a ModerationReport
+     * @example
+     * // Get one ModerationReport
+     * const moderationReport = await prisma.moderationReport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ModerationReportFindUniqueOrThrowArgs>(args: SelectSubset<T, ModerationReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationReport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportFindFirstArgs} args - Arguments to find a ModerationReport
+     * @example
+     * // Get one ModerationReport
+     * const moderationReport = await prisma.moderationReport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ModerationReportFindFirstArgs>(args?: SelectSubset<T, ModerationReportFindFirstArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationReport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportFindFirstOrThrowArgs} args - Arguments to find a ModerationReport
+     * @example
+     * // Get one ModerationReport
+     * const moderationReport = await prisma.moderationReport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ModerationReportFindFirstOrThrowArgs>(args?: SelectSubset<T, ModerationReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ModerationReports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ModerationReports
+     * const moderationReports = await prisma.moderationReport.findMany()
+     * 
+     * // Get first 10 ModerationReports
+     * const moderationReports = await prisma.moderationReport.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const moderationReportWithIdOnly = await prisma.moderationReport.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ModerationReportFindManyArgs>(args?: SelectSubset<T, ModerationReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ModerationReport.
+     * @param {ModerationReportCreateArgs} args - Arguments to create a ModerationReport.
+     * @example
+     * // Create one ModerationReport
+     * const ModerationReport = await prisma.moderationReport.create({
+     *   data: {
+     *     // ... data to create a ModerationReport
+     *   }
+     * })
+     * 
+     */
+    create<T extends ModerationReportCreateArgs>(args: SelectSubset<T, ModerationReportCreateArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ModerationReports.
+     * @param {ModerationReportCreateManyArgs} args - Arguments to create many ModerationReports.
+     * @example
+     * // Create many ModerationReports
+     * const moderationReport = await prisma.moderationReport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ModerationReportCreateManyArgs>(args?: SelectSubset<T, ModerationReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ModerationReports and returns the data saved in the database.
+     * @param {ModerationReportCreateManyAndReturnArgs} args - Arguments to create many ModerationReports.
+     * @example
+     * // Create many ModerationReports
+     * const moderationReport = await prisma.moderationReport.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ModerationReports and only return the `id`
+     * const moderationReportWithIdOnly = await prisma.moderationReport.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ModerationReportCreateManyAndReturnArgs>(args?: SelectSubset<T, ModerationReportCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ModerationReport.
+     * @param {ModerationReportDeleteArgs} args - Arguments to delete one ModerationReport.
+     * @example
+     * // Delete one ModerationReport
+     * const ModerationReport = await prisma.moderationReport.delete({
+     *   where: {
+     *     // ... filter to delete one ModerationReport
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ModerationReportDeleteArgs>(args: SelectSubset<T, ModerationReportDeleteArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ModerationReport.
+     * @param {ModerationReportUpdateArgs} args - Arguments to update one ModerationReport.
+     * @example
+     * // Update one ModerationReport
+     * const moderationReport = await prisma.moderationReport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ModerationReportUpdateArgs>(args: SelectSubset<T, ModerationReportUpdateArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ModerationReports.
+     * @param {ModerationReportDeleteManyArgs} args - Arguments to filter ModerationReports to delete.
+     * @example
+     * // Delete a few ModerationReports
+     * const { count } = await prisma.moderationReport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ModerationReportDeleteManyArgs>(args?: SelectSubset<T, ModerationReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ModerationReports
+     * const moderationReport = await prisma.moderationReport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ModerationReportUpdateManyArgs>(args: SelectSubset<T, ModerationReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationReports and returns the data updated in the database.
+     * @param {ModerationReportUpdateManyAndReturnArgs} args - Arguments to update many ModerationReports.
+     * @example
+     * // Update many ModerationReports
+     * const moderationReport = await prisma.moderationReport.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ModerationReports and only return the `id`
+     * const moderationReportWithIdOnly = await prisma.moderationReport.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ModerationReportUpdateManyAndReturnArgs>(args: SelectSubset<T, ModerationReportUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ModerationReport.
+     * @param {ModerationReportUpsertArgs} args - Arguments to update or create a ModerationReport.
+     * @example
+     * // Update or create a ModerationReport
+     * const moderationReport = await prisma.moderationReport.upsert({
+     *   create: {
+     *     // ... data to create a ModerationReport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ModerationReport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ModerationReportUpsertArgs>(args: SelectSubset<T, ModerationReportUpsertArgs<ExtArgs>>): Prisma__ModerationReportClient<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ModerationReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportCountArgs} args - Arguments to filter ModerationReports to count.
+     * @example
+     * // Count the number of ModerationReports
+     * const count = await prisma.moderationReport.count({
+     *   where: {
+     *     // ... the filter for the ModerationReports we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModerationReportCountArgs>(
+      args?: Subset<T, ModerationReportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModerationReportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ModerationReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModerationReportAggregateArgs>(args: Subset<T, ModerationReportAggregateArgs>): Prisma.PrismaPromise<GetModerationReportAggregateType<T>>
+
+    /**
+     * Group by ModerationReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationReportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModerationReportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModerationReportGroupByArgs['orderBy'] }
+        : { orderBy?: ModerationReportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModerationReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModerationReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ModerationReport model
+   */
+  readonly fields: ModerationReportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ModerationReport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ModerationReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    reporter<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    resolvedBy<T extends ModerationReport$resolvedByArgs<ExtArgs> = {}>(args?: Subset<T, ModerationReport$resolvedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ModerationReport model
+   */
+  interface ModerationReportFieldRefs {
+    readonly id: FieldRef<"ModerationReport", 'String'>
+    readonly reason: FieldRef<"ModerationReport", 'String'>
+    readonly details: FieldRef<"ModerationReport", 'String'>
+    readonly status: FieldRef<"ModerationReport", 'String'>
+    readonly reporterId: FieldRef<"ModerationReport", 'String'>
+    readonly targetId: FieldRef<"ModerationReport", 'String'>
+    readonly targetType: FieldRef<"ModerationReport", 'String'>
+    readonly createdAt: FieldRef<"ModerationReport", 'DateTime'>
+    readonly updatedAt: FieldRef<"ModerationReport", 'DateTime'>
+    readonly resolvedById: FieldRef<"ModerationReport", 'String'>
+    readonly resolvedAt: FieldRef<"ModerationReport", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ModerationReport findUnique
+   */
+  export type ModerationReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationReport to fetch.
+     */
+    where: ModerationReportWhereUniqueInput
+  }
+
+  /**
+   * ModerationReport findUniqueOrThrow
+   */
+  export type ModerationReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationReport to fetch.
+     */
+    where: ModerationReportWhereUniqueInput
+  }
+
+  /**
+   * ModerationReport findFirst
+   */
+  export type ModerationReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationReport to fetch.
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationReports to fetch.
+     */
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationReports.
+     */
+    cursor?: ModerationReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationReports.
+     */
+    distinct?: ModerationReportScalarFieldEnum | ModerationReportScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationReport findFirstOrThrow
+   */
+  export type ModerationReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationReport to fetch.
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationReports to fetch.
+     */
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationReports.
+     */
+    cursor?: ModerationReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationReports.
+     */
+    distinct?: ModerationReportScalarFieldEnum | ModerationReportScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationReport findMany
+   */
+  export type ModerationReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationReports to fetch.
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationReports to fetch.
+     */
+    orderBy?: ModerationReportOrderByWithRelationInput | ModerationReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ModerationReports.
+     */
+    cursor?: ModerationReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationReports.
+     */
+    distinct?: ModerationReportScalarFieldEnum | ModerationReportScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationReport create
+   */
+  export type ModerationReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ModerationReport.
+     */
+    data: XOR<ModerationReportCreateInput, ModerationReportUncheckedCreateInput>
+  }
+
+  /**
+   * ModerationReport createMany
+   */
+  export type ModerationReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ModerationReports.
+     */
+    data: ModerationReportCreateManyInput | ModerationReportCreateManyInput[]
+  }
+
+  /**
+   * ModerationReport createManyAndReturn
+   */
+  export type ModerationReportCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * The data used to create many ModerationReports.
+     */
+    data: ModerationReportCreateManyInput | ModerationReportCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationReport update
+   */
+  export type ModerationReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ModerationReport.
+     */
+    data: XOR<ModerationReportUpdateInput, ModerationReportUncheckedUpdateInput>
+    /**
+     * Choose, which ModerationReport to update.
+     */
+    where: ModerationReportWhereUniqueInput
+  }
+
+  /**
+   * ModerationReport updateMany
+   */
+  export type ModerationReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ModerationReports.
+     */
+    data: XOR<ModerationReportUpdateManyMutationInput, ModerationReportUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationReports to update
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * Limit how many ModerationReports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationReport updateManyAndReturn
+   */
+  export type ModerationReportUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * The data used to update ModerationReports.
+     */
+    data: XOR<ModerationReportUpdateManyMutationInput, ModerationReportUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationReports to update
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * Limit how many ModerationReports to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationReport upsert
+   */
+  export type ModerationReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ModerationReport to update in case it exists.
+     */
+    where: ModerationReportWhereUniqueInput
+    /**
+     * In case the ModerationReport found by the `where` argument doesn't exist, create a new ModerationReport with this data.
+     */
+    create: XOR<ModerationReportCreateInput, ModerationReportUncheckedCreateInput>
+    /**
+     * In case the ModerationReport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ModerationReportUpdateInput, ModerationReportUncheckedUpdateInput>
+  }
+
+  /**
+   * ModerationReport delete
+   */
+  export type ModerationReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+    /**
+     * Filter which ModerationReport to delete.
+     */
+    where: ModerationReportWhereUniqueInput
+  }
+
+  /**
+   * ModerationReport deleteMany
+   */
+  export type ModerationReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationReports to delete
+     */
+    where?: ModerationReportWhereInput
+    /**
+     * Limit how many ModerationReports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationReport.resolvedBy
+   */
+  export type ModerationReport$resolvedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ModerationReport without action
+   */
+  export type ModerationReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationReport
+     */
+    select?: ModerationReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationReport
+     */
+    omit?: ModerationReportOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationReportInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ModerationLog
+   */
+
+  export type AggregateModerationLog = {
+    _count: ModerationLogCountAggregateOutputType | null
+    _min: ModerationLogMinAggregateOutputType | null
+    _max: ModerationLogMaxAggregateOutputType | null
+  }
+
+  export type ModerationLogMinAggregateOutputType = {
+    id: string | null
+    action: string | null
+    details: string | null
+    moderatorId: string | null
+    targetId: string | null
+    targetType: string | null
+    createdAt: Date | null
+  }
+
+  export type ModerationLogMaxAggregateOutputType = {
+    id: string | null
+    action: string | null
+    details: string | null
+    moderatorId: string | null
+    targetId: string | null
+    targetType: string | null
+    createdAt: Date | null
+  }
+
+  export type ModerationLogCountAggregateOutputType = {
+    id: number
+    action: number
+    details: number
+    moderatorId: number
+    targetId: number
+    targetType: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ModerationLogMinAggregateInputType = {
+    id?: true
+    action?: true
+    details?: true
+    moderatorId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+  }
+
+  export type ModerationLogMaxAggregateInputType = {
+    id?: true
+    action?: true
+    details?: true
+    moderatorId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+  }
+
+  export type ModerationLogCountAggregateInputType = {
+    id?: true
+    action?: true
+    details?: true
+    moderatorId?: true
+    targetId?: true
+    targetType?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ModerationLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationLog to aggregate.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ModerationLogs
+    **/
+    _count?: true | ModerationLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModerationLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModerationLogMaxAggregateInputType
+  }
+
+  export type GetModerationLogAggregateType<T extends ModerationLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateModerationLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModerationLog[P]>
+      : GetScalarType<T[P], AggregateModerationLog[P]>
+  }
+
+
+
+
+  export type ModerationLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationLogWhereInput
+    orderBy?: ModerationLogOrderByWithAggregationInput | ModerationLogOrderByWithAggregationInput[]
+    by: ModerationLogScalarFieldEnum[] | ModerationLogScalarFieldEnum
+    having?: ModerationLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModerationLogCountAggregateInputType | true
+    _min?: ModerationLogMinAggregateInputType
+    _max?: ModerationLogMaxAggregateInputType
+  }
+
+  export type ModerationLogGroupByOutputType = {
+    id: string
+    action: string
+    details: string | null
+    moderatorId: string
+    targetId: string | null
+    targetType: string | null
+    createdAt: Date
+    _count: ModerationLogCountAggregateOutputType | null
+    _min: ModerationLogMinAggregateOutputType | null
+    _max: ModerationLogMaxAggregateOutputType | null
+  }
+
+  type GetModerationLogGroupByPayload<T extends ModerationLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ModerationLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModerationLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModerationLogGroupByOutputType[P]>
+            : GetScalarType<T[P], ModerationLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModerationLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    action?: boolean
+    details?: boolean
+    moderatorId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    action?: boolean
+    details?: boolean
+    moderatorId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    action?: boolean
+    details?: boolean
+    moderatorId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectScalar = {
+    id?: boolean
+    action?: boolean
+    details?: boolean
+    moderatorId?: boolean
+    targetId?: boolean
+    targetType?: boolean
+    createdAt?: boolean
+  }
+
+  export type ModerationLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "action" | "details" | "moderatorId" | "targetId" | "targetType" | "createdAt", ExtArgs["result"]["moderationLog"]>
+  export type ModerationLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ModerationLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ModerationLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ModerationLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ModerationLog"
+    objects: {
+      moderator: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      action: string
+      details: string | null
+      moderatorId: string
+      targetId: string | null
+      targetType: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["moderationLog"]>
+    composites: {}
+  }
+
+  type ModerationLogGetPayload<S extends boolean | null | undefined | ModerationLogDefaultArgs> = $Result.GetResult<Prisma.$ModerationLogPayload, S>
+
+  type ModerationLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ModerationLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ModerationLogCountAggregateInputType | true
+    }
+
+  export interface ModerationLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ModerationLog'], meta: { name: 'ModerationLog' } }
+    /**
+     * Find zero or one ModerationLog that matches the filter.
+     * @param {ModerationLogFindUniqueArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ModerationLogFindUniqueArgs>(args: SelectSubset<T, ModerationLogFindUniqueArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ModerationLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ModerationLogFindUniqueOrThrowArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ModerationLogFindUniqueOrThrowArgs>(args: SelectSubset<T, ModerationLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindFirstArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ModerationLogFindFirstArgs>(args?: SelectSubset<T, ModerationLogFindFirstArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindFirstOrThrowArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ModerationLogFindFirstOrThrowArgs>(args?: SelectSubset<T, ModerationLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ModerationLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ModerationLogs
+     * const moderationLogs = await prisma.moderationLog.findMany()
+     * 
+     * // Get first 10 ModerationLogs
+     * const moderationLogs = await prisma.moderationLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ModerationLogFindManyArgs>(args?: SelectSubset<T, ModerationLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ModerationLog.
+     * @param {ModerationLogCreateArgs} args - Arguments to create a ModerationLog.
+     * @example
+     * // Create one ModerationLog
+     * const ModerationLog = await prisma.moderationLog.create({
+     *   data: {
+     *     // ... data to create a ModerationLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends ModerationLogCreateArgs>(args: SelectSubset<T, ModerationLogCreateArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ModerationLogs.
+     * @param {ModerationLogCreateManyArgs} args - Arguments to create many ModerationLogs.
+     * @example
+     * // Create many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ModerationLogCreateManyArgs>(args?: SelectSubset<T, ModerationLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ModerationLogs and returns the data saved in the database.
+     * @param {ModerationLogCreateManyAndReturnArgs} args - Arguments to create many ModerationLogs.
+     * @example
+     * // Create many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ModerationLogs and only return the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ModerationLogCreateManyAndReturnArgs>(args?: SelectSubset<T, ModerationLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ModerationLog.
+     * @param {ModerationLogDeleteArgs} args - Arguments to delete one ModerationLog.
+     * @example
+     * // Delete one ModerationLog
+     * const ModerationLog = await prisma.moderationLog.delete({
+     *   where: {
+     *     // ... filter to delete one ModerationLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ModerationLogDeleteArgs>(args: SelectSubset<T, ModerationLogDeleteArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ModerationLog.
+     * @param {ModerationLogUpdateArgs} args - Arguments to update one ModerationLog.
+     * @example
+     * // Update one ModerationLog
+     * const moderationLog = await prisma.moderationLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ModerationLogUpdateArgs>(args: SelectSubset<T, ModerationLogUpdateArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ModerationLogs.
+     * @param {ModerationLogDeleteManyArgs} args - Arguments to filter ModerationLogs to delete.
+     * @example
+     * // Delete a few ModerationLogs
+     * const { count } = await prisma.moderationLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ModerationLogDeleteManyArgs>(args?: SelectSubset<T, ModerationLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ModerationLogUpdateManyArgs>(args: SelectSubset<T, ModerationLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationLogs and returns the data updated in the database.
+     * @param {ModerationLogUpdateManyAndReturnArgs} args - Arguments to update many ModerationLogs.
+     * @example
+     * // Update many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ModerationLogs and only return the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ModerationLogUpdateManyAndReturnArgs>(args: SelectSubset<T, ModerationLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ModerationLog.
+     * @param {ModerationLogUpsertArgs} args - Arguments to update or create a ModerationLog.
+     * @example
+     * // Update or create a ModerationLog
+     * const moderationLog = await prisma.moderationLog.upsert({
+     *   create: {
+     *     // ... data to create a ModerationLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ModerationLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ModerationLogUpsertArgs>(args: SelectSubset<T, ModerationLogUpsertArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ModerationLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogCountArgs} args - Arguments to filter ModerationLogs to count.
+     * @example
+     * // Count the number of ModerationLogs
+     * const count = await prisma.moderationLog.count({
+     *   where: {
+     *     // ... the filter for the ModerationLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModerationLogCountArgs>(
+      args?: Subset<T, ModerationLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModerationLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ModerationLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModerationLogAggregateArgs>(args: Subset<T, ModerationLogAggregateArgs>): Prisma.PrismaPromise<GetModerationLogAggregateType<T>>
+
+    /**
+     * Group by ModerationLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModerationLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModerationLogGroupByArgs['orderBy'] }
+        : { orderBy?: ModerationLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModerationLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModerationLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ModerationLog model
+   */
+  readonly fields: ModerationLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ModerationLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ModerationLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    moderator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ModerationLog model
+   */
+  interface ModerationLogFieldRefs {
+    readonly id: FieldRef<"ModerationLog", 'String'>
+    readonly action: FieldRef<"ModerationLog", 'String'>
+    readonly details: FieldRef<"ModerationLog", 'String'>
+    readonly moderatorId: FieldRef<"ModerationLog", 'String'>
+    readonly targetId: FieldRef<"ModerationLog", 'String'>
+    readonly targetType: FieldRef<"ModerationLog", 'String'>
+    readonly createdAt: FieldRef<"ModerationLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ModerationLog findUnique
+   */
+  export type ModerationLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog findUniqueOrThrow
+   */
+  export type ModerationLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog findFirst
+   */
+  export type ModerationLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog findFirstOrThrow
+   */
+  export type ModerationLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog findMany
+   */
+  export type ModerationLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLogs to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog create
+   */
+  export type ModerationLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ModerationLog.
+     */
+    data: XOR<ModerationLogCreateInput, ModerationLogUncheckedCreateInput>
+  }
+
+  /**
+   * ModerationLog createMany
+   */
+  export type ModerationLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ModerationLogs.
+     */
+    data: ModerationLogCreateManyInput | ModerationLogCreateManyInput[]
+  }
+
+  /**
+   * ModerationLog createManyAndReturn
+   */
+  export type ModerationLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many ModerationLogs.
+     */
+    data: ModerationLogCreateManyInput | ModerationLogCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationLog update
+   */
+  export type ModerationLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ModerationLog.
+     */
+    data: XOR<ModerationLogUpdateInput, ModerationLogUncheckedUpdateInput>
+    /**
+     * Choose, which ModerationLog to update.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog updateMany
+   */
+  export type ModerationLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ModerationLogs.
+     */
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationLogs to update
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationLog updateManyAndReturn
+   */
+  export type ModerationLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * The data used to update ModerationLogs.
+     */
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationLogs to update
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationLog upsert
+   */
+  export type ModerationLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ModerationLog to update in case it exists.
+     */
+    where: ModerationLogWhereUniqueInput
+    /**
+     * In case the ModerationLog found by the `where` argument doesn't exist, create a new ModerationLog with this data.
+     */
+    create: XOR<ModerationLogCreateInput, ModerationLogUncheckedCreateInput>
+    /**
+     * In case the ModerationLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ModerationLogUpdateInput, ModerationLogUncheckedUpdateInput>
+  }
+
+  /**
+   * ModerationLog delete
+   */
+  export type ModerationLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter which ModerationLog to delete.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog deleteMany
+   */
+  export type ModerationLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationLogs to delete
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationLog without action
+   */
+  export type ModerationLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -35872,6 +38418,36 @@ export namespace Prisma {
   export type LigueScalarFieldEnum = (typeof LigueScalarFieldEnum)[keyof typeof LigueScalarFieldEnum]
 
 
+  export const ModerationReportScalarFieldEnum: {
+    id: 'id',
+    reason: 'reason',
+    details: 'details',
+    status: 'status',
+    reporterId: 'reporterId',
+    targetId: 'targetId',
+    targetType: 'targetType',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    resolvedById: 'resolvedById',
+    resolvedAt: 'resolvedAt'
+  };
+
+  export type ModerationReportScalarFieldEnum = (typeof ModerationReportScalarFieldEnum)[keyof typeof ModerationReportScalarFieldEnum]
+
+
+  export const ModerationLogScalarFieldEnum: {
+    id: 'id',
+    action: 'action',
+    details: 'details',
+    moderatorId: 'moderatorId',
+    targetId: 'targetId',
+    targetType: 'targetType',
+    createdAt: 'createdAt'
+  };
+
+  export type ModerationLogScalarFieldEnum = (typeof ModerationLogScalarFieldEnum)[keyof typeof ModerationLogScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -36135,6 +38711,9 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     blocks?: BlockListRelationFilter
     blockedBy?: BlockListRelationFilter
+    reportsMade?: ModerationReportListRelationFilter
+    reportsResolved?: ModerationReportListRelationFilter
+    moderationLogs?: ModerationLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -36181,6 +38760,9 @@ export namespace Prisma {
     commissaireLigues?: LigueOrderByRelationAggregateInput
     blocks?: BlockOrderByRelationAggregateInput
     blockedBy?: BlockOrderByRelationAggregateInput
+    reportsMade?: ModerationReportOrderByRelationAggregateInput
+    reportsResolved?: ModerationReportOrderByRelationAggregateInput
+    moderationLogs?: ModerationLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -36230,6 +38812,9 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     blocks?: BlockListRelationFilter
     blockedBy?: BlockListRelationFilter
+    reportsMade?: ModerationReportListRelationFilter
+    reportsResolved?: ModerationReportListRelationFilter
+    moderationLogs?: ModerationLogListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -38052,6 +40637,159 @@ export namespace Prisma {
     lng?: FloatNullableWithAggregatesFilter<"Ligue"> | number | null
   }
 
+  export type ModerationReportWhereInput = {
+    AND?: ModerationReportWhereInput | ModerationReportWhereInput[]
+    OR?: ModerationReportWhereInput[]
+    NOT?: ModerationReportWhereInput | ModerationReportWhereInput[]
+    id?: StringFilter<"ModerationReport"> | string
+    reason?: StringFilter<"ModerationReport"> | string
+    details?: StringNullableFilter<"ModerationReport"> | string | null
+    status?: StringFilter<"ModerationReport"> | string
+    reporterId?: StringFilter<"ModerationReport"> | string
+    targetId?: StringFilter<"ModerationReport"> | string
+    targetType?: StringFilter<"ModerationReport"> | string
+    createdAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    updatedAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    resolvedById?: StringNullableFilter<"ModerationReport"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ModerationReport"> | Date | string | null
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    resolvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ModerationReportOrderByWithRelationInput = {
+    id?: SortOrder
+    reason?: SortOrder
+    details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reporterId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    resolvedById?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    reporter?: UserOrderByWithRelationInput
+    resolvedBy?: UserOrderByWithRelationInput
+  }
+
+  export type ModerationReportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ModerationReportWhereInput | ModerationReportWhereInput[]
+    OR?: ModerationReportWhereInput[]
+    NOT?: ModerationReportWhereInput | ModerationReportWhereInput[]
+    reason?: StringFilter<"ModerationReport"> | string
+    details?: StringNullableFilter<"ModerationReport"> | string | null
+    status?: StringFilter<"ModerationReport"> | string
+    reporterId?: StringFilter<"ModerationReport"> | string
+    targetId?: StringFilter<"ModerationReport"> | string
+    targetType?: StringFilter<"ModerationReport"> | string
+    createdAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    updatedAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    resolvedById?: StringNullableFilter<"ModerationReport"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ModerationReport"> | Date | string | null
+    reporter?: XOR<UserScalarRelationFilter, UserWhereInput>
+    resolvedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type ModerationReportOrderByWithAggregationInput = {
+    id?: SortOrder
+    reason?: SortOrder
+    details?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reporterId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    resolvedById?: SortOrderInput | SortOrder
+    resolvedAt?: SortOrderInput | SortOrder
+    _count?: ModerationReportCountOrderByAggregateInput
+    _max?: ModerationReportMaxOrderByAggregateInput
+    _min?: ModerationReportMinOrderByAggregateInput
+  }
+
+  export type ModerationReportScalarWhereWithAggregatesInput = {
+    AND?: ModerationReportScalarWhereWithAggregatesInput | ModerationReportScalarWhereWithAggregatesInput[]
+    OR?: ModerationReportScalarWhereWithAggregatesInput[]
+    NOT?: ModerationReportScalarWhereWithAggregatesInput | ModerationReportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ModerationReport"> | string
+    reason?: StringWithAggregatesFilter<"ModerationReport"> | string
+    details?: StringNullableWithAggregatesFilter<"ModerationReport"> | string | null
+    status?: StringWithAggregatesFilter<"ModerationReport"> | string
+    reporterId?: StringWithAggregatesFilter<"ModerationReport"> | string
+    targetId?: StringWithAggregatesFilter<"ModerationReport"> | string
+    targetType?: StringWithAggregatesFilter<"ModerationReport"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ModerationReport"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ModerationReport"> | Date | string
+    resolvedById?: StringNullableWithAggregatesFilter<"ModerationReport"> | string | null
+    resolvedAt?: DateTimeNullableWithAggregatesFilter<"ModerationReport"> | Date | string | null
+  }
+
+  export type ModerationLogWhereInput = {
+    AND?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    OR?: ModerationLogWhereInput[]
+    NOT?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    id?: StringFilter<"ModerationLog"> | string
+    action?: StringFilter<"ModerationLog"> | string
+    details?: StringNullableFilter<"ModerationLog"> | string | null
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetId?: StringNullableFilter<"ModerationLog"> | string | null
+    targetType?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+    moderator?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ModerationLogOrderByWithRelationInput = {
+    id?: SortOrder
+    action?: SortOrder
+    details?: SortOrderInput | SortOrder
+    moderatorId?: SortOrder
+    targetId?: SortOrderInput | SortOrder
+    targetType?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    moderator?: UserOrderByWithRelationInput
+  }
+
+  export type ModerationLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    OR?: ModerationLogWhereInput[]
+    NOT?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    action?: StringFilter<"ModerationLog"> | string
+    details?: StringNullableFilter<"ModerationLog"> | string | null
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetId?: StringNullableFilter<"ModerationLog"> | string | null
+    targetType?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+    moderator?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ModerationLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    action?: SortOrder
+    details?: SortOrderInput | SortOrder
+    moderatorId?: SortOrder
+    targetId?: SortOrderInput | SortOrder
+    targetType?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ModerationLogCountOrderByAggregateInput
+    _max?: ModerationLogMaxOrderByAggregateInput
+    _min?: ModerationLogMinOrderByAggregateInput
+  }
+
+  export type ModerationLogScalarWhereWithAggregatesInput = {
+    AND?: ModerationLogScalarWhereWithAggregatesInput | ModerationLogScalarWhereWithAggregatesInput[]
+    OR?: ModerationLogScalarWhereWithAggregatesInput[]
+    NOT?: ModerationLogScalarWhereWithAggregatesInput | ModerationLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ModerationLog"> | string
+    action?: StringWithAggregatesFilter<"ModerationLog"> | string
+    details?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    moderatorId?: StringWithAggregatesFilter<"ModerationLog"> | string
+    targetId?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    targetType?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ModerationLog"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -38247,6 +40985,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -38292,6 +41033,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUpdateInput = {
@@ -38337,6 +41081,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -38382,6 +41129,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -40276,6 +43026,171 @@ export namespace Prisma {
     lng?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
+  export type ModerationReportCreateInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    reporter: UserCreateNestedOneWithoutReportsMadeInput
+    resolvedBy?: UserCreateNestedOneWithoutReportsResolvedInput
+  }
+
+  export type ModerationReportUncheckedCreateInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    reporterId: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationReportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reporter?: UserUpdateOneRequiredWithoutReportsMadeNestedInput
+    resolvedBy?: UserUpdateOneWithoutReportsResolvedNestedInput
+  }
+
+  export type ModerationReportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reporterId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationReportCreateManyInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    reporterId: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationReportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationReportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reporterId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationLogCreateInput = {
+    id?: string
+    action: string
+    details?: string | null
+    targetId?: string | null
+    targetType?: string | null
+    createdAt?: Date | string
+    moderator: UserCreateNestedOneWithoutModerationLogsInput
+  }
+
+  export type ModerationLogUncheckedCreateInput = {
+    id?: string
+    action: string
+    details?: string | null
+    moderatorId: string
+    targetId?: string | null
+    targetType?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneRequiredWithoutModerationLogsNestedInput
+  }
+
+  export type ModerationLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogCreateManyInput = {
+    id?: string
+    action: string
+    details?: string | null
+    moderatorId: string
+    targetId?: string | null
+    targetType?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -40614,6 +43529,18 @@ export namespace Prisma {
     none?: BlockWhereInput
   }
 
+  export type ModerationReportListRelationFilter = {
+    every?: ModerationReportWhereInput
+    some?: ModerationReportWhereInput
+    none?: ModerationReportWhereInput
+  }
+
+  export type ModerationLogListRelationFilter = {
+    every?: ModerationLogWhereInput
+    some?: ModerationLogWhereInput
+    none?: ModerationLogWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -40687,6 +43614,14 @@ export namespace Prisma {
   }
 
   export type BlockOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ModerationReportOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ModerationLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -41865,6 +44800,78 @@ export namespace Prisma {
     lng?: SortOrder
   }
 
+  export type ModerationReportCountOrderByAggregateInput = {
+    id?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    reporterId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type ModerationReportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    reporterId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type ModerationReportMinOrderByAggregateInput = {
+    id?: SortOrder
+    reason?: SortOrder
+    details?: SortOrder
+    status?: SortOrder
+    reporterId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    resolvedById?: SortOrder
+    resolvedAt?: SortOrder
+  }
+
+  export type ModerationLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    moderatorId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModerationLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    moderatorId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModerationLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    moderatorId?: SortOrder
+    targetId?: SortOrder
+    targetType?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -42105,6 +45112,27 @@ export namespace Prisma {
     connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
   }
 
+  export type ModerationReportCreateNestedManyWithoutReporterInput = {
+    create?: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput> | ModerationReportCreateWithoutReporterInput[] | ModerationReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutReporterInput | ModerationReportCreateOrConnectWithoutReporterInput[]
+    createMany?: ModerationReportCreateManyReporterInputEnvelope
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+  }
+
+  export type ModerationReportCreateNestedManyWithoutResolvedByInput = {
+    create?: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput> | ModerationReportCreateWithoutResolvedByInput[] | ModerationReportUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutResolvedByInput | ModerationReportCreateOrConnectWithoutResolvedByInput[]
+    createMany?: ModerationReportCreateManyResolvedByInputEnvelope
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+  }
+
+  export type ModerationLogCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -42289,6 +45317,27 @@ export namespace Prisma {
     connectOrCreate?: BlockCreateOrConnectWithoutBlockedInput | BlockCreateOrConnectWithoutBlockedInput[]
     createMany?: BlockCreateManyBlockedInputEnvelope
     connect?: BlockWhereUniqueInput | BlockWhereUniqueInput[]
+  }
+
+  export type ModerationReportUncheckedCreateNestedManyWithoutReporterInput = {
+    create?: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput> | ModerationReportCreateWithoutReporterInput[] | ModerationReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutReporterInput | ModerationReportCreateOrConnectWithoutReporterInput[]
+    createMany?: ModerationReportCreateManyReporterInputEnvelope
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+  }
+
+  export type ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput = {
+    create?: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput> | ModerationReportCreateWithoutResolvedByInput[] | ModerationReportUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutResolvedByInput | ModerationReportCreateOrConnectWithoutResolvedByInput[]
+    createMany?: ModerationReportCreateManyResolvedByInputEnvelope
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+  }
+
+  export type ModerationLogUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -42684,6 +45733,48 @@ export namespace Prisma {
     deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
   }
 
+  export type ModerationReportUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput> | ModerationReportCreateWithoutReporterInput[] | ModerationReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutReporterInput | ModerationReportCreateOrConnectWithoutReporterInput[]
+    upsert?: ModerationReportUpsertWithWhereUniqueWithoutReporterInput | ModerationReportUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: ModerationReportCreateManyReporterInputEnvelope
+    set?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    disconnect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    delete?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    update?: ModerationReportUpdateWithWhereUniqueWithoutReporterInput | ModerationReportUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: ModerationReportUpdateManyWithWhereWithoutReporterInput | ModerationReportUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+  }
+
+  export type ModerationReportUpdateManyWithoutResolvedByNestedInput = {
+    create?: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput> | ModerationReportCreateWithoutResolvedByInput[] | ModerationReportUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutResolvedByInput | ModerationReportCreateOrConnectWithoutResolvedByInput[]
+    upsert?: ModerationReportUpsertWithWhereUniqueWithoutResolvedByInput | ModerationReportUpsertWithWhereUniqueWithoutResolvedByInput[]
+    createMany?: ModerationReportCreateManyResolvedByInputEnvelope
+    set?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    disconnect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    delete?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    update?: ModerationReportUpdateWithWhereUniqueWithoutResolvedByInput | ModerationReportUpdateWithWhereUniqueWithoutResolvedByInput[]
+    updateMany?: ModerationReportUpdateManyWithWhereWithoutResolvedByInput | ModerationReportUpdateManyWithWhereWithoutResolvedByInput[]
+    deleteMany?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+  }
+
+  export type ModerationLogUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutModeratorInput | ModerationLogUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutModeratorInput | ModerationLogUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutModeratorInput | ModerationLogUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -43057,6 +46148,48 @@ export namespace Prisma {
     update?: BlockUpdateWithWhereUniqueWithoutBlockedInput | BlockUpdateWithWhereUniqueWithoutBlockedInput[]
     updateMany?: BlockUpdateManyWithWhereWithoutBlockedInput | BlockUpdateManyWithWhereWithoutBlockedInput[]
     deleteMany?: BlockScalarWhereInput | BlockScalarWhereInput[]
+  }
+
+  export type ModerationReportUncheckedUpdateManyWithoutReporterNestedInput = {
+    create?: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput> | ModerationReportCreateWithoutReporterInput[] | ModerationReportUncheckedCreateWithoutReporterInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutReporterInput | ModerationReportCreateOrConnectWithoutReporterInput[]
+    upsert?: ModerationReportUpsertWithWhereUniqueWithoutReporterInput | ModerationReportUpsertWithWhereUniqueWithoutReporterInput[]
+    createMany?: ModerationReportCreateManyReporterInputEnvelope
+    set?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    disconnect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    delete?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    update?: ModerationReportUpdateWithWhereUniqueWithoutReporterInput | ModerationReportUpdateWithWhereUniqueWithoutReporterInput[]
+    updateMany?: ModerationReportUpdateManyWithWhereWithoutReporterInput | ModerationReportUpdateManyWithWhereWithoutReporterInput[]
+    deleteMany?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+  }
+
+  export type ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput = {
+    create?: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput> | ModerationReportCreateWithoutResolvedByInput[] | ModerationReportUncheckedCreateWithoutResolvedByInput[]
+    connectOrCreate?: ModerationReportCreateOrConnectWithoutResolvedByInput | ModerationReportCreateOrConnectWithoutResolvedByInput[]
+    upsert?: ModerationReportUpsertWithWhereUniqueWithoutResolvedByInput | ModerationReportUpsertWithWhereUniqueWithoutResolvedByInput[]
+    createMany?: ModerationReportCreateManyResolvedByInputEnvelope
+    set?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    disconnect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    delete?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    connect?: ModerationReportWhereUniqueInput | ModerationReportWhereUniqueInput[]
+    update?: ModerationReportUpdateWithWhereUniqueWithoutResolvedByInput | ModerationReportUpdateWithWhereUniqueWithoutResolvedByInput[]
+    updateMany?: ModerationReportUpdateManyWithWhereWithoutResolvedByInput | ModerationReportUpdateManyWithWhereWithoutResolvedByInput[]
+    deleteMany?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutModeratorInput | ModerationLogUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutModeratorInput | ModerationLogUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutModeratorInput | ModerationLogUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBlocksInput = {
@@ -44579,6 +47712,50 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutReportsMadeInput = {
+    create?: XOR<UserCreateWithoutReportsMadeInput, UserUncheckedCreateWithoutReportsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsMadeInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReportsResolvedInput = {
+    create?: XOR<UserCreateWithoutReportsResolvedInput, UserUncheckedCreateWithoutReportsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsResolvedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutReportsMadeNestedInput = {
+    create?: XOR<UserCreateWithoutReportsMadeInput, UserUncheckedCreateWithoutReportsMadeInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsMadeInput
+    upsert?: UserUpsertWithoutReportsMadeInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReportsMadeInput, UserUpdateWithoutReportsMadeInput>, UserUncheckedUpdateWithoutReportsMadeInput>
+  }
+
+  export type UserUpdateOneWithoutReportsResolvedNestedInput = {
+    create?: XOR<UserCreateWithoutReportsResolvedInput, UserUncheckedCreateWithoutReportsResolvedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReportsResolvedInput
+    upsert?: UserUpsertWithoutReportsResolvedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReportsResolvedInput, UserUpdateWithoutReportsResolvedInput>, UserUncheckedUpdateWithoutReportsResolvedInput>
+  }
+
+  export type UserCreateNestedOneWithoutModerationLogsInput = {
+    create?: XOR<UserCreateWithoutModerationLogsInput, UserUncheckedCreateWithoutModerationLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModerationLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutModerationLogsNestedInput = {
+    create?: XOR<UserCreateWithoutModerationLogsInput, UserUncheckedCreateWithoutModerationLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModerationLogsInput
+    upsert?: UserUpsertWithoutModerationLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModerationLogsInput, UserUpdateWithoutModerationLogsInput>, UserUncheckedUpdateWithoutModerationLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -44872,6 +48049,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -44916,6 +48096,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -44976,6 +48159,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -45020,6 +48206,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -45064,6 +48253,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -45108,6 +48300,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -45168,6 +48363,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -45212,6 +48410,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -46200,6 +49401,103 @@ export namespace Prisma {
     data: BlockCreateManyBlockedInput | BlockCreateManyBlockedInput[]
   }
 
+  export type ModerationReportCreateWithoutReporterInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    resolvedBy?: UserCreateNestedOneWithoutReportsResolvedInput
+  }
+
+  export type ModerationReportUncheckedCreateWithoutReporterInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationReportCreateOrConnectWithoutReporterInput = {
+    where: ModerationReportWhereUniqueInput
+    create: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput>
+  }
+
+  export type ModerationReportCreateManyReporterInputEnvelope = {
+    data: ModerationReportCreateManyReporterInput | ModerationReportCreateManyReporterInput[]
+  }
+
+  export type ModerationReportCreateWithoutResolvedByInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+    reporter: UserCreateNestedOneWithoutReportsMadeInput
+  }
+
+  export type ModerationReportUncheckedCreateWithoutResolvedByInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    reporterId: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationReportCreateOrConnectWithoutResolvedByInput = {
+    where: ModerationReportWhereUniqueInput
+    create: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput>
+  }
+
+  export type ModerationReportCreateManyResolvedByInputEnvelope = {
+    data: ModerationReportCreateManyResolvedByInput | ModerationReportCreateManyResolvedByInput[]
+  }
+
+  export type ModerationLogCreateWithoutModeratorInput = {
+    id?: string
+    action: string
+    details?: string | null
+    targetId?: string | null
+    targetType?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    action: string
+    details?: string | null
+    targetId?: string | null
+    targetType?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogCreateOrConnectWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    create: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ModerationLogCreateManyModeratorInputEnvelope = {
+    data: ModerationLogCreateManyModeratorInput | ModerationLogCreateManyModeratorInput[]
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -46941,6 +50239,84 @@ export namespace Prisma {
     data: XOR<BlockUpdateManyMutationInput, BlockUncheckedUpdateManyWithoutBlockedInput>
   }
 
+  export type ModerationReportUpsertWithWhereUniqueWithoutReporterInput = {
+    where: ModerationReportWhereUniqueInput
+    update: XOR<ModerationReportUpdateWithoutReporterInput, ModerationReportUncheckedUpdateWithoutReporterInput>
+    create: XOR<ModerationReportCreateWithoutReporterInput, ModerationReportUncheckedCreateWithoutReporterInput>
+  }
+
+  export type ModerationReportUpdateWithWhereUniqueWithoutReporterInput = {
+    where: ModerationReportWhereUniqueInput
+    data: XOR<ModerationReportUpdateWithoutReporterInput, ModerationReportUncheckedUpdateWithoutReporterInput>
+  }
+
+  export type ModerationReportUpdateManyWithWhereWithoutReporterInput = {
+    where: ModerationReportScalarWhereInput
+    data: XOR<ModerationReportUpdateManyMutationInput, ModerationReportUncheckedUpdateManyWithoutReporterInput>
+  }
+
+  export type ModerationReportScalarWhereInput = {
+    AND?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+    OR?: ModerationReportScalarWhereInput[]
+    NOT?: ModerationReportScalarWhereInput | ModerationReportScalarWhereInput[]
+    id?: StringFilter<"ModerationReport"> | string
+    reason?: StringFilter<"ModerationReport"> | string
+    details?: StringNullableFilter<"ModerationReport"> | string | null
+    status?: StringFilter<"ModerationReport"> | string
+    reporterId?: StringFilter<"ModerationReport"> | string
+    targetId?: StringFilter<"ModerationReport"> | string
+    targetType?: StringFilter<"ModerationReport"> | string
+    createdAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    updatedAt?: DateTimeFilter<"ModerationReport"> | Date | string
+    resolvedById?: StringNullableFilter<"ModerationReport"> | string | null
+    resolvedAt?: DateTimeNullableFilter<"ModerationReport"> | Date | string | null
+  }
+
+  export type ModerationReportUpsertWithWhereUniqueWithoutResolvedByInput = {
+    where: ModerationReportWhereUniqueInput
+    update: XOR<ModerationReportUpdateWithoutResolvedByInput, ModerationReportUncheckedUpdateWithoutResolvedByInput>
+    create: XOR<ModerationReportCreateWithoutResolvedByInput, ModerationReportUncheckedCreateWithoutResolvedByInput>
+  }
+
+  export type ModerationReportUpdateWithWhereUniqueWithoutResolvedByInput = {
+    where: ModerationReportWhereUniqueInput
+    data: XOR<ModerationReportUpdateWithoutResolvedByInput, ModerationReportUncheckedUpdateWithoutResolvedByInput>
+  }
+
+  export type ModerationReportUpdateManyWithWhereWithoutResolvedByInput = {
+    where: ModerationReportScalarWhereInput
+    data: XOR<ModerationReportUpdateManyMutationInput, ModerationReportUncheckedUpdateManyWithoutResolvedByInput>
+  }
+
+  export type ModerationLogUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    update: XOR<ModerationLogUpdateWithoutModeratorInput, ModerationLogUncheckedUpdateWithoutModeratorInput>
+    create: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ModerationLogUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    data: XOR<ModerationLogUpdateWithoutModeratorInput, ModerationLogUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type ModerationLogUpdateManyWithWhereWithoutModeratorInput = {
+    where: ModerationLogScalarWhereInput
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyWithoutModeratorInput>
+  }
+
+  export type ModerationLogScalarWhereInput = {
+    AND?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+    OR?: ModerationLogScalarWhereInput[]
+    NOT?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+    id?: StringFilter<"ModerationLog"> | string
+    action?: StringFilter<"ModerationLog"> | string
+    details?: StringNullableFilter<"ModerationLog"> | string | null
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetId?: StringNullableFilter<"ModerationLog"> | string | null
+    targetType?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+  }
+
   export type UserCreateWithoutBlocksInput = {
     id?: string
     name?: string | null
@@ -46983,6 +50359,9 @@ export namespace Prisma {
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -47027,6 +50406,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -47076,6 +50458,9 @@ export namespace Prisma {
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -47120,6 +50505,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -47180,6 +50568,9 @@ export namespace Prisma {
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -47224,6 +50615,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutBlockedByInput = {
@@ -47279,6 +50673,9 @@ export namespace Prisma {
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -47323,6 +50720,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutTournamentsInput = {
@@ -47367,6 +50767,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -47411,6 +50814,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -47497,6 +50903,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -47541,6 +50950,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -47727,6 +51139,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -47771,6 +51186,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -48317,6 +51735,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -48361,6 +51782,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -48636,6 +52060,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -48680,6 +52107,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -48918,6 +52348,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -48962,6 +52395,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -49036,6 +52472,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -49080,6 +52519,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -49206,6 +52648,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -49250,6 +52695,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -49321,6 +52769,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -49365,6 +52816,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -49425,6 +52879,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -49469,6 +52926,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -49518,6 +52978,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -49562,6 +53025,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -49647,6 +53113,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -49691,6 +53160,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutUser2ConversationsInput = {
@@ -49746,6 +53218,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -49790,6 +53265,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -49875,6 +53353,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -49919,6 +53400,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -50010,6 +53494,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -50054,6 +53541,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -50098,6 +53588,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -50142,6 +53635,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -50239,6 +53735,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -50283,6 +53782,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -50403,6 +53905,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -50447,6 +53952,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -50496,6 +54004,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -50540,6 +54051,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -50639,6 +54153,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -50683,6 +54200,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -50738,6 +54258,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -50782,6 +54305,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostCreateWithoutReactionsInput = {
@@ -50859,6 +54385,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -50903,6 +54432,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -51002,6 +54534,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -51046,6 +54581,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -51090,6 +54628,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -51134,6 +54675,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -51203,6 +54747,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -51247,6 +54794,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -51344,6 +54894,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -51388,6 +54941,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutFollowsInput = {
@@ -51578,6 +55134,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -51622,6 +55181,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -51791,6 +55353,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -51835,6 +55400,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentCreateWithoutTeamsInput = {
@@ -51982,6 +55550,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -52026,6 +55597,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -52214,6 +55788,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -52258,6 +55835,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentTeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
@@ -52345,6 +55925,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -52389,6 +55972,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -52482,6 +56068,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -52526,6 +56115,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentCreateWithoutMercenariesInput = {
@@ -52673,6 +56265,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -52717,6 +56312,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -52886,6 +56484,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -52930,6 +56531,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutArticlesInput = {
@@ -52974,6 +56578,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -53018,6 +56625,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -53105,6 +56715,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -53149,6 +56762,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -53256,6 +56872,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -53300,6 +56919,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ArticleTagUpsertWithWhereUniqueWithoutArticlesInput = {
@@ -53395,6 +57017,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -53439,6 +57064,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type LigueUpsertWithoutArticlesInput = {
@@ -53626,6 +57254,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -53670,6 +57301,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -53773,6 +57407,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -53817,6 +57454,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutOwnedLiguesInput = {
@@ -53861,6 +57501,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -53905,6 +57548,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -53954,6 +57600,9 @@ export namespace Prisma {
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -53998,6 +57647,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -54195,6 +57847,9 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -54239,6 +57894,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -54299,6 +57957,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -54343,6 +58004,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCommissaireLiguesInput = {
@@ -54407,6 +58071,618 @@ export namespace Prisma {
   export type UserUpdateManyWithWhereWithoutLiguesInput = {
     where: UserScalarWhereInput
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutLiguesInput>
+  }
+
+  export type UserCreateWithoutReportsMadeInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutReportsMadeInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutReportsMadeInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReportsMadeInput, UserUncheckedCreateWithoutReportsMadeInput>
+  }
+
+  export type UserCreateWithoutReportsResolvedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutReportsResolvedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutReportsResolvedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReportsResolvedInput, UserUncheckedCreateWithoutReportsResolvedInput>
+  }
+
+  export type UserUpsertWithoutReportsMadeInput = {
+    update: XOR<UserUpdateWithoutReportsMadeInput, UserUncheckedUpdateWithoutReportsMadeInput>
+    create: XOR<UserCreateWithoutReportsMadeInput, UserUncheckedCreateWithoutReportsMadeInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReportsMadeInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReportsMadeInput, UserUncheckedUpdateWithoutReportsMadeInput>
+  }
+
+  export type UserUpdateWithoutReportsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReportsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUpsertWithoutReportsResolvedInput = {
+    update: XOR<UserUpdateWithoutReportsResolvedInput, UserUncheckedUpdateWithoutReportsResolvedInput>
+    create: XOR<UserCreateWithoutReportsResolvedInput, UserUncheckedCreateWithoutReportsResolvedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReportsResolvedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReportsResolvedInput, UserUncheckedUpdateWithoutReportsResolvedInput>
+  }
+
+  export type UserUpdateWithoutReportsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReportsResolvedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserCreateWithoutModerationLogsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserUncheckedCreateWithoutModerationLogsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+  }
+
+  export type UserCreateOrConnectWithoutModerationLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutModerationLogsInput, UserUncheckedCreateWithoutModerationLogsInput>
+  }
+
+  export type UserUpsertWithoutModerationLogsInput = {
+    update: XOR<UserUpdateWithoutModerationLogsInput, UserUncheckedUpdateWithoutModerationLogsInput>
+    create: XOR<UserCreateWithoutModerationLogsInput, UserUncheckedCreateWithoutModerationLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutModerationLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutModerationLogsInput, UserUncheckedUpdateWithoutModerationLogsInput>
+  }
+
+  export type UserUpdateWithoutModerationLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutModerationLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -54658,6 +58934,41 @@ export namespace Prisma {
 
   export type BlockCreateManyBlockedInput = {
     blockerId: string
+    createdAt?: Date | string
+  }
+
+  export type ModerationReportCreateManyReporterInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedById?: string | null
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationReportCreateManyResolvedByInput = {
+    id?: string
+    reason: string
+    details?: string | null
+    status?: string
+    reporterId: string
+    targetId: string
+    targetType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    resolvedAt?: Date | string | null
+  }
+
+  export type ModerationLogCreateManyModeratorInput = {
+    id?: string
+    action: string
+    details?: string | null
+    targetId?: string | null
+    targetType?: string | null
     createdAt?: Date | string
   }
 
@@ -55726,6 +60037,111 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ModerationReportUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    resolvedBy?: UserUpdateOneWithoutReportsResolvedNestedInput
+  }
+
+  export type ModerationReportUncheckedUpdateWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationReportUncheckedUpdateManyWithoutReporterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedById?: NullableStringFieldUpdateOperationsInput | string | null
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationReportUpdateWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reporter?: UserUpdateOneRequiredWithoutReportsMadeNestedInput
+  }
+
+  export type ModerationReportUncheckedUpdateWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reporterId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationReportUncheckedUpdateManyWithoutResolvedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    reporterId?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ModerationLogUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    targetId?: NullableStringFieldUpdateOperationsInput | string | null
+    targetType?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TournamentRegistrationCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -55793,6 +60209,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -55837,6 +60256,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -56331,6 +60753,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -56375,6 +60800,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -56604,6 +61032,9 @@ export namespace Prisma {
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -56648,6 +61079,9 @@ export namespace Prisma {
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -56898,6 +61332,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -56942,6 +61379,9 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {

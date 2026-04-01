@@ -11,6 +11,7 @@ import EmptyState from "@/common/components/EmptyState/EmptyState";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import { getUserActivity, getUserStats, startConversation, getBlockedUsersIds } from "@/app/profile/actions";
+import { isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
@@ -90,7 +91,7 @@ export default function SpyProfilePage() {
   if (!user) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Utilisateur introuvable.</div>;
 
   const userRole = (session?.user as any)?.role;
-  const isModerator = userRole === "ADMIN" || userRole === "MODERATOR";
+  const isModerator = checkIsModerator(userRole);
 
   const handleContact = async () => {
     if (!session?.user) {

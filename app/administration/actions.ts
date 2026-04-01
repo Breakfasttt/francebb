@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
+import { logModerationAction } from "@/app/moderation/actions";
 
 export async function resetDatabase(phrase: string) {
   const session = await auth();
@@ -103,6 +104,13 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
     where: { id: targetUserId },
     data: { role: newRole }
   });
+
+  await logModerationAction(
+    "USER_ROLE_CHANGED",
+    targetUserId,
+    "USER",
+    `Changement de rôle : ${targetUser.role} -> ${newRole}`
+  );
 
   return { success: true };
 }

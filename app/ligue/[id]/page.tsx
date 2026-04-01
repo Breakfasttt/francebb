@@ -156,12 +156,12 @@ export default async function LigueDetailPage({
           </PremiumCard>
 
           <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-            <button className="btn-report">
-              <AlertTriangle size={16} /> Signaler la ligue
-            </button>
+            <ReportLigueButton ligueId={ligue.id} ligueName={ligue.name} />
           </div>
         </aside>
       </div>
     </main>
   );
 }
+
+import ReportLigueButton from "./component/ReportLigueButton";

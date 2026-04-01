@@ -412,6 +412,30 @@ exports.Prisma.LigueScalarFieldEnum = {
   lng: 'lng'
 };
 
+exports.Prisma.ModerationReportScalarFieldEnum = {
+  id: 'id',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reporterId: 'reporterId',
+  targetId: 'targetId',
+  targetType: 'targetType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  resolvedById: 'resolvedById',
+  resolvedAt: 'resolvedAt'
+};
+
+exports.Prisma.ModerationLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  details: 'details',
+  moderatorId: 'moderatorId',
+  targetId: 'targetId',
+  targetType: 'targetType',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -462,7 +486,9 @@ exports.Prisma.ModelName = {
   Article: 'Article',
   ArticleTag: 'ArticleTag',
   ArticleReaction: 'ArticleReaction',
-  Ligue: 'Ligue'
+  Ligue: 'Ligue',
+  ModerationReport: 'ModerationReport',
+  ModerationLog: 'ModerationLog'
 };
 
 /**

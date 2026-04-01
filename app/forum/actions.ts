@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { logModerationAction } from "@/app/moderation/actions";
 
 export async function getUnreadMessagesCount() {
   const session = await auth();
@@ -312,6 +313,13 @@ export async function createForum(formData: FormData) {
     });
   });
 
+  await logModerationAction(
+    "FORUM_CREATED",
+    forum.id,
+    "FORUM",
+    `Création du forum : ${name}`
+  );
+
   revalidatePath("/forum");
   if (parentForumId) {
     revalidatePath(`/forum/${parentForumId}`);
@@ -434,6 +442,13 @@ export async function deleteForum(forumId: string, forumName: string) {
   const deletedForum = await prisma.forum.delete({
     where: { id: forumId }
   });
+
+  await logModerationAction(
+    "FORUM_DELETED",
+    forumId,
+    "FORUM",
+    `Suppression du forum : ${forumName}`
+  );
 
   revalidatePath("/forum");
   if (deletedForum.parentForumId) {
@@ -692,6 +707,13 @@ export async function moderatePost(postId: string, reason: string) {
     }
   });
 
+  await logModerationAction(
+    "POST_MODERATED",
+    postId,
+    "POST",
+    `Message modéré. Raison : ${reason}`
+  );
+
   revalidatePath(`/forum/topic/${post.topicId}`);
 }
 
@@ -716,6 +738,13 @@ export async function unmoderatePost(postId: string) {
       updatedAt: new Date()
     }
   });
+
+  await logModerationAction(
+    "POST_UNMODERATED",
+    postId,
+    "POST",
+    `Modération annulée sur le message`
+  );
 
   revalidatePath(`/forum/topic/${post.topicId}`);
 }
@@ -746,7 +775,13 @@ export async function deletePost(postId: string) {
     data: { isDeleted: true }
   });
 
-
+  // Log de la suppression (même si c'est par l'auteur, c'est utile à l'historique)
+  await logModerationAction(
+    "POST_MODERATED", // On réutilise ce type pour charger le log si on n'en a pas de spécifique, mais on précise dans les détails
+    postId,
+    "POST",
+    `Suppression du message par l'auteur`
+  );
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   revalidatePath(`/forum/${post.topic.forumId}`);
@@ -814,14 +849,19 @@ export async function togglePinTopic(topicId: string) {
     data: { isSticky: !topic.isSticky }
   });
 
+  await logModerationAction(
+    topic.isSticky ? "TOPIC_UNPINNED" : "TOPIC_PINNED",
+    topicId,
+    "TOPIC",
+    `${topic.isSticky ? "Désépinglage" : "Épinglage"} du sujet`
+  );
+
   revalidatePath(`/forum/topic/${topicId}`);
 }
 
 export async function deleteTopicPermanent(topicId: string, topicTitle: string) {
   const session = await auth();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent supprimer des sujets.");
-  }
+  if (!session?.user?.id) throw new Error("Non connecté.");
 
   const topic = await prisma.topic.findUnique({
     where: { id: topicId }
@@ -829,11 +869,25 @@ export async function deleteTopicPermanent(topicId: string, topicTitle: string) 
 
   if (!topic) throw new Error("Sujet introuvable.");
 
+  const isAuthor = topic.authorId === session.user.id;
+  const isMod = isModerator(session.user.role);
+
+  if (!isAuthor && !isMod) {
+    throw new Error("Action non autorisée.");
+  }
+
   await prisma.$transaction([
     prisma.topicView.deleteMany({ where: { topicId } }),
     prisma.post.deleteMany({ where: { topicId } }),
     prisma.topic.delete({ where: { id: topicId } })
   ]);
+
+  await logModerationAction(
+    "TOPIC_DELETED",
+    topicId,
+    "TOPIC",
+    `Suppression définitive du sujet : ${topicTitle}`
+  );
 
   revalidatePath(`/forum/${topic.forumId}`);
   redirect(`/forum?deletedTopic=${encodeURIComponent(topicTitle)}`);
@@ -855,6 +909,13 @@ export async function moveTopic(topicId: string, newForumId: string) {
     where: { id: topicId },
     data: { forumId: newForumId }
   });
+
+  await logModerationAction(
+    "TOPIC_MOVED",
+    topicId,
+    "TOPIC",
+    `Sujet déplacé vers le forum ${newForumId}`
+  );
 
   revalidatePath(`/forum/${topic.forumId}`);
   revalidatePath(`/forum/${newForumId}`);
@@ -946,6 +1007,13 @@ export async function toggleArchiveTopic(topicId: string) {
     where: { id: topicId },
     data: { isArchived: !topic.isArchived }
   });
+
+  await logModerationAction(
+    topic.isArchived ? "TOPIC_UNARCHIVED" : "TOPIC_ARCHIVED",
+    topicId,
+    "TOPIC",
+    `${topic.isArchived ? "Désarchivage" : "Archivage"} du sujet`
+  );
 
   revalidatePath(`/forum/${topic.forumId}`);
   revalidatePath(`/forum/topic/${topicId}`);
@@ -1093,6 +1161,13 @@ export async function toggleForumLock(forumId: string) {
     data: { isLocked: !forum.isLocked }
   });
 
+  await logModerationAction(
+    forum.isLocked ? "FORUM_UNLOCKED" : "FORUM_LOCKED",
+    forumId,
+    "FORUM",
+    `${forum.isLocked ? "Déverrouillage" : "Verrouillage"} du forum`
+  );
+
   revalidatePath("/forum");
   revalidatePath(`/forum/${forumId}`);
   return { success: true };
@@ -1115,6 +1190,13 @@ export async function toggleTopicLock(topicId: string) {
     where: { id: topicId },
     data: { isLocked: !topic.isLocked }
   });
+
+  await logModerationAction(
+    topic.isLocked ? "TOPIC_UNLOCKED" : "TOPIC_LOCKED",
+    topicId,
+    "TOPIC",
+    `${topic.isLocked ? "Déverrouillage" : "Verrouillage"} du sujet`
+  );
 
   revalidatePath(`/forum/topic/${topicId}`);
   revalidatePath(`/forum/${topic.forumId}`);

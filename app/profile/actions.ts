@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
+import { logModerationAction } from "@/app/moderation/actions";
 import { encrypt, decrypt } from "@/lib/crypto";
 
 export async function updateProfile(formData: FormData) {
@@ -41,7 +42,7 @@ export async function updateProfile(formData: FormData) {
   return { success: true };
 }
 
-export async function toggleBanUser(userId: string) {
+export async function toggleBanUser(userId: string, reason?: string) {
   const session = await auth();
   if (!isModerator(session?.user?.role)) throw new Error("Action non autorisée");
 
@@ -52,10 +53,22 @@ export async function toggleBanUser(userId: string) {
 
   if (!user) throw new Error("Utilisateur introuvable");
 
+  const isBanning = !user.isBanned;
+
   await prisma.user.update({
     where: { id: userId },
-    data: { isBanned: !user.isBanned }
+    data: { 
+      isBanned: isBanning,
+      banReason: isBanning ? (reason || "Bannissement manuel") : null
+    }
   });
+
+  await logModerationAction(
+    isBanning ? "USER_BANNED" : "USER_UNBANNED",
+    userId,
+    "USER",
+    isBanning ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
+  );
 
   revalidatePath(`/spy/${userId}`);
   return { success: true };

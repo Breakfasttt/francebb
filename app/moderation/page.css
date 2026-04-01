@@ -1,9 +1,140 @@
 .moderation-container {
-  padding: 2rem 0;
+    padding-bottom: 5rem;
 }
-.moderation-content {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--glass-border);
-  padding: 2rem;
-  border-radius: 12px;
+
+.moderation-content-layout {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+
+.moderation-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 0; /* Prevent flex blow-out */
+}
+
+.moderation-table {
+    width: 100%;
+    border-collapse: collapse; /* On passe en collapse pour avoir de vraies bordures */
+    margin-top: 1rem;
+}
+
+.moderation-table th {
+    text-align: center; /* Centré par défaut pour les headers */
+    padding: 1.2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--glass-border);
+}
+
+.moderation-row {
+    border-bottom: 1px solid var(--glass-border);
+    transition: background 0.2s ease;
+}
+
+.moderation-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.moderation-cell {
+    padding: 1rem;
+    text-align: center; /* Centré par défaut pour toutes les cellules */
+    vertical-align: middle;
+}
+
+.moderation-cell:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.moderation-cell:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    text-align: right;
+}
+
+.action-badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.action-badge.info { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.2); }
+.action-badge.warning { background: var(--primary-transparent); color: var(--accent); border: 1px solid var(--accent); }
+.action-badge.danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+.action-badge.success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid var(--success); }
+
+.report-card {
+    margin-bottom: 1.5rem;
+    padding: 1.8rem;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* On recentre verticalement pour aligner badges et boutons */
+    margin-bottom: 1.5rem;
+    gap: 1.5rem;
+}
+
+.report-target-info {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.report-details {
+    padding: 1.2rem;
+    background: var(--glass-bg);
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--glass-border);
+}
+
+.report-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 1024px) {
+    .moderation-content-layout {
+        flex-direction: column;
+    }
+    
+    .moderation-sidebar-wrapper {
+        width: 100%;
+        position: static;
+        margin-bottom: 2rem;
+    }
+}
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    height: auto;
+}
+
+.success {
+    background: var(--success) !important;
+    color: white !important;
+}
+
+.secondary-btn.danger {
+    color: var(--danger) !important;
+    border-color: var(--danger) !important;
+    background: transparent;
+}
+
+.secondary-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
 }

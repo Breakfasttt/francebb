@@ -8,6 +8,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
 import SharePostButton from "./SharePostButton";
+import ReportPostButton from "./ReportPostButton";
 
 interface PostItemProps {
   post: any;
@@ -226,6 +227,9 @@ const PostItem: React.FC<PostItemProps> = ({
             <span style={{ fontWeight: 800, color: 'var(--accent)', marginRight: '0.5rem' }}>#{index + 1}</span>
             {currentUserId && <MarkUnreadAction topicId={topicId} postId={post.id} />}
             <SharePostButton postId={post.id} topicId={topicId} page={safeCurrentPage} />
+            {currentUserId && currentUserId !== post.authorId && (
+              <ReportPostButton postId={post.id} authorName={post.author.name} />
+            )}
           </div>
         </div>
 

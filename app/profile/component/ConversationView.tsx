@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import ReportModal from "@/common/components/ReportModal/ReportModal";
 
 interface ConversationViewProps {
   conversationId: string;
@@ -134,17 +135,12 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         isDanger={true}
       />
 
-      <ConfirmModal
+      <ReportModal 
         isOpen={isReportModalOpen}
         onClose={() => setIsReportModalOpen(false)}
-        onConfirm={async () => {
-          toast.success("Signalement envoyé à l'équipe");
-          setIsReportModalOpen(false);
-        }}
-        title="Signaler un membre"
-        message={`Voulez-vous signaler ${recipient.name} ? (Le contenu de vos messages RESTERA PRIVÉ et ne sera pas partagé)`}
-        confirmLabel="Signaler"
-        isDanger={true}
+        targetId={recipient?.id || ""}
+        targetType="USER"
+        itemTitle={recipient?.name}
       />
 
       <div className="pm-disclaimer">
@@ -195,6 +191,22 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 <div className="message-meta">
                   <Clock size={12} />
                   <span>{formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true, locale: fr })}</span>
+                  {msg.authorId !== session?.user?.id && (
+                    <button 
+                      className="icon-action-btn report-btn-inline" 
+                      title="Signaler ce message"
+                      onClick={() => {
+                        // On réutilise le modal de signalement mais pour le message spécifique
+                        // Mais le modal actuel est limité à un seul targetId.
+                        // Je vais plutôt créer un mini composant local ou gérer plusieurs états.
+                        // Pour faire simple, on va signaler le membre, car pour les MP le contenu est chiffré/privé.
+                        setIsReportModalOpen(true);
+                      }}
+                      style={{ marginLeft: 'auto', opacity: 0.4 }}
+                    >
+                      <AlertTriangle size={12} />
+                    </button>
+                  )}
                 </div>
                 <div
                   className="message-body"

@@ -85,6 +85,10 @@ model User {
 
   blocks          Block[]   @relation("Blocker")
   blockedBy       Block[]   @relation("Blocked")
+
+  reportsMade     ModerationReport[] @relation("ReportedBy")
+  reportsResolved ModerationReport[] @relation("ResolvedBy")
+  moderationLogs  ModerationLog[]
 }
 
 model Block {
@@ -490,4 +494,40 @@ model Ligue {
 
   lat             Float?
   lng             Float?
+}
+
+model ModerationReport {
+  id          String   @id @default(cuid())
+  reason      String   
+  details     String?  
+  status      String   @default("PENDING") // PENDING, RESOLVED, IGNORED
+  
+  reporterId  String
+  reporter    User     @relation("ReportedBy", fields: [reporterId], references: [id])
+  
+  targetId    String   
+  targetType  String   // POST, TOPIC, USER, ARTICLE, LIGUE, MESSAGE
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  resolvedById String?
+  resolvedBy   User?    @relation("ResolvedBy", fields: [resolvedById], references: [id])
+  resolvedAt   DateTime?
+
+  @@index([targetId, targetType])
+}
+
+model ModerationLog {
+  id          String   @id @default(cuid())
+  action      String   
+  details     String?  
+  
+  moderatorId String
+  moderator   User     @relation(fields: [moderatorId], references: [id])
+  
+  targetId    String?
+  targetType  String?
+  
+  createdAt   DateTime @default(now())
 }
