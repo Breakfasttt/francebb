@@ -168,7 +168,7 @@ export async function reportUser(userId: string, reason: string) {
   if (!session?.user?.id) throw new Error("Non connecté");
 
   // For now, we just log it or simulate a report
-  console.log(`REPORT: User ${session.user.id} reported User ${userId} for: ${reason}`);
+  // For now, we just log it or simulate a report
   
   // Future: create a Report model or send a PM to moderators
   return { success: true };

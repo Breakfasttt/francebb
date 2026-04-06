@@ -10,13 +10,11 @@ const globalForPrisma = global as unknown as {
 const config = {
   url: process.env.DATABASE_URL || "file:./dev.db",
 };
-console.log(`[PRISMA] Utilisation de la base : ${config.url}`);
 const getPrismaClient = () => {
   if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v16") {
     return globalForPrisma.prisma;
   }
 
-  console.log(`[PRISMA] Initialisation du client (Base: ${config.url})`);
   const adapter = new PrismaLibSql(config);
   const client = new PrismaClient({ adapter });
 

@@ -134,7 +134,6 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
 
   // On crée une version client-side de l'action pour injecter les IDs fixes en mode édition
   const formAction = async (formData: FormData) => {
-    console.log("CLIENT - forumAction formData keys:", Array.from(formData.keys()));
     if (isEdit && initialData) {
       await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
     } else {

@@ -6,8 +6,6 @@ export async function POST(req: Request) {
   const userId = "user_test_breakyt";
   const { name, image } = await req.json();
 
-  console.log(`[API] Tentative de mise à jour pour ${userId} avec name=${name}`);
-
   const updatedUser = await prisma.user.upsert({
     where: { id: userId },
     update: { name, image },
@@ -18,8 +16,6 @@ export async function POST(req: Request) {
       image: image || "https://api.dicebear.com/7.x/avataaars/svg?seed=Breakyt"
     }
   });
-
-  console.log(`[API] Utilisateur mis à jour en base : ${updatedUser.name}`);
 
   revalidatePath("/");
   revalidatePath("/profile");

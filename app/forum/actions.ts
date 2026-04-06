@@ -470,8 +470,6 @@ export async function createTopic(formData: FormData) {
   const isSticky = formData.get("isSticky") === "on";
   const isLocked = formData.get("isLocked") === "on";
 
-  console.log("DEBUG - createTopic:", { title, content: content?.substring(0, 20), forumId });
-
   if (!title || !content || !forumId) {
     throw new Error(`Titre, contenu et forum sont obligatoires. (Titre: ${!!title}, Contenu: ${!!content}, Forum: ${!!forumId})`);
   }
