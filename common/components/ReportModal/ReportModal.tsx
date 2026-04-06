@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AlertTriangle, X, ShieldAlert, Loader2 } from "lucide-react";
 import { createReportAction } from "@/app/moderation/actions";
 import { toast } from "react-hot-toast";
@@ -26,8 +27,14 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [mounted, setMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
 
   const handleSubmit = () => {
     if (!reason) {
@@ -54,7 +61,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
     });
   };
 
-  return (
+  return createPortal(
     <div className="modal-overlay">
       <PremiumCard className="report-modal">
         <div className="modal-header">
@@ -121,7 +128,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 1000;
+          z-index: 2000;
           padding: 1.5rem;
         }
         :global(.report-modal) {
@@ -191,6 +198,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
           box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4) !important;
         }
       `}</style>
-    </div>
+    </div>,
+    document.body
   );
 }
