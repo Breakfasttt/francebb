@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
+import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -122,6 +123,7 @@ export default async function RootLayout({
               <Github size={14} /> GitHub
             </a>
           </footer>
+          <CookieBanner />
         </AuthProvider>
       </ThemeProvider>
     </body>

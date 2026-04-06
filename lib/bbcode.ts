@@ -21,6 +21,35 @@ export const smileysMap: Record<string, string> = {
 };
 
 /**
+ * A simple helper to sanitize URLs and prevent JS injection
+ */
+function sanitizeUrl(url: string, base: string = "#"): string {
+  if (!url) return base;
+  const decoded = url.trim().replace(/\s/g, "");
+  // Bloquer absolument javascript: et data:
+  if (decoded.toLowerCase().startsWith("javascript:") || decoded.toLowerCase().startsWith("data:")) return base;
+  // Autoriser les protocoles standards ou les liens relatifs
+  if (/^(https?:\/\/|mailto:|\/|#)/i.test(decoded)) return decoded;
+  // Par défaut, on préfixe par https:// si ça ressemble à un domaine
+  return `https://${decoded}`;
+}
+
+/**
+ * A simple helper to sanitize styles (color/size) to prevent CSS injection
+ */
+function sanitizeStyle(value: string, type: 'color' | 'size'): string {
+  const v = value.trim().split(';')[0]; // On ne prend que la première instruction CSS
+  if (type === 'color') {
+    // Regex simple pour hex, rgb, hsl ou noms de couleurs
+    if (/^(#[0-9a-f]{3,8}|[a-z]{3,20}|rgba?\(.*\)|hsla?\(.*\))$/i.test(v)) return v;
+  } else if (type === 'size') {
+    // On autorise chiffres + unités simples (% em rem px)
+    if (/^[0-9.]+(%|em|rem|px|pt|vh|vw)?$/i.test(v)) return v;
+  }
+  return "";
+}
+
+/**
  * A simple BBCode parser that escapes HTML to prevent XSS and replaces known tags.
  */
 export function parseBBCode(text: string, postStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>): string {
@@ -49,13 +78,16 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     html = html.replace(/\[s\]((?:(?!\[s\]).)*?)\[\/s\]/i, "<s>$1</s>");
   }
   while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
-    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>");
+    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, (match, color, content) => {
+      const safeColor = sanitizeStyle(color, 'color') || 'inherit';
+      return `<span style="color: ${safeColor}">${content}</span>`;
+    });
   }
   while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) {
-    // Basic protection/sanitization: ensure size is alphanumeric/unit-based
-    const match = html.match(/\[size=(.*?)\]/i);
-    const size = match ? match[1].replace(/[^a-zA-Z0-9.%-]/g, "") : "";
-    html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, `<span style="font-size: ${size}; line-height: 1.2;">$1</span>`);
+    html = html.replace(/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, (match, size, content) => {
+      const safeSize = sanitizeStyle(size, 'size') || 'inherit';
+      return `<span style="font-size: ${safeSize}; line-height: 1.2;">${content}</span>`;
+    });
   }
   
   // Alignment blocks
@@ -123,8 +155,13 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   });
 
   // 6. Links
-  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$2</a>");
-  html = html.replace(/\[url\](.*?)\[\/url\]/gi, "<a href=\"$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--accent); text-decoration:underline;\">$1</a>");
+  html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, (match, url, content) => {
+    return `<a href="${sanitizeUrl(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">${content}</a>`;
+  });
+  html = html.replace(/\[url\](.*?)\[\/url\]/gi, (match, url) => {
+    const safeUrl = sanitizeUrl(url);
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">${url}</a>`;
+  });
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
   html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
 
@@ -132,6 +169,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   html = html.replace(
     /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\](.*?)\[\/img\]/gi,
     (match, align, wrap, thumb, url) => {
+      const safeUrl = sanitizeUrl(url);
       const isThumb = thumb !== "no";
       let style = "max-width:100%; border-radius:8px;";
       if (isThumb) style += " max-width: 400px; max-height: 250px; object-fit: contain;";
@@ -145,7 +183,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
         else if (align === "right") style += " display: block; margin: 0.8rem 0; margin-left: auto;";
         else style += " display: block; margin: 0.8rem auto;";
       }
-      return `<img src="${url}" alt="Image" style="${style}" loading="lazy" />`;
+      return `<img src="${safeUrl}" alt="Image" style="${style}" loading="lazy" />`;
     }
   );
 
