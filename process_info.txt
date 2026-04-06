@@ -1,1 +1,0 @@
-﻿"node"   "C:\Users\jeane\AppData\Local\npm-cache\_npx\f6829324ff4cde8f\node_modules\.bin\\..\@googlemaps\code-assist-mcp\dist\index.js" 
