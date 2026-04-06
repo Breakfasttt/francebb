@@ -94,7 +94,7 @@ export default async function LiguesPage({
                 <Pagination 
                     currentPage={page} 
                     totalPages={totalPages} 
-                    baseUrl="/ligues" 
+                    baseUrl={`/ligues?view=${view}${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} 
                     queryParam="page"
                 />
             </div>
