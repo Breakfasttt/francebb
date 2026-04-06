@@ -4,6 +4,7 @@ import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
 import { prisma } from "@/lib/prisma";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
+import { Github } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -100,7 +101,8 @@ export default async function RootLayout({
             borderTop: '1px solid var(--accent)',
             background: 'var(--footer-bg)',
             backdropFilter: 'blur(10px)',
-            zIndex: 1000
+            pointerEvents: 'auto',
+            zIndex: 5000
           }}>
             <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: 'var(--header-foreground)', opacity: 0.8, transition: 'opacity 0.2s' }} className="footer-link">
               Mentions légales
@@ -109,6 +111,16 @@ export default async function RootLayout({
             <span style={{ fontStyle: 'italic', opacity: 0.7 }}>
               Ce site a été entièrement conçu avec l'aide de l'intelligence artificielle
             </span>
+            {' • '}
+            <a 
+              href="https://github.com/Breakfasttt/francebb" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-link"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--header-foreground)', opacity: 0.8, transition: 'opacity 0.2s' }}
+            >
+              <Github size={14} /> GitHub
+            </a>
           </footer>
         </AuthProvider>
       </ThemeProvider>

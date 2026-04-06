@@ -190,5 +190,5 @@ services:
 
 ## 📄 Licence & Contribution
 
-Projet privé — Tous droits réservés.
-Les contributions doivent faire l'objet d'une demande préalable via une issue.
+Ce projet est sous licence [MIT](./LICENSE).
+Les contributions sont les bienvenues via les Pull Requests. Pour tout changement majeur, merci de créer une issue au préalable.

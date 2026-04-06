@@ -1,0 +1,97 @@
+.mentions-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  color: var(--foreground);
+  min-height: 80vh;
+}
+
+.mentions-grid {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.mentions-section {
+  padding: 2rem;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mentions-section:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--glass-shadow);
+}
+
+.mentions-section h2 {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.mentions-section p {
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.mentions-section ul {
+  list-style: none;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mentions-section ul li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.mentions-section ul li::before {
+  content: "•";
+  color: var(--primary);
+  position: absolute;
+  left: -1.2rem;
+  font-weight: bold;
+}
+
+.mentions-section a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.mentions-section a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.mentions-footer {
+  margin-top: 4rem;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0.7;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.mentions-footer p {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mentions-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  
+  .mentions-grid {
+    grid-template-columns: 1fr;
+  }
+}
