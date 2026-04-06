@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import React, { useTransition, useState, useEffect } from "react";
 import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
@@ -9,6 +9,9 @@ import toast from "react-hot-toast";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
+import Pagination from "@/common/components/Pagination/Pagination";
+
+const USERS_PER_PAGE = 25;
 
 interface Props {
   users: any[];
@@ -32,6 +35,13 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const [banModal, setBanModal] = useState<{ isOpen: boolean, userId: string, isBanning: boolean, userName: string }>({ isOpen: false, userId: "", isBanning: false, userName: "" });
   const [banReason, setBanReason] = useState("");
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean, userId: string, userName: string }>({ isOpen: false, userId: "", userName: "" });
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedRole, selectedRegion, selectedLigue, sortConfig]);
 
   const handleRoleSelect = (userId: string, newRole: UserRole) => {
     setRoleModal({ isOpen: true, userId, newRole, roleLabel: ROLE_LABELS[newRole] });
@@ -165,7 +175,11 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     setSelectedRole("");
     setSelectedRegion("");
     setSelectedLigue("");
+    setCurrentPage(1);
   };
+
+  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
+  const paginatedUsers = sortedUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE);
 
   return (
     <PremiumCard className="members-table-card fade-in">
@@ -323,7 +337,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             </tr>
           </thead>
           <tbody>
-            {sortedUsers.length > 0 ? sortedUsers.map(user => {
+            {paginatedUsers.length > 0 ? paginatedUsers.map(user => {
               const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
               const selectableRoles = getAllowedRolesToAssign(currentUserRole);
 
@@ -489,6 +503,17 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             )}
           </tbody>
         </table>
+      </div>
+
+      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(p) => {
+            setCurrentPage(p);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
       </div>
 
       <Modal 
