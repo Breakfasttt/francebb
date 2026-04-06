@@ -1,10 +1,10 @@
 "use client";
 
-import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users, Settings, Wrench } from "lucide-react";
+import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users, Settings, Wrench, BookOpen } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 
-export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference";
+export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -19,6 +19,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
     { id: "coachs", label: "Membres & Accès", icon: <Users size={18} /> },
     { id: "structure", label: "Structure Forums", icon: <LayoutList size={18} /> },
     { id: "reference", label: "Données de Référence", icon: <Database size={18} /> },
+    { id: "howtoplay", label: "Guide du Débutant", icon: <BookOpen size={18} /> },
   ];
 
   const advancedTabs: TabItem[] = [

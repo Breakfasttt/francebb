@@ -16,6 +16,7 @@ import RolesTab from "./component/RolesTab";
 import StructureTab from "./component/StructureTab";
 import ReferenceDataTab from "./component/ReferenceDataTab";
 import GeneralTab from "./component/GeneralTab";
+import HowToPlayTab from "./component/HowToPlayTab";
 
 import "./page.css";
 
@@ -43,7 +44,7 @@ export default function AdministrationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    if (tabParam && ["general", "coachs", "roles", "structure", "backup", "reset", "reference"].includes(tabParam)) {
+    if (tabParam && ["general", "coachs", "roles", "structure", "backup", "reset", "reference", "howtoplay"].includes(tabParam)) {
       setActiveTab(tabParam as AdminTab);
     }
   }, [tabParam]);
@@ -99,6 +100,10 @@ export default function AdministrationPage() {
 
           {activeTab === "reference" && (
             <ReferenceDataTab />
+          )}
+          
+          {activeTab === "howtoplay" && (
+            <HowToPlayTab />
           )}
 
           {activeTab === "backup" && isSuperAdmin && <BackupTab />}

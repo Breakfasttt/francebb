@@ -397,3 +397,44 @@ export async function updateSiteSetting(key: string, value: string) {
 
   return { success: true };
 }
+
+export async function getHowToPlaySettings() {
+  const keys = [
+    "how_to_play_what_is_bb",
+    "how_to_play_platforms",
+    "how_to_play_community",
+    "how_to_play_tournaments",
+    "how_to_play_naf_cdf_rtc",
+    "how_to_play_challenges"
+  ];
+  
+  const settings = await prisma.siteSetting.findMany({
+    where: { key: { in: keys } }
+  });
+
+  const result: Record<string, string> = {};
+  keys.forEach(k => result[k] = "");
+  settings.forEach(s => result[s.key] = s.value);
+  
+  return result;
+}
+
+export async function updateHowToPlaySettings(settings: Record<string, string>) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return { success: false, error: "Non autorisé." };
+  }
+
+  const entries = Object.entries(settings);
+  
+  await prisma.$transaction(
+    entries.map(([key, value]) => prisma.siteSetting.upsert({
+      where: { key },
+      update: { value },
+      create: { key, value }
+    }))
+  );
+
+  return { success: true };
+}
