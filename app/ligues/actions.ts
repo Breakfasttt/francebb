@@ -52,8 +52,16 @@ export async function createLigue(formData: FormData) {
     throw new Error("Le nom et l'acronyme sont obligatoires.");
   }
 
-  // Géocodage automatique
-  const { lat, lng } = await geocode(ville, address);
+  // Utiliser les coordonnées manuelles si fournies (depuis le MapPicker)
+  let lat = formData.get("lat") ? parseFloat(formData.get("lat") as string) : null;
+  let lng = formData.get("lng") ? parseFloat(formData.get("lng") as string) : null;
+
+  if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) {
+    // Géocodage automatique en secours
+    const coords = await geocode(ville, address);
+    lat = coords.lat;
+    lng = coords.lng;
+  }
 
   const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
 
@@ -120,6 +128,16 @@ export async function updateLigue(id: string, formData: FormData) {
   const address = formData.get("address") as string;
   const gmapsUrl = formData.get("gmapsUrl") as string;
 
+  // Utiliser les coordonnées manuelles si fournies
+  let lat = formData.get("lat") ? parseFloat(formData.get("lat") as string) : null;
+  let lng = formData.get("lng") ? parseFloat(formData.get("lng") as string) : null;
+
+  if (lat === null || lng === null || isNaN(lat) || isNaN(lng)) {
+    const coords = await geocode(ville, address);
+    lat = coords.lat;
+    lng = coords.lng;
+  }
+
   const data: any = {
     name,
     acronym,
@@ -130,6 +148,8 @@ export async function updateLigue(id: string, formData: FormData) {
     ville,
     address,
     gmapsUrl,
+    lat,
+    lng,
   };
 
   // Seul le créateur peut modifier les commissaires

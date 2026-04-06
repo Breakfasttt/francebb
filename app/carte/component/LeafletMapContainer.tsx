@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapPin, Calendar } from "lucide-react";
@@ -9,9 +9,25 @@ import { MapPin, Calendar } from "lucide-react";
 interface LeafletMapProps {
   points: any[];
   viewType: "tournaments" | "ligues";
+  isFullscreen?: boolean;
 }
 
-export default function LeafletMapContainer({ points, viewType }: LeafletMapProps) {
+// Composant interne pour corriger le bug des zones grises au resize/fullscreen
+function MapResizer({ isFullscreen }: { isFullscreen: boolean }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    // Petit délai pour laisser le CSS s'appliquer
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [isFullscreen, map]);
+
+  return null;
+}
+
+export default function LeafletMapContainer({ points, viewType, isFullscreen = false }: LeafletMapProps) {
   const [icons, setIcons] = useState<any>(null);
 
   useEffect(() => {
@@ -54,13 +70,15 @@ export default function LeafletMapContainer({ points, viewType }: LeafletMapProp
     <MapContainer 
       center={center} 
       zoom={6} 
-      style={{ height: "100%", width: "100%", borderRadius: "24px" }}
+      style={{ height: "100%", width: "100%", borderRadius: isFullscreen ? "0" : "24px" }}
       scrollWheelZoom={true}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
+      <MapResizer isFullscreen={isFullscreen} />
       
       {points.map((p) => (
         <Marker 

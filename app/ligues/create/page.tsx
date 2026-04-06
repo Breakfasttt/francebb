@@ -75,17 +75,6 @@ export default async function CreateLiguePage() {
                     allDepartments={departments} 
                 />
                 
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lieu habituel / Adresse</label>
-                  <input type="text" name="address" className="admin-input" placeholder="Ex: Bar Le Gobelin, 12 rue de l'Arbalète" />
-                </div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lien Google Maps (Lieu de jeu)</label>
-                  <div style={{ position: 'relative' }}>
-                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                    <input type="url" name="gmapsUrl" className="admin-input" style={{ paddingLeft: '2.8rem' }} placeholder="https://maps.google.com/..." />
-                  </div>
-                </div>
               </div>
 
               <div className="section-separator">

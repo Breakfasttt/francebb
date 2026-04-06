@@ -21,6 +21,8 @@ const MapPicker = dynamic(() => import("./MapPicker"), {
 });
 
 
+import { DEPARTMENTS_BY_REGION, REGION_BY_DEPARTMENT } from "@/lib/france";
+
 interface TournamentFormProps {
   forumId: string;
   userCanStick: boolean;
@@ -85,6 +87,13 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   const [lng, setLng] = useState<number | null>(initialData?.lng ?? null);
   const [address, setAddress] = useState(initialData?.address ?? "");
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+
+  const [selectedRegion, setSelectedRegion] = useState<string>(initialData?.region || "");
+  const [selectedDept, setSelectedDept] = useState<string>(initialData?.departement || "");
+
+  const filteredDepartments = selectedRegion 
+    ? referenceData.departments.filter(d => REGION_BY_DEPARTMENT[d.key] === selectedRegion)
+    : referenceData.departments;
 
   const handleNumericKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, allowDecimal = false) => {
     // Liste des touches spéciales autorisées
@@ -236,7 +245,15 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 </div>
                 <div className="form-group">
                   <label>Région (France)</label>
-                  <select name="tRegion" className="admin-input" defaultValue={initialData?.region || ""}>
+                  <select 
+                    name="tRegion" 
+                    className="admin-input" 
+                    value={selectedRegion}
+                    onChange={(e) => {
+                        setSelectedRegion(e.target.value);
+                        setSelectedDept("");
+                    }}
+                  >
                     <option value="">Sélectionner</option>
                     {referenceData.franceRegions.map(r => (
                         <option key={r.key} value={r.key}>{r.label}</option>
@@ -245,9 +262,14 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 </div>
                 <div className="form-group">
                   <label>Département</label>
-                  <select name="tDept" className="admin-input" defaultValue={initialData?.departement || ""}>
+                  <select 
+                    name="tDept" 
+                    className="admin-input" 
+                    value={selectedDept}
+                    onChange={(e) => setSelectedDept(e.target.value)}
+                  >
                     <option value="">Sélectionner</option>
-                    {referenceData.departments.map(d => (
+                    {filteredDepartments.map(d => (
                         <option key={d.key} value={d.key}>{d.label}</option>
                     ))}
                   </select>

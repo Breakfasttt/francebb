@@ -35,7 +35,4 @@
     height: auto;
     overflow: visible;
   }
-  .map-view-leaflet {
-    height: 50vh !important;
-  }
 }
