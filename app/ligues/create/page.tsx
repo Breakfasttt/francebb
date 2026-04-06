@@ -6,6 +6,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createLigue } from "@/app/ligues/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "./UserSearchWrapper";
+import LigueLocationFields from "./LigueLocationFields";
 import { Shield, MapPin, Globe, Users, Info } from "lucide-react";
 import "./page.css";
 
@@ -15,6 +16,11 @@ export default async function CreateLiguePage() {
 
   const coachRegions = await prisma.referenceData.findMany({
     where: { group: "COACH_REGION", isActive: true },
+    orderBy: { order: "asc" }
+  });
+
+  const franceRegions = await prisma.referenceData.findMany({
+    where: { group: "REGION_FRANCE", isActive: true },
     orderBy: { order: "asc" }
   });
 
@@ -63,32 +69,12 @@ export default async function CreateLiguePage() {
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div className="form-group">
-                  <label>Zone Géographique (NAF/Téléphone) *</label>
-                  <select name="geographicalZone" required className="admin-input">
-                    <option value="">Sélectionner une zone</option>
-                    {coachRegions.map(r => (
-                      <option key={r.key} value={r.key}>{r.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Ville siège</label>
-                  <input type="text" name="ville" className="admin-input" placeholder="Ex: Lyon" />
-                </div>
-                <div className="form-group">
-                  <label>Département</label>
-                  <select name="departement" className="admin-input">
-                    <option value="">Sélectionner</option>
-                    {departments.map(d => (
-                       <option key={d.key} value={d.label}>{d.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Région administrative</label>
-                  <input type="text" name="region" className="admin-input" placeholder="Ex: Auvergne-Rhône-Alpes" />
-                </div>
+                <LigueLocationFields 
+                    coachRegions={coachRegions} 
+                    franceRegions={franceRegions} 
+                    allDepartments={departments} 
+                />
+                
                 <div className="form-group" style={{ gridColumn: 'span 2' }}>
                   <label>Lieu habituel / Adresse</label>
                   <input type="text" name="address" className="admin-input" placeholder="Ex: Bar Le Gobelin, 12 rue de l'Arbalète" />

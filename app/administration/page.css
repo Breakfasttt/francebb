@@ -1,11 +1,11 @@
 .admin-container {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
 }
 
 .admin-content-layout {
   display: flex;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   align-items: flex-start;
 }
@@ -22,7 +22,7 @@
   .admin-content-layout {
     flex-direction: column;
   }
-  .profile-sidebar-wrapper {
+  .admin-sidebar-wrapper {
     width: 100% !important;
   }
 }
