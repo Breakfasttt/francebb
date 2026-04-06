@@ -6,6 +6,7 @@ import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 
 export type ModerationTab = 
   | "logs" 
+  | "users"
   | "reports_post" 
   | "reports_topic" 
   | "reports_user" 
@@ -21,6 +22,7 @@ interface ModerationSidebarProps {
 export default function ModerationSidebar({ activeTab, onTabChange }: ModerationSidebarProps) {
   const tabs: TabItem[] = [
     { id: "logs", label: "Journal d'audit", icon: <FileText size={18} /> },
+    { id: "users", label: "Utilisateurs", icon: <Users size={18} /> },
     { id: "reports_post", label: "Messages signalés", icon: <MessageSquare size={18} /> },
     { id: "reports_topic", label: "Sujets signalés", icon: <AlertTriangle size={18} /> },
     { id: "reports_user", label: "Coachs signalés", icon: <Users size={18} /> },

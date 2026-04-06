@@ -37,13 +37,17 @@ export default function ModerationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    const validTabs: ModerationTab[] = ["logs", "reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "reports_user_banned"];
+    const validTabs: ModerationTab[] = ["logs", "users", "reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "reports_user_banned"];
     if (tabParam && validTabs.includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, [tabParam]);
 
   const handleTabChange = (tab: ModerationTab) => {
+    if (tab === "users") {
+      router.push("/membres");
+      return;
+    }
     setActiveTab(tab);
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", tab);

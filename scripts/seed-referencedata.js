@@ -1,10 +1,10 @@
-import { PrismaClient } from "../prisma/generated-client/index.js";
-// @ts-ignore
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+const path = require('path');
+const { PrismaClient } = require('../prisma/generated-client');
+const { PrismaLibSql } = require('@prisma/adapter-libsql');
 
-const path = require("path");
-const adapter = new PrismaLibSql({ url: `file:${path.join(__dirname, "..", "dev.db")}` });
-const prisma = new PrismaClient({ adapter } as any);
+const dbPath = path.join(__dirname, '..', 'dev.db');
+const adapter = new PrismaLibSql({ url: `file:${dbPath}` });
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('Seed: Start ReferenceData...');
@@ -31,26 +31,6 @@ async function main() {
     { key: "Occitanie", label: "Occitanie", order: 11 },
     { key: "Pays de la Loire", label: "Pays de la Loire", order: 12 },
     { key: "Provence-Alpes-Côte d'Azur", label: "Provence-Alpes-Côte d'Azur", order: 13 },
-  ];
-
-  const gameEditions = [
-    { key: "BB25", label: "Blood Bowl 2025", order: 1 },
-    { key: "BB20", label: "Blood Bowl 2020", order: 2 },
-    { key: "BB3", label: "Blood Bowl 3", order: 3 },
-    { key: "BB7", label: "Blood Bowl 7's", order: 4 },
-    { key: "GutterBowl", label: "Gutter Bowl", order: 5 },
-    { key: "Classic", label: "Classic / LRB6", order: 6 },
-  ];
-
-  const tournamentTypes = [
-    { key: "Resurrection", label: "Résurrection", order: 1 },
-    { key: "Evolutif", label: "Évolutif", order: 2 },
-  ];
-
-  const platforms = [
-    { key: "Tabletop", label: "Tabletop (Plateau)", order: 1 },
-    { key: "Fumbbl", label: "Fumbbl", order: 2 },
-    { key: "VideoGame", label: "Jeu Vidéo (BB3/BB2)", order: 3 },
   ];
 
   const departments = [
@@ -110,15 +90,11 @@ async function main() {
   const allToSeed = [
     { group: 'COACH_REGION', data: coachRegions },
     { group: 'REGION_FRANCE', data: franceRegions },
-    { group: 'GAME_EDITION', data: gameEditions },
-    { group: 'TOURNAMENT_TYPE', data: tournamentTypes },
-    { group: 'PLATFORM', data: platforms },
     { group: 'DEPARTEMENT_FRANCE', data: departments },
   ];
 
   for (const group of allToSeed) {
     for (const item of group.data) {
-        // @ts-ignore
         await prisma.referenceData.upsert({
             where: { group_key: { group: group.group, key: item.key } },
             update: { label: item.label, order: item.order },

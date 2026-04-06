@@ -14,13 +14,18 @@ interface Props {
   users: any[];
   currentUserRole: UserRole;
   currentUserId: string;
+  allLigues: { id: string, name: string, acronym: string }[];
+  allRegions: { key: string, label: string }[];
 }
 
-export default function MembersTable({ users, currentUserRole, currentUserId }: Props) {
+export default function MembersTable({ users, currentUserRole, currentUserId, allLigues, allRegions }: Props) {
   const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
+  const [selectedLigue, setSelectedLigue] = useState<string>("");
+  const [selectedRegion, setSelectedRegion] = useState<string>("");
   
-  type SortConfig = { key: "name" | "role" | "naf"; direction: "asc" | "desc" } | null;
+  type SortConfig = { key: "name" | "role" | "naf" | "region" | "ligue"; direction: "asc" | "desc" } | null;
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
   const [roleModal, setRoleModal] = useState<{ isOpen: boolean, userId: string, newRole: UserRole | "", roleLabel: string }>({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
@@ -89,11 +94,16 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
   const showMod = isModerator(currentUserRole);
   const showDelete = currentUserRole === "SUPERADMIN";
 
-  const filteredUsers = users.filter(u => 
-    u.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users.filter(u => {
+    const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = selectedRole === "" || u.role === selectedRole;
+    const matchesRegion = selectedRegion === "" || u.region === selectedRegion;
+    const matchesLigue = selectedLigue === "" || u.ligues?.some((l: any) => l.id === selectedLigue);
+    
+    return matchesSearch && matchesRole && matchesRegion && matchesLigue;
+  });
 
-  const handleSort = (key: "name" | "role" | "naf") => {
+  const handleSort = (key: "name" | "role" | "naf" | "region" | "ligue") => {
     let direction: "asc" | "desc" = "asc";
     if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
@@ -130,142 +140,330 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
       if (nafA > nafB) return sortConfig.direction === "asc" ? 1 : -1;
       return 0;
     }
+
+    if (sortConfig.key === "region") {
+      const regA = a.region || "";
+      const regB = b.region || "";
+      if (regA < regB) return sortConfig.direction === "asc" ? -1 : 1;
+      if (regA > regB) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    }
+
+    if (sortConfig.key === "ligue") {
+      const ligA = a.ligues?.[0]?.acronym || "";
+      const ligB = b.ligues?.[0]?.acronym || "";
+      if (ligA < ligB) return sortConfig.direction === "asc" ? -1 : 1;
+      if (ligA > ligB) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    }
     
     return 0;
   });
 
+  const resetFilters = () => {
+    setSearchTerm("");
+    setSelectedRole("");
+    setSelectedRegion("");
+    setSelectedLigue("");
+  };
+
   return (
     <PremiumCard className="members-table-card fade-in">
-      <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'flex-end' }}>
-        <input 
-          type="text" 
-          placeholder="Rechercher un membre..." 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            padding: '0.6rem 1rem',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '6px',
-            color: 'white',
-            width: '100%',
-            maxWidth: '300px',
-            outline: 'none'
-          }}
-        />
-      </div>
-      <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--glass-border)' }}>
-            <th onClick={() => handleSort('name')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
-              Utilisateur {sortConfig?.key === 'name' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-            </th>
-            <th onClick={() => handleSort('role')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
-              Rôle {sortConfig?.key === 'role' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-            </th>
-            <th onClick={() => handleSort('naf')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
-              N°NAF {sortConfig?.key === 'naf' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-            </th>
-            <th style={{ padding: '1rem', textAlign: 'center' }}>MP</th>
-            {showRoles && <th style={{ padding: '1rem' }}>Gestion des Rôles</th>}
-            {showMod && <th style={{ padding: '1rem' }}>Modération</th>}
-            {showDelete && <th style={{ padding: '1rem' }}>Gestion</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedUsers.map(user => {
-            const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
-            const selectableRoles = getAllowedRolesToAssign(currentUserRole);
+      <div className="members-filter-bar" style={{ 
+        marginBottom: '2rem', 
+        display: 'flex', 
+        gap: '1rem', 
+        flexWrap: 'wrap',
+        background: 'rgba(255,255,255,0.02)',
+        padding: '1.2rem',
+        borderRadius: '12px',
+        border: '1px solid var(--glass-border)'
+      }}>
+        <div style={{ flex: '1 1 250px' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Recherche</label>
+          <input 
+            type="text" 
+            placeholder="Nom du coach..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '0.6rem 1rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '6px',
+              color: 'white',
+              width: '100%',
+              outline: 'none',
+              fontSize: '0.9rem'
+            }}
+          />
+        </div>
 
-            return (
-              <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', opacity: user.isBanned ? 0.5 : 1 }}>
-                <td style={{ padding: '1rem' }}>
-                  <Link href={`/spy/${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
-                    {user.image && <img src={user.image} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />}
-                    <span style={{ fontWeight: 600, transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
-                      {user.name} {user.isBanned && <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>}
-                    </span>
-                  </Link>
-                </td>
-                <td style={{ padding: '1rem' }}>
-                  <StatusBadge 
-                    variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
-                  >
-                    {getRoleLabel(user.role)}
-                  </StatusBadge>
-                </td>
-                <td style={{ padding: '1rem', color: '#888' }}>
-                  {user.nafNumber ? (
-                    <a 
-                      href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: 600 }}
-                    >
-                      {user.nafNumber}
-                    </a>
-                  ) : "—"}
-                </td>
-                <td style={{ padding: '1rem', textAlign: 'center' }}>
-                  {user.id !== currentUserId && !user.isBanned && (
-                    <Link 
-                      href={`/profile?tab=pm&recipientId=${user.id}`}
-                      style={{ 
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.4rem',
-                        padding: '0.4rem 0.8rem', 
-                        background: 'rgba(34, 197, 94, 0.1)', 
-                        border: '1px solid rgba(34, 197, 94, 0.2)', 
-                        borderRadius: '6px', 
-                        color: '#4ade80', 
-                        fontSize: '0.75rem', 
-                        textDecoration: 'none',
-                        fontWeight: 700,
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <Mail size={14} /> MP
-                    </Link>
-                  )}
-                </td>
-                {showRoles && (
+        <div style={{ flex: '1 1 180px' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Rôle</label>
+          <select 
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+            style={{
+              padding: '0.6rem 0.8rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '6px',
+              color: 'white',
+              width: '100%',
+              outline: 'none',
+              fontSize: '0.9rem'
+            }}
+          >
+            <option value="">Tous les rôles</option>
+            {Object.entries(ROLE_LABELS).map(([val, label]) => (
+              <option key={val} value={val}>{label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div style={{ flex: '1 1 180px' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Région</label>
+          <select 
+            value={selectedRegion}
+            onChange={(e) => setSelectedRegion(e.target.value)}
+            style={{
+              padding: '0.6rem 0.8rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '6px',
+              color: 'white',
+              width: '100%',
+              outline: 'none',
+              fontSize: '0.9rem'
+            }}
+          >
+            <option value="">Toutes les régions</option>
+            {allRegions.map(region => (
+              <option key={region.key} value={region.key}>{region.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div style={{ flex: '1 1 200px' }}>
+          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Ligue</label>
+          <select 
+            value={selectedLigue}
+            onChange={(e) => setSelectedLigue(e.target.value)}
+            style={{
+              padding: '0.6rem 0.8rem',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '6px',
+              color: 'white',
+              width: '100%',
+              outline: 'none',
+              fontSize: '0.9rem'
+            }}
+          >
+            <option value="">Toutes les ligues</option>
+            {allLigues.map(ligue => (
+              <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '2px' }}>
+          <button 
+            autoFocus={false}
+            onClick={resetFilters}
+            style={{
+              padding: '0.6rem 1rem',
+              background: 'transparent',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '6px',
+              color: '#888',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = '#888';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+            }}
+          >
+            Réinitialiser
+          </button>
+        </div>
+      </div>
+
+      <div style={{ overflowX: 'auto' }}>
+        <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--glass-border)' }}>
+              <th onClick={() => handleSort('name')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                Utilisateur {sortConfig?.key === 'name' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+              </th>
+              <th onClick={() => handleSort('role')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                Rôle {sortConfig?.key === 'role' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+              </th>
+              <th onClick={() => handleSort('naf')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                N°NAF {sortConfig?.key === 'naf' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+              </th>
+              <th onClick={() => handleSort('region')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                Région {sortConfig?.key === 'region' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+              </th>
+              <th onClick={() => handleSort('ligue')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                Ligue(s) {sortConfig?.key === 'ligue' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
+              </th>
+              <th style={{ padding: '1rem', textAlign: 'center' }}>MP</th>
+              {showRoles && <th style={{ padding: '1rem' }}>Gestion des Rôles</th>}
+              {showMod && <th style={{ padding: '1rem' }}>Modération</th>}
+              {showDelete && <th style={{ padding: '1rem' }}>Gestion</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {sortedUsers.length > 0 ? sortedUsers.map(user => {
+              const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
+              const selectableRoles = getAllowedRolesToAssign(currentUserRole);
+
+              return (
+                <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', opacity: user.isBanned ? 0.5 : 1 }}>
                   <td style={{ padding: '1rem' }}>
-                    {canEdit ? (
-                      <select 
-                        value={user.role}
-                        disabled={isPending}
-                        onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
-                        style={{ 
+                    <Link href={`/spy/${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
+                      {user.image && <img src={user.image} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />}
+                      <span style={{ fontWeight: 600, transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                        {user.name} {user.isBanned && <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>}
+                      </span>
+                    </Link>
+                  </td>
+                  <td style={{ padding: '1rem' }}>
+                    <StatusBadge 
+                      variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
+                    >
+                      {getRoleLabel(user.role)}
+                    </StatusBadge>
+                  </td>
+                  <td style={{ padding: '1rem', color: '#888' }}>
+                    {user.nafNumber ? (
+                      <a 
+                        href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: 600 }}
+                      >
+                        {user.nafNumber}
+                      </a>
+                    ) : "—"}
+                  </td>
+                  <td style={{ padding: '1rem', color: '#888', fontSize: '0.85rem' }}>
+                    {allRegions.find(r => r.key === user.region)?.label || user.region || "—"}
+                  </td>
+                  <td style={{ padding: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                      {user.ligues && user.ligues.length > 0 ? user.ligues.map((l: any) => (
+                        <span key={l.id} style={{ 
+                          fontSize: '0.7rem', 
+                          padding: '0.2rem 0.5rem', 
                           background: 'rgba(255,255,255,0.05)', 
-                          border: '1px solid var(--glass-border)',
-                          color: 'white',
-                          padding: '0.4rem',
-                          borderRadius: '6px',
-                          outline: 'none',
-                          fontSize: '0.85rem'
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '4px',
+                          color: 'var(--primary)',
+                          fontWeight: 700
+                        }}>
+                          {l.acronym}
+                        </span>
+                      )) : (
+                        <span style={{ color: '#555', fontStyle: 'italic', fontSize: '0.85rem' }}>—</span>
+                      )}
+                    </div>
+                  </td>
+                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                    {user.id !== currentUserId && !user.isBanned && (
+                      <Link 
+                        href={`/profile?tab=pm&recipientId=${user.id}`}
+                        style={{ 
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.4rem',
+                          padding: '0.4rem 0.8rem', 
+                          background: 'rgba(34, 197, 94, 0.1)', 
+                          border: '1px solid rgba(34, 197, 94, 0.2)', 
+                          borderRadius: '6px', 
+                          color: '#4ade80', 
+                          fontSize: '0.75rem', 
+                          textDecoration: 'none',
+                          fontWeight: 700,
+                          transition: 'all 0.2s'
                         }}
                       >
-                        <option value={user.role} disabled>Changer le rôle...</option>
-                        {selectableRoles.map(role => (
-                          <option key={role} value={role}>{ROLE_LABELS[role]}</option>
-                        ))}
-                      </select>
-                    ) : (
-                      <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
+                        <Mail size={14} /> MP
+                      </Link>
                     )}
                   </td>
-                )}
-                {showMod && (
-                  <td style={{ padding: '1rem' }}>
-                    {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
+                  {showRoles && (
+                    <td style={{ padding: '1rem' }}>
+                      {canEdit ? (
+                        <select 
+                          value={user.role}
+                          disabled={isPending}
+                          onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
+                          style={{ 
+                            background: 'rgba(255,255,255,0.05)', 
+                            border: '1px solid var(--glass-border)',
+                            color: 'white',
+                            padding: '0.4rem',
+                            borderRadius: '6px',
+                            outline: 'none',
+                            fontSize: '0.85rem'
+                          }}
+                        >
+                          <option value={user.role} disabled>Changer le rôle...</option>
+                          {selectableRoles.map(role => (
+                            <option key={role} value={role}>{ROLE_LABELS[role]}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
+                      )}
+                    </td>
+                  )}
+                  {showMod && (
+                    <td style={{ padding: '1rem' }}>
+                      {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
+                        <button 
+                          disabled={isPending}
+                          onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
+                          style={{ 
+                            background: user.isBanned ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
+                            border: `1px solid ${user.isBanned ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                            color: user.isBanned ? '#4ade80' : '#f87171',
+                            padding: '0.4rem 0.8rem',
+                            borderRadius: '6px',
+                            cursor: isPending ? 'not-allowed' : 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.4rem',
+                            fontSize: '0.8rem',
+                            fontWeight: 600
+                          }}
+                        >
+                          {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
+                        </button>
+                      ) : (
+                        <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
+                      )}
+                    </td>
+                  )}
+                  {showDelete && (
+                    <td style={{ padding: '1rem' }}>
                       <button 
                         disabled={isPending}
-                        onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
+                        onClick={() => handleDeleteClick(user.id, user.name)}
                         style={{ 
-                          background: user.isBanned ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
-                          border: `1px solid ${user.isBanned ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-                          color: user.isBanned ? '#4ade80' : '#f87171',
+                          background: 'transparent', 
+                          border: '1px solid rgba(239, 68, 68, 0.5)',
+                          color: '#ef4444',
                           padding: '0.4rem 0.8rem',
                           borderRadius: '6px',
                           cursor: isPending ? 'not-allowed' : 'pointer',
@@ -276,41 +474,22 @@ export default function MembersTable({ users, currentUserRole, currentUserId }: 
                           fontWeight: 600
                         }}
                       >
-                        {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
+                        <Trash2 size={14} /> Supprimer
                       </button>
-                    ) : (
-                      <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
-                    )}
-                  </td>
-                )}
-                {showDelete && (
-                  <td style={{ padding: '1rem' }}>
-                    <button 
-                      disabled={isPending}
-                      onClick={() => handleDeleteClick(user.id, user.name)}
-                      style={{ 
-                        background: 'transparent', 
-                        border: '1px solid rgba(239, 68, 68, 0.5)',
-                        color: '#ef4444',
-                        padding: '0.4rem 0.8rem',
-                        borderRadius: '6px',
-                        cursor: isPending ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.4rem',
-                        fontSize: '0.8rem',
-                        fontWeight: 600
-                      }}
-                    >
-                      <Trash2 size={14} /> Supprimer
-                    </button>
-                  </td>
-                )}
+                    </td>
+                  )}
+                </tr>
+              );
+            }) : (
+              <tr>
+                <td colSpan={9} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                  Aucun membre ne correspond à vos critères de recherche.
+                </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <Modal 
         isOpen={roleModal.isOpen} 

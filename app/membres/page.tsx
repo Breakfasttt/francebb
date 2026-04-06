@@ -33,11 +33,26 @@ export default async function MembersPage() {
   // 3. Vérification des permissions
   const showBanned = isModerator(me.role as UserRole);
 
-  // 4. Récupérer tous les utilisateurs
+  // 4. Récupérer tous les utilisateurs avec leurs ligues et région
   const allUsers = await prisma.user.findMany({
     where: showBanned ? undefined : { isBanned: false },
+    include: {
+      ligues: { select: { id: true, name: true, acronym: true } }
+    },
     orderBy: { name: 'asc' }
   });
+
+  // 5. Récupérer les données de filtrage
+  const [allLigues, allRegions] = await Promise.all([
+    prisma.ligue.findMany({ 
+      select: { id: true, name: true, acronym: true }, 
+      orderBy: { acronym: 'asc' } 
+    }),
+    prisma.referenceData.findMany({ 
+      where: { group: 'COACH_REGION', isActive: true }, 
+      orderBy: { order: 'asc' } 
+    })
+  ]);
 
   return (
     <main className="container">
@@ -52,7 +67,13 @@ export default async function MembersPage() {
         backTitle="Retour à l'accueil"
       />
 
-      <MembersTable users={allUsers} currentUserRole={me.role as UserRole} currentUserId={session.user.id} />
+      <MembersTable 
+        users={allUsers} 
+        currentUserRole={me.role as UserRole} 
+        currentUserId={session.user.id} 
+        allLigues={allLigues}
+        allRegions={allRegions}
+      />
     </main>
   );
 }
