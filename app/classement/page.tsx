@@ -14,9 +14,11 @@ import {
   Award,
   Loader2,
   TrendingUp,
-  Info
+  Info,
+  HelpCircle
 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import Modal from "@/common/components/Modal/Modal";
 import { getRanking, getHallOfFame, getRankingYears, RankingFilter } from "./actions";
 import "./page.css";
 
@@ -27,6 +29,7 @@ export default function ClassementPage() {
   const [ranking, setRanking] = useState<any[]>([]);
   const [hof, setHof] = useState<any[]>([]);
   const [availableYears, setAvailableYears] = useState<number[]>([]);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   useEffect(() => {
     async function loadYears() {
@@ -66,8 +69,8 @@ export default function ClassementPage() {
   return (
     <main className="container classement-page">
       <PageHeader 
-        title="Classement National" 
-        subtitle="Le Panthéon des meilleurs coachs du Championnat de France"
+        title="Championnat de France" 
+        subtitle="Le Panthéon des meilleurs coachs et de la communauté Blood Bowl France"
         backHref="/" 
       />
 
@@ -96,10 +99,13 @@ export default function ClassementPage() {
           </div>
         </div>
 
-        <div className="ranking-info-badge" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Info size={14} />
-          {filter === "ROSTER" ? "Top 2 résultats" : "Top 4 résultats retenus"}
-        </div>
+        <button 
+          className="cdf-help-trigger" 
+          onClick={() => setIsHelpOpen(true)}
+        >
+          <HelpCircle size={16} />
+          <span>Comment sont calculés les points ?</span>
+        </button>
       </div>
 
       {loading ? (
@@ -209,6 +215,29 @@ export default function ClassementPage() {
       <footer style={{ marginTop: '4rem', textAlign: 'center', opacity: 0.6, fontSize: '0.9rem' }}>
         <p>Le Championnat de France est régi par les règles de la Team France Blood Bowl.</p>
       </footer>
+      <Modal
+        isOpen={isHelpOpen}
+        onClose={() => setIsHelpOpen(false)}
+        title="Calcul des Points CDF"
+      >
+        <div className="cdf-help-content">
+          <p>Le <strong>Championnat de France</strong> utilise une formule pondérée pour valoriser la performance et l&apos;ampleur des tournois :</p>
+          
+          <ul className="help-rules-list">
+            <li><strong>Sélection des scores :</strong> Seuls vos 4 meilleurs résultats sur la période (12 mois glissants ou année civile) sont cumulés pour votre score total.</li>
+            <li><strong>La Formule :</strong> <code>Score = R * (Nc - Pl) / (Nc + Pl - 2)</code>
+              <br/><small>Nc = Nb participants, Pl = Votre place, R = Valeur de référence du tournoi.</small>
+            </li>
+            <li><strong>Poids du tournoi (R) :</strong> Le score maximum (R) dépend du type de tournoi (100 en individuel), boosté par le nombre de rondes et de participants.</li>
+            <li><strong>Équité :</strong> Le vainqueur d&apos;un tournoi reçoit toujours le score R maximum calculé pour cet événement.</li>
+          </ul>
+
+          <div className="help-roster-note">
+            <Info size={14} />
+            <span>Pour le classement par Roster, seuls les 2 meilleurs scores avec la même race sont retenus.</span>
+          </div>
+        </div>
+      </Modal>
     </main>
   );
 }

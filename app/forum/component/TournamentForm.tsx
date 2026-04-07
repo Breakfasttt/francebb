@@ -33,6 +33,7 @@ interface TournamentFormProps {
     tournamentTypes: any[];
     platforms: any[];
     coachRegions: any[];
+    tournamentFormats: any[];
   };
   initialData?: {
     id: string;
@@ -74,6 +75,8 @@ interface TournamentFormProps {
     isOrganizer: boolean;
     lat: number | null;
     lng: number | null;
+    totalMatches: number | null;
+    tournamentType: string | null;
   };
 }
 
@@ -89,6 +92,10 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   const [lng, setLng] = useState<number | null>(initialData?.lng ?? null);
   const [address, setAddress] = useState(initialData?.address ?? "");
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+  
+  const [pairingType, setPairingType] = useState<"INDIVIDUEL" | "EQUIPE">(
+    initialData?.typeCDF === "EQUIPE_TOTALE" ? "EQUIPE" : "INDIVIDUEL"
+  );
 
   const [selectedRegion, setSelectedRegion] = useState<string>(initialData?.region || "");
   const [selectedDept, setSelectedDept] = useState<string>(initialData?.departement || "");
@@ -313,33 +320,14 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<Users size={18} />} title="Participants" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', alignItems: 'end' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'end', marginBottom: isTeam ? '1.5rem' : 0 }}>
                 <div className="form-group">
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', background: 'var(--glass-bg)', padding: '0.8rem', borderRadius: '8px', border: isTeam ? '1px solid var(--accent)' : '1px solid var(--glass-border)' }}>
                     <input type="checkbox" name="isTeam" checked={isTeam} onChange={e => setIsTeam(e.target.checked)} style={{ width: '18px', height: '18px' }} />
                     <span>En équipe</span>
                   </label>
                 </div>
-                {isTeam && (
-                  <div className="form-group">
-                    <label>Coachs par équipe</label>
-                    <input 
-                      type="number" 
-                      name="tCoachsPerTeam" 
-                      defaultValue={Math.max(2, initialData?.coachsPerTeam || 2)} 
-                      min={2} 
-                      className="admin-input" 
-                      onKeyDown={(e) => handleNumericKeyDown(e)}
-                      onInput={(e: any) => {
-                        const val = e.target.value;
-                        if (val === "0") e.target.value = "2"; 
-                      }}
-                      onBlur={(e) => {
-                        if (parseInt(e.target.value) < 2 || !e.target.value) e.target.value = "2";
-                      }}
-                    />
-                  </div>
-                )}
+
                 <div className="form-group">
                   <label>{isTeam ? "Nombre d'équipes max" : "Nombre de coachs max"}</label>
                   <input 
@@ -356,6 +344,50 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                   />
                 </div>
               </div>
+
+              {isTeam && (
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: '1fr 1fr', 
+                  gap: '1.5rem', 
+                  padding: '1.2rem', 
+                  background: 'rgba(255,255,255,0.02)', 
+                  borderRadius: '12px',
+                  border: '1px dashed var(--glass-border)',
+                  marginBottom: '1rem'
+                }}>
+                  <div className="form-group">
+                    <label>Coachs par équipe</label>
+                    <input 
+                      type="number" 
+                      name="tCoachsPerTeam" 
+                      defaultValue={Math.max(2, initialData?.coachsPerTeam || 2)} 
+                      min={2} 
+                      className="admin-input" 
+                      onKeyDown={(e) => handleNumericKeyDown(e)}
+                      onBlur={(e) => {
+                        if (parseInt(e.target.value) < 2 || !e.target.value) e.target.value = "2";
+                      }}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Système d&apos;appariement</label>
+                    <select 
+                      className="admin-input" 
+                      value={pairingType} 
+                      onChange={(e) => setPairingType(e.target.value as any)}
+                    >
+                      <option value="INDIVIDUEL">Individuel (Partiel)</option>
+                      <option value="EQUIPE">Par équipe (Total)</option>
+                    </select>
+                    <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.4rem', marginBottom: 0 }}>
+                      {pairingType === "INDIVIDUEL" 
+                        ? "Scores individuels (ex: Coupe de France)." 
+                        : "Appariements et scores collectifs."}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {(initialData?.isOrganizer ?? true) && (
                 <>
@@ -398,22 +430,46 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 ))}
               </div>
 
+              <input 
+                type="hidden" 
+                name="typeCDF" 
+                value={!isTeam ? "INDIVIDUEL" : (pairingType === "EQUIPE" ? "EQUIPE_TOTALE" : "EQUIPE_PARTIELLE")} 
+              />
+
               {isCDF && (
-                <div className="form-group" style={{ marginTop: '1rem' }}>
-                  <label>Type de Tournoi CDF *</label>
-                  <select name="typeCDF" className="admin-input" defaultValue={initialData?.typeCDF || "INDIVIDUEL"}>
-                    <option value="INDIVIDUEL">Individuel</option>
-                    <option value="EQUIPE_PARTIELLE">Équipe Partielle (Appariements individuels)</option>
-                    <option value="EQUIPE_TOTALE">Équipe Totale (Appariements par équipe)</option>
-                  </select>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                    Indispensable pour le calcul automatique des points au classement national.
+                <div className="form-group" style={{ marginTop: '0.5rem', padding: '0.8rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '3px solid var(--accent)' }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600 }}>
+                    Type de classement CDF : <span style={{ color: 'var(--accent)' }}>
+                      {!isTeam ? "Individuel" : (pairingType === "EQUIPE" ? "Équipe Totale" : "Équipe Partielle")}
+                    </span>
+                  </p>
+                  <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.3rem', marginBottom: 0 }}>
+                    Le calcul des points s&apos;adaptera automatiquement à ce format.
                   </p>
                 </div>
               )}
 
+              <div className="form-group" style={{ marginTop: '1rem' }}>
+                <label>Nombre de rondes (total)</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <input 
+                    type="number" 
+                    name="tTotalMatches" 
+                    defaultValue={initialData?.totalMatches ?? ""} 
+                    placeholder="Ex: 5" 
+                    min={1} 
+                    className="admin-input" 
+                    style={{ width: '100px' }}
+                    onKeyDown={(e) => handleNumericKeyDown(e)}
+                  />
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>
+                    Par défaut : 3 rondes par jour. Saisissez une valeur pour forcer le calcul CDF.
+                  </p>
+                </div>
+              </div>
+
               <SectionSeparator icon={<Monitor size={18} />} title="Plateforme & Édition" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
                 <div className="form-group">
                   <label>Plateforme</label>
                   <select name="tPlatform" className="admin-input" defaultValue={initialData?.platform || "Tabletop"}>
@@ -424,24 +480,32 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 </div>
                 <div className="form-group">
                   <label>Édition du jeu</label>
-                  <select name="tGame" className="admin-input" defaultValue={initialData?.gameEdition || "BB25"}>
+                  <select name="tGame" className="admin-input" defaultValue={initialData?.gameEdition || "BB2025"}>
                     {referenceData.gameEditions.map(g => (
                         <option key={g.key} value={g.key}>{g.label}</option>
                     ))}
                   </select>
                 </div>
                 <div className="form-group">
-                  <label>Ruleset (Pack de règles)</label>
-                  <input type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex: Eurobowl 2024" className="admin-input" />
-                </div>
-                <div className="form-group">
-                  <label>Type de tournoi</label>
+                  <label>Format de tournoi</label>
                   <select name="tStructure" className="admin-input" defaultValue={initialData?.structure || "Resurrection"}>
-                    {referenceData.tournamentTypes.map(s => (
+                    {referenceData.tournamentFormats.map(s => (
                         <option key={s.key} value={s.key}>{s.label}</option>
                     ))}
                   </select>
                 </div>
+                <div className="form-group">
+                  <label>Type de tournoi</label>
+                  <select name="tournamentType" className="admin-input" defaultValue={initialData?.tournamentType || "SWISS"}>
+                    {referenceData.tournamentTypes.map(t => (
+                        <option key={t.key} value={t.key}>{t.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-group" style={{ marginTop: '1rem' }}>
+                <label>Ruleset (Pack de règles)</label>
+                <input type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex: Eurobowl 2024" className="admin-input" />
               </div>
 
               <SectionSeparator icon={<Coins size={18} />} title="Logistique & Prix" />

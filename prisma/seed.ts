@@ -10,16 +10,34 @@ async function main() {
   const userId = "user_test_breakyt";
 
   console.log("Cleaning all existing data...");
+  // On vide les tables dans l'ordre inverse des dépendances pour éviter les erreurs de clés étrangères
+  await prisma.moderationLog.deleteMany();
+  await prisma.moderationReport.deleteMany();
+  await prisma.articleReaction.deleteMany();
+  await prisma.article.deleteMany();
+  await prisma.resource.deleteMany();
+  await prisma.tournamentMatch.deleteMany();
+  await prisma.tournamentRound.deleteMany();
+  await prisma.tournamentResult.deleteMany();
+  await prisma.tournamentRegistration.deleteMany();
+  await prisma.tournamentTeamMember.deleteMany();
+  await prisma.tournamentTeam.deleteMany();
+  await prisma.tournamentMercenary.deleteMany();
   await prisma.postReaction.deleteMany();
   await prisma.mention.deleteMany();
-  await prisma.topicView.deleteMany();
-  await prisma.privateMessage.deleteMany();
-  await prisma.conversation.deleteMany();
   await prisma.post.deleteMany();
+  await prisma.topicFollow.deleteMany();
+  await prisma.topicView.deleteMany();
   await prisma.topic.deleteMany();
+  await prisma.tournament.deleteMany();
+  await prisma.ligue.deleteMany();
   await prisma.forum.deleteMany();
   await prisma.category.deleteMany();
-  await prisma.tournament.deleteMany();
+  await prisma.privateMessage.deleteMany();
+  await prisma.conversation.deleteMany();
+  await prisma.session.deleteMany();
+  await prisma.account.deleteMany();
+  await prisma.block.deleteMany();
   await prisma.user.deleteMany();
   await prisma.roleConfig.deleteMany();
 
@@ -424,10 +442,44 @@ async function main() {
     { key: "976", label: "976 - Mayotte", order: 101 },
   ];
 
+  const platforms = [
+    { key: "Tabletop", label: "Tabletop", order: 1 },
+    { key: "Fumbbl", label: "Fumbbl", order: 2 },
+    { key: "VideoGame", label: "Jeu vidéo", order: 3 },
+    { key: "Other", label: "Autre", order: 4 },
+  ];
+
+  const gameEditions = [
+    { key: "BB2025", label: "BB2025", order: 1 },
+    { key: "BB2020", label: "BB2020", order: 2 },
+    { key: "BB7", label: "BB7", order: 3 },
+    { key: "DungeonBowl", label: "Dungeon Bowl", order: 4 },
+    { key: "Other", label: "Autre", order: 5 },
+  ];
+
+  const tournamentFormats = [
+    { key: "Evolutif", label: "Évolutif", order: 1 },
+    { key: "Resurrection", label: "Résurrection", order: 2 },
+    { key: "Other", label: "Autre", order: 3 },
+  ];
+
+  const tournamentTypes = [
+    { key: "LIGUE", label: "Ligue", order: 1 },
+    { key: "SWISS", label: "Tournoi - ronde suisse", order: 2 },
+    { key: "ROBIN", label: "Tournoi - toute ronde", order: 3 },
+    { key: "BRACKET", label: "Tournoi - Bracket", order: 4 },
+    { key: "DBRACKET", label: "Tournoi - Double Bracket", order: 5 },
+    { key: "OTHER", label: "Autre", order: 6 },
+  ];
+
   const allRefData = [
     { group: "COACH_REGION", data: coachRegions },
     { group: "REGION_FRANCE", data: franceRegions },
     { group: "DEPARTEMENT_FRANCE", data: depts },
+    { group: "PLATFORM", data: platforms },
+    { group: "GAME_EDITION", data: gameEditions },
+    { group: "TOURNAMENT_FORMAT", data: tournamentFormats },
+    { group: "TOURNAMENT_TYPE", data: tournamentTypes },
   ];
 
   for (const group of allRefData) {

@@ -59,10 +59,11 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
   if (!firstPost) notFound();
 
   // Charger toutes les données de référence
-  const [franceRegions, gameEditions, departments, tournamentTypes, platforms, coachRegions] = await Promise.all([
+  const [franceRegions, gameEditions, departments, tournamentFormats, tournamentTypes, platforms, coachRegions] = await Promise.all([
     prisma.referenceData.findMany({ where: { group: 'REGION_FRANCE', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'GAME_EDITION', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'DEPARTEMENT_FRANCE', isActive: true }, orderBy: { order: 'asc' } }),
+    prisma.referenceData.findMany({ where: { group: 'TOURNAMENT_FORMAT', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'TOURNAMENT_TYPE', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'PLATFORM', isActive: true }, orderBy: { order: 'asc' } }),
     prisma.referenceData.findMany({ where: { group: 'COACH_REGION', isActive: true }, orderBy: { order: 'asc' } }),
@@ -98,6 +99,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
           franceRegions,
           gameEditions,
           departments,
+          tournamentFormats,
           tournamentTypes,
           platforms,
           coachRegions
