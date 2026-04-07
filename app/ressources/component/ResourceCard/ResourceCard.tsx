@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { ExternalLink, Tag as TagIcon, Edit, Trash2 } from "lucide-react";
@@ -23,6 +24,8 @@ interface ResourceCardProps {
   onDelete?: () => void;
 }
 
+const FALLBACK_IMAGE = "/images/resource-placeholder.png";
+
 export default function ResourceCard({ 
   resource, 
   viewMode = "grid",
@@ -32,6 +35,12 @@ export default function ResourceCard({
   onDelete
 }: ResourceCardProps) {
   const isExternal = resource.link.startsWith('http');
+  const [imgSrc, setImgSrc] = useState<string>(resource.imageUrl || FALLBACK_IMAGE);
+
+  // Sync state if prop changes (e.g. after editing)
+  useEffect(() => {
+    setImgSrc(resource.imageUrl || FALLBACK_IMAGE);
+  }, [resource.imageUrl]);
   
   return (
     <PremiumCard className={`resource-card ${viewMode} ${resource.isSystem ? 'system-resource' : ''}`}>
@@ -41,9 +50,13 @@ export default function ResourceCard({
           className="resource-card-link-wrapper" 
           target={isExternal ? '_blank' : '_self'}
         >
-          {resource.imageUrl && viewMode === "grid" && (
+          {viewMode === "grid" && (
             <div className="resource-image">
-              <img src={resource.imageUrl} alt={resource.title} />
+              <img 
+                src={imgSrc} 
+                alt={resource.title} 
+                onError={() => setImgSrc(FALLBACK_IMAGE)}
+              />
             </div>
           )}
           
