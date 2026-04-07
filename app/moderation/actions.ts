@@ -295,3 +295,40 @@ export async function unbanUserAction(userId: string) {
     return { success: false, error: "Erreur serveur" };
   }
 }
+/**
+ * Récupère le résumé des compteurs pour le dashboard de modération.
+ */
+export async function getModerationSummaryCounts() {
+  const session = await auth();
+  if (!isModerator(session?.user?.role)) return null;
+
+  try {
+    const [
+      posts,
+      topics,
+      users,
+      articles,
+      ligues,
+      resources
+    ] = await Promise.all([
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "POST" } }),
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "TOPIC" } }),
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "USER" } }),
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "ARTICLE" } }),
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "LIGUE" } }),
+      prisma.resource.count({ where: { status: "PENDING" } }),
+    ]);
+
+    return {
+      reports_post: posts,
+      reports_topic: topics,
+      reports_user: users,
+      reports_article: articles,
+      reports_ligue: ligues,
+      resources_validation: resources
+    };
+  } catch (error) {
+    console.error("[GET_MOD_COUNTS] Error:", error);
+    return null;
+  }
+}

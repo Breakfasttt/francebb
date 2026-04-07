@@ -9,7 +9,11 @@ import { fr } from "date-fns/locale";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 
-export default function ResourceModerationTab() {
+interface ResourceModerationTabProps {
+  onActionSuccess?: () => void;
+}
+
+export default function ResourceModerationTab({ onActionSuccess }: ResourceModerationTabProps) {
   const [resources, setResources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -31,6 +35,7 @@ export default function ResourceModerationTab() {
       if (res.success) {
         toast.success("Ressource approuvée");
         fetchResources();
+        onActionSuccess?.();
       } else {
         toast.error(res.error || "Une erreur est survenue");
       }
@@ -43,6 +48,7 @@ export default function ResourceModerationTab() {
       if (res.success) {
         toast.success("Ressource rejetée");
         fetchResources();
+        onActionSuccess?.();
       } else {
         toast.error(res.error || "Une erreur est survenue");
       }

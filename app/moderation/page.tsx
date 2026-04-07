@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Loader2, ShieldCheck } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ModerationSidebar, { ModerationTab } from "./component/ModerationSidebar";
 import LogsTab from "./component/LogsTab";
@@ -11,6 +11,7 @@ import ReportsTab from "./component/ReportsTab";
 import BannedUsersTab from "./component/BannedUsersTab";
 import ResourceModerationTab from "./component/ResourceModerationTab";
 import { isModerator } from "@/lib/roles";
+import { getModerationSummaryCounts } from "./actions";
 
 import "./page.css";
 
@@ -28,6 +29,12 @@ export default function ModerationPage() {
   const pathname = usePathname();
 
   const [activeTab, setActiveTab] = useState<ModerationTab>("logs");
+  const [counts, setCounts] = useState<any>({});
+
+  const fetchCounts = async () => {
+    const res = await getModerationSummaryCounts();
+    if (res) setCounts(res);
+  };
 
   useEffect(() => {
     if (status === "loading") return;
@@ -35,6 +42,7 @@ export default function ModerationPage() {
     if (!isModerator(userRole)) {
       redirect("/");
     }
+    fetchCounts();
   }, [session, status]);
 
   useEffect(() => {
@@ -76,7 +84,7 @@ export default function ModerationPage() {
       />
 
       <div className="moderation-content-layout">
-        <ModerationSidebar activeTab={activeTab} onTabChange={handleTabChange} />
+        <ModerationSidebar activeTab={activeTab} onTabChange={handleTabChange} counts={counts} />
 
         <div className="moderation-main-content">
           {activeTab === "logs" && (
@@ -84,23 +92,23 @@ export default function ModerationPage() {
           )}
 
           {activeTab === "reports_post" && (
-            <ReportsTab type="POST" title="Signalements de messages" />
+            <ReportsTab type="POST" title="Signalements de messages" onActionSuccess={fetchCounts} />
           )}
 
           {activeTab === "reports_topic" && (
-            <ReportsTab type="TOPIC" title="Signalements de sujets" />
+            <ReportsTab type="TOPIC" title="Signalements de sujets" onActionSuccess={fetchCounts} />
           )}
 
           {activeTab === "reports_user" && (
-            <ReportsTab type="USER" title="Signalements de coachs" />
+            <ReportsTab type="USER" title="Signalements de coachs" onActionSuccess={fetchCounts} />
           )}
 
           {activeTab === "reports_article" && (
-            <ReportsTab type="ARTICLE" title="Signalements d'articles" />
+            <ReportsTab type="ARTICLE" title="Signalements d'articles" onActionSuccess={fetchCounts} />
           )}
 
           {activeTab === "reports_ligue" && (
-            <ReportsTab type="LIGUE" title="Signalements de ligues" />
+            <ReportsTab type="LIGUE" title="Signalements de ligues" onActionSuccess={fetchCounts} />
           )}
 
           {activeTab === "reports_user_banned" && (
@@ -108,7 +116,7 @@ export default function ModerationPage() {
           )}
 
           {activeTab === "resources_validation" && (
-            <ResourceModerationTab />
+            <ResourceModerationTab onActionSuccess={fetchCounts} />
           )}
         </div>
       </div>

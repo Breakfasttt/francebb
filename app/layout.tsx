@@ -46,6 +46,19 @@ export default async function RootLayout({
   const isMod = isModerator(userRole);
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
 
+  let pendingModCount = 0;
+  if (isMod) {
+    try {
+      const [pendingReports, pendingResources] = await Promise.all([
+        prisma.moderationReport.count({ where: { status: "PENDING" } }),
+        prisma.resource.count({ where: { status: "PENDING" } })
+      ]);
+      pendingModCount = pendingReports + pendingResources;
+    } catch (error) {
+       console.error("Error fetching pending mod count:", error);
+    }
+  }
+
   let unreadCount = 0;
   if (session?.user?.id) {
     try {
@@ -85,6 +98,7 @@ export default async function RootLayout({
             isAdmin={isAdmin} 
             isMod={isMod} 
             unreadCount={unreadCount} 
+            pendingModCount={pendingModCount}
           />
 
           <main className="main-layout-wrapper">

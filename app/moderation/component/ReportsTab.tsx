@@ -13,9 +13,10 @@ import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 interface ReportsTabProps {
   type: "POST" | "TOPIC" | "USER" | "ARTICLE" | "LIGUE" | "MESSAGE";
   title: string;
+  onActionSuccess?: () => void;
 }
 
-export default function ReportsTab({ type, title }: ReportsTabProps) {
+export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabProps) {
   const [reportGroups, setReportGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -56,6 +57,7 @@ export default function ReportsTab({ type, title }: ReportsTabProps) {
     if (res.success) {
       toast.success(action === "RESOLVE" ? "Signalement résolu" : "Signalement ignoré");
       fetchReports();
+      onActionSuccess?.();
       setConfirmState(prev => ({ ...prev, isOpen: false }));
     } else {
       toast.error("Erreur serveur");

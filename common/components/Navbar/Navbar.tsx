@@ -12,9 +12,10 @@ interface NavbarProps {
   isAdmin: boolean;
   isMod: boolean;
   unreadCount: number;
+  pendingModCount: number;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount }) => {
+const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, pendingModCount }) => {
   const pathname = usePathname();
   const isHome = pathname === '/';
 
@@ -40,10 +41,32 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount })
         {isMod && (
           <Link
             href="/moderation"
-            title="Modération"
+            title={`${pendingModCount} action(s) de modération en attente`}
             className="nav-icon-capsule"
+            style={{ position: 'relative' }}
           >
             <ShieldAlert size={22} />
+            {pendingModCount > 0 && (
+              <span style={{
+                position: 'absolute',
+                top: '-5px',
+                right: '-5px',
+                background: '#ef4444', // Rouge vif pour la modération
+                color: 'white',
+                borderRadius: '50%',
+                width: '18px',
+                height: '18px',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+                boxShadow: '0 0 10px rgba(239, 68, 68, 0.5)'
+              }}>
+                {pendingModCount > 9 ? '9+' : pendingModCount}
+              </span>
+            )}
           </Link>
         )}
         {session?.user && (

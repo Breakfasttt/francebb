@@ -18,19 +18,20 @@ export type ModerationTab =
 interface ModerationSidebarProps {
   activeTab: ModerationTab;
   onTabChange: (tab: ModerationTab) => void;
+  counts?: { [key: string]: number };
 }
 
-export default function ModerationSidebar({ activeTab, onTabChange }: ModerationSidebarProps) {
+export default function ModerationSidebar({ activeTab, onTabChange, counts }: ModerationSidebarProps) {
   const tabs: TabItem[] = [
     { id: "logs", label: "Journal d'audit", icon: <FileText size={18} /> },
     { id: "users", label: "Utilisateurs", icon: <Users size={18} /> },
-    { id: "reports_post", label: "Messages signalés", icon: <MessageSquare size={18} /> },
-    { id: "reports_topic", label: "Sujets signalés", icon: <AlertTriangle size={18} /> },
-    { id: "reports_user", label: "Coachs signalés", icon: <Users size={18} /> },
-    { id: "reports_article", label: "Articles signalés", icon: <BookOpen size={18} /> },
-    { id: "reports_ligue", label: "Ligues signalées", icon: <Trophy size={18} /> },
+    { id: "reports_post", label: "Messages signalés", icon: <MessageSquare size={18} />, badge: counts?.reports_post },
+    { id: "reports_topic", label: "Sujets signalés", icon: <AlertTriangle size={18} />, badge: counts?.reports_topic },
+    { id: "reports_user", label: "Coachs signalés", icon: <Users size={18} />, badge: counts?.reports_user },
+    { id: "reports_article", label: "Articles signalés", icon: <BookOpen size={18} />, badge: counts?.reports_article },
+    { id: "reports_ligue", label: "Ligues signalées", icon: <Trophy size={18} />, badge: counts?.reports_ligue },
     { id: "reports_user_banned", label: "Coachs bannis", icon: <UserX size={18} /> },
-    { id: "resources_validation", label: "Validation Ressources", icon: <Layout size={18} /> },
+    { id: "resources_validation", label: "Validation Ressources", icon: <Layout size={18} />, badge: counts?.resources_validation },
   ];
 
   return (

@@ -13,6 +13,7 @@ export interface TabItem {
   label: string;
   icon?: React.ReactNode;
   disabled?: boolean;
+  badge?: number;
 }
 
 interface TabSystemProps {
@@ -46,6 +47,9 @@ const TabSystem: React.FC<TabSystemProps> = ({
           >
             {item.icon && <span className="tab-icon">{item.icon}</span>}
             {showLabels && <span className="tab-label">{item.label}</span>}
+            {item.badge !== undefined && item.badge > 0 && (
+              <span className="tab-badge">{item.badge}</span>
+            )}
           </button>
         );
 
