@@ -108,11 +108,11 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
 }
 
 /**
- * Récupérer les signalements groupés par cible pour un type spécifique.
+ * Récupérer les signalements groupés par cible pour un type spécifique avec pagination.
  */
-export async function getPendingReportsByType(targetType: string) {
+export async function getPendingReportsByType(targetType: string, page = 1, pageSize = 10) {
   const session = await auth();
-  if (!isModerator(session?.user?.role)) return [];
+  if (!isModerator(session?.user?.role)) return { groups: [], total: 0 };
 
   const reports = await prisma.moderationReport.findMany({
     where: { 
@@ -142,7 +142,11 @@ export async function getPendingReportsByType(targetType: string) {
     grouped[report.targetId].count++;
   }
 
-  return Object.values(grouped).sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime());
+  const allGroups = Object.values(grouped).sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime());
+  const total = allGroups.length;
+  const groups = allGroups.slice((page - 1) * pageSize, page * pageSize);
+
+  return { groups, total };
 }
 
 /**
@@ -223,24 +227,31 @@ export async function cleanupModerationLogs(months = 3) {
 }
 
 /**
- * Récupère la liste des utilisateurs bannis avec les détails du ban.
+ * Récupère la liste des utilisateurs bannis avec les détails du ban et pagination.
  */
-export async function getBannedUsers() {
+export async function getBannedUsers(page = 1, pageSize = 10) {
   const session = await auth();
-  if (!isModerator(session?.user?.role)) return [];
+  if (!isModerator(session?.user?.role)) return { users: [], total: 0 };
 
-  // On récupère les users bannis
-  const bannedUsers = await prisma.user.findMany({
-    where: { isBanned: true },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      banReason: true,
-      role: true
-    }
-  });
+  const skip = (page - 1) * pageSize;
+
+  // On récupère les users bannis avec pagination
+  const [bannedUsers, total] = await Promise.all([
+    prisma.user.findMany({
+      where: { isBanned: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        banReason: true,
+        role: true
+      },
+      take: pageSize,
+      skip
+    }),
+    prisma.user.count({ where: { isBanned: true } })
+  ]);
 
   // Pour chaque user, on cherche le log de ban le plus récent
   const usersWithLogs = await Promise.all(bannedUsers.map(async (user) => {
@@ -262,7 +273,10 @@ export async function getBannedUsers() {
     };
   }));
 
-  return usersWithLogs.sort((a, b) => b.bannedAt.getTime() - a.bannedAt.getTime());
+  return {
+    users: usersWithLogs.sort((a, b) => b.bannedAt.getTime() - a.bannedAt.getTime()),
+    total
+  };
 }
 
 /**

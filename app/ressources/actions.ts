@@ -311,24 +311,32 @@ export async function deleteResourceAction(id: string) {
 }
 
 /**
- * Récupère les ressources en attente de modération
+ * Récupère les ressources en attente de modération avec pagination.
  */
-export async function getPendingResources() {
+export async function getPendingResources(page = 1, pageSize = 10) {
   const session = await auth();
   const sessionUser = session?.user as any;
-  if (!isModerator(sessionUser?.role)) return [];
+  if (!isModerator(sessionUser?.role)) return { resources: [], total: 0 };
+
+  const skip = (page - 1) * pageSize;
 
   try {
-    return await prisma.resource.findMany({
-      where: { status: "PENDING" },
-      include: { 
-        tags: true,
-        author: { select: { name: true } }
-      },
-      orderBy: { createdAt: "asc" },
-    });
+    const [resources, total] = await Promise.all([
+      prisma.resource.findMany({
+        where: { status: "PENDING" },
+        include: { 
+          tags: true,
+          author: { select: { name: true } }
+        },
+        orderBy: { createdAt: "asc" },
+        take: pageSize,
+        skip,
+      }),
+      prisma.resource.count({ where: { status: "PENDING" } })
+    ]);
+    return { resources, total };
   } catch (error) {
-    return [];
+    return { resources: [], total: 0 };
   }
 }
 

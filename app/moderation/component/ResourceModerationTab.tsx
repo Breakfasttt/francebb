@@ -1,3 +1,7 @@
+/**
+ * Onglet de modération des ressources.
+ * Permet d'approuver ou rejeter les nouvelles ressources soumises par la communauté.
+ */
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
@@ -8,6 +12,7 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 interface ResourceModerationTabProps {
   onActionSuccess?: () => void;
@@ -17,17 +22,20 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
   const [resources, setResources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const fetchResources = async () => {
     setLoading(true);
-    const data = await getPendingResources();
-    setResources(data);
+    const data = await getPendingResources(page);
+    setResources(data.resources);
+    setTotal(data.total);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchResources();
-  }, []);
+  }, [page]);
 
   const handleApprove = (id: string) => {
     startTransition(async () => {
@@ -118,6 +126,13 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
           ))}
         </div>
       )}
+
+      <Pagination 
+        currentPage={page}
+        totalPages={Math.ceil(total / 10)}
+        onPageChange={(p: number) => { setPage(p); window.scrollTo(0, 0); }}
+        className="moderation-pagination"
+      />
 
       <style jsx>{`
         :global(.moderation-item-card) {

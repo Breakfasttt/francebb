@@ -1,3 +1,7 @@
+/**
+ * Onglet de gestion des utilisateurs bannis.
+ * Permet de lister les bannissements actifs et de débannir des utilisateurs.
+ */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,23 +12,27 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { toast } from "react-hot-toast";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 export default function BannedUsersTab() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   const fetchUsers = async () => {
     setLoading(true);
-    const data = await getBannedUsers();
-    setUsers(data);
+    const data = await getBannedUsers(page);
+    setUsers(data.users);
+    setTotal(data.total);
     setLoading(false);
   };
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [page]);
 
   const handleUnbanClick = (userId: string) => {
     setSelectedUserId(userId);
@@ -122,6 +130,13 @@ export default function BannedUsersTab() {
           </div>
         </PremiumCard>
       )}
+
+      <Pagination 
+        currentPage={page}
+        totalPages={Math.ceil(total / 10)}
+        onPageChange={(p: number) => { setPage(p); window.scrollTo(0, 0); }}
+        className="moderation-pagination"
+      />
 
       <ConfirmModal 
         isOpen={isConfirmOpen}

@@ -1,3 +1,7 @@
+/**
+ * Onglet du journal d'audit (Logs).
+ * Affiche l'historique des actions de modération effectuées sur la plateforme.
+ */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,6 +14,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { cleanupModerationLogs } from "../actions";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import Pagination from "@/common/components/Pagination/Pagination";
 
 interface LogsTabProps {
   userRole?: string;
@@ -55,14 +60,52 @@ export default function LogsTab({ userRole }: LogsTabProps) {
   };
 
   const getActionBadge = (action: string) => {
-    if (action.includes("DELETE") || action.includes("BAN")) return "danger";
-    if (action.includes("LOCK") || action.includes("ARCHIVE") || action.includes("MODERATED")) return "warning";
-    if (action.includes("UNLOCKED") || action.includes("UNBANNED") || action.includes("RESOLVED")) return "success";
-    return "info";
+    if (action.includes("DELETE") || action.includes("BAN")) return "status-danger";
+    if (action.includes("LOCK") || action.includes("ARCHIVE") || action.includes("MODERATED")) return "status-warning";
+    if (action.includes("UNLOCKED") || action.includes("UNBANNED") || action.includes("RESOLVED")) return "status-success";
+    return "status-info";
   };
 
   const formatAction = (action: string) => {
-    return action.replace(/_/g, " ");
+    const translations: Record<string, string> = {
+      // Forum
+      "FORUM_CREATED": "Forum créé",
+      "FORUM_LOCKED": "Forum verrouillé",
+      "FORUM_UNLOCKED": "Forum déverrouillé",
+      "FORUM_DELETED": "Forum supprimé",
+      // Topics
+      "TOPIC_DELETED": "Sujet supprimé",
+      "TOPIC_PINNED": "Sujet épinglé",
+      "TOPIC_UNPINNED": "Sujet désépinglé",
+      "TOPIC_MOVED": "Sujet déplacé",
+      "TOPIC_ARCHIVED": "Sujet archivé",
+      "TOPIC_UNARCHIVED": "Sujet désarchivé",
+      "TOPIC_LOCKED": "Sujet verrouillé",
+      "TOPIC_UNLOCKED": "Sujet déverrouillé",
+      // Posts
+      "POST_MODERATED": "Message modéré",
+      "POST_UNMODERATED": "Message restauré",
+      // User
+      "USER_ROLE_CHANGED": "Rôle modifié",
+      "USER_BANNED": "Utilisateur banni",
+      "USER_UNBANNED": "Utilisateur débanni",
+      // Articles
+      "ARTICLE_MODERATED": "Article modéré",
+      "ARTICLE_UNMODERATED": "Article restauré",
+      "ARTICLE_DELETED": "Article supprimé",
+      // Ligues
+      "LIGUE_CREATED": "Ligue créée",
+      "LIGUE_DELETED": "Ligue supprimée",
+      // Resources
+      "RESOURCE_APPROVED": "Ressource approuvée",
+      "RESOURCE_REJECTED": "Ressource rejetée",
+      "RESOURCE_UPDATED": "Ressource mise à jour",
+      "RESOURCE_DELETED": "Ressource supprimée",
+      // Reports
+      "REPORT_IGNORED": "Signalement ignoré",
+      "REPORT_RESOLVED": "Signalement traité"
+    };
+    return translations[action] || action.replace(/_/g, " ");
   };
 
   const getTargetUrl = (log: any) => {
@@ -120,9 +163,8 @@ export default function LogsTab({ userRole }: LogsTabProps) {
               <thead>
                 <tr>
                   <th>Modérateur</th>
-                  <th>Action</th>
+                  <th>Action effectuée</th>
                   <th>Cible</th>
-                  <th>Détails</th>
                   <th>Date</th>
                 </tr>
               </thead>
@@ -130,15 +172,28 @@ export default function LogsTab({ userRole }: LogsTabProps) {
                 {logs.map((log) => (
                   <tr key={log.id} className="moderation-row">
                     <td className="moderation-cell">
-                      <div className="report-author">
-                        <UserIcon size={14} />
-                        <span>{log.moderator.name}</span>
-                      </div>
+                      <Link href={`/spy/${log.moderator.id}`} className="report-author hover-link" title="Espionner le modérateur">
+                        <div className="avatar-mini">
+                          {log.moderator.image ? (
+                            <img src={log.moderator.image} alt="" />
+                          ) : (
+                            <UserIcon size={12} />
+                          )}
+                        </div>
+                        <span style={{ fontWeight: 600 }}>{log.moderator.name}</span>
+                      </Link>
                     </td>
                     <td className="moderation-cell">
-                      <span className={`action-badge ${getActionBadge(log.action)}`}>
-                        {formatAction(log.action)}
-                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        <span className={`action-badge ${getActionBadge(log.action)}`}>
+                          {formatAction(log.action)}
+                        </span>
+                        {log.details && (
+                          <span style={{ fontSize: '0.8rem', opacity: 0.6, fontStyle: 'italic', maxWidth: '300px' }}>
+                            {log.details}
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="moderation-cell">
                       {log.targetId ? (
@@ -153,9 +208,6 @@ export default function LogsTab({ userRole }: LogsTabProps) {
                       ) : "-"}
                     </td>
                     <td className="moderation-cell">
-                      <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>{log.details || "-"}</span>
-                    </td>
-                    <td className="moderation-cell">
                       <div style={{ fontSize: '0.8rem', opacity: 0.6, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
                         <Clock size={12} />
                         {format(new Date(log.createdAt), "dd/MM HH:mm", { locale: fr })}
@@ -168,30 +220,12 @@ export default function LogsTab({ userRole }: LogsTabProps) {
           </div>
         )}
 
-        {total > 20 && (
-          <div className="pagination" style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
-            <button 
-              className="widget-button secondary-btn btn-sm" 
-              disabled={page === 1} 
-              onClick={() => { setPage(p => p - 1); window.scrollTo(0, 0); }}
-              style={{ width: 'auto' }}
-            >
-              Précédent
-            </button>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Page {page}</span>
-              <span style={{ fontSize: '0.75rem', opacity: 0.5 }}>sur {Math.ceil(total / 20)} ({total} entrées)</span>
-            </div>
-            <button 
-              className="widget-button secondary-btn btn-sm" 
-              disabled={page >= Math.ceil(total / 20)} 
-              onClick={() => { setPage(p => p + 1); window.scrollTo(0, 0); }}
-              style={{ width: 'auto' }}
-            >
-              Suivant
-            </button>
-          </div>
-        )}
+        <Pagination 
+          currentPage={page} 
+          totalPages={Math.ceil(total / 20)} 
+          onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }}
+          className="moderation-pagination"
+        />
       </PremiumCard>
 
       <ConfirmModal 

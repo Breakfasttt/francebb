@@ -13,9 +13,10 @@ interface ConfirmModalProps {
   message: string;
   confirmLabel?: string;
   isDanger?: boolean;
+  children?: React.ReactNode;
 }
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmLabel = "Confirmer", isDanger = false }: ConfirmModalProps) {
+export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message, confirmLabel = "Confirmer", isDanger = false, children }: ConfirmModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -56,7 +57,13 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
         </div>
 
         <h3 style={{ marginBottom: '1rem', color: '#eee' }}>{title}</h3>
-        <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '2rem' }}>{message}</p>
+        <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '1.5rem' }}>{message}</p>
+
+        {children && (
+          <div style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+            {children}
+          </div>
+        )}
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
           <button type="button" onClick={onClose} className="widget-button secondary-btn" style={{ width: 'auto', padding: '0.6rem 1.5rem' }}>
