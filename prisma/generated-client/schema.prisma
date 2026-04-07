@@ -80,6 +80,7 @@ model User {
   tournamentResults       TournamentResult[]
   captainTeams            TournamentTeam[]         @relation("TeamCaptain")
   teamMemberships         TournamentTeamMember[]
+  rankingArchives         RankingArchive[]
   roleConfig              RoleConfig               @relation(fields: [role], references: [name])
   commissaireLigues       Ligue[]                  @relation("LigueCommissaires")
   ligues                  Ligue[]                  @relation("LigueMembers")
@@ -305,6 +306,17 @@ model TopicFollow {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, topicId])
+}
+
+model RankingArchive {
+  id           String   @id @default(cuid())
+  year         Int      @unique
+  name         String
+  data         String // JSON stringified ranking data
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  archivedById String
+  archivedBy   User     @relation(fields: [archivedById], references: [id])
 }
 
 model ReferenceData {

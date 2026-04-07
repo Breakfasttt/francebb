@@ -1,6 +1,9 @@
 "use server";
-
+ 
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
+import { isModerator } from "@/lib/roles";
+import { logModerationAction } from "@/app/moderation/actions";
 
 export type RankingFilter = 
   | string // CDF_2026, CDF_2025, ROLLING, ROSTER, HOF
@@ -9,21 +12,33 @@ export type RankingFilter =
   | "HOF";
 
 /**
- * Récupère les années disponibles pour le classement CDF (basé sur la date de fin des tournois).
+ * Récupère les années disponibles pour le classement CDF, en incluant les archives.
  */
 export async function getRankingYears() {
-  const tournaments = await prisma.tournament.findMany({
-    where: {
-      isCDF: true,
-      isFinished: true,
-      results: { some: {} }
-    },
-    select: { endDate: true, date: true }
-  });
+  const [tournaments, archives] = await Promise.all([
+    prisma.tournament.findMany({
+      where: {
+        isCDF: true,
+        isFinished: true,
+        results: { some: {} }
+      },
+      select: { endDate: true, date: true }
+    }),
+    prisma.rankingArchive.findMany({
+      select: { year: true }
+    })
+  ]);
 
   const years = tournaments.map((t: any) => new Date(t.endDate || t.date).getFullYear());
-  const yearSet = new Set<number>(years);
-  return Array.from(yearSet).sort((a, b) => b - a);
+  const archivedYearsList = archives.map(a => a.year);
+  const yearSet = new Set<number>([...years, ...archivedYearsList]);
+  
+  return Array.from(yearSet)
+    .sort((a, b) => b - a)
+    .map(y => ({
+      year: y,
+      isArchived: archivedYearsList.includes(y)
+    }));
 }
 
 /**
@@ -49,8 +64,17 @@ export async function getRanking(filter: RankingFilter) {
     // Hall of Fame: On renverra une structure différente ou on gérera par année
     startDate = new Date(2000, 0, 1);
   } else {
-    // CDF 202X
+    // CDF 202X - Vérifier si une archive existe
     const year = parseInt(filter.split("_")[1]);
+    const archive = await prisma.rankingArchive.findUnique({
+      where: { year }
+    });
+    
+    if (archive) {
+      console.log(`[getRanking] Loading from archive for year ${year}`);
+      return JSON.parse(archive.data);
+    }
+
     startDate = new Date(year, 0, 1);
     endDate = new Date(year, 11, 31, 23, 59, 59);
   }
@@ -218,26 +242,128 @@ function calculateRosterRanking(results: any[]) {
 }
 
 export async function getHallOfFame() {
-  const years = await getRankingYears();
+  const yearData = await getRankingYears();
   const hof = [];
 
-  for (const year of years) {
+  for (const entry of yearData) {
     // Pour chaque année, on calcule le classement standard top 3
-    const ranking = await getRanking(`CDF_${year}`);
+    const ranking = await getRanking(`CDF_${entry.year}`);
     if (ranking.length > 0) {
       hof.push({
-        year,
+        year: entry.year,
+        isArchived: entry.isArchived,
         // On prend les 3 meilleurs
-        podium: ranking.slice(0, 3).map((r, i) => ({
+        podium: ranking.slice(0, 3).map((r: any, i: number) => ({
           rank: i + 1,
           name: r.name,
           totalPoints: r.totalPoints,
-          // On essaie de trouver le roster le plus joué par ce coach cette année là
-          // Pour l'instant on simplifie (on pourrait approfondir en récupérant les rosters)
         }))
       });
     }
   }
 
   return hof;
+}
+
+/**
+ * MODÉRATION : Archivage du classement d'une année.
+ */
+export async function archiveYear(year: number) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
+
+  try {
+    // Calculer le classement actuel pour l'instantané
+    const rankingData = await getRanking(`CDF_${year}`);
+    
+    const archive = await prisma.rankingArchive.create({
+      data: {
+        year,
+        name: `Championnat de France ${year}`,
+        data: JSON.stringify(rankingData),
+        archivedById: session.user.id
+      }
+    });
+
+    await logModerationAction(
+      "ARCHIVE_RANKING",
+      archive.id,
+      "RankingArchive",
+      `Archivage du Championnat de France ${year}`
+    );
+
+    return { success: true };
+  } catch (e) {
+    console.error(e);
+    return { error: "Erreur lors de l'archivage" };
+  }
+}
+
+/**
+ * MODÉRATION / ADMIN : Suppression d'une archive.
+ */
+export async function deleteArchive(year: number) {
+  const session = await auth();
+  // Suppression réservée aux admins+
+  if (!session?.user?.id || !isAdmin(session.user.role)) return { error: "Non autorisé (Admin requis)" };
+
+  try {
+    const archive = await prisma.rankingArchive.findUnique({ where: { year } });
+    if (!archive) return { error: "Archive non trouvée" };
+
+    await prisma.rankingArchive.delete({ where: { year } });
+
+    await logModerationAction(
+      "DELETE_ARCHIVE",
+      archive.id,
+      "RankingArchive",
+      `Suppression de l'archive du classement ${year}`
+    );
+
+    return { success: true };
+  } catch (e) {
+    console.error(e);
+    return { error: "Erreur lors de la suppression" };
+  }
+}
+
+/**
+ * MODÉRATION : Mise à jour ou création manuelle d'une archive.
+ */
+export async function saveArchive(year: number, name: string, rankingData: any[]) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
+
+  try {
+    const archive = await prisma.rankingArchive.upsert({
+      where: { year },
+      create: {
+        year,
+        name,
+        data: JSON.stringify(rankingData),
+        archivedById: session.user.id
+      },
+      update: {
+        name,
+        data: JSON.stringify(rankingData)
+      }
+    });
+
+    await logModerationAction(
+      archive.createdAt === archive.updatedAt ? "CREATE_ARCHIVE_MANUAL" : "UPDATE_ARCHIVE",
+      archive.id,
+      "RankingArchive",
+      `Mise à jour manuelle de l'archive ${year} (${name})`
+    );
+
+    return { success: true };
+  } catch (e) {
+    console.error(e);
+    return { error: "Erreur lors de la sauvegarde" };
+  }
+}
+
+// Helper pour vérifier le grade admin (à adapter selon vos rôles)
+function isAdmin(role: string) {
+  return role === "ADMIN" || role === "SUPERADMIN";
 }

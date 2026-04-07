@@ -99,6 +99,11 @@ export type RoleConfig = $Result.DefaultSelection<Prisma.$RoleConfigPayload>
  */
 export type TopicFollow = $Result.DefaultSelection<Prisma.$TopicFollowPayload>
 /**
+ * Model RankingArchive
+ * 
+ */
+export type RankingArchive = $Result.DefaultSelection<Prisma.$RankingArchivePayload>
+/**
  * Model ReferenceData
  * 
  */
@@ -507,6 +512,16 @@ export class PrismaClient<
     * ```
     */
   get topicFollow(): Prisma.TopicFollowDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.rankingArchive`: Exposes CRUD operations for the **RankingArchive** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RankingArchives
+    * const rankingArchives = await prisma.rankingArchive.findMany()
+    * ```
+    */
+  get rankingArchive(): Prisma.RankingArchiveDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.referenceData`: Exposes CRUD operations for the **ReferenceData** model.
@@ -1128,6 +1143,7 @@ export namespace Prisma {
     PostReaction: 'PostReaction',
     RoleConfig: 'RoleConfig',
     TopicFollow: 'TopicFollow',
+    RankingArchive: 'RankingArchive',
     ReferenceData: 'ReferenceData',
     TournamentRegistration: 'TournamentRegistration',
     TournamentTeam: 'TournamentTeam',
@@ -1160,7 +1176,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2419,6 +2435,80 @@ export namespace Prisma {
           count: {
             args: Prisma.TopicFollowCountArgs<ExtArgs>
             result: $Utils.Optional<TopicFollowCountAggregateOutputType> | number
+          }
+        }
+      }
+      RankingArchive: {
+        payload: Prisma.$RankingArchivePayload<ExtArgs>
+        fields: Prisma.RankingArchiveFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RankingArchiveFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RankingArchiveFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          findFirst: {
+            args: Prisma.RankingArchiveFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RankingArchiveFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          findMany: {
+            args: Prisma.RankingArchiveFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>[]
+          }
+          create: {
+            args: Prisma.RankingArchiveCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          createMany: {
+            args: Prisma.RankingArchiveCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RankingArchiveCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>[]
+          }
+          delete: {
+            args: Prisma.RankingArchiveDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          update: {
+            args: Prisma.RankingArchiveUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          deleteMany: {
+            args: Prisma.RankingArchiveDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RankingArchiveUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RankingArchiveUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>[]
+          }
+          upsert: {
+            args: Prisma.RankingArchiveUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RankingArchivePayload>
+          }
+          aggregate: {
+            args: Prisma.RankingArchiveAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRankingArchive>
+          }
+          groupBy: {
+            args: Prisma.RankingArchiveGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RankingArchiveGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RankingArchiveCountArgs<ExtArgs>
+            result: $Utils.Optional<RankingArchiveCountAggregateOutputType> | number
           }
         }
       }
@@ -3805,6 +3895,7 @@ export namespace Prisma {
     postReaction?: PostReactionOmit
     roleConfig?: RoleConfigOmit
     topicFollow?: TopicFollowOmit
+    rankingArchive?: RankingArchiveOmit
     referenceData?: ReferenceDataOmit
     tournamentRegistration?: TournamentRegistrationOmit
     tournamentTeam?: TournamentTeamOmit
@@ -3933,6 +4024,7 @@ export namespace Prisma {
     tournamentResults: number
     captainTeams: number
     teamMemberships: number
+    rankingArchives: number
     commissaireLigues: number
     ligues: number
     commissairesTournaments: number
@@ -3970,6 +4062,7 @@ export namespace Prisma {
     tournamentResults?: boolean | UserCountOutputTypeCountTournamentResultsArgs
     captainTeams?: boolean | UserCountOutputTypeCountCaptainTeamsArgs
     teamMemberships?: boolean | UserCountOutputTypeCountTeamMembershipsArgs
+    rankingArchives?: boolean | UserCountOutputTypeCountRankingArchivesArgs
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
     ligues?: boolean | UserCountOutputTypeCountLiguesArgs
     commissairesTournaments?: boolean | UserCountOutputTypeCountCommissairesTournamentsArgs
@@ -4201,6 +4294,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTeamMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TournamentTeamMemberWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountRankingArchivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RankingArchiveWhereInput
   }
 
   /**
@@ -7289,6 +7389,7 @@ export namespace Prisma {
     tournamentResults?: boolean | User$tournamentResultsArgs<ExtArgs>
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
+    rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
@@ -7385,6 +7486,7 @@ export namespace Prisma {
     tournamentResults?: boolean | User$tournamentResultsArgs<ExtArgs>
     captainTeams?: boolean | User$captainTeamsArgs<ExtArgs>
     teamMemberships?: boolean | User$teamMembershipsArgs<ExtArgs>
+    rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
@@ -7432,6 +7534,7 @@ export namespace Prisma {
       tournamentResults: Prisma.$TournamentResultPayload<ExtArgs>[]
       captainTeams: Prisma.$TournamentTeamPayload<ExtArgs>[]
       teamMemberships: Prisma.$TournamentTeamMemberPayload<ExtArgs>[]
+      rankingArchives: Prisma.$RankingArchivePayload<ExtArgs>[]
       roleConfig: Prisma.$RoleConfigPayload<ExtArgs>
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
       ligues: Prisma.$LiguePayload<ExtArgs>[]
@@ -7878,6 +7981,7 @@ export namespace Prisma {
     tournamentResults<T extends User$tournamentResultsArgs<ExtArgs> = {}>(args?: Subset<T, User$tournamentResultsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentResultPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     captainTeams<T extends User$captainTeamsArgs<ExtArgs> = {}>(args?: Subset<T, User$captainTeamsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     teamMemberships<T extends User$teamMembershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$teamMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentTeamMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    rankingArchives<T extends User$rankingArchivesArgs<ExtArgs> = {}>(args?: Subset<T, User$rankingArchivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     roleConfig<T extends RoleConfigDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleConfigDefaultArgs<ExtArgs>>): Prisma__RoleConfigClient<$Result.GetResult<Prisma.$RoleConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ligues<T extends User$liguesArgs<ExtArgs> = {}>(args?: Subset<T, User$liguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9066,6 +9170,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentTeamMemberScalarFieldEnum | TournamentTeamMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.rankingArchives
+   */
+  export type User$rankingArchivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    where?: RankingArchiveWhereInput
+    orderBy?: RankingArchiveOrderByWithRelationInput | RankingArchiveOrderByWithRelationInput[]
+    cursor?: RankingArchiveWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RankingArchiveScalarFieldEnum | RankingArchiveScalarFieldEnum[]
   }
 
   /**
@@ -25472,6 +25600,1127 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: TopicFollowInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RankingArchive
+   */
+
+  export type AggregateRankingArchive = {
+    _count: RankingArchiveCountAggregateOutputType | null
+    _avg: RankingArchiveAvgAggregateOutputType | null
+    _sum: RankingArchiveSumAggregateOutputType | null
+    _min: RankingArchiveMinAggregateOutputType | null
+    _max: RankingArchiveMaxAggregateOutputType | null
+  }
+
+  export type RankingArchiveAvgAggregateOutputType = {
+    year: number | null
+  }
+
+  export type RankingArchiveSumAggregateOutputType = {
+    year: number | null
+  }
+
+  export type RankingArchiveMinAggregateOutputType = {
+    id: string | null
+    year: number | null
+    name: string | null
+    data: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    archivedById: string | null
+  }
+
+  export type RankingArchiveMaxAggregateOutputType = {
+    id: string | null
+    year: number | null
+    name: string | null
+    data: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    archivedById: string | null
+  }
+
+  export type RankingArchiveCountAggregateOutputType = {
+    id: number
+    year: number
+    name: number
+    data: number
+    createdAt: number
+    updatedAt: number
+    archivedById: number
+    _all: number
+  }
+
+
+  export type RankingArchiveAvgAggregateInputType = {
+    year?: true
+  }
+
+  export type RankingArchiveSumAggregateInputType = {
+    year?: true
+  }
+
+  export type RankingArchiveMinAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    data?: true
+    createdAt?: true
+    updatedAt?: true
+    archivedById?: true
+  }
+
+  export type RankingArchiveMaxAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    data?: true
+    createdAt?: true
+    updatedAt?: true
+    archivedById?: true
+  }
+
+  export type RankingArchiveCountAggregateInputType = {
+    id?: true
+    year?: true
+    name?: true
+    data?: true
+    createdAt?: true
+    updatedAt?: true
+    archivedById?: true
+    _all?: true
+  }
+
+  export type RankingArchiveAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RankingArchive to aggregate.
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RankingArchives to fetch.
+     */
+    orderBy?: RankingArchiveOrderByWithRelationInput | RankingArchiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RankingArchiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RankingArchives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RankingArchives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RankingArchives
+    **/
+    _count?: true | RankingArchiveCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RankingArchiveAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RankingArchiveSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RankingArchiveMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RankingArchiveMaxAggregateInputType
+  }
+
+  export type GetRankingArchiveAggregateType<T extends RankingArchiveAggregateArgs> = {
+        [P in keyof T & keyof AggregateRankingArchive]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRankingArchive[P]>
+      : GetScalarType<T[P], AggregateRankingArchive[P]>
+  }
+
+
+
+
+  export type RankingArchiveGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RankingArchiveWhereInput
+    orderBy?: RankingArchiveOrderByWithAggregationInput | RankingArchiveOrderByWithAggregationInput[]
+    by: RankingArchiveScalarFieldEnum[] | RankingArchiveScalarFieldEnum
+    having?: RankingArchiveScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RankingArchiveCountAggregateInputType | true
+    _avg?: RankingArchiveAvgAggregateInputType
+    _sum?: RankingArchiveSumAggregateInputType
+    _min?: RankingArchiveMinAggregateInputType
+    _max?: RankingArchiveMaxAggregateInputType
+  }
+
+  export type RankingArchiveGroupByOutputType = {
+    id: string
+    year: number
+    name: string
+    data: string
+    createdAt: Date
+    updatedAt: Date
+    archivedById: string
+    _count: RankingArchiveCountAggregateOutputType | null
+    _avg: RankingArchiveAvgAggregateOutputType | null
+    _sum: RankingArchiveSumAggregateOutputType | null
+    _min: RankingArchiveMinAggregateOutputType | null
+    _max: RankingArchiveMaxAggregateOutputType | null
+  }
+
+  type GetRankingArchiveGroupByPayload<T extends RankingArchiveGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RankingArchiveGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RankingArchiveGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RankingArchiveGroupByOutputType[P]>
+            : GetScalarType<T[P], RankingArchiveGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RankingArchiveSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    data?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    archivedById?: boolean
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rankingArchive"]>
+
+  export type RankingArchiveSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    data?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    archivedById?: boolean
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rankingArchive"]>
+
+  export type RankingArchiveSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    data?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    archivedById?: boolean
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["rankingArchive"]>
+
+  export type RankingArchiveSelectScalar = {
+    id?: boolean
+    year?: boolean
+    name?: boolean
+    data?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    archivedById?: boolean
+  }
+
+  export type RankingArchiveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "name" | "data" | "createdAt" | "updatedAt" | "archivedById", ExtArgs["result"]["rankingArchive"]>
+  export type RankingArchiveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RankingArchiveIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RankingArchiveIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    archivedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RankingArchivePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RankingArchive"
+    objects: {
+      archivedBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      year: number
+      name: string
+      data: string
+      createdAt: Date
+      updatedAt: Date
+      archivedById: string
+    }, ExtArgs["result"]["rankingArchive"]>
+    composites: {}
+  }
+
+  type RankingArchiveGetPayload<S extends boolean | null | undefined | RankingArchiveDefaultArgs> = $Result.GetResult<Prisma.$RankingArchivePayload, S>
+
+  type RankingArchiveCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RankingArchiveFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RankingArchiveCountAggregateInputType | true
+    }
+
+  export interface RankingArchiveDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RankingArchive'], meta: { name: 'RankingArchive' } }
+    /**
+     * Find zero or one RankingArchive that matches the filter.
+     * @param {RankingArchiveFindUniqueArgs} args - Arguments to find a RankingArchive
+     * @example
+     * // Get one RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RankingArchiveFindUniqueArgs>(args: SelectSubset<T, RankingArchiveFindUniqueArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RankingArchive that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RankingArchiveFindUniqueOrThrowArgs} args - Arguments to find a RankingArchive
+     * @example
+     * // Get one RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RankingArchiveFindUniqueOrThrowArgs>(args: SelectSubset<T, RankingArchiveFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RankingArchive that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveFindFirstArgs} args - Arguments to find a RankingArchive
+     * @example
+     * // Get one RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RankingArchiveFindFirstArgs>(args?: SelectSubset<T, RankingArchiveFindFirstArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RankingArchive that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveFindFirstOrThrowArgs} args - Arguments to find a RankingArchive
+     * @example
+     * // Get one RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RankingArchiveFindFirstOrThrowArgs>(args?: SelectSubset<T, RankingArchiveFindFirstOrThrowArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RankingArchives that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RankingArchives
+     * const rankingArchives = await prisma.rankingArchive.findMany()
+     * 
+     * // Get first 10 RankingArchives
+     * const rankingArchives = await prisma.rankingArchive.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const rankingArchiveWithIdOnly = await prisma.rankingArchive.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RankingArchiveFindManyArgs>(args?: SelectSubset<T, RankingArchiveFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RankingArchive.
+     * @param {RankingArchiveCreateArgs} args - Arguments to create a RankingArchive.
+     * @example
+     * // Create one RankingArchive
+     * const RankingArchive = await prisma.rankingArchive.create({
+     *   data: {
+     *     // ... data to create a RankingArchive
+     *   }
+     * })
+     * 
+     */
+    create<T extends RankingArchiveCreateArgs>(args: SelectSubset<T, RankingArchiveCreateArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RankingArchives.
+     * @param {RankingArchiveCreateManyArgs} args - Arguments to create many RankingArchives.
+     * @example
+     * // Create many RankingArchives
+     * const rankingArchive = await prisma.rankingArchive.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RankingArchiveCreateManyArgs>(args?: SelectSubset<T, RankingArchiveCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RankingArchives and returns the data saved in the database.
+     * @param {RankingArchiveCreateManyAndReturnArgs} args - Arguments to create many RankingArchives.
+     * @example
+     * // Create many RankingArchives
+     * const rankingArchive = await prisma.rankingArchive.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RankingArchives and only return the `id`
+     * const rankingArchiveWithIdOnly = await prisma.rankingArchive.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RankingArchiveCreateManyAndReturnArgs>(args?: SelectSubset<T, RankingArchiveCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RankingArchive.
+     * @param {RankingArchiveDeleteArgs} args - Arguments to delete one RankingArchive.
+     * @example
+     * // Delete one RankingArchive
+     * const RankingArchive = await prisma.rankingArchive.delete({
+     *   where: {
+     *     // ... filter to delete one RankingArchive
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RankingArchiveDeleteArgs>(args: SelectSubset<T, RankingArchiveDeleteArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RankingArchive.
+     * @param {RankingArchiveUpdateArgs} args - Arguments to update one RankingArchive.
+     * @example
+     * // Update one RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RankingArchiveUpdateArgs>(args: SelectSubset<T, RankingArchiveUpdateArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RankingArchives.
+     * @param {RankingArchiveDeleteManyArgs} args - Arguments to filter RankingArchives to delete.
+     * @example
+     * // Delete a few RankingArchives
+     * const { count } = await prisma.rankingArchive.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RankingArchiveDeleteManyArgs>(args?: SelectSubset<T, RankingArchiveDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RankingArchives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RankingArchives
+     * const rankingArchive = await prisma.rankingArchive.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RankingArchiveUpdateManyArgs>(args: SelectSubset<T, RankingArchiveUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RankingArchives and returns the data updated in the database.
+     * @param {RankingArchiveUpdateManyAndReturnArgs} args - Arguments to update many RankingArchives.
+     * @example
+     * // Update many RankingArchives
+     * const rankingArchive = await prisma.rankingArchive.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RankingArchives and only return the `id`
+     * const rankingArchiveWithIdOnly = await prisma.rankingArchive.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RankingArchiveUpdateManyAndReturnArgs>(args: SelectSubset<T, RankingArchiveUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RankingArchive.
+     * @param {RankingArchiveUpsertArgs} args - Arguments to update or create a RankingArchive.
+     * @example
+     * // Update or create a RankingArchive
+     * const rankingArchive = await prisma.rankingArchive.upsert({
+     *   create: {
+     *     // ... data to create a RankingArchive
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RankingArchive we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RankingArchiveUpsertArgs>(args: SelectSubset<T, RankingArchiveUpsertArgs<ExtArgs>>): Prisma__RankingArchiveClient<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RankingArchives.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveCountArgs} args - Arguments to filter RankingArchives to count.
+     * @example
+     * // Count the number of RankingArchives
+     * const count = await prisma.rankingArchive.count({
+     *   where: {
+     *     // ... the filter for the RankingArchives we want to count
+     *   }
+     * })
+    **/
+    count<T extends RankingArchiveCountArgs>(
+      args?: Subset<T, RankingArchiveCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RankingArchiveCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RankingArchive.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RankingArchiveAggregateArgs>(args: Subset<T, RankingArchiveAggregateArgs>): Prisma.PrismaPromise<GetRankingArchiveAggregateType<T>>
+
+    /**
+     * Group by RankingArchive.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RankingArchiveGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RankingArchiveGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RankingArchiveGroupByArgs['orderBy'] }
+        : { orderBy?: RankingArchiveGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RankingArchiveGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRankingArchiveGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RankingArchive model
+   */
+  readonly fields: RankingArchiveFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RankingArchive.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RankingArchiveClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    archivedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RankingArchive model
+   */
+  interface RankingArchiveFieldRefs {
+    readonly id: FieldRef<"RankingArchive", 'String'>
+    readonly year: FieldRef<"RankingArchive", 'Int'>
+    readonly name: FieldRef<"RankingArchive", 'String'>
+    readonly data: FieldRef<"RankingArchive", 'String'>
+    readonly createdAt: FieldRef<"RankingArchive", 'DateTime'>
+    readonly updatedAt: FieldRef<"RankingArchive", 'DateTime'>
+    readonly archivedById: FieldRef<"RankingArchive", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RankingArchive findUnique
+   */
+  export type RankingArchiveFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter, which RankingArchive to fetch.
+     */
+    where: RankingArchiveWhereUniqueInput
+  }
+
+  /**
+   * RankingArchive findUniqueOrThrow
+   */
+  export type RankingArchiveFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter, which RankingArchive to fetch.
+     */
+    where: RankingArchiveWhereUniqueInput
+  }
+
+  /**
+   * RankingArchive findFirst
+   */
+  export type RankingArchiveFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter, which RankingArchive to fetch.
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RankingArchives to fetch.
+     */
+    orderBy?: RankingArchiveOrderByWithRelationInput | RankingArchiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RankingArchives.
+     */
+    cursor?: RankingArchiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RankingArchives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RankingArchives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RankingArchives.
+     */
+    distinct?: RankingArchiveScalarFieldEnum | RankingArchiveScalarFieldEnum[]
+  }
+
+  /**
+   * RankingArchive findFirstOrThrow
+   */
+  export type RankingArchiveFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter, which RankingArchive to fetch.
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RankingArchives to fetch.
+     */
+    orderBy?: RankingArchiveOrderByWithRelationInput | RankingArchiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RankingArchives.
+     */
+    cursor?: RankingArchiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RankingArchives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RankingArchives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RankingArchives.
+     */
+    distinct?: RankingArchiveScalarFieldEnum | RankingArchiveScalarFieldEnum[]
+  }
+
+  /**
+   * RankingArchive findMany
+   */
+  export type RankingArchiveFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter, which RankingArchives to fetch.
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RankingArchives to fetch.
+     */
+    orderBy?: RankingArchiveOrderByWithRelationInput | RankingArchiveOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RankingArchives.
+     */
+    cursor?: RankingArchiveWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RankingArchives from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RankingArchives.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RankingArchives.
+     */
+    distinct?: RankingArchiveScalarFieldEnum | RankingArchiveScalarFieldEnum[]
+  }
+
+  /**
+   * RankingArchive create
+   */
+  export type RankingArchiveCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RankingArchive.
+     */
+    data: XOR<RankingArchiveCreateInput, RankingArchiveUncheckedCreateInput>
+  }
+
+  /**
+   * RankingArchive createMany
+   */
+  export type RankingArchiveCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RankingArchives.
+     */
+    data: RankingArchiveCreateManyInput | RankingArchiveCreateManyInput[]
+  }
+
+  /**
+   * RankingArchive createManyAndReturn
+   */
+  export type RankingArchiveCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * The data used to create many RankingArchives.
+     */
+    data: RankingArchiveCreateManyInput | RankingArchiveCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RankingArchive update
+   */
+  export type RankingArchiveUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RankingArchive.
+     */
+    data: XOR<RankingArchiveUpdateInput, RankingArchiveUncheckedUpdateInput>
+    /**
+     * Choose, which RankingArchive to update.
+     */
+    where: RankingArchiveWhereUniqueInput
+  }
+
+  /**
+   * RankingArchive updateMany
+   */
+  export type RankingArchiveUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RankingArchives.
+     */
+    data: XOR<RankingArchiveUpdateManyMutationInput, RankingArchiveUncheckedUpdateManyInput>
+    /**
+     * Filter which RankingArchives to update
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * Limit how many RankingArchives to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RankingArchive updateManyAndReturn
+   */
+  export type RankingArchiveUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * The data used to update RankingArchives.
+     */
+    data: XOR<RankingArchiveUpdateManyMutationInput, RankingArchiveUncheckedUpdateManyInput>
+    /**
+     * Filter which RankingArchives to update
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * Limit how many RankingArchives to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RankingArchive upsert
+   */
+  export type RankingArchiveUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RankingArchive to update in case it exists.
+     */
+    where: RankingArchiveWhereUniqueInput
+    /**
+     * In case the RankingArchive found by the `where` argument doesn't exist, create a new RankingArchive with this data.
+     */
+    create: XOR<RankingArchiveCreateInput, RankingArchiveUncheckedCreateInput>
+    /**
+     * In case the RankingArchive was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RankingArchiveUpdateInput, RankingArchiveUncheckedUpdateInput>
+  }
+
+  /**
+   * RankingArchive delete
+   */
+  export type RankingArchiveDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
+    /**
+     * Filter which RankingArchive to delete.
+     */
+    where: RankingArchiveWhereUniqueInput
+  }
+
+  /**
+   * RankingArchive deleteMany
+   */
+  export type RankingArchiveDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RankingArchives to delete
+     */
+    where?: RankingArchiveWhereInput
+    /**
+     * Limit how many RankingArchives to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RankingArchive without action
+   */
+  export type RankingArchiveDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RankingArchive
+     */
+    select?: RankingArchiveSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RankingArchive
+     */
+    omit?: RankingArchiveOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RankingArchiveInclude<ExtArgs> | null
   }
 
 
@@ -44903,6 +46152,19 @@ export namespace Prisma {
   export type TopicFollowScalarFieldEnum = (typeof TopicFollowScalarFieldEnum)[keyof typeof TopicFollowScalarFieldEnum]
 
 
+  export const RankingArchiveScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    name: 'name',
+    data: 'data',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    archivedById: 'archivedById'
+  };
+
+  export type RankingArchiveScalarFieldEnum = (typeof RankingArchiveScalarFieldEnum)[keyof typeof RankingArchiveScalarFieldEnum]
+
+
   export const ReferenceDataScalarFieldEnum: {
     id: 'id',
     group: 'group',
@@ -45396,6 +46658,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultListRelationFilter
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
+    rankingArchives?: RankingArchiveListRelationFilter
     roleConfig?: XOR<RoleConfigScalarRelationFilter, RoleConfigWhereInput>
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
@@ -45449,6 +46712,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultOrderByRelationAggregateInput
     captainTeams?: TournamentTeamOrderByRelationAggregateInput
     teamMemberships?: TournamentTeamMemberOrderByRelationAggregateInput
+    rankingArchives?: RankingArchiveOrderByRelationAggregateInput
     roleConfig?: RoleConfigOrderByWithRelationInput
     commissaireLigues?: LigueOrderByRelationAggregateInput
     ligues?: LigueOrderByRelationAggregateInput
@@ -45505,6 +46769,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultListRelationFilter
     captainTeams?: TournamentTeamListRelationFilter
     teamMemberships?: TournamentTeamMemberListRelationFilter
+    rankingArchives?: RankingArchiveListRelationFilter
     roleConfig?: XOR<RoleConfigScalarRelationFilter, RoleConfigWhereInput>
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
@@ -46677,6 +47942,73 @@ export namespace Prisma {
     NOT?: TopicFollowScalarWhereWithAggregatesInput | TopicFollowScalarWhereWithAggregatesInput[]
     userId?: StringWithAggregatesFilter<"TopicFollow"> | string
     topicId?: StringWithAggregatesFilter<"TopicFollow"> | string
+  }
+
+  export type RankingArchiveWhereInput = {
+    AND?: RankingArchiveWhereInput | RankingArchiveWhereInput[]
+    OR?: RankingArchiveWhereInput[]
+    NOT?: RankingArchiveWhereInput | RankingArchiveWhereInput[]
+    id?: StringFilter<"RankingArchive"> | string
+    year?: IntFilter<"RankingArchive"> | number
+    name?: StringFilter<"RankingArchive"> | string
+    data?: StringFilter<"RankingArchive"> | string
+    createdAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    updatedAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    archivedById?: StringFilter<"RankingArchive"> | string
+    archivedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RankingArchiveOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    archivedById?: SortOrder
+    archivedBy?: UserOrderByWithRelationInput
+  }
+
+  export type RankingArchiveWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    year?: number
+    AND?: RankingArchiveWhereInput | RankingArchiveWhereInput[]
+    OR?: RankingArchiveWhereInput[]
+    NOT?: RankingArchiveWhereInput | RankingArchiveWhereInput[]
+    name?: StringFilter<"RankingArchive"> | string
+    data?: StringFilter<"RankingArchive"> | string
+    createdAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    updatedAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    archivedById?: StringFilter<"RankingArchive"> | string
+    archivedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "year">
+
+  export type RankingArchiveOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    archivedById?: SortOrder
+    _count?: RankingArchiveCountOrderByAggregateInput
+    _avg?: RankingArchiveAvgOrderByAggregateInput
+    _max?: RankingArchiveMaxOrderByAggregateInput
+    _min?: RankingArchiveMinOrderByAggregateInput
+    _sum?: RankingArchiveSumOrderByAggregateInput
+  }
+
+  export type RankingArchiveScalarWhereWithAggregatesInput = {
+    AND?: RankingArchiveScalarWhereWithAggregatesInput | RankingArchiveScalarWhereWithAggregatesInput[]
+    OR?: RankingArchiveScalarWhereWithAggregatesInput[]
+    NOT?: RankingArchiveScalarWhereWithAggregatesInput | RankingArchiveScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RankingArchive"> | string
+    year?: IntWithAggregatesFilter<"RankingArchive"> | number
+    name?: StringWithAggregatesFilter<"RankingArchive"> | string
+    data?: StringWithAggregatesFilter<"RankingArchive"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RankingArchive"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RankingArchive"> | Date | string
+    archivedById?: StringWithAggregatesFilter<"RankingArchive"> | string
   }
 
   export type ReferenceDataWhereInput = {
@@ -48086,6 +49418,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -48139,6 +49472,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -48190,6 +49524,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -48243,6 +49578,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -49484,6 +50820,75 @@ export namespace Prisma {
   export type TopicFollowUncheckedUpdateManyInput = {
     userId?: StringFieldUpdateOperationsInput | string
     topicId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RankingArchiveCreateInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedBy: UserCreateNestedOneWithoutRankingArchivesInput
+  }
+
+  export type RankingArchiveUncheckedCreateInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedById: string
+  }
+
+  export type RankingArchiveUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedBy?: UserUpdateOneRequiredWithoutRankingArchivesNestedInput
+  }
+
+  export type RankingArchiveUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedById?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RankingArchiveCreateManyInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    archivedById: string
+  }
+
+  export type RankingArchiveUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RankingArchiveUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    archivedById?: StringFieldUpdateOperationsInput | string
   }
 
   export type ReferenceDataCreateInput = {
@@ -51101,6 +52506,12 @@ export namespace Prisma {
     none?: TournamentTeamMemberWhereInput
   }
 
+  export type RankingArchiveListRelationFilter = {
+    every?: RankingArchiveWhereInput
+    some?: RankingArchiveWhereInput
+    none?: RankingArchiveWhereInput
+  }
+
   export type RoleConfigScalarRelationFilter = {
     is?: RoleConfigWhereInput
     isNot?: RoleConfigWhereInput
@@ -51199,6 +52610,10 @@ export namespace Prisma {
   }
 
   export type TournamentTeamMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RankingArchiveOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -51993,6 +53408,44 @@ export namespace Prisma {
   export type TopicFollowMinOrderByAggregateInput = {
     userId?: SortOrder
     topicId?: SortOrder
+  }
+
+  export type RankingArchiveCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    archivedById?: SortOrder
+  }
+
+  export type RankingArchiveAvgOrderByAggregateInput = {
+    year?: SortOrder
+  }
+
+  export type RankingArchiveMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    archivedById?: SortOrder
+  }
+
+  export type RankingArchiveMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    archivedById?: SortOrder
+  }
+
+  export type RankingArchiveSumOrderByAggregateInput = {
+    year?: SortOrder
   }
 
   export type ReferenceDataGroupKeyCompoundUniqueInput = {
@@ -52998,6 +54451,13 @@ export namespace Prisma {
     connect?: TournamentTeamMemberWhereUniqueInput | TournamentTeamMemberWhereUniqueInput[]
   }
 
+  export type RankingArchiveCreateNestedManyWithoutArchivedByInput = {
+    create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
+    connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
+    createMany?: RankingArchiveCreateManyArchivedByInputEnvelope
+    connect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+  }
+
   export type RoleConfigCreateNestedOneWithoutUsersInput = {
     create?: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
     connectOrCreate?: RoleConfigCreateOrConnectWithoutUsersInput
@@ -53237,6 +54697,13 @@ export namespace Prisma {
     connectOrCreate?: TournamentTeamMemberCreateOrConnectWithoutUserInput | TournamentTeamMemberCreateOrConnectWithoutUserInput[]
     createMany?: TournamentTeamMemberCreateManyUserInputEnvelope
     connect?: TournamentTeamMemberWhereUniqueInput | TournamentTeamMemberWhereUniqueInput[]
+  }
+
+  export type RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput = {
+    create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
+    connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
+    createMany?: RankingArchiveCreateManyArchivedByInputEnvelope
+    connect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
   }
 
   export type LigueUncheckedCreateNestedManyWithoutCommissairesInput = {
@@ -53697,6 +55164,20 @@ export namespace Prisma {
     update?: TournamentTeamMemberUpdateWithWhereUniqueWithoutUserInput | TournamentTeamMemberUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TournamentTeamMemberUpdateManyWithWhereWithoutUserInput | TournamentTeamMemberUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TournamentTeamMemberScalarWhereInput | TournamentTeamMemberScalarWhereInput[]
+  }
+
+  export type RankingArchiveUpdateManyWithoutArchivedByNestedInput = {
+    create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
+    connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
+    upsert?: RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput | RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput[]
+    createMany?: RankingArchiveCreateManyArchivedByInputEnvelope
+    set?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    disconnect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    delete?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    connect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    update?: RankingArchiveUpdateWithWhereUniqueWithoutArchivedByInput | RankingArchiveUpdateWithWhereUniqueWithoutArchivedByInput[]
+    updateMany?: RankingArchiveUpdateManyWithWhereWithoutArchivedByInput | RankingArchiveUpdateManyWithWhereWithoutArchivedByInput[]
+    deleteMany?: RankingArchiveScalarWhereInput | RankingArchiveScalarWhereInput[]
   }
 
   export type RoleConfigUpdateOneRequiredWithoutUsersNestedInput = {
@@ -54178,6 +55659,20 @@ export namespace Prisma {
     update?: TournamentTeamMemberUpdateWithWhereUniqueWithoutUserInput | TournamentTeamMemberUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TournamentTeamMemberUpdateManyWithWhereWithoutUserInput | TournamentTeamMemberUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TournamentTeamMemberScalarWhereInput | TournamentTeamMemberScalarWhereInput[]
+  }
+
+  export type RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput = {
+    create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
+    connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
+    upsert?: RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput | RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput[]
+    createMany?: RankingArchiveCreateManyArchivedByInputEnvelope
+    set?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    disconnect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    delete?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    connect?: RankingArchiveWhereUniqueInput | RankingArchiveWhereUniqueInput[]
+    update?: RankingArchiveUpdateWithWhereUniqueWithoutArchivedByInput | RankingArchiveUpdateWithWhereUniqueWithoutArchivedByInput[]
+    updateMany?: RankingArchiveUpdateManyWithWhereWithoutArchivedByInput | RankingArchiveUpdateManyWithWhereWithoutArchivedByInput[]
+    deleteMany?: RankingArchiveScalarWhereInput | RankingArchiveScalarWhereInput[]
   }
 
   export type LigueUncheckedUpdateManyWithoutCommissairesNestedInput = {
@@ -55295,6 +56790,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFollowedTopicsInput, UserUpdateWithoutFollowedTopicsInput>, UserUncheckedUpdateWithoutFollowedTopicsInput>
   }
 
+  export type UserCreateNestedOneWithoutRankingArchivesInput = {
+    create?: XOR<UserCreateWithoutRankingArchivesInput, UserUncheckedCreateWithoutRankingArchivesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRankingArchivesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutRankingArchivesNestedInput = {
+    create?: XOR<UserCreateWithoutRankingArchivesInput, UserUncheckedCreateWithoutRankingArchivesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRankingArchivesInput
+    upsert?: UserUpsertWithoutRankingArchivesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRankingArchivesInput, UserUpdateWithoutRankingArchivesInput>, UserUncheckedUpdateWithoutRankingArchivesInput>
+  }
+
   export type UserCreateNestedOneWithoutTournamentRegistrationsInput = {
     create?: XOR<UserCreateWithoutTournamentRegistrationsInput, UserUncheckedCreateWithoutTournamentRegistrationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutTournamentRegistrationsInput
@@ -56409,6 +57918,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -56461,6 +57971,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -56527,6 +58038,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -56579,6 +58091,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -56629,6 +58142,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -56681,6 +58195,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -56747,6 +58262,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -56799,6 +58315,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -57829,6 +59346,33 @@ export namespace Prisma {
 
   export type TournamentTeamMemberCreateManyUserInputEnvelope = {
     data: TournamentTeamMemberCreateManyUserInput | TournamentTeamMemberCreateManyUserInput[]
+  }
+
+  export type RankingArchiveCreateWithoutArchivedByInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RankingArchiveUncheckedCreateWithoutArchivedByInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RankingArchiveCreateOrConnectWithoutArchivedByInput = {
+    where: RankingArchiveWhereUniqueInput
+    create: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput>
+  }
+
+  export type RankingArchiveCreateManyArchivedByInputEnvelope = {
+    data: RankingArchiveCreateManyArchivedByInput | RankingArchiveCreateManyArchivedByInput[]
   }
 
   export type RoleConfigCreateWithoutUsersInput = {
@@ -58923,6 +60467,35 @@ export namespace Prisma {
     userId?: StringFilter<"TournamentTeamMember"> | string
   }
 
+  export type RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput = {
+    where: RankingArchiveWhereUniqueInput
+    update: XOR<RankingArchiveUpdateWithoutArchivedByInput, RankingArchiveUncheckedUpdateWithoutArchivedByInput>
+    create: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput>
+  }
+
+  export type RankingArchiveUpdateWithWhereUniqueWithoutArchivedByInput = {
+    where: RankingArchiveWhereUniqueInput
+    data: XOR<RankingArchiveUpdateWithoutArchivedByInput, RankingArchiveUncheckedUpdateWithoutArchivedByInput>
+  }
+
+  export type RankingArchiveUpdateManyWithWhereWithoutArchivedByInput = {
+    where: RankingArchiveScalarWhereInput
+    data: XOR<RankingArchiveUpdateManyMutationInput, RankingArchiveUncheckedUpdateManyWithoutArchivedByInput>
+  }
+
+  export type RankingArchiveScalarWhereInput = {
+    AND?: RankingArchiveScalarWhereInput | RankingArchiveScalarWhereInput[]
+    OR?: RankingArchiveScalarWhereInput[]
+    NOT?: RankingArchiveScalarWhereInput | RankingArchiveScalarWhereInput[]
+    id?: StringFilter<"RankingArchive"> | string
+    year?: IntFilter<"RankingArchive"> | number
+    name?: StringFilter<"RankingArchive"> | string
+    data?: StringFilter<"RankingArchive"> | string
+    createdAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    updatedAt?: DateTimeFilter<"RankingArchive"> | Date | string
+    archivedById?: StringFilter<"RankingArchive"> | string
+  }
+
   export type RoleConfigUpsertWithoutUsersInput = {
     update: XOR<RoleConfigUpdateWithoutUsersInput, RoleConfigUncheckedUpdateWithoutUsersInput>
     create: XOR<RoleConfigCreateWithoutUsersInput, RoleConfigUncheckedCreateWithoutUsersInput>
@@ -59045,6 +60618,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -59097,6 +60671,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -59152,6 +60727,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -59204,6 +60780,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -59270,6 +60847,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -59322,6 +60900,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -59383,6 +60962,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -59435,6 +61015,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -59569,6 +61150,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -59621,6 +61203,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -59820,6 +61403,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -59872,6 +61456,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
   }
@@ -60033,6 +61618,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -60085,6 +61671,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -60699,6 +62286,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -60751,6 +62339,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -61019,6 +62608,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -61071,6 +62661,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -61215,6 +62806,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -61267,6 +62859,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -61322,6 +62915,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -61374,6 +62968,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -61516,6 +63111,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -61568,6 +63164,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -61629,6 +63226,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -61681,6 +63279,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -61790,6 +63389,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -61842,6 +63442,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -61897,6 +63498,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -61949,6 +63551,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -62040,6 +63643,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -62092,6 +63696,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -62153,6 +63758,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -62205,6 +63811,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -62271,6 +63878,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -62323,6 +63931,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -62414,6 +64023,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -62466,6 +64076,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -62584,6 +64195,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -62636,6 +64248,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -62745,6 +64358,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -62797,6 +64411,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -62847,6 +64462,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -62899,6 +64515,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -62954,6 +64571,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -63006,6 +64624,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -63105,6 +64724,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -63157,6 +64777,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -63218,6 +64839,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -63270,6 +64892,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -63359,6 +64982,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -63411,6 +65035,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -63510,6 +65135,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -63562,6 +65188,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -63652,6 +65279,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
@@ -63703,6 +65331,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -63815,6 +65444,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -63867,6 +65497,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -63976,6 +65607,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -64019,6 +65651,231 @@ export namespace Prisma {
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+  }
+
+  export type UserCreateWithoutRankingArchivesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+  }
+
+  export type UserUncheckedCreateWithoutRankingArchivesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+  }
+
+  export type UserCreateOrConnectWithoutRankingArchivesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRankingArchivesInput, UserUncheckedCreateWithoutRankingArchivesInput>
+  }
+
+  export type UserUpsertWithoutRankingArchivesInput = {
+    update: XOR<UserUpdateWithoutRankingArchivesInput, UserUncheckedUpdateWithoutRankingArchivesInput>
+    create: XOR<UserCreateWithoutRankingArchivesInput, UserUncheckedCreateWithoutRankingArchivesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutRankingArchivesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRankingArchivesInput, UserUncheckedUpdateWithoutRankingArchivesInput>
+  }
+
+  export type UserUpdateWithoutRankingArchivesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutRankingArchivesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
     tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
     matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
@@ -64078,6 +65935,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -64130,6 +65988,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -64307,6 +66166,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -64359,6 +66219,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -64526,6 +66387,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -64578,6 +66440,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -64774,6 +66637,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -64826,6 +66690,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -65009,6 +66874,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -65061,6 +66927,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -65154,6 +67021,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -65206,6 +67074,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -65289,6 +67158,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -65341,6 +67211,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -65518,6 +67389,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -65570,6 +67442,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -65784,6 +67657,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -65836,6 +67710,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -65891,6 +67766,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -65943,6 +67819,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -66100,6 +67977,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -66152,6 +68030,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -66213,6 +68092,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -66265,6 +68145,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -66408,6 +68289,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -66460,6 +68342,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -66563,6 +68446,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -66615,6 +68499,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -66749,6 +68634,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -66801,6 +68687,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -66972,6 +68859,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
@@ -67024,6 +68912,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -67079,6 +68968,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
@@ -67131,6 +69021,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
   }
@@ -67212,6 +69103,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -67264,6 +69156,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -67362,6 +69255,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -67414,6 +69308,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -67469,6 +69364,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -67521,6 +69417,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -67587,6 +69484,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -67639,6 +69537,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -67700,6 +69599,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -67752,6 +69652,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -67802,6 +69703,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -67854,6 +69756,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -67920,6 +69823,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -67972,6 +69876,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -68022,6 +69927,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -68074,6 +69980,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -68155,6 +70062,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -68207,6 +70115,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -68328,6 +70237,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -68380,6 +70290,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -68557,6 +70468,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -68609,6 +70521,7 @@ export namespace Prisma {
     tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -69059,6 +70972,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -69111,6 +71025,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -69166,6 +71081,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
@@ -69218,6 +71134,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
     captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
@@ -69301,6 +71218,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -69353,6 +71271,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -69414,6 +71333,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -69466,6 +71386,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -69840,6 +71761,15 @@ export namespace Prisma {
   export type TournamentTeamMemberCreateManyUserInput = {
     id?: string
     teamId: string
+  }
+
+  export type RankingArchiveCreateManyArchivedByInput = {
+    id?: string
+    year: number
+    name: string
+    data: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -70938,6 +72868,33 @@ export namespace Prisma {
     teamId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type RankingArchiveUpdateWithoutArchivedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RankingArchiveUncheckedUpdateWithoutArchivedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RankingArchiveUncheckedUpdateManyWithoutArchivedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LigueUpdateWithoutCommissairesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -71449,6 +73406,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
@@ -71501,6 +73459,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
   }
@@ -71924,6 +73883,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
@@ -71975,6 +73935,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
@@ -72411,6 +74372,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
@@ -72463,6 +74425,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }
@@ -72531,6 +74494,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
@@ -72583,6 +74547,7 @@ export namespace Prisma {
     tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
     captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
   }

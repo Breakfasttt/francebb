@@ -1,8 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import toast from 'react-hot-toast';
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { 
   Trophy, 
   Users, 
@@ -15,20 +19,41 @@ import {
   Loader2,
   TrendingUp,
   Info,
-  HelpCircle
+  HelpCircle,
+  Edit
 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Modal from "@/common/components/Modal/Modal";
-import { getRanking, getHallOfFame, getRankingYears, RankingFilter } from "./actions";
+import { isModerator, isAdmin } from "@/lib/roles";
+import { 
+  getRanking, 
+  getHallOfFame, 
+  getRankingYears, 
+  archiveYear,
+  deleteArchive,
+  RankingFilter 
+} from "./actions";
 import "./page.css";
 
 export default function ClassementPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [filter, setFilter] = useState<RankingFilter>("ROLLING");
   const [loading, setLoading] = useState(true);
   const [ranking, setRanking] = useState<any[]>([]);
   const [hof, setHof] = useState<any[]>([]);
-  const [availableYears, setAvailableYears] = useState<number[]>([]);
+  const [availableYears, setAvailableYears] = useState<any[]>([]);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isArchiveConfirmOpen, setIsArchiveConfirmOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isDeleteConfirmLevel2Open, setIsDeleteConfirmLevel2Open] = useState(false);
+
+  const user = session?.user as any;
+  const isMod = isModerator(user?.role);
+  const isAdminUser = isAdmin(user?.role);
+
+  const currentYearData = availableYears.find(y => `CDF_${y.year}` === filter);
+  const isSelectedYearArchived = currentYearData?.isArchived || false;
 
   useEffect(() => {
     async function loadYears() {
@@ -36,7 +61,7 @@ export default function ClassementPage() {
       setAvailableYears(years);
       // Si une année est dispo et qu'on est au chargement initial, on peut choisir la plus récente
       if (years.length > 0 && filter === "ROLLING") {
-        setFilter(`CDF_${years[0]}`);
+        setFilter(`CDF_${years[0].year}`);
       }
     }
     loadYears();
@@ -62,6 +87,31 @@ export default function ClassementPage() {
     fetchData();
   }, [filter]);
 
+  async function handleArchive() {
+    if (!currentYearData) return;
+    const res = await archiveYear(currentYearData.year);
+    if (res.success) {
+      toast.success("Classement archivé avec succès !");
+      // Recharger les années
+      const years = await getRankingYears();
+      setAvailableYears(years);
+    } else {
+      toast.error(res.error || "Une erreur est survenue");
+    }
+  }
+
+  async function handleDeleteArchive() {
+    if (!currentYearData) return;
+    const res = await deleteArchive(currentYearData.year);
+    if (res.success) {
+      toast.success("Archive supprimée.");
+      const years = await getRankingYears();
+      setAvailableYears(years);
+    } else {
+      toast.error(res.error || "Une erreur est survenue");
+    }
+  }
+
 
   const years = [2026, 2025, 2024, 2023];
 
@@ -81,12 +131,46 @@ export default function ClassementPage() {
             onChange={(e) => setFilter(e.target.value as RankingFilter)}
           >
             {availableYears.map(y => (
-              <option key={y} value={`CDF_${y}`}>🏆 Championnat de France {y}</option>
+              <option key={y.year} value={`CDF_${y.year}`}>
+                {y.isArchived ? "[Archive] " : "🏆 "} Championnat de France {y.year}
+              </option>
             ))}
             <option value="ROLLING">🔄 Classement Glissant (12 mois)</option>
             <option value="ROSTER">🏹 Meilleur Coach par Roster</option>
             <option value="HOF">🏛️ Hall of Fame (Palmarès HISTORIQUE)</option>
           </select>
+
+          {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
+            <button className="admin-action-btn archive-btn" onClick={() => setIsArchiveConfirmOpen(true)}>
+              <Shield size={16} /> Archiver
+            </button>
+          )}
+
+          {isMod && filter.startsWith("CDF_") && isSelectedYearArchived && (
+            <div className="admin-actions-group">
+              <button 
+                className="admin-action-btn edit-archive-btn" 
+                onClick={() => router.push(`/classement/edit-archive?year=${currentYearData?.year}`)}
+              >
+                Modifier l'archive
+              </button>
+              {isAdminUser && (
+                <button className="admin-action-btn delete-archive-btn danger" onClick={() => setIsDeleteConfirmOpen(true)}>
+                  Supprimer
+                </button>
+              )}
+            </div>
+          )}
+
+          {isMod && (
+            <button 
+              className="admin-action-btn manual-archive-btn outline" 
+              onClick={() => router.push('/classement/edit-archive')}
+              title="Ajouter une archive manuellement"
+            >
+              + Manuel
+            </button>
+          )}
         </div>
 
         <button 
@@ -228,6 +312,40 @@ export default function ClassementPage() {
           </div>
         </div>
       </Modal>
+
+      <ConfirmModal
+        isOpen={isArchiveConfirmOpen}
+        onClose={() => setIsArchiveConfirmOpen(false)}
+        onConfirm={async () => handleArchive()}
+        title="Confirmer l'archivage"
+        message={`Voulez-vous figer le classement pour l'année ${currentYearData?.year} ? Un instantanné sera pris et affiché à la place du calcul dynamique.`}
+      />
+
+      <ConfirmModal
+        isOpen={isDeleteConfirmOpen}
+        onClose={() => setIsDeleteConfirmOpen(false)}
+        onConfirm={async () => {
+          setIsDeleteConfirmOpen(false);
+          setIsDeleteConfirmLevel2Open(true);
+        }}
+        title="Supprimer l'archive (1/2)"
+        message="Êtes-vous sûr de vouloir supprimer cette archive ? Les données seront à nouveau calculées en temps réel."
+        confirmLabel="Continuer"
+        isDanger
+      />
+
+      <ConfirmModal
+        isOpen={isDeleteConfirmLevel2Open}
+        onClose={() => setIsDeleteConfirmLevel2Open(false)}
+        onConfirm={async () => {
+          setIsDeleteConfirmLevel2Open(false);
+          await handleDeleteArchive();
+        }}
+        title="CONFIRMATION FINALE (2/2)"
+        message="CETTE ACTION EST IRRÉVERSIBLE. Vous confirmez la suppression définitive de l'instantané ?"
+        confirmLabel="SUPPRIMER DÉFINITIVEMENT"
+        isDanger
+      />
     </main>
   );
 }

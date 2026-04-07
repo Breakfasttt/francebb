@@ -320,6 +320,16 @@ exports.Prisma.TopicFollowScalarFieldEnum = {
   topicId: 'topicId'
 };
 
+exports.Prisma.RankingArchiveScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  name: 'name',
+  data: 'data',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  archivedById: 'archivedById'
+};
+
 exports.Prisma.ReferenceDataScalarFieldEnum = {
   id: 'id',
   group: 'group',
@@ -537,6 +547,7 @@ exports.Prisma.ModelName = {
   PostReaction: 'PostReaction',
   RoleConfig: 'RoleConfig',
   TopicFollow: 'TopicFollow',
+  RankingArchive: 'RankingArchive',
   ReferenceData: 'ReferenceData',
   TournamentRegistration: 'TournamentRegistration',
   TournamentTeam: 'TournamentTeam',
