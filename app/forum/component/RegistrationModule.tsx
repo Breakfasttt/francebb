@@ -46,6 +46,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   });
 
   const canManage = isOrganizer || isCommissioner;
+  const isOver = new Date(tournament.date) < new Date();
+  const isActionBlocked = tournament.registrationsLocked || tournament.isFinished || isOver;
 
   // -- Inscription Individuelle --
   const isRegistered = tournament.registrations?.some((r: any) => r.userId === currentUser?.id);
@@ -129,7 +131,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             <div className="quick-user-action">
               {tournament.isTeam ? (
                 /* Équipe : Cacher le bouton si bloqué, sinon afficher le bouton d'inscription */
-                !tournament.registrationsLocked && (
+                !isActionBlocked && (
                   <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
                     <Plus size={16} /> Inscrire une équipe
                   </button>
@@ -141,7 +143,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
                     <UserMinus size={16} /> Annuler
                   </button>
                 ) : (
-                  !tournament.registrationsLocked && (
+                  !isActionBlocked && (
                     <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
                       <UserPlus size={16} /> Me pré-inscrire
                     </button>

@@ -454,6 +454,45 @@ exports.Prisma.ResourceTagScalarFieldEnum = {
   name: 'name'
 };
 
+exports.Prisma.TournamentResultScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  coachName: 'coachName',
+  userId: 'userId',
+  roster: 'roster',
+  wins: 'wins',
+  draws: 'draws',
+  losses: 'losses',
+  casualties: 'casualties',
+  points: 'points',
+  rank: 'rank',
+  autoCalculate: 'autoCalculate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TournamentRoundScalarFieldEnum = {
+  id: 'id',
+  tournamentId: 'tournamentId',
+  roundNumber: 'roundNumber'
+};
+
+exports.Prisma.TournamentMatchScalarFieldEnum = {
+  id: 'id',
+  roundId: 'roundId',
+  tableNumber: 'tableNumber',
+  coach1Name: 'coach1Name',
+  coach1UserId: 'coach1UserId',
+  coach2Name: 'coach2Name',
+  coach2UserId: 'coach2UserId',
+  coach1TD: 'coach1TD',
+  coach1Casualties: 'coach1Casualties',
+  coach2TD: 'coach2TD',
+  coach2Casualties: 'coach2Casualties',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -508,7 +547,10 @@ exports.Prisma.ModelName = {
   ModerationReport: 'ModerationReport',
   ModerationLog: 'ModerationLog',
   Resource: 'Resource',
-  ResourceTag: 'ResourceTag'
+  ResourceTag: 'ResourceTag',
+  TournamentResult: 'TournamentResult',
+  TournamentRound: 'TournamentRound',
+  TournamentMatch: 'TournamentMatch'
 };
 
 /**

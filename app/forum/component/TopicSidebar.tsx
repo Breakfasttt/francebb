@@ -13,13 +13,17 @@ import {
   Trash2,
   Move,
   Type,
-  ChevronsDown,
-  Mail,
+  CheckCircle,
+  XCircle,
+  Shield,
   Check,
+  Lock as LockIcon,
+  Trophy,
   Eye,
   Bookmark,
-  Lock as LockIcon,
-  AlertTriangle
+  AlertTriangle,
+  ChevronsDown,
+  Mail
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -57,7 +61,6 @@ interface TopicSidebarProps {
   registrationsLocked?: boolean;
 }
 
-import { Shield, CheckCircle, XCircle } from "lucide-react";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { finishTournament, cancelTournament } from "@/app/tournaments/actions";
 import toast from "react-hot-toast";
@@ -400,6 +403,15 @@ export default function TopicSidebar({
                   <CheckCircle size={16} />
                   <span>Terminer le tournoi</span>
                 </button>
+
+                <Link 
+                  href={`/forum/tournament/${tournamentId}/results`}
+                  className="widget-button secondary-btn" 
+                  style={{ textAlign: 'left', padding: '8px 12px', textDecoration: 'none', color: 'var(--foreground)' }}
+                >
+                  <Trophy size={16} style={{ color: 'var(--accent)' }} />
+                  <span>Gérer les résultats</span>
+                </Link>
                 
                 <button 
                   onClick={handleToggleRegistrations}

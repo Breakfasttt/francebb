@@ -91,6 +91,10 @@ model User {
   moderationLogs  ModerationLog[]
 
   submittedResources Resource[] @relation("SubmittedResources")
+
+  tournamentResults   TournamentResult[]
+  matchesAsCoach1     TournamentMatch[] @relation("MatchCoach1")
+  matchesAsCoach2     TournamentMatch[] @relation("MatchCoach2")
 }
 
 model Block {
@@ -172,6 +176,9 @@ model Tournament {
   lat                 Float?
   lng                 Float?
   registrationsLocked Boolean  @default(false)
+
+  results             TournamentResult[]
+  rounds              TournamentRound[]
 }
 
 model Category {
@@ -557,4 +564,65 @@ model ResourceTag {
   id        String      @id @default(cuid())
   name      String      @unique
   resources Resource[]
+}
+
+model TournamentResult {
+  id                  String     @id @default(cuid())
+  tournamentId        String
+  tournament          Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  
+  coachName           String
+  userId              String?
+  user                User?      @relation(fields: [userId], references: [id])
+  
+  roster              String?
+  wins                Int        @default(0)
+  draws               Int        @default(0)
+  losses              Int        @default(0)
+  casualties          Int        @default(0)
+  points              Float      @default(0)
+  rank                Int?
+  
+  autoCalculate       Boolean    @default(true)
+  
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
+  @@unique([tournamentId, coachName])
+}
+
+model TournamentRound {
+  id                  String            @id @default(cuid())
+  tournamentId        String
+  tournament          Tournament        @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  roundNumber         Int
+  
+  matches             TournamentMatch[]
+
+  @@unique([tournamentId, roundNumber])
+}
+
+model TournamentMatch {
+  id                  String          @id @default(cuid())
+  roundId             String
+  round               TournamentRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  
+  tableNumber         Int?
+  
+  coach1Name          String
+  coach1UserId        String?
+  coach1User          User?           @relation("MatchCoach1", fields: [coach1UserId], references: [id])
+  
+  coach2Name          String
+  coach2UserId        String?
+  coach2User          User?           @relation("MatchCoach2", fields: [coach2UserId], references: [id])
+  
+  coach1TD            Int             @default(0)
+  coach1Casualties    Int             @default(0)
+  
+  coach2TD            Int             @default(0)
+  coach2Casualties    Int             @default(0)
+
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 }

@@ -6,6 +6,7 @@ import QuickReply from "@/app/forum/component/QuickReply";
 import RegistrationModule from "@/app/forum/component/RegistrationModule";
 import TopicSidebar from "@/app/forum/component/TopicSidebar";
 import TournamentSummary from "@/app/forum/component/TournamentSummary";
+import TournamentResultWidget from "@/app/forum/component/TournamentResultWidget";
 import { auth } from "@/auth";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
@@ -95,6 +96,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
               }
             },
             mercenaries: { include: { user: true } },
+            results: { include: { user: true } },
+            rounds: { include: { matches: true }, orderBy: { roundNumber: 'asc' } },
             ligue: true
           }
         },
@@ -206,6 +209,16 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             {topic.tournament && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <TournamentSummary tournament={topic.tournament} />
+                
+                {topic.tournament.isFinished && (
+                  <TournamentResultWidget 
+                    tournamentId={topic.tournament.id}
+                    results={topic.tournament.results}
+                    rounds={topic.tournament.rounds}
+                    canEdit={canEditTournament}
+                  />
+                )}
+
                 <RegistrationModule
                   tournament={topic.tournament}
                   currentUser={session?.user}
