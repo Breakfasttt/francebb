@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.article-filter-sidebar :global(.filter-card) {
+.article-filter-sidebar .filter-card {
   padding: 1.5rem !important;
   display: flex;
   flex-direction: column;
@@ -123,7 +123,7 @@
 }
 
 @media (max-width: 1024px) {
-  .article-filter-sidebar :global(.filter-card) {
+  .article-filter-sidebar .filter-card {
     flex-direction: row;
     flex-wrap: wrap;
   }

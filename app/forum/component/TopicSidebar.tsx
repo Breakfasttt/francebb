@@ -379,7 +379,7 @@ export default function TopicSidebar({
             </button>
 
             {/* 3. Tournament Administration Section */}
-            {isTournament && canEditTournament && !isFinished && !isCancelled && (
+            {isTournament && canEditTournament && !isCancelled && (
               <div style={{ marginTop: '0.4rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <h3 style={{ margin: '0 0 0.2rem 0', fontSize: '0.85rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <Shield size={14} /> Gestion Tournoi
@@ -394,44 +394,48 @@ export default function TopicSidebar({
                   <span>Modifier le tournoi</span>
                 </button>
 
-                <button 
-                  onClick={handleFinish}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', padding: '8px 12px' }}
-                >
-                  <CheckCircle size={16} />
-                  <span>Terminer le tournoi</span>
-                </button>
+                {isFinished ? (
+                  <Link 
+                    href={`/forum/tournament/${tournamentId}/results`}
+                    className="widget-button secondary-btn" 
+                    style={{ textAlign: 'left', padding: '8px 12px', textDecoration: 'none', color: 'var(--foreground)' }}
+                  >
+                    <Trophy size={16} style={{ color: 'var(--accent)' }} />
+                    <span>Gérer les résultats</span>
+                  </Link>
+                ) : (
+                  <>
+                    <button 
+                      onClick={handleFinish}
+                      disabled={isPending}
+                      className="widget-button secondary-btn" 
+                      style={{ textAlign: 'left', padding: '8px 12px' }}
+                    >
+                      <CheckCircle size={16} />
+                      <span>Terminer le tournoi</span>
+                    </button>
+                    
+                    <button 
+                      onClick={handleToggleRegistrations}
+                      disabled={isPending}
+                      className="widget-button secondary-btn" 
+                      style={{ textAlign: 'left', padding: '8px 12px', color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
+                    >
+                      {registrationsLocked ? <Check size={16} /> : <LockIcon size={16} />}
+                      <span>{registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}</span>
+                    </button>
 
-                <Link 
-                  href={`/forum/tournament/${tournamentId}/results`}
-                  className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', padding: '8px 12px', textDecoration: 'none', color: 'var(--foreground)' }}
-                >
-                  <Trophy size={16} style={{ color: 'var(--accent)' }} />
-                  <span>Gérer les résultats</span>
-                </Link>
-                
-                <button 
-                  onClick={handleToggleRegistrations}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', padding: '8px 12px', color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
-                >
-                  {registrationsLocked ? <Check size={16} /> : <LockIcon size={16} />}
-                  <span>{registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}</span>
-                </button>
-
-                <button 
-                  onClick={handleCancel}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
-                >
-                  <XCircle size={16} />
-                  <span>Annuler le tournoi</span>
-                </button>
+                    <button 
+                      onClick={handleCancel}
+                      disabled={isPending}
+                      className="widget-button secondary-btn" 
+                      style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
+                    >
+                      <XCircle size={16} />
+                      <span>Annuler le tournoi</span>
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
