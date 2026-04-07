@@ -61,3 +61,8 @@ export function isModerator(role: string | null | undefined): boolean {
   if (!role) return false;
   return getRolePower(role) >= ROLE_POWER.MODERATOR;
 }
+
+export function isAdmin(role: string | null | undefined): boolean {
+  if (!role) return false;
+  return getRolePower(role) >= ROLE_POWER.ADMIN;
+}

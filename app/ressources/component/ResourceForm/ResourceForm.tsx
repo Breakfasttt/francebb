@@ -18,6 +18,7 @@ interface ResourceFormProps {
   isSubmitting: boolean;
   submitLabel?: string;
   onCancel?: () => void;
+  isSystem?: boolean;
 }
 
 export default function ResourceForm({ 
@@ -25,7 +26,8 @@ export default function ResourceForm({
   onSubmit, 
   isSubmitting, 
   submitLabel = "Soumettre la ressource",
-  onCancel
+  onCancel,
+  isSystem = false
 }: ResourceFormProps) {
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
   const [description, setDescription] = useState(initialData?.description || "");
@@ -75,8 +77,10 @@ export default function ResourceForm({
             defaultValue={initialData?.title}
             placeholder="Ex: Blood Bowl Team Builder"
             required
-            className="form-input"
+            className={`form-input ${isSystem ? 'readonly' : ''}`}
+            readOnly={isSystem}
           />
+          {isSystem && <p className="form-hint">Le titre d'un outil système ne peut pas être modifié.</p>}
         </div>
 
         <div className="form-group">
@@ -109,9 +113,11 @@ export default function ResourceForm({
               defaultValue={initialData?.link}
               placeholder="https://..."
               required
-              className="form-input"
+              className={`form-input ${isSystem ? 'readonly' : ''}`}
+              readOnly={isSystem}
             />
           </div>
+          {isSystem && <p className="form-hint">Le lien d'un outil système est fixe.</p>}
         </div>
 
         <div className="form-group">
@@ -157,8 +163,10 @@ export default function ResourceForm({
             name="tags"
             defaultValue={initialData?.tags.join(", ")}
             placeholder="Ex: Équipes, Calendrier, Tournoi"
-            className="form-input"
+            className={`form-input ${isSystem ? 'readonly' : ''}`}
+            readOnly={isSystem}
           />
+          {isSystem && <p className="form-hint">Les tags système sont gérés par l'administration.</p>}
         </div>
 
         <div className="form-actions">

@@ -8,7 +8,7 @@ import { getResource, updateResourceAction } from "@/app/ressources/actions";
 import { Loader2, AlertTriangle } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { useSession } from "next-auth/react";
-import { isModerator } from "@/lib/roles";
+import { isModerator, isAdmin } from "@/lib/roles";
 import { toast } from "react-hot-toast";
 
 interface EditResourcePageProps {
@@ -43,7 +43,7 @@ export default function EditResourcePage({ params }: EditResourcePageProps) {
     setIsSubmitting(false);
     
     if (res.success) {
-      toast.success("Ressource mise à jour (repasse en modération)");
+      toast.success(resource.isSystem ? "Outil système mis à jour" : "Ressource mise à jour (repasse en modération)");
       router.push("/ressources");
       return { success: true };
     } else {
@@ -63,7 +63,11 @@ export default function EditResourcePage({ params }: EditResourcePageProps) {
 
   // Vérification des permissions
   const user = session?.user as any;
-  const canEdit = isModerator(user?.role) || user?.id === resource.authorId;
+  const isAuthor = user?.id === resource.authorId;
+  const isMod = isModerator(user?.role);
+  const isSys = resource.isSystem || resource.id === 'bbpusher';
+
+  const canEdit = isSys ? isAdmin(user?.role) : (isMod || isAuthor);
 
   if (!canEdit) {
     return (
@@ -102,6 +106,7 @@ export default function EditResourcePage({ params }: EditResourcePageProps) {
           isSubmitting={isSubmitting}
           submitLabel="Mettre à jour"
           onCancel={() => router.back()}
+          isSystem={isSys}
         />
       </div>
     </main>

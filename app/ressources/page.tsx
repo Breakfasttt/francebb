@@ -14,25 +14,9 @@ import ResourceFilterSidebar from "./component/ResourceFilterSidebar/ResourceFil
 import Pagination from "@/common/components/Pagination/Pagination";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { getResources, deleteResourceAction } from "./actions";
-import { isModerator } from "@/lib/roles";
+import { isModerator, isAdmin } from "@/lib/roles";
 import { toast } from "react-hot-toast";
 import "./page.css";
-
-// Ressource BBPusher (Innée au site)
-const BB_PUSHER_RESOURCE = {
-  id: "bbpusher",
-  title: "BB Pusher",
-  description: "Plateau tactique interactif pour Blood Bowl. Placez vos joueurs, simulez des poussées et partagez vos schémas tactiques.",
-  imageUrl: "/images/bbpusher-preview.jpg",
-  link: "/bbpusher",
-  isSystem: true,
-  tags: [{ id: "tag-system", name: "Outil Officiel" }],
-  author: { name: "Système", image: null },
-  status: "APPROVED",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  authorId: "system"
-};
 
 export default function RessourcesPage() {
   const { data: session } = useSession();
@@ -56,18 +40,7 @@ export default function RessourcesPage() {
       pageSize: 20
     });
     
-    let finalResources = [...data.resources];
-    
-    if (page === 1) {
-      const matchesSearch = !searchQuery || BB_PUSHER_RESOURCE.title.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesTags = selectedTags.length === 0 || selectedTags.some(t => BB_PUSHER_RESOURCE.tags.some(rt => rt.name === t));
-      
-      if (matchesSearch && matchesTags) {
-        finalResources = [BB_PUSHER_RESOURCE, ...finalResources];
-      }
-    }
-
-    setResources(finalResources);
+    setResources(data.resources);
     setTotalPages(data.totalPages);
     setLoading(false);
   }, [searchQuery, selectedTags, page]);
@@ -98,7 +71,6 @@ export default function RessourcesPage() {
   };
 
   const user = session?.user as any;
-  const isMod = isModerator(user?.role);
 
   return (
     <main className="container ressources-page">
@@ -143,8 +115,12 @@ export default function RessourcesPage() {
                 <>
                   <div className={`resources-${viewMode}`}>
                     {resources.map(res => {
-                      const canEdit = isMod || (user?.id === res.authorId && !res.isSystem);
-                      const canDelete = canEdit;
+                      const isAuthor = user?.id === res.authorId;
+                      const isMod = isModerator(user?.role);
+                      const isSystem = res.isSystem || res.id === 'bbpusher';
+                      
+                      const canEdit = isSystem ? isAdmin(user?.role) : (isMod || isAuthor);
+                      const canDelete = !isSystem && (isMod || isAuthor);
                       
                       return (
                         <ResourceCard 

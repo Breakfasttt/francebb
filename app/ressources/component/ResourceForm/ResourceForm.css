@@ -55,6 +55,14 @@
   box-shadow: 0 0 0 4px var(--primary-transparent);
 }
 
+.form-input.readonly, .form-textarea.readonly {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: var(--glass-border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
 .form-textarea {
   resize: vertical;
   min-height: 100px;

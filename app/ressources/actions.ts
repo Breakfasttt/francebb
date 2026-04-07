@@ -6,8 +6,8 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isModerator, isAdmin } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export type ResourceStatus = "PENDING" | "APPROVED" | "REJECTED";
@@ -187,16 +187,35 @@ export async function getUserResources(userId: string, page = 1, pageSize = 10) 
  */
 export async function updateResourceAction(id: string, formData: FormData) {
   const session = await auth();
-  const sessionUser = session?.user as any;
-  if (!sessionUser?.id) return { error: "Non authentifié" };
+  const user = session?.user as any;
+  if (!user?.id) return { error: "Non authentifié" };
 
   const resource = await prisma.resource.findUnique({ where: { id } });
   if (!resource) return { error: "Ressource introuvable" };
 
-  const isOwner = resource.authorId === sessionUser.id;
-  const isMod = isModerator(sessionUser.role);
+  if (!isModerator(user.role) && user.id !== resource.authorId) {
+    return { error: "Non autorisé" };
+  }
 
-  if (!isOwner && !isMod) return { error: "Action non autorisée" };
+  // Exception Ressources Système (BBPusher, etc)
+  if (resource.isSystem) {
+    if (!isAdmin(user.role)) {
+      return { error: "Seuls les administrateurs peuvent modifier les outils système" };
+    }
+    // Pour une ressource système, on ne modifie que description et image
+    await prisma.resource.update({
+      where: { id },
+      data: {
+        description: formData.get("description") as string,
+        imageUrl: formData.get("imageUrl") as string,
+        // Les ressources système restent approuvées
+      }
+    });
+
+    await logModerationAction("RESOURCE_UPDATED", id, "RESOURCE", "Mise à jour d'un outil système");
+    revalidatePath("/ressources");
+    return { success: true };
+  }
 
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -235,7 +254,7 @@ export async function updateResourceAction(id: string, formData: FormData) {
         "RESOURCE_UPDATED", 
         id, 
         "RESOURCE", 
-        isMod ? "Mise à jour par un modérateur" : "Mise à jour par l'auteur"
+        isModerator(user.role) ? "Mise à jour par un modérateur" : "Mise à jour par l'auteur"
     );
 
     revalidatePath("/ressources");
@@ -254,16 +273,19 @@ export async function updateResourceAction(id: string, formData: FormData) {
  */
 export async function deleteResourceAction(id: string) {
   const session = await auth();
-  const sessionUser = session?.user as any;
-  if (!sessionUser?.id) return { error: "Non authentifié" };
+  const user = session?.user as any;
+  if (!user?.id) return { error: "Non authentifié" };
 
   const resource = await prisma.resource.findUnique({ where: { id } });
   if (!resource) return { error: "Ressource introuvable" };
 
-  const isOwner = resource.authorId === sessionUser.id;
-  const isMod = isModerator(sessionUser.role);
+  if (!isModerator(user.role) && user.id !== resource.authorId) {
+    return { error: "Non autorisé" };
+  }
 
-  if (!isOwner && !isMod) return { error: "Action non autorisée" };
+  if (resource.isSystem) {
+    return { error: "Impossible de supprimer un outil système" };
+  }
 
   try {
     await prisma.resource.delete({ where: { id } });
@@ -272,7 +294,7 @@ export async function deleteResourceAction(id: string) {
         "RESOURCE_DELETED", 
         id, 
         "RESOURCE", 
-        isMod ? "Suppression par un modérateur" : "Suppression par l'auteur"
+        isModerator(user.role) ? "Suppression par un modérateur" : "Suppression par l'auteur"
     );
 
     revalidatePath("/ressources");
