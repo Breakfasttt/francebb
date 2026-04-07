@@ -35,6 +35,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import UserMapper from '@/common/components/UserMapper/UserMapper';
+import { calculateCdfPoints, CdfTournamentType } from '@/common/utils/cdf';
 import "./TournamentResultsEditor.css";
 
 interface TournamentResultsEditorProps {
@@ -42,7 +43,7 @@ interface TournamentResultsEditorProps {
   allUsers: any[];
 }
 
-const NumberInput = ({ value, onChange, className, step = 1, style }: any) => (
+const NumberInput = ({ value, onChange, className, step = 1, style, readOnly, disabled, tabIndex }: any) => (
   <input 
     type="number" 
     className={`${className} no-arrows`}
@@ -50,6 +51,9 @@ const NumberInput = ({ value, onChange, className, step = 1, style }: any) => (
     min="0"
     step={step}
     style={style}
+    readOnly={readOnly}
+    disabled={disabled}
+    tabIndex={tabIndex}
     onKeyDown={(e) => {
       if (e.key === '-' || e.key === 'e' || e.key === 'E' || e.key === '+') e.preventDefault();
     }}
@@ -60,7 +64,7 @@ const NumberInput = ({ value, onChange, className, step = 1, style }: any) => (
   />
 );
 
-const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTERS }: any) => {
+const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTERS, isCDF }: any) => {
   const {
     attributes,
     listeners,
@@ -85,6 +89,15 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
         </div>
       </td>
       <td><NumberInput value={res.rank} onChange={(val: number) => updateResultField(idx, 'rank', val)} style={{ width: '40px' }} /></td>
+      <td>
+        <input 
+          type="text" 
+          value={res.nafNumber || ''} 
+          onChange={(e) => updateResultField(idx, 'nafNumber', e.target.value)} 
+          placeholder="NAF..." 
+          style={{ width: '80px' }}
+        />
+      </td>
       <td><input type="text" value={res.coachName} onChange={(e) => updateResultField(idx, 'coachName', e.target.value)} placeholder="Nom coach..." /></td>
       <td className="user-mapper-cell">
         <UserMapper 
@@ -117,7 +130,17 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
       <td><NumberInput value={res.draws} onChange={(val: number) => updateResultField(idx, 'draws', val)} /></td>
       <td><NumberInput value={res.losses} onChange={(val: number) => updateResultField(idx, 'losses', val)} /></td>
       <td><NumberInput value={res.casualties} onChange={(val: number) => updateResultField(idx, 'casualties', val)} /></td>
-      <td><NumberInput value={res.points} onChange={(val: number) => updateResultField(idx, 'points', val)} step="0.5" /></td>
+      <td>
+        <NumberInput 
+          value={res.points} 
+          onChange={(val: number) => updateResultField(idx, 'points', val)} 
+          step="0.0001" 
+          style={{ width: '80px', opacity: isCDF ? 0.6 : 1 }}
+          className={isCDF ? 'readonly-input' : ''}
+          readOnly={isCDF}
+          tabIndex={isCDF ? -1 : 0}
+        />
+      </td>
       <td>
         <button className="delete-row-btn" onClick={() => removeResult(idx)}><Trash2 size={14} /></button>
       </td>
@@ -154,7 +177,14 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
       
       updatedResults.forEach((res: any) => {
         if (!res.userId) {
-          const userMatch = allUsers.find((u: any) => u.name?.toLowerCase() === res.coachName.toLowerCase());
+          // 1. Priorité Numéro NAF
+          let userMatch = res.nafNumber ? allUsers.find((u: any) => u.nafNumber === res.nafNumber) : null;
+          
+          // 2. Priorité Pseudo
+          if (!userMatch) {
+            userMatch = allUsers.find((u: any) => u.name?.toLowerCase() === res.coachName.toLowerCase());
+          }
+
           if (userMatch) {
             res.userId = userMatch.id;
             res.user = userMatch;
@@ -166,6 +196,44 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
       if (changed) setResults(updatedResults);
     }
   }, [results, allUsers]);
+
+  // Recalculer les points CDF quand la liste ou les rangs changent
+  useEffect(() => {
+    if (tournament.isCDF && results.length > 0) {
+      const numParticipants = results.length;
+      const roundsAtVenue = parseInt(tournament.days || "1") * 3;
+      const numRounds = tournament.totalMatches || roundsAtVenue || 5; 
+      const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
+
+      const updatedResults = results.map((res: any) => {
+        const newPoints = calculateCdfPoints(
+          typeCDF,
+          numRounds,
+          numParticipants,
+          res.rank || 0
+        );
+        if (res.points !== newPoints) {
+          return { ...res, points: newPoints };
+        }
+        return res;
+      });
+
+      const hasChanged = updatedResults.some((res: any, i: number) => res.points !== results[i].points);
+      if (hasChanged) {
+        setResults(updatedResults);
+      }
+    }
+    // Correction : inclure le coachName dans la dépendance pour détecter les changements d'ordre
+  }, [
+    results.length, 
+    tournament.isCDF, 
+    tournament.typeCDF, 
+    tournament.totalMatches, 
+    tournament.days, 
+    results.map((r: any) => `${r.coachName}-${r.rank}`).join(',')
+  ]);
+
+
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -208,6 +276,19 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         // Tri automatique et attribution des rangs
         newResults = autoSortResults(newResults);
         
+        // Force recalculation of points for newResults to ensure they are visible immediately
+        if (tournament.isCDF) {
+          const numParticipants = newResults.length;
+          const roundsAtVenue = parseInt(tournament.days || "1") * 3;
+          const numRounds = tournament.totalMatches || roundsAtVenue || 5;
+          const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
+
+          newResults = newResults.map((res: any) => ({
+            ...res,
+            points: calculateCdfPoints(typeCDF, numRounds, numParticipants, res.rank || 0)
+          }));
+        }
+
         setResults(newResults);
         setRounds(data.rounds);
         toast.success("Rapport NAF importé ! Données réinitialisées et triées.");
@@ -221,7 +302,38 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
   const handleSave = async () => {
     setIsSaving(true);
-    const response = await saveTournamentResults(tournament.id, { results, rounds });
+    
+    // NETTOYAGE DES DONNÉES pour éviter les erreurs de sérialisation [Object]
+    const cleanResults = results.map((res: any) => ({
+      coachName: res.coachName,
+      nafNumber: res.nafNumber ? String(res.nafNumber) : null,
+      userId: res.userId || null,
+      roster: res.roster || null,
+      wins: Number(res.wins) || 0,
+      draws: Number(res.draws) || 0,
+      losses: Number(res.losses) || 0,
+      casualties: Number(res.casualties) || 0,
+      points: Number(res.points) || 0,
+      rank: res.rank ? Number(res.rank) : null,
+      autoCalculate: res.autoCalculate ?? true
+    }));
+
+    const cleanRounds = rounds.map((rnd: any) => ({
+      roundNumber: Number(rnd.roundNumber),
+      matches: rnd.matches.map((m: any) => ({
+        tableNumber: m.tableNumber ? Number(m.tableNumber) : null,
+        coach1Name: m.coach1Name,
+        coach1UserId: m.coach1UserId || null,
+        coach2Name: m.coach2Name,
+        coach2UserId: m.coach2UserId || null,
+        coach1TD: Number(m.coach1TD) || 0,
+        coach1Casualties: Number(m.coach1Casualties) || 0,
+        coach2TD: Number(m.coach2TD) || 0,
+        coach2Casualties: Number(m.coach2Casualties) || 0
+      }))
+    }));
+
+    const response = await saveTournamentResults(tournament.id, { results: cleanResults, rounds: cleanRounds });
     if (response.success) {
       toast.success("Résultats publiés avec succès !");
       router.refresh();
@@ -266,6 +378,24 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
   const updateResultField = (index: number, field: string, value: any) => {
     const updatedResults = [...results];
     updatedResults[index][field] = value;
+    
+    // Si on change le rang manuellement, on peut vouloir re-trier automatiquement
+    // mais pour ne pas perturber la saisie, on le fera seulement si le champ perd le focus 
+    // ou on recalcule simplement les points CDF immédiatement ici
+    if (field === 'rank' && tournament.isCDF) {
+       const numParticipants = updatedResults.length;
+       const roundsAtVenue = parseInt(tournament.days || "1") * 3;
+       const numRounds = tournament.totalMatches || roundsAtVenue || 5;
+       const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
+
+       updatedResults[index].points = calculateCdfPoints(
+         typeCDF,
+         numRounds,
+         numParticipants,
+         Number(value) || 0
+       );
+    }
+
     setResults(updatedResults);
   };
 
@@ -314,9 +444,14 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
           <div className="ranking-section">
             <div className="section-header">
               <h3>Classement du tournoi</h3>
-              <button className="add-item-btn" onClick={handleAddCoach}>
-                <Plus size={14} /> Ajouter un coach
-              </button>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button className="add-item-btn secondary" onClick={() => setResults(autoSortResults(results))}>
+                   <Trophy size={14} /> Trier par rang
+                </button>
+                <button className="add-item-btn" onClick={handleAddCoach}>
+                  <Plus size={14} /> Ajouter un coach
+                </button>
+              </div>
             </div>
             
             <div className="table-responsive">
@@ -330,14 +465,15 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                     <tr>
                       <th style={{ width: '30px' }}></th>
                       <th style={{ width: '50px' }}>Rank</th>
-                      <th style={{ width: '200px' }}>Coach (Nom)</th>
+                      <th style={{ width: '100px' }}>NAF #</th>
+                      <th style={{ width: '150px' }}>Coach (Nom)</th>
                       <th>Forum User Mapping</th>
                       <th style={{ width: '150px' }}>Roster</th>
                       <th style={{ width: '60px' }}>V</th>
                       <th style={{ width: '60px' }}>N</th>
                       <th style={{ width: '60px' }}>D</th>
                       <th style={{ width: '60px' }}>CAS</th>
-                      <th style={{ width: '80px' }}>Points</th>
+                      <th style={{ width: '120px' }}>{tournament.isCDF ? 'points CDF individuel/équipe' : 'Points'}</th>
                       <th style={{ width: '40px' }}></th>
                     </tr>
                   </thead>
@@ -354,6 +490,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                           updateResultField={updateResultField}
                           removeResult={removeResult}
                           OFFICIAL_ROSTERS={OFFICIAL_ROSTERS}
+                          isCDF={tournament.isCDF}
                         />
                       ))}
                     </SortableContext>

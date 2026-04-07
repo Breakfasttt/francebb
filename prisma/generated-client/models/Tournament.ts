@@ -84,6 +84,7 @@ export type TournamentMinAggregateOutputType = {
   platform: string | null
   isNAF: boolean | null
   isCDF: boolean | null
+  typeCDF: string | null
   isCGO: boolean | null
   isTGE: boolean | null
   isTSC: boolean | null
@@ -129,6 +130,7 @@ export type TournamentMaxAggregateOutputType = {
   platform: string | null
   isNAF: boolean | null
   isCDF: boolean | null
+  typeCDF: string | null
   isCGO: boolean | null
   isTGE: boolean | null
   isTSC: boolean | null
@@ -174,6 +176,7 @@ export type TournamentCountAggregateOutputType = {
   platform: number
   isNAF: number
   isCDF: number
+  typeCDF: number
   isCGO: number
   isTGE: number
   isTSC: number
@@ -247,6 +250,7 @@ export type TournamentMinAggregateInputType = {
   platform?: true
   isNAF?: true
   isCDF?: true
+  typeCDF?: true
   isCGO?: true
   isTGE?: true
   isTSC?: true
@@ -292,6 +296,7 @@ export type TournamentMaxAggregateInputType = {
   platform?: true
   isNAF?: true
   isCDF?: true
+  typeCDF?: true
   isCGO?: true
   isTGE?: true
   isTSC?: true
@@ -337,6 +342,7 @@ export type TournamentCountAggregateInputType = {
   platform?: true
   isNAF?: true
   isCDF?: true
+  typeCDF?: true
   isCGO?: true
   isTGE?: true
   isTSC?: true
@@ -469,6 +475,7 @@ export type TournamentGroupByOutputType = {
   platform: string | null
   isNAF: boolean
   isCDF: boolean
+  typeCDF: string | null
   isCGO: boolean
   isTGE: boolean
   isTSC: boolean
@@ -537,6 +544,7 @@ export type TournamentWhereInput = {
   platform?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isNAF?: Prisma.BoolFilter<"Tournament"> | boolean
   isCDF?: Prisma.BoolFilter<"Tournament"> | boolean
+  typeCDF?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isCGO?: Prisma.BoolFilter<"Tournament"> | boolean
   isTGE?: Prisma.BoolFilter<"Tournament"> | boolean
   isTSC?: Prisma.BoolFilter<"Tournament"> | boolean
@@ -591,6 +599,7 @@ export type TournamentOrderByWithRelationInput = {
   platform?: Prisma.SortOrderInput | Prisma.SortOrder
   isNAF?: Prisma.SortOrder
   isCDF?: Prisma.SortOrder
+  typeCDF?: Prisma.SortOrderInput | Prisma.SortOrder
   isCGO?: Prisma.SortOrder
   isTGE?: Prisma.SortOrder
   isTSC?: Prisma.SortOrder
@@ -648,6 +657,7 @@ export type TournamentWhereUniqueInput = Prisma.AtLeast<{
   platform?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isNAF?: Prisma.BoolFilter<"Tournament"> | boolean
   isCDF?: Prisma.BoolFilter<"Tournament"> | boolean
+  typeCDF?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isCGO?: Prisma.BoolFilter<"Tournament"> | boolean
   isTGE?: Prisma.BoolFilter<"Tournament"> | boolean
   isTSC?: Prisma.BoolFilter<"Tournament"> | boolean
@@ -702,6 +712,7 @@ export type TournamentOrderByWithAggregationInput = {
   platform?: Prisma.SortOrderInput | Prisma.SortOrder
   isNAF?: Prisma.SortOrder
   isCDF?: Prisma.SortOrder
+  typeCDF?: Prisma.SortOrderInput | Prisma.SortOrder
   isCGO?: Prisma.SortOrder
   isTGE?: Prisma.SortOrder
   isTSC?: Prisma.SortOrder
@@ -755,6 +766,7 @@ export type TournamentScalarWhereWithAggregatesInput = {
   platform?: Prisma.StringNullableWithAggregatesFilter<"Tournament"> | string | null
   isNAF?: Prisma.BoolWithAggregatesFilter<"Tournament"> | boolean
   isCDF?: Prisma.BoolWithAggregatesFilter<"Tournament"> | boolean
+  typeCDF?: Prisma.StringNullableWithAggregatesFilter<"Tournament"> | string | null
   isCGO?: Prisma.BoolWithAggregatesFilter<"Tournament"> | boolean
   isTGE?: Prisma.BoolWithAggregatesFilter<"Tournament"> | boolean
   isTSC?: Prisma.BoolWithAggregatesFilter<"Tournament"> | boolean
@@ -800,6 +812,7 @@ export type TournamentCreateInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -852,6 +865,7 @@ export type TournamentUncheckedCreateInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -904,6 +918,7 @@ export type TournamentUpdateInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -956,6 +971,7 @@ export type TournamentUncheckedUpdateInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1008,6 +1024,7 @@ export type TournamentCreateManyInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1053,6 +1070,7 @@ export type TournamentUpdateManyMutationInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1096,6 +1114,7 @@ export type TournamentUncheckedUpdateManyInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1151,6 +1170,7 @@ export type TournamentCountOrderByAggregateInput = {
   platform?: Prisma.SortOrder
   isNAF?: Prisma.SortOrder
   isCDF?: Prisma.SortOrder
+  typeCDF?: Prisma.SortOrder
   isCGO?: Prisma.SortOrder
   isTGE?: Prisma.SortOrder
   isTSC?: Prisma.SortOrder
@@ -1209,6 +1229,7 @@ export type TournamentMaxOrderByAggregateInput = {
   platform?: Prisma.SortOrder
   isNAF?: Prisma.SortOrder
   isCDF?: Prisma.SortOrder
+  typeCDF?: Prisma.SortOrder
   isCGO?: Prisma.SortOrder
   isTGE?: Prisma.SortOrder
   isTSC?: Prisma.SortOrder
@@ -1254,6 +1275,7 @@ export type TournamentMinOrderByAggregateInput = {
   platform?: Prisma.SortOrder
   isNAF?: Prisma.SortOrder
   isCDF?: Prisma.SortOrder
+  typeCDF?: Prisma.SortOrder
   isCGO?: Prisma.SortOrder
   isTGE?: Prisma.SortOrder
   isTSC?: Prisma.SortOrder
@@ -1546,6 +1568,7 @@ export type TournamentCreateWithoutOrganizerInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1597,6 +1620,7 @@ export type TournamentUncheckedCreateWithoutOrganizerInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1657,6 +1681,7 @@ export type TournamentCreateWithoutCommissairesInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1708,6 +1733,7 @@ export type TournamentUncheckedCreateWithoutCommissairesInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1783,6 +1809,7 @@ export type TournamentScalarWhereInput = {
   platform?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isNAF?: Prisma.BoolFilter<"Tournament"> | boolean
   isCDF?: Prisma.BoolFilter<"Tournament"> | boolean
+  typeCDF?: Prisma.StringNullableFilter<"Tournament"> | string | null
   isCGO?: Prisma.BoolFilter<"Tournament"> | boolean
   isTGE?: Prisma.BoolFilter<"Tournament"> | boolean
   isTSC?: Prisma.BoolFilter<"Tournament"> | boolean
@@ -1844,6 +1871,7 @@ export type TournamentCreateWithoutTopicInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1895,6 +1923,7 @@ export type TournamentUncheckedCreateWithoutTopicInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -1962,6 +1991,7 @@ export type TournamentUpdateWithoutTopicInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2013,6 +2043,7 @@ export type TournamentUncheckedUpdateWithoutTopicInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2064,6 +2095,7 @@ export type TournamentCreateWithoutRegistrationsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2115,6 +2147,7 @@ export type TournamentUncheckedCreateWithoutRegistrationsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2182,6 +2215,7 @@ export type TournamentUpdateWithoutRegistrationsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2233,6 +2267,7 @@ export type TournamentUncheckedUpdateWithoutRegistrationsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2284,6 +2319,7 @@ export type TournamentCreateWithoutTeamsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2335,6 +2371,7 @@ export type TournamentUncheckedCreateWithoutTeamsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2402,6 +2439,7 @@ export type TournamentUpdateWithoutTeamsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2453,6 +2491,7 @@ export type TournamentUncheckedUpdateWithoutTeamsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2504,6 +2543,7 @@ export type TournamentCreateWithoutMercenariesInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2555,6 +2595,7 @@ export type TournamentUncheckedCreateWithoutMercenariesInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2622,6 +2663,7 @@ export type TournamentUpdateWithoutMercenariesInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2673,6 +2715,7 @@ export type TournamentUncheckedUpdateWithoutMercenariesInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2724,6 +2767,7 @@ export type TournamentCreateWithoutLigueInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2775,6 +2819,7 @@ export type TournamentUncheckedCreateWithoutLigueInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2851,6 +2896,7 @@ export type TournamentCreateWithoutResultsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2902,6 +2948,7 @@ export type TournamentUncheckedCreateWithoutResultsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -2969,6 +3016,7 @@ export type TournamentUpdateWithoutResultsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3020,6 +3068,7 @@ export type TournamentUncheckedUpdateWithoutResultsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3071,6 +3120,7 @@ export type TournamentCreateWithoutRoundsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3122,6 +3172,7 @@ export type TournamentUncheckedCreateWithoutRoundsInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3189,6 +3240,7 @@ export type TournamentUpdateWithoutRoundsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3240,6 +3292,7 @@ export type TournamentUncheckedUpdateWithoutRoundsInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3291,6 +3344,7 @@ export type TournamentCreateManyOrganizerInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3335,6 +3389,7 @@ export type TournamentUpdateWithoutOrganizerInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3386,6 +3441,7 @@ export type TournamentUncheckedUpdateWithoutOrganizerInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3437,6 +3493,7 @@ export type TournamentUncheckedUpdateManyWithoutOrganizerInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3481,6 +3538,7 @@ export type TournamentUpdateWithoutCommissairesInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3532,6 +3590,7 @@ export type TournamentUncheckedUpdateWithoutCommissairesInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3583,6 +3642,7 @@ export type TournamentUncheckedUpdateManyWithoutCommissairesInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3628,6 +3688,7 @@ export type TournamentCreateManyLigueInput = {
   platform?: string | null
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: string | null
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3672,6 +3733,7 @@ export type TournamentUpdateWithoutLigueInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3723,6 +3785,7 @@ export type TournamentUncheckedUpdateWithoutLigueInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3774,6 +3837,7 @@ export type TournamentUncheckedUpdateManyWithoutLigueInput = {
   platform?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isNAF?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isCDF?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  typeCDF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isCGO?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTGE?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTSC?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3894,6 +3958,7 @@ export type TournamentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   platform?: boolean
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: boolean
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3949,6 +4014,7 @@ export type TournamentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   platform?: boolean
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: boolean
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -3996,6 +4062,7 @@ export type TournamentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   platform?: boolean
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: boolean
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -4043,6 +4110,7 @@ export type TournamentSelectScalar = {
   platform?: boolean
   isNAF?: boolean
   isCDF?: boolean
+  typeCDF?: boolean
   isCGO?: boolean
   isTGE?: boolean
   isTSC?: boolean
@@ -4056,7 +4124,7 @@ export type TournamentSelectScalar = {
   registrationsLocked?: boolean
 }
 
-export type TournamentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked", ExtArgs["result"]["tournament"]>
+export type TournamentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "typeCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked", ExtArgs["result"]["tournament"]>
 export type TournamentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   topic?: boolean | Prisma.Tournament$topicArgs<ExtArgs>
   ligue?: boolean | Prisma.Tournament$ligueArgs<ExtArgs>
@@ -4123,6 +4191,7 @@ export type $TournamentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     platform: string | null
     isNAF: boolean
     isCDF: boolean
+    typeCDF: string | null
     isCGO: boolean
     isTGE: boolean
     isTSC: boolean
@@ -4597,6 +4666,7 @@ export interface TournamentFieldRefs {
   readonly platform: Prisma.FieldRef<"Tournament", 'String'>
   readonly isNAF: Prisma.FieldRef<"Tournament", 'Boolean'>
   readonly isCDF: Prisma.FieldRef<"Tournament", 'Boolean'>
+  readonly typeCDF: Prisma.FieldRef<"Tournament", 'String'>
   readonly isCGO: Prisma.FieldRef<"Tournament", 'Boolean'>
   readonly isTGE: Prisma.FieldRef<"Tournament", 'Boolean'>
   readonly isTSC: Prisma.FieldRef<"Tournament", 'Boolean'>

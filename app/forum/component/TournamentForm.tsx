@@ -64,6 +64,7 @@ interface TournamentFormProps {
     isCGO: boolean;
     isTGE: boolean;
     isTSC: boolean;
+    typeCDF: string | null;
     ligueId: string | null;
     ligueCustom: string | null;
     commissaires: any[];
@@ -79,6 +80,7 @@ interface TournamentFormProps {
 export default function TournamentForm({ forumId, userCanStick, referenceData, initialData }: TournamentFormProps) {
   const isEdit = !!initialData;
   const [isTeam, setIsTeam] = useState(initialData?.isTeam ?? false);
+  const [isCDF, setIsCDF] = useState(initialData?.isCDF ?? false);
   const [commissaires, setCommissaires] = useState<any[]>(initialData?.commissaires ?? []);
   const [startDate, setStartDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "");
   const [endDate, setEndDate] = useState(initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "");
@@ -381,13 +383,34 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem' }}>
                 {['NAF', 'CDF', 'CGO', 'TGE', 'TSC'].map(c => (
                   <label key={c} className="checkbox-box-admin">
-                    <input type="checkbox" name={`is${c}`} defaultChecked={(initialData as any)?.[`is${c}`]} />
+                    <input 
+                      type="checkbox" 
+                      name={`is${c}`} 
+                      defaultChecked={(initialData as any)?.[`is${c}`] ?? (c === 'CDF' ? isCDF : false)} 
+                      onChange={(e) => {
+                        if (c === 'CDF') setIsCDF(e.target.checked);
+                      }}
+                    />
                     <div className="box-content" style={{ padding: '1rem' }}>
                       <span style={{ fontWeight: 800 }}>{c}</span>
                     </div>
                   </label>
                 ))}
               </div>
+
+              {isCDF && (
+                <div className="form-group" style={{ marginTop: '1rem' }}>
+                  <label>Type de Tournoi CDF *</label>
+                  <select name="typeCDF" className="admin-input" defaultValue={initialData?.typeCDF || "INDIVIDUEL"}>
+                    <option value="INDIVIDUEL">Individuel</option>
+                    <option value="EQUIPE_PARTIELLE">Équipe Partielle (Appariements individuels)</option>
+                    <option value="EQUIPE_TOTALE">Équipe Totale (Appariements par équipe)</option>
+                  </select>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+                    Indispensable pour le calcul automatique des points au classement national.
+                  </p>
+                </div>
+              )}
 
               <SectionSeparator icon={<Monitor size={18} />} title="Plateforme & Édition" />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>

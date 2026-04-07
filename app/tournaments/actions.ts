@@ -21,12 +21,13 @@ export async function finishTournament(tournamentId: string) {
 
   if (!tournament) return null;
 
-  // Autorisation : Organisateur, Commissaire ou SUPERADMIN
+  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isSuperAdmin = session.user.role === "SUPERADMIN";
+  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
 
-  if (!isOrganizer && !isCommissaire && !isSuperAdmin) {
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    console.warn(`[finishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
     return null;
   }
 
@@ -59,12 +60,13 @@ export async function cancelTournament(tournamentId: string) {
 
   if (!tournament) return null;
 
-  // Autorisation : Organisateur, Commissaire ou SUPERADMIN
+  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isSuperAdmin = session.user.role === "SUPERADMIN";
+  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
 
-  if (!isOrganizer && !isCommissaire && !isSuperAdmin) {
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    console.warn(`[cancelTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
     return null;
   }
 
@@ -99,9 +101,10 @@ export async function saveTournamentResults(tournamentId: string, data: { result
 
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isSuperAdmin = session.user.role === "SUPERADMIN";
+  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
 
-  if (!isOrganizer && !isCommissaire && !isSuperAdmin) {
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    console.warn(`[saveTournamentResults] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
     return { error: "Non autorisé" };
   }
 
@@ -118,6 +121,7 @@ export async function saveTournamentResults(tournamentId: string, data: { result
           data: {
             tournamentId,
             coachName: res.coachName,
+            nafNumber: res.nafNumber ? String(res.nafNumber) : null,
             userId: res.userId || null,
             roster: res.roster || null,
             wins: Number(res.wins) || 0,

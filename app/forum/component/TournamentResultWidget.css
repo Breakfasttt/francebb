@@ -240,6 +240,13 @@
   width: 40px;
 }
 
+.naf-cell {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  width: 80px;
+}
+
 .coach-avatar {
   width: 24px;
   height: 24px;
@@ -461,6 +468,7 @@
 
 /* Th improvements */
 .rank-th { width: 40px; text-align: center; }
+.naf-th { width: 80px; text-align: left; }
 .roster-th { width: 140px; }
 .stats-cell-th { width: 80px; text-align: center; }
 .points-cell-th { width: 80px; text-align: center; }

@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "./generated-client"
 }
 
@@ -136,6 +136,7 @@ model Tournament {
   platform            String?                  @default("Tabletop")
   isNAF               Boolean                  @default(false)
   isCDF               Boolean                  @default(false)
+  typeCDF             String?                  @default("INDIVIDUEL")
   isCGO               Boolean                  @default(false)
   isTGE               Boolean                  @default(false)
   isTSC               Boolean                  @default(false)
@@ -488,6 +489,7 @@ model TournamentResult {
   id            String     @id @default(cuid())
   tournamentId  String
   coachName     String
+  nafNumber     String?
   userId        String?
   roster        String?
   wins          Int        @default(0)

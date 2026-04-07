@@ -29,6 +29,10 @@ Pour des informations à jour sur les tournois, les classements mondiaux ou les 
 - **URL** : [https://mordorbihan.fr/](https://mordorbihan.fr/)
 - **Usage** : Un des sites de référence francophones pour les guides stratégiques, les aides de jeu et les résumés de règles.
 
+## 4. Règles de calcul de point du Championnat de france
+- **URL** : [https://teamfrancebb.1fr1.net/t2706-reglement-championnat-de-france](https://teamfrancebb.1fr1.net/t2706-reglement-championnat-de-france)
+- **Usage** : Règles de calcul de point du Championnat de france.
+
 ## 🧠 Instructions pour l'Agent
 
 1. **Priorité aux règles locales** : Si l'utilisateur pose une question technique sur une règle, commence par chercher dans `public/data/docs/lrb_s3.txt`.

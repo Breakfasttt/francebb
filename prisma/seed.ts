@@ -86,6 +86,8 @@ async function main() {
       ruleset: "Eurobowl",
       mealsIncluded: true,
       fridayArrival: true,
+      isCDF: true,
+      endDate: new Date("2026-05-17"),
     },
     {
       name: "Paris Open Cup",
@@ -105,6 +107,8 @@ async function main() {
       ruleset: "NAF",
       mealsIncluded: false,
       fridayArrival: false,
+      isCDF: true,
+      endDate: new Date("2026-06-10"),
     },
     {
       name: "La Ligue du Vieux Monde",
@@ -124,6 +128,8 @@ async function main() {
       ruleset: "Custom",
       mealsIncluded: false,
       fridayArrival: false,
+      isCDF: true,
+      endDate: new Date("2026-04-30"),
     },
     {
       name: "Bretagne Smash",
@@ -143,6 +149,8 @@ async function main() {
       ruleset: "NAF",
       mealsIncluded: true,
       fridayArrival: true,
+      isCDF: true,
+      endDate: new Date("2026-07-22"),
     },
     {
       name: "Le Grand Chelem Toulousain",
@@ -162,6 +170,8 @@ async function main() {
       ruleset: "Eurobowl",
       mealsIncluded: true,
       fridayArrival: true,
+      isCDF: true,
+      endDate: new Date("2026-08-08"),
     },
     {
       name: "Dungeon Bowl Masters",
@@ -182,7 +192,9 @@ async function main() {
       ruleset: "Dungeon Bowl",
       mealsIncluded: false,
       fridayArrival: false,
-      gameEdition: "DB"
+      gameEdition: "DB",
+      isCDF: true,
+      endDate: new Date("2027-03-30"),
     }
   ];
 

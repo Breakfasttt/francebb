@@ -30,6 +30,7 @@ interface TournamentResult {
   draws: number;
   losses: number;
   casualties: number;
+  nafNumber: string | null;
   points: number;
   user?: {
     id: string;
@@ -120,6 +121,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                     <thead>
                       <tr>
                         <th className="rank-th">#</th>
+                        <th className="naf-th">NAF #</th>
                         <th>Coach</th>
                         <th className="roster-th">Roster</th>
                         <th className="stats-cell-th">V/N/D</th>
@@ -131,6 +133,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                       {sortedResults.map((res: any) => (
                         <tr key={res.id}>
                           <td className="rank-cell">{res.rank || '-'}</td>
+                          <td className="naf-cell">{res.nafNumber || '-'}</td>
                           <td className="coach-cell-wrapper">
                             <div className="coach-cell">
                               {res.user ? (

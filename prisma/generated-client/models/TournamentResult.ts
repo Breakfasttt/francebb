@@ -48,6 +48,7 @@ export type TournamentResultMinAggregateOutputType = {
   id: string | null
   tournamentId: string | null
   coachName: string | null
+  nafNumber: string | null
   userId: string | null
   roster: string | null
   wins: number | null
@@ -65,6 +66,7 @@ export type TournamentResultMaxAggregateOutputType = {
   id: string | null
   tournamentId: string | null
   coachName: string | null
+  nafNumber: string | null
   userId: string | null
   roster: string | null
   wins: number | null
@@ -82,6 +84,7 @@ export type TournamentResultCountAggregateOutputType = {
   id: number
   tournamentId: number
   coachName: number
+  nafNumber: number
   userId: number
   roster: number
   wins: number
@@ -119,6 +122,7 @@ export type TournamentResultMinAggregateInputType = {
   id?: true
   tournamentId?: true
   coachName?: true
+  nafNumber?: true
   userId?: true
   roster?: true
   wins?: true
@@ -136,6 +140,7 @@ export type TournamentResultMaxAggregateInputType = {
   id?: true
   tournamentId?: true
   coachName?: true
+  nafNumber?: true
   userId?: true
   roster?: true
   wins?: true
@@ -153,6 +158,7 @@ export type TournamentResultCountAggregateInputType = {
   id?: true
   tournamentId?: true
   coachName?: true
+  nafNumber?: true
   userId?: true
   roster?: true
   wins?: true
@@ -257,6 +263,7 @@ export type TournamentResultGroupByOutputType = {
   id: string
   tournamentId: string
   coachName: string
+  nafNumber: string | null
   userId: string | null
   roster: string | null
   wins: number
@@ -297,6 +304,7 @@ export type TournamentResultWhereInput = {
   id?: Prisma.StringFilter<"TournamentResult"> | string
   tournamentId?: Prisma.StringFilter<"TournamentResult"> | string
   coachName?: Prisma.StringFilter<"TournamentResult"> | string
+  nafNumber?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   userId?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   roster?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   wins?: Prisma.IntFilter<"TournamentResult"> | number
@@ -316,6 +324,7 @@ export type TournamentResultOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tournamentId?: Prisma.SortOrder
   coachName?: Prisma.SortOrder
+  nafNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   roster?: Prisma.SortOrderInput | Prisma.SortOrder
   wins?: Prisma.SortOrder
@@ -339,6 +348,7 @@ export type TournamentResultWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.TournamentResultWhereInput | Prisma.TournamentResultWhereInput[]
   tournamentId?: Prisma.StringFilter<"TournamentResult"> | string
   coachName?: Prisma.StringFilter<"TournamentResult"> | string
+  nafNumber?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   userId?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   roster?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   wins?: Prisma.IntFilter<"TournamentResult"> | number
@@ -358,6 +368,7 @@ export type TournamentResultOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tournamentId?: Prisma.SortOrder
   coachName?: Prisma.SortOrder
+  nafNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrderInput | Prisma.SortOrder
   roster?: Prisma.SortOrderInput | Prisma.SortOrder
   wins?: Prisma.SortOrder
@@ -383,6 +394,7 @@ export type TournamentResultScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"TournamentResult"> | string
   tournamentId?: Prisma.StringWithAggregatesFilter<"TournamentResult"> | string
   coachName?: Prisma.StringWithAggregatesFilter<"TournamentResult"> | string
+  nafNumber?: Prisma.StringNullableWithAggregatesFilter<"TournamentResult"> | string | null
   userId?: Prisma.StringNullableWithAggregatesFilter<"TournamentResult"> | string | null
   roster?: Prisma.StringNullableWithAggregatesFilter<"TournamentResult"> | string | null
   wins?: Prisma.IntWithAggregatesFilter<"TournamentResult"> | number
@@ -399,6 +411,7 @@ export type TournamentResultScalarWhereWithAggregatesInput = {
 export type TournamentResultCreateInput = {
   id?: string
   coachName: string
+  nafNumber?: string | null
   roster?: string | null
   wins?: number
   draws?: number
@@ -417,6 +430,7 @@ export type TournamentResultUncheckedCreateInput = {
   id?: string
   tournamentId: string
   coachName: string
+  nafNumber?: string | null
   userId?: string | null
   roster?: string | null
   wins?: number
@@ -433,6 +447,7 @@ export type TournamentResultUncheckedCreateInput = {
 export type TournamentResultUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -451,6 +466,7 @@ export type TournamentResultUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tournamentId?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
@@ -468,6 +484,7 @@ export type TournamentResultCreateManyInput = {
   id?: string
   tournamentId: string
   coachName: string
+  nafNumber?: string | null
   userId?: string | null
   roster?: string | null
   wins?: number
@@ -484,6 +501,7 @@ export type TournamentResultCreateManyInput = {
 export type TournamentResultUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -500,6 +518,7 @@ export type TournamentResultUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tournamentId?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
@@ -532,6 +551,7 @@ export type TournamentResultCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tournamentId?: Prisma.SortOrder
   coachName?: Prisma.SortOrder
+  nafNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   roster?: Prisma.SortOrder
   wins?: Prisma.SortOrder
@@ -558,6 +578,7 @@ export type TournamentResultMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tournamentId?: Prisma.SortOrder
   coachName?: Prisma.SortOrder
+  nafNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   roster?: Prisma.SortOrder
   wins?: Prisma.SortOrder
@@ -575,6 +596,7 @@ export type TournamentResultMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tournamentId?: Prisma.SortOrder
   coachName?: Prisma.SortOrder
+  nafNumber?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   roster?: Prisma.SortOrder
   wins?: Prisma.SortOrder
@@ -692,6 +714,7 @@ export type FloatFieldUpdateOperationsInput = {
 export type TournamentResultCreateWithoutUserInput = {
   id?: string
   coachName: string
+  nafNumber?: string | null
   roster?: string | null
   wins?: number
   draws?: number
@@ -709,6 +732,7 @@ export type TournamentResultUncheckedCreateWithoutUserInput = {
   id?: string
   tournamentId: string
   coachName: string
+  nafNumber?: string | null
   roster?: string | null
   wins?: number
   draws?: number
@@ -753,6 +777,7 @@ export type TournamentResultScalarWhereInput = {
   id?: Prisma.StringFilter<"TournamentResult"> | string
   tournamentId?: Prisma.StringFilter<"TournamentResult"> | string
   coachName?: Prisma.StringFilter<"TournamentResult"> | string
+  nafNumber?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   userId?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   roster?: Prisma.StringNullableFilter<"TournamentResult"> | string | null
   wins?: Prisma.IntFilter<"TournamentResult"> | number
@@ -769,6 +794,7 @@ export type TournamentResultScalarWhereInput = {
 export type TournamentResultCreateWithoutTournamentInput = {
   id?: string
   coachName: string
+  nafNumber?: string | null
   roster?: string | null
   wins?: number
   draws?: number
@@ -785,6 +811,7 @@ export type TournamentResultCreateWithoutTournamentInput = {
 export type TournamentResultUncheckedCreateWithoutTournamentInput = {
   id?: string
   coachName: string
+  nafNumber?: string | null
   userId?: string | null
   roster?: string | null
   wins?: number
@@ -827,6 +854,7 @@ export type TournamentResultCreateManyUserInput = {
   id?: string
   tournamentId: string
   coachName: string
+  nafNumber?: string | null
   roster?: string | null
   wins?: number
   draws?: number
@@ -842,6 +870,7 @@ export type TournamentResultCreateManyUserInput = {
 export type TournamentResultUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -859,6 +888,7 @@ export type TournamentResultUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tournamentId?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -875,6 +905,7 @@ export type TournamentResultUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tournamentId?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -890,6 +921,7 @@ export type TournamentResultUncheckedUpdateManyWithoutUserInput = {
 export type TournamentResultCreateManyTournamentInput = {
   id?: string
   coachName: string
+  nafNumber?: string | null
   userId?: string | null
   roster?: string | null
   wins?: number
@@ -906,6 +938,7 @@ export type TournamentResultCreateManyTournamentInput = {
 export type TournamentResultUpdateWithoutTournamentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
   draws?: Prisma.IntFieldUpdateOperationsInput | number
@@ -922,6 +955,7 @@ export type TournamentResultUpdateWithoutTournamentInput = {
 export type TournamentResultUncheckedUpdateWithoutTournamentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
@@ -938,6 +972,7 @@ export type TournamentResultUncheckedUpdateWithoutTournamentInput = {
 export type TournamentResultUncheckedUpdateManyWithoutTournamentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   coachName?: Prisma.StringFieldUpdateOperationsInput | string
+  nafNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   roster?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   wins?: Prisma.IntFieldUpdateOperationsInput | number
@@ -957,6 +992,7 @@ export type TournamentResultSelect<ExtArgs extends runtime.Types.Extensions.Inte
   id?: boolean
   tournamentId?: boolean
   coachName?: boolean
+  nafNumber?: boolean
   userId?: boolean
   roster?: boolean
   wins?: boolean
@@ -976,6 +1012,7 @@ export type TournamentResultSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   id?: boolean
   tournamentId?: boolean
   coachName?: boolean
+  nafNumber?: boolean
   userId?: boolean
   roster?: boolean
   wins?: boolean
@@ -995,6 +1032,7 @@ export type TournamentResultSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   id?: boolean
   tournamentId?: boolean
   coachName?: boolean
+  nafNumber?: boolean
   userId?: boolean
   roster?: boolean
   wins?: boolean
@@ -1014,6 +1052,7 @@ export type TournamentResultSelectScalar = {
   id?: boolean
   tournamentId?: boolean
   coachName?: boolean
+  nafNumber?: boolean
   userId?: boolean
   roster?: boolean
   wins?: boolean
@@ -1027,7 +1066,7 @@ export type TournamentResultSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TournamentResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tournamentId" | "coachName" | "userId" | "roster" | "wins" | "draws" | "losses" | "casualties" | "points" | "rank" | "autoCalculate" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentResult"]>
+export type TournamentResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tournamentId" | "coachName" | "nafNumber" | "userId" | "roster" | "wins" | "draws" | "losses" | "casualties" | "points" | "rank" | "autoCalculate" | "createdAt" | "updatedAt", ExtArgs["result"]["tournamentResult"]>
 export type TournamentResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.TournamentResult$userArgs<ExtArgs>
   tournament?: boolean | Prisma.TournamentDefaultArgs<ExtArgs>
@@ -1051,6 +1090,7 @@ export type $TournamentResultPayload<ExtArgs extends runtime.Types.Extensions.In
     id: string
     tournamentId: string
     coachName: string
+    nafNumber: string | null
     userId: string | null
     roster: string | null
     wins: number
@@ -1490,6 +1530,7 @@ export interface TournamentResultFieldRefs {
   readonly id: Prisma.FieldRef<"TournamentResult", 'String'>
   readonly tournamentId: Prisma.FieldRef<"TournamentResult", 'String'>
   readonly coachName: Prisma.FieldRef<"TournamentResult", 'String'>
+  readonly nafNumber: Prisma.FieldRef<"TournamentResult", 'String'>
   readonly userId: Prisma.FieldRef<"TournamentResult", 'String'>
   readonly roster: Prisma.FieldRef<"TournamentResult", 'String'>
   readonly wins: Prisma.FieldRef<"TournamentResult", 'Int'>
