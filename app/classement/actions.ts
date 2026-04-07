@@ -29,7 +29,7 @@ export async function getRankingYears() {
 /**
  * Récupère le classement CDF selon les filtres.
  */
-export async function getRanking(filter: RankingFilter, showTeams: boolean = false) {
+export async function getRanking(filter: RankingFilter) {
   const now = new Date();
   let startDate: Date;
   let endDate: Date = now;
@@ -78,10 +78,6 @@ export async function getRanking(filter: RankingFilter, showTeams: boolean = fal
               } }
           ] }
         ],
-        ...(showTeams 
-          ? { typeCDF: { in: ["EQUIPE_PARTIELLE", "EQUIPE_TOTALE"] } }
-          : { NOT: { typeCDF: { in: ["EQUIPE_PARTIELLE", "EQUIPE_TOTALE"] } } }
-        )
       },
       points: { gt: 0 }
     },
@@ -96,7 +92,7 @@ export async function getRanking(filter: RankingFilter, showTeams: boolean = fal
     }
   });
 
-  console.log(`[getRanking] Filter: ${filter}, showTeams: ${showTeams}, Results found: ${results.length}`);
+  console.log(`[getRanking] Filter: ${filter}, Results found: ${results.length}`);
   if (results.length > 0) {
     console.log(`[getRanking] First tournament type: ${results[0].tournament.typeCDF}`);
   }
@@ -221,13 +217,13 @@ function calculateRosterRanking(results: any[]) {
   return Array.from(bestByRoster.values()).sort((a, b) => b.totalPoints - a.totalPoints);
 }
 
-export async function getHallOfFame(showTeams: boolean = false) {
+export async function getHallOfFame() {
   const years = await getRankingYears();
   const hof = [];
 
   for (const year of years) {
     // Pour chaque année, on calcule le classement standard top 3
-    const ranking = await getRanking(`CDF_${year}`, showTeams);
+    const ranking = await getRanking(`CDF_${year}`);
     if (ranking.length > 0) {
       hof.push({
         year,

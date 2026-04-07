@@ -19,6 +19,7 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 - Ne toucher qu'aux fichiers strictement nécessaires à la tâche demandée
 - Si tu penses qu'un refactoring serait bénéfique, le mentionner en commentaire uniquement, ne pas le faire, et me le proposer
 - Ne jamais installer de nouvelles dépendances npm sans le mentionner explicitement
+- NE JAMAIS AU GRAND JAMAIS SUPPRIMER LES DONNEES DE LA BASE DE DONNEES SANS QUE CE SOIT DEMANDE EXPLICITEMENT !!!!
 
 
 ## STRUCTURE & CONVENTIONS :

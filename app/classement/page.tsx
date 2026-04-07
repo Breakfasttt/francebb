@@ -24,7 +24,6 @@ import "./page.css";
 
 export default function ClassementPage() {
   const [filter, setFilter] = useState<RankingFilter>("ROLLING");
-  const [showTeams, setShowTeams] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ranking, setRanking] = useState<any[]>([]);
   const [hof, setHof] = useState<any[]>([]);
@@ -48,10 +47,10 @@ export default function ClassementPage() {
       setLoading(true);
       try {
         if (filter === "HOF") {
-          const data = await getHallOfFame(showTeams);
+          const data = await getHallOfFame();
           setHof(data);
         } else {
-          const data = await getRanking(filter, showTeams);
+          const data = await getRanking(filter);
           setRanking(data);
         }
       } catch (error) {
@@ -61,7 +60,7 @@ export default function ClassementPage() {
       }
     }
     fetchData();
-  }, [filter, showTeams]);
+  }, [filter]);
 
 
   const years = [2026, 2025, 2024, 2023];
@@ -88,15 +87,6 @@ export default function ClassementPage() {
             <option value="ROSTER">🏹 Meilleur Coach par Roster</option>
             <option value="HOF">🏛️ Hall of Fame (Palmarès HISTORIQUE)</option>
           </select>
-
-          <div 
-            className={`team-toggle-wrapper ${showTeams ? 'active' : ''}`}
-            onClick={() => setShowTeams(!showTeams)}
-          >
-              <Users size={20} />
-              <span>Classement Équipes</span>
-            <div className="toggle-switch"></div>
-          </div>
         </div>
 
         <button 
