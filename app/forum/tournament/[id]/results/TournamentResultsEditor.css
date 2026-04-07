@@ -4,30 +4,11 @@
   gap: 1.5rem;
 }
 
-.editor-header {
+.editor-top-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   gap: 1rem;
-}
-
-.editor-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--foreground);
-}
-
-.editor-subtitle {
-  margin: 0;
-  color: var(--accent);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.header-actions {
-  display: flex;
-  gap: 0.75rem;
+  margin-bottom: 2rem;
+  justify-content: flex-end;
 }
 
 .import-btn, .save-btn, .add-item-btn {
@@ -167,6 +148,73 @@
   border-color: var(--accent);
 }
 
+/* Suppression des flèches pour les inputs type number */
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.no-arrows {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.1s;
+}
+
+.drag-handle:hover {
+  color: var(--accent);
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+tr.dragging {
+  background: var(--accent-transparent);
+  opacity: 0.8;
+  z-index: 100;
+}
+
+.add-item-btn {
+  background: var(--accent-transparent);
+  color: var(--accent);
+  font-size: 0.75rem;
+  padding: 8px 16px;
+  border: 1px solid var(--accent);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(194, 29, 29, 0.1);
+}
+
+.add-item-btn:hover {
+  background: var(--accent);
+  color: #000;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(194, 29, 29, 0.2);
+}
+
+.roster-input {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: var(--glass-border) !important;
+  color: var(--accent) !important;
+  font-weight: 600 !important;
+  font-style: italic;
+}
+
+.user-mapper-cell {
+  min-width: 120px;
+}
+
 .user-mapping {
   display: flex;
   align-items: center;
@@ -201,6 +249,86 @@
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.editor-top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  background: var(--glass-background);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.naf-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(255, 165, 0, 0.05);
+  border: 1px solid rgba(255, 165, 0, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+}
+
+.editor-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: -1px; /* Pour fusionner avec la bordure de la carte */
+  padding: 0 0.5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 8px 8px 0 0;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--foreground);
+}
+
+.tab-btn.active {
+  background: rgba(var(--accent-rgb), 0.05);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.editor-content-card {
+  border-top-left-radius: 0 !important;
+  margin-top: 0 !important;
+}
+
+.disclaimer-icon {
+  color: #ffa500;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.disclaimer-text {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.disclaimer-text strong {
+  color: #ffa500;
+  margin-right: 4px;
 }
 
 .round-header {

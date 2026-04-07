@@ -1,0 +1,128 @@
+.user-mapper-row {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 100%;
+  position: relative;
+  min-width: 80px;
+  height: 28px;
+}
+
+.selected-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--accent-transparent);
+  border: 1px solid var(--accent);
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--foreground);
+  flex-shrink: 0;
+  max-width: 150px;
+  height: 28px;
+}
+
+.selected-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.unselect-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+}
+
+.unselect-btn:hover {
+  opacity: 1;
+  color: var(--foreground);
+}
+
+.mapper-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 28px;
+}
+
+.mapper-input {
+  width: 100%;
+  height: 28px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 4px !important;
+  color: var(--foreground) !important;
+  padding: 0 8px 0 24px !important;
+  font-size: 0.75rem !important;
+  transition: all 0.2s;
+}
+
+.mapper-input:focus {
+  border-color: var(--accent) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  outline: none;
+}
+
+.mapper-search-icon {
+  position: absolute;
+  left: 6px;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.mapper-loader {
+  position: absolute;
+  right: 6px;
+  scale: 0.5;
+}
+
+.mapper-results-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  min-width: 180px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 2000;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+  margin-top: 2px;
+}
+
+.mapper-result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--foreground);
+  transition: background 0.1s;
+}
+
+.mapper-result-item:hover {
+  background: var(--accent-transparent);
+  color: var(--accent);
+}
+
+.mapper-no-results {
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}

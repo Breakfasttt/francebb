@@ -1,15 +1,40 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Trophy, Upload, Save, ChevronLeft, Trash2, 
-  Plus, Users, Swords, Search, AlertCircle,
-  Link as LinkIcon, RefreshCw, Layers
+  Trophy, 
+  Swords, 
+  Edit2, 
+  User as UserIcon, 
+  Trash2, 
+  Plus, 
+  Upload, 
+  Save, 
+  GripVertical, 
+  AlertTriangle 
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import { saveTournamentResults, parseNafReport } from '@/app/tournaments/actions';
+import { 
+  DndContext, 
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import UserMapper from '@/common/components/UserMapper/UserMapper';
 import "./TournamentResultsEditor.css";
 
 interface TournamentResultsEditorProps {
@@ -17,15 +42,102 @@ interface TournamentResultsEditorProps {
   allUsers: any[];
 }
 
+const NumberInput = ({ value, onChange, className, step = 1, style }: any) => (
+  <input 
+    type="number" 
+    className={`${className} no-arrows`}
+    value={value === null || value === undefined ? '' : value} 
+    min="0"
+    step={step}
+    style={style}
+    onKeyDown={(e) => {
+      if (e.key === '-' || e.key === 'e' || e.key === 'E' || e.key === '+') e.preventDefault();
+    }}
+    onChange={(e) => {
+      const val = e.target.value === '' ? 0 : parseFloat(e.target.value);
+      onChange(isNaN(val) ? 0 : Math.max(0, val));
+    }}
+  />
+);
+
+const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTERS }: any) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: res.tempId || `res-${res.id || idx}` });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    background: isDragging ? 'var(--accent-transparent)' : undefined,
+  };
+
+  return (
+    <tr ref={setNodeRef} style={style}>
+      <td>
+        <div className="drag-handle" {...attributes} {...listeners}>
+          <GripVertical size={16} />
+        </div>
+      </td>
+      <td><NumberInput value={res.rank} onChange={(val: number) => updateResultField(idx, 'rank', val)} style={{ width: '40px' }} /></td>
+      <td><input type="text" value={res.coachName} onChange={(e) => updateResultField(idx, 'coachName', e.target.value)} placeholder="Nom coach..." /></td>
+      <td className="user-mapper-cell">
+        <UserMapper 
+          selectedUser={res.user}
+          onSelect={(user: any) => {
+            updateResultField(idx, 'userId', user.id);
+            updateResultField(idx, 'user', user);
+          }}
+          onRemove={() => {
+            updateResultField(idx, 'userId', null);
+            updateResultField(idx, 'user', null);
+          }}
+          placeholder="Forum user..."
+        />
+      </td>
+      <td>
+        <input 
+          list={`rosters-${idx}`} 
+          className="roster-input"
+          value={res.roster || ''} 
+          onChange={(e) => updateResultField(idx, 'roster', e.target.value)} 
+          placeholder="Race..." 
+          style={{ width: '100%' }}
+        />
+        <datalist id={`rosters-${idx}`}>
+          {OFFICIAL_ROSTERS.map((r: string) => <option key={r} value={r} />)}
+        </datalist>
+      </td>
+      <td><NumberInput value={res.wins} onChange={(val: number) => updateResultField(idx, 'wins', val)} /></td>
+      <td><NumberInput value={res.draws} onChange={(val: number) => updateResultField(idx, 'draws', val)} /></td>
+      <td><NumberInput value={res.losses} onChange={(val: number) => updateResultField(idx, 'losses', val)} /></td>
+      <td><NumberInput value={res.casualties} onChange={(val: number) => updateResultField(idx, 'casualties', val)} /></td>
+      <td><NumberInput value={res.points} onChange={(val: number) => updateResultField(idx, 'points', val)} step="0.5" /></td>
+      <td>
+        <button className="delete-row-btn" onClick={() => removeResult(idx)}><Trash2 size={14} /></button>
+      </td>
+    </tr>
+  );
+};
+
 export default function TournamentResultsEditor({ tournament, allUsers }: TournamentResultsEditorProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'ranking' | 'matches'>('ranking');
   const [isSaving, setIsSaving] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
 
-  // Valeurs par défaut extraites du tournoi
-  const [results, setResults] = useState(tournament.results || []);
+  const [results, setResults] = useState((tournament.results || []).map((r: any, i: number) => ({ ...r, tempId: `res-${i}-${Date.now()}` })));
   const [rounds, setRounds] = useState(tournament.rounds || []);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   const OFFICIAL_ROSTERS = [
     "Amazon", "Chaos Chosen", "Chaos Dwarf", "Chaos Renegade", "Dark Elf", 
@@ -35,9 +147,8 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     "Skaven", "Snotling", "Tomb Kings", "Underworld Denizens", "Vampire", "Wood Elf"
   ];
 
-  // Mapping automatique des utilisateurs par pseudonyme (sensible à la casse)
   useEffect(() => {
-    if (results.length > 0 && results.some(r => !r.userId)) {
+    if (results.length > 0 && results.some((r: any) => !r.userId)) {
       const updatedResults = [...results];
       let changed = false;
       
@@ -56,6 +167,27 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     }
   }, [results, allUsers]);
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setResults((items: any[]) => {
+        const oldIndex = items.findIndex((i) => (i.tempId || `res-${items.indexOf(i)}`) === active.id);
+        const newIndex = items.findIndex((i) => (i.tempId || `res-${items.indexOf(i)}`) === over.id);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        return newItems.map((item, idx) => ({ ...item, rank: idx + 1 }));
+      });
+    }
+  };
+
+  const autoSortResults = (data: any[]) => {
+    return [...data].sort((a, b) => {
+      if ((parseFloat(b.points) || 0) !== (parseFloat(a.points) || 0)) return (parseFloat(b.points) || 0) - (parseFloat(a.points) || 0);
+      if ((parseInt(b.wins) || 0) !== (parseInt(a.wins) || 0)) return (parseInt(b.wins) || 0) - (parseInt(a.wins) || 0);
+      if ((parseInt(a.losses) || 0) !== (parseInt(b.losses) || 0)) return (parseInt(a.losses) || 0) - (parseInt(b.losses) || 0);
+      return (parseInt(b.casualties) || 0) - (parseInt(a.casualties) || 0);
+    }).map((r, i) => ({ ...r, rank: i + 1 }));
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -67,13 +199,18 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
       const data = await parseNafReport(xmlContent);
       
       if (data) {
-        setResults(data.results.map((r: any) => {
-           // Tentative de mapping sur l'existant
-           const existing = results.find((ex: any) => ex.coachName === r.coachName);
-           return { ...r, id: existing?.id, userId: existing?.userId, user: existing?.user };
+        // Remplacer complètement les résultats (plus de fusion)
+        let newResults = data.results.map((r: any) => ({
+           ...r, 
+           tempId: `res-import-${Math.random()}` 
         }));
+
+        // Tri automatique et attribution des rangs
+        newResults = autoSortResults(newResults);
+        
+        setResults(newResults);
         setRounds(data.rounds);
-        toast.success("Rapport NAF importé avec succès !");
+        toast.success("Rapport NAF importé ! Données réinitialisées et triées.");
       } else {
         toast.error("Erreur lors du parsing du fichier XML.");
       }
@@ -86,7 +223,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     setIsSaving(true);
     const response = await saveTournamentResults(tournament.id, { results, rounds });
     if (response.success) {
-      toast.success("Résultats sauvegardés !");
+      toast.success("Résultats publiés avec succès !");
       router.refresh();
       router.push(`/forum/topic/${tournament.topic?.id}`);
     } else {
@@ -133,24 +270,33 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
   };
 
   const handleAddCoach = () => {
-    setResults([...results, { coachName: "", roster: "", wins: 0, draws: 0, losses: 0, casualties: 0, points: 0, rank: results.length + 1 }]);
+    setResults([...results, { coachName: "", roster: "", wins: 0, draws: 0, losses: 0, casualties: 0, points: 0, rank: results.length + 1, tempId: `res-new-${Date.now()}` }]);
+  };
+
+  const removeResult = (idx: number) => {
+    const updated = [...results];
+    updated.splice(idx, 1);
+    setResults(updated);
   };
 
   return (
     <div className="results-editor">
-      <div className="editor-header">
-        <div>
-          <h1 className="editor-title">Gérer les résultats</h1>
-          <p className="editor-subtitle">{tournament.topic?.title || tournament.name}</p>
-        </div>
-        <div className="header-actions">
-          <label className="import-btn">
-            <Upload size={16} /> Rapport NAF XML
-            <input type="file" onChange={handleFileUpload} accept=".xml" hidden disabled={isParsing} />
-          </label>
-          <button className="save-btn" onClick={handleSave} disabled={isSaving}>
-            <Save size={16} /> {isSaving ? "Sauvegarde..." : "Enregistrer tout"}
-          </button>
+      <div className="editor-top-actions" style={{ justifyContent: 'flex-start', gap: '1rem' }}>
+        <button className="save-btn" onClick={handleSave} disabled={isSaving}>
+          <Save size={16} /> {isSaving ? "Publication..." : "Publier les résultats"}
+        </button>
+        <label className="import-btn">
+          <Upload size={16} /> Rapport NAF XML
+          <input type="file" onChange={handleFileUpload} hidden disabled={isParsing} />
+        </label>
+      </div>
+
+      <div className="naf-disclaimer">
+        <AlertTriangle size={20} className="disclaimer-icon" />
+        <div className="disclaimer-text">
+          <strong>Note importante sur l&apos;import NAF :</strong> Le fichier XML ne contient pas les données de classement final. 
+          Il ne prend pas en compte les tie-breakers spécifiques à votre tournoi (ex: SOS, Opp-Opp, Points de peinture...). 
+          Le classement doit être contrôlé et ajusté manuellement après l&apos;import.
         </div>
       </div>
 
@@ -174,68 +320,46 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
             </div>
             
             <div className="table-responsive">
-              <table className="editor-table">
-                <thead>
-                  <tr>
-                    <th style={{ width: '40px' }}>Rank</th>
-                    <th style={{ width: '250px' }}>Coach (Nom)</th>
-                    <th>Forum User</th>
-                    <th style={{ width: '180px' }}>Roster</th>
-                    <th style={{ width: '60px' }}>V</th>
-                    <th style={{ width: '60px' }}>N</th>
-                    <th style={{ width: '60px' }}>D</th>
-                    <th style={{ width: '60px' }}>CAS</th>
-                    <th style={{ width: '80px' }}>Points</th>
-                    <th style={{ width: '40px' }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.map((res: any, idx: number) => (
-                    <tr key={idx}>
-                      <td><input type="number" value={res.rank || ''} onChange={(e) => updateResultField(idx, 'rank', e.target.value)} /></td>
-                      <td><input type="text" value={res.coachName} onChange={(e) => updateResultField(idx, 'coachName', e.target.value)} placeholder="Nom coach..." /></td>
-                      <td>
-                        <div className="user-mapping">
-                          {res.user && (
-                            <img src={res.user.image || "/default-avatar.png"} alt="" className="mini-avatar" title={res.user.name} />
-                          )}
-                          <select 
-                            value={res.userId || ""} 
-                            onChange={(e) => {
-                              const user = allUsers.find(u => u.id === e.target.value);
-                              updateResultField(idx, 'userId', e.target.value);
-                              updateResultField(idx, 'user', user);
-                            }}
-                          >
-                            <option value="">Aucun mapping</option>
-                            {allUsers.map(u => (
-                              <option key={u.id} value={u.id}>{u.name} {u.nafNumber ? `(${u.nafNumber})` : ''}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                      <td>
-                        <input list={`rosters-${idx}`} value={res.roster || ''} onChange={(e) => updateResultField(idx, 'roster', e.target.value)} placeholder="Race..." />
-                        <datalist id={`rosters-${idx}`}>
-                          {OFFICIAL_ROSTERS.map(r => <option key={r} value={r} />)}
-                        </datalist>
-                      </td>
-                      <td><input type="number" value={res.wins} onChange={(e) => updateResultField(idx, 'wins', e.target.value)} /></td>
-                      <td><input type="number" value={res.draws} onChange={(e) => updateResultField(idx, 'draws', e.target.value)} /></td>
-                      <td><input type="number" value={res.losses} onChange={(e) => updateResultField(idx, 'losses', e.target.value)} /></td>
-                      <td><input type="number" value={res.casualties} onChange={(e) => updateResultField(idx, 'casualties', e.target.value)} /></td>
-                      <td><input type="number" value={res.points} onChange={(e) => updateResultField(idx, 'points', e.target.value)} step="0.5" /></td>
-                      <td>
-                        <button className="delete-row-btn" onClick={() => {
-                          const updated = [...results];
-                          updated.splice(idx, 1);
-                          setResults(updated);
-                        }}><Trash2 size={14} /></button>
-                      </td>
+              <DndContext 
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <table className="editor-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '30px' }}></th>
+                      <th style={{ width: '50px' }}>Rank</th>
+                      <th style={{ width: '200px' }}>Coach (Nom)</th>
+                      <th>Forum User Mapping</th>
+                      <th style={{ width: '150px' }}>Roster</th>
+                      <th style={{ width: '60px' }}>V</th>
+                      <th style={{ width: '60px' }}>N</th>
+                      <th style={{ width: '60px' }}>D</th>
+                      <th style={{ width: '60px' }}>CAS</th>
+                      <th style={{ width: '80px' }}>Points</th>
+                      <th style={{ width: '40px' }}></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <SortableContext 
+                      items={results.map((r: any) => r.tempId || `res-${results.indexOf(r)}`)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {results.map((res: any, idx: number) => (
+                        <SortableRow 
+                          key={res.tempId} 
+                          res={res} 
+                          idx={idx} 
+                          updateResultField={updateResultField}
+                          removeResult={removeResult}
+                          OFFICIAL_ROSTERS={OFFICIAL_ROSTERS}
+                        />
+                      ))}
+                    </SortableContext>
+                  </tbody>
+                </table>
+              </DndContext>
             </div>
           </div>
         ) : (
@@ -279,7 +403,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                   </div>
                   {round.matches.map((match: any, mIdx: number) => (
                     <div key={mIdx} className="match-row">
-                      <input type="number" className="mini-input" value={match.tableNumber || ''} onChange={(e) => updateMatchField(rIdx, mIdx, 'tableNumber', e.target.value)} style={{ width: '40px' }} />
+                      <NumberInput className="mini-input" value={match.tableNumber} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'tableNumber', val)} style={{ width: '40px' }} />
                       
                       <div className="coach-selector-small">
                         <input list={`all-coaches-${rIdx}-${mIdx}`} value={match.coach1Name} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach1Name', e.target.value)} />
@@ -288,13 +412,13 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                         </datalist>
                       </div>
 
-                      <input type="number" className="mini-input" value={match.coach1TD} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach1TD', e.target.value)} />
-                      <input type="number" className="mini-input" value={match.coach1Casualties} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach1Casualties', e.target.value)} />
+                      <NumberInput className="mini-input" value={match.coach1TD} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'coach1TD', val)} />
+                      <NumberInput className="mini-input" value={match.coach1Casualties} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'coach1Casualties', val)} />
                       
                       <span className="vs-sep">vs</span>
 
-                      <input type="number" className="mini-input" value={match.coach2TD} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach2TD', e.target.value)} />
-                      <input type="number" className="mini-input" value={match.coach2Casualties} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach2Casualties', e.target.value)} />
+                      <NumberInput className="mini-input" value={match.coach2TD} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'coach2TD', val)} />
+                      <NumberInput className="mini-input" value={match.coach2Casualties} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'coach2Casualties', val)} />
 
                       <div className="coach-selector-small">
                         <input list={`all-coaches-2-${rIdx}-${mIdx}`} value={match.coach2Name} onChange={(e) => updateMatchField(rIdx, mIdx, 'coach2Name', e.target.value)} />

@@ -401,7 +401,7 @@ export default function TopicSidebar({
                     style={{ textAlign: 'left', padding: '8px 12px', textDecoration: 'none', color: 'var(--foreground)' }}
                   >
                     <Trophy size={16} style={{ color: 'var(--accent)' }} />
-                    <span>Gérer les résultats</span>
+                    <span>Publier les résultats</span>
                   </Link>
                 ) : (
                   <>
