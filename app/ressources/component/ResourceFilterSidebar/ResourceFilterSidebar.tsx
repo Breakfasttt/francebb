@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { Search, Tag as TagIcon, Grid, List } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import TagSelector from "@/common/components/TagSelector/TagSelector";
+import { getResourceTags } from "../../actions";
 import "./ResourceFilterSidebar.css";
 
 interface ResourceFilterSidebarProps {
@@ -24,23 +26,15 @@ export default function ResourceFilterSidebar({
   viewMode,
   onViewModeChange
 }: ResourceFilterSidebarProps) {
-  const [tagsInputValue, setTagsInputValue] = useState(selectedTags.join(", "));
+  const [allExistingTags, setAllExistingTags] = useState<string[]>([]);
 
-  // Synchro locale si selectedTags change ailleurs (ex: reset)
   useEffect(() => {
-    setTagsInputValue(selectedTags.join(", "));
-  }, [selectedTags]);
-
-  const handleTagsBlur = () => {
-    const tags = tagsInputValue.split(",").map((t: string) => t.trim()).filter((t: string) => t.length > 0);
-    onTagsChange(tags);
-  };
-
-  const handleTagsKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleTagsBlur();
+    async function loadTags() {
+      const tags = await getResourceTags();
+      setAllExistingTags(tags);
     }
-  };
+    loadTags();
+  }, []);
 
   return (
     <aside className="resource-filter-sidebar">
@@ -79,20 +73,13 @@ export default function ResourceFilterSidebar({
         </div>
 
         <div className="filter-section">
-          <h4 className="filter-title">Tags</h4>
-          <div className="search-input-wrapper">
-            <TagIcon className="search-icon" size={18} />
-            <input
-              type="text"
-              placeholder="Ex: Outil, Guide, App..."
-              value={tagsInputValue}
-              onChange={(e) => setTagsInputValue(e.target.value)}
-              onBlur={handleTagsBlur}
-              onKeyDown={handleTagsKeyDown}
-              className="search-input"
-            />
-          </div>
-          <p className="filter-hint">Séparez les tags par des virgules</p>
+          <h4 className="filter-title">Rechercher par tag</h4>
+          <TagSelector 
+            value={selectedTags}
+            onChange={onTagsChange}
+            suggestions={allExistingTags}
+            placeholder="Ex: Outil, Guide..."
+          />
         </div>
       </PremiumCard>
     </aside>

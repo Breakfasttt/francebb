@@ -6,7 +6,7 @@ import ArticleCard from "@/app/articles/component/ArticleCard";
 import ArticleFilterSidebar from "@/app/articles/component/ArticleFilterSidebar";
 import Pagination from "@/common/components/Pagination/Pagination";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
-import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 import Link from "next/link";
 import "./page.css";
 
@@ -38,7 +38,12 @@ export default async function ArticlesPage({
     ];
   }
   if (tag) {
-    where.tags = { some: { name: tag } };
+    const tagNames = tag.split(",");
+    where.tags = { 
+      some: { 
+        name: { in: tagNames } 
+      } 
+    };
   }
   if (author) {
     where.author = { name: { contains: author } };
@@ -75,52 +80,36 @@ export default async function ArticlesPage({
   const availableTags = allTags.map((t) => t.name);
 
   return (
-    <main className="container articles-container">
+    <main className="container articles-page">
       <PageHeader 
         title="Articles & Chroniques" 
         subtitle="Découvrez les dernières news, guides et récits de la communauté."
         backHref="/" 
       />
 
-      <div className="articles-actions-bar">
-        <div className="results-count">
-          <strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}
-        </div>
-        {session && (
-          <Link href="/articles/create" className="create-article-btn">
-            <Plus size={18} />
-            Créer un article
-          </Link>
-        )}
-      </div>
+      <div className="articles-layout">
+        <ArticleFilterSidebar availableTags={availableTags} />
 
-      <div className="search-layout">
-        <aside className="sidebar-wrapper">
-          <ArticleFilterSidebar availableTags={availableTags} />
-        </aside>
+        <div className="articles-content">
+          <div className="articles-top-actions">
+            <div className="results-count">
+              <strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}
+            </div>
+            {session && (
+              <Link href="/articles/create" className="create-article-btn">
+                <Plus size={18} />
+                Créer un article
+              </Link>
+            )}
+          </div>
 
-        <section className="results-wrapper">
           {articles.length > 0 ? (
             <>
-              {view === "grid" ? (
-                <div className="articles-grid">
-                  {articles.map((article) => (
-                    <ArticleCard key={article.id} article={article} view="grid" />
-                  ))}
-                </div>
-              ) : (
-                <div className="articles-list-view">
-                  <div className="list-header-row">
-                    <span>Article</span>
-                    <span>Auteur</span>
-                    <span>Tags</span>
-                    <span>Date</span>
-                  </div>
-                  {articles.map((article) => (
-                    <ArticleCard key={article.id} article={article} view="list" />
-                  ))}
-                </div>
-              )}
+              <div className={`articles-${view}`}>
+                {articles.map((article) => (
+                  <ArticleCard key={article.id} article={article} view={view as "grid" | "list"} />
+                ))}
+              </div>
 
               <div className="pagination-wrapper">
                 <Pagination 
@@ -138,7 +127,7 @@ export default async function ArticlesPage({
               description="Essayez de modifier vos filtres ou soyez le premier à en écrire un !"
             />
           )}
-        </section>
+        </div>
       </div>
     </main>
   );

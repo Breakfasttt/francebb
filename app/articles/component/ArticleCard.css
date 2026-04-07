@@ -10,6 +10,40 @@
   color: inherit;
 }
 
+.article-metrics {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.article-metric {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s;
+}
+
+.article-card:hover .article-metric {
+  color: var(--foreground);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.article-view-count {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
 .article-card.clickable {
   cursor: pointer;
 }

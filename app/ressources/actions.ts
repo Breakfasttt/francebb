@@ -132,9 +132,11 @@ export async function getResources(params: {
  */
 export async function getResourceTags() {
   try {
-    return await prisma.resourceTag.findMany({
+    const tags = await prisma.resourceTag.findMany({
+      select: { name: true },
       orderBy: { name: "asc" },
     });
+    return tags.map(t => t.name);
   } catch (error) {
     return [];
   }

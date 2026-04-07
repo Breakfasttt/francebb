@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Loader2, Upload, Link as LinkIcon, Image as ImageIcon, Send } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { siteConfig } from "@/lib/siteConfig";
+import { getResourceTags } from "../../actions";
 import "./ResourceForm.css";
 
 interface ResourceFormProps {
@@ -31,8 +33,18 @@ export default function ResourceForm({
 }: ResourceFormProps) {
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || "");
   const [description, setDescription] = useState(initialData?.description || "");
+  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    async function loadSuggestions() {
+      const allTags = await getResourceTags();
+      setSuggestions(allTags);
+    }
+    loadSuggestions();
+  }, []);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,6 +75,8 @@ export default function ResourceForm({
   return (
     <form 
       action={async (formData) => {
+        // Ajouter les tags au formData avant l'envoi
+        formData.set("tags", tags.join(","));
         await onSubmit(formData);
       }} 
       className="resource-form"
@@ -156,15 +170,13 @@ export default function ResourceForm({
         </div>
 
         <div className="form-group">
-          <label htmlFor="tags">Tags (séparés par des virgules)</label>
-          <input
-            type="text"
-            id="tags"
-            name="tags"
-            defaultValue={initialData?.tags.join(", ")}
-            placeholder="Ex: Équipes, Calendrier, Tournoi"
-            className={`form-input ${isSystem ? 'readonly' : ''}`}
-            readOnly={isSystem}
+          <label htmlFor="tags">Tags</label>
+          <TagSelector
+            value={tags}
+            onChange={setTags}
+            suggestions={suggestions}
+            placeholder={isSystem ? "Les tags système sont verrouillés" : "Ajouter un tag..."}
+            className={isSystem ? 'readonly' : ''}
           />
           {isSystem && <p className="form-hint">Les tags système sont gérés par l'administration.</p>}
         </div>

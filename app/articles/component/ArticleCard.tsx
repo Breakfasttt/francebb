@@ -4,7 +4,7 @@
  */
 import React from "react";
 import Link from "next/link";
-import { Clock, User, MessageCircle, AlertTriangle } from "lucide-react";
+import { Clock, User, MessageCircle, AlertTriangle, Eye } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { stripBBCode } from "@/lib/bbcode";
@@ -42,6 +42,9 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
         </div>
 
         <div className="list-col-date">
+          <div className="article-view-count" title="Nombre de vues">
+            <Eye size={12} /> {article.views || 0}
+          </div>
           {dateStr}
         </div>
       </Link>
@@ -83,12 +86,18 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
           </div>
         </div>
 
-        {article.reactions && article.reactions.length > 0 && (
-          <div className="article-reactions-count">
-            <MessageCircle size={14} />
-            <span>{article.reactions.length}</span>
+        <div className="article-metrics">
+          <div className="article-metric" title="Nombre de vues">
+            <Eye size={14} />
+            <span>{article.views || 0}</span>
           </div>
-        )}
+          {(article._count?.reactions > 0 || (article.reactions && article.reactions.length > 0)) && (
+            <div className="article-metric" title="Nombre de réactions">
+              <MessageCircle size={14} />
+              <span>{article._count?.reactions || article.reactions?.length || 0}</span>
+            </div>
+          )}
+        </div>
       </div>
     </PremiumCard>
   );

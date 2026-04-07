@@ -32,6 +32,12 @@ Badges de statut colorés.
 ### 📊 StatItem
 Affichage de données numériques ou textuelles (Messages, NAF, etc.).
 
+### 🏷️ TagSelector
+Gestionnaire de tags (mots-clés).
+- **Usage** : Filtrage de listes (Articles, Ressources), formulaires de création.
+- **Fonctionnement** : Ajout par touche "Entrée" (pas de virgules), badges amovibles avec icône de croix, suggestions dynamiques basées sur l'existant via dropdown Glassmorphism.
+- **Règle** : Privilégier la recherche libre plutôt que des listes déroulantes de tags si le nombre est élevé.
+
 ### 🖼️ UserAvatar
 Widget avatar complet. Gère les cadres (`RankSelect`) et les statuts.
 
