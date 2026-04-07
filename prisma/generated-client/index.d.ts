@@ -158,6 +158,16 @@ export type ModerationReport = $Result.DefaultSelection<Prisma.$ModerationReport
  * 
  */
 export type ModerationLog = $Result.DefaultSelection<Prisma.$ModerationLogPayload>
+/**
+ * Model Resource
+ * 
+ */
+export type Resource = $Result.DefaultSelection<Prisma.$ResourcePayload>
+/**
+ * Model ResourceTag
+ * 
+ */
+export type ResourceTag = $Result.DefaultSelection<Prisma.$ResourceTagPayload>
 
 /**
  * Enums
@@ -602,6 +612,26 @@ export class PrismaClient<
     * ```
     */
   get moderationLog(): Prisma.ModerationLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.resource`: Exposes CRUD operations for the **Resource** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Resources
+    * const resources = await prisma.resource.findMany()
+    * ```
+    */
+  get resource(): Prisma.ResourceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.resourceTag`: Exposes CRUD operations for the **ResourceTag** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ResourceTags
+    * const resourceTags = await prisma.resourceTag.findMany()
+    * ```
+    */
+  get resourceTag(): Prisma.ResourceTagDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1064,7 +1094,9 @@ export namespace Prisma {
     ArticleReaction: 'ArticleReaction',
     Ligue: 'Ligue',
     ModerationReport: 'ModerationReport',
-    ModerationLog: 'ModerationLog'
+    ModerationLog: 'ModerationLog',
+    Resource: 'Resource',
+    ResourceTag: 'ResourceTag'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1080,7 +1112,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3230,6 +3262,154 @@ export namespace Prisma {
           }
         }
       }
+      Resource: {
+        payload: Prisma.$ResourcePayload<ExtArgs>
+        fields: Prisma.ResourceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ResourceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ResourceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          findFirst: {
+            args: Prisma.ResourceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ResourceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          findMany: {
+            args: Prisma.ResourceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+          }
+          create: {
+            args: Prisma.ResourceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          createMany: {
+            args: Prisma.ResourceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ResourceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+          }
+          delete: {
+            args: Prisma.ResourceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          update: {
+            args: Prisma.ResourceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          deleteMany: {
+            args: Prisma.ResourceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ResourceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ResourceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>[]
+          }
+          upsert: {
+            args: Prisma.ResourceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourcePayload>
+          }
+          aggregate: {
+            args: Prisma.ResourceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateResource>
+          }
+          groupBy: {
+            args: Prisma.ResourceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ResourceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ResourceCountArgs<ExtArgs>
+            result: $Utils.Optional<ResourceCountAggregateOutputType> | number
+          }
+        }
+      }
+      ResourceTag: {
+        payload: Prisma.$ResourceTagPayload<ExtArgs>
+        fields: Prisma.ResourceTagFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ResourceTagFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ResourceTagFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          findFirst: {
+            args: Prisma.ResourceTagFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ResourceTagFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          findMany: {
+            args: Prisma.ResourceTagFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>[]
+          }
+          create: {
+            args: Prisma.ResourceTagCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          createMany: {
+            args: Prisma.ResourceTagCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ResourceTagCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>[]
+          }
+          delete: {
+            args: Prisma.ResourceTagDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          update: {
+            args: Prisma.ResourceTagUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          deleteMany: {
+            args: Prisma.ResourceTagDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ResourceTagUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ResourceTagUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>[]
+          }
+          upsert: {
+            args: Prisma.ResourceTagUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ResourceTagPayload>
+          }
+          aggregate: {
+            args: Prisma.ResourceTagAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateResourceTag>
+          }
+          groupBy: {
+            args: Prisma.ResourceTagGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ResourceTagGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ResourceTagCountArgs<ExtArgs>
+            result: $Utils.Optional<ResourceTagCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3367,6 +3547,8 @@ export namespace Prisma {
     ligue?: LigueOmit
     moderationReport?: ModerationReportOmit
     moderationLog?: ModerationLogOmit
+    resource?: ResourceOmit
+    resourceTag?: ResourceTagOmit
   }
 
   /* Types for Logging */
@@ -3477,6 +3659,7 @@ export namespace Prisma {
     reportsMade: number
     reportsResolved: number
     moderationLogs: number
+    submittedResources: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3510,6 +3693,7 @@ export namespace Prisma {
     reportsMade?: boolean | UserCountOutputTypeCountReportsMadeArgs
     reportsResolved?: boolean | UserCountOutputTypeCountReportsResolvedArgs
     moderationLogs?: boolean | UserCountOutputTypeCountModerationLogsArgs
+    submittedResources?: boolean | UserCountOutputTypeCountSubmittedResourcesArgs
   }
 
   // Custom InputTypes
@@ -3731,6 +3915,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountModerationLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ModerationLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSubmittedResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceWhereInput
   }
 
 
@@ -4171,6 +4362,68 @@ export namespace Prisma {
    */
   export type LigueCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+
+  /**
+   * Count Type ResourceCountOutputType
+   */
+
+  export type ResourceCountOutputType = {
+    tags: number
+  }
+
+  export type ResourceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tags?: boolean | ResourceCountOutputTypeCountTagsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ResourceCountOutputType without action
+   */
+  export type ResourceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceCountOutputType
+     */
+    select?: ResourceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ResourceCountOutputType without action
+   */
+  export type ResourceCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceTagWhereInput
+  }
+
+
+  /**
+   * Count Type ResourceTagCountOutputType
+   */
+
+  export type ResourceTagCountOutputType = {
+    resources: number
+  }
+
+  export type ResourceTagCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resources?: boolean | ResourceTagCountOutputTypeCountResourcesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ResourceTagCountOutputType without action
+   */
+  export type ResourceTagCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTagCountOutputType
+     */
+    select?: ResourceTagCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ResourceTagCountOutputType without action
+   */
+  export type ResourceTagCountOutputTypeCountResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceWhereInput
   }
 
 
@@ -6687,6 +6940,7 @@ export namespace Prisma {
     reportsMade?: boolean | User$reportsMadeArgs<ExtArgs>
     reportsResolved?: boolean | User$reportsResolvedArgs<ExtArgs>
     moderationLogs?: boolean | User$moderationLogsArgs<ExtArgs>
+    submittedResources?: boolean | User$submittedResourcesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6779,6 +7033,7 @@ export namespace Prisma {
     reportsMade?: boolean | User$reportsMadeArgs<ExtArgs>
     reportsResolved?: boolean | User$reportsResolvedArgs<ExtArgs>
     moderationLogs?: boolean | User$moderationLogsArgs<ExtArgs>
+    submittedResources?: boolean | User$submittedResourcesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6822,6 +7077,7 @@ export namespace Prisma {
       reportsMade: Prisma.$ModerationReportPayload<ExtArgs>[]
       reportsResolved: Prisma.$ModerationReportPayload<ExtArgs>[]
       moderationLogs: Prisma.$ModerationLogPayload<ExtArgs>[]
+      submittedResources: Prisma.$ResourcePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7264,6 +7520,7 @@ export namespace Prisma {
     reportsMade<T extends User$reportsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reportsResolved<T extends User$reportsResolvedArgs<ExtArgs> = {}>(args?: Subset<T, User$reportsResolvedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     moderationLogs<T extends User$moderationLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderationLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    submittedResources<T extends User$submittedResourcesArgs<ExtArgs> = {}>(args?: Subset<T, User$submittedResourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8443,6 +8700,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.submittedResources
+   */
+  export type User$submittedResourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    where?: ResourceWhereInput
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    cursor?: ResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ResourceScalarFieldEnum | ResourceScalarFieldEnum[]
   }
 
   /**
@@ -38032,6 +38313,2196 @@ export namespace Prisma {
 
 
   /**
+   * Model Resource
+   */
+
+  export type AggregateResource = {
+    _count: ResourceCountAggregateOutputType | null
+    _min: ResourceMinAggregateOutputType | null
+    _max: ResourceMaxAggregateOutputType | null
+  }
+
+  export type ResourceMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    imageUrl: string | null
+    link: string | null
+    status: string | null
+    authorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    isSystem: boolean | null
+  }
+
+  export type ResourceMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    imageUrl: string | null
+    link: string | null
+    status: string | null
+    authorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    isSystem: boolean | null
+  }
+
+  export type ResourceCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    imageUrl: number
+    link: number
+    status: number
+    authorId: number
+    createdAt: number
+    updatedAt: number
+    isSystem: number
+    _all: number
+  }
+
+
+  export type ResourceMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    imageUrl?: true
+    link?: true
+    status?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+    isSystem?: true
+  }
+
+  export type ResourceMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    imageUrl?: true
+    link?: true
+    status?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+    isSystem?: true
+  }
+
+  export type ResourceCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    imageUrl?: true
+    link?: true
+    status?: true
+    authorId?: true
+    createdAt?: true
+    updatedAt?: true
+    isSystem?: true
+    _all?: true
+  }
+
+  export type ResourceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Resource to aggregate.
+     */
+    where?: ResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resources to fetch.
+     */
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Resources
+    **/
+    _count?: true | ResourceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ResourceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ResourceMaxAggregateInputType
+  }
+
+  export type GetResourceAggregateType<T extends ResourceAggregateArgs> = {
+        [P in keyof T & keyof AggregateResource]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateResource[P]>
+      : GetScalarType<T[P], AggregateResource[P]>
+  }
+
+
+
+
+  export type ResourceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceWhereInput
+    orderBy?: ResourceOrderByWithAggregationInput | ResourceOrderByWithAggregationInput[]
+    by: ResourceScalarFieldEnum[] | ResourceScalarFieldEnum
+    having?: ResourceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ResourceCountAggregateInputType | true
+    _min?: ResourceMinAggregateInputType
+    _max?: ResourceMaxAggregateInputType
+  }
+
+  export type ResourceGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    imageUrl: string | null
+    link: string
+    status: string
+    authorId: string
+    createdAt: Date
+    updatedAt: Date
+    isSystem: boolean
+    _count: ResourceCountAggregateOutputType | null
+    _min: ResourceMinAggregateOutputType | null
+    _max: ResourceMaxAggregateOutputType | null
+  }
+
+  type GetResourceGroupByPayload<T extends ResourceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ResourceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ResourceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ResourceGroupByOutputType[P]>
+            : GetScalarType<T[P], ResourceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ResourceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    link?: boolean
+    status?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    isSystem?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Resource$tagsArgs<ExtArgs>
+    _count?: boolean | ResourceCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resource"]>
+
+  export type ResourceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    link?: boolean
+    status?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    isSystem?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resource"]>
+
+  export type ResourceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    link?: boolean
+    status?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    isSystem?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resource"]>
+
+  export type ResourceSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    imageUrl?: boolean
+    link?: boolean
+    status?: boolean
+    authorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    isSystem?: boolean
+  }
+
+  export type ResourceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "imageUrl" | "link" | "status" | "authorId" | "createdAt" | "updatedAt" | "isSystem", ExtArgs["result"]["resource"]>
+  export type ResourceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+    tags?: boolean | Resource$tagsArgs<ExtArgs>
+    _count?: boolean | ResourceCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ResourceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ResourceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ResourcePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Resource"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+      tags: Prisma.$ResourceTagPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      imageUrl: string | null
+      link: string
+      status: string
+      authorId: string
+      createdAt: Date
+      updatedAt: Date
+      isSystem: boolean
+    }, ExtArgs["result"]["resource"]>
+    composites: {}
+  }
+
+  type ResourceGetPayload<S extends boolean | null | undefined | ResourceDefaultArgs> = $Result.GetResult<Prisma.$ResourcePayload, S>
+
+  type ResourceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ResourceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ResourceCountAggregateInputType | true
+    }
+
+  export interface ResourceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Resource'], meta: { name: 'Resource' } }
+    /**
+     * Find zero or one Resource that matches the filter.
+     * @param {ResourceFindUniqueArgs} args - Arguments to find a Resource
+     * @example
+     * // Get one Resource
+     * const resource = await prisma.resource.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ResourceFindUniqueArgs>(args: SelectSubset<T, ResourceFindUniqueArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Resource that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ResourceFindUniqueOrThrowArgs} args - Arguments to find a Resource
+     * @example
+     * // Get one Resource
+     * const resource = await prisma.resource.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ResourceFindUniqueOrThrowArgs>(args: SelectSubset<T, ResourceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Resource that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceFindFirstArgs} args - Arguments to find a Resource
+     * @example
+     * // Get one Resource
+     * const resource = await prisma.resource.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ResourceFindFirstArgs>(args?: SelectSubset<T, ResourceFindFirstArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Resource that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceFindFirstOrThrowArgs} args - Arguments to find a Resource
+     * @example
+     * // Get one Resource
+     * const resource = await prisma.resource.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ResourceFindFirstOrThrowArgs>(args?: SelectSubset<T, ResourceFindFirstOrThrowArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Resources that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Resources
+     * const resources = await prisma.resource.findMany()
+     * 
+     * // Get first 10 Resources
+     * const resources = await prisma.resource.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const resourceWithIdOnly = await prisma.resource.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ResourceFindManyArgs>(args?: SelectSubset<T, ResourceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Resource.
+     * @param {ResourceCreateArgs} args - Arguments to create a Resource.
+     * @example
+     * // Create one Resource
+     * const Resource = await prisma.resource.create({
+     *   data: {
+     *     // ... data to create a Resource
+     *   }
+     * })
+     * 
+     */
+    create<T extends ResourceCreateArgs>(args: SelectSubset<T, ResourceCreateArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Resources.
+     * @param {ResourceCreateManyArgs} args - Arguments to create many Resources.
+     * @example
+     * // Create many Resources
+     * const resource = await prisma.resource.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ResourceCreateManyArgs>(args?: SelectSubset<T, ResourceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Resources and returns the data saved in the database.
+     * @param {ResourceCreateManyAndReturnArgs} args - Arguments to create many Resources.
+     * @example
+     * // Create many Resources
+     * const resource = await prisma.resource.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Resources and only return the `id`
+     * const resourceWithIdOnly = await prisma.resource.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ResourceCreateManyAndReturnArgs>(args?: SelectSubset<T, ResourceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Resource.
+     * @param {ResourceDeleteArgs} args - Arguments to delete one Resource.
+     * @example
+     * // Delete one Resource
+     * const Resource = await prisma.resource.delete({
+     *   where: {
+     *     // ... filter to delete one Resource
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ResourceDeleteArgs>(args: SelectSubset<T, ResourceDeleteArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Resource.
+     * @param {ResourceUpdateArgs} args - Arguments to update one Resource.
+     * @example
+     * // Update one Resource
+     * const resource = await prisma.resource.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ResourceUpdateArgs>(args: SelectSubset<T, ResourceUpdateArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Resources.
+     * @param {ResourceDeleteManyArgs} args - Arguments to filter Resources to delete.
+     * @example
+     * // Delete a few Resources
+     * const { count } = await prisma.resource.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ResourceDeleteManyArgs>(args?: SelectSubset<T, ResourceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Resources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Resources
+     * const resource = await prisma.resource.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ResourceUpdateManyArgs>(args: SelectSubset<T, ResourceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Resources and returns the data updated in the database.
+     * @param {ResourceUpdateManyAndReturnArgs} args - Arguments to update many Resources.
+     * @example
+     * // Update many Resources
+     * const resource = await prisma.resource.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Resources and only return the `id`
+     * const resourceWithIdOnly = await prisma.resource.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ResourceUpdateManyAndReturnArgs>(args: SelectSubset<T, ResourceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Resource.
+     * @param {ResourceUpsertArgs} args - Arguments to update or create a Resource.
+     * @example
+     * // Update or create a Resource
+     * const resource = await prisma.resource.upsert({
+     *   create: {
+     *     // ... data to create a Resource
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Resource we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ResourceUpsertArgs>(args: SelectSubset<T, ResourceUpsertArgs<ExtArgs>>): Prisma__ResourceClient<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Resources.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceCountArgs} args - Arguments to filter Resources to count.
+     * @example
+     * // Count the number of Resources
+     * const count = await prisma.resource.count({
+     *   where: {
+     *     // ... the filter for the Resources we want to count
+     *   }
+     * })
+    **/
+    count<T extends ResourceCountArgs>(
+      args?: Subset<T, ResourceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ResourceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Resource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ResourceAggregateArgs>(args: Subset<T, ResourceAggregateArgs>): Prisma.PrismaPromise<GetResourceAggregateType<T>>
+
+    /**
+     * Group by Resource.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ResourceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ResourceGroupByArgs['orderBy'] }
+        : { orderBy?: ResourceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ResourceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResourceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Resource model
+   */
+  readonly fields: ResourceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Resource.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ResourceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    tags<T extends Resource$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Resource$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Resource model
+   */
+  interface ResourceFieldRefs {
+    readonly id: FieldRef<"Resource", 'String'>
+    readonly title: FieldRef<"Resource", 'String'>
+    readonly description: FieldRef<"Resource", 'String'>
+    readonly imageUrl: FieldRef<"Resource", 'String'>
+    readonly link: FieldRef<"Resource", 'String'>
+    readonly status: FieldRef<"Resource", 'String'>
+    readonly authorId: FieldRef<"Resource", 'String'>
+    readonly createdAt: FieldRef<"Resource", 'DateTime'>
+    readonly updatedAt: FieldRef<"Resource", 'DateTime'>
+    readonly isSystem: FieldRef<"Resource", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Resource findUnique
+   */
+  export type ResourceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which Resource to fetch.
+     */
+    where: ResourceWhereUniqueInput
+  }
+
+  /**
+   * Resource findUniqueOrThrow
+   */
+  export type ResourceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which Resource to fetch.
+     */
+    where: ResourceWhereUniqueInput
+  }
+
+  /**
+   * Resource findFirst
+   */
+  export type ResourceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which Resource to fetch.
+     */
+    where?: ResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resources to fetch.
+     */
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Resources.
+     */
+    cursor?: ResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Resources.
+     */
+    distinct?: ResourceScalarFieldEnum | ResourceScalarFieldEnum[]
+  }
+
+  /**
+   * Resource findFirstOrThrow
+   */
+  export type ResourceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which Resource to fetch.
+     */
+    where?: ResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resources to fetch.
+     */
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Resources.
+     */
+    cursor?: ResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Resources.
+     */
+    distinct?: ResourceScalarFieldEnum | ResourceScalarFieldEnum[]
+  }
+
+  /**
+   * Resource findMany
+   */
+  export type ResourceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter, which Resources to fetch.
+     */
+    where?: ResourceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Resources to fetch.
+     */
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Resources.
+     */
+    cursor?: ResourceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Resources from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Resources.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Resources.
+     */
+    distinct?: ResourceScalarFieldEnum | ResourceScalarFieldEnum[]
+  }
+
+  /**
+   * Resource create
+   */
+  export type ResourceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Resource.
+     */
+    data: XOR<ResourceCreateInput, ResourceUncheckedCreateInput>
+  }
+
+  /**
+   * Resource createMany
+   */
+  export type ResourceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Resources.
+     */
+    data: ResourceCreateManyInput | ResourceCreateManyInput[]
+  }
+
+  /**
+   * Resource createManyAndReturn
+   */
+  export type ResourceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * The data used to create many Resources.
+     */
+    data: ResourceCreateManyInput | ResourceCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Resource update
+   */
+  export type ResourceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Resource.
+     */
+    data: XOR<ResourceUpdateInput, ResourceUncheckedUpdateInput>
+    /**
+     * Choose, which Resource to update.
+     */
+    where: ResourceWhereUniqueInput
+  }
+
+  /**
+   * Resource updateMany
+   */
+  export type ResourceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Resources.
+     */
+    data: XOR<ResourceUpdateManyMutationInput, ResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which Resources to update
+     */
+    where?: ResourceWhereInput
+    /**
+     * Limit how many Resources to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Resource updateManyAndReturn
+   */
+  export type ResourceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * The data used to update Resources.
+     */
+    data: XOR<ResourceUpdateManyMutationInput, ResourceUncheckedUpdateManyInput>
+    /**
+     * Filter which Resources to update
+     */
+    where?: ResourceWhereInput
+    /**
+     * Limit how many Resources to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Resource upsert
+   */
+  export type ResourceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Resource to update in case it exists.
+     */
+    where: ResourceWhereUniqueInput
+    /**
+     * In case the Resource found by the `where` argument doesn't exist, create a new Resource with this data.
+     */
+    create: XOR<ResourceCreateInput, ResourceUncheckedCreateInput>
+    /**
+     * In case the Resource was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ResourceUpdateInput, ResourceUncheckedUpdateInput>
+  }
+
+  /**
+   * Resource delete
+   */
+  export type ResourceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    /**
+     * Filter which Resource to delete.
+     */
+    where: ResourceWhereUniqueInput
+  }
+
+  /**
+   * Resource deleteMany
+   */
+  export type ResourceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Resources to delete
+     */
+    where?: ResourceWhereInput
+    /**
+     * Limit how many Resources to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Resource.tags
+   */
+  export type Resource$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    where?: ResourceTagWhereInput
+    orderBy?: ResourceTagOrderByWithRelationInput | ResourceTagOrderByWithRelationInput[]
+    cursor?: ResourceTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ResourceTagScalarFieldEnum | ResourceTagScalarFieldEnum[]
+  }
+
+  /**
+   * Resource without action
+   */
+  export type ResourceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ResourceTag
+   */
+
+  export type AggregateResourceTag = {
+    _count: ResourceTagCountAggregateOutputType | null
+    _min: ResourceTagMinAggregateOutputType | null
+    _max: ResourceTagMaxAggregateOutputType | null
+  }
+
+  export type ResourceTagMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type ResourceTagMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+  }
+
+  export type ResourceTagCountAggregateOutputType = {
+    id: number
+    name: number
+    _all: number
+  }
+
+
+  export type ResourceTagMinAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type ResourceTagMaxAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type ResourceTagCountAggregateInputType = {
+    id?: true
+    name?: true
+    _all?: true
+  }
+
+  export type ResourceTagAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ResourceTag to aggregate.
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTags to fetch.
+     */
+    orderBy?: ResourceTagOrderByWithRelationInput | ResourceTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ResourceTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ResourceTags
+    **/
+    _count?: true | ResourceTagCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ResourceTagMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ResourceTagMaxAggregateInputType
+  }
+
+  export type GetResourceTagAggregateType<T extends ResourceTagAggregateArgs> = {
+        [P in keyof T & keyof AggregateResourceTag]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateResourceTag[P]>
+      : GetScalarType<T[P], AggregateResourceTag[P]>
+  }
+
+
+
+
+  export type ResourceTagGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResourceTagWhereInput
+    orderBy?: ResourceTagOrderByWithAggregationInput | ResourceTagOrderByWithAggregationInput[]
+    by: ResourceTagScalarFieldEnum[] | ResourceTagScalarFieldEnum
+    having?: ResourceTagScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ResourceTagCountAggregateInputType | true
+    _min?: ResourceTagMinAggregateInputType
+    _max?: ResourceTagMaxAggregateInputType
+  }
+
+  export type ResourceTagGroupByOutputType = {
+    id: string
+    name: string
+    _count: ResourceTagCountAggregateOutputType | null
+    _min: ResourceTagMinAggregateOutputType | null
+    _max: ResourceTagMaxAggregateOutputType | null
+  }
+
+  type GetResourceTagGroupByPayload<T extends ResourceTagGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ResourceTagGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ResourceTagGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ResourceTagGroupByOutputType[P]>
+            : GetScalarType<T[P], ResourceTagGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ResourceTagSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    resources?: boolean | ResourceTag$resourcesArgs<ExtArgs>
+    _count?: boolean | ResourceTagCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["resourceTag"]>
+
+  export type ResourceTagSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["resourceTag"]>
+
+  export type ResourceTagSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["resourceTag"]>
+
+  export type ResourceTagSelectScalar = {
+    id?: boolean
+    name?: boolean
+  }
+
+  export type ResourceTagOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["resourceTag"]>
+  export type ResourceTagInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    resources?: boolean | ResourceTag$resourcesArgs<ExtArgs>
+    _count?: boolean | ResourceTagCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ResourceTagIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ResourceTagIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ResourceTagPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ResourceTag"
+    objects: {
+      resources: Prisma.$ResourcePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+    }, ExtArgs["result"]["resourceTag"]>
+    composites: {}
+  }
+
+  type ResourceTagGetPayload<S extends boolean | null | undefined | ResourceTagDefaultArgs> = $Result.GetResult<Prisma.$ResourceTagPayload, S>
+
+  type ResourceTagCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ResourceTagFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ResourceTagCountAggregateInputType | true
+    }
+
+  export interface ResourceTagDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ResourceTag'], meta: { name: 'ResourceTag' } }
+    /**
+     * Find zero or one ResourceTag that matches the filter.
+     * @param {ResourceTagFindUniqueArgs} args - Arguments to find a ResourceTag
+     * @example
+     * // Get one ResourceTag
+     * const resourceTag = await prisma.resourceTag.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ResourceTagFindUniqueArgs>(args: SelectSubset<T, ResourceTagFindUniqueArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ResourceTag that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ResourceTagFindUniqueOrThrowArgs} args - Arguments to find a ResourceTag
+     * @example
+     * // Get one ResourceTag
+     * const resourceTag = await prisma.resourceTag.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ResourceTagFindUniqueOrThrowArgs>(args: SelectSubset<T, ResourceTagFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ResourceTag that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagFindFirstArgs} args - Arguments to find a ResourceTag
+     * @example
+     * // Get one ResourceTag
+     * const resourceTag = await prisma.resourceTag.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ResourceTagFindFirstArgs>(args?: SelectSubset<T, ResourceTagFindFirstArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ResourceTag that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagFindFirstOrThrowArgs} args - Arguments to find a ResourceTag
+     * @example
+     * // Get one ResourceTag
+     * const resourceTag = await prisma.resourceTag.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ResourceTagFindFirstOrThrowArgs>(args?: SelectSubset<T, ResourceTagFindFirstOrThrowArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ResourceTags that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ResourceTags
+     * const resourceTags = await prisma.resourceTag.findMany()
+     * 
+     * // Get first 10 ResourceTags
+     * const resourceTags = await prisma.resourceTag.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const resourceTagWithIdOnly = await prisma.resourceTag.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ResourceTagFindManyArgs>(args?: SelectSubset<T, ResourceTagFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ResourceTag.
+     * @param {ResourceTagCreateArgs} args - Arguments to create a ResourceTag.
+     * @example
+     * // Create one ResourceTag
+     * const ResourceTag = await prisma.resourceTag.create({
+     *   data: {
+     *     // ... data to create a ResourceTag
+     *   }
+     * })
+     * 
+     */
+    create<T extends ResourceTagCreateArgs>(args: SelectSubset<T, ResourceTagCreateArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ResourceTags.
+     * @param {ResourceTagCreateManyArgs} args - Arguments to create many ResourceTags.
+     * @example
+     * // Create many ResourceTags
+     * const resourceTag = await prisma.resourceTag.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ResourceTagCreateManyArgs>(args?: SelectSubset<T, ResourceTagCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ResourceTags and returns the data saved in the database.
+     * @param {ResourceTagCreateManyAndReturnArgs} args - Arguments to create many ResourceTags.
+     * @example
+     * // Create many ResourceTags
+     * const resourceTag = await prisma.resourceTag.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ResourceTags and only return the `id`
+     * const resourceTagWithIdOnly = await prisma.resourceTag.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ResourceTagCreateManyAndReturnArgs>(args?: SelectSubset<T, ResourceTagCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ResourceTag.
+     * @param {ResourceTagDeleteArgs} args - Arguments to delete one ResourceTag.
+     * @example
+     * // Delete one ResourceTag
+     * const ResourceTag = await prisma.resourceTag.delete({
+     *   where: {
+     *     // ... filter to delete one ResourceTag
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ResourceTagDeleteArgs>(args: SelectSubset<T, ResourceTagDeleteArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ResourceTag.
+     * @param {ResourceTagUpdateArgs} args - Arguments to update one ResourceTag.
+     * @example
+     * // Update one ResourceTag
+     * const resourceTag = await prisma.resourceTag.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ResourceTagUpdateArgs>(args: SelectSubset<T, ResourceTagUpdateArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ResourceTags.
+     * @param {ResourceTagDeleteManyArgs} args - Arguments to filter ResourceTags to delete.
+     * @example
+     * // Delete a few ResourceTags
+     * const { count } = await prisma.resourceTag.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ResourceTagDeleteManyArgs>(args?: SelectSubset<T, ResourceTagDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ResourceTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ResourceTags
+     * const resourceTag = await prisma.resourceTag.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ResourceTagUpdateManyArgs>(args: SelectSubset<T, ResourceTagUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ResourceTags and returns the data updated in the database.
+     * @param {ResourceTagUpdateManyAndReturnArgs} args - Arguments to update many ResourceTags.
+     * @example
+     * // Update many ResourceTags
+     * const resourceTag = await prisma.resourceTag.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ResourceTags and only return the `id`
+     * const resourceTagWithIdOnly = await prisma.resourceTag.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ResourceTagUpdateManyAndReturnArgs>(args: SelectSubset<T, ResourceTagUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ResourceTag.
+     * @param {ResourceTagUpsertArgs} args - Arguments to update or create a ResourceTag.
+     * @example
+     * // Update or create a ResourceTag
+     * const resourceTag = await prisma.resourceTag.upsert({
+     *   create: {
+     *     // ... data to create a ResourceTag
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ResourceTag we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ResourceTagUpsertArgs>(args: SelectSubset<T, ResourceTagUpsertArgs<ExtArgs>>): Prisma__ResourceTagClient<$Result.GetResult<Prisma.$ResourceTagPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ResourceTags.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagCountArgs} args - Arguments to filter ResourceTags to count.
+     * @example
+     * // Count the number of ResourceTags
+     * const count = await prisma.resourceTag.count({
+     *   where: {
+     *     // ... the filter for the ResourceTags we want to count
+     *   }
+     * })
+    **/
+    count<T extends ResourceTagCountArgs>(
+      args?: Subset<T, ResourceTagCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ResourceTagCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ResourceTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ResourceTagAggregateArgs>(args: Subset<T, ResourceTagAggregateArgs>): Prisma.PrismaPromise<GetResourceTagAggregateType<T>>
+
+    /**
+     * Group by ResourceTag.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ResourceTagGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ResourceTagGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ResourceTagGroupByArgs['orderBy'] }
+        : { orderBy?: ResourceTagGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ResourceTagGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetResourceTagGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ResourceTag model
+   */
+  readonly fields: ResourceTagFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ResourceTag.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ResourceTagClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    resources<T extends ResourceTag$resourcesArgs<ExtArgs> = {}>(args?: Subset<T, ResourceTag$resourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ResourceTag model
+   */
+  interface ResourceTagFieldRefs {
+    readonly id: FieldRef<"ResourceTag", 'String'>
+    readonly name: FieldRef<"ResourceTag", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ResourceTag findUnique
+   */
+  export type ResourceTagFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTag to fetch.
+     */
+    where: ResourceTagWhereUniqueInput
+  }
+
+  /**
+   * ResourceTag findUniqueOrThrow
+   */
+  export type ResourceTagFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTag to fetch.
+     */
+    where: ResourceTagWhereUniqueInput
+  }
+
+  /**
+   * ResourceTag findFirst
+   */
+  export type ResourceTagFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTag to fetch.
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTags to fetch.
+     */
+    orderBy?: ResourceTagOrderByWithRelationInput | ResourceTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ResourceTags.
+     */
+    cursor?: ResourceTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ResourceTags.
+     */
+    distinct?: ResourceTagScalarFieldEnum | ResourceTagScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceTag findFirstOrThrow
+   */
+  export type ResourceTagFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTag to fetch.
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTags to fetch.
+     */
+    orderBy?: ResourceTagOrderByWithRelationInput | ResourceTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ResourceTags.
+     */
+    cursor?: ResourceTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ResourceTags.
+     */
+    distinct?: ResourceTagScalarFieldEnum | ResourceTagScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceTag findMany
+   */
+  export type ResourceTagFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter, which ResourceTags to fetch.
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ResourceTags to fetch.
+     */
+    orderBy?: ResourceTagOrderByWithRelationInput | ResourceTagOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ResourceTags.
+     */
+    cursor?: ResourceTagWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ResourceTags from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ResourceTags.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ResourceTags.
+     */
+    distinct?: ResourceTagScalarFieldEnum | ResourceTagScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceTag create
+   */
+  export type ResourceTagCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ResourceTag.
+     */
+    data: XOR<ResourceTagCreateInput, ResourceTagUncheckedCreateInput>
+  }
+
+  /**
+   * ResourceTag createMany
+   */
+  export type ResourceTagCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ResourceTags.
+     */
+    data: ResourceTagCreateManyInput | ResourceTagCreateManyInput[]
+  }
+
+  /**
+   * ResourceTag createManyAndReturn
+   */
+  export type ResourceTagCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * The data used to create many ResourceTags.
+     */
+    data: ResourceTagCreateManyInput | ResourceTagCreateManyInput[]
+  }
+
+  /**
+   * ResourceTag update
+   */
+  export type ResourceTagUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ResourceTag.
+     */
+    data: XOR<ResourceTagUpdateInput, ResourceTagUncheckedUpdateInput>
+    /**
+     * Choose, which ResourceTag to update.
+     */
+    where: ResourceTagWhereUniqueInput
+  }
+
+  /**
+   * ResourceTag updateMany
+   */
+  export type ResourceTagUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ResourceTags.
+     */
+    data: XOR<ResourceTagUpdateManyMutationInput, ResourceTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ResourceTags to update
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * Limit how many ResourceTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceTag updateManyAndReturn
+   */
+  export type ResourceTagUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * The data used to update ResourceTags.
+     */
+    data: XOR<ResourceTagUpdateManyMutationInput, ResourceTagUncheckedUpdateManyInput>
+    /**
+     * Filter which ResourceTags to update
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * Limit how many ResourceTags to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceTag upsert
+   */
+  export type ResourceTagUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ResourceTag to update in case it exists.
+     */
+    where: ResourceTagWhereUniqueInput
+    /**
+     * In case the ResourceTag found by the `where` argument doesn't exist, create a new ResourceTag with this data.
+     */
+    create: XOR<ResourceTagCreateInput, ResourceTagUncheckedCreateInput>
+    /**
+     * In case the ResourceTag was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ResourceTagUpdateInput, ResourceTagUncheckedUpdateInput>
+  }
+
+  /**
+   * ResourceTag delete
+   */
+  export type ResourceTagDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+    /**
+     * Filter which ResourceTag to delete.
+     */
+    where: ResourceTagWhereUniqueInput
+  }
+
+  /**
+   * ResourceTag deleteMany
+   */
+  export type ResourceTagDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ResourceTags to delete
+     */
+    where?: ResourceTagWhereInput
+    /**
+     * Limit how many ResourceTags to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ResourceTag.resources
+   */
+  export type ResourceTag$resourcesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resource
+     */
+    select?: ResourceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resource
+     */
+    omit?: ResourceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceInclude<ExtArgs> | null
+    where?: ResourceWhereInput
+    orderBy?: ResourceOrderByWithRelationInput | ResourceOrderByWithRelationInput[]
+    cursor?: ResourceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ResourceScalarFieldEnum | ResourceScalarFieldEnum[]
+  }
+
+  /**
+   * ResourceTag without action
+   */
+  export type ResourceTagDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ResourceTag
+     */
+    select?: ResourceTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ResourceTag
+     */
+    omit?: ResourceTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ResourceTagInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -38448,6 +40919,30 @@ export namespace Prisma {
   export type ModerationLogScalarFieldEnum = (typeof ModerationLogScalarFieldEnum)[keyof typeof ModerationLogScalarFieldEnum]
 
 
+  export const ResourceScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    imageUrl: 'imageUrl',
+    link: 'link',
+    status: 'status',
+    authorId: 'authorId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    isSystem: 'isSystem'
+  };
+
+  export type ResourceScalarFieldEnum = (typeof ResourceScalarFieldEnum)[keyof typeof ResourceScalarFieldEnum]
+
+
+  export const ResourceTagScalarFieldEnum: {
+    id: 'id',
+    name: 'name'
+  };
+
+  export type ResourceTagScalarFieldEnum = (typeof ResourceTagScalarFieldEnum)[keyof typeof ResourceTagScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -38714,6 +41209,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportListRelationFilter
     reportsResolved?: ModerationReportListRelationFilter
     moderationLogs?: ModerationLogListRelationFilter
+    submittedResources?: ResourceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -38763,6 +41259,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportOrderByRelationAggregateInput
     reportsResolved?: ModerationReportOrderByRelationAggregateInput
     moderationLogs?: ModerationLogOrderByRelationAggregateInput
+    submittedResources?: ResourceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -38815,6 +41312,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportListRelationFilter
     reportsResolved?: ModerationReportListRelationFilter
     moderationLogs?: ModerationLogListRelationFilter
+    submittedResources?: ResourceListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -40790,6 +43288,129 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ModerationLog"> | Date | string
   }
 
+  export type ResourceWhereInput = {
+    AND?: ResourceWhereInput | ResourceWhereInput[]
+    OR?: ResourceWhereInput[]
+    NOT?: ResourceWhereInput | ResourceWhereInput[]
+    id?: StringFilter<"Resource"> | string
+    title?: StringFilter<"Resource"> | string
+    description?: StringFilter<"Resource"> | string
+    imageUrl?: StringNullableFilter<"Resource"> | string | null
+    link?: StringFilter<"Resource"> | string
+    status?: StringFilter<"Resource"> | string
+    authorId?: StringFilter<"Resource"> | string
+    createdAt?: DateTimeFilter<"Resource"> | Date | string
+    updatedAt?: DateTimeFilter<"Resource"> | Date | string
+    isSystem?: BoolFilter<"Resource"> | boolean
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: ResourceTagListRelationFilter
+  }
+
+  export type ResourceOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    link?: SortOrder
+    status?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    isSystem?: SortOrder
+    author?: UserOrderByWithRelationInput
+    tags?: ResourceTagOrderByRelationAggregateInput
+  }
+
+  export type ResourceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ResourceWhereInput | ResourceWhereInput[]
+    OR?: ResourceWhereInput[]
+    NOT?: ResourceWhereInput | ResourceWhereInput[]
+    title?: StringFilter<"Resource"> | string
+    description?: StringFilter<"Resource"> | string
+    imageUrl?: StringNullableFilter<"Resource"> | string | null
+    link?: StringFilter<"Resource"> | string
+    status?: StringFilter<"Resource"> | string
+    authorId?: StringFilter<"Resource"> | string
+    createdAt?: DateTimeFilter<"Resource"> | Date | string
+    updatedAt?: DateTimeFilter<"Resource"> | Date | string
+    isSystem?: BoolFilter<"Resource"> | boolean
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+    tags?: ResourceTagListRelationFilter
+  }, "id">
+
+  export type ResourceOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    link?: SortOrder
+    status?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    isSystem?: SortOrder
+    _count?: ResourceCountOrderByAggregateInput
+    _max?: ResourceMaxOrderByAggregateInput
+    _min?: ResourceMinOrderByAggregateInput
+  }
+
+  export type ResourceScalarWhereWithAggregatesInput = {
+    AND?: ResourceScalarWhereWithAggregatesInput | ResourceScalarWhereWithAggregatesInput[]
+    OR?: ResourceScalarWhereWithAggregatesInput[]
+    NOT?: ResourceScalarWhereWithAggregatesInput | ResourceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Resource"> | string
+    title?: StringWithAggregatesFilter<"Resource"> | string
+    description?: StringWithAggregatesFilter<"Resource"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"Resource"> | string | null
+    link?: StringWithAggregatesFilter<"Resource"> | string
+    status?: StringWithAggregatesFilter<"Resource"> | string
+    authorId?: StringWithAggregatesFilter<"Resource"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Resource"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Resource"> | Date | string
+    isSystem?: BoolWithAggregatesFilter<"Resource"> | boolean
+  }
+
+  export type ResourceTagWhereInput = {
+    AND?: ResourceTagWhereInput | ResourceTagWhereInput[]
+    OR?: ResourceTagWhereInput[]
+    NOT?: ResourceTagWhereInput | ResourceTagWhereInput[]
+    id?: StringFilter<"ResourceTag"> | string
+    name?: StringFilter<"ResourceTag"> | string
+    resources?: ResourceListRelationFilter
+  }
+
+  export type ResourceTagOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    resources?: ResourceOrderByRelationAggregateInput
+  }
+
+  export type ResourceTagWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: ResourceTagWhereInput | ResourceTagWhereInput[]
+    OR?: ResourceTagWhereInput[]
+    NOT?: ResourceTagWhereInput | ResourceTagWhereInput[]
+    resources?: ResourceListRelationFilter
+  }, "id" | "name">
+
+  export type ResourceTagOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    _count?: ResourceTagCountOrderByAggregateInput
+    _max?: ResourceTagMaxOrderByAggregateInput
+    _min?: ResourceTagMinOrderByAggregateInput
+  }
+
+  export type ResourceTagScalarWhereWithAggregatesInput = {
+    AND?: ResourceTagScalarWhereWithAggregatesInput | ResourceTagScalarWhereWithAggregatesInput[]
+    OR?: ResourceTagScalarWhereWithAggregatesInput[]
+    NOT?: ResourceTagScalarWhereWithAggregatesInput | ResourceTagScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ResourceTag"> | string
+    name?: StringWithAggregatesFilter<"ResourceTag"> | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -40988,6 +43609,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -41036,6 +43658,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUpdateInput = {
@@ -41084,6 +43707,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -41132,6 +43756,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -43191,6 +45816,139 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ResourceCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+    author: UserCreateNestedOneWithoutSubmittedResourcesInput
+    tags?: ResourceTagCreateNestedManyWithoutResourcesInput
+  }
+
+  export type ResourceUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+    tags?: ResourceTagUncheckedCreateNestedManyWithoutResourcesInput
+  }
+
+  export type ResourceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    author?: UserUpdateOneRequiredWithoutSubmittedResourcesNestedInput
+    tags?: ResourceTagUpdateManyWithoutResourcesNestedInput
+  }
+
+  export type ResourceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    tags?: ResourceTagUncheckedUpdateManyWithoutResourcesNestedInput
+  }
+
+  export type ResourceCreateManyInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+  }
+
+  export type ResourceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ResourceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ResourceTagCreateInput = {
+    id?: string
+    name: string
+    resources?: ResourceCreateNestedManyWithoutTagsInput
+  }
+
+  export type ResourceTagUncheckedCreateInput = {
+    id?: string
+    name: string
+    resources?: ResourceUncheckedCreateNestedManyWithoutTagsInput
+  }
+
+  export type ResourceTagUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    resources?: ResourceUpdateManyWithoutTagsNestedInput
+  }
+
+  export type ResourceTagUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    resources?: ResourceUncheckedUpdateManyWithoutTagsNestedInput
+  }
+
+  export type ResourceTagCreateManyInput = {
+    id?: string
+    name: string
+  }
+
+  export type ResourceTagUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceTagUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -43541,6 +46299,12 @@ export namespace Prisma {
     none?: ModerationLogWhereInput
   }
 
+  export type ResourceListRelationFilter = {
+    every?: ResourceWhereInput
+    some?: ResourceWhereInput
+    none?: ResourceWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -43622,6 +46386,10 @@ export namespace Prisma {
   }
 
   export type ModerationLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ResourceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -44872,6 +47640,70 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ResourceTagListRelationFilter = {
+    every?: ResourceTagWhereInput
+    some?: ResourceTagWhereInput
+    none?: ResourceTagWhereInput
+  }
+
+  export type ResourceTagOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ResourceCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    link?: SortOrder
+    status?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    isSystem?: SortOrder
+  }
+
+  export type ResourceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    link?: SortOrder
+    status?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    isSystem?: SortOrder
+  }
+
+  export type ResourceMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    imageUrl?: SortOrder
+    link?: SortOrder
+    status?: SortOrder
+    authorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    isSystem?: SortOrder
+  }
+
+  export type ResourceTagCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ResourceTagMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type ResourceTagMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -45133,6 +47965,13 @@ export namespace Prisma {
     connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
   }
 
+  export type ResourceCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput> | ResourceCreateWithoutAuthorInput[] | ResourceUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutAuthorInput | ResourceCreateOrConnectWithoutAuthorInput[]
+    createMany?: ResourceCreateManyAuthorInputEnvelope
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -45338,6 +48177,13 @@ export namespace Prisma {
     connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
     createMany?: ModerationLogCreateManyModeratorInputEnvelope
     connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
+  export type ResourceUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput> | ResourceCreateWithoutAuthorInput[] | ResourceUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutAuthorInput | ResourceCreateOrConnectWithoutAuthorInput[]
+    createMany?: ResourceCreateManyAuthorInputEnvelope
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -45775,6 +48621,20 @@ export namespace Prisma {
     deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
   }
 
+  export type ResourceUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput> | ResourceCreateWithoutAuthorInput[] | ResourceUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutAuthorInput | ResourceCreateOrConnectWithoutAuthorInput[]
+    upsert?: ResourceUpsertWithWhereUniqueWithoutAuthorInput | ResourceUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: ResourceCreateManyAuthorInputEnvelope
+    set?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    disconnect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    delete?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    update?: ResourceUpdateWithWhereUniqueWithoutAuthorInput | ResourceUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: ResourceUpdateManyWithWhereWithoutAuthorInput | ResourceUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -46190,6 +49050,20 @@ export namespace Prisma {
     update?: ModerationLogUpdateWithWhereUniqueWithoutModeratorInput | ModerationLogUpdateWithWhereUniqueWithoutModeratorInput[]
     updateMany?: ModerationLogUpdateManyWithWhereWithoutModeratorInput | ModerationLogUpdateManyWithWhereWithoutModeratorInput[]
     deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
+  export type ResourceUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput> | ResourceCreateWithoutAuthorInput[] | ResourceUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutAuthorInput | ResourceCreateOrConnectWithoutAuthorInput[]
+    upsert?: ResourceUpsertWithWhereUniqueWithoutAuthorInput | ResourceUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: ResourceCreateManyAuthorInputEnvelope
+    set?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    disconnect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    delete?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    update?: ResourceUpdateWithWhereUniqueWithoutAuthorInput | ResourceUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: ResourceUpdateManyWithWhereWithoutAuthorInput | ResourceUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBlocksInput = {
@@ -47756,6 +50630,96 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModerationLogsInput, UserUpdateWithoutModerationLogsInput>, UserUncheckedUpdateWithoutModerationLogsInput>
   }
 
+  export type UserCreateNestedOneWithoutSubmittedResourcesInput = {
+    create?: XOR<UserCreateWithoutSubmittedResourcesInput, UserUncheckedCreateWithoutSubmittedResourcesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubmittedResourcesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ResourceTagCreateNestedManyWithoutResourcesInput = {
+    create?: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput> | ResourceTagCreateWithoutResourcesInput[] | ResourceTagUncheckedCreateWithoutResourcesInput[]
+    connectOrCreate?: ResourceTagCreateOrConnectWithoutResourcesInput | ResourceTagCreateOrConnectWithoutResourcesInput[]
+    connect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+  }
+
+  export type ResourceTagUncheckedCreateNestedManyWithoutResourcesInput = {
+    create?: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput> | ResourceTagCreateWithoutResourcesInput[] | ResourceTagUncheckedCreateWithoutResourcesInput[]
+    connectOrCreate?: ResourceTagCreateOrConnectWithoutResourcesInput | ResourceTagCreateOrConnectWithoutResourcesInput[]
+    connect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutSubmittedResourcesNestedInput = {
+    create?: XOR<UserCreateWithoutSubmittedResourcesInput, UserUncheckedCreateWithoutSubmittedResourcesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubmittedResourcesInput
+    upsert?: UserUpsertWithoutSubmittedResourcesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubmittedResourcesInput, UserUpdateWithoutSubmittedResourcesInput>, UserUncheckedUpdateWithoutSubmittedResourcesInput>
+  }
+
+  export type ResourceTagUpdateManyWithoutResourcesNestedInput = {
+    create?: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput> | ResourceTagCreateWithoutResourcesInput[] | ResourceTagUncheckedCreateWithoutResourcesInput[]
+    connectOrCreate?: ResourceTagCreateOrConnectWithoutResourcesInput | ResourceTagCreateOrConnectWithoutResourcesInput[]
+    upsert?: ResourceTagUpsertWithWhereUniqueWithoutResourcesInput | ResourceTagUpsertWithWhereUniqueWithoutResourcesInput[]
+    set?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    disconnect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    delete?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    connect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    update?: ResourceTagUpdateWithWhereUniqueWithoutResourcesInput | ResourceTagUpdateWithWhereUniqueWithoutResourcesInput[]
+    updateMany?: ResourceTagUpdateManyWithWhereWithoutResourcesInput | ResourceTagUpdateManyWithWhereWithoutResourcesInput[]
+    deleteMany?: ResourceTagScalarWhereInput | ResourceTagScalarWhereInput[]
+  }
+
+  export type ResourceTagUncheckedUpdateManyWithoutResourcesNestedInput = {
+    create?: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput> | ResourceTagCreateWithoutResourcesInput[] | ResourceTagUncheckedCreateWithoutResourcesInput[]
+    connectOrCreate?: ResourceTagCreateOrConnectWithoutResourcesInput | ResourceTagCreateOrConnectWithoutResourcesInput[]
+    upsert?: ResourceTagUpsertWithWhereUniqueWithoutResourcesInput | ResourceTagUpsertWithWhereUniqueWithoutResourcesInput[]
+    set?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    disconnect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    delete?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    connect?: ResourceTagWhereUniqueInput | ResourceTagWhereUniqueInput[]
+    update?: ResourceTagUpdateWithWhereUniqueWithoutResourcesInput | ResourceTagUpdateWithWhereUniqueWithoutResourcesInput[]
+    updateMany?: ResourceTagUpdateManyWithWhereWithoutResourcesInput | ResourceTagUpdateManyWithWhereWithoutResourcesInput[]
+    deleteMany?: ResourceTagScalarWhereInput | ResourceTagScalarWhereInput[]
+  }
+
+  export type ResourceCreateNestedManyWithoutTagsInput = {
+    create?: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput> | ResourceCreateWithoutTagsInput[] | ResourceUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutTagsInput | ResourceCreateOrConnectWithoutTagsInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+  }
+
+  export type ResourceUncheckedCreateNestedManyWithoutTagsInput = {
+    create?: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput> | ResourceCreateWithoutTagsInput[] | ResourceUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutTagsInput | ResourceCreateOrConnectWithoutTagsInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+  }
+
+  export type ResourceUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput> | ResourceCreateWithoutTagsInput[] | ResourceUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutTagsInput | ResourceCreateOrConnectWithoutTagsInput[]
+    upsert?: ResourceUpsertWithWhereUniqueWithoutTagsInput | ResourceUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    disconnect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    delete?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    update?: ResourceUpdateWithWhereUniqueWithoutTagsInput | ResourceUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: ResourceUpdateManyWithWhereWithoutTagsInput | ResourceUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
+  }
+
+  export type ResourceUncheckedUpdateManyWithoutTagsNestedInput = {
+    create?: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput> | ResourceCreateWithoutTagsInput[] | ResourceUncheckedCreateWithoutTagsInput[]
+    connectOrCreate?: ResourceCreateOrConnectWithoutTagsInput | ResourceCreateOrConnectWithoutTagsInput[]
+    upsert?: ResourceUpsertWithWhereUniqueWithoutTagsInput | ResourceUpsertWithWhereUniqueWithoutTagsInput[]
+    set?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    disconnect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    delete?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    connect?: ResourceWhereUniqueInput | ResourceWhereUniqueInput[]
+    update?: ResourceUpdateWithWhereUniqueWithoutTagsInput | ResourceUpdateWithWhereUniqueWithoutTagsInput[]
+    updateMany?: ResourceUpdateManyWithWhereWithoutTagsInput | ResourceUpdateManyWithWhereWithoutTagsInput[]
+    deleteMany?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -48052,6 +51016,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -48099,6 +51064,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -48162,6 +51128,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -48209,6 +51176,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -48256,6 +51224,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -48303,6 +51272,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -48366,6 +51336,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -48413,6 +51384,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -49498,6 +52470,41 @@ export namespace Prisma {
     data: ModerationLogCreateManyModeratorInput | ModerationLogCreateManyModeratorInput[]
   }
 
+  export type ResourceCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+    tags?: ResourceTagCreateNestedManyWithoutResourcesInput
+  }
+
+  export type ResourceUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+    tags?: ResourceTagUncheckedCreateNestedManyWithoutResourcesInput
+  }
+
+  export type ResourceCreateOrConnectWithoutAuthorInput = {
+    where: ResourceWhereUniqueInput
+    create: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type ResourceCreateManyAuthorInputEnvelope = {
+    data: ResourceCreateManyAuthorInput | ResourceCreateManyAuthorInput[]
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -50317,6 +53324,38 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
   }
 
+  export type ResourceUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: ResourceWhereUniqueInput
+    update: XOR<ResourceUpdateWithoutAuthorInput, ResourceUncheckedUpdateWithoutAuthorInput>
+    create: XOR<ResourceCreateWithoutAuthorInput, ResourceUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type ResourceUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: ResourceWhereUniqueInput
+    data: XOR<ResourceUpdateWithoutAuthorInput, ResourceUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type ResourceUpdateManyWithWhereWithoutAuthorInput = {
+    where: ResourceScalarWhereInput
+    data: XOR<ResourceUpdateManyMutationInput, ResourceUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type ResourceScalarWhereInput = {
+    AND?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
+    OR?: ResourceScalarWhereInput[]
+    NOT?: ResourceScalarWhereInput | ResourceScalarWhereInput[]
+    id?: StringFilter<"Resource"> | string
+    title?: StringFilter<"Resource"> | string
+    description?: StringFilter<"Resource"> | string
+    imageUrl?: StringNullableFilter<"Resource"> | string | null
+    link?: StringFilter<"Resource"> | string
+    status?: StringFilter<"Resource"> | string
+    authorId?: StringFilter<"Resource"> | string
+    createdAt?: DateTimeFilter<"Resource"> | Date | string
+    updatedAt?: DateTimeFilter<"Resource"> | Date | string
+    isSystem?: BoolFilter<"Resource"> | boolean
+  }
+
   export type UserCreateWithoutBlocksInput = {
     id?: string
     name?: string | null
@@ -50362,6 +53401,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -50409,6 +53449,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -50461,6 +53502,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -50508,6 +53550,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -50571,6 +53614,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -50618,6 +53662,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUpsertWithoutBlockedByInput = {
@@ -50676,6 +53721,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -50723,6 +53769,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutTournamentsInput = {
@@ -50770,6 +53817,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -50817,6 +53865,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -50906,6 +53955,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -50953,6 +54003,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -51142,6 +54193,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -51189,6 +54241,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -51738,6 +54791,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -51785,6 +54839,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -52063,6 +55118,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -52110,6 +55166,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -52351,6 +55408,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -52398,6 +55456,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -52475,6 +55534,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -52522,6 +55582,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -52651,6 +55712,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -52698,6 +55760,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -52772,6 +55835,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -52819,6 +55883,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -52882,6 +55947,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -52929,6 +55995,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -52981,6 +56048,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -53028,6 +56096,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -53116,6 +56185,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -53163,6 +56233,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUpsertWithoutUser2ConversationsInput = {
@@ -53221,6 +56292,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -53268,6 +56340,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -53356,6 +56429,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -53403,6 +56477,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -53497,6 +56572,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -53544,6 +56620,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutTopicViewsInput = {
@@ -53591,6 +56668,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -53638,6 +56716,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -53738,6 +56817,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -53785,6 +56865,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TopicUpsertWithoutTopicViewsInput = {
@@ -53908,6 +56989,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -53955,6 +57037,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -54007,6 +57090,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -54054,6 +57138,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -54156,6 +57241,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -54203,6 +57289,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUpsertWithoutMentionsReceivedInput = {
@@ -54261,6 +57348,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -54308,6 +57396,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type PostCreateWithoutReactionsInput = {
@@ -54388,6 +57477,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -54435,6 +57525,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -54537,6 +57628,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -54584,6 +57676,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -54631,6 +57724,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -54678,6 +57772,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -54750,6 +57845,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -54797,6 +57893,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -54897,6 +57994,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -54944,6 +58042,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TopicUpsertWithoutFollowsInput = {
@@ -55137,6 +58236,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -55184,6 +58284,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -55356,6 +58457,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -55403,6 +58505,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TournamentCreateWithoutTeamsInput = {
@@ -55553,6 +58656,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -55600,6 +58704,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -55791,6 +58896,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -55838,6 +58944,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TournamentTeamMemberUpsertWithWhereUniqueWithoutTeamInput = {
@@ -55928,6 +59035,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -55975,6 +59083,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -56071,6 +59180,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -56118,6 +59228,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type TournamentCreateWithoutMercenariesInput = {
@@ -56268,6 +59379,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -56315,6 +59427,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -56487,6 +59600,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -56534,6 +59648,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutArticlesInput = {
@@ -56581,6 +59696,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -56628,6 +59744,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -56718,6 +59835,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -56765,6 +59883,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -56875,6 +59994,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -56922,6 +60042,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type ArticleTagUpsertWithWhereUniqueWithoutArticlesInput = {
@@ -57020,6 +60141,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -57067,6 +60189,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type LigueUpsertWithoutArticlesInput = {
@@ -57257,6 +60380,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -57304,6 +60428,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -57410,6 +60535,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -57457,6 +60583,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutOwnedLiguesInput = {
@@ -57504,6 +60631,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -57551,6 +60679,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -57603,6 +60732,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -57650,6 +60780,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -57850,6 +60981,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -57897,6 +61029,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -57960,6 +61093,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -58007,6 +61141,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCommissaireLiguesInput = {
@@ -58118,6 +61253,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -58165,6 +61301,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -58217,6 +61354,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -58264,6 +61402,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -58327,6 +61466,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -58374,6 +61514,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUpsertWithoutReportsResolvedInput = {
@@ -58432,6 +61573,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -58479,6 +61621,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -58526,6 +61669,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -58573,6 +61717,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
     reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -58636,6 +61781,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -58683,6 +61829,301 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserCreateWithoutSubmittedResourcesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSubmittedResourcesInput, UserUncheckedCreateWithoutSubmittedResourcesInput>
+  }
+
+  export type ResourceTagCreateWithoutResourcesInput = {
+    id?: string
+    name: string
+  }
+
+  export type ResourceTagUncheckedCreateWithoutResourcesInput = {
+    id?: string
+    name: string
+  }
+
+  export type ResourceTagCreateOrConnectWithoutResourcesInput = {
+    where: ResourceTagWhereUniqueInput
+    create: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput>
+  }
+
+  export type UserUpsertWithoutSubmittedResourcesInput = {
+    update: XOR<UserUpdateWithoutSubmittedResourcesInput, UserUncheckedUpdateWithoutSubmittedResourcesInput>
+    create: XOR<UserCreateWithoutSubmittedResourcesInput, UserUncheckedCreateWithoutSubmittedResourcesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubmittedResourcesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubmittedResourcesInput, UserUncheckedUpdateWithoutSubmittedResourcesInput>
+  }
+
+  export type UserUpdateWithoutSubmittedResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    roleConfig?: RoleConfigUpdateOneWithoutUsersNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
+    where: ResourceTagWhereUniqueInput
+    update: XOR<ResourceTagUpdateWithoutResourcesInput, ResourceTagUncheckedUpdateWithoutResourcesInput>
+    create: XOR<ResourceTagCreateWithoutResourcesInput, ResourceTagUncheckedCreateWithoutResourcesInput>
+  }
+
+  export type ResourceTagUpdateWithWhereUniqueWithoutResourcesInput = {
+    where: ResourceTagWhereUniqueInput
+    data: XOR<ResourceTagUpdateWithoutResourcesInput, ResourceTagUncheckedUpdateWithoutResourcesInput>
+  }
+
+  export type ResourceTagUpdateManyWithWhereWithoutResourcesInput = {
+    where: ResourceTagScalarWhereInput
+    data: XOR<ResourceTagUpdateManyMutationInput, ResourceTagUncheckedUpdateManyWithoutResourcesInput>
+  }
+
+  export type ResourceTagScalarWhereInput = {
+    AND?: ResourceTagScalarWhereInput | ResourceTagScalarWhereInput[]
+    OR?: ResourceTagScalarWhereInput[]
+    NOT?: ResourceTagScalarWhereInput | ResourceTagScalarWhereInput[]
+    id?: StringFilter<"ResourceTag"> | string
+    name?: StringFilter<"ResourceTag"> | string
+  }
+
+  export type ResourceCreateWithoutTagsInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+    author: UserCreateNestedOneWithoutSubmittedResourcesInput
+  }
+
+  export type ResourceUncheckedCreateWithoutTagsInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    authorId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
+  }
+
+  export type ResourceCreateOrConnectWithoutTagsInput = {
+    where: ResourceWhereUniqueInput
+    create: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput>
+  }
+
+  export type ResourceUpsertWithWhereUniqueWithoutTagsInput = {
+    where: ResourceWhereUniqueInput
+    update: XOR<ResourceUpdateWithoutTagsInput, ResourceUncheckedUpdateWithoutTagsInput>
+    create: XOR<ResourceCreateWithoutTagsInput, ResourceUncheckedCreateWithoutTagsInput>
+  }
+
+  export type ResourceUpdateWithWhereUniqueWithoutTagsInput = {
+    where: ResourceWhereUniqueInput
+    data: XOR<ResourceUpdateWithoutTagsInput, ResourceUncheckedUpdateWithoutTagsInput>
+  }
+
+  export type ResourceUpdateManyWithWhereWithoutTagsInput = {
+    where: ResourceScalarWhereInput
+    data: XOR<ResourceUpdateManyMutationInput, ResourceUncheckedUpdateManyWithoutTagsInput>
   }
 
   export type AccountCreateManyUserInput = {
@@ -58970,6 +62411,18 @@ export namespace Prisma {
     targetId?: string | null
     targetType?: string | null
     createdAt?: Date | string
+  }
+
+  export type ResourceCreateManyAuthorInput = {
+    id?: string
+    title: string
+    description?: string
+    imageUrl?: string | null
+    link: string
+    status?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isSystem?: boolean
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -60142,6 +63595,44 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ResourceUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    tags?: ResourceTagUpdateManyWithoutResourcesNestedInput
+  }
+
+  export type ResourceUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    tags?: ResourceTagUncheckedUpdateManyWithoutResourcesNestedInput
+  }
+
+  export type ResourceUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+  }
+
   export type TournamentRegistrationCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -60212,6 +63703,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -60259,6 +63751,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -60756,6 +64249,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -60803,6 +64297,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -61035,6 +64530,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -61082,6 +64578,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -61335,6 +64832,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -61382,6 +64880,7 @@ export namespace Prisma {
     reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
     reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {
@@ -61400,6 +64899,60 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ResourceTagUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceTagUncheckedUpdateWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceTagUncheckedUpdateManyWithoutResourcesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ResourceUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    author?: UserUpdateOneRequiredWithoutSubmittedResourcesNestedInput
+  }
+
+  export type ResourceUncheckedUpdateWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ResourceUncheckedUpdateManyWithoutTagsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
   }
 
 

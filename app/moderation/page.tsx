@@ -9,6 +9,7 @@ import ModerationSidebar, { ModerationTab } from "./component/ModerationSidebar"
 import LogsTab from "./component/LogsTab";
 import ReportsTab from "./component/ReportsTab";
 import BannedUsersTab from "./component/BannedUsersTab";
+import ResourceModerationTab from "./component/ResourceModerationTab";
 import { isModerator } from "@/lib/roles";
 
 import "./page.css";
@@ -37,7 +38,7 @@ export default function ModerationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    const validTabs: ModerationTab[] = ["logs", "users", "reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "reports_user_banned"];
+    const validTabs: ModerationTab[] = ["logs", "users", "reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "reports_user_banned", "resources_validation"];
     if (tabParam && validTabs.includes(tabParam)) {
       setActiveTab(tabParam);
     }
@@ -104,6 +105,10 @@ export default function ModerationPage() {
 
           {activeTab === "reports_user_banned" && (
             <BannedUsersTab />
+          )}
+
+          {activeTab === "resources_validation" && (
+            <ResourceModerationTab />
           )}
         </div>
       </div>

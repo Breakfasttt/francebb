@@ -7,7 +7,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import StatItem from "@/common/components/StatItem/StatItem";
 import TabSystem from "@/common/components/TabSystem/TabSystem";
-import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText, UserX } from "lucide-react";
+import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText, UserX, Layout } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useTransition, useEffect } from "react";
@@ -88,6 +88,7 @@ export default function ProfileSidebar({
     { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
+    { id: "ressources", label: "Mes ressources", icon: <Layout size={18} /> },
     { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "blocked", label: "Utilisateurs bloqués", icon: <UserX size={18} /> },

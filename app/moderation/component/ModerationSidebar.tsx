@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, MessageSquare, AlertTriangle, Users, BookOpen, Trophy, Info, UserX } from "lucide-react";
+import { FileText, MessageSquare, AlertTriangle, Users, BookOpen, Trophy, Info, UserX, Layout } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 
@@ -12,7 +12,8 @@ export type ModerationTab =
   | "reports_user" 
   | "reports_article" 
   | "reports_ligue"
-  | "reports_user_banned";
+  | "reports_user_banned"
+  | "resources_validation";
 
 interface ModerationSidebarProps {
   activeTab: ModerationTab;
@@ -29,6 +30,7 @@ export default function ModerationSidebar({ activeTab, onTabChange }: Moderation
     { id: "reports_article", label: "Articles signalés", icon: <BookOpen size={18} /> },
     { id: "reports_ligue", label: "Ligues signalées", icon: <Trophy size={18} /> },
     { id: "reports_user_banned", label: "Coachs bannis", icon: <UserX size={18} /> },
+    { id: "resources_validation", label: "Validation Ressources", icon: <Layout size={18} /> },
   ];
 
   return (

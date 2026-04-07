@@ -436,6 +436,24 @@ exports.Prisma.ModerationLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  link: 'link',
+  status: 'status',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  isSystem: 'isSystem'
+};
+
+exports.Prisma.ResourceTagScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -488,7 +506,9 @@ exports.Prisma.ModelName = {
   ArticleReaction: 'ArticleReaction',
   Ligue: 'Ligue',
   ModerationReport: 'ModerationReport',
-  ModerationLog: 'ModerationLog'
+  ModerationLog: 'ModerationLog',
+  Resource: 'Resource',
+  ResourceTag: 'ResourceTag'
 };
 
 /**
