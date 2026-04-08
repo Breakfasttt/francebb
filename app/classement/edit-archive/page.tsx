@@ -4,6 +4,7 @@ import { isModerator } from "@/lib/roles";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ArchiveEditor from "./ArchiveEditor";
+import "./page.css";
 
 export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
   const { year: yearStr } = await searchParams;
@@ -35,8 +36,7 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
 
   const allUsers = await prisma.user.findMany({
     where: { isBanned: false },
-    select: { id: true, name: true, nafNumber: true },
-    orderBy: { name: 'asc' }
+    select: { id: true, name: true, image: true, avatarFrame: true, nafNumber: true },
   });
 
   return (
