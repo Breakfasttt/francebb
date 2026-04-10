@@ -329,7 +329,7 @@ export default function QuizEngine() {
 
           <div className="quiz-footer-actions">
             <div className="quiz-jokers">
-              <Tooltip text="50/50 : Supprime deux mauvaises réponses" position="right">
+              <Tooltip text="50/50 : Supprime deux mauvaises réponses">
                 <button 
                   className="joker-btn" 
                   disabled={!jokers.fiftyFifty || phase !== "answering"} 

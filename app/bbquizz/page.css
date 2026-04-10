@@ -1,11 +1,10 @@
-/* Overrides to fit between header and footer without scroll */
 .container {
   padding-top: 1rem !important;
   padding-bottom: 2.5rem !important;
   height: calc(100vh - 80px); /* Adjust to compensate for navbar */
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible; /* Autoriser les tooltips qui dépassent */
 }
 
 .quiz-page-layout {
@@ -16,7 +15,7 @@
   margin-top: 0.5rem;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .quiz-main-section {
