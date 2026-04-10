@@ -9,8 +9,10 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { getRandomQuizQuestions, submitQuizAttempt, getCommunityStats } from "../../actions";
 import { toast } from "react-hot-toast";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
-import { Loader2, Zap, Users, Scissors, FastForward, Award, Trophy, Brain, PlusCircle, MinusCircle } from "lucide-react";
+import { Loader2, Zap, Users, Scissors, FastForward, Award, Trophy, Brain, PlusCircle, MinusCircle, Plus, Edit2, Check } from "lucide-react";
 import "./QuizEngine.css";
+import QuizManagement from "../QuizManagement/QuizManagement";
+import { isModerator } from "@/lib/roles";
 
 interface Question {
   category: string;
@@ -23,7 +25,7 @@ interface Question {
 const READ_TIME = 5;
 const ANSWER_TIME = 30;
 
-export default function QuizEngine() {
+export default function QuizEngine({ session }: { session: any }) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -41,6 +43,16 @@ export default function QuizEngine() {
   const [sessionDuration, setSessionDuration] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastPointsWon, setLastPointsWon] = useState<number | null>(null);
+
+  // Management Modal state
+  const [mgmtOpen, setMgmtOpen] = useState(false);
+  const [mgmtMode, setMgmtMode] = useState<"suggest" | "validate" | "edit">("suggest");
+  const isModo = isModerator(session?.user?.role);
+
+  const openManagement = (mode: "suggest" | "validate" | "edit") => {
+    setMgmtMode(mode);
+    setMgmtOpen(true);
+  };
 
   // Initialize quiz
   useEffect(() => {
@@ -201,11 +213,36 @@ export default function QuizEngine() {
               <li>+100 pts par bonne réponse + bonus temps</li>
               <li>-25 pts par mauvaise réponse</li>
             </ul>
-            <button className="quiz-btn primary mt-8" onClick={startQuiz}>
-              Commencer le match !
-            </button>
+            <div className="quiz-start-actions">
+              <button className="quiz-btn primary" onClick={startQuiz}>
+                Commencer le match !
+              </button>
+              
+              <div className="quiz-admin-actions">
+                <button className="quiz-btn outline" onClick={() => openManagement("suggest")}>
+                  <Plus size={16} /> Proposer
+                </button>
+                {isModo && (
+                  <>
+                    <button className="quiz-btn outline" onClick={() => openManagement("edit")}>
+                      <Edit2 size={16} /> Éditer
+                    </button>
+                    <button className="quiz-btn outline" onClick={() => openManagement("validate")}>
+                      <Check size={16} /> Validation
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
           </PremiumCard>
         </div>
+
+        <QuizManagement 
+          isOpen={mgmtOpen} 
+          onClose={() => setMgmtOpen(false)} 
+          initialMode={mgmtMode}
+          isModo={isModo}
+        />
       </div>
     );
   }

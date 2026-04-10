@@ -32,7 +32,7 @@ export default async function QuizPage() {
 
       <div className="quiz-page-layout">
         <section className="quiz-main-section">
-          <QuizEngine />
+          <QuizEngine session={session} />
         </section>
 
         <aside className="quiz-sidebar">
