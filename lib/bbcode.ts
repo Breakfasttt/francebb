@@ -1,3 +1,8 @@
+/**
+ * Moteur de rendu BBCode pour BBFrance.
+ * Gère la transformation du BBCode en HTML sécurisé.
+ * Supporte : formatting, couleurs, spoilers, accordéons, citations, galeries et YouTube.
+ */
 export const smileysMap: Record<string, string> = {
   ":)": "🙂",
   ":-": "😐",
@@ -286,8 +291,18 @@ export function parseInlineBBCode(text: string): string {
   while (/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i.test(html)) { html = html.replace(/\[i\]((?:(?!\[i\])[\s\S])*?)\[\/i\]/i, "<em>$1</em>"); }
   while (/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i.test(html)) { html = html.replace(/\[u\]((?:(?!\[u\])[\s\S])*?)\[\/u\]/i, "<u>$1</u>"); }
   while (/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i.test(html)) { html = html.replace(/\[s\]((?:(?!\[s\])[\s\S])*?)\[\/s\]/i, "<s>$1</s>"); }
-  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) { html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, "<span style='color: $1'>$2</span>"); }
-  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) { html = html.replace(/\[size=.*?\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, "<span>$1</span>"); }
+  while (/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i.test(html)) {
+    html = html.replace(/\[color=(.*?)\]((?:(?!\[color=)[\s\S])*?)\[\/color\]/i, (match, color, content) => {
+      const safeColor = sanitizeStyle(color, 'color') || 'inherit';
+      return `<span style="color: ${safeColor}">${content}</span>`;
+    });
+  }
+  while (/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i.test(html)) {
+    html = html.replace(/\[size=(.*?)\]((?:(?!\[size=)[\s\S])*?)\[\/size\]/i, (match, size, content) => {
+      const safeSize = sanitizeStyle(size, 'size') || 'inherit';
+      return `<span style="font-size: ${safeSize}">${content}</span>`;
+    });
+  }
   html = html.replace(/\[hr\]/gi, " --- ");
   html = html.replace(/\[img(?: align=(?:left|right|center))?\].*?\[\/img\]/gi, "📸 Image");
   html = html.replace(/\[youtube(?: align=(?:left|right|center))?\].*?\[\/youtube\]/gi, "🎥 Vidéo");

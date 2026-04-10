@@ -1,3 +1,7 @@
+/**
+ * Actions serveur pour la gestion des tournois.
+ * Gère la clôture, l'annulation, la sauvegarde et le parsing de rapports NAF XML.
+ */
 "use server";
 
 import { prisma } from "@/lib/prisma";

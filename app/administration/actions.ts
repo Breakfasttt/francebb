@@ -118,6 +118,12 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
 // ---- CUSTOM ROLES MANAGEMENT ----
 
 export async function getAllRoles() {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
+    return [];
+  }
+
   const roles = await prisma.roleConfig.findMany({
     orderBy: { power: "desc" },
     include: {
@@ -376,6 +382,12 @@ export async function getAllReferenceDataAdmin() {
 // ---- SITE SETTINGS MANAGEMENT ----
 
 export async function getSiteSetting(key: string) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    return null;
+  }
+
   const setting = await prisma.siteSetting.findUnique({
     where: { key }
   });

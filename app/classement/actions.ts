@@ -1,3 +1,7 @@
+/**
+ * Actions serveur pour le classement du Championnat de France (CDF).
+ * Gère le calcul des points, les filtres (Rolling, Roster) et l'archivage annuel.
+ */
 "use server";
  
 import { prisma } from "@/lib/prisma";

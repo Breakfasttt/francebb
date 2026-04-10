@@ -1,3 +1,8 @@
+/**
+ * Actions serveur pour la modération de BBFrance.
+ * Gère les signalements (reports), le journal d'audit (ModerationLog),
+ * le bannissement des utilisateurs et le nettoyage des logs.
+ */
 "use server";
 
 import { auth } from "@/auth";

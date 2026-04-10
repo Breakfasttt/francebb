@@ -1,3 +1,7 @@
+/**
+ * Actions serveur pour le forum de BBFrance.
+ * Regroupe la gestion des topics, posts, lectures, modération et création de tournois via le forum.
+ */
 "use server";
 
 import { auth } from "@/auth";

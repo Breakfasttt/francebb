@@ -1,3 +1,8 @@
+/**
+ * Système de gestion des rôles et des permissions (RBAC).
+ * Définit la hiérarchie des pouvoirs (ROLE_POWER) et les fonctions 
+ * utilitaires de vérification d'accès.
+ */
 export type UserRole = 
   | "SUPERADMIN"
   | "ADMIN"
