@@ -1,0 +1,12 @@
+/* styles spécifiques mobile pour le formulaire de ressource */
+
+@media (max-width: 600px) {
+  .input-with-action {
+    flex-direction: column;
+  }
+  
+  .upload-btn {
+    padding: 1rem;
+    justify-content: center;
+  }
+}

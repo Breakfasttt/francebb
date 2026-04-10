@@ -3,6 +3,8 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { Video, Youtube, Radio } from "lucide-react";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export const dynamic = "force-dynamic";
 

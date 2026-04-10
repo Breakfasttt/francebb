@@ -1,0 +1,13 @@
+/* styles spécifiques mobile pour la sidebar de filtrage des articles */
+
+@media (max-width: 1024px) {
+  .article-filter-sidebar .filter-card {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .filter-section {
+    flex: 1;
+    min-width: 200px;
+  }
+}

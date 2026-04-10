@@ -9,6 +9,8 @@ import { isModerator } from "@/lib/roles";
 import Link from "next/link";
 import { parseBBCode } from "@/lib/bbcode";
 import "./id.css";
+import "./id-mobile.css";
+
 
 export default async function LigueDetailPage({
   params,

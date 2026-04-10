@@ -34,6 +34,8 @@ import {
   RankingFilter 
 } from "./actions";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default function ClassementPage() {
   const { data: session } = useSession();

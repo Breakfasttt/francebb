@@ -519,8 +519,6 @@
   color: var(--accent);
 }
 
-@media (max-width: 600px) {
-  .matches-grid {
-    grid-template-columns: 1fr;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans TournamentResultWidget-mobile.css */
+

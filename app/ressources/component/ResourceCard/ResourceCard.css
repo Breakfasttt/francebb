@@ -209,22 +209,6 @@
   border-left: 4px solid var(--primary);
 }
 
-@media (max-width: 768px) {
-  .resource-card.list {
-    flex-direction: column;
-    padding: 1.5rem !important;
-  }
-  
-  .resource-card.list .resource-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .resource-card.list .resource-footer {
-    width: 100%;
-    margin-left: 0;
-    padding-top: 1rem;
-    border-top: 1px solid var(--glass-border);
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ResourceCard-mobile.css */
+

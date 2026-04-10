@@ -16,6 +16,8 @@ import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import "./page.css";
+import "./page-mobile.css";
+
 
 type ProfileTab = "activity" | "palmares" | "articles";
 

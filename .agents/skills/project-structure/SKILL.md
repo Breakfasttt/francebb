@@ -25,6 +25,7 @@ Ce document sert de référence pour comprendre l'organisation du code, la répa
 Chaque page doit suivre cette structure stricte :
 - **Chemin** : `app/[nom-page]/page.tsx`
 - **Style** : `app/[nom-page]/page.css` (importé dans le `page.tsx`)
+- **Style mobile** : `app/[nom-page]/page-mobile.css` (importé dans le `page.tsx`)
 - **Composants Locaux** : `app/[nom-page]/component/`
   - Chaque composant possède son sous-dossier : `component/NomComposant/NomComposant.tsx` + `.css`.
 - **Actions Serveur** : `app/[nom-page]/actions.ts` (pour la logique de mutation et accès DB)
@@ -48,6 +49,7 @@ Chaque page doit suivre cette structure stricte :
 Regroupe les composants UI réutilisables. Chaque composant possède son propre dossier avec :
 - `NomComposant.tsx`
 - `NomComposant.css`
+- `NomComposant-mobile.css`
 
 **Composants Clés :**
 - `PremiumCard` : Base pour l'effet glassmorphism.
@@ -80,4 +82,4 @@ Ce dossier regroupe la logique "headless" partagée entre les Server Actions et 
 1. **Localité** : Si un composant n'est utilisé que par une seule page, il DOIT rester dans `app/[page]/component/`. S'il est utilisé par deux pages ou plus, il DOIT être déplacé dans `common/components/`.
 2. **Séparation des préoccupations** : La logique d'accès aux données réside toujours dans `actions.ts` (ou `lib/`), jamais directement dans le `page.tsx`.
 3. **Styles** : Toujours utiliser les variables CSS définies dans les thèmes (`app/theme/`). Ne jamais écrire de couleurs hexadécimales en dur dans les fichiers `.css`.
-4. **Fichiers** : Ne jamais créer de fichiers orphelins. Un composant = un dossier dédié avec son CSS.
+4. **Fichiers** : Ne jamais créer de fichiers orphelins. Un composant = un dossier dédié avec son CSS et sa variante CSS mobile.

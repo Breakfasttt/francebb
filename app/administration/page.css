@@ -17,12 +17,6 @@
   gap: 1.5rem;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .admin-content-layout {
-    flex-direction: column;
-  }
-  .admin-sidebar-wrapper {
-    width: 100% !important;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+

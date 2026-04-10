@@ -9,6 +9,8 @@ import UserSearchWrapper from "./UserSearchWrapper";
 import LigueLocationFields from "./LigueLocationFields";
 import { Shield, MapPin, Globe, Users, Info } from "lucide-react";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default async function CreateLiguePage() {
   const session = await auth();

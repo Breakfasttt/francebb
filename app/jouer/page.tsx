@@ -4,6 +4,8 @@ import { Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map, ChevronRi
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import "./page.css";
+import "./page-mobile.css";
+
 
 // Page "Comment Jouer" - Guide pour les nouveaux coachs
 // Le contenu est géré via le panneau d'administration (SiteSetting)

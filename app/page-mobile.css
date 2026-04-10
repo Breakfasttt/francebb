@@ -1,0 +1,27 @@
+/* styles spécifiques mobile pour la page d'accueil */
+
+@media (max-width: 1024px) {
+  .home-page-fixed {
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .home-content-split {
+    grid-template-columns: 1fr;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .action-grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}

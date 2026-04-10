@@ -1,0 +1,8 @@
+/* styles spécifiques mobile pour l'édition des archives de classement */
+
+@media (max-width: 1024px) {
+    .archive-settings-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}

@@ -122,14 +122,6 @@
   box-shadow: 0 2px 8px rgba(194, 29, 29, 0.3);
 }
 
-@media (max-width: 1024px) {
-  .article-filter-sidebar .filter-card {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-  
-  .filter-section {
-    flex: 1;
-    min-width: 200px;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ArticleFilterSidebar-mobile.css */
+

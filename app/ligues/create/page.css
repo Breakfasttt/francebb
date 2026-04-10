@@ -1,6 +1,8 @@
 .ligue-form { margin-top: 2rem; }
 .form-layout { display: grid; grid-template-columns: 1fr 350px; gap: 2rem; }
-@media (max-width: 1000px) { .form-layout { grid-template-columns: 1fr; } }
+
+/* Responsive déplacé dans page-mobile.css */
+
 
 .section-separator {
   display: flex;

@@ -1,0 +1,7 @@
+/* styles spécifiques mobile pour la page de création de ligue */
+
+@media (max-width: 1000px) { 
+  .form-layout { 
+    grid-template-columns: 1fr; 
+  } 
+}

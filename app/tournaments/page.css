@@ -256,11 +256,9 @@
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
-@media (max-width: 768px) {
-  .tournaments-grid {
-    grid-template-columns: 1fr;
-  }
-}
+
+/* Responsive déplacé dans page-mobile.css */
+
 
 /* Vue Liste Section */
 .tournaments-list-view {
@@ -484,15 +482,6 @@
   box-shadow: 0 6px 15px rgba(194, 29, 29, 0.4);
 }
 
-@media (max-width: 900px) {
-  .list-header-row, 
-  .tournament-list-item {
-    grid-template-columns: 60px 1fr 100px 80px;
-    padding: 1rem;
-  }
-  .list-col-location,
-  .list-col-format,
-  .list-col-price {
-    display: none;
-  }
-}
+
+/* Responsive déplacé dans page-mobile.css */
+

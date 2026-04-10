@@ -1,0 +1,21 @@
+/* Styles spécifiques mobile pour CookieBanner */
+
+@media (max-width: 768px) {
+  .cookie-banner-overlay {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+  }
+  .cookie-banner-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    align-items: center;
+  }
+  .cookie-banner-content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

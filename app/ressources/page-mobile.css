@@ -1,0 +1,19 @@
+/* styles spécifiques mobile pour la page ressources */
+
+@media (max-width: 1024px) {
+  .ressources-layout {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .help-content-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -19,6 +19,8 @@ import GeneralTab from "./component/GeneralTab";
 import HowToPlayTab from "./component/HowToPlayTab";
 
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default function AdministrationPage() {
   const { data: session, status } = useSession({

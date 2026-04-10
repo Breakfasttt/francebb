@@ -1,0 +1,9 @@
+/* styles spécifiques mobile pour la sidebar BBPusher */
+
+@media (max-width: 1024px) {
+  .tool-sidebar {
+    position: absolute;
+    left: -280px;
+    transition: left 0.3s;
+  }
+}

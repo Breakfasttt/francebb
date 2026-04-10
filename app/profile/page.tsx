@@ -23,6 +23,8 @@ import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
 import Pagination from "@/common/components/Pagination/Pagination";
 import "./page.css";
+import "./page-mobile.css";
+
 
 type ProfileTab = "followed" | "articles" | "ressources" | "activity" | "edit" | "palmares" | "pm" | "settings" | "blocked";
 

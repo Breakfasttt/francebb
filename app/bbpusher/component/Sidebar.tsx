@@ -1,6 +1,8 @@
 import React from "react";
 import { TokenData, TokenType } from "../page";
 import "./Sidebar.css";
+import "./Sidebar-mobile.css";
+
 
 interface SidebarProps {
   tokens: TokenData[];

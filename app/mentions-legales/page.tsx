@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import PageHeader from '@/common/components/PageHeader/PageHeader';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import './page.css';
+import './page-mobile.css';
 
 /**
  * Page des Mentions Légales du site BBFrance.

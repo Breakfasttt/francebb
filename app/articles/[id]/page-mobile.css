@@ -1,0 +1,26 @@
+/* styles spécifiques mobile pour le détail d'un article */
+
+@media (max-width: 1024px) {
+  .article-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .article-sidebar {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .article-sidebar > div {
+    flex: 1;
+    min-width: 250px;
+  }
+  .article-content-wrapper {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .article-sidebar > div {
+    min-width: 100%;
+  }
+}

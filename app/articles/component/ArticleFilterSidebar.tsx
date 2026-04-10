@@ -6,6 +6,8 @@ import { Search, Tag as TagIcon, User, ArrowDownAz, Grid, List, RotateCcw } from
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import "./ArticleFilterSidebar.css";
+import "./ArticleFilterSidebar-mobile.css";
+
 
 interface ArticleFilterSidebarProps {
   availableTags: string[];

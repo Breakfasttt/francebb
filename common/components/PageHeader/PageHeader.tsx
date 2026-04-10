@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import BackButton from '@/common/components/BackButton/BackButton';
 import './PageHeader.css';
+import './PageHeader-mobile.css';
+
 
 interface PageHeaderProps {
   /** Le titre principal de la page */

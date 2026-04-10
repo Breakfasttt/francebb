@@ -7,6 +7,8 @@ import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { siteConfig } from "@/lib/siteConfig";
 import { getResourceTags } from "../../actions";
 import "./ResourceForm.css";
+import "./ResourceForm-mobile.css";
+
 
 interface ResourceFormProps {
   initialData?: {

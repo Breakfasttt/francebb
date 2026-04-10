@@ -1,0 +1,13 @@
+/* styles spécifiques mobile pour la page de modération */
+
+@media (max-width: 1024px) {
+    .moderation-content-layout {
+        flex-direction: column;
+    }
+    
+    .moderation-sidebar-wrapper {
+        width: 100%;
+        position: static;
+        margin-bottom: 2rem;
+    }
+}

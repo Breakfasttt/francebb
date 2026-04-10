@@ -355,15 +355,6 @@
 
 .bb-spoiler-rehide:hover { background: var(--primary); color: white; }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  .section-visual { height: 250px; }
-  .section-title { font-size: 1.8rem; }
-  .cta-card h3 { font-size: 2rem; }
-}
 
-@media (max-width: 768px) {
-  .section-card { padding: 1.5rem !important; }
-  .cta-buttons { flex-direction: column; }
-  .cta-primary, .cta-secondary { width: 100%; text-align: center; }
-}
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+

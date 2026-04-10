@@ -12,6 +12,8 @@ import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./globals.css";
+import "./globals-mobile.css";
+
 
 export const dynamic = "force-dynamic";
 

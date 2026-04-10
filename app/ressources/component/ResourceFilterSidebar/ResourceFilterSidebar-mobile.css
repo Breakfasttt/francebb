@@ -1,0 +1,8 @@
+/* styles spécifiques mobile pour la sidebar de filtrage des ressources */
+
+@media (max-width: 1024px) {
+  .resource-filter-sidebar {
+    width: 100%;
+    position: static;
+  }
+}

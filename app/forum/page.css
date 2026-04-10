@@ -167,28 +167,9 @@
   margin-top: 0.2rem;
 }
 
-@media (max-width: 1024px) {
-  .forum-layout {
-    grid-template-columns: 1fr;
-  }
 
-  .forum-sidebar {
-    position: static;
-    margin-top: 2rem;
-  }
-}
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
 
-@media (max-width: 768px) {
-  .forum-item {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .forum-stats,
-  .forum-last-post {
-    display: none;
-  }
-}
 
 /* Sidebar Styling */
 .forum-sidebar {

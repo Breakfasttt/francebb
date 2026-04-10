@@ -5,6 +5,8 @@ import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { ExternalLink, Tag as TagIcon, Edit, Trash2 } from "lucide-react";
 import "./ResourceCard.css";
+import "./ResourceCard-mobile.css";
+
 
 interface ResourceCardProps {
   resource: {
@@ -96,7 +98,7 @@ export default function ResourceCard({
                 <Edit size={14} />
               </Link>
             )}
-            {canDelete && (
+            {(canDelete && !resource.isSystem) && (
               <button 
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }}
                 className="action-btn delete"

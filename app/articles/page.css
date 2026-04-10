@@ -71,21 +71,9 @@
   justify-content: center;
 }
 
-@media (max-width: 1024px) {
-  .articles-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-@media (max-width: 600px) {
-  .articles-top-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .create-article-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
+
+/* Responsive déplacé dans page-mobile.css */
+
+
+/* Responsive déplacé dans page-mobile.css */
+

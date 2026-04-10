@@ -9,6 +9,8 @@ import { createArticle, updateArticle } from "@/app/articles/actions";
 import toast from "react-hot-toast";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import "./ArticleForm.css";
+import "./ArticleForm-mobile.css";
+
 
 interface ArticleFormProps {
   initialData?: {

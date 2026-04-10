@@ -1,4 +1,6 @@
 import "./page.css";
+import "./page-mobile.css";
+
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
 import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";

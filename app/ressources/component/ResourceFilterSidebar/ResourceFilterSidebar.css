@@ -189,9 +189,6 @@
   font-style: italic;
 }
 
-@media (max-width: 1024px) {
-  .resource-filter-sidebar {
-    width: 100%;
-    position: static;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ResourceFilterSidebar-mobile.css */
+

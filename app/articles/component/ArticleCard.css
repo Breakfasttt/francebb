@@ -208,11 +208,6 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 900px) {
-  .article-list-item {
-    grid-template-columns: 1fr 100px;
-  }
-  .list-col-author, .list-col-tags {
-    display: none;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ArticleCard-mobile.css */
+

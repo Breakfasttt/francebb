@@ -85,13 +85,6 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-  .mentions-container {
-    padding: 1rem;
-    margin: 1rem auto;
-  }
-  
-  .mentions-grid {
-    grid-template-columns: 1fr;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+

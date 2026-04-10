@@ -498,6 +498,40 @@ async function main() {
     }
   }
 
+  console.log("Seeding BBPusher...");
+  const systemUserId = "system";
+  await prisma.user.upsert({
+    where: { id: systemUserId },
+    update: {},
+    create: {
+      id: systemUserId,
+      name: "Système",
+      email: "system@bbfrance.fr",
+      role: "SUPERADMIN"
+    }
+  });
+
+  await prisma.resource.upsert({
+    where: { id: "bbpusher" },
+    update: { isSystem: true },
+    create: {
+      id: "bbpusher",
+      title: "BB Pusher",
+      description: "Plateau tactique interactif pour Blood Bowl. Placez vos joueurs, simulez des poussées et partagez vos schémas tactiques.",
+      imageUrl: "/images/bbpusher-preview.jpg",
+      link: "/bbpusher",
+      status: "APPROVED",
+      isSystem: true,
+      authorId: systemUserId,
+      tags: {
+        connectOrCreate: {
+          where: { name: "Outil Officiel" },
+          create: { name: "Outil Officiel" }
+        }
+      }
+    }
+  });
+
   console.log("Seed finished successfully.");
 }
 

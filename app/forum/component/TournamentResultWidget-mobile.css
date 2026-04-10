@@ -1,0 +1,7 @@
+/* styles spécifiques mobile pour le widget de résultats de tournoi */
+
+@media (max-width: 600px) {
+  .matches-grid {
+    grid-template-columns: 1fr;
+  }
+}

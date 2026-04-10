@@ -1,0 +1,10 @@
+/* styles spécifiques mobile pour la page d'administration */
+
+@media (max-width: 1024px) {
+  .admin-content-layout {
+    flex-direction: column;
+  }
+  .admin-sidebar-wrapper {
+    width: 100% !important;
+  }
+}

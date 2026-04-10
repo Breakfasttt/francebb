@@ -11,6 +11,8 @@ import { stripBBCode } from "@/lib/bbcode";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import "./ArticleCard.css";
+import "./ArticleCard-mobile.css";
+
 
 interface ArticleCardProps {
   article: any;

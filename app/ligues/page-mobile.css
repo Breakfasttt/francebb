@@ -1,0 +1,14 @@
+/* styles spécifiques mobile pour la page ligues */
+
+@media (max-width: 900px) {
+  .ligues-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-filters {
+    flex-direction: column;
+  }
+}

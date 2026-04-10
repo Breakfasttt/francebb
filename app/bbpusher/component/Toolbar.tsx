@@ -1,6 +1,8 @@
 import { ToolType } from "../page";
 import { User, Users, Goal, Eraser, MousePointer2, RefreshCcw } from "lucide-react";
 import "./Toolbar.css";
+import "./Toolbar-mobile.css";
+
 
 interface ToolbarProps {
   activeTool: ToolType;

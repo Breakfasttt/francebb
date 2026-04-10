@@ -1,0 +1,9 @@
+/* styles spécifiques mobile pour la page de la carte */
+
+@media (max-width: 768px) {
+  .carte-page-fixed {
+    padding: 1rem;
+    height: auto;
+    overflow: visible;
+  }
+}

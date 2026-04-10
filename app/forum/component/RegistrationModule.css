@@ -250,11 +250,9 @@
 .btn-icon.neutral { background: var(--glass-border); color: var(--text-secondary); }
 .btn-icon.warning { background: var(--primary); color: var(--header-foreground); }
 
-@media (max-width: 768px) {
-    .registration-sections {
-        grid-template-columns: 1fr;
-    }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans RegistrationModule-mobile.css */
+
 
 /* Admin Tournament Controls */
 .admin-tournament-controls {

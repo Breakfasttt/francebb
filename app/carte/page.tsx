@@ -3,6 +3,8 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { Map } from "lucide-react";
 import CarteClient from "./component/CarteClient";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export const dynamic = "force-dynamic";
 

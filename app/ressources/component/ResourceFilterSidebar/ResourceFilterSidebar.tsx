@@ -6,6 +6,8 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { getResourceTags } from "../../actions";
 import "./ResourceFilterSidebar.css";
+import "./ResourceFilterSidebar-mobile.css";
+
 
 interface ResourceFilterSidebarProps {
   searchQuery: string;

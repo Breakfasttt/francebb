@@ -354,6 +354,9 @@ export async function moderateResource(
 
   try {
     if (action === "DELETE") {
+      const resource = await prisma.resource.findUnique({ where: { id } });
+      if (resource?.isSystem) return { error: "Impossible de supprimer un outil système" };
+      
       await prisma.resource.delete({ where: { id } });
       await logModerationAction("RESOURCE_DELETED", id, "RESOURCE", "Ressource supprimée");
     } else if (action === "APPROVE") {

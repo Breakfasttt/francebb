@@ -7,6 +7,8 @@ import Link from "next/link";
 import Pagination from "@/common/components/Pagination/Pagination";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export const dynamic = "force-dynamic";
 

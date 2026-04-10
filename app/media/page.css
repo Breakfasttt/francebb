@@ -108,8 +108,6 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-@media (max-width: 1024px) {
-  .media-grid {
-    grid-template-columns: 1fr;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+

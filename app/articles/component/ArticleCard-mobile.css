@@ -1,0 +1,10 @@
+/* styles spécifiques mobile pour la carte d'article */
+
+@media (max-width: 900px) {
+  .article-list-item {
+    grid-template-columns: 1fr 100px;
+  }
+  .list-col-author, .list-col-tags {
+    display: none;
+  }
+}

@@ -1,0 +1,47 @@
+/* styles spécifiques mobile pour la page profil */
+
+@media (max-width: 900px) {
+  .profile-content-layout {
+    gap: 2rem;
+  }
+  .profile-sidebar-wrapper {
+    width: 100% !important;
+  }
+  .profile-summary-box {
+    border-top-right-radius: 16px !important;
+    padding-top: 2rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ProfileEdit — mise en page une colonne */
+  .form-row-box,
+  .avatar-studio-box {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    padding: 1rem !important;
+  }
+
+  .studio-preview-pane {
+    border-right: none !important;
+    padding-right: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 1.5rem;
+  }
+
+  .form-group.full-width {
+    grid-column: auto !important;
+  }
+
+  .avatar-input-group {
+    flex-direction: column;
+  }
+
+  .avatar-input-group input {
+    width: 100%;
+  }
+
+  .avatar-studio-box {
+    grid-template-columns: 1fr !important;
+  }
+}

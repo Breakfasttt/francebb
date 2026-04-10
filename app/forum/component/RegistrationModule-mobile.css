@@ -1,0 +1,7 @@
+/* styles spécifiques mobile pour le module d'inscription */
+
+@media (max-width: 768px) {
+    .registration-sections {
+        grid-template-columns: 1fr;
+    }
+}

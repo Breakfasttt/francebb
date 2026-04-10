@@ -303,22 +303,6 @@
   transition: all 0.2s;
 }
 
-@media (max-width: 900px) {
-  .profile-content-layout {
-    flex-direction: column;
-    gap: 2rem;
-  }
-  .profile-sidebar-wrapper {
-    width: 100% !important;
-  }
-  .profile-summary-box {
-    border-top-right-radius: 16px !important;
-    padding-top: 2rem !important;
-  }
-}
 
-@media (max-width: 768px) {
-  .profile-content-layout {
-    gap: 1.5rem;
-  }
-}
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+

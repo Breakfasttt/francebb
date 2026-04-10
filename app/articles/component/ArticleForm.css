@@ -118,8 +118,6 @@
   transform: none;
 }
 
-@media (max-width: 768px) {
-  .form-card {
-    padding: 1.5rem;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ArticleForm-mobile.css */
+

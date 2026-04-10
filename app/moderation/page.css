@@ -159,17 +159,9 @@
     object-fit: cover;
 }
 
-@media (max-width: 1024px) {
-    .moderation-content-layout {
-        flex-direction: column;
-    }
-    
-    .moderation-sidebar-wrapper {
-        width: 100%;
-        position: static;
-        margin-bottom: 2rem;
-    }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+
 .btn-sm {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;

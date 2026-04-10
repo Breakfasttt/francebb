@@ -19,12 +19,9 @@
     align-items: flex-end;
 }
 
-@media (max-width: 1024px) {
-    .archive-settings-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
+
 
 .form-group {
     display: flex;

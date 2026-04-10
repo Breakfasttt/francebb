@@ -182,13 +182,6 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 600px) {
-  .input-with-action {
-    flex-direction: column;
-  }
-  
-  .upload-btn {
-    padding: 1rem;
-    justify-content: center;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans ResourceForm-mobile.css */
+

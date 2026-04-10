@@ -1,0 +1,7 @@
+/* styles spécifiques mobile pour la page média */
+
+@media (max-width: 1024px) {
+  .media-grid {
+    grid-template-columns: 1fr;
+  }
+}

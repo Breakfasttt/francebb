@@ -6,6 +6,8 @@ import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen,
 import { auth } from "@/auth";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default async function Home() {
   const session = await auth();

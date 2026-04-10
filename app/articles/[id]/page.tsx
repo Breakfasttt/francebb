@@ -15,6 +15,8 @@ import ReportArticleButton from "@/app/articles/[id]/component/ReportArticleButt
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export const dynamic = "force-dynamic";
 

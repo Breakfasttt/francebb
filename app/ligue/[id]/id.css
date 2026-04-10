@@ -9,15 +9,9 @@
   align-items: flex-start;
 }
 
-@media (max-width: 1100px) {
-  .ligue-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .ligue-sidebar {
-    order: -1;
-  }
-}
+
+/* Responsive déplacé dans id-mobile.css */
+
 
 /* Hero Section */
 .ligue-hero {
@@ -102,25 +96,9 @@
   font-weight: 800;
 }
 
-@media (max-width: 768px) {
-  .ligue-hero {
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
-  }
-  
-  .hero-content {
-    flex-direction: column;
-  }
-  
-  .hero-stats {
-    padding: 1.5rem 0 0 0;
-    border-left: none;
-    border-top: 1px solid var(--glass-border);
-    width: 100%;
-    justify-content: center;
-  }
-}
+
+/* Responsive déplacé dans id-mobile.css */
+
 
 /* Content Sections */
 .ligue-content-sections {

@@ -13,6 +13,8 @@ import {
   Plus, AlertCircle
 } from "lucide-react";
 import "./RegistrationModule.css";
+import "./RegistrationModule-mobile.css";
+
 import toast from "react-hot-toast";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { 

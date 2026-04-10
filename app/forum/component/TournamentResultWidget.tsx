@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Trophy, ChevronLeft, ChevronRight, Edit2, Swords, User as UserIcon, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
 import './TournamentResultWidget.css';
+import './TournamentResultWidget-mobile.css';
+
 
 interface TournamentMatch {
   id: string;

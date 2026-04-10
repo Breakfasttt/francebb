@@ -24,7 +24,7 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 
 ## STRUCTURE & CONVENTIONS :
 - Avant toute création de fichier, page ou composant, **consulte SYSTEMATIQUEMENT** : `.agents/skills/project-structure/SKILL.md`
-- Respecter strictement l'arborescence, les conventions de nommage (`page.tsx` + `page.css`) et la localité des composants décrites dans ce guide.
+- Respecter strictement l'arborescence, les conventions de nommage (`page.tsx` + `page.css` + `page-mobile.css`) et la localité des composants décrites dans ce guide.
 
 
 ## CONVENTIONS DU PROJET :

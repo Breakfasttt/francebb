@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Cookie, X, Check } from "lucide-react";
 import "./CookieBanner.css";
+import "./CookieBanner-mobile.css";
+
 
 /**
  * Composant pour l'affichage du bandeau de consentement aux cookies (RGPD).

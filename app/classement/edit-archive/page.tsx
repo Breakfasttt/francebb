@@ -5,6 +5,8 @@ import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ArchiveEditor from "./ArchiveEditor";
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
   const { year: yearStr } = await searchParams;

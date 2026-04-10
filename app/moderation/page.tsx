@@ -14,6 +14,8 @@ import { isModerator } from "@/lib/roles";
 import { getModerationSummaryCounts } from "./actions";
 
 import "./page.css";
+import "./page-mobile.css";
+
 
 export default function ModerationPage() {
   const { data: session, status } = useSession({

@@ -60,14 +60,6 @@
   transform: translateX(-50%) translateY(0);
 }
 
-@media (max-width: 768px) {
-  .tool-toolbar {
-    bottom: 1rem;
-    padding: 0.3rem;
-  }
-  
-  .toolbar-item {
-    width: 40px;
-    height: 40px;
-  }
-}
+
+/* RESPONSIVE DESIGN (MOBILE) Déplacé dans Toolbar-mobile.css */
+
