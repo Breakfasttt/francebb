@@ -1,0 +1,65 @@
+/* Overrides to fit between header and footer without scroll */
+.container {
+  padding-top: 1rem !important;
+  padding-bottom: 2.5rem !important;
+  height: calc(100vh - 80px); /* Adjust to compensate for navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.quiz-page-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-top: 0.5rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.quiz-main-section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.quiz-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  min-height: 0;
+}
+
+.sidebar-header h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  color: var(--foreground);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+@media (max-width: 1100px) {
+  .quiz-page-layout {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+    height: auto;
+  }
+  
+  .container {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .quiz-sidebar {
+    height: auto;
+    overflow: visible;
+  }
+}

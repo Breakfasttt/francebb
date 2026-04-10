@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+  .quiz-page-layout {
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .quiz-main-section {
+    min-height: auto;
+  }
+}

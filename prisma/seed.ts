@@ -6,15 +6,21 @@ const config = { url: "file:./dev.db" };
 const adapter = new PrismaLibSql(config);
 const prisma = new PrismaClient({ adapter });
 
+import { questions as quizQuestions } from "../app/bbquizz/data/questions";
+
 async function main() {
   const userId = "user_test_breakyt";
 
   console.log("Cleaning all existing data...");
   // On vide les tables dans l'ordre inverse des dépendances pour éviter les erreurs de clés étrangères
+  await prisma.rankingArchive.deleteMany();
   await prisma.moderationLog.deleteMany();
   await prisma.moderationReport.deleteMany();
   await prisma.articleReaction.deleteMany();
   await prisma.article.deleteMany();
+  await prisma.quizAttempt.deleteMany();
+  await prisma.quizDailyWinner.deleteMany();
+  await prisma.quizQuestion.deleteMany();
   await prisma.resource.deleteMany();
   await prisma.tournamentMatch.deleteMany();
   await prisma.tournamentRound.deleteMany();
@@ -531,6 +537,40 @@ async function main() {
       }
     }
   });
+
+  await prisma.resource.upsert({
+    where: { id: "bbquizz" },
+    update: { isSystem: true },
+    create: {
+      id: "bbquizz",
+      title: "Quizz Blood Bowl",
+      description: "Testez vos connaissances sur Blood Bowl ! Répondez à 20 questions de règles, rosters, compétences et gagnez votre place au Panthéon.",
+      imageUrl: "/images/quiz-preview.jpg",
+      link: "/bbquizz",
+      status: "APPROVED",
+      isSystem: true,
+      authorId: systemUserId,
+      tags: {
+        connectOrCreate: {
+          where: { name: "Mini-Jeu" },
+          create: { name: "Mini-Jeu" }
+        }
+      }
+    }
+  });
+
+  console.log("Seeding quiz questions...");
+  for (const q of quizQuestions) {
+    await prisma.quizQuestion.create({
+      data: {
+        category: q.category,
+        question: q.question,
+        options: JSON.stringify(q.options),
+        correctIndex: q.correctIndex,
+        explanation: q.explanation || null
+      }
+    });
+  }
 
   console.log("Seed finished successfully.");
 }

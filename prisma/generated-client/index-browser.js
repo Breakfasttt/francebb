@@ -154,7 +154,11 @@ exports.Prisma.UserScalarFieldEnum = {
   avatarFrame: 'avatarFrame',
   theme: 'theme',
   equipe: 'equipe',
-  ligueCustom: 'ligueCustom'
+  ligueCustom: 'ligueCustom',
+  quizTotalScore: 'quizTotalScore',
+  quizBestScore: 'quizBestScore',
+  quizStreak: 'quizStreak',
+  quizAttemptsCount: 'quizAttemptsCount'
 };
 
 exports.Prisma.BlockScalarFieldEnum = {
@@ -506,6 +510,41 @@ exports.Prisma.TournamentMatchScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.QuizQuestionScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  question: 'question',
+  imageUrl: 'imageUrl',
+  options: 'options',
+  correctIndex: 'correctIndex',
+  explanation: 'explanation',
+  timesCorrect: 'timesCorrect',
+  timesOption0: 'timesOption0',
+  timesOption1: 'timesOption1',
+  timesOption2: 'timesOption2',
+  timesOption3: 'timesOption3',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QuizAttemptScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  score: 'score',
+  correct: 'correct',
+  total: 'total',
+  duration: 'duration',
+  jokersUsed: 'jokersUsed',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.QuizDailyWinnerScalarFieldEnum = {
+  date: 'date',
+  userId: 'userId',
+  score: 'score',
+  streak: 'streak'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -564,7 +603,10 @@ exports.Prisma.ModelName = {
   ResourceTag: 'ResourceTag',
   TournamentResult: 'TournamentResult',
   TournamentRound: 'TournamentRound',
-  TournamentMatch: 'TournamentMatch'
+  TournamentMatch: 'TournamentMatch',
+  QuizQuestion: 'QuizQuestion',
+  QuizAttempt: 'QuizAttempt',
+  QuizDailyWinner: 'QuizDailyWinner'
 };
 
 /**

@@ -188,6 +188,21 @@ export type TournamentRound = $Result.DefaultSelection<Prisma.$TournamentRoundPa
  * 
  */
 export type TournamentMatch = $Result.DefaultSelection<Prisma.$TournamentMatchPayload>
+/**
+ * Model QuizQuestion
+ * 
+ */
+export type QuizQuestion = $Result.DefaultSelection<Prisma.$QuizQuestionPayload>
+/**
+ * Model QuizAttempt
+ * 
+ */
+export type QuizAttempt = $Result.DefaultSelection<Prisma.$QuizAttemptPayload>
+/**
+ * Model QuizDailyWinner
+ * 
+ */
+export type QuizDailyWinner = $Result.DefaultSelection<Prisma.$QuizDailyWinnerPayload>
 
 /**
  * Enums
@@ -692,6 +707,36 @@ export class PrismaClient<
     * ```
     */
   get tournamentMatch(): Prisma.TournamentMatchDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.quizQuestion`: Exposes CRUD operations for the **QuizQuestion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuizQuestions
+    * const quizQuestions = await prisma.quizQuestion.findMany()
+    * ```
+    */
+  get quizQuestion(): Prisma.QuizQuestionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.quizAttempt`: Exposes CRUD operations for the **QuizAttempt** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuizAttempts
+    * const quizAttempts = await prisma.quizAttempt.findMany()
+    * ```
+    */
+  get quizAttempt(): Prisma.QuizAttemptDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.quizDailyWinner`: Exposes CRUD operations for the **QuizDailyWinner** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuizDailyWinners
+    * const quizDailyWinners = await prisma.quizDailyWinner.findMany()
+    * ```
+    */
+  get quizDailyWinner(): Prisma.QuizDailyWinnerDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1160,7 +1205,10 @@ export namespace Prisma {
     ResourceTag: 'ResourceTag',
     TournamentResult: 'TournamentResult',
     TournamentRound: 'TournamentRound',
-    TournamentMatch: 'TournamentMatch'
+    TournamentMatch: 'TournamentMatch',
+    QuizQuestion: 'QuizQuestion',
+    QuizAttempt: 'QuizAttempt',
+    QuizDailyWinner: 'QuizDailyWinner'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1176,7 +1224,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3770,6 +3818,228 @@ export namespace Prisma {
           }
         }
       }
+      QuizQuestion: {
+        payload: Prisma.$QuizQuestionPayload<ExtArgs>
+        fields: Prisma.QuizQuestionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuizQuestionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuizQuestionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          findFirst: {
+            args: Prisma.QuizQuestionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuizQuestionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          findMany: {
+            args: Prisma.QuizQuestionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
+          }
+          create: {
+            args: Prisma.QuizQuestionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          createMany: {
+            args: Prisma.QuizQuestionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuizQuestionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
+          }
+          delete: {
+            args: Prisma.QuizQuestionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          update: {
+            args: Prisma.QuizQuestionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuizQuestionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuizQuestionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuizQuestionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuizQuestionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
+          }
+          aggregate: {
+            args: Prisma.QuizQuestionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuizQuestion>
+          }
+          groupBy: {
+            args: Prisma.QuizQuestionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuizQuestionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuizQuestionCountArgs<ExtArgs>
+            result: $Utils.Optional<QuizQuestionCountAggregateOutputType> | number
+          }
+        }
+      }
+      QuizAttempt: {
+        payload: Prisma.$QuizAttemptPayload<ExtArgs>
+        fields: Prisma.QuizAttemptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuizAttemptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuizAttemptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          findFirst: {
+            args: Prisma.QuizAttemptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuizAttemptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          findMany: {
+            args: Prisma.QuizAttemptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
+          }
+          create: {
+            args: Prisma.QuizAttemptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          createMany: {
+            args: Prisma.QuizAttemptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuizAttemptCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
+          }
+          delete: {
+            args: Prisma.QuizAttemptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          update: {
+            args: Prisma.QuizAttemptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuizAttemptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuizAttemptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuizAttemptUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuizAttemptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
+          }
+          aggregate: {
+            args: Prisma.QuizAttemptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuizAttempt>
+          }
+          groupBy: {
+            args: Prisma.QuizAttemptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuizAttemptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuizAttemptCountArgs<ExtArgs>
+            result: $Utils.Optional<QuizAttemptCountAggregateOutputType> | number
+          }
+        }
+      }
+      QuizDailyWinner: {
+        payload: Prisma.$QuizDailyWinnerPayload<ExtArgs>
+        fields: Prisma.QuizDailyWinnerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuizDailyWinnerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          findFirst: {
+            args: Prisma.QuizDailyWinnerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          findMany: {
+            args: Prisma.QuizDailyWinnerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
+          }
+          create: {
+            args: Prisma.QuizDailyWinnerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          createMany: {
+            args: Prisma.QuizDailyWinnerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
+          }
+          delete: {
+            args: Prisma.QuizDailyWinnerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          update: {
+            args: Prisma.QuizDailyWinnerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuizDailyWinnerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuizDailyWinnerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuizDailyWinnerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
+          }
+          aggregate: {
+            args: Prisma.QuizDailyWinnerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuizDailyWinner>
+          }
+          groupBy: {
+            args: Prisma.QuizDailyWinnerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuizDailyWinnerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuizDailyWinnerCountArgs<ExtArgs>
+            result: $Utils.Optional<QuizDailyWinnerCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3913,6 +4183,9 @@ export namespace Prisma {
     tournamentResult?: TournamentResultOmit
     tournamentRound?: TournamentRoundOmit
     tournamentMatch?: TournamentMatchOmit
+    quizQuestion?: QuizQuestionOmit
+    quizAttempt?: QuizAttemptOmit
+    quizDailyWinner?: QuizDailyWinnerOmit
   }
 
   /* Types for Logging */
@@ -4028,6 +4301,8 @@ export namespace Prisma {
     commissaireLigues: number
     ligues: number
     commissairesTournaments: number
+    quizAttempts: number
+    dailyWins: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4066,6 +4341,8 @@ export namespace Prisma {
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
     ligues?: boolean | UserCountOutputTypeCountLiguesArgs
     commissairesTournaments?: boolean | UserCountOutputTypeCountCommissairesTournamentsArgs
+    quizAttempts?: boolean | UserCountOutputTypeCountQuizAttemptsArgs
+    dailyWins?: boolean | UserCountOutputTypeCountDailyWinsArgs
   }
 
   // Custom InputTypes
@@ -4322,6 +4599,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCommissairesTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TournamentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountQuizAttemptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizAttemptWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDailyWinsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizDailyWinnerWhereInput
   }
 
 
@@ -7120,8 +7411,24 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    quizTotalScore: number | null
+    quizBestScore: number | null
+    quizStreak: number | null
+    quizAttemptsCount: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    quizTotalScore: number | null
+    quizBestScore: number | null
+    quizStreak: number | null
+    quizAttemptsCount: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -7140,6 +7447,10 @@ export namespace Prisma {
     theme: string | null
     equipe: string | null
     ligueCustom: string | null
+    quizTotalScore: number | null
+    quizBestScore: number | null
+    quizStreak: number | null
+    quizAttemptsCount: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -7158,6 +7469,10 @@ export namespace Prisma {
     theme: string | null
     equipe: string | null
     ligueCustom: string | null
+    quizTotalScore: number | null
+    quizBestScore: number | null
+    quizStreak: number | null
+    quizAttemptsCount: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -7176,9 +7491,27 @@ export namespace Prisma {
     theme: number
     equipe: number
     ligueCustom: number
+    quizTotalScore: number
+    quizBestScore: number
+    quizStreak: number
+    quizAttemptsCount: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    quizTotalScore?: true
+    quizBestScore?: true
+    quizStreak?: true
+    quizAttemptsCount?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    quizTotalScore?: true
+    quizBestScore?: true
+    quizStreak?: true
+    quizAttemptsCount?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -7196,6 +7529,10 @@ export namespace Prisma {
     theme?: true
     equipe?: true
     ligueCustom?: true
+    quizTotalScore?: true
+    quizBestScore?: true
+    quizStreak?: true
+    quizAttemptsCount?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -7214,6 +7551,10 @@ export namespace Prisma {
     theme?: true
     equipe?: true
     ligueCustom?: true
+    quizTotalScore?: true
+    quizBestScore?: true
+    quizStreak?: true
+    quizAttemptsCount?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -7232,6 +7573,10 @@ export namespace Prisma {
     theme?: true
     equipe?: true
     ligueCustom?: true
+    quizTotalScore?: true
+    quizBestScore?: true
+    quizStreak?: true
+    quizAttemptsCount?: true
     _all?: true
   }
 
@@ -7273,6 +7618,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -7303,6 +7660,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -7323,7 +7682,13 @@ export namespace Prisma {
     theme: string
     equipe: string | null
     ligueCustom: string | null
+    quizTotalScore: number
+    quizBestScore: number
+    quizStreak: number
+    quizAttemptsCount: number
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -7358,6 +7723,10 @@ export namespace Prisma {
     theme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
+    quizTotalScore?: boolean
+    quizBestScore?: boolean
+    quizStreak?: boolean
+    quizAttemptsCount?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     articles?: boolean | User$articlesArgs<ExtArgs>
@@ -7394,6 +7763,8 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
+    dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7413,6 +7784,10 @@ export namespace Prisma {
     theme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
+    quizTotalScore?: boolean
+    quizBestScore?: boolean
+    quizStreak?: boolean
+    quizAttemptsCount?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7432,6 +7807,10 @@ export namespace Prisma {
     theme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
+    quizTotalScore?: boolean
+    quizBestScore?: boolean
+    quizStreak?: boolean
+    quizAttemptsCount?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7451,9 +7830,13 @@ export namespace Prisma {
     theme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
+    quizTotalScore?: boolean
+    quizBestScore?: boolean
+    quizStreak?: boolean
+    quizAttemptsCount?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -7491,6 +7874,8 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
+    dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7539,6 +7924,8 @@ export namespace Prisma {
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
       ligues: Prisma.$LiguePayload<ExtArgs>[]
       commissairesTournaments: Prisma.$TournamentPayload<ExtArgs>[]
+      quizAttempts: Prisma.$QuizAttemptPayload<ExtArgs>[]
+      dailyWins: Prisma.$QuizDailyWinnerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7556,6 +7943,10 @@ export namespace Prisma {
       theme: string
       equipe: string | null
       ligueCustom: string | null
+      quizTotalScore: number
+      quizBestScore: number
+      quizStreak: number
+      quizAttemptsCount: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -7986,6 +8377,8 @@ export namespace Prisma {
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ligues<T extends User$liguesArgs<ExtArgs> = {}>(args?: Subset<T, User$liguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commissairesTournaments<T extends User$commissairesTournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commissairesTournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    quizAttempts<T extends User$quizAttemptsArgs<ExtArgs> = {}>(args?: Subset<T, User$quizAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    dailyWins<T extends User$dailyWinsArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyWinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8030,6 +8423,10 @@ export namespace Prisma {
     readonly theme: FieldRef<"User", 'String'>
     readonly equipe: FieldRef<"User", 'String'>
     readonly ligueCustom: FieldRef<"User", 'String'>
+    readonly quizTotalScore: FieldRef<"User", 'Int'>
+    readonly quizBestScore: FieldRef<"User", 'Int'>
+    readonly quizStreak: FieldRef<"User", 'Int'>
+    readonly quizAttemptsCount: FieldRef<"User", 'Int'>
   }
     
 
@@ -9266,6 +9663,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * User.quizAttempts
+   */
+  export type User$quizAttemptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    where?: QuizAttemptWhereInput
+    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
+    cursor?: QuizAttemptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * User.dailyWins
+   */
+  export type User$dailyWinsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    where?: QuizDailyWinnerWhereInput
+    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
+    cursor?: QuizDailyWinnerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
   }
 
   /**
@@ -45888,6 +46333,3411 @@ export namespace Prisma {
 
 
   /**
+   * Model QuizQuestion
+   */
+
+  export type AggregateQuizQuestion = {
+    _count: QuizQuestionCountAggregateOutputType | null
+    _avg: QuizQuestionAvgAggregateOutputType | null
+    _sum: QuizQuestionSumAggregateOutputType | null
+    _min: QuizQuestionMinAggregateOutputType | null
+    _max: QuizQuestionMaxAggregateOutputType | null
+  }
+
+  export type QuizQuestionAvgAggregateOutputType = {
+    correctIndex: number | null
+    timesCorrect: number | null
+    timesOption0: number | null
+    timesOption1: number | null
+    timesOption2: number | null
+    timesOption3: number | null
+  }
+
+  export type QuizQuestionSumAggregateOutputType = {
+    correctIndex: number | null
+    timesCorrect: number | null
+    timesOption0: number | null
+    timesOption1: number | null
+    timesOption2: number | null
+    timesOption3: number | null
+  }
+
+  export type QuizQuestionMinAggregateOutputType = {
+    id: string | null
+    category: string | null
+    question: string | null
+    imageUrl: string | null
+    options: string | null
+    correctIndex: number | null
+    explanation: string | null
+    timesCorrect: number | null
+    timesOption0: number | null
+    timesOption1: number | null
+    timesOption2: number | null
+    timesOption3: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type QuizQuestionMaxAggregateOutputType = {
+    id: string | null
+    category: string | null
+    question: string | null
+    imageUrl: string | null
+    options: string | null
+    correctIndex: number | null
+    explanation: string | null
+    timesCorrect: number | null
+    timesOption0: number | null
+    timesOption1: number | null
+    timesOption2: number | null
+    timesOption3: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type QuizQuestionCountAggregateOutputType = {
+    id: number
+    category: number
+    question: number
+    imageUrl: number
+    options: number
+    correctIndex: number
+    explanation: number
+    timesCorrect: number
+    timesOption0: number
+    timesOption1: number
+    timesOption2: number
+    timesOption3: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type QuizQuestionAvgAggregateInputType = {
+    correctIndex?: true
+    timesCorrect?: true
+    timesOption0?: true
+    timesOption1?: true
+    timesOption2?: true
+    timesOption3?: true
+  }
+
+  export type QuizQuestionSumAggregateInputType = {
+    correctIndex?: true
+    timesCorrect?: true
+    timesOption0?: true
+    timesOption1?: true
+    timesOption2?: true
+    timesOption3?: true
+  }
+
+  export type QuizQuestionMinAggregateInputType = {
+    id?: true
+    category?: true
+    question?: true
+    imageUrl?: true
+    options?: true
+    correctIndex?: true
+    explanation?: true
+    timesCorrect?: true
+    timesOption0?: true
+    timesOption1?: true
+    timesOption2?: true
+    timesOption3?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type QuizQuestionMaxAggregateInputType = {
+    id?: true
+    category?: true
+    question?: true
+    imageUrl?: true
+    options?: true
+    correctIndex?: true
+    explanation?: true
+    timesCorrect?: true
+    timesOption0?: true
+    timesOption1?: true
+    timesOption2?: true
+    timesOption3?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type QuizQuestionCountAggregateInputType = {
+    id?: true
+    category?: true
+    question?: true
+    imageUrl?: true
+    options?: true
+    correctIndex?: true
+    explanation?: true
+    timesCorrect?: true
+    timesOption0?: true
+    timesOption1?: true
+    timesOption2?: true
+    timesOption3?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type QuizQuestionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizQuestion to aggregate.
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizQuestions to fetch.
+     */
+    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuizQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuizQuestions
+    **/
+    _count?: true | QuizQuestionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QuizQuestionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuizQuestionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuizQuestionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuizQuestionMaxAggregateInputType
+  }
+
+  export type GetQuizQuestionAggregateType<T extends QuizQuestionAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuizQuestion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuizQuestion[P]>
+      : GetScalarType<T[P], AggregateQuizQuestion[P]>
+  }
+
+
+
+
+  export type QuizQuestionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizQuestionWhereInput
+    orderBy?: QuizQuestionOrderByWithAggregationInput | QuizQuestionOrderByWithAggregationInput[]
+    by: QuizQuestionScalarFieldEnum[] | QuizQuestionScalarFieldEnum
+    having?: QuizQuestionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuizQuestionCountAggregateInputType | true
+    _avg?: QuizQuestionAvgAggregateInputType
+    _sum?: QuizQuestionSumAggregateInputType
+    _min?: QuizQuestionMinAggregateInputType
+    _max?: QuizQuestionMaxAggregateInputType
+  }
+
+  export type QuizQuestionGroupByOutputType = {
+    id: string
+    category: string
+    question: string
+    imageUrl: string | null
+    options: string
+    correctIndex: number
+    explanation: string | null
+    timesCorrect: number
+    timesOption0: number
+    timesOption1: number
+    timesOption2: number
+    timesOption3: number
+    createdAt: Date
+    updatedAt: Date
+    _count: QuizQuestionCountAggregateOutputType | null
+    _avg: QuizQuestionAvgAggregateOutputType | null
+    _sum: QuizQuestionSumAggregateOutputType | null
+    _min: QuizQuestionMinAggregateOutputType | null
+    _max: QuizQuestionMaxAggregateOutputType | null
+  }
+
+  type GetQuizQuestionGroupByPayload<T extends QuizQuestionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuizQuestionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuizQuestionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuizQuestionGroupByOutputType[P]>
+            : GetScalarType<T[P], QuizQuestionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuizQuestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    question?: boolean
+    imageUrl?: boolean
+    options?: boolean
+    correctIndex?: boolean
+    explanation?: boolean
+    timesCorrect?: boolean
+    timesOption0?: boolean
+    timesOption1?: boolean
+    timesOption2?: boolean
+    timesOption3?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["quizQuestion"]>
+
+  export type QuizQuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    question?: boolean
+    imageUrl?: boolean
+    options?: boolean
+    correctIndex?: boolean
+    explanation?: boolean
+    timesCorrect?: boolean
+    timesOption0?: boolean
+    timesOption1?: boolean
+    timesOption2?: boolean
+    timesOption3?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["quizQuestion"]>
+
+  export type QuizQuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    category?: boolean
+    question?: boolean
+    imageUrl?: boolean
+    options?: boolean
+    correctIndex?: boolean
+    explanation?: boolean
+    timesCorrect?: boolean
+    timesOption0?: boolean
+    timesOption1?: boolean
+    timesOption2?: boolean
+    timesOption3?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["quizQuestion"]>
+
+  export type QuizQuestionSelectScalar = {
+    id?: boolean
+    category?: boolean
+    question?: boolean
+    imageUrl?: boolean
+    options?: boolean
+    correctIndex?: boolean
+    explanation?: boolean
+    timesCorrect?: boolean
+    timesOption0?: boolean
+    timesOption1?: boolean
+    timesOption2?: boolean
+    timesOption3?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type QuizQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "question" | "imageUrl" | "options" | "correctIndex" | "explanation" | "timesCorrect" | "timesOption0" | "timesOption1" | "timesOption2" | "timesOption3" | "createdAt" | "updatedAt", ExtArgs["result"]["quizQuestion"]>
+
+  export type $QuizQuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuizQuestion"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      category: string
+      question: string
+      imageUrl: string | null
+      options: string
+      correctIndex: number
+      explanation: string | null
+      timesCorrect: number
+      timesOption0: number
+      timesOption1: number
+      timesOption2: number
+      timesOption3: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["quizQuestion"]>
+    composites: {}
+  }
+
+  type QuizQuestionGetPayload<S extends boolean | null | undefined | QuizQuestionDefaultArgs> = $Result.GetResult<Prisma.$QuizQuestionPayload, S>
+
+  type QuizQuestionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuizQuestionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuizQuestionCountAggregateInputType | true
+    }
+
+  export interface QuizQuestionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizQuestion'], meta: { name: 'QuizQuestion' } }
+    /**
+     * Find zero or one QuizQuestion that matches the filter.
+     * @param {QuizQuestionFindUniqueArgs} args - Arguments to find a QuizQuestion
+     * @example
+     * // Get one QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuizQuestionFindUniqueArgs>(args: SelectSubset<T, QuizQuestionFindUniqueArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuizQuestion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuizQuestionFindUniqueOrThrowArgs} args - Arguments to find a QuizQuestion
+     * @example
+     * // Get one QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuizQuestionFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizQuestionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizQuestion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionFindFirstArgs} args - Arguments to find a QuizQuestion
+     * @example
+     * // Get one QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuizQuestionFindFirstArgs>(args?: SelectSubset<T, QuizQuestionFindFirstArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizQuestion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionFindFirstOrThrowArgs} args - Arguments to find a QuizQuestion
+     * @example
+     * // Get one QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuizQuestionFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizQuestionFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuizQuestions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuizQuestions
+     * const quizQuestions = await prisma.quizQuestion.findMany()
+     * 
+     * // Get first 10 QuizQuestions
+     * const quizQuestions = await prisma.quizQuestion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const quizQuestionWithIdOnly = await prisma.quizQuestion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends QuizQuestionFindManyArgs>(args?: SelectSubset<T, QuizQuestionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuizQuestion.
+     * @param {QuizQuestionCreateArgs} args - Arguments to create a QuizQuestion.
+     * @example
+     * // Create one QuizQuestion
+     * const QuizQuestion = await prisma.quizQuestion.create({
+     *   data: {
+     *     // ... data to create a QuizQuestion
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuizQuestionCreateArgs>(args: SelectSubset<T, QuizQuestionCreateArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuizQuestions.
+     * @param {QuizQuestionCreateManyArgs} args - Arguments to create many QuizQuestions.
+     * @example
+     * // Create many QuizQuestions
+     * const quizQuestion = await prisma.quizQuestion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuizQuestionCreateManyArgs>(args?: SelectSubset<T, QuizQuestionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuizQuestions and returns the data saved in the database.
+     * @param {QuizQuestionCreateManyAndReturnArgs} args - Arguments to create many QuizQuestions.
+     * @example
+     * // Create many QuizQuestions
+     * const quizQuestion = await prisma.quizQuestion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuizQuestions and only return the `id`
+     * const quizQuestionWithIdOnly = await prisma.quizQuestion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuizQuestionCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizQuestionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuizQuestion.
+     * @param {QuizQuestionDeleteArgs} args - Arguments to delete one QuizQuestion.
+     * @example
+     * // Delete one QuizQuestion
+     * const QuizQuestion = await prisma.quizQuestion.delete({
+     *   where: {
+     *     // ... filter to delete one QuizQuestion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuizQuestionDeleteArgs>(args: SelectSubset<T, QuizQuestionDeleteArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuizQuestion.
+     * @param {QuizQuestionUpdateArgs} args - Arguments to update one QuizQuestion.
+     * @example
+     * // Update one QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuizQuestionUpdateArgs>(args: SelectSubset<T, QuizQuestionUpdateArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuizQuestions.
+     * @param {QuizQuestionDeleteManyArgs} args - Arguments to filter QuizQuestions to delete.
+     * @example
+     * // Delete a few QuizQuestions
+     * const { count } = await prisma.quizQuestion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuizQuestionDeleteManyArgs>(args?: SelectSubset<T, QuizQuestionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizQuestions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuizQuestions
+     * const quizQuestion = await prisma.quizQuestion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuizQuestionUpdateManyArgs>(args: SelectSubset<T, QuizQuestionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizQuestions and returns the data updated in the database.
+     * @param {QuizQuestionUpdateManyAndReturnArgs} args - Arguments to update many QuizQuestions.
+     * @example
+     * // Update many QuizQuestions
+     * const quizQuestion = await prisma.quizQuestion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuizQuestions and only return the `id`
+     * const quizQuestionWithIdOnly = await prisma.quizQuestion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuizQuestionUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizQuestionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuizQuestion.
+     * @param {QuizQuestionUpsertArgs} args - Arguments to update or create a QuizQuestion.
+     * @example
+     * // Update or create a QuizQuestion
+     * const quizQuestion = await prisma.quizQuestion.upsert({
+     *   create: {
+     *     // ... data to create a QuizQuestion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuizQuestion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuizQuestionUpsertArgs>(args: SelectSubset<T, QuizQuestionUpsertArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuizQuestions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionCountArgs} args - Arguments to filter QuizQuestions to count.
+     * @example
+     * // Count the number of QuizQuestions
+     * const count = await prisma.quizQuestion.count({
+     *   where: {
+     *     // ... the filter for the QuizQuestions we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuizQuestionCountArgs>(
+      args?: Subset<T, QuizQuestionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuizQuestionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuizQuestion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuizQuestionAggregateArgs>(args: Subset<T, QuizQuestionAggregateArgs>): Prisma.PrismaPromise<GetQuizQuestionAggregateType<T>>
+
+    /**
+     * Group by QuizQuestion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizQuestionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuizQuestionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuizQuestionGroupByArgs['orderBy'] }
+        : { orderBy?: QuizQuestionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuizQuestionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizQuestionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuizQuestion model
+   */
+  readonly fields: QuizQuestionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuizQuestion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuizQuestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuizQuestion model
+   */
+  interface QuizQuestionFieldRefs {
+    readonly id: FieldRef<"QuizQuestion", 'String'>
+    readonly category: FieldRef<"QuizQuestion", 'String'>
+    readonly question: FieldRef<"QuizQuestion", 'String'>
+    readonly imageUrl: FieldRef<"QuizQuestion", 'String'>
+    readonly options: FieldRef<"QuizQuestion", 'String'>
+    readonly correctIndex: FieldRef<"QuizQuestion", 'Int'>
+    readonly explanation: FieldRef<"QuizQuestion", 'String'>
+    readonly timesCorrect: FieldRef<"QuizQuestion", 'Int'>
+    readonly timesOption0: FieldRef<"QuizQuestion", 'Int'>
+    readonly timesOption1: FieldRef<"QuizQuestion", 'Int'>
+    readonly timesOption2: FieldRef<"QuizQuestion", 'Int'>
+    readonly timesOption3: FieldRef<"QuizQuestion", 'Int'>
+    readonly createdAt: FieldRef<"QuizQuestion", 'DateTime'>
+    readonly updatedAt: FieldRef<"QuizQuestion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuizQuestion findUnique
+   */
+  export type QuizQuestionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter, which QuizQuestion to fetch.
+     */
+    where: QuizQuestionWhereUniqueInput
+  }
+
+  /**
+   * QuizQuestion findUniqueOrThrow
+   */
+  export type QuizQuestionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter, which QuizQuestion to fetch.
+     */
+    where: QuizQuestionWhereUniqueInput
+  }
+
+  /**
+   * QuizQuestion findFirst
+   */
+  export type QuizQuestionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter, which QuizQuestion to fetch.
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizQuestions to fetch.
+     */
+    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizQuestions.
+     */
+    cursor?: QuizQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizQuestions.
+     */
+    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * QuizQuestion findFirstOrThrow
+   */
+  export type QuizQuestionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter, which QuizQuestion to fetch.
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizQuestions to fetch.
+     */
+    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizQuestions.
+     */
+    cursor?: QuizQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizQuestions.
+     */
+    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * QuizQuestion findMany
+   */
+  export type QuizQuestionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter, which QuizQuestions to fetch.
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizQuestions to fetch.
+     */
+    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuizQuestions.
+     */
+    cursor?: QuizQuestionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizQuestions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizQuestions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizQuestions.
+     */
+    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
+  }
+
+  /**
+   * QuizQuestion create
+   */
+  export type QuizQuestionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a QuizQuestion.
+     */
+    data: XOR<QuizQuestionCreateInput, QuizQuestionUncheckedCreateInput>
+  }
+
+  /**
+   * QuizQuestion createMany
+   */
+  export type QuizQuestionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuizQuestions.
+     */
+    data: QuizQuestionCreateManyInput | QuizQuestionCreateManyInput[]
+  }
+
+  /**
+   * QuizQuestion createManyAndReturn
+   */
+  export type QuizQuestionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuizQuestions.
+     */
+    data: QuizQuestionCreateManyInput | QuizQuestionCreateManyInput[]
+  }
+
+  /**
+   * QuizQuestion update
+   */
+  export type QuizQuestionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a QuizQuestion.
+     */
+    data: XOR<QuizQuestionUpdateInput, QuizQuestionUncheckedUpdateInput>
+    /**
+     * Choose, which QuizQuestion to update.
+     */
+    where: QuizQuestionWhereUniqueInput
+  }
+
+  /**
+   * QuizQuestion updateMany
+   */
+  export type QuizQuestionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuizQuestions.
+     */
+    data: XOR<QuizQuestionUpdateManyMutationInput, QuizQuestionUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizQuestions to update
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * Limit how many QuizQuestions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizQuestion updateManyAndReturn
+   */
+  export type QuizQuestionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * The data used to update QuizQuestions.
+     */
+    data: XOR<QuizQuestionUpdateManyMutationInput, QuizQuestionUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizQuestions to update
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * Limit how many QuizQuestions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizQuestion upsert
+   */
+  export type QuizQuestionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the QuizQuestion to update in case it exists.
+     */
+    where: QuizQuestionWhereUniqueInput
+    /**
+     * In case the QuizQuestion found by the `where` argument doesn't exist, create a new QuizQuestion with this data.
+     */
+    create: XOR<QuizQuestionCreateInput, QuizQuestionUncheckedCreateInput>
+    /**
+     * In case the QuizQuestion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuizQuestionUpdateInput, QuizQuestionUncheckedUpdateInput>
+  }
+
+  /**
+   * QuizQuestion delete
+   */
+  export type QuizQuestionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+    /**
+     * Filter which QuizQuestion to delete.
+     */
+    where: QuizQuestionWhereUniqueInput
+  }
+
+  /**
+   * QuizQuestion deleteMany
+   */
+  export type QuizQuestionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizQuestions to delete
+     */
+    where?: QuizQuestionWhereInput
+    /**
+     * Limit how many QuizQuestions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizQuestion without action
+   */
+  export type QuizQuestionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizQuestion
+     */
+    select?: QuizQuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizQuestion
+     */
+    omit?: QuizQuestionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model QuizAttempt
+   */
+
+  export type AggregateQuizAttempt = {
+    _count: QuizAttemptCountAggregateOutputType | null
+    _avg: QuizAttemptAvgAggregateOutputType | null
+    _sum: QuizAttemptSumAggregateOutputType | null
+    _min: QuizAttemptMinAggregateOutputType | null
+    _max: QuizAttemptMaxAggregateOutputType | null
+  }
+
+  export type QuizAttemptAvgAggregateOutputType = {
+    score: number | null
+    correct: number | null
+    total: number | null
+    duration: number | null
+    jokersUsed: number | null
+  }
+
+  export type QuizAttemptSumAggregateOutputType = {
+    score: number | null
+    correct: number | null
+    total: number | null
+    duration: number | null
+    jokersUsed: number | null
+  }
+
+  export type QuizAttemptMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    score: number | null
+    correct: number | null
+    total: number | null
+    duration: number | null
+    jokersUsed: number | null
+    createdAt: Date | null
+  }
+
+  export type QuizAttemptMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    score: number | null
+    correct: number | null
+    total: number | null
+    duration: number | null
+    jokersUsed: number | null
+    createdAt: Date | null
+  }
+
+  export type QuizAttemptCountAggregateOutputType = {
+    id: number
+    userId: number
+    score: number
+    correct: number
+    total: number
+    duration: number
+    jokersUsed: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type QuizAttemptAvgAggregateInputType = {
+    score?: true
+    correct?: true
+    total?: true
+    duration?: true
+    jokersUsed?: true
+  }
+
+  export type QuizAttemptSumAggregateInputType = {
+    score?: true
+    correct?: true
+    total?: true
+    duration?: true
+    jokersUsed?: true
+  }
+
+  export type QuizAttemptMinAggregateInputType = {
+    id?: true
+    userId?: true
+    score?: true
+    correct?: true
+    total?: true
+    duration?: true
+    jokersUsed?: true
+    createdAt?: true
+  }
+
+  export type QuizAttemptMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    score?: true
+    correct?: true
+    total?: true
+    duration?: true
+    jokersUsed?: true
+    createdAt?: true
+  }
+
+  export type QuizAttemptCountAggregateInputType = {
+    id?: true
+    userId?: true
+    score?: true
+    correct?: true
+    total?: true
+    duration?: true
+    jokersUsed?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type QuizAttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizAttempt to aggregate.
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizAttempts to fetch.
+     */
+    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuizAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuizAttempts
+    **/
+    _count?: true | QuizAttemptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QuizAttemptAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuizAttemptSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuizAttemptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuizAttemptMaxAggregateInputType
+  }
+
+  export type GetQuizAttemptAggregateType<T extends QuizAttemptAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuizAttempt]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuizAttempt[P]>
+      : GetScalarType<T[P], AggregateQuizAttempt[P]>
+  }
+
+
+
+
+  export type QuizAttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizAttemptWhereInput
+    orderBy?: QuizAttemptOrderByWithAggregationInput | QuizAttemptOrderByWithAggregationInput[]
+    by: QuizAttemptScalarFieldEnum[] | QuizAttemptScalarFieldEnum
+    having?: QuizAttemptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuizAttemptCountAggregateInputType | true
+    _avg?: QuizAttemptAvgAggregateInputType
+    _sum?: QuizAttemptSumAggregateInputType
+    _min?: QuizAttemptMinAggregateInputType
+    _max?: QuizAttemptMaxAggregateInputType
+  }
+
+  export type QuizAttemptGroupByOutputType = {
+    id: string
+    userId: string
+    score: number
+    correct: number
+    total: number
+    duration: number
+    jokersUsed: number
+    createdAt: Date
+    _count: QuizAttemptCountAggregateOutputType | null
+    _avg: QuizAttemptAvgAggregateOutputType | null
+    _sum: QuizAttemptSumAggregateOutputType | null
+    _min: QuizAttemptMinAggregateOutputType | null
+    _max: QuizAttemptMaxAggregateOutputType | null
+  }
+
+  type GetQuizAttemptGroupByPayload<T extends QuizAttemptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuizAttemptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuizAttemptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuizAttemptGroupByOutputType[P]>
+            : GetScalarType<T[P], QuizAttemptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuizAttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    score?: boolean
+    correct?: boolean
+    total?: boolean
+    duration?: boolean
+    jokersUsed?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizAttempt"]>
+
+  export type QuizAttemptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    score?: boolean
+    correct?: boolean
+    total?: boolean
+    duration?: boolean
+    jokersUsed?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizAttempt"]>
+
+  export type QuizAttemptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    score?: boolean
+    correct?: boolean
+    total?: boolean
+    duration?: boolean
+    jokersUsed?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizAttempt"]>
+
+  export type QuizAttemptSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    score?: boolean
+    correct?: boolean
+    total?: boolean
+    duration?: boolean
+    jokersUsed?: boolean
+    createdAt?: boolean
+  }
+
+  export type QuizAttemptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "score" | "correct" | "total" | "duration" | "jokersUsed" | "createdAt", ExtArgs["result"]["quizAttempt"]>
+  export type QuizAttemptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizAttemptIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizAttemptIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $QuizAttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuizAttempt"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      score: number
+      correct: number
+      total: number
+      duration: number
+      jokersUsed: number
+      createdAt: Date
+    }, ExtArgs["result"]["quizAttempt"]>
+    composites: {}
+  }
+
+  type QuizAttemptGetPayload<S extends boolean | null | undefined | QuizAttemptDefaultArgs> = $Result.GetResult<Prisma.$QuizAttemptPayload, S>
+
+  type QuizAttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuizAttemptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuizAttemptCountAggregateInputType | true
+    }
+
+  export interface QuizAttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizAttempt'], meta: { name: 'QuizAttempt' } }
+    /**
+     * Find zero or one QuizAttempt that matches the filter.
+     * @param {QuizAttemptFindUniqueArgs} args - Arguments to find a QuizAttempt
+     * @example
+     * // Get one QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuizAttemptFindUniqueArgs>(args: SelectSubset<T, QuizAttemptFindUniqueArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuizAttempt that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuizAttemptFindUniqueOrThrowArgs} args - Arguments to find a QuizAttempt
+     * @example
+     * // Get one QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuizAttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizAttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizAttempt that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptFindFirstArgs} args - Arguments to find a QuizAttempt
+     * @example
+     * // Get one QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuizAttemptFindFirstArgs>(args?: SelectSubset<T, QuizAttemptFindFirstArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizAttempt that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptFindFirstOrThrowArgs} args - Arguments to find a QuizAttempt
+     * @example
+     * // Get one QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuizAttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizAttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuizAttempts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuizAttempts
+     * const quizAttempts = await prisma.quizAttempt.findMany()
+     * 
+     * // Get first 10 QuizAttempts
+     * const quizAttempts = await prisma.quizAttempt.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const quizAttemptWithIdOnly = await prisma.quizAttempt.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends QuizAttemptFindManyArgs>(args?: SelectSubset<T, QuizAttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuizAttempt.
+     * @param {QuizAttemptCreateArgs} args - Arguments to create a QuizAttempt.
+     * @example
+     * // Create one QuizAttempt
+     * const QuizAttempt = await prisma.quizAttempt.create({
+     *   data: {
+     *     // ... data to create a QuizAttempt
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuizAttemptCreateArgs>(args: SelectSubset<T, QuizAttemptCreateArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuizAttempts.
+     * @param {QuizAttemptCreateManyArgs} args - Arguments to create many QuizAttempts.
+     * @example
+     * // Create many QuizAttempts
+     * const quizAttempt = await prisma.quizAttempt.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuizAttemptCreateManyArgs>(args?: SelectSubset<T, QuizAttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuizAttempts and returns the data saved in the database.
+     * @param {QuizAttemptCreateManyAndReturnArgs} args - Arguments to create many QuizAttempts.
+     * @example
+     * // Create many QuizAttempts
+     * const quizAttempt = await prisma.quizAttempt.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuizAttempts and only return the `id`
+     * const quizAttemptWithIdOnly = await prisma.quizAttempt.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuizAttemptCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizAttemptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuizAttempt.
+     * @param {QuizAttemptDeleteArgs} args - Arguments to delete one QuizAttempt.
+     * @example
+     * // Delete one QuizAttempt
+     * const QuizAttempt = await prisma.quizAttempt.delete({
+     *   where: {
+     *     // ... filter to delete one QuizAttempt
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuizAttemptDeleteArgs>(args: SelectSubset<T, QuizAttemptDeleteArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuizAttempt.
+     * @param {QuizAttemptUpdateArgs} args - Arguments to update one QuizAttempt.
+     * @example
+     * // Update one QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuizAttemptUpdateArgs>(args: SelectSubset<T, QuizAttemptUpdateArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuizAttempts.
+     * @param {QuizAttemptDeleteManyArgs} args - Arguments to filter QuizAttempts to delete.
+     * @example
+     * // Delete a few QuizAttempts
+     * const { count } = await prisma.quizAttempt.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuizAttemptDeleteManyArgs>(args?: SelectSubset<T, QuizAttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuizAttempts
+     * const quizAttempt = await prisma.quizAttempt.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuizAttemptUpdateManyArgs>(args: SelectSubset<T, QuizAttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizAttempts and returns the data updated in the database.
+     * @param {QuizAttemptUpdateManyAndReturnArgs} args - Arguments to update many QuizAttempts.
+     * @example
+     * // Update many QuizAttempts
+     * const quizAttempt = await prisma.quizAttempt.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuizAttempts and only return the `id`
+     * const quizAttemptWithIdOnly = await prisma.quizAttempt.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuizAttemptUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizAttemptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuizAttempt.
+     * @param {QuizAttemptUpsertArgs} args - Arguments to update or create a QuizAttempt.
+     * @example
+     * // Update or create a QuizAttempt
+     * const quizAttempt = await prisma.quizAttempt.upsert({
+     *   create: {
+     *     // ... data to create a QuizAttempt
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuizAttempt we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuizAttemptUpsertArgs>(args: SelectSubset<T, QuizAttemptUpsertArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuizAttempts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptCountArgs} args - Arguments to filter QuizAttempts to count.
+     * @example
+     * // Count the number of QuizAttempts
+     * const count = await prisma.quizAttempt.count({
+     *   where: {
+     *     // ... the filter for the QuizAttempts we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuizAttemptCountArgs>(
+      args?: Subset<T, QuizAttemptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuizAttemptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuizAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuizAttemptAggregateArgs>(args: Subset<T, QuizAttemptAggregateArgs>): Prisma.PrismaPromise<GetQuizAttemptAggregateType<T>>
+
+    /**
+     * Group by QuizAttempt.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizAttemptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuizAttemptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuizAttemptGroupByArgs['orderBy'] }
+        : { orderBy?: QuizAttemptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuizAttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuizAttempt model
+   */
+  readonly fields: QuizAttemptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuizAttempt.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuizAttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuizAttempt model
+   */
+  interface QuizAttemptFieldRefs {
+    readonly id: FieldRef<"QuizAttempt", 'String'>
+    readonly userId: FieldRef<"QuizAttempt", 'String'>
+    readonly score: FieldRef<"QuizAttempt", 'Int'>
+    readonly correct: FieldRef<"QuizAttempt", 'Int'>
+    readonly total: FieldRef<"QuizAttempt", 'Int'>
+    readonly duration: FieldRef<"QuizAttempt", 'Int'>
+    readonly jokersUsed: FieldRef<"QuizAttempt", 'Int'>
+    readonly createdAt: FieldRef<"QuizAttempt", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuizAttempt findUnique
+   */
+  export type QuizAttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizAttempt to fetch.
+     */
+    where: QuizAttemptWhereUniqueInput
+  }
+
+  /**
+   * QuizAttempt findUniqueOrThrow
+   */
+  export type QuizAttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizAttempt to fetch.
+     */
+    where: QuizAttemptWhereUniqueInput
+  }
+
+  /**
+   * QuizAttempt findFirst
+   */
+  export type QuizAttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizAttempt to fetch.
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizAttempts to fetch.
+     */
+    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizAttempts.
+     */
+    cursor?: QuizAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizAttempts.
+     */
+    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * QuizAttempt findFirstOrThrow
+   */
+  export type QuizAttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizAttempt to fetch.
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizAttempts to fetch.
+     */
+    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizAttempts.
+     */
+    cursor?: QuizAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizAttempts.
+     */
+    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * QuizAttempt findMany
+   */
+  export type QuizAttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizAttempts to fetch.
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizAttempts to fetch.
+     */
+    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuizAttempts.
+     */
+    cursor?: QuizAttemptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizAttempts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizAttempts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizAttempts.
+     */
+    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * QuizAttempt create
+   */
+  export type QuizAttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * The data needed to create a QuizAttempt.
+     */
+    data: XOR<QuizAttemptCreateInput, QuizAttemptUncheckedCreateInput>
+  }
+
+  /**
+   * QuizAttempt createMany
+   */
+  export type QuizAttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuizAttempts.
+     */
+    data: QuizAttemptCreateManyInput | QuizAttemptCreateManyInput[]
+  }
+
+  /**
+   * QuizAttempt createManyAndReturn
+   */
+  export type QuizAttemptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuizAttempts.
+     */
+    data: QuizAttemptCreateManyInput | QuizAttemptCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizAttempt update
+   */
+  export type QuizAttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * The data needed to update a QuizAttempt.
+     */
+    data: XOR<QuizAttemptUpdateInput, QuizAttemptUncheckedUpdateInput>
+    /**
+     * Choose, which QuizAttempt to update.
+     */
+    where: QuizAttemptWhereUniqueInput
+  }
+
+  /**
+   * QuizAttempt updateMany
+   */
+  export type QuizAttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuizAttempts.
+     */
+    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizAttempts to update
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * Limit how many QuizAttempts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizAttempt updateManyAndReturn
+   */
+  export type QuizAttemptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * The data used to update QuizAttempts.
+     */
+    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizAttempts to update
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * Limit how many QuizAttempts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizAttempt upsert
+   */
+  export type QuizAttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * The filter to search for the QuizAttempt to update in case it exists.
+     */
+    where: QuizAttemptWhereUniqueInput
+    /**
+     * In case the QuizAttempt found by the `where` argument doesn't exist, create a new QuizAttempt with this data.
+     */
+    create: XOR<QuizAttemptCreateInput, QuizAttemptUncheckedCreateInput>
+    /**
+     * In case the QuizAttempt was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuizAttemptUpdateInput, QuizAttemptUncheckedUpdateInput>
+  }
+
+  /**
+   * QuizAttempt delete
+   */
+  export type QuizAttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+    /**
+     * Filter which QuizAttempt to delete.
+     */
+    where: QuizAttemptWhereUniqueInput
+  }
+
+  /**
+   * QuizAttempt deleteMany
+   */
+  export type QuizAttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizAttempts to delete
+     */
+    where?: QuizAttemptWhereInput
+    /**
+     * Limit how many QuizAttempts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizAttempt without action
+   */
+  export type QuizAttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizAttempt
+     */
+    select?: QuizAttemptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizAttempt
+     */
+    omit?: QuizAttemptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizAttemptInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model QuizDailyWinner
+   */
+
+  export type AggregateQuizDailyWinner = {
+    _count: QuizDailyWinnerCountAggregateOutputType | null
+    _avg: QuizDailyWinnerAvgAggregateOutputType | null
+    _sum: QuizDailyWinnerSumAggregateOutputType | null
+    _min: QuizDailyWinnerMinAggregateOutputType | null
+    _max: QuizDailyWinnerMaxAggregateOutputType | null
+  }
+
+  export type QuizDailyWinnerAvgAggregateOutputType = {
+    score: number | null
+    streak: number | null
+  }
+
+  export type QuizDailyWinnerSumAggregateOutputType = {
+    score: number | null
+    streak: number | null
+  }
+
+  export type QuizDailyWinnerMinAggregateOutputType = {
+    date: Date | null
+    userId: string | null
+    score: number | null
+    streak: number | null
+  }
+
+  export type QuizDailyWinnerMaxAggregateOutputType = {
+    date: Date | null
+    userId: string | null
+    score: number | null
+    streak: number | null
+  }
+
+  export type QuizDailyWinnerCountAggregateOutputType = {
+    date: number
+    userId: number
+    score: number
+    streak: number
+    _all: number
+  }
+
+
+  export type QuizDailyWinnerAvgAggregateInputType = {
+    score?: true
+    streak?: true
+  }
+
+  export type QuizDailyWinnerSumAggregateInputType = {
+    score?: true
+    streak?: true
+  }
+
+  export type QuizDailyWinnerMinAggregateInputType = {
+    date?: true
+    userId?: true
+    score?: true
+    streak?: true
+  }
+
+  export type QuizDailyWinnerMaxAggregateInputType = {
+    date?: true
+    userId?: true
+    score?: true
+    streak?: true
+  }
+
+  export type QuizDailyWinnerCountAggregateInputType = {
+    date?: true
+    userId?: true
+    score?: true
+    streak?: true
+    _all?: true
+  }
+
+  export type QuizDailyWinnerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizDailyWinner to aggregate.
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizDailyWinners to fetch.
+     */
+    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuizDailyWinnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizDailyWinners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizDailyWinners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuizDailyWinners
+    **/
+    _count?: true | QuizDailyWinnerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QuizDailyWinnerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuizDailyWinnerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuizDailyWinnerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuizDailyWinnerMaxAggregateInputType
+  }
+
+  export type GetQuizDailyWinnerAggregateType<T extends QuizDailyWinnerAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuizDailyWinner]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuizDailyWinner[P]>
+      : GetScalarType<T[P], AggregateQuizDailyWinner[P]>
+  }
+
+
+
+
+  export type QuizDailyWinnerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizDailyWinnerWhereInput
+    orderBy?: QuizDailyWinnerOrderByWithAggregationInput | QuizDailyWinnerOrderByWithAggregationInput[]
+    by: QuizDailyWinnerScalarFieldEnum[] | QuizDailyWinnerScalarFieldEnum
+    having?: QuizDailyWinnerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuizDailyWinnerCountAggregateInputType | true
+    _avg?: QuizDailyWinnerAvgAggregateInputType
+    _sum?: QuizDailyWinnerSumAggregateInputType
+    _min?: QuizDailyWinnerMinAggregateInputType
+    _max?: QuizDailyWinnerMaxAggregateInputType
+  }
+
+  export type QuizDailyWinnerGroupByOutputType = {
+    date: Date
+    userId: string
+    score: number
+    streak: number
+    _count: QuizDailyWinnerCountAggregateOutputType | null
+    _avg: QuizDailyWinnerAvgAggregateOutputType | null
+    _sum: QuizDailyWinnerSumAggregateOutputType | null
+    _min: QuizDailyWinnerMinAggregateOutputType | null
+    _max: QuizDailyWinnerMaxAggregateOutputType | null
+  }
+
+  type GetQuizDailyWinnerGroupByPayload<T extends QuizDailyWinnerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuizDailyWinnerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuizDailyWinnerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuizDailyWinnerGroupByOutputType[P]>
+            : GetScalarType<T[P], QuizDailyWinnerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuizDailyWinnerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    userId?: boolean
+    score?: boolean
+    streak?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizDailyWinner"]>
+
+  export type QuizDailyWinnerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    userId?: boolean
+    score?: boolean
+    streak?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizDailyWinner"]>
+
+  export type QuizDailyWinnerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    date?: boolean
+    userId?: boolean
+    score?: boolean
+    streak?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizDailyWinner"]>
+
+  export type QuizDailyWinnerSelectScalar = {
+    date?: boolean
+    userId?: boolean
+    score?: boolean
+    streak?: boolean
+  }
+
+  export type QuizDailyWinnerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"date" | "userId" | "score" | "streak", ExtArgs["result"]["quizDailyWinner"]>
+  export type QuizDailyWinnerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizDailyWinnerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizDailyWinnerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $QuizDailyWinnerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuizDailyWinner"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      date: Date
+      userId: string
+      score: number
+      streak: number
+    }, ExtArgs["result"]["quizDailyWinner"]>
+    composites: {}
+  }
+
+  type QuizDailyWinnerGetPayload<S extends boolean | null | undefined | QuizDailyWinnerDefaultArgs> = $Result.GetResult<Prisma.$QuizDailyWinnerPayload, S>
+
+  type QuizDailyWinnerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuizDailyWinnerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuizDailyWinnerCountAggregateInputType | true
+    }
+
+  export interface QuizDailyWinnerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizDailyWinner'], meta: { name: 'QuizDailyWinner' } }
+    /**
+     * Find zero or one QuizDailyWinner that matches the filter.
+     * @param {QuizDailyWinnerFindUniqueArgs} args - Arguments to find a QuizDailyWinner
+     * @example
+     * // Get one QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuizDailyWinnerFindUniqueArgs>(args: SelectSubset<T, QuizDailyWinnerFindUniqueArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuizDailyWinner that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuizDailyWinnerFindUniqueOrThrowArgs} args - Arguments to find a QuizDailyWinner
+     * @example
+     * // Get one QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuizDailyWinnerFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizDailyWinner that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerFindFirstArgs} args - Arguments to find a QuizDailyWinner
+     * @example
+     * // Get one QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuizDailyWinnerFindFirstArgs>(args?: SelectSubset<T, QuizDailyWinnerFindFirstArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizDailyWinner that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerFindFirstOrThrowArgs} args - Arguments to find a QuizDailyWinner
+     * @example
+     * // Get one QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuizDailyWinnerFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuizDailyWinners that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuizDailyWinners
+     * const quizDailyWinners = await prisma.quizDailyWinner.findMany()
+     * 
+     * // Get first 10 QuizDailyWinners
+     * const quizDailyWinners = await prisma.quizDailyWinner.findMany({ take: 10 })
+     * 
+     * // Only select the `date`
+     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.findMany({ select: { date: true } })
+     * 
+     */
+    findMany<T extends QuizDailyWinnerFindManyArgs>(args?: SelectSubset<T, QuizDailyWinnerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuizDailyWinner.
+     * @param {QuizDailyWinnerCreateArgs} args - Arguments to create a QuizDailyWinner.
+     * @example
+     * // Create one QuizDailyWinner
+     * const QuizDailyWinner = await prisma.quizDailyWinner.create({
+     *   data: {
+     *     // ... data to create a QuizDailyWinner
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuizDailyWinnerCreateArgs>(args: SelectSubset<T, QuizDailyWinnerCreateArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuizDailyWinners.
+     * @param {QuizDailyWinnerCreateManyArgs} args - Arguments to create many QuizDailyWinners.
+     * @example
+     * // Create many QuizDailyWinners
+     * const quizDailyWinner = await prisma.quizDailyWinner.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuizDailyWinnerCreateManyArgs>(args?: SelectSubset<T, QuizDailyWinnerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuizDailyWinners and returns the data saved in the database.
+     * @param {QuizDailyWinnerCreateManyAndReturnArgs} args - Arguments to create many QuizDailyWinners.
+     * @example
+     * // Create many QuizDailyWinners
+     * const quizDailyWinner = await prisma.quizDailyWinner.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuizDailyWinners and only return the `date`
+     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.createManyAndReturn({
+     *   select: { date: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuizDailyWinnerCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuizDailyWinner.
+     * @param {QuizDailyWinnerDeleteArgs} args - Arguments to delete one QuizDailyWinner.
+     * @example
+     * // Delete one QuizDailyWinner
+     * const QuizDailyWinner = await prisma.quizDailyWinner.delete({
+     *   where: {
+     *     // ... filter to delete one QuizDailyWinner
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuizDailyWinnerDeleteArgs>(args: SelectSubset<T, QuizDailyWinnerDeleteArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuizDailyWinner.
+     * @param {QuizDailyWinnerUpdateArgs} args - Arguments to update one QuizDailyWinner.
+     * @example
+     * // Update one QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuizDailyWinnerUpdateArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuizDailyWinners.
+     * @param {QuizDailyWinnerDeleteManyArgs} args - Arguments to filter QuizDailyWinners to delete.
+     * @example
+     * // Delete a few QuizDailyWinners
+     * const { count } = await prisma.quizDailyWinner.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuizDailyWinnerDeleteManyArgs>(args?: SelectSubset<T, QuizDailyWinnerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizDailyWinners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuizDailyWinners
+     * const quizDailyWinner = await prisma.quizDailyWinner.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuizDailyWinnerUpdateManyArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizDailyWinners and returns the data updated in the database.
+     * @param {QuizDailyWinnerUpdateManyAndReturnArgs} args - Arguments to update many QuizDailyWinners.
+     * @example
+     * // Update many QuizDailyWinners
+     * const quizDailyWinner = await prisma.quizDailyWinner.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuizDailyWinners and only return the `date`
+     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.updateManyAndReturn({
+     *   select: { date: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuizDailyWinnerUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuizDailyWinner.
+     * @param {QuizDailyWinnerUpsertArgs} args - Arguments to update or create a QuizDailyWinner.
+     * @example
+     * // Update or create a QuizDailyWinner
+     * const quizDailyWinner = await prisma.quizDailyWinner.upsert({
+     *   create: {
+     *     // ... data to create a QuizDailyWinner
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuizDailyWinner we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuizDailyWinnerUpsertArgs>(args: SelectSubset<T, QuizDailyWinnerUpsertArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuizDailyWinners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerCountArgs} args - Arguments to filter QuizDailyWinners to count.
+     * @example
+     * // Count the number of QuizDailyWinners
+     * const count = await prisma.quizDailyWinner.count({
+     *   where: {
+     *     // ... the filter for the QuizDailyWinners we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuizDailyWinnerCountArgs>(
+      args?: Subset<T, QuizDailyWinnerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuizDailyWinnerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuizDailyWinner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuizDailyWinnerAggregateArgs>(args: Subset<T, QuizDailyWinnerAggregateArgs>): Prisma.PrismaPromise<GetQuizDailyWinnerAggregateType<T>>
+
+    /**
+     * Group by QuizDailyWinner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizDailyWinnerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuizDailyWinnerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuizDailyWinnerGroupByArgs['orderBy'] }
+        : { orderBy?: QuizDailyWinnerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuizDailyWinnerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizDailyWinnerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuizDailyWinner model
+   */
+  readonly fields: QuizDailyWinnerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuizDailyWinner.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuizDailyWinnerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuizDailyWinner model
+   */
+  interface QuizDailyWinnerFieldRefs {
+    readonly date: FieldRef<"QuizDailyWinner", 'DateTime'>
+    readonly userId: FieldRef<"QuizDailyWinner", 'String'>
+    readonly score: FieldRef<"QuizDailyWinner", 'Int'>
+    readonly streak: FieldRef<"QuizDailyWinner", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuizDailyWinner findUnique
+   */
+  export type QuizDailyWinnerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizDailyWinner to fetch.
+     */
+    where: QuizDailyWinnerWhereUniqueInput
+  }
+
+  /**
+   * QuizDailyWinner findUniqueOrThrow
+   */
+  export type QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizDailyWinner to fetch.
+     */
+    where: QuizDailyWinnerWhereUniqueInput
+  }
+
+  /**
+   * QuizDailyWinner findFirst
+   */
+  export type QuizDailyWinnerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizDailyWinner to fetch.
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizDailyWinners to fetch.
+     */
+    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizDailyWinners.
+     */
+    cursor?: QuizDailyWinnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizDailyWinners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizDailyWinners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizDailyWinners.
+     */
+    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
+  }
+
+  /**
+   * QuizDailyWinner findFirstOrThrow
+   */
+  export type QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizDailyWinner to fetch.
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizDailyWinners to fetch.
+     */
+    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizDailyWinners.
+     */
+    cursor?: QuizDailyWinnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizDailyWinners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizDailyWinners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizDailyWinners.
+     */
+    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
+  }
+
+  /**
+   * QuizDailyWinner findMany
+   */
+  export type QuizDailyWinnerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizDailyWinners to fetch.
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizDailyWinners to fetch.
+     */
+    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuizDailyWinners.
+     */
+    cursor?: QuizDailyWinnerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizDailyWinners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizDailyWinners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizDailyWinners.
+     */
+    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
+  }
+
+  /**
+   * QuizDailyWinner create
+   */
+  export type QuizDailyWinnerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a QuizDailyWinner.
+     */
+    data: XOR<QuizDailyWinnerCreateInput, QuizDailyWinnerUncheckedCreateInput>
+  }
+
+  /**
+   * QuizDailyWinner createMany
+   */
+  export type QuizDailyWinnerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuizDailyWinners.
+     */
+    data: QuizDailyWinnerCreateManyInput | QuizDailyWinnerCreateManyInput[]
+  }
+
+  /**
+   * QuizDailyWinner createManyAndReturn
+   */
+  export type QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuizDailyWinners.
+     */
+    data: QuizDailyWinnerCreateManyInput | QuizDailyWinnerCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizDailyWinner update
+   */
+  export type QuizDailyWinnerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a QuizDailyWinner.
+     */
+    data: XOR<QuizDailyWinnerUpdateInput, QuizDailyWinnerUncheckedUpdateInput>
+    /**
+     * Choose, which QuizDailyWinner to update.
+     */
+    where: QuizDailyWinnerWhereUniqueInput
+  }
+
+  /**
+   * QuizDailyWinner updateMany
+   */
+  export type QuizDailyWinnerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuizDailyWinners.
+     */
+    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizDailyWinners to update
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * Limit how many QuizDailyWinners to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizDailyWinner updateManyAndReturn
+   */
+  export type QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * The data used to update QuizDailyWinners.
+     */
+    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizDailyWinners to update
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * Limit how many QuizDailyWinners to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizDailyWinner upsert
+   */
+  export type QuizDailyWinnerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the QuizDailyWinner to update in case it exists.
+     */
+    where: QuizDailyWinnerWhereUniqueInput
+    /**
+     * In case the QuizDailyWinner found by the `where` argument doesn't exist, create a new QuizDailyWinner with this data.
+     */
+    create: XOR<QuizDailyWinnerCreateInput, QuizDailyWinnerUncheckedCreateInput>
+    /**
+     * In case the QuizDailyWinner was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuizDailyWinnerUpdateInput, QuizDailyWinnerUncheckedUpdateInput>
+  }
+
+  /**
+   * QuizDailyWinner delete
+   */
+  export type QuizDailyWinnerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+    /**
+     * Filter which QuizDailyWinner to delete.
+     */
+    where: QuizDailyWinnerWhereUniqueInput
+  }
+
+  /**
+   * QuizDailyWinner deleteMany
+   */
+  export type QuizDailyWinnerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizDailyWinners to delete
+     */
+    where?: QuizDailyWinnerWhereInput
+    /**
+     * Limit how many QuizDailyWinners to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizDailyWinner without action
+   */
+  export type QuizDailyWinnerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizDailyWinner
+     */
+    select?: QuizDailyWinnerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizDailyWinner
+     */
+    omit?: QuizDailyWinnerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizDailyWinnerInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -45941,7 +49791,11 @@ export namespace Prisma {
     avatarFrame: 'avatarFrame',
     theme: 'theme',
     equipe: 'equipe',
-    ligueCustom: 'ligueCustom'
+    ligueCustom: 'ligueCustom',
+    quizTotalScore: 'quizTotalScore',
+    quizBestScore: 'quizBestScore',
+    quizStreak: 'quizStreak',
+    quizAttemptsCount: 'quizAttemptsCount'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -46392,6 +50246,50 @@ export namespace Prisma {
   export type TournamentMatchScalarFieldEnum = (typeof TournamentMatchScalarFieldEnum)[keyof typeof TournamentMatchScalarFieldEnum]
 
 
+  export const QuizQuestionScalarFieldEnum: {
+    id: 'id',
+    category: 'category',
+    question: 'question',
+    imageUrl: 'imageUrl',
+    options: 'options',
+    correctIndex: 'correctIndex',
+    explanation: 'explanation',
+    timesCorrect: 'timesCorrect',
+    timesOption0: 'timesOption0',
+    timesOption1: 'timesOption1',
+    timesOption2: 'timesOption2',
+    timesOption3: 'timesOption3',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type QuizQuestionScalarFieldEnum = (typeof QuizQuestionScalarFieldEnum)[keyof typeof QuizQuestionScalarFieldEnum]
+
+
+  export const QuizAttemptScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    score: 'score',
+    correct: 'correct',
+    total: 'total',
+    duration: 'duration',
+    jokersUsed: 'jokersUsed',
+    createdAt: 'createdAt'
+  };
+
+  export type QuizAttemptScalarFieldEnum = (typeof QuizAttemptScalarFieldEnum)[keyof typeof QuizAttemptScalarFieldEnum]
+
+
+  export const QuizDailyWinnerScalarFieldEnum: {
+    date: 'date',
+    userId: 'userId',
+    score: 'score',
+    streak: 'streak'
+  };
+
+  export type QuizDailyWinnerScalarFieldEnum = (typeof QuizDailyWinnerScalarFieldEnum)[keyof typeof QuizDailyWinnerScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -46627,6 +50525,10 @@ export namespace Prisma {
     theme?: StringFilter<"User"> | string
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
+    quizTotalScore?: IntFilter<"User"> | number
+    quizBestScore?: IntFilter<"User"> | number
+    quizStreak?: IntFilter<"User"> | number
+    quizAttemptsCount?: IntFilter<"User"> | number
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -46663,6 +50565,8 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    quizAttempts?: QuizAttemptListRelationFilter
+    dailyWins?: QuizDailyWinnerListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -46681,6 +50585,10 @@ export namespace Prisma {
     theme?: SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     moderatedArticles?: ArticleOrderByRelationAggregateInput
     articles?: ArticleOrderByRelationAggregateInput
@@ -46717,6 +50625,8 @@ export namespace Prisma {
     commissaireLigues?: LigueOrderByRelationAggregateInput
     ligues?: LigueOrderByRelationAggregateInput
     commissairesTournaments?: TournamentOrderByRelationAggregateInput
+    quizAttempts?: QuizAttemptOrderByRelationAggregateInput
+    dailyWins?: QuizDailyWinnerOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -46738,6 +50648,10 @@ export namespace Prisma {
     theme?: StringFilter<"User"> | string
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
+    quizTotalScore?: IntFilter<"User"> | number
+    quizBestScore?: IntFilter<"User"> | number
+    quizStreak?: IntFilter<"User"> | number
+    quizAttemptsCount?: IntFilter<"User"> | number
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -46774,6 +50688,8 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    quizAttempts?: QuizAttemptListRelationFilter
+    dailyWins?: QuizDailyWinnerListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -46792,9 +50708,15 @@ export namespace Prisma {
     theme?: SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -46816,6 +50738,10 @@ export namespace Prisma {
     theme?: StringWithAggregatesFilter<"User"> | string
     equipe?: StringNullableWithAggregatesFilter<"User"> | string | null
     ligueCustom?: StringNullableWithAggregatesFilter<"User"> | string | null
+    quizTotalScore?: IntWithAggregatesFilter<"User"> | number
+    quizBestScore?: IntWithAggregatesFilter<"User"> | number
+    quizStreak?: IntWithAggregatesFilter<"User"> | number
+    quizAttemptsCount?: IntWithAggregatesFilter<"User"> | number
   }
 
   export type BlockWhereInput = {
@@ -49220,6 +53146,229 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TournamentMatch"> | Date | string
   }
 
+  export type QuizQuestionWhereInput = {
+    AND?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
+    OR?: QuizQuestionWhereInput[]
+    NOT?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
+    id?: StringFilter<"QuizQuestion"> | string
+    category?: StringFilter<"QuizQuestion"> | string
+    question?: StringFilter<"QuizQuestion"> | string
+    imageUrl?: StringNullableFilter<"QuizQuestion"> | string | null
+    options?: StringFilter<"QuizQuestion"> | string
+    correctIndex?: IntFilter<"QuizQuestion"> | number
+    explanation?: StringNullableFilter<"QuizQuestion"> | string | null
+    timesCorrect?: IntFilter<"QuizQuestion"> | number
+    timesOption0?: IntFilter<"QuizQuestion"> | number
+    timesOption1?: IntFilter<"QuizQuestion"> | number
+    timesOption2?: IntFilter<"QuizQuestion"> | number
+    timesOption3?: IntFilter<"QuizQuestion"> | number
+    createdAt?: DateTimeFilter<"QuizQuestion"> | Date | string
+    updatedAt?: DateTimeFilter<"QuizQuestion"> | Date | string
+  }
+
+  export type QuizQuestionOrderByWithRelationInput = {
+    id?: SortOrder
+    category?: SortOrder
+    question?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    options?: SortOrder
+    correctIndex?: SortOrder
+    explanation?: SortOrderInput | SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuizQuestionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
+    OR?: QuizQuestionWhereInput[]
+    NOT?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
+    category?: StringFilter<"QuizQuestion"> | string
+    question?: StringFilter<"QuizQuestion"> | string
+    imageUrl?: StringNullableFilter<"QuizQuestion"> | string | null
+    options?: StringFilter<"QuizQuestion"> | string
+    correctIndex?: IntFilter<"QuizQuestion"> | number
+    explanation?: StringNullableFilter<"QuizQuestion"> | string | null
+    timesCorrect?: IntFilter<"QuizQuestion"> | number
+    timesOption0?: IntFilter<"QuizQuestion"> | number
+    timesOption1?: IntFilter<"QuizQuestion"> | number
+    timesOption2?: IntFilter<"QuizQuestion"> | number
+    timesOption3?: IntFilter<"QuizQuestion"> | number
+    createdAt?: DateTimeFilter<"QuizQuestion"> | Date | string
+    updatedAt?: DateTimeFilter<"QuizQuestion"> | Date | string
+  }, "id">
+
+  export type QuizQuestionOrderByWithAggregationInput = {
+    id?: SortOrder
+    category?: SortOrder
+    question?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    options?: SortOrder
+    correctIndex?: SortOrder
+    explanation?: SortOrderInput | SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: QuizQuestionCountOrderByAggregateInput
+    _avg?: QuizQuestionAvgOrderByAggregateInput
+    _max?: QuizQuestionMaxOrderByAggregateInput
+    _min?: QuizQuestionMinOrderByAggregateInput
+    _sum?: QuizQuestionSumOrderByAggregateInput
+  }
+
+  export type QuizQuestionScalarWhereWithAggregatesInput = {
+    AND?: QuizQuestionScalarWhereWithAggregatesInput | QuizQuestionScalarWhereWithAggregatesInput[]
+    OR?: QuizQuestionScalarWhereWithAggregatesInput[]
+    NOT?: QuizQuestionScalarWhereWithAggregatesInput | QuizQuestionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"QuizQuestion"> | string
+    category?: StringWithAggregatesFilter<"QuizQuestion"> | string
+    question?: StringWithAggregatesFilter<"QuizQuestion"> | string
+    imageUrl?: StringNullableWithAggregatesFilter<"QuizQuestion"> | string | null
+    options?: StringWithAggregatesFilter<"QuizQuestion"> | string
+    correctIndex?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    explanation?: StringNullableWithAggregatesFilter<"QuizQuestion"> | string | null
+    timesCorrect?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    timesOption0?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    timesOption1?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    timesOption2?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    timesOption3?: IntWithAggregatesFilter<"QuizQuestion"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"QuizQuestion"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"QuizQuestion"> | Date | string
+  }
+
+  export type QuizAttemptWhereInput = {
+    AND?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
+    OR?: QuizAttemptWhereInput[]
+    NOT?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
+    id?: StringFilter<"QuizAttempt"> | string
+    userId?: StringFilter<"QuizAttempt"> | string
+    score?: IntFilter<"QuizAttempt"> | number
+    correct?: IntFilter<"QuizAttempt"> | number
+    total?: IntFilter<"QuizAttempt"> | number
+    duration?: IntFilter<"QuizAttempt"> | number
+    jokersUsed?: IntFilter<"QuizAttempt"> | number
+    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type QuizAttemptOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type QuizAttemptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
+    OR?: QuizAttemptWhereInput[]
+    NOT?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
+    userId?: StringFilter<"QuizAttempt"> | string
+    score?: IntFilter<"QuizAttempt"> | number
+    correct?: IntFilter<"QuizAttempt"> | number
+    total?: IntFilter<"QuizAttempt"> | number
+    duration?: IntFilter<"QuizAttempt"> | number
+    jokersUsed?: IntFilter<"QuizAttempt"> | number
+    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type QuizAttemptOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+    createdAt?: SortOrder
+    _count?: QuizAttemptCountOrderByAggregateInput
+    _avg?: QuizAttemptAvgOrderByAggregateInput
+    _max?: QuizAttemptMaxOrderByAggregateInput
+    _min?: QuizAttemptMinOrderByAggregateInput
+    _sum?: QuizAttemptSumOrderByAggregateInput
+  }
+
+  export type QuizAttemptScalarWhereWithAggregatesInput = {
+    AND?: QuizAttemptScalarWhereWithAggregatesInput | QuizAttemptScalarWhereWithAggregatesInput[]
+    OR?: QuizAttemptScalarWhereWithAggregatesInput[]
+    NOT?: QuizAttemptScalarWhereWithAggregatesInput | QuizAttemptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"QuizAttempt"> | string
+    userId?: StringWithAggregatesFilter<"QuizAttempt"> | string
+    score?: IntWithAggregatesFilter<"QuizAttempt"> | number
+    correct?: IntWithAggregatesFilter<"QuizAttempt"> | number
+    total?: IntWithAggregatesFilter<"QuizAttempt"> | number
+    duration?: IntWithAggregatesFilter<"QuizAttempt"> | number
+    jokersUsed?: IntWithAggregatesFilter<"QuizAttempt"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"QuizAttempt"> | Date | string
+  }
+
+  export type QuizDailyWinnerWhereInput = {
+    AND?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
+    OR?: QuizDailyWinnerWhereInput[]
+    NOT?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
+    date?: DateTimeFilter<"QuizDailyWinner"> | Date | string
+    userId?: StringFilter<"QuizDailyWinner"> | string
+    score?: IntFilter<"QuizDailyWinner"> | number
+    streak?: IntFilter<"QuizDailyWinner"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type QuizDailyWinnerOrderByWithRelationInput = {
+    date?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    streak?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type QuizDailyWinnerWhereUniqueInput = Prisma.AtLeast<{
+    date?: Date | string
+    AND?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
+    OR?: QuizDailyWinnerWhereInput[]
+    NOT?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
+    userId?: StringFilter<"QuizDailyWinner"> | string
+    score?: IntFilter<"QuizDailyWinner"> | number
+    streak?: IntFilter<"QuizDailyWinner"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "date">
+
+  export type QuizDailyWinnerOrderByWithAggregationInput = {
+    date?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    streak?: SortOrder
+    _count?: QuizDailyWinnerCountOrderByAggregateInput
+    _avg?: QuizDailyWinnerAvgOrderByAggregateInput
+    _max?: QuizDailyWinnerMaxOrderByAggregateInput
+    _min?: QuizDailyWinnerMinOrderByAggregateInput
+    _sum?: QuizDailyWinnerSumOrderByAggregateInput
+  }
+
+  export type QuizDailyWinnerScalarWhereWithAggregatesInput = {
+    AND?: QuizDailyWinnerScalarWhereWithAggregatesInput | QuizDailyWinnerScalarWhereWithAggregatesInput[]
+    OR?: QuizDailyWinnerScalarWhereWithAggregatesInput[]
+    NOT?: QuizDailyWinnerScalarWhereWithAggregatesInput | QuizDailyWinnerScalarWhereWithAggregatesInput[]
+    date?: DateTimeWithAggregatesFilter<"QuizDailyWinner"> | Date | string
+    userId?: StringWithAggregatesFilter<"QuizDailyWinner"> | string
+    score?: IntWithAggregatesFilter<"QuizDailyWinner"> | number
+    streak?: IntWithAggregatesFilter<"QuizDailyWinner"> | number
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -49387,6 +53536,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -49423,6 +53576,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -49441,6 +53596,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -49476,6 +53635,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -49493,6 +53654,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -49529,6 +53694,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -49547,6 +53714,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -49582,6 +53753,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -49600,6 +53773,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -49617,6 +53794,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -49635,6 +53816,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type BlockCreateInput = {
@@ -52143,6 +56328,249 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type QuizQuestionCreateInput = {
+    id?: string
+    category: string
+    question: string
+    imageUrl?: string | null
+    options: string
+    correctIndex: number
+    explanation?: string | null
+    timesCorrect?: number
+    timesOption0?: number
+    timesOption1?: number
+    timesOption2?: number
+    timesOption3?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuizQuestionUncheckedCreateInput = {
+    id?: string
+    category: string
+    question: string
+    imageUrl?: string | null
+    options: string
+    correctIndex: number
+    explanation?: string | null
+    timesCorrect?: number
+    timesOption0?: number
+    timesOption1?: number
+    timesOption2?: number
+    timesOption3?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuizQuestionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: StringFieldUpdateOperationsInput | string
+    correctIndex?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    timesCorrect?: IntFieldUpdateOperationsInput | number
+    timesOption0?: IntFieldUpdateOperationsInput | number
+    timesOption1?: IntFieldUpdateOperationsInput | number
+    timesOption2?: IntFieldUpdateOperationsInput | number
+    timesOption3?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizQuestionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: StringFieldUpdateOperationsInput | string
+    correctIndex?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    timesCorrect?: IntFieldUpdateOperationsInput | number
+    timesOption0?: IntFieldUpdateOperationsInput | number
+    timesOption1?: IntFieldUpdateOperationsInput | number
+    timesOption2?: IntFieldUpdateOperationsInput | number
+    timesOption3?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizQuestionCreateManyInput = {
+    id?: string
+    category: string
+    question: string
+    imageUrl?: string | null
+    options: string
+    correctIndex: number
+    explanation?: string | null
+    timesCorrect?: number
+    timesOption0?: number
+    timesOption1?: number
+    timesOption2?: number
+    timesOption3?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuizQuestionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: StringFieldUpdateOperationsInput | string
+    correctIndex?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    timesCorrect?: IntFieldUpdateOperationsInput | number
+    timesOption0?: IntFieldUpdateOperationsInput | number
+    timesOption1?: IntFieldUpdateOperationsInput | number
+    timesOption2?: IntFieldUpdateOperationsInput | number
+    timesOption3?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizQuestionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    question?: StringFieldUpdateOperationsInput | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    options?: StringFieldUpdateOperationsInput | string
+    correctIndex?: IntFieldUpdateOperationsInput | number
+    explanation?: NullableStringFieldUpdateOperationsInput | string | null
+    timesCorrect?: IntFieldUpdateOperationsInput | number
+    timesOption0?: IntFieldUpdateOperationsInput | number
+    timesOption1?: IntFieldUpdateOperationsInput | number
+    timesOption2?: IntFieldUpdateOperationsInput | number
+    timesOption3?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizAttemptCreateInput = {
+    id?: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutQuizAttemptsInput
+  }
+
+  export type QuizAttemptUncheckedCreateInput = {
+    id?: string
+    userId: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+  }
+
+  export type QuizAttemptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutQuizAttemptsNestedInput
+  }
+
+  export type QuizAttemptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizAttemptCreateManyInput = {
+    id?: string
+    userId: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+  }
+
+  export type QuizAttemptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizAttemptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizDailyWinnerCreateInput = {
+    date: Date | string
+    score: number
+    streak?: number
+    user: UserCreateNestedOneWithoutDailyWinsInput
+  }
+
+  export type QuizDailyWinnerUncheckedCreateInput = {
+    date: Date | string
+    userId: string
+    score: number
+    streak?: number
+  }
+
+  export type QuizDailyWinnerUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutDailyWinsNestedInput
+  }
+
+  export type QuizDailyWinnerUncheckedUpdateInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type QuizDailyWinnerCreateManyInput = {
+    date: Date | string
+    userId: string
+    score: number
+    streak?: number
+  }
+
+  export type QuizDailyWinnerUpdateManyMutationInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type QuizDailyWinnerUncheckedUpdateManyInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -52362,6 +56790,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -52517,6 +56956,18 @@ export namespace Prisma {
     isNot?: RoleConfigWhereInput
   }
 
+  export type QuizAttemptListRelationFilter = {
+    every?: QuizAttemptWhereInput
+    some?: QuizAttemptWhereInput
+    none?: QuizAttemptWhereInput
+  }
+
+  export type QuizDailyWinnerListRelationFilter = {
+    every?: QuizDailyWinnerWhereInput
+    some?: QuizDailyWinnerWhereInput
+    none?: QuizDailyWinnerWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -52617,6 +57068,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type QuizAttemptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type QuizDailyWinnerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -52633,6 +57092,17 @@ export namespace Prisma {
     theme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -52651,6 +57121,10 @@ export namespace Prisma {
     theme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -52669,6 +57143,17 @@ export namespace Prisma {
     theme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    quizTotalScore?: SortOrder
+    quizBestScore?: SortOrder
+    quizStreak?: SortOrder
+    quizAttemptsCount?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -52691,6 +57176,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BlockBlockerIdBlockedIdCompoundUniqueInput = {
@@ -52737,17 +57238,6 @@ export namespace Prisma {
     identifier?: SortOrder
     token?: SortOrder
     expires?: SortOrder
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -52956,22 +57446,6 @@ export namespace Prisma {
     priceLodging?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -54186,6 +58660,155 @@ export namespace Prisma {
     coach2Casualties?: SortOrder
   }
 
+  export type QuizQuestionCountOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    question?: SortOrder
+    imageUrl?: SortOrder
+    options?: SortOrder
+    correctIndex?: SortOrder
+    explanation?: SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuizQuestionAvgOrderByAggregateInput = {
+    correctIndex?: SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+  }
+
+  export type QuizQuestionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    question?: SortOrder
+    imageUrl?: SortOrder
+    options?: SortOrder
+    correctIndex?: SortOrder
+    explanation?: SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuizQuestionMinOrderByAggregateInput = {
+    id?: SortOrder
+    category?: SortOrder
+    question?: SortOrder
+    imageUrl?: SortOrder
+    options?: SortOrder
+    correctIndex?: SortOrder
+    explanation?: SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuizQuestionSumOrderByAggregateInput = {
+    correctIndex?: SortOrder
+    timesCorrect?: SortOrder
+    timesOption0?: SortOrder
+    timesOption1?: SortOrder
+    timesOption2?: SortOrder
+    timesOption3?: SortOrder
+  }
+
+  export type QuizAttemptCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuizAttemptAvgOrderByAggregateInput = {
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+  }
+
+  export type QuizAttemptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuizAttemptMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type QuizAttemptSumOrderByAggregateInput = {
+    score?: SortOrder
+    correct?: SortOrder
+    total?: SortOrder
+    duration?: SortOrder
+    jokersUsed?: SortOrder
+  }
+
+  export type QuizDailyWinnerCountOrderByAggregateInput = {
+    date?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    streak?: SortOrder
+  }
+
+  export type QuizDailyWinnerAvgOrderByAggregateInput = {
+    score?: SortOrder
+    streak?: SortOrder
+  }
+
+  export type QuizDailyWinnerMaxOrderByAggregateInput = {
+    date?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    streak?: SortOrder
+  }
+
+  export type QuizDailyWinnerMinOrderByAggregateInput = {
+    date?: SortOrder
+    userId?: SortOrder
+    score?: SortOrder
+    streak?: SortOrder
+  }
+
+  export type QuizDailyWinnerSumOrderByAggregateInput = {
+    score?: SortOrder
+    streak?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -54482,6 +59105,20 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
+  export type QuizAttemptCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
+    createMany?: QuizAttemptCreateManyUserInputEnvelope
+    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+  }
+
+  export type QuizDailyWinnerCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
+    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
+    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -54724,12 +59361,34 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
+  export type QuizAttemptUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
+    createMany?: QuizAttemptCreateManyUserInputEnvelope
+    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+  }
+
+  export type QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
+    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
+    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -55227,6 +59886,34 @@ export namespace Prisma {
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
   }
 
+  export type QuizAttemptUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
+    upsert?: QuizAttemptUpsertWithWhereUniqueWithoutUserInput | QuizAttemptUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizAttemptCreateManyUserInputEnvelope
+    set?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    disconnect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    delete?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+  }
+
+  export type QuizDailyWinnerUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
+    upsert?: QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
+    set?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    disconnect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    delete?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    update?: QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizDailyWinnerUpdateManyWithWhereWithoutUserInput | QuizDailyWinnerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -55714,6 +60401,34 @@ export namespace Prisma {
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
   }
 
+  export type QuizAttemptUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
+    upsert?: QuizAttemptUpsertWithWhereUniqueWithoutUserInput | QuizAttemptUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizAttemptCreateManyUserInputEnvelope
+    set?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    disconnect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    delete?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+    update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+  }
+
+  export type QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
+    upsert?: QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
+    set?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    disconnect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    delete?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
+    update?: QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizDailyWinnerUpdateManyWithWhereWithoutUserInput | QuizDailyWinnerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutBlockedByInput = {
     create?: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
     connectOrCreate?: UserCreateOrConnectWithoutBlockedByInput
@@ -55846,14 +60561,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -57606,6 +62313,34 @@ export namespace Prisma {
     update?: XOR<XOR<TournamentRoundUpdateToOneWithWhereWithoutMatchesInput, TournamentRoundUpdateWithoutMatchesInput>, TournamentRoundUncheckedUpdateWithoutMatchesInput>
   }
 
+  export type UserCreateNestedOneWithoutQuizAttemptsInput = {
+    create?: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuizAttemptsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutQuizAttemptsNestedInput = {
+    create?: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuizAttemptsInput
+    upsert?: UserUpsertWithoutQuizAttemptsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizAttemptsInput, UserUpdateWithoutQuizAttemptsInput>, UserUncheckedUpdateWithoutQuizAttemptsInput>
+  }
+
+  export type UserCreateNestedOneWithoutDailyWinsInput = {
+    create?: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailyWinsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutDailyWinsNestedInput = {
+    create?: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDailyWinsInput
+    upsert?: UserUpsertWithoutDailyWinsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailyWinsInput, UserUpdateWithoutDailyWinsInput>, UserUncheckedUpdateWithoutDailyWinsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -57888,6 +62623,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -57923,6 +62662,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -57941,6 +62682,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -57975,6 +62720,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -58008,6 +62755,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -58043,6 +62794,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -58061,6 +62814,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -58095,6 +62852,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -58112,6 +62871,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -58147,6 +62910,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -58165,6 +62930,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -58199,6 +62968,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -58232,6 +63003,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -58267,6 +63042,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -58285,6 +63062,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -58319,6 +63100,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -59603,6 +64386,56 @@ export namespace Prisma {
     create: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput>
   }
 
+  export type QuizAttemptCreateWithoutUserInput = {
+    id?: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+  }
+
+  export type QuizAttemptUncheckedCreateWithoutUserInput = {
+    id?: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+  }
+
+  export type QuizAttemptCreateOrConnectWithoutUserInput = {
+    where: QuizAttemptWhereUniqueInput
+    create: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizAttemptCreateManyUserInputEnvelope = {
+    data: QuizAttemptCreateManyUserInput | QuizAttemptCreateManyUserInput[]
+  }
+
+  export type QuizDailyWinnerCreateWithoutUserInput = {
+    date: Date | string
+    score: number
+    streak?: number
+  }
+
+  export type QuizDailyWinnerUncheckedCreateWithoutUserInput = {
+    date: Date | string
+    score: number
+    streak?: number
+  }
+
+  export type QuizDailyWinnerCreateOrConnectWithoutUserInput = {
+    where: QuizDailyWinnerWhereUniqueInput
+    create: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizDailyWinnerCreateManyUserInputEnvelope = {
+    data: QuizDailyWinnerCreateManyUserInput | QuizDailyWinnerCreateManyUserInput[]
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -60573,6 +65406,62 @@ export namespace Prisma {
     data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCommissairesInput>
   }
 
+  export type QuizAttemptUpsertWithWhereUniqueWithoutUserInput = {
+    where: QuizAttemptWhereUniqueInput
+    update: XOR<QuizAttemptUpdateWithoutUserInput, QuizAttemptUncheckedUpdateWithoutUserInput>
+    create: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizAttemptUpdateWithWhereUniqueWithoutUserInput = {
+    where: QuizAttemptWhereUniqueInput
+    data: XOR<QuizAttemptUpdateWithoutUserInput, QuizAttemptUncheckedUpdateWithoutUserInput>
+  }
+
+  export type QuizAttemptUpdateManyWithWhereWithoutUserInput = {
+    where: QuizAttemptScalarWhereInput
+    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type QuizAttemptScalarWhereInput = {
+    AND?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+    OR?: QuizAttemptScalarWhereInput[]
+    NOT?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+    id?: StringFilter<"QuizAttempt"> | string
+    userId?: StringFilter<"QuizAttempt"> | string
+    score?: IntFilter<"QuizAttempt"> | number
+    correct?: IntFilter<"QuizAttempt"> | number
+    total?: IntFilter<"QuizAttempt"> | number
+    duration?: IntFilter<"QuizAttempt"> | number
+    jokersUsed?: IntFilter<"QuizAttempt"> | number
+    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
+  }
+
+  export type QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput = {
+    where: QuizDailyWinnerWhereUniqueInput
+    update: XOR<QuizDailyWinnerUpdateWithoutUserInput, QuizDailyWinnerUncheckedUpdateWithoutUserInput>
+    create: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput = {
+    where: QuizDailyWinnerWhereUniqueInput
+    data: XOR<QuizDailyWinnerUpdateWithoutUserInput, QuizDailyWinnerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type QuizDailyWinnerUpdateManyWithWhereWithoutUserInput = {
+    where: QuizDailyWinnerScalarWhereInput
+    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type QuizDailyWinnerScalarWhereInput = {
+    AND?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
+    OR?: QuizDailyWinnerScalarWhereInput[]
+    NOT?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
+    date?: DateTimeFilter<"QuizDailyWinner"> | Date | string
+    userId?: StringFilter<"QuizDailyWinner"> | string
+    score?: IntFilter<"QuizDailyWinner"> | number
+    streak?: IntFilter<"QuizDailyWinner"> | number
+  }
+
   export type UserCreateWithoutBlockedByInput = {
     id?: string
     name?: string | null
@@ -60588,6 +65477,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -60623,6 +65516,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -60641,6 +65536,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -60675,6 +65574,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -60697,6 +65598,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -60732,6 +65637,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -60750,6 +65657,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -60784,6 +65695,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -60817,6 +65730,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -60852,6 +65769,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -60870,6 +65789,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -60904,6 +65827,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutBlocksInput = {
@@ -60932,6 +65857,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -60967,6 +65896,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -60985,6 +65916,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -61019,6 +65954,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicCreateWithoutTournamentInput = {
@@ -61120,6 +66057,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -61155,6 +66096,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -61173,6 +66116,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -61207,6 +66154,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -61372,6 +66321,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -61407,6 +66360,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -61425,6 +66380,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -61459,6 +66418,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -61588,6 +66549,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -61623,6 +66588,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -61641,6 +66608,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -61675,6 +66646,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentMercenaryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -61801,6 +66774,10 @@ export namespace Prisma {
     theme?: StringFilter<"User"> | string
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
+    quizTotalScore?: IntFilter<"User"> | number
+    quizBestScore?: IntFilter<"User"> | number
+    quizStreak?: IntFilter<"User"> | number
+    quizAttemptsCount?: IntFilter<"User"> | number
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -62256,6 +67233,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -62291,6 +67272,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -62309,6 +67292,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -62343,6 +67330,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -62578,6 +67567,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -62613,6 +67606,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -62631,6 +67626,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -62665,6 +67664,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -62776,6 +67777,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -62811,6 +67816,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -62829,6 +67836,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -62863,6 +67874,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -62885,6 +67898,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -62920,6 +67937,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -62938,6 +67957,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -62972,6 +67995,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -63081,6 +68106,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -63116,6 +68145,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -63134,6 +68165,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63168,6 +68203,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -63196,6 +68233,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -63231,6 +68272,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -63249,6 +68292,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63283,6 +68330,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -63359,6 +68408,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -63394,6 +68447,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -63412,6 +68467,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -63446,6 +68505,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -63468,6 +68529,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -63503,6 +68568,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -63521,6 +68588,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -63555,6 +68626,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -63613,6 +68686,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -63648,6 +68725,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -63666,6 +68745,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63700,6 +68783,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUser1ConversationsInput = {
@@ -63728,6 +68813,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -63763,6 +68852,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -63781,6 +68872,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -63815,6 +68910,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -63848,6 +68945,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -63883,6 +68984,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -63901,6 +69004,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -63935,6 +69042,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -63993,6 +69102,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -64028,6 +69141,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -64046,6 +69161,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -64080,6 +69199,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationUpsertWithoutMessagesInput = {
@@ -64165,6 +69286,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -64200,6 +69325,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -64218,6 +69345,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -64252,6 +69383,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -64328,6 +69461,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -64363,6 +69500,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -64381,6 +69520,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -64415,6 +69558,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMentionsReceivedInput = {
@@ -64432,6 +69577,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -64467,6 +69616,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -64485,6 +69636,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -64519,6 +69674,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -64541,6 +69698,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -64576,6 +69737,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -64594,6 +69757,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -64628,6 +69795,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -64694,6 +69863,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -64729,6 +69902,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -64747,6 +69922,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -64781,6 +69960,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -64809,6 +69990,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -64844,6 +70029,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -64862,6 +70049,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -64896,6 +70087,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutMentionsInput = {
@@ -64952,6 +70145,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -64987,6 +70184,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -65005,6 +70204,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -65039,6 +70242,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -65105,6 +70310,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -65140,6 +70349,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -65158,6 +70369,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -65192,6 +70407,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutReactionsInput = {
@@ -65248,6 +70465,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -65283,6 +70504,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -65300,6 +70523,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -65335,6 +70562,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -65414,6 +70643,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -65449,6 +70682,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -65467,6 +70702,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -65501,6 +70740,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -65577,6 +70818,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -65612,6 +70857,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -65630,6 +70877,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -65664,6 +70915,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRankingArchivesInput = {
@@ -65681,6 +70934,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -65716,6 +70973,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRankingArchivesInput = {
@@ -65734,6 +70993,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -65768,6 +71031,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRankingArchivesInput = {
@@ -65801,6 +71066,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -65836,6 +71105,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRankingArchivesInput = {
@@ -65854,6 +71125,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -65888,6 +71163,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTournamentRegistrationsInput = {
@@ -65905,6 +71182,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -65940,6 +71221,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -65958,6 +71241,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -65992,6 +71279,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -66136,6 +71425,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -66171,6 +71464,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -66189,6 +71484,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -66223,6 +71522,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutRegistrationsInput = {
@@ -66357,6 +71658,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -66392,6 +71697,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -66410,6 +71717,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -66444,6 +71755,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -66607,6 +71920,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -66642,6 +71959,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -66660,6 +71979,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -66694,6 +72017,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutTeamsInput = {
@@ -66844,6 +72169,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -66879,6 +72208,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -66897,6 +72228,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -66931,6 +72266,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -66991,6 +72328,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -67026,6 +72367,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -67044,6 +72387,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -67078,6 +72425,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentTeamUpsertWithoutMembersInput = {
@@ -67128,6 +72477,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -67163,6 +72516,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -67181,6 +72536,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -67215,6 +72574,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -67359,6 +72720,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -67394,6 +72759,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -67412,6 +72779,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -67446,6 +72817,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutMercenariesInput = {
@@ -67627,6 +73000,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -67662,6 +73039,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -67680,6 +73059,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -67714,6 +73097,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -67736,6 +73121,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -67771,6 +73160,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -67789,6 +73180,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -67823,6 +73218,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -67947,6 +73344,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -67982,6 +73383,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -68000,6 +73403,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -68034,6 +73441,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutArticlesInput = {
@@ -68062,6 +73471,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -68097,6 +73510,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -68115,6 +73530,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -68149,6 +73568,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
@@ -68259,6 +73680,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68294,6 +73719,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -68312,6 +73739,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68346,6 +73777,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -68416,6 +73849,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -68451,6 +73888,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -68469,6 +73908,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -68503,6 +73946,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutReactionsInput = {
@@ -68604,6 +74049,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68639,6 +74088,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -68657,6 +74108,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68691,6 +74146,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -68828,6 +74285,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68863,6 +74324,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -68881,6 +74344,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68915,6 +74382,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -68937,6 +74406,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68972,6 +74445,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -68990,6 +74465,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69024,6 +74503,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -69073,6 +74554,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69108,6 +74593,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -69126,6 +74613,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69160,6 +74651,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutLigueInput = {
@@ -69225,6 +74718,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69260,6 +74757,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -69278,6 +74777,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69312,6 +74815,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -69334,6 +74839,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69369,6 +74878,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -69387,6 +74898,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69421,6 +74936,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -69454,6 +74971,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69489,6 +75010,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -69507,6 +75030,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69541,6 +75068,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReportsMadeInput = {
@@ -69569,6 +75098,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69604,6 +75137,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -69622,6 +75157,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69656,6 +75195,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -69673,6 +75214,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69708,6 +75253,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -69726,6 +75273,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69760,6 +75311,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -69793,6 +75346,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69828,6 +75385,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -69846,6 +75405,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69880,6 +75443,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubmittedResourcesInput = {
@@ -69897,6 +75462,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69932,6 +75501,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
@@ -69950,6 +75521,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69984,6 +75559,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
@@ -70032,6 +75609,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70067,6 +75648,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
@@ -70085,6 +75668,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70119,6 +75706,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
@@ -70207,6 +75796,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70242,6 +75835,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentResultsInput = {
@@ -70260,6 +75855,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -70294,6 +75893,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentResultsInput = {
@@ -70438,6 +76039,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70473,6 +76078,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentResultsInput = {
@@ -70491,6 +76098,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70525,6 +76136,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutResultsInput = {
@@ -70942,6 +76555,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70977,6 +76594,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach2Input = {
@@ -70995,6 +76614,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71029,6 +76652,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach2Input = {
@@ -71051,6 +76676,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71086,6 +76715,8 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach1Input = {
@@ -71104,6 +76735,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71138,6 +76773,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach1Input = {
@@ -71188,6 +76825,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71223,6 +76864,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach2Input = {
@@ -71241,6 +76884,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71275,6 +76922,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMatchesAsCoach1Input = {
@@ -71303,6 +76952,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71338,6 +76991,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach1Input = {
@@ -71356,6 +77011,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71390,6 +77049,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentRoundUpsertWithoutMatchesInput = {
@@ -71413,6 +77074,502 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tournamentId?: StringFieldUpdateOperationsInput | string
     roundNumber?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserCreateWithoutQuizAttemptsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutQuizAttemptsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutQuizAttemptsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
+  }
+
+  export type UserUpsertWithoutQuizAttemptsInput = {
+    update: XOR<UserUpdateWithoutQuizAttemptsInput, UserUncheckedUpdateWithoutQuizAttemptsInput>
+    create: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutQuizAttemptsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutQuizAttemptsInput, UserUncheckedUpdateWithoutQuizAttemptsInput>
+  }
+
+  export type UserUpdateWithoutQuizAttemptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutQuizAttemptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutDailyWinsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutDailyWinsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutDailyWinsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
+  }
+
+  export type UserUpsertWithoutDailyWinsInput = {
+    update: XOR<UserUpdateWithoutDailyWinsInput, UserUncheckedUpdateWithoutDailyWinsInput>
+    create: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDailyWinsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDailyWinsInput, UserUncheckedUpdateWithoutDailyWinsInput>
+  }
+
+  export type UserUpdateWithoutDailyWinsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDailyWinsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -71770,6 +77927,22 @@ export namespace Prisma {
     data: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type QuizAttemptCreateManyUserInput = {
+    id?: string
+    score: number
+    correct: number
+    total?: number
+    duration: number
+    jokersUsed?: number
+    createdAt?: Date | string
+  }
+
+  export type QuizDailyWinnerCreateManyUserInput = {
+    date: Date | string
+    score: number
+    streak?: number
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -73168,6 +79341,54 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
   }
 
+  export type QuizAttemptUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizAttemptUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizAttemptUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    total?: IntFieldUpdateOperationsInput | number
+    duration?: IntFieldUpdateOperationsInput | number
+    jokersUsed?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizDailyWinnerUpdateWithoutUserInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type QuizDailyWinnerUncheckedUpdateWithoutUserInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type QuizDailyWinnerUncheckedUpdateManyWithoutUserInput = {
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    score?: IntFieldUpdateOperationsInput | number
+    streak?: IntFieldUpdateOperationsInput | number
+  }
+
   export type TournamentMercenaryCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -73375,6 +79596,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73410,6 +79635,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -73428,6 +79655,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73462,6 +79693,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -73480,6 +79713,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -73835,6 +80072,10 @@ export namespace Prisma {
     theme?: string
     equipe?: string | null
     ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
   }
 
   export type UserUpdateWithoutRoleConfigInput = {
@@ -73852,6 +80093,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73887,6 +80132,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -73904,6 +80151,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73939,6 +80190,8 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -73956,6 +80209,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type TournamentTeamMemberCreateManyTeamInput = {
@@ -74341,6 +80598,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74376,6 +80637,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -74394,6 +80657,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74428,6 +80695,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -74446,6 +80715,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserUpdateWithoutLiguesInput = {
@@ -74463,6 +80736,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74498,6 +80775,8 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -74516,6 +80795,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74550,6 +80833,8 @@ export namespace Prisma {
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {
@@ -74568,6 +80853,10 @@ export namespace Prisma {
     theme?: StringFieldUpdateOperationsInput | string
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type ResourceTagUpdateWithoutResourcesInput = {
