@@ -51,11 +51,11 @@
   --btn-classic-border: var(--glass-border);
   --btn-classic-hover: rgba(255, 255, 255, 0.12);
 
-  --btn-cta-bg: var(--accent);
+  --btn-cta-bg: #10b981; /* Emerald-500 */
   --btn-cta-text: #000000;
-  --btn-cta-glow: rgba(var(--accent-rgb), 0.4);
-  --btn-cta-hover: #ffea00;
-  --btn-cta-shiny: rgba(255, 255, 255, 0.4);
+  --btn-cta-glow: rgba(16, 185, 129, 0.4);
+  --btn-cta-hover: #059669; /* Emerald-600 */
+  --btn-cta-shiny: rgba(255, 255, 255, 0.3);
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;
