@@ -141,7 +141,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
                   >
                     <option value={user.role} disabled>{user.role} (Actuel)</option>
                     {availableRoles.map(role => (
-                      <option key={role.id} value={role.name}>{role.name}</option>
+                      <option key={role.name} value={role.name}>{role.name}</option>
                     ))}
                   </select>
                 ) : (

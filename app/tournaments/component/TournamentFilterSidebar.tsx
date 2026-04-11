@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
