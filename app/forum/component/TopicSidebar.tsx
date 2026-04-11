@@ -320,7 +320,7 @@ export default function TopicSidebar({
 
             {(!(isLocked || isForumLocked) || isModerator) && (
               <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
-                className="widget-button" style={{ background: 'var(--primary)', color: 'var(--header-foreground)', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '8px 12px' }}>
+                className="widget-button primary-btn">
                 <MessageSquare size={16} /><span>Répondre</span>
               </button>
             )}
@@ -331,14 +331,12 @@ export default function TopicSidebar({
                 disabled={isPending}
                 className="widget-button secondary-btn"
                 style={{
-                  textAlign: 'left',
-                  padding: '8px 12px',
                   borderColor: isFollowing ? 'var(--accent)' : 'var(--glass-border)',
                   color: isFollowing ? 'var(--accent)' : 'var(--foreground)',
                 }}
               >
                 <Bookmark size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
-                <span>{isFollowing ? "Arrêter de suivre le sujet" : "Suivre le sujet"}</span>
+                <span>{isFollowing ? "Arrêter de suivre" : "Suivre le sujet"}</span>
               </button>
             )}
 
@@ -346,7 +344,6 @@ export default function TopicSidebar({
               <button 
                 onClick={handleEditTitleClick}
                 className="widget-button secondary-btn" 
-                style={{ textAlign: 'left', padding: '8px 12px' }}
               >
                 <Type size={16} />
                 <span>Modifier le titre</span>
@@ -357,7 +354,6 @@ export default function TopicSidebar({
               <button 
                 onClick={() => setShowReportModal(true)}
                 className="widget-button secondary-btn" 
-                style={{ textAlign: 'left', padding: '8px 12px' }}
               >
                 <AlertTriangle size={16} />
                 <span>Signaler</span>
@@ -368,13 +364,12 @@ export default function TopicSidebar({
               href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
               onClick={handleGoToLast}
               className="widget-button secondary-btn" 
-              style={{ textAlign: 'left', padding: '8px 12px' }}
             >
               <ChevronsDown size={16} /><span>Dernier message</span>
             </a>
 
             <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="widget-button secondary-btn" style={{ textAlign: 'left', padding: '8px 12px' }}>
+              className="widget-button secondary-btn">
               <ArrowUp size={16} /><span>Haut de page</span>
             </button>
 
@@ -388,7 +383,6 @@ export default function TopicSidebar({
                 <button 
                   onClick={handleEditTitleClick}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', padding: '8px 12px' }}
                 >
                   <Type size={16} />
                   <span>Modifier le tournoi</span>
@@ -398,7 +392,6 @@ export default function TopicSidebar({
                   <Link 
                     href={`/forum/tournament/${tournamentId}/results`}
                     className="widget-button secondary-btn" 
-                    style={{ textAlign: 'left', padding: '8px 12px', textDecoration: 'none', color: 'var(--foreground)' }}
                   >
                     <Trophy size={16} style={{ color: 'var(--accent)' }} />
                     <span>Publier les résultats</span>
@@ -409,7 +402,6 @@ export default function TopicSidebar({
                       onClick={handleFinish}
                       disabled={isPending}
                       className="widget-button secondary-btn" 
-                      style={{ textAlign: 'left', padding: '8px 12px' }}
                     >
                       <CheckCircle size={16} />
                       <span>Terminer le tournoi</span>
@@ -419,7 +411,7 @@ export default function TopicSidebar({
                       onClick={handleToggleRegistrations}
                       disabled={isPending}
                       className="widget-button secondary-btn" 
-                      style={{ textAlign: 'left', padding: '8px 12px', color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
+                      style={{ color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
                     >
                       {registrationsLocked ? <Check size={16} /> : <LockIcon size={16} />}
                       <span>{registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}</span>
@@ -449,7 +441,7 @@ export default function TopicSidebar({
                   onClick={handleTogglePin}
                   disabled={isPending}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', color: isPinned ? 'var(--unread-marker)' : 'var(--foreground)', padding: '8px 12px' }}
+                  style={{ color: isPinned ? 'var(--unread-marker)' : 'var(--foreground)' }}
                 >
                   {isPinned ? <PinOff size={16} /> : <Pin size={16} />}
                   <span>{isPinned ? "Désépingler" : "Épingler"}</span>
@@ -459,7 +451,6 @@ export default function TopicSidebar({
                   onClick={() => setShowMoveModal(true)}
                   disabled={isPending}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', padding: '8px 12px' }}
                 >
                   <Move size={16} />
                   <span>Déplacer</span>
@@ -471,8 +462,6 @@ export default function TopicSidebar({
                   disabled={isPending}
                   className="widget-button secondary-btn"
                   style={{ 
-                    textAlign: 'left', 
-                    padding: '8px 12px',
                     borderColor: isArchived ? 'var(--accent)' : 'var(--glass-border)',
                     color: isArchived ? 'var(--accent)' : 'var(--foreground)'
                   }}
@@ -491,7 +480,7 @@ export default function TopicSidebar({
                   onClick={() => setShowDeleteModal(true)}
                   disabled={isPending}
                   className="widget-button secondary-btn" 
-                  style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
+                  style={{ color: 'var(--danger)' }}
                 >
                   <Trash2 size={16} />
                   <span>Supprimer sujet</span>

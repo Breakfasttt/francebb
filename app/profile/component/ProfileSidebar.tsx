@@ -227,16 +227,16 @@ export default function ProfileSidebar({
         {!isOwnProfile && (
           <div className="profile-actions-column">
             {onContact && (
-              <button onClick={onContact} className="action-button primary-btn">
+              <button onClick={onContact} className="widget-button primary-btn">
                 <MessageSquare size={16} /> <span>Message privé</span>
               </button>
             )}
-            <button onClick={() => setShowReportModal(true)} className="action-button secondary-btn">
+            <button onClick={() => setShowReportModal(true)} className="widget-button secondary-btn">
               <AlertTriangle size={16} /> <span>Signaler</span>
             </button>
             <button 
               onClick={() => setShowBlockModal(true)} 
-              className={`action-button ${isBlocked ? 'success-btn' : 'secondary-btn highlight'}`}
+              className={`widget-button ${isBlocked ? 'success-btn' : 'secondary-btn highlight'}`}
               disabled={isPending}
             >
               <UserX size={16} /> <span>{isBlocked ? "Débloquer" : "Bloquer"}</span>
@@ -244,7 +244,7 @@ export default function ProfileSidebar({
             {isModerator && (
               <button
                 onClick={() => setShowBanModal(true)}
-                className={`action-button ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
+                className={`widget-button ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
                 disabled={isPending}
               >
                 {user.isBanned ? <UserCheck size={16} /> : <Ban size={16} />}

@@ -240,24 +240,37 @@
 
 
 
-.sidebar-widget-group {
+.sidebar-widget-container {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1rem;
+}
+
+.sidebar-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.sidebar-widget.pagination-widget {
+  padding: 1rem;
 }
 
 .widget-button {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.8rem;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--glass-border);
+  width: 100%;
+  cursor: pointer;
 }
 
 .widget-button.primary-btn {

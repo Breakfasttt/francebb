@@ -51,19 +51,10 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
           )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.5rem' }}>
-            <button type="submit" className="widget-button" style={{ 
-              width: '100%', 
-              background: isTournament ? 'var(--accent)' : 'var(--primary)', 
-              color: 'var(--header-foreground)',
-              padding: '1rem', 
-              fontSize: '1.1rem', 
-              justifyContent: 'center',
-              fontWeight: 800,
-              boxShadow: isTournament ? '0 4px 15px rgba(255, 215, 0, 0.2)' : '0 4px 15px rgba(194, 29, 29, 0.3)'
-            }}>
+            <button type="submit" className={`widget-button btn-centered ${isTournament ? 'accent-btn' : 'primary-btn'}`}>
               {submitLabel.toUpperCase()}
             </button>
-            <Link href={`/forum/${forumId}`} className="widget-button secondary-btn" style={{ width: '100%', justifyContent: 'center' }}>
+            <Link href={`/forum/${forumId}`} className="widget-button secondary-btn btn-centered">
               Annuler
             </Link>
           </div>

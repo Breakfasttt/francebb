@@ -13,6 +13,7 @@ import Navbar from "@/common/components/Navbar/Navbar";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./globals.css";
 import "./globals-mobile.css";
+import "@/common/styles/widgets.css";
 
 
 export const dynamic = "force-dynamic";
