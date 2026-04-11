@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
@@ -143,7 +144,9 @@ export default function TournamentFilterSidebar() {
 
   return (
     <PremiumCard className="filter-sidebar">
-      <button className="reset-btn" onClick={() => router.push("/tournaments")}>Réinitialiser filtres</button>
+      <ClassicButton onClick={() => router.push("/tournaments")} fullWidth style={{ marginBottom: '1rem' }}>
+        Réinitialiser filtres
+      </ClassicButton>
 
       <div className="search-box">
         <Search size={18} className="search-icon" />

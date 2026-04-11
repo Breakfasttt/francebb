@@ -43,4 +43,24 @@
   --accent-rgb: 184, 134, 11;
   --success-rgb: 21, 128, 61;
   --primary-rgb: 194, 29, 29;
+
+  /* Button System */
+  --btn-classic-bg: rgba(0, 0, 0, 0.05);
+  --btn-classic-text: var(--foreground);
+  --btn-classic-border: rgba(0, 0, 0, 0.15);
+  --btn-classic-hover: rgba(0, 0, 0, 0.1);
+
+  --btn-cta-bg: var(--primary);
+  --btn-cta-text: var(--header-foreground);
+  --btn-cta-glow: rgba(var(--primary-rgb), 0.3);
+  --btn-cta-hover: var(--primary-hover);
+  --btn-cta-shiny: rgba(255, 255, 255, 0.3);
+
+  --btn-danger-bg: #991b1b;
+  --btn-danger-text: #ffffff;
+  --btn-danger-hover: #7f1d1d;
+
+  --btn-admin-bg: #6d28d9;
+  --btn-admin-text: #ffffff;
+  --btn-admin-hover: #5b21b6;
 }

@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
 import { MessageSquare, Loader2, Send } from "lucide-react";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import { useRouter } from "next/navigation";
 
 export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteContent }: { topicId: string; quotePostId?: string; quoteAuthor?: string; quoteContent?: string }) {
@@ -49,23 +51,16 @@ export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteCont
       </div>
 
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-        <button 
-          type="button" 
-          onClick={() => router.back()}
-          className="widget-button secondary-btn"
-          style={{ width: 'auto', padding: '0.8rem 2rem' }}
-        >
+        <ClassicButton type="button" onClick={() => router.back()}>
           Annuler
-        </button>
-        <button 
+        </ClassicButton>
+        <CTAButton 
           type="submit" 
-          disabled={isSubmitting}
-          className="widget-button" 
-          style={{ width: 'auto', padding: '0.8rem 2rem', background: 'var(--primary)', color: 'white', border: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          isLoading={isSubmitting}
+          icon={Send}
         >
-          {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
           Publier ma réponse
-        </button>
+        </CTAButton>
       </div>
     </form>
   );

@@ -43,4 +43,24 @@
   --accent-rgb: 0, 65, 117;
   --success-rgb: 21, 128, 61;
   --primary-rgb: 158, 29, 29;
+
+  /* Button System */
+  --btn-classic-bg: rgba(0, 65, 117, 0.08); /* Navy hint */
+  --btn-classic-text: var(--foreground);
+  --btn-classic-border: rgba(0, 65, 117, 0.2);
+  --btn-classic-hover: rgba(0, 65, 117, 0.15);
+
+  --btn-cta-bg: var(--primary);
+  --btn-cta-text: var(--header-foreground);
+  --btn-cta-glow: rgba(var(--primary-rgb), 0.3);
+  --btn-cta-hover: var(--primary-hover);
+  --btn-cta-shiny: rgba(255, 255, 255, 0.25);
+
+  --btn-danger-bg: #b91c1c;
+  --btn-danger-text: #ffffff;
+  --btn-danger-hover: #991b1b;
+
+  --btn-admin-bg: #6d28d9;
+  --btn-admin-text: #ffffff;
+  --btn-admin-hover: #5b21b6;
 }

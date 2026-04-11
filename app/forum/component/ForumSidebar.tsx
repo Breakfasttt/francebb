@@ -17,6 +17,9 @@ import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
 import Pagination from "@/common/components/Pagination/Pagination";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 const POSTS_PER_PAGE = 20;
 
@@ -80,54 +83,54 @@ export default async function ForumSidebar({
 
           {/* Nouveau Sujet / Tournoi */}
           {forumId && (!isLocked || canCreateForum) && (
-            <div className="sidebar-widget-group">
+            <PremiumCard className="sidebar-widget nav-widget">
               {isTournamentForum && (
-                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button accent-btn">
-                  <Trophy size={18} />
-                  <span>Nouveau Tournoi</span>
-                </Link>
+                <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
+                  Nouveau Tournoi
+                </CTAButton>
               )}
-              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button primary-btn">
-                <PlusCircle size={18} />
-                <span>Nouveau Sujet</span>
-              </Link>
-            </div>
+              <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={<PlusCircle size={18} />}>
+                Nouveau Sujet
+              </CTAButton>
+            </PremiumCard>
           )}
 
           {forumId && isLocked && !canCreateForum && (
-            <div className="sidebar-widget-group" style={{ opacity: 0.6 }}>
-              <div className="widget-button disabled-btn">
-                <LockIcon size={18} />
-                <span>Forum verrouillé</span>
-              </div>
+            <div className="sidebar-widget-group">
+              <ClassicButton 
+                disabled 
+                icon={<LockIcon size={18} />}
+                style={{ opacity: 0.6 }}
+              >
+                Forum verrouillé
+              </ClassicButton>
             </div>
           )}
 
           {/* Recherche Avancée */}
           <PremiumCard className="sidebar-widget nav-widget">
-            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button glass-btn">
-              <Search size={18} />
-              <span>Recherche avancée</span>
-            </Link>
+            <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={<Search size={18} />}>
+              Recherche avancée
+            </ClassicButton>
             
-            <Link href="/membres" className="widget-button secondary-btn">
-              <Users size={18} />
-              <span>Les membres</span>
-            </Link>
+            <ClassicButton href="/membres" icon={<Users size={18} />}>
+              Les membres
+            </ClassicButton>
           </PremiumCard>
 
           {/* Posts Non Lus */}
           {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
-            <div className="sidebar-widget-group">
-              <Link href="/forum/unread" className="widget-button secondary-btn">
-                <MessageSquare size={18} />
-                <span>Posts non lus ({unreadTopics})</span>
-              </Link>
-              <MarkAllAsReadButton />
-            </div>
+            <PremiumCard className="sidebar-widget unread-widget">
+              <div className="sidebar-widget-group">
+                <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
+                  Posts non lus ({unreadTopics})
+                </ClassicButton>
+                <MarkAllAsReadButton />
+              </div>
+            </PremiumCard>
           )}
 
-          {/* Recent Posts - Only on main forum to save space */}
+          {/* Recent Posts - Only on main forum to save space 
           {!forumId && (
             <PremiumCard className="sidebar-widget recent-posts-widget">
               <h3>
@@ -164,18 +167,8 @@ export default async function ForumSidebar({
               </div>
             </PremiumCard>
           )}
+          */}
 
-          {/* Random Post - Only on main forum */}
-          {!forumId && (
-            <div className="sidebar-widget random-widget">
-              <form action={handleRandomPost}>
-                <button type="submit" className="widget-button secondary-btn">
-                  <Repeat size={18} />
-                  <span>Lire un post aléatoire</span>
-                </button>
-              </form>
-            </div>
-          )}
 
           {/* Admin Tools */}
           {canCreateForum && (

@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast";
 import { cleanupModerationLogs } from "../actions";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface LogsTabProps {
   userRole?: string;
@@ -144,14 +145,14 @@ export default function LogsTab({ userRole }: LogsTabProps) {
           <h3 style={{ margin: 0, fontSize: '1.2rem' }}>Journal d'audit</h3>
           
           {(userRole === "ADMIN" || userRole === "SUPERADMIN") && (
-            <button 
-              className="widget-button secondary-btn btn-sm" 
-              style={{ marginLeft: 'auto', width: 'auto', fontSize: '0.75rem', borderColor: 'var(--danger)', color: 'var(--danger)' }}
+            <AdminButton 
               onClick={handleCleanupClick}
-              disabled={isCleaning}
+              isLoading={isCleaning}
+              size="sm"
+              style={{ marginLeft: 'auto', fontSize: '0.75rem', borderColor: 'var(--danger)', color: 'var(--danger)', background: 'transparent' }}
             >
-              {isCleaning ? <Loader2 size={14} className="animate-spin" /> : "Purger > 3 mois"}
-            </button>
+              Purger &gt; 3 mois
+            </AdminButton>
           )}
         </div>
 

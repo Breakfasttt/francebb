@@ -134,45 +134,7 @@ label {
 
 
 
-.widget-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  width: 100%;
-  padding: 0.8rem;
-  background: var(--primary);
-  color: var(--header-foreground);
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.widget-button:hover {
-  filter: brightness(1.1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--btn-shadow);
-}
-
-.widget-button.active {
-  background: var(--accent);
-  color: var(--header-foreground);
-}
-
-.secondary-btn {
-  background: var(--glass-border);
-  border: 1px solid var(--glass-border);
-  color: var(--foreground);
-}
-
-.secondary-btn:hover {
-  background: var(--glass-bg);
-  border-color: var(--text-muted);
-}
+/* .btn-primary, .widget-button and .secondary-btn have been replaced by the standardized Button component system */
 
 
 

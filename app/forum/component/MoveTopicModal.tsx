@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import Modal from "@/common/components/Modal/Modal";
 import { moveTopic } from "@/app/forum/actions";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface MoveTopicModalProps {
   isOpen: boolean;
@@ -55,21 +57,16 @@ export default function MoveTopicModal({ isOpen, onClose, topicId, allForums }: 
         </select>
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-          <button 
-            onClick={onClose}
-            className="widget-button secondary-btn"
-            style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
-          >
+          <ClassicButton onClick={onClose}>
             Annuler
-          </button>
-          <button 
+          </ClassicButton>
+          <AdminButton 
             onClick={handleMove}
-            disabled={isPending || !selectedForumId}
-            className="widget-button"
-            style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
+            isLoading={isPending}
+            disabled={!selectedForumId}
           >
-            {isPending ? "Déplacement..." : "Confirmer le déplacement"}
-          </button>
+            Confirmer le déplacement
+          </AdminButton>
         </div>
       </div>
     </Modal>

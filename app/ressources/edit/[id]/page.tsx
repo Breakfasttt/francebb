@@ -10,6 +10,8 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { useSession } from "next-auth/react";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { toast } from "react-hot-toast";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 interface EditResourcePageProps {
   params: Promise<{ id: string }>;
@@ -76,9 +78,9 @@ export default function EditResourcePage({ params }: EditResourcePageProps) {
           <AlertTriangle size={48} color="var(--danger)" style={{ margin: '0 auto 1.5rem' }} />
           <h3>Action non autorisée</h3>
           <p>Vous n'avez pas les permissions nécessaires pour modifier cette ressource.</p>
-          <button onClick={() => router.push("/ressources")} className="widget-button" style={{ marginTop: '1.5rem', width: 'auto', padding: '0.8rem 2rem' }}>
+          <ClassicButton onClick={() => router.push("/ressources")} style={{ marginTop: '1.5rem' }}>
             Retour aux ressources
-          </button>
+          </ClassicButton>
         </PremiumCard>
       </div>
     );

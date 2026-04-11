@@ -14,6 +14,9 @@ import ModerateArticleButton from "@/app/articles/[id]/component/ModerateArticle
 import ReportArticleButton from "@/app/articles/[id]/component/ReportArticleButton";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 import "./page.css";
 import "./page-mobile.css";
 
@@ -104,9 +107,9 @@ export default async function ArticleDetailPage({
           <div className="sidebar-section article-actions">
             {canEdit && (
               <>
-                <Link href={`/articles/edit/${article.id}`} className="action-button edit">
-                  <Edit3 size={18} /> Modifier l'article
-                </Link>
+                <ClassicButton href={`/articles/edit/${article.id}`} icon={Edit3} fullWidth>
+                  Modifier
+                </ClassicButton>
                 <DeleteArticleButton articleId={article.id} />
               </>
             )}

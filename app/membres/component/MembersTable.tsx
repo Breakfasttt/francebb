@@ -10,6 +10,9 @@ import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import Pagination from "@/common/components/Pagination/Pagination";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 import "./MembersTable.css";
 
@@ -239,9 +242,9 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </select>
         </div>
 
-        <button className="reset-filters-btn" onClick={resetFilters}>
+        <ClassicButton onClick={resetFilters}>
           Réinitialiser
-        </button>
+        </ClassicButton>
       </div>
 
       <div className="members-list-container">
@@ -319,12 +322,13 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   </td>
                   <td style={{ textAlign: 'center' }}>
                     {user.id !== currentUserId && !user.isBanned && (
-                      <Link 
+                      <ClassicButton 
                         href={`/profile?tab=pm&recipientId=${user.id}`}
-                        className="mp-btn"
+                        icon={Mail}
+                        size="sm"
                       >
-                        <Mail size={14} /> MP
-                      </Link>
+                        MP
+                      </ClassicButton>
                     )}
                   </td>
                   {showRoles && (
@@ -349,13 +353,18 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   {showMod && (
                     <td>
                       {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
-                        <button 
-                          disabled={isPending}
+                        <AdminButton 
                           onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
-                          className={`mod-btn ${user.isBanned ? 'unban' : 'ban'}`}
+                          isLoading={isPending}
+                          size="sm"
+                          style={{ 
+                            background: user.isBanned ? "#22c55e" : "#ef4444", 
+                            color: "white",
+                            borderColor: user.isBanned ? "#22c55e" : "#ef4444" 
+                          }}
                         >
                           {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
-                        </button>
+                        </AdminButton>
                       ) : (
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
                       )}
@@ -363,13 +372,14 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   )}
                   {showDelete && (
                     <td>
-                      <button 
-                        disabled={isPending}
+                      <DangerButton 
                         onClick={() => handleDeleteClick(user.id, user.name)}
-                        className="delete-btn"
+                        isLoading={isPending}
+                        icon={Trash2}
+                        size="sm"
                       >
-                        <Trash2 size={14} /> Supprimer
-                      </button>
+                        Supprimer
+                      </DangerButton>
                     </td>
                   )}
                 </tr>
@@ -441,19 +451,16 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         )}
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-          <button 
-            onClick={() => setBanModal(v => ({...v, isOpen: false}))} 
-            style={{ background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
-          >
+          <ClassicButton onClick={() => setBanModal(v => ({...v, isOpen: false}))}>
             Annuler
-          </button>
-          <button 
+          </ClassicButton>
+          <AdminButton 
             onClick={confirmBanToggle} 
-            disabled={isPending}
-            style={{ background: banModal.isBanning ? '#ef4444' : '#22c55e', color: 'white', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+            isLoading={isPending}
+            style={{ background: banModal.isBanning ? '#ef4444' : '#22c55e', color: 'white', borderColor: banModal.isBanning ? '#ef4444' : '#22c55e' }}
           >
             Confirmer
-          </button>
+          </AdminButton>
         </div>
       </Modal>
 
@@ -476,19 +483,15 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         </p>
         
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '2rem' }}>
-          <button 
-            onClick={() => setDeleteModal(v => ({...v, isOpen: false}))} 
-            style={{ background: 'transparent', border: '1px solid rgba(255, 255, 255, 0.2)', color: 'white', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer' }}
-          >
+          <ClassicButton onClick={() => setDeleteModal(v => ({...v, isOpen: false}))}>
             Annuler
-          </button>
-          <button 
+          </ClassicButton>
+          <DangerButton 
             onClick={confirmDelete} 
-            disabled={isPending}
-            style={{ background: '#ef4444', color: 'white', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+            isLoading={isPending}
           >
             Confirmer la suppression
-          </button>
+          </DangerButton>
         </div>
       </Modal>
 

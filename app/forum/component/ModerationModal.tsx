@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, ShieldAlert, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface ModerationModalProps {
   isOpen: boolean;
@@ -95,17 +97,16 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} className="widget-button secondary-btn" style={{ width: 'auto', padding: '0.6rem 1.5rem' }}>
+            <ClassicButton type="button" onClick={onClose}>
               Annuler
-            </button>
-            <button 
+            </ClassicButton>
+            <AdminButton 
               type="submit" 
-              disabled={isSubmitting || !reason.trim()}
-              className="widget-button" 
-              style={{ width: 'auto', padding: '0.6rem 2rem', background: 'var(--primary)', color: 'white', border: 'none' }}
+              isLoading={isSubmitting}
+              disabled={!reason.trim()}
             >
-              {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : "Confirmer la modération"}
-            </button>
+              Confirmer la modération
+            </AdminButton>
           </div>
         </form>
       </PremiumCard>

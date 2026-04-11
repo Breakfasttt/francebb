@@ -13,6 +13,7 @@ import { fr } from "date-fns/locale";
 import { toast } from "react-hot-toast";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 export default function BannedUsersTab() {
   const [users, setUsers] = useState<any[]>([]);
@@ -115,13 +116,14 @@ export default function BannedUsersTab() {
                       </div>
                     </td>
                     <td className="moderation-cell">
-                      <button 
-                        className="widget-button success btn-sm" 
+                      <AdminButton 
                         onClick={() => handleUnbanClick(user.id)}
-                        style={{ width: 'auto' }}
+                        size="sm"
+                        icon={UserCheck}
+                        style={{ background: "#22c55e", color: "white", borderColor: "transparent" }}
                       >
-                        <UserCheck size={14} /> Débannir
-                      </button>
+                        Débannir
+                      </AdminButton>
                     </td>
                   </tr>
                 ))}

@@ -9,6 +9,7 @@ import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
 import SharePostButton from "./SharePostButton";
 import ReportPostButton from "./ReportPostButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface PostItemProps {
   post: any;
@@ -146,71 +147,26 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
 
           <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
-            <Link
+            <ClassicButton 
               href={`/spy/${post.author.id}`}
-              className="user-badge profil"
-              style={{
-                padding: '0.35rem 0.8rem',
-                background: 'rgba(var(--accent-rgb, 255, 215, 0), 0.08)',
-                border: '1.2px solid var(--accent)',
-                borderRadius: '6px',
-                color: 'var(--accent)',
-                fontSize: '0.65rem',
-                textDecoration: 'none',
-                fontWeight: 800,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.4rem',
-                textTransform: 'uppercase',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.05em'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--accent)';
-                e.currentTarget.style.color = '#000';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(var(--accent-rgb, 255, 215, 0), 0.08)';
-                e.currentTarget.style.color = 'var(--accent)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
+              icon={User}
+              size="sm"
             >
-              <User size={11} strokeWidth={2.5} /> PROFIL
-            </Link>
+              PROFIL
+            </ClassicButton>
             {post.author.id !== currentUserId && (
-              <Link
+              <ClassicButton 
                 href={`/profile?tab=pm&recipientId=${post.author.id}`}
-                className="user-badge mp"
-                style={{
-                  padding: '0.35rem 0.8rem',
-                  background: 'rgba(var(--success-rgb, 34, 197, 94), 0.08)',
-                  border: '1.2px solid var(--success)',
-                  borderRadius: '6px',
-                  color: 'var(--success)',
-                  fontSize: '0.65rem',
-                  textDecoration: 'none',
-                  fontWeight: 800,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  textTransform: 'uppercase',
-                  transition: 'all 0.2s ease',
-                  letterSpacing: '0.05em'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--success)';
-                  e.currentTarget.style.color = 'white';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(var(--success-rgb, 34, 197, 94), 0.08)';
-                  e.currentTarget.style.color = 'var(--success)';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                icon={Mail}
+                size="sm"
+                style={{ 
+                  background: "rgba(34, 197, 94, 0.1)", 
+                  color: "var(--success)",
+                  borderColor: "var(--success)"
                 }}
               >
-                <Mail size={11} strokeWidth={2.5} /> MP
-              </Link>
+                MP
+              </ClassicButton>
             )}
           </div>
         </div>
@@ -306,39 +262,13 @@ const PostItem: React.FC<PostItemProps> = ({
               </p>
             </div>
 
-            <button 
+            <ClassicButton 
               onClick={() => setIsRevealed(true)}
-              className="widget-button secondary-btn"
-              style={{ 
-                marginTop: '0.5rem', 
-                width: 'auto', 
-                padding: '0.8rem 2.2rem',
-                fontSize: '0.8rem',
-                fontWeight: 900,
-                letterSpacing: '0.12em',
-                background: 'var(--glass-bg)',
-                border: '1px solid var(--glass-border)',
-                color: 'var(--foreground)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.8rem',
-                textTransform: 'uppercase',
-                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)';
-                e.currentTarget.style.borderColor = 'var(--primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = 'var(--glass-border)';
-              }}
+              icon={Eye}
+              style={{ width: 'auto', padding: '0.8rem 2.2rem' }}
             >
-              <Eye size={18} /> <span>Afficher le message</span>
-            </button>
+              Afficher le message
+            </ClassicButton>
           </div>
         ) : (
           <>

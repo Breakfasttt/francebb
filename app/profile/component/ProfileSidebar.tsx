@@ -13,6 +13,9 @@ import Link from "next/link";
 import { useState, useTransition, useEffect } from "react";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 import "../page.css";
 
 interface ProfileSidebarProps {
@@ -227,29 +230,40 @@ export default function ProfileSidebar({
         {!isOwnProfile && (
           <div className="profile-actions-column">
             {onContact && (
-              <button onClick={onContact} className="widget-button primary-btn">
-                <MessageSquare size={16} /> <span>Message privé</span>
-              </button>
+              <ClassicButton onClick={onContact} icon={MessageSquare} fullWidth>
+                Message privé
+              </ClassicButton>
             )}
-            <button onClick={() => setShowReportModal(true)} className="widget-button secondary-btn">
-              <AlertTriangle size={16} /> <span>Signaler</span>
-            </button>
-            <button 
+            <ClassicButton onClick={() => setShowReportModal(true)} icon={AlertTriangle} fullWidth>
+              Signaler
+            </ClassicButton>
+            <ClassicButton 
               onClick={() => setShowBlockModal(true)} 
-              className={`widget-button ${isBlocked ? 'success-btn' : 'secondary-btn highlight'}`}
-              disabled={isPending}
+              isLoading={isPending}
+              icon={UserX}
+              fullWidth
+              style={{ 
+                background: isBlocked ? "var(--success)" : undefined,
+                color: isBlocked ? "white" : undefined,
+                borderColor: isBlocked ? "var(--success)" : undefined
+              }}
             >
-              <UserX size={16} /> <span>{isBlocked ? "Débloquer" : "Bloquer"}</span>
-            </button>
+              {isBlocked ? "Débloquer" : "Bloquer"}
+            </ClassicButton>
             {isModerator && (
-              <button
+              <AdminButton
                 onClick={() => setShowBanModal(true)}
-                className={`widget-button ${user.isBanned ? 'success-btn' : 'danger-btn'}`}
-                disabled={isPending}
+                isLoading={isPending}
+                icon={user.isBanned ? UserCheck : Ban}
+                fullWidth
+                style={{ 
+                  background: user.isBanned ? "#2E7D32" : "#ef4444", 
+                  color: "white",
+                  borderColor: user.isBanned ? "#2E7D32" : "#ef4444"
+                }}
               >
-                {user.isBanned ? <UserCheck size={16} /> : <Ban size={16} />}
-                <span>{user.isBanned ? "Débannir" : "Bannir"}</span>
-              </button>
+                {user.isBanned ? "Débannir" : "Bannir"}
+              </AdminButton>
             )}
           </div>
         )}

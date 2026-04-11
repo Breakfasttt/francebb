@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import "./SignInButton.css";
+import { LogIn, LogOut } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface SignInButtonProps {
   user?: {
@@ -12,7 +15,6 @@ interface SignInButtonProps {
 }
 
 export function SignInButton({ user }: SignInButtonProps) {
-
   const handleDisconnect = () => {
     import("next-auth/react").then(({ signOut }) => {
       signOut({ callbackUrl: "/" });
@@ -21,9 +23,9 @@ export function SignInButton({ user }: SignInButtonProps) {
 
   if (!user) {
     return (
-      <Link href="/auth/login" className="btn-login" style={{ textDecoration: 'none' }}>
+      <CTAButton href="/auth/login" icon={LogIn} style={{ height: '40px' }}>
         Connexion
-      </Link>
+      </CTAButton>
     );
   }
 
@@ -43,12 +45,13 @@ export function SignInButton({ user }: SignInButtonProps) {
         )}
         <span className="user-name">{user.name || "Joueur"}</span>
       </Link>
-      <button
+      <ClassicButton
         onClick={handleDisconnect}
-        className="btn-logout"
+        icon={LogOut}
+        style={{ height: '40px' }}
       >
         Déconnexion
-      </button>
+      </ClassicButton>
     </div>
   );
 }

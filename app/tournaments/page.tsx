@@ -10,6 +10,7 @@ import EmptyState from "@/common/components/EmptyState/EmptyState";
 import { Search, MapPin, Calendar, Users, Trophy, Sparkles, GitBranch, Clock } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Pagination from "@/common/components/Pagination/Pagination";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -174,21 +175,21 @@ export default async function TournamentsPage({
                         </div>
                       </div>
                       
-                      <div className="t-footer">
-                        <div className="t-stats-box">
-                          <div className="t-participants" title="Inscriptions">
-                            <Users size={18} />
-                            <span>{t.currentParticipants} / {t.maxParticipants || "∞"}</span>
+                        <div className="t-footer">
+                          <div className="t-stats-box">
+                            <div className="t-participants" title="Inscriptions">
+                              <Users size={18} />
+                              <span>{t.currentParticipants} / {t.maxParticipants || "∞"}</span>
+                            </div>
+                            <div className="t-price">
+                              {t.price === 0 ? "GRATUIT" : `${t.price}€`}
+                            </div>
                           </div>
-                          <div className="t-price">
-                            {t.price === 0 ? "GRATUIT" : `${t.price}€`}
-                          </div>
+                          
+                          <ClassicButton as="div" size="sm">
+                            Détails
+                          </ClassicButton>
                         </div>
-                        
-                        <div className="t-action-btn-fake">
-                          Détails
-                        </div>
-                      </div>
                     </PremiumCard>
                   ))}
                 </div>
@@ -253,12 +254,12 @@ export default async function TournamentsPage({
                         </div>
 
                         <div className="list-col-action">
-                          <Link 
+                          <ClassicButton 
                             href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`} 
-                            className="list-btn"
+                            size="sm"
                           >
                             Voir
-                          </Link>
+                          </ClassicButton>
                         </div>
                       </div>
                     );

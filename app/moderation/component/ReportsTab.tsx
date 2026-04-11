@@ -18,6 +18,8 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface ReportsTabProps {
   type: "POST" | "TOPIC" | "USER" | "ARTICLE" | "LIGUE" | "MESSAGE";
@@ -165,27 +167,37 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                 <div className="report-actions-section">
                   <div className="action-buttons-group">
                     {getTargetUrl(group.targetId) && (
-                      <Link href={getTargetUrl(group.targetId)!} target="_blank" className="widget-button secondary-btn btn-sm" title="Voir l'élément">
-                        <ExternalLink size={14} />
-                        <span>Voir</span>
-                      </Link>
+                      <ClassicButton 
+                        href={getTargetUrl(group.targetId)!} 
+                        target="_blank" 
+                        size="sm"
+                        icon={ExternalLink}
+                        title="Voir l'élément"
+                      >
+                        Voir
+                      </ClassicButton>
                     )}
-                    <button 
-                      className={`widget-button secondary-btn btn-sm ${expandedId === group.targetId ? 'active' : ''}`} 
+                    <ClassicButton 
+                      size="sm"
                       onClick={() => toggleExpand(group.targetId)}
                       title="Afficher les détails"
                     >
                       {expandedId === group.targetId ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                      <span>Détails</span>
-                    </button>
-                    <button 
-                      className="widget-button success btn-sm treated-btn" 
+                      Détails
+                    </ClassicButton>
+                    <AdminButton 
                       onClick={() => handleActionClick(group.targetId)} 
-                      disabled={isPending}
+                      isLoading={isPending}
+                      size="sm"
+                      icon={Check}
+                      style={{ 
+                        background: "linear-gradient(135deg, var(--success), #059669)", 
+                        color: "white",
+                        borderColor: "transparent"
+                      }}
                     >
-                      <Check size={14} />
-                      <span>Traité</span>
-                    </button>
+                      Traité
+                    </AdminButton>
                   </div>
                 </div>
               </div>

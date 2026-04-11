@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X, AlertTriangle, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import DangerButton from "@/common/components/Button/DangerButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -66,24 +69,25 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
         )}
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <button type="button" onClick={onClose} className="widget-button secondary-btn" style={{ width: 'auto', padding: '0.6rem 1.5rem' }}>
+          <ClassicButton type="button" onClick={onClose}>
             Annuler
-          </button>
-          <button 
-            type="button" 
-            onClick={onConfirm}
-            className="widget-button" 
-            style={{ 
-              width: 'auto', 
-              padding: '0.6rem 2rem', 
-              background: isDanger ? '#cc3333' : 'var(--primary)', 
-              color: 'white', 
-              border: 'none',
-              fontWeight: 700
-            }}
-          >
-            {confirmLabel}
-          </button>
+          </ClassicButton>
+          {isDanger ? (
+            <DangerButton 
+              type="button" 
+              onClick={onConfirm}
+            >
+              {confirmLabel}
+            </DangerButton>
+          ) : (
+            <AdminButton 
+              type="button" 
+              onClick={onConfirm}
+              style={{ background: 'var(--primary)', color: 'white', borderColor: 'transparent' }}
+            >
+              {confirmLabel}
+            </AdminButton>
+          )}
         </div>
       </PremiumCard>
     </div>,

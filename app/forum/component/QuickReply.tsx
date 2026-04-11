@@ -3,8 +3,8 @@
 import { useState } from "react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
-import { MessageSquare, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 export default function QuickReply({ topicId, onReplySuccess }: { topicId: string; onReplySuccess?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,21 +48,20 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
         */}
         
         <div style={{ marginTop: '1.5rem' }}>
-          <button 
+          <CTAButton 
             onClick={() => {
-              // Find the textarea inside the editor and get its value
               const editorTextarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
-              if (editorTextarea) {
+              if (editorTextarea && editorTextarea.value.trim()) {
+                setIsSubmitting(true);
                 createPost(topicId, editorTextarea.value).then(() => window.location.reload());
               }
             }}
-            disabled={isSubmitting}
-            className="widget-button" 
-            style={{ background: 'var(--primary)', color: 'white', border: 'none', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
+            isLoading={isSubmitting}
+            icon={MessageSquare}
+            fullWidth
           >
-            {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <MessageSquare size={18} />}
             Envoyer ma réponse
-          </button>
+          </CTAButton>
         </div>
       </PremiumCard>
     </div>

@@ -13,6 +13,9 @@ import { fr } from "date-fns/locale";
 import { toast } from "react-hot-toast";
 import Link from "next/link";
 import Pagination from "@/common/components/Pagination/Pagination";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface ResourceModerationTabProps {
   onActionSuccess?: () => void;
@@ -111,15 +114,24 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <Link href={`/ressources/edit/${res.id}`} className="widget-button secondary-btn btn-sm" style={{ width: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Edit size={14} />
-                  </Link>
-                  <button onClick={() => handleApprove(res.id)} className="widget-button success btn-sm" style={{ width: 'auto' }} disabled={isPending}>
-                    <Check size={14} />
-                  </button>
-                  <button onClick={() => handleReject(res.id)} className="widget-button secondary-btn danger btn-sm" style={{ width: 'auto' }} disabled={isPending}>
-                    <X size={14} />
-                  </button>
+                  <ClassicButton 
+                    href={`/ressources/edit/${res.id}`} 
+                    size="sm"
+                    icon={Edit}
+                  />
+                  <AdminButton 
+                    onClick={() => handleApprove(res.id)} 
+                    isLoading={isPending}
+                    size="sm"
+                    icon={Check}
+                    style={{ background: "#22c55e", color: "white", borderColor: "transparent" }}
+                  />
+                  <DangerButton 
+                    onClick={() => handleReject(res.id)} 
+                    isLoading={isPending}
+                    size="sm"
+                    icon={X}
+                  />
                 </div>
               </div>
             </PremiumCard>

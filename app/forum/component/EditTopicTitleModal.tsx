@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import Modal from "@/common/components/Modal/Modal";
 import { updateTopicTitle } from "@/app/forum/actions";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface EditTopicTitleModalProps {
   isOpen: boolean;
@@ -42,22 +44,15 @@ export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialT
         <TitleInputWithSmiley initialValue={initialTitle} name="title" />
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-          <button 
-            type="button"
-            onClick={onClose}
-            className="widget-button secondary-btn"
-            style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
-          >
+          <ClassicButton type="button" onClick={onClose}>
             Annuler
-          </button>
-          <button 
+          </ClassicButton>
+          <AdminButton 
             type="submit"
-            disabled={isPending}
-            className="widget-button"
-            style={{ width: 'auto', padding: '0.5rem 1.5rem' }}
+            isLoading={isPending}
           >
-            {isPending ? "Modification..." : "Enregistrer"}
-          </button>
+            Enregistrer
+          </AdminButton>
         </div>
       </form>
     </Modal>

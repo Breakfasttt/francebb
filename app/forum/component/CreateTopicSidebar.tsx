@@ -1,6 +1,8 @@
 import { MessageSquarePlus, Pin, Lock } from "lucide-react";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 import "./CreateTopicSidebar.css";
 
 interface CreateTopicSidebarProps {
@@ -51,12 +53,19 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
           )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.5rem' }}>
-            <button type="submit" className={`widget-button btn-centered ${isTournament ? 'accent-btn' : 'primary-btn'}`}>
+            <CTAButton 
+              type="submit" 
+              style={{ width: '100%' }}
+              className={isTournament ? 'accent-btn' : ''}
+            >
               {submitLabel.toUpperCase()}
-            </button>
-            <Link href={`/forum/${forumId}`} className="widget-button secondary-btn btn-centered">
+            </CTAButton>
+            <ClassicButton 
+              href={`/forum/${forumId}`} 
+              style={{ width: '100%' }}
+            >
               Annuler
-            </Link>
+            </ClassicButton>
           </div>
         </div>
       </div>

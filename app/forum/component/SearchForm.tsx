@@ -3,6 +3,7 @@
 import { useState, useEffect, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Filter, Calendar, User, FolderTree, Loader2 } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 export interface ForumOption {
   id: string;
@@ -192,21 +193,14 @@ export default function SearchForm({
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
-        <button type="submit" disabled={isPending} className="widget-button" style={{ 
-          background: "var(--primary)",
-          display: "flex", 
-          alignItems: "center", 
-          justifyContent: "center",
-          gap: "0.5rem", 
-          padding: "0.8rem 2.5rem", 
-          fontSize: "1.05rem",
-          opacity: isPending ? 0.7 : 1,
-          width: "auto",
-          minWidth: "300px"
-        }}>
-          {isPending ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
+        <CTAButton 
+          type="submit" 
+          isLoading={isPending}
+          icon={Search}
+          style={{ minWidth: "300px" }}
+        >
           {isPending ? "Recherche en cours..." : "Lancer la recherche"}
-        </button>
+        </CTAButton>
       </div>
 
     </form>

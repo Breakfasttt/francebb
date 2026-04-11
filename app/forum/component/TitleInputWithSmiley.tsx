@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { Smile } from "lucide-react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface TitleInputWithSmileyProps {
   initialValue?: string;
@@ -40,15 +41,13 @@ export default function TitleInputWithSmiley({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-        <button
+        <ClassicButton
           type="button"
           onClick={() => setIsSmileyOpen(!isSmileyOpen)}
-          className={`widget-button ${isSmileyOpen ? 'active' : 'secondary-btn'}`}
-          style={{ width: 'auto', padding: '0 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 0 }}
           title="Insérer un smiley"
-        >
-          <Smile size={20} />
-        </button>
+          icon={Smile}
+          style={{ width: 'auto', padding: '0 1rem', margin: 0, height: '45px' }}
+        />
         <input
           type="text"
           id="title"

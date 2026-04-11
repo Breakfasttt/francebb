@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteForum } from "@/app/forum/actions";
 import Modal from "@/common/components/Modal/Modal";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface DeleteForumButtonProps {
   forumId: string;
@@ -30,14 +31,13 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
 
   return (
     <>
-      <button 
+      <DangerButton 
         onClick={() => setIsModalOpen(true)}
-        className="widget-button" 
-        style={{ background: 'var(--glass-bg)', color: 'var(--danger)', border: '1px solid var(--danger)' }}
+        icon={Trash2}
+        fullWidth
       >
-        <Trash2 size={18} />
-        <span>Supprimer forum</span>
-      </button>
+        Supprimer forum
+      </DangerButton>
 
       <Modal
         isOpen={isModalOpen}

@@ -14,6 +14,8 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight, Palette } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -214,10 +216,14 @@ export default function OnboardingForm({ user }: { user: any }) {
           </div>
         </div>
 
-        <button type="submit" className="onboarding-submit-btn" disabled={isPending}>
-          {isPending ? "Finalisation..." : "Valider mon profil et entrer"}
-          {!isPending && <ArrowRight size={18} />}
-        </button>
+        <CTAButton 
+          type="submit" 
+          isLoading={isPending}
+          icon={ArrowRight}
+          fullWidth
+        >
+          Valider mon profil et entrer
+        </CTAButton>
       </form>
 
       <Modal isOpen={isGeneratorOpen} onClose={() => setIsGeneratorOpen(false)} onConfirm={() => {

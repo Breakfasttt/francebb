@@ -10,6 +10,7 @@ import { moderateArticle, unmoderateArticle } from "@/app/articles/actions";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import toast from "react-hot-toast";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface ModerateArticleButtonProps {
   articleId: string;
@@ -48,20 +49,22 @@ export default function ModerateArticleButton({
   return (
     <>
       {!isModerated ? (
-        <button 
+        <AdminButton 
           onClick={() => setIsModModalOpen(true)}
-          className="action-button moderate"
+          icon={ShieldAlert}
+          fullWidth
         >
-          <ShieldAlert size={18} /> Modérer l'article
-        </button>
+          Modérer
+        </AdminButton>
       ) : (
-        <button 
+        <AdminButton 
           onClick={() => setIsRestoreModalOpen(true)}
-          className="action-button moderate restore"
-          style={{ background: "rgba(46, 125, 50, 0.1)", color: "#2E7D32", borderColor: "#2E7D32" }}
+          icon={ShieldCheck}
+          fullWidth
+          style={{ background: "#2E7D32", color: "white", borderColor: "#2E7D32" }}
         >
-          <ShieldCheck size={18} /> Annuler la modération
-        </button>
+          Restaurer
+        </AdminButton>
       )}
 
       <ModerationModal

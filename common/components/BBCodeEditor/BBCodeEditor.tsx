@@ -8,6 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import Modal from "@/common/components/Modal/Modal";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 interface BBCodeEditorProps {
   name: string;
@@ -495,9 +497,14 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
 
         <div>
           <Tooltip text={isPreview ? "Fermer l'aperçu" : "Aperçu"}>
-            <button type="button" onClick={() => setIsPreview(!isPreview)} className={`widget-button ${isPreview ? "active" : "secondary-btn"}`} style={{ padding: "0.4rem 0.8rem", height: "auto", fontSize: "0.85rem" }}>
-              {isPreview ? <EyeOff size={16} /> : <Eye size={16} />}
-            </button>
+            <ClassicButton 
+              type="button" 
+              onClick={() => setIsPreview(!isPreview)} 
+              variant={isPreview ? "classic" : "classic"}
+              style={{ padding: "0.4rem 0.8rem", height: "auto" }}
+              className={isPreview ? "active" : ""}
+              icon={isPreview ? EyeOff : Eye}
+            />
           </Tooltip>
         </div>
       </div>
@@ -508,7 +515,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <input type="url" placeholder="URL (ex: https://...)" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
               <input type="text" placeholder="Texte (optionnel)" value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} />
-              <button type="button" onClick={submitLink} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+              <CTAButton type="button" onClick={submitLink} size="sm">Insérer</CTAButton>
             </div>
           )}
           {activeTool === 'topic' && (
@@ -531,7 +538,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", padding: "0.5rem 0.8rem", background: "var(--glass-bg)", borderRadius: "6px", border: "1px solid var(--glass-border)" }}>
                   <div style={{ flex: 1 }}><div style={{ fontWeight: 600, fontSize: "0.88rem" }}>📌 {selectedTopic.title}</div><div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>📂 {selectedTopic.forumName}</div></div>
                   <input type="text" placeholder="Texte affiché (défaut = titre)" value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)", fontSize: "0.88rem" }} />
-                  <button type="button" onClick={submitTopic} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.2rem", flexShrink: 0 }}>Insérer</button>
+                  <CTAButton type="button" onClick={submitTopic} size="sm" style={{ flexShrink: 0 }}>Insérer</CTAButton>
                   <button type="button" onClick={() => setSelectedTopic(null)} style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "1.1rem", padding: "0 0.2rem" }}>✕</button>
                 </div>
               )}
@@ -588,7 +595,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   )}
                 </div>
               </div>
-              <button type="button" onClick={submitYoutube} className="widget-button" style={{ width: "auto", padding: "0.4rem 2rem", height: "38px" }}>Insérer la vidéo</button>
+              <CTAButton type="button" onClick={submitYoutube} size="sm" style={{ height: "38px" }}>Insérer la vidéo</CTAButton>
             </div>
           )}
           {activeTool === 'gallery' && (
@@ -603,7 +610,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   autoFocus 
                 />
               </div>
-              <button type="button" onClick={submitGallery} className="widget-button" style={{ width: "auto", padding: "0.4rem 2rem", height: "38px" }}>Créer la galerie</button>
+              <CTAButton type="button" onClick={submitGallery} size="sm" style={{ height: "38px" }}>Créer la galerie</CTAButton>
             </div>
           )}
           {activeTool === 'mention' && (
@@ -674,18 +681,23 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
               </div>
 
               <div style={{ display: "flex", gap: "0.5rem" }}>
-                <button type="button" onClick={submitImageUrl} className="widget-button" style={{ flex: 1, height: "38px" }}>Insérer via URL</button>
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="widget-button secondary-btn" disabled={isUploading} style={{ flex: 1, height: "38px", display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }}>
-                  {isUploading ? <Loader2 size={18} className="animate-spin" /> : <ImageIcon size={18} />}
-                  {isUploading ? "Upload..." : "Uploader depuis PC"}
-                </button>
+                <CTAButton type="button" onClick={submitImageUrl} style={{ flex: 1, height: "38px" }}>Insérer via URL</CTAButton>
+                <ClassicButton 
+                  type="button" 
+                  onClick={() => fileInputRef.current?.click()} 
+                  isLoading={isUploading} 
+                  icon={ImageIcon}
+                  style={{ flex: 1, height: "38px" }}
+                >
+                  Uploader depuis PC
+                </ClassicButton>
               </div>
             </div>
           )}
           {activeTool === 'size' && (
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
               {["0.7rem", "0.85rem", "1rem", "1.25rem", "1.5rem", "2rem"].map(s => (
-                <button key={s} type="button" onClick={() => { insertTag(`[size=${s}]`, "[/size]"); setActiveTool(null); }} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: s }}>{s}</button>
+                <ClassicButton key={s} type="button" onClick={() => { insertTag(`[size=${s}]`, "[/size]"); setActiveTool(null); }} size="sm" style={{ fontSize: s }}>{s}</ClassicButton>
               ))}
             </div>
           )}
@@ -699,13 +711,13 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           {activeTool === 'spoiler' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <input type="text" placeholder="Titre spoiler..." value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
-              <button type="button" onClick={submitSpoiler} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+              <CTAButton type="button" onClick={submitSpoiler} size="sm">Insérer</CTAButton>
             </div>
           )}
           {activeTool === 'accordion' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
               <input type="text" placeholder="Titre accordéon..." value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
-              <button type="button" onClick={submitAccordion} className="widget-button" style={{ width: "auto", padding: "0.4rem 1.5rem" }}>Insérer</button>
+              <CTAButton type="button" onClick={submitAccordion} size="sm">Insérer</CTAButton>
             </div>
           )}
           {activeTool === 'list' && (
@@ -717,9 +729,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 { v: "1", t: "Numéros (1.)", i: ListOrdered },
                 { v: "a", t: "Lettres (a.)", i: ListOrdered }
               ].map(ls => (
-                <button key={ls.v} type="button" onClick={() => insertListTag(ls.v)} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <ls.i size={14} /> {ls.t}
-                </button>
+                <ClassicButton key={ls.v} type="button" onClick={() => insertListTag(ls.v)} size="sm" icon={ls.i}>
+                  {ls.t}
+                </ClassicButton>
               ))}
             </div>
           )}
@@ -731,9 +743,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 { v: "right", t: "Droite", i: AlignRight },
                 { v: "justify", t: "Justifié", i: AlignJustify }
               ].map(al => (
-                <button key={al.v} type="button" onClick={() => { insertTag(`[${al.v}]`, `[/${al.v}]`); setActiveTool(null); }} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <al.i size={14} /> {al.t}
-                </button>
+                <ClassicButton key={al.v} type="button" onClick={() => { insertTag(`[${al.v}]`, `[/${al.v}]`); setActiveTool(null); }} size="sm" icon={al.i}>
+                  {al.t}
+                </ClassicButton>
               ))}
             </div>
           )}
@@ -744,9 +756,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 { v: "sup", t: "Exposant", i: Superscript },
                 { v: "sub", t: "Indice", i: Subscript }
               ].map(ty => (
-                <button key={ty.v} type="button" onClick={() => { insertTag(`[${ty.v}]`, `[/${ty.v}]`); setActiveTool(null); }} className="widget-button secondary-btn" style={{ width: "auto", padding: "0.4rem 1rem", fontSize: "0.85rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                  <ty.i size={14} /> {ty.t}
-                </button>
+                <ClassicButton key={ty.v} type="button" onClick={() => { insertTag(`[${ty.v}]`, `[/${ty.v}]`); setActiveTool(null); }} size="sm" icon={ty.i}>
+                  {ty.t}
+                </ClassicButton>
               ))}
             </div>
           )}
@@ -807,21 +819,21 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-              <button type="button" onClick={copyAIPrompt} className="widget-button" style={{ width: "100%", justifyContent: "center" }}>
+              <CTAButton type="button" onClick={copyAIPrompt} style={{ width: "100%" }}>
                 Copier le prompt
-              </button>
+              </CTAButton>
               
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                <button type="button" onClick={() => openAI("https://gemini.google.com/app")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem" }}>
-                  <Sparkles size={14} /> Gemini
-                </button>
-                <button type="button" onClick={() => openAI("https://claude.ai/new")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem" }}>
-                  <Bot size={14} /> Claude
-                </button>
+                <ClassicButton type="button" onClick={() => openAI("https://gemini.google.com/app")} size="sm" icon={Sparkles} style={{ flex: 1 }}>
+                  Gemini
+                </ClassicButton>
+                <ClassicButton type="button" onClick={() => openAI("https://claude.ai/new")} size="sm" icon={Bot} style={{ flex: 1 }}>
+                  Claude
+                </ClassicButton>
               </div>
-              <button type="button" onClick={() => openAI("https://chatgpt.com")} className="widget-button secondary-btn" style={{ fontSize: "0.8rem", padding: "0.5rem", width: "100%", justifyContent: "center" }}>
+              <ClassicButton type="button" onClick={() => openAI("https://chatgpt.com")} style={{ width: "100%" }}>
                 Ouvrir ChatGPT
-              </button>
+              </ClassicButton>
             </div>
             
             <p style={{ fontSize: "0.75rem", fontStyle: "italic", textAlign: "center", color: "var(--text-muted)", margin: 0 }}>

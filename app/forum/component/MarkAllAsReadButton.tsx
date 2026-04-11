@@ -5,6 +5,7 @@ import { CheckCheck } from "lucide-react";
 import { markAllTopicsAsRead } from "@/app/forum/actions";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import Modal from "@/common/components/Modal/Modal";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 export default function MarkAllAsReadButton() {
   const [isConfirming, setIsConfirming] = useState(false);
@@ -23,15 +24,12 @@ export default function MarkAllAsReadButton() {
 
   return (
     <>
-      <Tooltip text="Tout marquer comme lu">
-        <button 
-          className="widget-button" 
-          onClick={() => setIsConfirming(true)}
-          style={{ width: 'auto', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <CheckCheck size={18} />
-        </button>
-      </Tooltip>
+      <ClassicButton
+        onClick={() => setIsConfirming(true)}
+        style={{ color: 'var(--text-muted)', cursor: 'pointer', width: 'auto' }}
+        icon={CheckCheck}
+        title="Tout marquer comme lu"
+      />
 
       <Modal
         isOpen={isConfirming}

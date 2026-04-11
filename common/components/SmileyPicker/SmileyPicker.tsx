@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Smile } from "lucide-react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface SmileyPickerProps {
   onSelect: (code: string) => void;
@@ -27,15 +28,13 @@ export default function SmileyPicker({ onSelect }: SmileyPickerProps) {
 
   return (
     <div className="smiley-picker-container" ref={pickerRef} style={{ position: "relative", display: "inline-block" }}>
-      <button
+      <ClassicButton
         type="button"
-        className="widget-button secondary-btn"
         style={{ padding: "0.4rem" }}
         onClick={() => setIsOpen(!isOpen)}
         title="Insérer un smiley"
-      >
-        <Smile size={18} />
-      </button>
+        icon={Smile}
+      />
 
       {isOpen && (
         <PremiumCard

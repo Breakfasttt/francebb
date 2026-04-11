@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { PlusCircle, AlertCircle } from "lucide-react";
-import Link from "next/link";
 import Modal from "@/common/components/Modal/Modal";
+import AdminButton from "@/common/components/Button/AdminButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 interface NewForumButtonProps {
   categoryId?: string;
@@ -30,15 +31,14 @@ export default function NewForumButton({
 
   return (
     <>
-      <Link 
+      <AdminButton 
         href={href}
         onClick={handleClick}
-        className="widget-button secondary-btn" 
-        style={{ background: 'var(--glass-bg)' }}
+        icon={PlusCircle}
+        fullWidth
       >
-        <PlusCircle size={18} />
-        <span>Nouveau forum</span>
-      </Link>
+        Nouveau forum
+      </AdminButton>
 
       <Modal 
         isOpen={isModalOpen} 
@@ -53,13 +53,12 @@ export default function NewForumButton({
           <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "2rem" }}>
             Veuillez supprimer ou réorganiser les sous-forums existants avant d'en créer un nouveau.
           </p>
-          <button 
+          <CTAButton 
             onClick={() => setIsModalOpen(false)} 
-            className="widget-button" 
-            style={{ width: "100%", background: "var(--primary)" }}
+            fullWidth
           >
             Compris
-          </button>
+          </CTAButton>
         </div>
       </Modal>
     </>

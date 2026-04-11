@@ -13,6 +13,9 @@ import { saveArchive } from "../actions";
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import UserMapper from '@/common/components/UserMapper/UserMapper';
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface ArchiveEditorProps {
   initialData: {
@@ -159,17 +162,17 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
               placeholder="Ex: Championnat de France 2026"
             />
           </div>
-          <button className="widget-button" onClick={handleSave} disabled={isSaving}>
-            {isSaving ? "Sauvegarde..." : <><Save size={18} /> Enregistrer l'Archive</>}
-          </button>
+          <AdminButton onClick={handleSave} isLoading={isSaving} icon={Save}>
+            Enregistrer l'Archive
+          </AdminButton>
         </div>
       </PremiumCard>
 
       <div className="archive-entries-header">
         <h3>Entrées du classement ({entries.length})</h3>
-        <button className="admin-action-btn outline" onClick={addEntry}>
-          <PlusCircle size={16} /> Ajouter un coach
-        </button>
+        <ClassicButton onClick={addEntry} icon={PlusCircle} size="sm">
+          Ajouter un coach
+        </ClassicButton>
       </div>
 
       <div className="archive-table-wrapper">
@@ -194,9 +197,9 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
                 <React.Fragment key={entry.id}>
                   <tr className={isExpanded ? 'expanded-parent' : ''}>
                     <td className="center-text">
-                      <button className="icon-btn" onClick={() => toggleRow(entry.id)}>
+                      <ClassicButton size="sm" onClick={() => toggleRow(entry.id)} style={{ padding: '0.2rem' }}>
                         {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                      </button>
+                      </ClassicButton>
                     </td>
                     <td className="center-text"><strong>{idx + 1}</strong></td>
                     <td>
@@ -244,9 +247,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
                       />
                     </td>
                     <td className="center-text">
-                      <button className="icon-btn danger" onClick={() => removeEntry(originalIndex)} title="Supprimer">
-                        <Trash2 size={18} />
-                      </button>
+                      <DangerButton size="sm" onClick={() => removeEntry(originalIndex)} title="Supprimer" icon={Trash2} />
                     </td>
                   </tr>
                   

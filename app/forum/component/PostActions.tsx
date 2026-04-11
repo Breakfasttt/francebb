@@ -1,6 +1,9 @@
 "use client";
 
 import { MessageSquare, Pencil, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 import Link from "next/link";
 import { moderatePost, unmoderatePost, deletePost } from "@/app/forum/actions";
 import { useState } from "react";
@@ -103,25 +106,25 @@ export default function PostActions({
           {isModerator && (
             <div>
               {!isModerated ? (
-                <button 
+                <AdminButton 
                   onClick={() => setIsModModalOpen(true)}
-                  className="secondary-btn" 
                   title="Modérer ce message"
-                  style={{ ...btnStyle, background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)', color: 'var(--danger)', borderColor: 'var(--danger)' }}
+                  icon={ShieldAlert}
+                  size="sm"
+                  style={{ background: 'rgba(var(--danger-rgb), 0.1)', color: 'var(--danger)', borderColor: 'var(--danger)' }}
                 >
-                  <ShieldAlert size={14} />
-                  <span>Modérer</span>
-                </button>
+                  Modérer
+                </AdminButton>
               ) : (
-                <button 
+                <AdminButton 
                   onClick={() => setIsRestoreModalOpen(true)}
-                  className="secondary-btn" 
                   title="Restaurer ce message"
-                  style={{ ...btnStyle, background: 'rgba(var(--success-rgb, 46, 125, 50), 0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}
+                  icon={ShieldCheck}
+                  size="sm"
+                  style={{ background: 'rgba(var(--success-rgb), 0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}
                 >
-                  <ShieldCheck size={14} />
-                  <span>Restaurer</span>
-                </button>
+                  Restaurer
+                </AdminButton>
               )}
             </div>
           )}
@@ -137,26 +140,24 @@ export default function PostActions({
           
           {/* Citer */}
           <div className="tooltip-wrapper">
-            <button 
+            <ClassicButton 
               onClick={handleQuote}
-              className="secondary-btn hover-brightness" 
-              style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--glass-bg)', color: 'var(--foreground)' }}
-            >
-              <MessageSquare size={16} />
-            </button>
+              icon={MessageSquare}
+              size="sm"
+              style={{ width: '32px', height: '32px', justifyContent: 'center' }}
+            />
             <span className="tooltip-text">Citer</span>
           </div>
 
           {/* Modifier */}
           {canEdit && (
             <div className="tooltip-wrapper">
-              <Link 
+              <ClassicButton 
                 href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
-                className="widget-button hover-brightness" 
-                style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'var(--header-foreground)', border: 'none' }}
-              >
-                <Pencil size={16} />
-              </Link>
+                icon={Pencil}
+                size="sm"
+                style={{ width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'white', border: 'none' }}
+              />
               <span className="tooltip-text">{isTournament && isFirstPost ? "Modifier tournoi" : "Modifier"}</span>
             </div>
           )}
@@ -164,13 +165,12 @@ export default function PostActions({
           {/* Supprimer */}
           {isAuthor && (
             <div className="tooltip-wrapper">
-              <button 
+              <DangerButton 
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="secondary-btn hover-brightness" 
-                style={{ ...btnStyle, padding: '0.5rem', width: '32px', height: '32px', justifyContent: 'center', background: 'var(--glass-bg)', color: 'var(--danger)' }}
-              >
-                <Trash2 size={16} />
-              </button>
+                icon={Trash2}
+                size="sm"
+                style={{ width: '32px', height: '32px', justifyContent: 'center' }}
+              />
               <span className="tooltip-text">Supprimer</span>
             </div>
           )}

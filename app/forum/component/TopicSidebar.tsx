@@ -33,6 +33,10 @@ import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
 import Pagination from "@/common/components/Pagination/Pagination";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 import LockButton from "@/app/forum/component/LockButton";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
@@ -319,59 +323,57 @@ export default function TopicSidebar({
             )}
 
             {(!(isLocked || isForumLocked) || isModerator) && (
-              <button onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })}
-                className="widget-button primary-btn">
-                <MessageSquare size={16} /><span>Répondre</span>
-              </button>
+              <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={MessageSquare}>
+                Répondre
+              </CTAButton>
             )}
             
             {currentUserId && (
-              <button
+              <ClassicButton
                 onClick={handleToggleFollow}
-                disabled={isPending}
-                className="widget-button secondary-btn"
+                isLoading={isPending}
+                icon={Bookmark}
                 style={{
-                  borderColor: isFollowing ? 'var(--accent)' : 'var(--glass-border)',
-                  color: isFollowing ? 'var(--accent)' : 'var(--foreground)',
+                  borderColor: isFollowing ? 'var(--accent)' : undefined,
+                  color: isFollowing ? 'var(--accent)' : undefined,
                 }}
               >
-                <Bookmark size={16} style={{ opacity: isFollowing ? 1 : 0.85 }} />
-                <span>{isFollowing ? "Arrêter de suivre" : "Suivre le sujet"}</span>
-              </button>
+                {isFollowing ? "Arrêter de suivre" : "Suivre le sujet"}
+              </ClassicButton>
             )}
 
             {!isTournament && canEditTitle && (
-              <button 
+              <ClassicButton 
                 onClick={handleEditTitleClick}
-                className="widget-button secondary-btn" 
+                icon={Type}
               >
-                <Type size={16} />
-                <span>Modifier le titre</span>
-              </button>
+                Modifier le titre
+              </ClassicButton>
             )}
 
             {currentUserId && currentUserId !== authorId && (
-              <button 
+              <ClassicButton 
                 onClick={() => setShowReportModal(true)}
-                className="widget-button secondary-btn" 
+                icon={AlertTriangle}
               >
-                <AlertTriangle size={16} />
-                <span>Signaler</span>
-              </button>
+                Signaler
+              </ClassicButton>
             )}
 
-            <a 
+            <ClassicButton 
               href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
               onClick={handleGoToLast}
-              className="widget-button secondary-btn" 
+              icon={ChevronsDown}
             >
-              <ChevronsDown size={16} /><span>Dernier message</span>
-            </a>
+              Dernier message
+            </ClassicButton>
 
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="widget-button secondary-btn">
-              <ArrowUp size={16} /><span>Haut de page</span>
-            </button>
+            <ClassicButton 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              icon={ArrowUp}
+            >
+              Haut de page
+            </ClassicButton>
 
             {/* 3. Tournament Administration Section */}
             {isTournament && canEditTournament && !isCancelled && (
@@ -380,52 +382,46 @@ export default function TopicSidebar({
                   <Shield size={14} /> Gestion Tournoi
                 </h3>
                 
-                <button 
+                <AdminButton 
                   onClick={handleEditTitleClick}
-                  className="widget-button secondary-btn" 
+                  icon={Type}
                 >
-                  <Type size={16} />
-                  <span>Modifier le tournoi</span>
-                </button>
+                  Modifier le tournoi
+                </AdminButton>
 
                 {isFinished ? (
-                  <Link 
+                  <AdminButton 
                     href={`/forum/tournament/${tournamentId}/results`}
-                    className="widget-button secondary-btn" 
+                    icon={Trophy}
                   >
-                    <Trophy size={16} style={{ color: 'var(--accent)' }} />
-                    <span>Publier les résultats</span>
-                  </Link>
+                    Publier les résultats
+                  </AdminButton>
                 ) : (
                   <>
-                    <button 
+                    <AdminButton 
                       onClick={handleFinish}
-                      disabled={isPending}
-                      className="widget-button secondary-btn" 
+                      isLoading={isPending}
+                      icon={CheckCircle}
                     >
-                      <CheckCircle size={16} />
-                      <span>Terminer le tournoi</span>
-                    </button>
+                      Terminer le tournoi
+                    </AdminButton>
                     
-                    <button 
+                    <AdminButton 
                       onClick={handleToggleRegistrations}
-                      disabled={isPending}
-                      className="widget-button secondary-btn" 
-                      style={{ color: registrationsLocked ? 'var(--accent)' : 'var(--foreground)' }}
+                      isLoading={isPending}
+                      icon={registrationsLocked ? Check : LockIcon}
+                      style={{ color: registrationsLocked ? 'var(--accent)' : undefined }}
                     >
-                      {registrationsLocked ? <Check size={16} /> : <LockIcon size={16} />}
-                      <span>{registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}</span>
-                    </button>
+                      {registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}
+                    </AdminButton>
 
-                    <button 
+                    <DangerButton 
                       onClick={handleCancel}
-                      disabled={isPending}
-                      className="widget-button secondary-btn" 
-                      style={{ textAlign: 'left', color: 'var(--danger)', padding: '8px 12px' }}
+                      isLoading={isPending}
+                      icon={XCircle}
                     >
-                      <XCircle size={16} />
-                      <span>Annuler le tournoi</span>
-                    </button>
+                      Annuler le tournoi
+                    </DangerButton>
                   </>
                 )}
               </div>
@@ -437,38 +433,32 @@ export default function TopicSidebar({
                 <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
                 
                 
-                <button 
+                <AdminButton 
                   onClick={handleTogglePin}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
-                  style={{ color: isPinned ? 'var(--unread-marker)' : 'var(--foreground)' }}
+                  isLoading={isPending}
+                  icon={isPinned ? PinOff : Pin}
+                  style={{ color: isPinned ? 'var(--unread-marker)' : undefined }}
                 >
-                  {isPinned ? <PinOff size={16} /> : <Pin size={16} />}
-                  <span>{isPinned ? "Désépingler" : "Épingler"}</span>
-                </button>
+                  {isPinned ? "Désépingler" : "Épingler"}
+                </AdminButton>
 
-                <button 
+                <AdminButton 
                   onClick={() => setShowMoveModal(true)}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
+                  isLoading={isPending}
+                  icon={Move}
                 >
-                  <Move size={16} />
-                  <span>Déplacer</span>
-                </button>
+                  Déplacer
+                </AdminButton>
 
                 {/* Archivage */}
-                <button 
+                <AdminButton 
                   onClick={handleToggleArchive}
-                  disabled={isPending}
-                  className="widget-button secondary-btn"
-                  style={{ 
-                    borderColor: isArchived ? 'var(--accent)' : 'var(--glass-border)',
-                    color: isArchived ? 'var(--accent)' : 'var(--foreground)'
-                  }}
+                  isLoading={isPending}
+                  icon={Eye}
+                  style={{ color: isArchived ? 'var(--accent)' : undefined }}
                 >
-                  <Eye size={16} style={{ opacity: isArchived ? 1 : 0.7 }} />
-                  <span>{isArchived ? "Désarchiver" : "Archiver"}</span>
-                </button>
+                  {isArchived ? "Désarchiver" : "Archiver"}
+                </AdminButton>
 
                 <LockButton 
                   id={topicId} 
@@ -476,15 +466,13 @@ export default function TopicSidebar({
                   isLocked={isLocked} 
                 />
 
-                <button 
+                <DangerButton 
                   onClick={() => setShowDeleteModal(true)}
-                  disabled={isPending}
-                  className="widget-button secondary-btn" 
-                  style={{ color: 'var(--danger)' }}
+                  isLoading={isPending}
+                  icon={Trash2}
                 >
-                  <Trash2 size={16} />
-                  <span>Supprimer sujet</span>
-                </button>
+                  Supprimer sujet
+                </DangerButton>
               </div>
             )}
           </div>
@@ -510,8 +498,8 @@ export default function TopicSidebar({
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <button onClick={() => setShowDeleteModal(false)} className="widget-button secondary-btn">Annuler</button>
-            <button onClick={handleDeleteTopic} disabled={isPending} className="widget-button" style={{ background: '#e04444' }}>Confirmer la suppression</button>
+            <ClassicButton onClick={() => setShowDeleteModal(false)}>Annuler</ClassicButton>
+            <DangerButton onClick={handleDeleteTopic} isLoading={isPending}>Confirmer la suppression</DangerButton>
           </div>
         </div>
       </Modal>

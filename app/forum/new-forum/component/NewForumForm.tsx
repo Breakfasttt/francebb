@@ -9,6 +9,8 @@
 import { FolderPlus } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface Forum {
   id: string;
@@ -144,13 +146,19 @@ export default function NewForumForm({
 
 
         <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <button type="submit" className="widget-button" style={{ flex: 1, background: 'var(--primary)', border: 'none', color: 'white', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-            <FolderPlus size={18} />
+          <AdminButton 
+            type="submit" 
+            icon={FolderPlus}
+            style={{ flex: 1 }}
+          >
             Créer le forum
-          </button>
-          <Link href="/forum" className="widget-button secondary-btn" style={{ flex: 1, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.8rem' }}>
+          </AdminButton>
+          <ClassicButton 
+            href="/forum" 
+            style={{ flex: 1 }}
+          >
             Annuler
-          </Link>
+          </ClassicButton>
         </div>
       </form>
     </div>

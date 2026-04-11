@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { deleteArticle } from "@/app/articles/actions";
 import toast from "react-hot-toast";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface DeleteArticleButtonProps {
   articleId: string;
@@ -29,14 +30,15 @@ export default function DeleteArticleButton({ articleId }: DeleteArticleButtonPr
 
   return (
     <>
-      <button 
+      <DangerButton 
         onClick={() => setIsModalOpen(true)} 
-        className="action-button delete" 
-        disabled={isPending}
+        isLoading={isPending}
+        icon={Trash2}
+        fullWidth
         title="Supprimer définitivement cet article"
       >
-        <Trash2 size={18} /> {isPending ? "Suppression..." : "Supprimer"}
-      </button>
+        Supprimer
+      </DangerButton>
 
       <ConfirmModal
         isOpen={isModalOpen}

@@ -6,6 +6,7 @@ import { toggleForumLock, toggleTopicLock } from "@/app/forum/actions";
 import { useRouter } from "next/navigation";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import toast from "react-hot-toast";
+import AdminButton from "@/common/components/Button/AdminButton";
 
 interface LockButtonProps {
   id: string;
@@ -37,39 +38,18 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
 
   return (
     <Tooltip text={`${label} ce ${type === "forum" ? "forum" : "sujet"}`}>
-      <button
+      <AdminButton
         onClick={handleToggle}
-        disabled={isPending}
-        className="lock-toggle-btn"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '0.7rem',
-          width: '100%',
-          padding: '0.8rem',
-          background: 'var(--glass-bg)',
-          color: isLocked ? 'var(--success)' : 'var(--danger)',
-          border: `1px solid ${isLocked ? 'var(--success)' : 'var(--danger)'}`,
-          borderRadius: '8px',
-          fontWeight: '600',
-          fontSize: '0.9rem',
-          cursor: 'pointer',
-          transition: 'all 0.2s ease',
-          opacity: isPending ? 0.7 : 1
+        isLoading={isPending}
+        icon={isLocked ? Unlock : Lock}
+        fullWidth
+        style={{ 
+          background: isLocked ? 'var(--success)' : 'var(--danger)',
+          borderColor: isLocked ? 'var(--success)' : 'var(--danger)',
         }}
       >
-        {isLocked ? <Unlock size={18} /> : <Lock size={18} />}
-        <span>{label}</span>
-      </button>
-      <style jsx>{`
-        .lock-toggle-btn:hover {
-          background: var(--glass-bg) !important;
-          border-color: ${isLocked ? 'var(--success)' : 'var(--danger)'} !important;
-          filter: brightness(1.2);
-          transform: translateY(-1px);
-        }
-      `}</style>
+        {label}
+      </AdminButton>
     </Tooltip>
   );
 }

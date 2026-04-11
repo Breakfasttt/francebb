@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface ReportArticleButtonProps {
   articleId: string;
@@ -14,9 +15,9 @@ export default function ReportArticleButton({ articleId, articleTitle }: ReportA
 
   return (
     <>
-      <button className="action-button report" onClick={() => setShowModal(true)}>
-        <Flag size={18} /> Signaler l'article
-      </button>
+      <ClassicButton onClick={() => setShowModal(true)} icon={Flag} fullWidth>
+        Signaler l'article
+      </ClassicButton>
 
       <ReportModal 
         isOpen={showModal}

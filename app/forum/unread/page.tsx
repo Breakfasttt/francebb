@@ -1,4 +1,3 @@
-import { MessageSquare, Clock, CheckCircle2, Inbox, Trophy } from "lucide-react";
 import Link from "next/link";
 import Pagination from "@/common/components/Pagination/Pagination";
 import toast from "react-hot-toast";
@@ -89,9 +88,9 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
                 <MessageSquare size={48} color="var(--text-muted)" style={{ marginBottom: '1.5rem' }} />
                 <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Aucun nouveau message</h2>
                 <p style={{ color: 'var(--text-muted)' }}>Vous êtes à jour ! Tous les sujets ont été lus.</p>
-                <Link href="/forum" className="widget-button" style={{ display: 'inline-flex', width: 'auto', marginTop: '2rem', padding: '0.8rem 2rem' }}>
+                <ClassicButton href="/forum" style={{ marginTop: '2rem' }}>
                   Retour à l'index du forum
-                </Link>
+                </ClassicButton>
               </div>
             )}
           </div>

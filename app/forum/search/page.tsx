@@ -10,6 +10,7 @@ import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 export const dynamic = "force-dynamic";
 
@@ -213,9 +214,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                       </div>
                     </div>
                     
-                    <Link href={`/forum/topic/${post.topicId}#${post.id}`} className="bb-button primary" style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
+                    <ClassicButton href={`/forum/topic/${post.topicId}#${post.id}`} style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
                       Voir le message
-                    </Link>
+                    </ClassicButton>
                   </div>
                   
                   <div style={{ 

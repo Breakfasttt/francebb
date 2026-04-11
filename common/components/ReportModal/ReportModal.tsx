@@ -6,6 +6,8 @@ import { AlertTriangle, X, ShieldAlert, Loader2 } from "lucide-react";
 import { createReportAction } from "@/app/moderation/actions";
 import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -107,12 +109,12 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
         </div>
 
         <div className="modal-actions" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-          <button className="widget-button secondary-btn" onClick={onClose} disabled={isPending} style={{ width: 'auto', padding: '0.6rem 1.5rem' }}>
+          <ClassicButton onClick={onClose} disabled={isPending}>
             Annuler
-          </button>
-          <button className="widget-button danger-btn" onClick={handleSubmit} disabled={isPending} style={{ width: 'auto', padding: '0.6rem 2rem' }}>
-            {isPending ? <Loader2 className="animate-spin" size={18} /> : "Envoyer le signalement"}
-          </button>
+          </ClassicButton>
+          <DangerButton onClick={handleSubmit} isLoading={isPending}>
+            Envoyer le signalement
+          </DangerButton>
         </div>
       </PremiumCard>
 

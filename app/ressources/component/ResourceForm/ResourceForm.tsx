@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { Loader2, Upload, Link as LinkIcon, Image as ImageIcon, Send } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import { siteConfig } from "@/lib/siteConfig";
 import { getResourceTags } from "../../actions";
 import "./ResourceForm.css";
@@ -158,15 +160,15 @@ export default function ResourceForm({
               style={{ display: 'none' }} 
               accept="image/*" 
             />
-            <button
+            <ClassicButton
               type="button"
-              className="upload-btn"
               onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading}
+              isLoading={isUploading}
+              icon={Upload}
+              size="sm"
             >
-              {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-              <span>{isUploading ? "..." : "Upload"}</span>
-            </button>
+              Upload
+            </ClassicButton>
           </div>
           <p className="form-hint">Vous pouvez uploader une image directement sur ImgBB ou coller une URL.</p>
         </div>
@@ -185,17 +187,18 @@ export default function ResourceForm({
 
         <div className="form-actions">
           {onCancel && (
-            <button type="button" className="cancel-form-btn" onClick={onCancel}>
+            <ClassicButton type="button" onClick={onCancel}>
               Annuler
-            </button>
+            </ClassicButton>
           )}
-          <button type="submit" className="submit-form-btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <><Loader2 size={20} className="animate-spin" /> Traitement...</>
-            ) : (
-              <><Send size={20} /> {submitLabel}</>
-            )}
-          </button>
+          <CTAButton 
+            type="submit" 
+            isLoading={isSubmitting}
+            icon={Send}
+            style={{ minWidth: '220px' }}
+          >
+            {submitLabel}
+          </CTAButton>
         </div>
       </PremiumCard>
     </form>
