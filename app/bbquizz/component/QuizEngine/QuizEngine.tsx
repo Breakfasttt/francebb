@@ -11,8 +11,9 @@ import { toast } from "react-hot-toast";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { Loader2, Zap, Users, Scissors, FastForward, Award, Trophy, Brain, PlusCircle, MinusCircle, Plus, Edit2, Check } from "lucide-react";
 import "./QuizEngine.css";
-import QuizManagement from "../QuizManagement/QuizManagement";
+import { useRouter } from "next/navigation";
 import { isModerator } from "@/lib/roles";
+import { translateCategory } from "../../utils";
 
 interface Question {
   category: string;
@@ -44,14 +45,13 @@ export default function QuizEngine({ session }: { session: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastPointsWon, setLastPointsWon] = useState<number | null>(null);
 
-  // Management Modal state
-  const [mgmtOpen, setMgmtOpen] = useState(false);
-  const [mgmtMode, setMgmtMode] = useState<"suggest" | "validate" | "edit">("suggest");
+  const router = useRouter();
   const isModo = isModerator(session?.user?.role);
 
   const openManagement = (mode: "suggest" | "validate" | "edit") => {
-    setMgmtMode(mode);
-    setMgmtOpen(true);
+    if (mode === "suggest") router.push("/bbquizz/proposer");
+    if (mode === "validate") router.push("/bbquizz/valider");
+    if (mode === "edit") router.push("/bbquizz/editer");
   };
 
   // Initialize quiz
@@ -237,12 +237,6 @@ export default function QuizEngine({ session }: { session: any }) {
           </PremiumCard>
         </div>
 
-        <QuizManagement 
-          isOpen={mgmtOpen} 
-          onClose={() => setMgmtOpen(false)} 
-          initialMode={mgmtMode}
-          isModo={isModo}
-        />
       </div>
     );
   }
@@ -307,7 +301,7 @@ export default function QuizEngine({ session }: { session: any }) {
         <PremiumCard className="quiz-question-card fixed-height">
           <div className="category-tag">
             <Brain className="size-4" />
-            {currentQ.category}
+            {translateCategory(currentQ.category)}
           </div>
 
           <h1 className="question-text">{currentQ.question}</h1>

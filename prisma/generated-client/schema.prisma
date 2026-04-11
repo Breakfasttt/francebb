@@ -91,6 +91,7 @@ model User {
   quizBestScore           Int                      @default(0)
   quizStreak              Int                      @default(0)
   quizAttemptsCount       Int                      @default(0)
+  quizSuggestions         QuizQuestionSuggestion[]
 }
 
 model Block {
@@ -604,4 +605,19 @@ model QuizDailyWinner {
   score  Int
   streak Int      @default(1)
   user   User     @relation(fields: [userId], references: [id])
+}
+
+model QuizQuestionSuggestion {
+  id           String   @id @default(cuid())
+  category     String
+  question     String
+  imageUrl     String?
+  options      String // JSON stringified array [opt1, opt2, opt3, opt4]
+  correctIndex Int
+  explanation  String?
+  authorId     String
+  status       String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  author       User     @relation(fields: [authorId], references: [id])
 }

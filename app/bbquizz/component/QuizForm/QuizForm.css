@@ -1,0 +1,129 @@
+.quiz-form-card {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-select, .form-textarea, .form-input {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 0.8rem;
+  border-radius: 8px;
+  color: #fff;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.form-select:focus, .form-textarea:focus, .form-input:focus {
+  border-color: var(--primary);
+  outline: none;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.options-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.option-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-radio {
+  accent-color: var(--primary);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.radio-label {
+  cursor: pointer;
+  font-size: 0.8rem !important;
+  color: var(--text-secondary) !important;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--glass-bg);
+  color: #fff;
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .options-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

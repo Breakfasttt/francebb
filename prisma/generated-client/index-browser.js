@@ -545,6 +545,20 @@ exports.Prisma.QuizDailyWinnerScalarFieldEnum = {
   streak: 'streak'
 };
 
+exports.Prisma.QuizQuestionSuggestionScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  question: 'question',
+  imageUrl: 'imageUrl',
+  options: 'options',
+  correctIndex: 'correctIndex',
+  explanation: 'explanation',
+  authorId: 'authorId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -606,7 +620,8 @@ exports.Prisma.ModelName = {
   TournamentMatch: 'TournamentMatch',
   QuizQuestion: 'QuizQuestion',
   QuizAttempt: 'QuizAttempt',
-  QuizDailyWinner: 'QuizDailyWinner'
+  QuizDailyWinner: 'QuizDailyWinner',
+  QuizQuestionSuggestion: 'QuizQuestionSuggestion'
 };
 
 /**

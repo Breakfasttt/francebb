@@ -1,0 +1,14 @@
+@media (max-width: 768px) {
+  .question-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .question-actions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 0.75rem;
+  }
+}

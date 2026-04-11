@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+  .suggestion-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-approve, .btn-reject {
+    width: 100%;
+    justify-content: center;
+  }
+}

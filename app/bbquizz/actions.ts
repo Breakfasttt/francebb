@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { questions as staticQuestions } from "./data/questions";
 import { revalidatePath } from "next/cache";
 import { isModerator } from "@/lib/roles";
+import { translateCategory } from "./utils";
 
 /**
  * Récupère 20 questions pour une session de quizz.
@@ -22,7 +23,10 @@ export async function getRandomQuizQuestions() {
   const allQuestions = [...staticQuestions, ...dbQuestions.map(q => ({
     ...q,
     options: JSON.parse(q.options)
-  }))];
+  }))].map(q => ({
+    ...q,
+    category: translateCategory(q.category)
+  }));
 
   // Mélanger et prendre 20
   const shuffled = allQuestions.sort(() => 0.5 - Math.random());
@@ -194,11 +198,16 @@ export async function getQuizSuggestions() {
   const session = await auth();
   if (!isModerator(session?.user?.role)) return [];
 
-  return prisma.quizQuestionSuggestion.findMany({
+  const suggestions = await prisma.quizQuestionSuggestion.findMany({
     where: { status: "PENDING" },
     include: { author: { select: { name: true } } },
     orderBy: { createdAt: "desc" },
   });
+
+  return suggestions.map(s => ({
+    ...s,
+    category: translateCategory(s.category)
+  }));
 }
 
 /**
@@ -245,9 +254,14 @@ export async function getAllQuizQuestions() {
   const session = await auth();
   if (!isModerator(session?.user?.role)) return [];
 
-  return prisma.quizQuestion.findMany({
+  const questions = await prisma.quizQuestion.findMany({
     orderBy: { createdAt: "desc" }
   });
+
+  return questions.map(q => ({
+    ...q,
+    category: translateCategory(q.category)
+  }));
 }
 
 /**

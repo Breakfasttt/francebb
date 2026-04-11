@@ -1,0 +1,139 @@
+.valider-page-layout {
+  margin-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.suggestions-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.suggestion-card {
+  padding: 1.5rem;
+}
+
+.suggestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.separator {
+  margin: 0 0.2rem;
+}
+
+.category-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--theme-overlay);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+
+.suggestion-question {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.options-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.option-item.correct {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
+  color: #22c55e;
+}
+
+.option-label {
+  font-weight: 800;
+  opacity: 0.5;
+}
+
+.explanation-preview {
+  padding: 1rem;
+  background: var(--theme-overlay);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.suggestion-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 1.5rem;
+}
+
+.btn-approve, .btn-reject {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-approve {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+}
+
+.btn-approve:hover {
+  background: #16a34a;
+}
+
+.btn-reject {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.btn-reject:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 768px) {
+  .options-preview {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+@media (max-width: 768px) {
+  .quiz-form-card {
+    padding: 1.2rem;
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
