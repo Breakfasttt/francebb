@@ -1,0 +1,26 @@
+/* Réutilise les styles de login-container et login-card de la page de login */
+@import "../login/page.css";
+
+.error-icon-wrapper {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-error-details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+.error-code {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  font-family: monospace;
+  opacity: 0.5;
+}

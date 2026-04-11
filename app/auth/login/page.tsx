@@ -1,48 +1,90 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
+import { signIn } from "@/auth";
 import "./page.css";
+import { Mail, LogIn } from "lucide-react";
 
-const ROLES = [
-  { id: "user_test_superadmin", name: "SuperAdmin", icon: "👑" },
-  { id: "user_test_admin", name: "Administrateur", icon: "🛡️" },
-  { id: "user_test_moderator", name: "Modérateur", icon: "⚔️" },
-  { id: "user_test_rtc", name: "RTC", icon: "🎯" },
-  { id: "user_test_chefligue", name: "Chef de Ligue", icon: "🚩" },
-  { id: "user_test_breakyt", name: "Breakyt (Admin)", icon: "🦖" },
-  { id: "user_test_coach1", name: "Coach Blood Bowl", icon: "🏈" },
-];
-
-export default function LoginPage() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callback") || "/";
-
-  const handleConnect = (userId: string) => {
-    document.cookie = `simulated_user_id=${userId}; path=/; max-age=31536000`;
-    window.location.href = callbackUrl;
-  };
+export default async function LoginPage(props: {
+  searchParams: Promise<{ callbackUrl?: string; error?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const callbackUrl = searchParams.callbackUrl || "/";
+  const error = searchParams.error;
 
   return (
     <main className="login-container">
       <div className="login-card">
         <h1 className="login-title">Connexion</h1>
-        <p style={{ color: '#aaa', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-          Choisissez un compte pour simuler une connexion.<br/>
-          <i>Mode Simulation Activé</i>
-        </p>
         
-        <div className="role-list">
-          {ROLES.map((role) => (
-            <button
-              key={role.id}
-              onClick={() => handleConnect(role.id)}
-              className="role-button"
-            >
-              <div className="role-icon">{role.icon}</div>
-              <span>{role.name}</span>
+        {error === "OAuthAccountNotLinked" && (
+          <div className="auth-error">
+            Cet email est déjà lié à un autre mode de connexion.
+          </div>
+        )}
+
+        <div className="login-methods">
+          {/* Discord */}
+          <form
+            action={async () => {
+              "use server";
+              await signIn("discord", { redirectTo: callbackUrl });
+            }}
+          >
+            <button type="submit" className="login-method-button discord">
+              <span className="method-icon">🎮</span>
+              Se connecter avec Discord
             </button>
-          ))}
+          </form>
+
+          {/* Google */}
+          <form
+            action={async () => {
+              "use server";
+              await signIn("google", { redirectTo: callbackUrl });
+            }}
+          >
+            <button type="submit" className="login-method-button google">
+              <span className="method-icon">📧</span>
+              Se connecter avec Google
+            </button>
+          </form>
+
+          <div className="login-divider">
+            <span>OU</span>
+          </div>
+
+          {/* Magic Link */}
+          <form
+            className="magic-link-form"
+            action={async (formData) => {
+              "use server";
+              const email = formData.get("email");
+              if (email) {
+                await signIn("nodemailer", { email, redirectTo: callbackUrl });
+              }
+            }}
+          >
+            <div className="input-group">
+              <label htmlFor="email">Adresse email</label>
+              <div className="input-with-icon">
+                <Mail size={18} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="nom@exemple.fr"
+                  required
+                />
+              </div>
+            </div>
+            <button type="submit" className="login-method-button email">
+              <LogIn size={18} />
+              Recevoir un lien magique
+            </button>
+          </form>
         </div>
+
+        <p className="login-footer">
+          En vous connectant, vous acceptez nos mentions légales.
+        </p>
       </div>
     </main>
   );

@@ -92,6 +92,8 @@ model User {
   quizStreak              Int                      @default(0)
   quizAttemptsCount       Int                      @default(0)
   quizSuggestions         QuizQuestionSuggestion[]
+  legacyId                String?                  @unique // ID d'origine Forumactif
+  forumactifName          String?                  // Ancien pseudo Forumactif
 }
 
 model Block {
@@ -175,6 +177,7 @@ model Category {
   order        Int     @default(0)
   allowedRoles String  @default("ALL")
   forums       Forum[]
+  legacyId     String?  @unique
 }
 
 model Forum {
@@ -191,6 +194,7 @@ model Forum {
   subForums         Forum[]   @relation("SubForums")
   category          Category? @relation(fields: [categoryId], references: [id])
   topics            Topic[]
+  legacyId          String?   @unique
 }
 
 model Topic {
@@ -211,6 +215,7 @@ model Topic {
   forum        Forum         @relation(fields: [forumId], references: [id])
   follows      TopicFollow[]
   topicViews   TopicView[]
+  legacyId     String?     @unique
 }
 
 model Post {
@@ -229,6 +234,7 @@ model Post {
   author           User           @relation(fields: [authorId], references: [id])
   topic            Topic          @relation(fields: [topicId], references: [id])
   reactions        PostReaction[]
+  legacyId         String?        @unique
 }
 
 model Conversation {
@@ -620,4 +626,15 @@ model QuizQuestionSuggestion {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   author        User     @relation(fields: [authorId], references: [id])
+}
+
+model LegacyMember {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  forumactifName String
+  nafNumber      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([email])
 }
