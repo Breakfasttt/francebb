@@ -62,20 +62,20 @@
 }
 
 .status-badge.cancelled {
-  background: #c21d1d;
+  background: var(--danger);
   color: white;
-  box-shadow: 0 0 15px rgba(194, 29, 29, 0.4);
+  box-shadow: 0 0 15px var(--danger-shadow);
 }
 
 .status-badge.finished {
-  background: #444;
-  color: #ccc;
-  border: 1px solid #555;
+  background: var(--nav-btn-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
 }
 
 .status-badge.past {
-  background: rgba(0, 0, 0, 0.4);
-  color: #888;
+  background: var(--glass-bg);
+  color: var(--text-muted);
   border: 1px solid var(--glass-border);
 }
 
@@ -400,9 +400,9 @@
   letter-spacing: 0.5px;
 }
 
-.status-pill.cancelled { background: var(--primary); color: white; }
-.status-pill.finished { background: #444; color: #ccc; }
-.status-pill.past { background: rgba(255,255,255,0.05); color: #888; border: 1px solid var(--glass-border); }
+.status-pill.cancelled { background: var(--danger); color: white; }
+.status-pill.finished { background: var(--nav-btn-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
+.status-pill.past { background: var(--glass-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
 
 .participants-pill {
   display: flex;

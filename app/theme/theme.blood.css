@@ -22,6 +22,7 @@
   --admin-bg: rgba(100, 0, 0, 0.1);
   --admin-border: rgba(255, 0, 0, 0.3);
   --danger: #ff0000;
+  --warning: #ffcc00;
   --success: #39ff14;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(120, 0, 0, 0.4);

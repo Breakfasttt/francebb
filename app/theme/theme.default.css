@@ -23,6 +23,7 @@
   --admin-bg: rgba(194, 29, 29, 0.05);
   --admin-border: rgba(194, 29, 29, 0.3);
   --danger: #ff4444;
+  --warning: #f59e0b;
   --success: #22c55e;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(194, 29, 29, 0.25);

@@ -1,0 +1,236 @@
+.members-table-card {
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.members-filter-bar {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: var(--nav-btn-bg);
+  padding: 1.2rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.filter-group {
+  flex: 1 1 200px;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 800;
+  marginBottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-input {
+  padding: 0.6rem 0.8rem;
+  background: var(--nav-btn-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--foreground);
+  width: 100%;
+  outline: none;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.filter-input:focus {
+  border-color: var(--primary);
+  background: var(--nav-btn-hover-bg);
+}
+
+.reset-filters-btn {
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  fontSize: 0.85rem;
+  fontWeight: 700;
+  transition: all 0.2s;
+  align-self: flex-end;
+  marginBottom: 2px;
+}
+
+.reset-filters-btn:hover {
+  color: var(--foreground);
+  border-color: var(--text-muted);
+  background: var(--nav-btn-bg);
+}
+
+.members-list-container {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  padding: 1.2rem 1rem;
+  text-align: left;
+  border-bottom: 2px solid var(--glass-border);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.admin-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.admin-table th.sortable:hover {
+  color: var(--primary);
+}
+
+.admin-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 0.95rem;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  object-fit: cover;
+}
+
+.user-name-wrapper {
+  font-weight: 700;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-cell:hover .user-name-wrapper {
+  color: var(--primary);
+}
+
+.naf-link {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.naf-link:hover {
+  text-decoration: underline;
+}
+
+.ligues-list {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.ligue-mini-badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--primary-transparent);
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  color: var(--primary);
+  font-weight: 900;
+}
+
+.mp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--success);
+  border: none;
+  border-radius: 8px;
+  color: var(--badge-text);
+  font-size: 0.8rem;
+  text-decoration: none;
+  font-weight: 800;
+  transition: all 0.2s;
+  opacity: 0.9;
+}
+
+.mp-btn:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+  box-shadow: 0 4px 12px var(--btn-shadow);
+}
+
+.action-select {
+  background: var(--nav-btn-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--foreground);
+  padding: 0.5rem;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.85rem;
+}
+
+.mod-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border: none;
+  transition: all 0.2s;
+}
+
+.mod-btn.ban {
+  background: var(--danger);
+  color: white;
+}
+
+.mod-btn.unban {
+  background: var(--success);
+  color: var(--badge-text);
+}
+
+.mod-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.delete-btn {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: white;
+  transform: translateY(-2px);
+}

@@ -70,24 +70,24 @@ export default async function ForumSidebar({
 
           {/* Messages Privés */}
           {unreadMessages > 0 && (
-            <div className="sidebar-widget message-widget animate-pulse-subtle">
+            <PremiumCard className="sidebar-widget message-widget animate-pulse-subtle">
               <Link href="/forum/messages" className="widget-link">
                 <Mail size={20} className="text-secondary" />
                 <span>{unreadMessages} message{unreadMessages > 1 ? 's' : ''} privé{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}</span>
               </Link>
-            </div>
+            </PremiumCard>
           )}
 
           {/* Nouveau Sujet / Tournoi */}
           {forumId && (!isLocked || canCreateForum) && (
-            <div className="sidebar-widget new-topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+            <div className="sidebar-widget-group">
               {isTournamentForum && (
-                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--accent)', color: 'var(--background)' }}>
+                <Link href={`/forum/new-tournament?forumId=${forumId}`} className="widget-button accent-btn">
                   <Trophy size={18} />
                   <span>Nouveau Tournoi</span>
                 </Link>
               )}
-              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button" style={{ background: 'var(--primary)' }}>
+              <Link href={`/forum/new-topic?forumId=${forumId}`} className="widget-button primary-btn">
                 <PlusCircle size={18} />
                 <span>Nouveau Sujet</span>
               </Link>
@@ -95,8 +95,8 @@ export default async function ForumSidebar({
           )}
 
           {forumId && isLocked && !canCreateForum && (
-            <div className="sidebar-widget new-topic-widget" style={{ opacity: 0.6 }}>
-              <div className="widget-button" style={{ background: 'var(--glass-bg)', border: 'none', cursor: 'not-allowed', color: 'var(--text-muted)' }}>
+            <div className="sidebar-widget-group" style={{ opacity: 0.6 }}>
+              <div className="widget-button disabled-btn">
                 <LockIcon size={18} />
                 <span>Forum verrouillé</span>
               </div>
@@ -104,8 +104,8 @@ export default async function ForumSidebar({
           )}
 
           {/* Recherche Avancée */}
-          <div className="sidebar-widget search-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button" style={{ background: 'var(--glass-bg)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>
+          <PremiumCard className="sidebar-widget nav-widget">
+            <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} className="widget-button glass-btn">
               <Search size={18} />
               <span>Recherche avancée</span>
             </Link>
@@ -114,11 +114,11 @@ export default async function ForumSidebar({
               <Users size={18} />
               <span>Les membres</span>
             </Link>
-          </div>
+          </PremiumCard>
 
           {/* Posts Non Lus */}
           {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
-            <div className="sidebar-widget unread-widget" style={{ display: 'flex', gap: '4px' }}>
+            <div className="sidebar-widget-group">
               <Link href="/forum/unread" className="widget-button secondary-btn" style={{ flex: 1 }}>
                 <MessageSquare size={18} />
                 <span>Posts non lus ({unreadTopics})</span>
@@ -129,7 +129,7 @@ export default async function ForumSidebar({
 
           {/* Recent Posts - Only on main forum to save space */}
           {!forumId && (
-            <div className="sidebar-widget recent-posts-widget">
+            <PremiumCard className="sidebar-widget recent-posts-widget">
               <h3>
                 <Clock size={16} />
                 Dernières réponses
@@ -162,7 +162,7 @@ export default async function ForumSidebar({
                   );
                 })}
               </div>
-            </div>
+            </PremiumCard>
           )}
 
           {/* Random Post - Only on main forum */}
@@ -179,27 +179,29 @@ export default async function ForumSidebar({
 
           {/* Admin Tools */}
           {canCreateForum && (
-            <div className="sidebar-widget admin-widget" style={{ border: '1px solid var(--admin-border)', background: 'var(--admin-bg)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <PremiumCard className="sidebar-widget admin-widget premium">
               <h3 style={{ color: 'var(--primary)', margin: 0 }}>
                 <PlusCircle size={16} />
                 Administration
               </h3>
               
-              <NewForumButton 
-                categoryId={categoryId}
-                parentForumId={parentForumId}
-                subForumCount={subForumCount}
-              />
-
-              {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
-              {forumId && (
-                <LockButton 
-                  id={forumId} 
-                  type="forum" 
-                  isLocked={isLocked || false} 
+              <div className="admin-actions-list">
+                <NewForumButton 
+                  categoryId={categoryId}
+                  parentForumId={parentForumId}
+                  subForumCount={subForumCount}
                 />
-              )}
-            </div>
+
+                {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
+                {forumId && (
+                  <LockButton 
+                    id={forumId} 
+                    type="forum" 
+                    isLocked={isLocked || false} 
+                  />
+                )}
+              </div>
+            </PremiumCard>
           )}
         </div>
       </div>

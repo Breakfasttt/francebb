@@ -75,18 +75,20 @@
 }
 
 .action-card.discord-cta {
-  background: #5865F2 !important; /* DISCORD BLURPLE ACCORDING TO GUIDELINES */
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  --card-bg: #5865F2;
+  background: var(--card-bg) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   position: relative;
   overflow: hidden;
   color: white !important;
 }
 
 .action-card.discord-cta:hover {
-  background: #4752C4 !important; /* DARKER BLURPLE FOR HOVER */
-  border-color: #4752C4 !important;
+  --card-bg: #4752C4;
+  background: var(--card-bg) !important;
+  border-color: #ffffff;
   transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(88, 101, 242, 0.4);
+  box-shadow: 0 15px 40px rgba(88, 101, 242, 0.5);
 }
 
 .action-card.discord-cta .discord-text,

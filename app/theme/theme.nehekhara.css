@@ -22,6 +22,7 @@
   --admin-bg: rgba(17, 94, 89, 0.05); /* Teal for admin */
   --admin-border: rgba(17, 94, 89, 0.3);
   --danger: #ef4444;
+  --warning: #fbbf24;
   --success: #39ff14;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(217, 119, 6, 0.2);

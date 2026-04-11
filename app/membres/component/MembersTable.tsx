@@ -11,6 +11,8 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import Pagination from "@/common/components/Pagination/Pagination";
 
+import "./MembersTable.css";
+
 const USERS_PER_PAGE = 25;
 
 interface Props {
@@ -183,51 +185,24 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   return (
     <PremiumCard className="members-table-card fade-in">
-      <div className="members-filter-bar" style={{ 
-        marginBottom: '2rem', 
-        display: 'flex', 
-        gap: '1rem', 
-        flexWrap: 'wrap',
-        background: 'rgba(255,255,255,0.02)',
-        padding: '1.2rem',
-        borderRadius: '12px',
-        border: '1px solid var(--glass-border)'
-      }}>
-        <div style={{ flex: '1 1 250px' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Recherche</label>
+      <div className="members-filter-bar">
+        <div className="filter-group">
+          <label className="filter-label">Recherche</label>
           <input 
             type="text" 
             placeholder="Nom du coach..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '0.6rem 1rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '6px',
-              color: 'white',
-              width: '100%',
-              outline: 'none',
-              fontSize: '0.9rem'
-            }}
+            className="filter-input"
           />
         </div>
 
-        <div style={{ flex: '1 1 180px' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Rôle</label>
+        <div className="filter-group">
+          <label className="filter-label">Rôle</label>
           <select 
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            style={{
-              padding: '0.6rem 0.8rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '6px',
-              color: 'white',
-              width: '100%',
-              outline: 'none',
-              fontSize: '0.9rem'
-            }}
+            className="filter-input"
           >
             <option value="">Tous les rôles</option>
             {Object.entries(ROLE_LABELS).map(([val, label]) => (
@@ -236,21 +211,12 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </select>
         </div>
 
-        <div style={{ flex: '1 1 180px' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Région</label>
+        <div className="filter-group">
+          <label className="filter-label">Région</label>
           <select 
             value={selectedRegion}
             onChange={(e) => setSelectedRegion(e.target.value)}
-            style={{
-              padding: '0.6rem 0.8rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '6px',
-              color: 'white',
-              width: '100%',
-              outline: 'none',
-              fontSize: '0.9rem'
-            }}
+            className="filter-input"
           >
             <option value="">Toutes les régions</option>
             {allRegions.map(region => (
@@ -259,21 +225,12 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </select>
         </div>
 
-        <div style={{ flex: '1 1 200px' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase' }}>Ligue</label>
+        <div className="filter-group">
+          <label className="filter-label">Ligue</label>
           <select 
             value={selectedLigue}
             onChange={(e) => setSelectedLigue(e.target.value)}
-            style={{
-              padding: '0.6rem 0.8rem',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid var(--glass-border)',
-              borderRadius: '6px',
-              color: 'white',
-              width: '100%',
-              outline: 'none',
-              fontSize: '0.9rem'
-            }}
+            className="filter-input"
           >
             <option value="">Toutes les ligues</option>
             {allLigues.map(ligue => (
@@ -282,58 +239,34 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </select>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', paddingBottom: '2px' }}>
-          <button 
-            autoFocus={false}
-            onClick={resetFilters}
-            style={{
-              padding: '0.6rem 1rem',
-              background: 'transparent',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '6px',
-              color: '#888',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              transition: 'all 0.2s'
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.color = 'white';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.color = '#888';
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-            }}
-          >
-            Réinitialiser
-          </button>
-        </div>
+        <button className="reset-filters-btn" onClick={resetFilters}>
+          Réinitialiser
+        </button>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
-        <table className="admin-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <div className="members-list-container">
+        <table className="admin-table">
           <thead>
-            <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--glass-border)' }}>
-              <th onClick={() => handleSort('name')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+            <tr>
+              <th onClick={() => handleSort('name')} className="sortable">
                 Utilisateur {sortConfig?.key === 'name' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
               </th>
-              <th onClick={() => handleSort('role')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              <th onClick={() => handleSort('role')} className="sortable">
                 Rôle {sortConfig?.key === 'role' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
               </th>
-              <th onClick={() => handleSort('naf')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              <th onClick={() => handleSort('naf')} className="sortable">
                 N°NAF {sortConfig?.key === 'naf' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
               </th>
-              <th onClick={() => handleSort('region')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              <th onClick={() => handleSort('region')} className="sortable">
                 Région {sortConfig?.key === 'region' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
               </th>
-              <th onClick={() => handleSort('ligue')} style={{ padding: '1rem', cursor: 'pointer', userSelect: 'none', transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+              <th onClick={() => handleSort('ligue')} className="sortable">
                 Ligue(s) {sortConfig?.key === 'ligue' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
               </th>
-              <th style={{ padding: '1rem', textAlign: 'center' }}>MP</th>
-              {showRoles && <th style={{ padding: '1rem' }}>Gestion des Rôles</th>}
-              {showMod && <th style={{ padding: '1rem' }}>Modération</th>}
-              {showDelete && <th style={{ padding: '1rem' }}>Gestion</th>}
+              <th style={{ textAlign: 'center' }}>MP</th>
+              {showRoles && <th>Gestion des Rôles</th>}
+              {showMod && <th>Modération</th>}
+              {showDelete && <th>Gestion</th>}
             </tr>
           </thead>
           <tbody>
@@ -342,95 +275,66 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
               const selectableRoles = getAllowedRolesToAssign(currentUserRole);
 
               return (
-                <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', opacity: user.isBanned ? 0.5 : 1 }}>
-                  <td style={{ padding: '1rem' }}>
-                    <Link href={`/spy/${user.id}`} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'inherit' }}>
-                      {user.image && <img src={user.image} alt="" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />}
-                      <span style={{ fontWeight: 600, transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: '0.4rem' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+                <tr key={user.id} style={{ opacity: user.isBanned ? 0.5 : 1 }}>
+                  <td>
+                    <Link href={`/spy/${user.id}`} className="user-cell">
+                      {user.image && <img src={user.image} alt="" className="user-avatar-sm" />}
+                      <span className="user-name-wrapper">
                         {user.name} {user.isBanned && <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>}
                       </span>
                     </Link>
                   </td>
-                  <td style={{ padding: '1rem' }}>
+                  <td>
                     <StatusBadge 
                       variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
                     >
                       {getRoleLabel(user.role)}
                     </StatusBadge>
                   </td>
-                  <td style={{ padding: '1rem', color: '#888' }}>
+                  <td>
                     {user.nafNumber ? (
                       <a 
                         href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{ color: '#60a5fa', textDecoration: 'none', fontWeight: 600 }}
+                        className="naf-link"
                       >
                         {user.nafNumber}
                       </a>
                     ) : "—"}
                   </td>
-                  <td style={{ padding: '1rem', color: '#888', fontSize: '0.85rem' }}>
+                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
                     {allRegions.find(r => r.key === user.region)?.label || user.region || "—"}
                   </td>
-                  <td style={{ padding: '1rem' }}>
-                    <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+                  <td>
+                    <div className="ligues-list">
                       {user.ligues && user.ligues.length > 0 ? user.ligues.map((l: any) => (
-                        <span key={l.id} style={{ 
-                          fontSize: '0.7rem', 
-                          padding: '0.2rem 0.5rem', 
-                          background: 'rgba(255,255,255,0.05)', 
-                          border: '1px solid rgba(255,255,255,0.1)',
-                          borderRadius: '4px',
-                          color: 'var(--primary)',
-                          fontWeight: 700
-                        }}>
+                        <span key={l.id} className="ligue-mini-badge">
                           {l.acronym}
                         </span>
                       )) : (
-                        <span style={{ color: '#555', fontStyle: 'italic', fontSize: '0.85rem' }}>—</span>
+                        <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.85rem' }}>—</span>
                       )}
                     </div>
                   </td>
-                  <td style={{ padding: '1rem', textAlign: 'center' }}>
+                  <td style={{ textAlign: 'center' }}>
                     {user.id !== currentUserId && !user.isBanned && (
                       <Link 
                         href={`/profile?tab=pm&recipientId=${user.id}`}
-                        style={{ 
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.4rem',
-                          padding: '0.4rem 0.8rem', 
-                          background: 'rgba(34, 197, 94, 0.1)', 
-                          border: '1px solid rgba(34, 197, 94, 0.2)', 
-                          borderRadius: '6px', 
-                          color: '#4ade80', 
-                          fontSize: '0.75rem', 
-                          textDecoration: 'none',
-                          fontWeight: 700,
-                          transition: 'all 0.2s'
-                        }}
+                        className="mp-btn"
                       >
                         <Mail size={14} /> MP
                       </Link>
                     )}
                   </td>
                   {showRoles && (
-                    <td style={{ padding: '1rem' }}>
+                    <td>
                       {canEdit ? (
                         <select 
                           value={user.role}
                           disabled={isPending}
                           onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
-                          style={{ 
-                            background: 'rgba(255,255,255,0.05)', 
-                            border: '1px solid var(--glass-border)',
-                            color: 'white',
-                            padding: '0.4rem',
-                            borderRadius: '6px',
-                            outline: 'none',
-                            fontSize: '0.85rem'
-                          }}
+                          className="action-select"
                         >
                           <option value={user.role} disabled>Changer le rôle...</option>
                           {selectableRoles.map(role => (
@@ -438,55 +342,31 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                           ))}
                         </select>
                       ) : (
-                        <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
                       )}
                     </td>
                   )}
                   {showMod && (
-                    <td style={{ padding: '1rem' }}>
+                    <td>
                       {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
                         <button 
                           disabled={isPending}
                           onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
-                          style={{ 
-                            background: user.isBanned ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
-                            border: `1px solid ${user.isBanned ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-                            color: user.isBanned ? '#4ade80' : '#f87171',
-                            padding: '0.4rem 0.8rem',
-                            borderRadius: '6px',
-                            cursor: isPending ? 'not-allowed' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            fontSize: '0.8rem',
-                            fontWeight: 600
-                          }}
+                          className={`mod-btn ${user.isBanned ? 'unban' : 'ban'}`}
                         >
                           {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
                         </button>
                       ) : (
-                        <span style={{ fontSize: '0.8rem', color: '#555 italic' }}>Verrouillé</span>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
                       )}
                     </td>
                   )}
                   {showDelete && (
-                    <td style={{ padding: '1rem' }}>
+                    <td>
                       <button 
                         disabled={isPending}
                         onClick={() => handleDeleteClick(user.id, user.name)}
-                        style={{ 
-                          background: 'transparent', 
-                          border: '1px solid rgba(239, 68, 68, 0.5)',
-                          color: '#ef4444',
-                          padding: '0.4rem 0.8rem',
-                          borderRadius: '6px',
-                          cursor: isPending ? 'not-allowed' : 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.4rem',
-                          fontSize: '0.8rem',
-                          fontWeight: 600
-                        }}
+                        className="delete-btn"
                       >
                         <Trash2 size={14} /> Supprimer
                       </button>

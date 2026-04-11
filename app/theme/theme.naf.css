@@ -22,6 +22,7 @@
   --admin-bg: rgba(230, 176, 0, 0.05);
   --admin-border: rgba(230, 176, 0, 0.3);
   --danger: #ef4444;
+  --warning: #facc15;
   --success: #39ff14;
   --header-foreground: #011b33; /* Deep Navy text on yellow buttons */
   --category-hover-bg: rgba(1, 43, 93, 0.6);

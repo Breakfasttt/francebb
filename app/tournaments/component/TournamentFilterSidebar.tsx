@@ -141,7 +141,7 @@ export default function TournamentFilterSidebar() {
   ];
 
   return (
-    <div className="filter-sidebar">
+    <PremiumCard className="filter-sidebar">
       <button className="reset-btn" onClick={() => router.push("/tournaments")}>Réinitialiser filtres</button>
 
       <div className="search-box">
@@ -201,6 +201,6 @@ export default function TournamentFilterSidebar() {
           </div>
         </div>
       ))}
-    </div>
+    </PremiumCard>
   );
 }
