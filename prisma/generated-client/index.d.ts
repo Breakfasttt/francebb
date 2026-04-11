@@ -208,6 +208,11 @@ export type QuizDailyWinner = $Result.DefaultSelection<Prisma.$QuizDailyWinnerPa
  * 
  */
 export type QuizQuestionSuggestion = $Result.DefaultSelection<Prisma.$QuizQuestionSuggestionPayload>
+/**
+ * Model LegacyMember
+ * 
+ */
+export type LegacyMember = $Result.DefaultSelection<Prisma.$LegacyMemberPayload>
 
 /**
  * Enums
@@ -752,6 +757,16 @@ export class PrismaClient<
     * ```
     */
   get quizQuestionSuggestion(): Prisma.QuizQuestionSuggestionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.legacyMember`: Exposes CRUD operations for the **LegacyMember** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LegacyMembers
+    * const legacyMembers = await prisma.legacyMember.findMany()
+    * ```
+    */
+  get legacyMember(): Prisma.LegacyMemberDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1224,7 +1239,8 @@ export namespace Prisma {
     QuizQuestion: 'QuizQuestion',
     QuizAttempt: 'QuizAttempt',
     QuizDailyWinner: 'QuizDailyWinner',
-    QuizQuestionSuggestion: 'QuizQuestionSuggestion'
+    QuizQuestionSuggestion: 'QuizQuestionSuggestion',
+    LegacyMember: 'LegacyMember'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1240,7 +1256,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4130,6 +4146,80 @@ export namespace Prisma {
           }
         }
       }
+      LegacyMember: {
+        payload: Prisma.$LegacyMemberPayload<ExtArgs>
+        fields: Prisma.LegacyMemberFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LegacyMemberFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LegacyMemberFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          findFirst: {
+            args: Prisma.LegacyMemberFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LegacyMemberFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          findMany: {
+            args: Prisma.LegacyMemberFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>[]
+          }
+          create: {
+            args: Prisma.LegacyMemberCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          createMany: {
+            args: Prisma.LegacyMemberCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LegacyMemberCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>[]
+          }
+          delete: {
+            args: Prisma.LegacyMemberDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          update: {
+            args: Prisma.LegacyMemberUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          deleteMany: {
+            args: Prisma.LegacyMemberDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LegacyMemberUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LegacyMemberUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>[]
+          }
+          upsert: {
+            args: Prisma.LegacyMemberUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegacyMemberPayload>
+          }
+          aggregate: {
+            args: Prisma.LegacyMemberAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLegacyMember>
+          }
+          groupBy: {
+            args: Prisma.LegacyMemberGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LegacyMemberGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LegacyMemberCountArgs<ExtArgs>
+            result: $Utils.Optional<LegacyMemberCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4277,6 +4367,7 @@ export namespace Prisma {
     quizAttempt?: QuizAttemptOmit
     quizDailyWinner?: QuizDailyWinnerOmit
     quizQuestionSuggestion?: QuizQuestionSuggestionOmit
+    legacyMember?: LegacyMemberOmit
   }
 
   /* Types for Logging */
@@ -7551,6 +7642,9 @@ export namespace Prisma {
     quizBestScore: number | null
     quizStreak: number | null
     quizAttemptsCount: number | null
+    legacyId: string | null
+    forumactifName: string | null
+    hasFinishedOnboarding: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -7573,6 +7667,9 @@ export namespace Prisma {
     quizBestScore: number | null
     quizStreak: number | null
     quizAttemptsCount: number | null
+    legacyId: string | null
+    forumactifName: string | null
+    hasFinishedOnboarding: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -7595,6 +7692,9 @@ export namespace Prisma {
     quizBestScore: number
     quizStreak: number
     quizAttemptsCount: number
+    legacyId: number
+    forumactifName: number
+    hasFinishedOnboarding: number
     _all: number
   }
 
@@ -7633,6 +7733,9 @@ export namespace Prisma {
     quizBestScore?: true
     quizStreak?: true
     quizAttemptsCount?: true
+    legacyId?: true
+    forumactifName?: true
+    hasFinishedOnboarding?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -7655,6 +7758,9 @@ export namespace Prisma {
     quizBestScore?: true
     quizStreak?: true
     quizAttemptsCount?: true
+    legacyId?: true
+    forumactifName?: true
+    hasFinishedOnboarding?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -7677,6 +7783,9 @@ export namespace Prisma {
     quizBestScore?: true
     quizStreak?: true
     quizAttemptsCount?: true
+    legacyId?: true
+    forumactifName?: true
+    hasFinishedOnboarding?: true
     _all?: true
   }
 
@@ -7786,6 +7895,9 @@ export namespace Prisma {
     quizBestScore: number
     quizStreak: number
     quizAttemptsCount: number
+    legacyId: string | null
+    forumactifName: string | null
+    hasFinishedOnboarding: boolean
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -7827,6 +7939,9 @@ export namespace Prisma {
     quizBestScore?: boolean
     quizStreak?: boolean
     quizAttemptsCount?: boolean
+    legacyId?: boolean
+    forumactifName?: boolean
+    hasFinishedOnboarding?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     articles?: boolean | User$articlesArgs<ExtArgs>
@@ -7889,6 +8004,9 @@ export namespace Prisma {
     quizBestScore?: boolean
     quizStreak?: boolean
     quizAttemptsCount?: boolean
+    legacyId?: boolean
+    forumactifName?: boolean
+    hasFinishedOnboarding?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7912,6 +8030,9 @@ export namespace Prisma {
     quizBestScore?: boolean
     quizStreak?: boolean
     quizAttemptsCount?: boolean
+    legacyId?: boolean
+    forumactifName?: boolean
+    hasFinishedOnboarding?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7935,9 +8056,12 @@ export namespace Prisma {
     quizBestScore?: boolean
     quizStreak?: boolean
     quizAttemptsCount?: boolean
+    legacyId?: boolean
+    forumactifName?: boolean
+    hasFinishedOnboarding?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8050,6 +8174,9 @@ export namespace Prisma {
       quizBestScore: number
       quizStreak: number
       quizAttemptsCount: number
+      legacyId: string | null
+      forumactifName: string | null
+      hasFinishedOnboarding: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -8531,6 +8658,9 @@ export namespace Prisma {
     readonly quizBestScore: FieldRef<"User", 'Int'>
     readonly quizStreak: FieldRef<"User", 'Int'>
     readonly quizAttemptsCount: FieldRef<"User", 'Int'>
+    readonly legacyId: FieldRef<"User", 'String'>
+    readonly forumactifName: FieldRef<"User", 'String'>
+    readonly hasFinishedOnboarding: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -13759,6 +13889,7 @@ export namespace Prisma {
     description: string | null
     order: number | null
     allowedRoles: string | null
+    legacyId: string | null
   }
 
   export type CategoryMaxAggregateOutputType = {
@@ -13767,6 +13898,7 @@ export namespace Prisma {
     description: string | null
     order: number | null
     allowedRoles: string | null
+    legacyId: string | null
   }
 
   export type CategoryCountAggregateOutputType = {
@@ -13775,6 +13907,7 @@ export namespace Prisma {
     description: number
     order: number
     allowedRoles: number
+    legacyId: number
     _all: number
   }
 
@@ -13793,6 +13926,7 @@ export namespace Prisma {
     description?: true
     order?: true
     allowedRoles?: true
+    legacyId?: true
   }
 
   export type CategoryMaxAggregateInputType = {
@@ -13801,6 +13935,7 @@ export namespace Prisma {
     description?: true
     order?: true
     allowedRoles?: true
+    legacyId?: true
   }
 
   export type CategoryCountAggregateInputType = {
@@ -13809,6 +13944,7 @@ export namespace Prisma {
     description?: true
     order?: true
     allowedRoles?: true
+    legacyId?: true
     _all?: true
   }
 
@@ -13904,6 +14040,7 @@ export namespace Prisma {
     description: string | null
     order: number
     allowedRoles: string
+    legacyId: string | null
     _count: CategoryCountAggregateOutputType | null
     _avg: CategoryAvgAggregateOutputType | null
     _sum: CategorySumAggregateOutputType | null
@@ -13931,6 +14068,7 @@ export namespace Prisma {
     description?: boolean
     order?: boolean
     allowedRoles?: boolean
+    legacyId?: boolean
     forums?: boolean | Category$forumsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["category"]>
@@ -13941,6 +14079,7 @@ export namespace Prisma {
     description?: boolean
     order?: boolean
     allowedRoles?: boolean
+    legacyId?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13949,6 +14088,7 @@ export namespace Prisma {
     description?: boolean
     order?: boolean
     allowedRoles?: boolean
+    legacyId?: boolean
   }, ExtArgs["result"]["category"]>
 
   export type CategorySelectScalar = {
@@ -13957,9 +14097,10 @@ export namespace Prisma {
     description?: boolean
     order?: boolean
     allowedRoles?: boolean
+    legacyId?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "legacyId", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     forums?: boolean | Category$forumsArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -13978,6 +14119,7 @@ export namespace Prisma {
       description: string | null
       order: number
       allowedRoles: string
+      legacyId: string | null
     }, ExtArgs["result"]["category"]>
     composites: {}
   }
@@ -14407,6 +14549,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Category", 'String'>
     readonly order: FieldRef<"Category", 'Int'>
     readonly allowedRoles: FieldRef<"Category", 'String'>
+    readonly legacyId: FieldRef<"Category", 'String'>
   }
     
 
@@ -14870,6 +15013,7 @@ export namespace Prisma {
     isTournamentForum: boolean | null
     categoryId: string | null
     parentForumId: string | null
+    legacyId: string | null
   }
 
   export type ForumMaxAggregateOutputType = {
@@ -14882,6 +15026,7 @@ export namespace Prisma {
     isTournamentForum: boolean | null
     categoryId: string | null
     parentForumId: string | null
+    legacyId: string | null
   }
 
   export type ForumCountAggregateOutputType = {
@@ -14894,6 +15039,7 @@ export namespace Prisma {
     isTournamentForum: number
     categoryId: number
     parentForumId: number
+    legacyId: number
     _all: number
   }
 
@@ -14916,6 +15062,7 @@ export namespace Prisma {
     isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
+    legacyId?: true
   }
 
   export type ForumMaxAggregateInputType = {
@@ -14928,6 +15075,7 @@ export namespace Prisma {
     isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
+    legacyId?: true
   }
 
   export type ForumCountAggregateInputType = {
@@ -14940,6 +15088,7 @@ export namespace Prisma {
     isTournamentForum?: true
     categoryId?: true
     parentForumId?: true
+    legacyId?: true
     _all?: true
   }
 
@@ -15039,6 +15188,7 @@ export namespace Prisma {
     isTournamentForum: boolean
     categoryId: string | null
     parentForumId: string | null
+    legacyId: string | null
     _count: ForumCountAggregateOutputType | null
     _avg: ForumAvgAggregateOutputType | null
     _sum: ForumSumAggregateOutputType | null
@@ -15070,6 +15220,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
+    legacyId?: boolean
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     subForums?: boolean | Forum$subForumsArgs<ExtArgs>
     category?: boolean | Forum$categoryArgs<ExtArgs>
@@ -15087,6 +15238,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
+    legacyId?: boolean
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     category?: boolean | Forum$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["forum"]>
@@ -15101,6 +15253,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
+    legacyId?: boolean
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     category?: boolean | Forum$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["forum"]>
@@ -15115,9 +15268,10 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: boolean
     parentForumId?: boolean
+    legacyId?: boolean
   }
 
-  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "isLocked" | "isTournamentForum" | "categoryId" | "parentForumId", ExtArgs["result"]["forum"]>
+  export type ForumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "order" | "allowedRoles" | "isLocked" | "isTournamentForum" | "categoryId" | "parentForumId" | "legacyId", ExtArgs["result"]["forum"]>
   export type ForumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     subForums?: boolean | Forum$subForumsArgs<ExtArgs>
@@ -15152,6 +15306,7 @@ export namespace Prisma {
       isTournamentForum: boolean
       categoryId: string | null
       parentForumId: string | null
+      legacyId: string | null
     }, ExtArgs["result"]["forum"]>
     composites: {}
   }
@@ -15588,6 +15743,7 @@ export namespace Prisma {
     readonly isTournamentForum: FieldRef<"Forum", 'Boolean'>
     readonly categoryId: FieldRef<"Forum", 'String'>
     readonly parentForumId: FieldRef<"Forum", 'String'>
+    readonly legacyId: FieldRef<"Forum", 'String'>
   }
     
 
@@ -16123,6 +16279,7 @@ export namespace Prisma {
     forumId: string | null
     authorId: string | null
     tournamentId: string | null
+    legacyId: string | null
   }
 
   export type TopicMaxAggregateOutputType = {
@@ -16137,6 +16294,7 @@ export namespace Prisma {
     forumId: string | null
     authorId: string | null
     tournamentId: string | null
+    legacyId: string | null
   }
 
   export type TopicCountAggregateOutputType = {
@@ -16151,6 +16309,7 @@ export namespace Prisma {
     forumId: number
     authorId: number
     tournamentId: number
+    legacyId: number
     _all: number
   }
 
@@ -16175,6 +16334,7 @@ export namespace Prisma {
     forumId?: true
     authorId?: true
     tournamentId?: true
+    legacyId?: true
   }
 
   export type TopicMaxAggregateInputType = {
@@ -16189,6 +16349,7 @@ export namespace Prisma {
     forumId?: true
     authorId?: true
     tournamentId?: true
+    legacyId?: true
   }
 
   export type TopicCountAggregateInputType = {
@@ -16203,6 +16364,7 @@ export namespace Prisma {
     forumId?: true
     authorId?: true
     tournamentId?: true
+    legacyId?: true
     _all?: true
   }
 
@@ -16304,6 +16466,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId: string | null
+    legacyId: string | null
     _count: TopicCountAggregateOutputType | null
     _avg: TopicAvgAggregateOutputType | null
     _sum: TopicSumAggregateOutputType | null
@@ -16337,6 +16500,7 @@ export namespace Prisma {
     forumId?: boolean
     authorId?: boolean
     tournamentId?: boolean
+    legacyId?: boolean
     posts?: boolean | Topic$postsArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -16358,6 +16522,7 @@ export namespace Prisma {
     forumId?: boolean
     authorId?: boolean
     tournamentId?: boolean
+    legacyId?: boolean
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
@@ -16375,6 +16540,7 @@ export namespace Prisma {
     forumId?: boolean
     authorId?: boolean
     tournamentId?: boolean
+    legacyId?: boolean
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
@@ -16392,9 +16558,10 @@ export namespace Prisma {
     forumId?: boolean
     authorId?: boolean
     tournamentId?: boolean
+    legacyId?: boolean
   }
 
-  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId" | "tournamentId", ExtArgs["result"]["topic"]>
+  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId" | "tournamentId" | "legacyId", ExtArgs["result"]["topic"]>
   export type TopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | Topic$postsArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
@@ -16437,6 +16604,7 @@ export namespace Prisma {
       forumId: string
       authorId: string
       tournamentId: string | null
+      legacyId: string | null
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -16877,6 +17045,7 @@ export namespace Prisma {
     readonly forumId: FieldRef<"Topic", 'String'>
     readonly authorId: FieldRef<"Topic", 'String'>
     readonly tournamentId: FieldRef<"Topic", 'String'>
+    readonly legacyId: FieldRef<"Topic", 'String'>
   }
     
 
@@ -17406,6 +17575,7 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean | null
+    legacyId: string | null
   }
 
   export type PostMaxAggregateOutputType = {
@@ -17419,6 +17589,7 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean | null
+    legacyId: string | null
   }
 
   export type PostCountAggregateOutputType = {
@@ -17432,6 +17603,7 @@ export namespace Prisma {
     moderationReason: number
     moderatedBy: number
     isDeleted: number
+    legacyId: number
     _all: number
   }
 
@@ -17447,6 +17619,7 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    legacyId?: true
   }
 
   export type PostMaxAggregateInputType = {
@@ -17460,6 +17633,7 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    legacyId?: true
   }
 
   export type PostCountAggregateInputType = {
@@ -17473,6 +17647,7 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    legacyId?: true
     _all?: true
   }
 
@@ -17559,6 +17734,7 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean
+    legacyId: string | null
     _count: PostCountAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
     _max: PostMaxAggregateOutputType | null
@@ -17589,6 +17765,7 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    legacyId?: boolean
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
@@ -17608,6 +17785,7 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    legacyId?: boolean
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -17624,6 +17802,7 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    legacyId?: boolean
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -17640,9 +17819,10 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    legacyId?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "isDeleted", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "isDeleted" | "legacyId", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
@@ -17682,6 +17862,7 @@ export namespace Prisma {
       moderationReason: string | null
       moderatedBy: string | null
       isDeleted: boolean
+      legacyId: string | null
     }, ExtArgs["result"]["post"]>
     composites: {}
   }
@@ -18120,6 +18301,7 @@ export namespace Prisma {
     readonly moderationReason: FieldRef<"Post", 'String'>
     readonly moderatedBy: FieldRef<"Post", 'String'>
     readonly isDeleted: FieldRef<"Post", 'Boolean'>
+    readonly legacyId: FieldRef<"Post", 'String'>
   }
     
 
@@ -51039,6 +51221,1017 @@ export namespace Prisma {
 
 
   /**
+   * Model LegacyMember
+   */
+
+  export type AggregateLegacyMember = {
+    _count: LegacyMemberCountAggregateOutputType | null
+    _min: LegacyMemberMinAggregateOutputType | null
+    _max: LegacyMemberMaxAggregateOutputType | null
+  }
+
+  export type LegacyMemberMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    forumactifName: string | null
+    nafNumber: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegacyMemberMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    forumactifName: string | null
+    nafNumber: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegacyMemberCountAggregateOutputType = {
+    id: number
+    email: number
+    forumactifName: number
+    nafNumber: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LegacyMemberMinAggregateInputType = {
+    id?: true
+    email?: true
+    forumactifName?: true
+    nafNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegacyMemberMaxAggregateInputType = {
+    id?: true
+    email?: true
+    forumactifName?: true
+    nafNumber?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegacyMemberCountAggregateInputType = {
+    id?: true
+    email?: true
+    forumactifName?: true
+    nafNumber?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LegacyMemberAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegacyMember to aggregate.
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegacyMembers to fetch.
+     */
+    orderBy?: LegacyMemberOrderByWithRelationInput | LegacyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LegacyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegacyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegacyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LegacyMembers
+    **/
+    _count?: true | LegacyMemberCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LegacyMemberMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LegacyMemberMaxAggregateInputType
+  }
+
+  export type GetLegacyMemberAggregateType<T extends LegacyMemberAggregateArgs> = {
+        [P in keyof T & keyof AggregateLegacyMember]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLegacyMember[P]>
+      : GetScalarType<T[P], AggregateLegacyMember[P]>
+  }
+
+
+
+
+  export type LegacyMemberGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegacyMemberWhereInput
+    orderBy?: LegacyMemberOrderByWithAggregationInput | LegacyMemberOrderByWithAggregationInput[]
+    by: LegacyMemberScalarFieldEnum[] | LegacyMemberScalarFieldEnum
+    having?: LegacyMemberScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LegacyMemberCountAggregateInputType | true
+    _min?: LegacyMemberMinAggregateInputType
+    _max?: LegacyMemberMaxAggregateInputType
+  }
+
+  export type LegacyMemberGroupByOutputType = {
+    id: string
+    email: string
+    forumactifName: string
+    nafNumber: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LegacyMemberCountAggregateOutputType | null
+    _min: LegacyMemberMinAggregateOutputType | null
+    _max: LegacyMemberMaxAggregateOutputType | null
+  }
+
+  type GetLegacyMemberGroupByPayload<T extends LegacyMemberGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LegacyMemberGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LegacyMemberGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LegacyMemberGroupByOutputType[P]>
+            : GetScalarType<T[P], LegacyMemberGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LegacyMemberSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    forumactifName?: boolean
+    nafNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legacyMember"]>
+
+  export type LegacyMemberSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    forumactifName?: boolean
+    nafNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legacyMember"]>
+
+  export type LegacyMemberSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    forumactifName?: boolean
+    nafNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legacyMember"]>
+
+  export type LegacyMemberSelectScalar = {
+    id?: boolean
+    email?: boolean
+    forumactifName?: boolean
+    nafNumber?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LegacyMemberOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "forumactifName" | "nafNumber" | "createdAt" | "updatedAt", ExtArgs["result"]["legacyMember"]>
+
+  export type $LegacyMemberPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LegacyMember"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      forumactifName: string
+      nafNumber: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["legacyMember"]>
+    composites: {}
+  }
+
+  type LegacyMemberGetPayload<S extends boolean | null | undefined | LegacyMemberDefaultArgs> = $Result.GetResult<Prisma.$LegacyMemberPayload, S>
+
+  type LegacyMemberCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LegacyMemberFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LegacyMemberCountAggregateInputType | true
+    }
+
+  export interface LegacyMemberDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LegacyMember'], meta: { name: 'LegacyMember' } }
+    /**
+     * Find zero or one LegacyMember that matches the filter.
+     * @param {LegacyMemberFindUniqueArgs} args - Arguments to find a LegacyMember
+     * @example
+     * // Get one LegacyMember
+     * const legacyMember = await prisma.legacyMember.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LegacyMemberFindUniqueArgs>(args: SelectSubset<T, LegacyMemberFindUniqueArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LegacyMember that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LegacyMemberFindUniqueOrThrowArgs} args - Arguments to find a LegacyMember
+     * @example
+     * // Get one LegacyMember
+     * const legacyMember = await prisma.legacyMember.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LegacyMemberFindUniqueOrThrowArgs>(args: SelectSubset<T, LegacyMemberFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegacyMember that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberFindFirstArgs} args - Arguments to find a LegacyMember
+     * @example
+     * // Get one LegacyMember
+     * const legacyMember = await prisma.legacyMember.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LegacyMemberFindFirstArgs>(args?: SelectSubset<T, LegacyMemberFindFirstArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegacyMember that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberFindFirstOrThrowArgs} args - Arguments to find a LegacyMember
+     * @example
+     * // Get one LegacyMember
+     * const legacyMember = await prisma.legacyMember.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LegacyMemberFindFirstOrThrowArgs>(args?: SelectSubset<T, LegacyMemberFindFirstOrThrowArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LegacyMembers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LegacyMembers
+     * const legacyMembers = await prisma.legacyMember.findMany()
+     * 
+     * // Get first 10 LegacyMembers
+     * const legacyMembers = await prisma.legacyMember.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const legacyMemberWithIdOnly = await prisma.legacyMember.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LegacyMemberFindManyArgs>(args?: SelectSubset<T, LegacyMemberFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LegacyMember.
+     * @param {LegacyMemberCreateArgs} args - Arguments to create a LegacyMember.
+     * @example
+     * // Create one LegacyMember
+     * const LegacyMember = await prisma.legacyMember.create({
+     *   data: {
+     *     // ... data to create a LegacyMember
+     *   }
+     * })
+     * 
+     */
+    create<T extends LegacyMemberCreateArgs>(args: SelectSubset<T, LegacyMemberCreateArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LegacyMembers.
+     * @param {LegacyMemberCreateManyArgs} args - Arguments to create many LegacyMembers.
+     * @example
+     * // Create many LegacyMembers
+     * const legacyMember = await prisma.legacyMember.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LegacyMemberCreateManyArgs>(args?: SelectSubset<T, LegacyMemberCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LegacyMembers and returns the data saved in the database.
+     * @param {LegacyMemberCreateManyAndReturnArgs} args - Arguments to create many LegacyMembers.
+     * @example
+     * // Create many LegacyMembers
+     * const legacyMember = await prisma.legacyMember.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LegacyMembers and only return the `id`
+     * const legacyMemberWithIdOnly = await prisma.legacyMember.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LegacyMemberCreateManyAndReturnArgs>(args?: SelectSubset<T, LegacyMemberCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LegacyMember.
+     * @param {LegacyMemberDeleteArgs} args - Arguments to delete one LegacyMember.
+     * @example
+     * // Delete one LegacyMember
+     * const LegacyMember = await prisma.legacyMember.delete({
+     *   where: {
+     *     // ... filter to delete one LegacyMember
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LegacyMemberDeleteArgs>(args: SelectSubset<T, LegacyMemberDeleteArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LegacyMember.
+     * @param {LegacyMemberUpdateArgs} args - Arguments to update one LegacyMember.
+     * @example
+     * // Update one LegacyMember
+     * const legacyMember = await prisma.legacyMember.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LegacyMemberUpdateArgs>(args: SelectSubset<T, LegacyMemberUpdateArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LegacyMembers.
+     * @param {LegacyMemberDeleteManyArgs} args - Arguments to filter LegacyMembers to delete.
+     * @example
+     * // Delete a few LegacyMembers
+     * const { count } = await prisma.legacyMember.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LegacyMemberDeleteManyArgs>(args?: SelectSubset<T, LegacyMemberDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegacyMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LegacyMembers
+     * const legacyMember = await prisma.legacyMember.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LegacyMemberUpdateManyArgs>(args: SelectSubset<T, LegacyMemberUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegacyMembers and returns the data updated in the database.
+     * @param {LegacyMemberUpdateManyAndReturnArgs} args - Arguments to update many LegacyMembers.
+     * @example
+     * // Update many LegacyMembers
+     * const legacyMember = await prisma.legacyMember.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LegacyMembers and only return the `id`
+     * const legacyMemberWithIdOnly = await prisma.legacyMember.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LegacyMemberUpdateManyAndReturnArgs>(args: SelectSubset<T, LegacyMemberUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LegacyMember.
+     * @param {LegacyMemberUpsertArgs} args - Arguments to update or create a LegacyMember.
+     * @example
+     * // Update or create a LegacyMember
+     * const legacyMember = await prisma.legacyMember.upsert({
+     *   create: {
+     *     // ... data to create a LegacyMember
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LegacyMember we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LegacyMemberUpsertArgs>(args: SelectSubset<T, LegacyMemberUpsertArgs<ExtArgs>>): Prisma__LegacyMemberClient<$Result.GetResult<Prisma.$LegacyMemberPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LegacyMembers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberCountArgs} args - Arguments to filter LegacyMembers to count.
+     * @example
+     * // Count the number of LegacyMembers
+     * const count = await prisma.legacyMember.count({
+     *   where: {
+     *     // ... the filter for the LegacyMembers we want to count
+     *   }
+     * })
+    **/
+    count<T extends LegacyMemberCountArgs>(
+      args?: Subset<T, LegacyMemberCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LegacyMemberCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LegacyMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LegacyMemberAggregateArgs>(args: Subset<T, LegacyMemberAggregateArgs>): Prisma.PrismaPromise<GetLegacyMemberAggregateType<T>>
+
+    /**
+     * Group by LegacyMember.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegacyMemberGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LegacyMemberGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LegacyMemberGroupByArgs['orderBy'] }
+        : { orderBy?: LegacyMemberGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LegacyMemberGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLegacyMemberGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LegacyMember model
+   */
+  readonly fields: LegacyMemberFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LegacyMember.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LegacyMemberClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LegacyMember model
+   */
+  interface LegacyMemberFieldRefs {
+    readonly id: FieldRef<"LegacyMember", 'String'>
+    readonly email: FieldRef<"LegacyMember", 'String'>
+    readonly forumactifName: FieldRef<"LegacyMember", 'String'>
+    readonly nafNumber: FieldRef<"LegacyMember", 'String'>
+    readonly createdAt: FieldRef<"LegacyMember", 'DateTime'>
+    readonly updatedAt: FieldRef<"LegacyMember", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LegacyMember findUnique
+   */
+  export type LegacyMemberFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter, which LegacyMember to fetch.
+     */
+    where: LegacyMemberWhereUniqueInput
+  }
+
+  /**
+   * LegacyMember findUniqueOrThrow
+   */
+  export type LegacyMemberFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter, which LegacyMember to fetch.
+     */
+    where: LegacyMemberWhereUniqueInput
+  }
+
+  /**
+   * LegacyMember findFirst
+   */
+  export type LegacyMemberFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter, which LegacyMember to fetch.
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegacyMembers to fetch.
+     */
+    orderBy?: LegacyMemberOrderByWithRelationInput | LegacyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegacyMembers.
+     */
+    cursor?: LegacyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegacyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegacyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegacyMembers.
+     */
+    distinct?: LegacyMemberScalarFieldEnum | LegacyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * LegacyMember findFirstOrThrow
+   */
+  export type LegacyMemberFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter, which LegacyMember to fetch.
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegacyMembers to fetch.
+     */
+    orderBy?: LegacyMemberOrderByWithRelationInput | LegacyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegacyMembers.
+     */
+    cursor?: LegacyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegacyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegacyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegacyMembers.
+     */
+    distinct?: LegacyMemberScalarFieldEnum | LegacyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * LegacyMember findMany
+   */
+  export type LegacyMemberFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter, which LegacyMembers to fetch.
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegacyMembers to fetch.
+     */
+    orderBy?: LegacyMemberOrderByWithRelationInput | LegacyMemberOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LegacyMembers.
+     */
+    cursor?: LegacyMemberWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegacyMembers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegacyMembers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegacyMembers.
+     */
+    distinct?: LegacyMemberScalarFieldEnum | LegacyMemberScalarFieldEnum[]
+  }
+
+  /**
+   * LegacyMember create
+   */
+  export type LegacyMemberCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * The data needed to create a LegacyMember.
+     */
+    data: XOR<LegacyMemberCreateInput, LegacyMemberUncheckedCreateInput>
+  }
+
+  /**
+   * LegacyMember createMany
+   */
+  export type LegacyMemberCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LegacyMembers.
+     */
+    data: LegacyMemberCreateManyInput | LegacyMemberCreateManyInput[]
+  }
+
+  /**
+   * LegacyMember createManyAndReturn
+   */
+  export type LegacyMemberCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * The data used to create many LegacyMembers.
+     */
+    data: LegacyMemberCreateManyInput | LegacyMemberCreateManyInput[]
+  }
+
+  /**
+   * LegacyMember update
+   */
+  export type LegacyMemberUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * The data needed to update a LegacyMember.
+     */
+    data: XOR<LegacyMemberUpdateInput, LegacyMemberUncheckedUpdateInput>
+    /**
+     * Choose, which LegacyMember to update.
+     */
+    where: LegacyMemberWhereUniqueInput
+  }
+
+  /**
+   * LegacyMember updateMany
+   */
+  export type LegacyMemberUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LegacyMembers.
+     */
+    data: XOR<LegacyMemberUpdateManyMutationInput, LegacyMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which LegacyMembers to update
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * Limit how many LegacyMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegacyMember updateManyAndReturn
+   */
+  export type LegacyMemberUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * The data used to update LegacyMembers.
+     */
+    data: XOR<LegacyMemberUpdateManyMutationInput, LegacyMemberUncheckedUpdateManyInput>
+    /**
+     * Filter which LegacyMembers to update
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * Limit how many LegacyMembers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegacyMember upsert
+   */
+  export type LegacyMemberUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * The filter to search for the LegacyMember to update in case it exists.
+     */
+    where: LegacyMemberWhereUniqueInput
+    /**
+     * In case the LegacyMember found by the `where` argument doesn't exist, create a new LegacyMember with this data.
+     */
+    create: XOR<LegacyMemberCreateInput, LegacyMemberUncheckedCreateInput>
+    /**
+     * In case the LegacyMember was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LegacyMemberUpdateInput, LegacyMemberUncheckedUpdateInput>
+  }
+
+  /**
+   * LegacyMember delete
+   */
+  export type LegacyMemberDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+    /**
+     * Filter which LegacyMember to delete.
+     */
+    where: LegacyMemberWhereUniqueInput
+  }
+
+  /**
+   * LegacyMember deleteMany
+   */
+  export type LegacyMemberDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegacyMembers to delete
+     */
+    where?: LegacyMemberWhereInput
+    /**
+     * Limit how many LegacyMembers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegacyMember without action
+   */
+  export type LegacyMemberDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegacyMember
+     */
+    select?: LegacyMemberSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegacyMember
+     */
+    omit?: LegacyMemberOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51096,7 +52289,10 @@ export namespace Prisma {
     quizTotalScore: 'quizTotalScore',
     quizBestScore: 'quizBestScore',
     quizStreak: 'quizStreak',
-    quizAttemptsCount: 'quizAttemptsCount'
+    quizAttemptsCount: 'quizAttemptsCount',
+    legacyId: 'legacyId',
+    forumactifName: 'forumactifName',
+    hasFinishedOnboarding: 'hasFinishedOnboarding'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -51175,7 +52371,8 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     order: 'order',
-    allowedRoles: 'allowedRoles'
+    allowedRoles: 'allowedRoles',
+    legacyId: 'legacyId'
   };
 
   export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
@@ -51190,7 +52387,8 @@ export namespace Prisma {
     isLocked: 'isLocked',
     isTournamentForum: 'isTournamentForum',
     categoryId: 'categoryId',
-    parentForumId: 'parentForumId'
+    parentForumId: 'parentForumId',
+    legacyId: 'legacyId'
   };
 
   export type ForumScalarFieldEnum = (typeof ForumScalarFieldEnum)[keyof typeof ForumScalarFieldEnum]
@@ -51207,7 +52405,8 @@ export namespace Prisma {
     views: 'views',
     forumId: 'forumId',
     authorId: 'authorId',
-    tournamentId: 'tournamentId'
+    tournamentId: 'tournamentId',
+    legacyId: 'legacyId'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
@@ -51223,7 +52422,8 @@ export namespace Prisma {
     isModerated: 'isModerated',
     moderationReason: 'moderationReason',
     moderatedBy: 'moderatedBy',
-    isDeleted: 'isDeleted'
+    isDeleted: 'isDeleted',
+    legacyId: 'legacyId'
   };
 
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
@@ -51608,6 +52808,18 @@ export namespace Prisma {
   export type QuizQuestionSuggestionScalarFieldEnum = (typeof QuizQuestionSuggestionScalarFieldEnum)[keyof typeof QuizQuestionSuggestionScalarFieldEnum]
 
 
+  export const LegacyMemberScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    forumactifName: 'forumactifName',
+    nafNumber: 'nafNumber',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LegacyMemberScalarFieldEnum = (typeof LegacyMemberScalarFieldEnum)[keyof typeof LegacyMemberScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -51847,6 +53059,9 @@ export namespace Prisma {
     quizBestScore?: IntFilter<"User"> | number
     quizStreak?: IntFilter<"User"> | number
     quizAttemptsCount?: IntFilter<"User"> | number
+    legacyId?: StringNullableFilter<"User"> | string | null
+    forumactifName?: StringNullableFilter<"User"> | string | null
+    hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -51908,6 +53123,9 @@ export namespace Prisma {
     quizBestScore?: SortOrder
     quizStreak?: SortOrder
     quizAttemptsCount?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
+    forumactifName?: SortOrderInput | SortOrder
+    hasFinishedOnboarding?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     moderatedArticles?: ArticleOrderByRelationAggregateInput
     articles?: ArticleOrderByRelationAggregateInput
@@ -51952,6 +53170,7 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    legacyId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -51972,6 +53191,8 @@ export namespace Prisma {
     quizBestScore?: IntFilter<"User"> | number
     quizStreak?: IntFilter<"User"> | number
     quizAttemptsCount?: IntFilter<"User"> | number
+    forumactifName?: StringNullableFilter<"User"> | string | null
+    hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -52011,7 +53232,7 @@ export namespace Prisma {
     quizAttempts?: QuizAttemptListRelationFilter
     dailyWins?: QuizDailyWinnerListRelationFilter
     quizSuggestions?: QuizQuestionSuggestionListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "legacyId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -52033,6 +53254,9 @@ export namespace Prisma {
     quizBestScore?: SortOrder
     quizStreak?: SortOrder
     quizAttemptsCount?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
+    forumactifName?: SortOrderInput | SortOrder
+    hasFinishedOnboarding?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -52063,6 +53287,9 @@ export namespace Prisma {
     quizBestScore?: IntWithAggregatesFilter<"User"> | number
     quizStreak?: IntWithAggregatesFilter<"User"> | number
     quizAttemptsCount?: IntWithAggregatesFilter<"User"> | number
+    legacyId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    forumactifName?: StringNullableWithAggregatesFilter<"User"> | string | null
+    hasFinishedOnboarding?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type BlockWhereInput = {
@@ -52442,6 +53669,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Category"> | string | null
     order?: IntFilter<"Category"> | number
     allowedRoles?: StringFilter<"Category"> | string
+    legacyId?: StringNullableFilter<"Category"> | string | null
     forums?: ForumListRelationFilter
   }
 
@@ -52451,11 +53679,13 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     order?: SortOrder
     allowedRoles?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
     forums?: ForumOrderByRelationAggregateInput
   }
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    legacyId?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
@@ -52464,7 +53694,7 @@ export namespace Prisma {
     order?: IntFilter<"Category"> | number
     allowedRoles?: StringFilter<"Category"> | string
     forums?: ForumListRelationFilter
-  }, "id">
+  }, "id" | "legacyId">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
@@ -52472,6 +53702,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     order?: SortOrder
     allowedRoles?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
     _count?: CategoryCountOrderByAggregateInput
     _avg?: CategoryAvgOrderByAggregateInput
     _max?: CategoryMaxOrderByAggregateInput
@@ -52488,6 +53719,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Category"> | string | null
     order?: IntWithAggregatesFilter<"Category"> | number
     allowedRoles?: StringWithAggregatesFilter<"Category"> | string
+    legacyId?: StringNullableWithAggregatesFilter<"Category"> | string | null
   }
 
   export type ForumWhereInput = {
@@ -52503,6 +53735,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFilter<"Forum"> | boolean
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
+    legacyId?: StringNullableFilter<"Forum"> | string | null
     parentForum?: XOR<ForumNullableScalarRelationFilter, ForumWhereInput> | null
     subForums?: ForumListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
@@ -52519,6 +53752,7 @@ export namespace Prisma {
     isTournamentForum?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
+    legacyId?: SortOrderInput | SortOrder
     parentForum?: ForumOrderByWithRelationInput
     subForums?: ForumOrderByRelationAggregateInput
     category?: CategoryOrderByWithRelationInput
@@ -52527,6 +53761,7 @@ export namespace Prisma {
 
   export type ForumWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    legacyId?: string
     AND?: ForumWhereInput | ForumWhereInput[]
     OR?: ForumWhereInput[]
     NOT?: ForumWhereInput | ForumWhereInput[]
@@ -52542,7 +53777,7 @@ export namespace Prisma {
     subForums?: ForumListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     topics?: TopicListRelationFilter
-  }, "id">
+  }, "id" | "legacyId">
 
   export type ForumOrderByWithAggregationInput = {
     id?: SortOrder
@@ -52554,6 +53789,7 @@ export namespace Prisma {
     isTournamentForum?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     parentForumId?: SortOrderInput | SortOrder
+    legacyId?: SortOrderInput | SortOrder
     _count?: ForumCountOrderByAggregateInput
     _avg?: ForumAvgOrderByAggregateInput
     _max?: ForumMaxOrderByAggregateInput
@@ -52574,6 +53810,7 @@ export namespace Prisma {
     isTournamentForum?: BoolWithAggregatesFilter<"Forum"> | boolean
     categoryId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
     parentForumId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
+    legacyId?: StringNullableWithAggregatesFilter<"Forum"> | string | null
   }
 
   export type TopicWhereInput = {
@@ -52591,6 +53828,7 @@ export namespace Prisma {
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
     tournamentId?: StringNullableFilter<"Topic"> | string | null
+    legacyId?: StringNullableFilter<"Topic"> | string | null
     posts?: PostListRelationFilter
     tournament?: XOR<TournamentNullableScalarRelationFilter, TournamentWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -52611,6 +53849,7 @@ export namespace Prisma {
     forumId?: SortOrder
     authorId?: SortOrder
     tournamentId?: SortOrderInput | SortOrder
+    legacyId?: SortOrderInput | SortOrder
     posts?: PostOrderByRelationAggregateInput
     tournament?: TournamentOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
@@ -52622,6 +53861,7 @@ export namespace Prisma {
   export type TopicWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     tournamentId?: string
+    legacyId?: string
     AND?: TopicWhereInput | TopicWhereInput[]
     OR?: TopicWhereInput[]
     NOT?: TopicWhereInput | TopicWhereInput[]
@@ -52640,7 +53880,7 @@ export namespace Prisma {
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     follows?: TopicFollowListRelationFilter
     topicViews?: TopicViewListRelationFilter
-  }, "id" | "tournamentId">
+  }, "id" | "tournamentId" | "legacyId">
 
   export type TopicOrderByWithAggregationInput = {
     id?: SortOrder
@@ -52654,6 +53894,7 @@ export namespace Prisma {
     forumId?: SortOrder
     authorId?: SortOrder
     tournamentId?: SortOrderInput | SortOrder
+    legacyId?: SortOrderInput | SortOrder
     _count?: TopicCountOrderByAggregateInput
     _avg?: TopicAvgOrderByAggregateInput
     _max?: TopicMaxOrderByAggregateInput
@@ -52676,6 +53917,7 @@ export namespace Prisma {
     forumId?: StringWithAggregatesFilter<"Topic"> | string
     authorId?: StringWithAggregatesFilter<"Topic"> | string
     tournamentId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
+    legacyId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
   }
 
   export type PostWhereInput = {
@@ -52692,6 +53934,7 @@ export namespace Prisma {
     moderationReason?: StringNullableFilter<"Post"> | string | null
     moderatedBy?: StringNullableFilter<"Post"> | string | null
     isDeleted?: BoolFilter<"Post"> | boolean
+    legacyId?: StringNullableFilter<"Post"> | string | null
     mentions?: MentionListRelationFilter
     moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -52710,6 +53953,7 @@ export namespace Prisma {
     moderationReason?: SortOrderInput | SortOrder
     moderatedBy?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
     mentions?: MentionOrderByRelationAggregateInput
     moderator?: UserOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
@@ -52719,6 +53963,7 @@ export namespace Prisma {
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    legacyId?: string
     AND?: PostWhereInput | PostWhereInput[]
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
@@ -52736,7 +53981,7 @@ export namespace Prisma {
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     reactions?: PostReactionListRelationFilter
-  }, "id">
+  }, "id" | "legacyId">
 
   export type PostOrderByWithAggregationInput = {
     id?: SortOrder
@@ -52749,6 +53994,7 @@ export namespace Prisma {
     moderationReason?: SortOrderInput | SortOrder
     moderatedBy?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
+    legacyId?: SortOrderInput | SortOrder
     _count?: PostCountOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
     _min?: PostMinOrderByAggregateInput
@@ -52768,6 +54014,7 @@ export namespace Prisma {
     moderationReason?: StringNullableWithAggregatesFilter<"Post"> | string | null
     moderatedBy?: StringNullableWithAggregatesFilter<"Post"> | string | null
     isDeleted?: BoolWithAggregatesFilter<"Post"> | boolean
+    legacyId?: StringNullableWithAggregatesFilter<"Post"> | string | null
   }
 
   export type ConversationWhereInput = {
@@ -54777,6 +56024,63 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"QuizQuestionSuggestion"> | Date | string
   }
 
+  export type LegacyMemberWhereInput = {
+    AND?: LegacyMemberWhereInput | LegacyMemberWhereInput[]
+    OR?: LegacyMemberWhereInput[]
+    NOT?: LegacyMemberWhereInput | LegacyMemberWhereInput[]
+    id?: StringFilter<"LegacyMember"> | string
+    email?: StringFilter<"LegacyMember"> | string
+    forumactifName?: StringFilter<"LegacyMember"> | string
+    nafNumber?: StringNullableFilter<"LegacyMember"> | string | null
+    createdAt?: DateTimeFilter<"LegacyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"LegacyMember"> | Date | string
+  }
+
+  export type LegacyMemberOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    forumactifName?: SortOrder
+    nafNumber?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegacyMemberWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: LegacyMemberWhereInput | LegacyMemberWhereInput[]
+    OR?: LegacyMemberWhereInput[]
+    NOT?: LegacyMemberWhereInput | LegacyMemberWhereInput[]
+    forumactifName?: StringFilter<"LegacyMember"> | string
+    nafNumber?: StringNullableFilter<"LegacyMember"> | string | null
+    createdAt?: DateTimeFilter<"LegacyMember"> | Date | string
+    updatedAt?: DateTimeFilter<"LegacyMember"> | Date | string
+  }, "id" | "email">
+
+  export type LegacyMemberOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    forumactifName?: SortOrder
+    nafNumber?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LegacyMemberCountOrderByAggregateInput
+    _max?: LegacyMemberMaxOrderByAggregateInput
+    _min?: LegacyMemberMinOrderByAggregateInput
+  }
+
+  export type LegacyMemberScalarWhereWithAggregatesInput = {
+    AND?: LegacyMemberScalarWhereWithAggregatesInput | LegacyMemberScalarWhereWithAggregatesInput[]
+    OR?: LegacyMemberScalarWhereWithAggregatesInput[]
+    NOT?: LegacyMemberScalarWhereWithAggregatesInput | LegacyMemberScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LegacyMember"> | string
+    email?: StringWithAggregatesFilter<"LegacyMember"> | string
+    forumactifName?: StringWithAggregatesFilter<"LegacyMember"> | string
+    nafNumber?: StringNullableWithAggregatesFilter<"LegacyMember"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"LegacyMember"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LegacyMember"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -54948,6 +56252,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -55009,6 +56316,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -55068,6 +56378,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -55129,6 +56442,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -55189,6 +56505,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -55210,6 +56529,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -55232,6 +56554,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BlockCreateInput = {
@@ -55677,6 +57002,7 @@ export namespace Prisma {
     description?: string | null
     order?: number
     allowedRoles?: string
+    legacyId?: string | null
     forums?: ForumCreateNestedManyWithoutCategoryInput
   }
 
@@ -55686,6 +57012,7 @@ export namespace Prisma {
     description?: string | null
     order?: number
     allowedRoles?: string
+    legacyId?: string | null
     forums?: ForumUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -55695,6 +57022,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forums?: ForumUpdateManyWithoutCategoryNestedInput
   }
 
@@ -55704,6 +57032,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forums?: ForumUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -55713,6 +57042,7 @@ export namespace Prisma {
     description?: string | null
     order?: number
     allowedRoles?: string
+    legacyId?: string | null
   }
 
   export type CategoryUpdateManyMutationInput = {
@@ -55721,6 +57051,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CategoryUncheckedUpdateManyInput = {
@@ -55729,6 +57060,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ForumCreateInput = {
@@ -55739,6 +57071,7 @@ export namespace Prisma {
     allowedRoles?: string
     isLocked?: boolean
     isTournamentForum?: boolean
+    legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
@@ -55755,6 +57088,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
+    legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
@@ -55767,6 +57101,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
@@ -55783,6 +57118,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
@@ -55797,6 +57133,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
+    legacyId?: string | null
   }
 
   export type ForumUpdateManyMutationInput = {
@@ -55807,6 +57144,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ForumUncheckedUpdateManyInput = {
@@ -55819,6 +57157,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicCreateInput = {
@@ -55830,6 +57169,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
@@ -55850,6 +57190,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
@@ -55864,6 +57205,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
@@ -55884,6 +57226,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
@@ -55901,6 +57244,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
   }
 
   export type TopicUpdateManyMutationInput = {
@@ -55912,6 +57256,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicUncheckedUpdateManyInput = {
@@ -55926,6 +57271,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateInput = {
@@ -55936,6 +57282,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
@@ -55954,6 +57301,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
@@ -55966,6 +57314,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -55984,6 +57333,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -55999,6 +57349,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
   }
 
   export type PostUpdateManyMutationInput = {
@@ -56009,6 +57360,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostUncheckedUpdateManyInput = {
@@ -56022,6 +57374,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConversationCreateInput = {
@@ -58080,6 +59433,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LegacyMemberCreateInput = {
+    id?: string
+    email: string
+    forumactifName: string
+    nafNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegacyMemberUncheckedCreateInput = {
+    id?: string
+    email: string
+    forumactifName: string
+    nafNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegacyMemberUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    forumactifName?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegacyMemberUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    forumactifName?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegacyMemberCreateManyInput = {
+    id?: string
+    email: string
+    forumactifName: string
+    nafNumber?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegacyMemberUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    forumactifName?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegacyMemberUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    forumactifName?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -58615,6 +60031,9 @@ export namespace Prisma {
     quizBestScore?: SortOrder
     quizStreak?: SortOrder
     quizAttemptsCount?: SortOrder
+    legacyId?: SortOrder
+    forumactifName?: SortOrder
+    hasFinishedOnboarding?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -58644,6 +60063,9 @@ export namespace Prisma {
     quizBestScore?: SortOrder
     quizStreak?: SortOrder
     quizAttemptsCount?: SortOrder
+    legacyId?: SortOrder
+    forumactifName?: SortOrder
+    hasFinishedOnboarding?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -58666,6 +60088,9 @@ export namespace Prisma {
     quizBestScore?: SortOrder
     quizStreak?: SortOrder
     quizAttemptsCount?: SortOrder
+    legacyId?: SortOrder
+    forumactifName?: SortOrder
+    hasFinishedOnboarding?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -58999,6 +60424,7 @@ export namespace Prisma {
     description?: SortOrder
     order?: SortOrder
     allowedRoles?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type CategoryAvgOrderByAggregateInput = {
@@ -59011,6 +60437,7 @@ export namespace Prisma {
     description?: SortOrder
     order?: SortOrder
     allowedRoles?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type CategoryMinOrderByAggregateInput = {
@@ -59019,6 +60446,7 @@ export namespace Prisma {
     description?: SortOrder
     order?: SortOrder
     allowedRoles?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type CategorySumOrderByAggregateInput = {
@@ -59045,6 +60473,7 @@ export namespace Prisma {
     isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type ForumAvgOrderByAggregateInput = {
@@ -59061,6 +60490,7 @@ export namespace Prisma {
     isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type ForumMinOrderByAggregateInput = {
@@ -59073,6 +60503,7 @@ export namespace Prisma {
     isTournamentForum?: SortOrder
     categoryId?: SortOrder
     parentForumId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type ForumSumOrderByAggregateInput = {
@@ -59101,6 +60532,7 @@ export namespace Prisma {
     forumId?: SortOrder
     authorId?: SortOrder
     tournamentId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type TopicAvgOrderByAggregateInput = {
@@ -59119,6 +60551,7 @@ export namespace Prisma {
     forumId?: SortOrder
     authorId?: SortOrder
     tournamentId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type TopicMinOrderByAggregateInput = {
@@ -59133,6 +60566,7 @@ export namespace Prisma {
     forumId?: SortOrder
     authorId?: SortOrder
     tournamentId?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type TopicSumOrderByAggregateInput = {
@@ -59160,6 +60594,7 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type PostMaxOrderByAggregateInput = {
@@ -59173,6 +60608,7 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type PostMinOrderByAggregateInput = {
@@ -59186,6 +60622,7 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    legacyId?: SortOrder
   }
 
   export type ConversationUser1IdUser2IdCompoundUniqueInput = {
@@ -60376,6 +61813,33 @@ export namespace Prisma {
 
   export type QuizQuestionSuggestionSumOrderByAggregateInput = {
     correctIndex?: SortOrder
+  }
+
+  export type LegacyMemberCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    forumactifName?: SortOrder
+    nafNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegacyMemberMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    forumactifName?: SortOrder
+    nafNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegacyMemberMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    forumactifName?: SortOrder
+    nafNumber?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -64252,6 +65716,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -64312,6 +65779,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -64386,6 +65856,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -64446,6 +65919,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -64504,6 +65980,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -64564,6 +66043,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -64638,6 +66120,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -64698,6 +66183,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -65181,6 +66669,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionCreateNestedManyWithoutPostInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
@@ -65197,6 +66686,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
@@ -65218,6 +66708,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
@@ -65234,6 +66725,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
@@ -65360,6 +66852,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     forum: ForumCreateNestedOneWithoutTopicsInput
@@ -65378,6 +66871,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     tournamentId?: string | null
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
@@ -66490,6 +67984,7 @@ export namespace Prisma {
     moderationReason?: StringNullableFilter<"Post"> | string | null
     moderatedBy?: StringNullableFilter<"Post"> | string | null
     isDeleted?: BoolFilter<"Post"> | boolean
+    legacyId?: StringNullableFilter<"Post"> | string | null
   }
 
   export type PostUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -66652,6 +68147,7 @@ export namespace Prisma {
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
     tournamentId?: StringNullableFilter<"Topic"> | string | null
+    legacyId?: StringNullableFilter<"Topic"> | string | null
   }
 
   export type TopicFollowUpsertWithWhereUniqueWithoutUserInput = {
@@ -67182,6 +68678,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -67242,6 +68741,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -67305,6 +68807,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -67365,6 +68870,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -67439,6 +68947,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -67499,6 +69010,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -67568,6 +69082,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -67628,6 +69145,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -67676,6 +69196,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
@@ -67694,6 +69215,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     authorId: string
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
@@ -67770,6 +69292,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -67830,6 +69355,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68036,6 +69564,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68096,6 +69627,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68160,6 +69694,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
@@ -68178,6 +69713,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
@@ -68266,6 +69802,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -68326,6 +69865,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -68493,6 +70035,9 @@ export namespace Prisma {
     quizBestScore?: IntFilter<"User"> | number
     quizStreak?: IntFilter<"User"> | number
     quizAttemptsCount?: IntFilter<"User"> | number
+    legacyId?: StringNullableFilter<"User"> | string | null
+    forumactifName?: StringNullableFilter<"User"> | string | null
+    hasFinishedOnboarding?: BoolFilter<"User"> | boolean
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -68503,6 +70048,7 @@ export namespace Prisma {
     allowedRoles?: string
     isLocked?: boolean
     isTournamentForum?: boolean
+    legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -68517,6 +70063,7 @@ export namespace Prisma {
     isLocked?: boolean
     isTournamentForum?: boolean
     parentForumId?: string | null
+    legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
@@ -68559,6 +70106,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFilter<"Forum"> | boolean
     categoryId?: StringNullableFilter<"Forum"> | string | null
     parentForumId?: StringNullableFilter<"Forum"> | string | null
+    legacyId?: StringNullableFilter<"Forum"> | string | null
   }
 
   export type ForumCreateWithoutSubForumsInput = {
@@ -68569,6 +70117,7 @@ export namespace Prisma {
     allowedRoles?: string
     isLocked?: boolean
     isTournamentForum?: boolean
+    legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     category?: CategoryCreateNestedOneWithoutForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -68584,6 +70133,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
+    legacyId?: string | null
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
 
@@ -68600,6 +70150,7 @@ export namespace Prisma {
     allowedRoles?: string
     isLocked?: boolean
     isTournamentForum?: boolean
+    legacyId?: string | null
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
@@ -68614,6 +70165,7 @@ export namespace Prisma {
     isLocked?: boolean
     isTournamentForum?: boolean
     categoryId?: string | null
+    legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
@@ -68633,6 +70185,7 @@ export namespace Prisma {
     description?: string | null
     order?: number
     allowedRoles?: string
+    legacyId?: string | null
   }
 
   export type CategoryUncheckedCreateWithoutForumsInput = {
@@ -68641,6 +70194,7 @@ export namespace Prisma {
     description?: string | null
     order?: number
     allowedRoles?: string
+    legacyId?: string | null
   }
 
   export type CategoryCreateOrConnectWithoutForumsInput = {
@@ -68657,6 +70211,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
@@ -68675,6 +70230,7 @@ export namespace Prisma {
     views?: number
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
@@ -68708,6 +70264,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -68723,6 +70280,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
 
@@ -68759,6 +70317,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CategoryUncheckedUpdateWithoutForumsInput = {
@@ -68767,6 +70326,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     allowedRoles?: StringFieldUpdateOperationsInput | string
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicUpsertWithWhereUniqueWithoutForumInput = {
@@ -68793,6 +70353,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
@@ -68809,6 +70370,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
@@ -68952,6 +70514,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69012,6 +70577,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69064,6 +70632,7 @@ export namespace Prisma {
     allowedRoles?: string
     isLocked?: boolean
     isTournamentForum?: boolean
+    legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
@@ -69079,6 +70648,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: string | null
     parentForumId?: string | null
+    legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
   }
 
@@ -69288,6 +70858,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69348,6 +70921,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69406,6 +70982,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
@@ -69421,6 +70998,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
   }
 
@@ -69500,6 +71078,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69560,6 +71141,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69623,6 +71207,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69683,6 +71270,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69736,6 +71326,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
@@ -69755,6 +71346,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -69833,6 +71425,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69893,6 +71488,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69962,6 +71560,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70022,6 +71623,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70081,6 +71685,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
@@ -70100,6 +71705,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -70139,6 +71745,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70199,6 +71808,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -70262,6 +71874,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70322,6 +71937,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -70421,6 +72039,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70481,6 +72102,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70550,6 +72174,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70610,6 +72237,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70684,6 +72314,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70744,6 +72377,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -70843,6 +72479,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70903,6 +72542,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70982,6 +72624,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
@@ -71001,6 +72644,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -71029,6 +72673,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71089,6 +72736,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71153,6 +72803,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
@@ -71172,6 +72823,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -71206,6 +72858,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71266,6 +72921,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71324,6 +72982,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71384,6 +73045,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71447,6 +73111,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71507,6 +73174,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71559,6 +73229,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
@@ -71576,6 +73247,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -71614,6 +73286,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71674,6 +73349,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71743,6 +73421,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71803,6 +73484,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71861,6 +73545,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
@@ -71878,6 +73563,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -71900,6 +73586,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71960,6 +73649,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72012,6 +73704,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
@@ -72029,6 +73722,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
   }
 
@@ -72067,6 +73761,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72127,6 +73824,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72185,6 +73885,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -72202,6 +73903,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
   }
 
@@ -72224,6 +73926,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72283,6 +73988,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72357,6 +74065,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     views?: number
+    legacyId?: string | null
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
@@ -72376,6 +74085,7 @@ export namespace Prisma {
     forumId: string
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
   }
@@ -72404,6 +74114,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72464,6 +74177,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72528,6 +74244,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
@@ -72547,6 +74264,7 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
   }
@@ -72581,6 +74299,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72641,6 +74362,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72699,6 +74423,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72759,6 +74486,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72833,6 +74563,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72893,6 +74626,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72951,6 +74687,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73011,6 +74750,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -73196,6 +74938,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73256,6 +75001,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73431,6 +75179,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73491,6 +75242,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -73695,6 +75449,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73755,6 +75512,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73946,6 +75706,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -74006,6 +75769,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74107,6 +75873,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74167,6 +75936,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74258,6 +76030,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -74318,6 +76093,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74503,6 +76281,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74563,6 +76344,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74785,6 +76569,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -74845,6 +76632,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -74908,6 +76698,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -74968,6 +76761,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -75133,6 +76929,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -75193,6 +76992,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -75262,6 +77064,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -75322,6 +77127,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -75473,6 +77281,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75533,6 +77344,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -75644,6 +77458,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75704,6 +77521,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75846,6 +77666,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75906,6 +77729,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76084,6 +77910,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76144,6 +77973,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76207,6 +78039,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76267,6 +78102,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76357,6 +78195,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -76417,6 +78258,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -76523,6 +78367,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76583,6 +78430,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76646,6 +78496,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76706,6 +78559,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76780,6 +78636,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -76840,6 +78699,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -76909,6 +78771,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -76969,6 +78834,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -77027,6 +78895,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77087,6 +78958,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77161,6 +79035,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -77221,6 +79098,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -77279,6 +79159,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77339,6 +79222,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77428,6 +79314,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -77488,6 +79377,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -77617,6 +79509,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77677,6 +79572,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77862,6 +79760,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -77922,6 +79823,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78380,6 +80284,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78440,6 +80347,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78503,6 +80413,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78563,6 +80476,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78654,6 +80570,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78714,6 +80633,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78783,6 +80705,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78843,6 +80768,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78924,6 +80852,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78984,6 +80915,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79058,6 +80992,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79118,6 +81055,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79176,6 +81116,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79236,6 +81179,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79310,6 +81256,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79370,6 +81319,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79428,6 +81380,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79488,6 +81443,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79562,6 +81520,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79622,6 +81583,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79816,6 +81780,7 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
   }
 
   export type PostCreateManyAuthorInput = {
@@ -79828,6 +81793,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
   }
 
   export type PostReactionCreateManyUserInput = {
@@ -79874,6 +81840,7 @@ export namespace Prisma {
     views?: number
     forumId: string
     tournamentId?: string | null
+    legacyId?: string | null
   }
 
   export type TopicFollowCreateManyUserInput = {
@@ -80510,6 +82477,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUpdateManyWithoutPostNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
@@ -80526,6 +82494,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -80540,6 +82509,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostUpdateWithoutAuthorInput = {
@@ -80550,6 +82520,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
@@ -80566,6 +82537,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -80580,6 +82552,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostReactionUpdateWithoutUserInput = {
@@ -80692,6 +82665,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
@@ -80710,6 +82684,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
@@ -80726,6 +82701,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     forumId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicFollowUpdateWithoutUserInput = {
@@ -81741,6 +83717,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81801,6 +83780,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -81860,6 +83842,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -81871,6 +83856,7 @@ export namespace Prisma {
     isLocked?: boolean
     isTournamentForum?: boolean
     parentForumId?: string | null
+    legacyId?: string | null
   }
 
   export type ForumUpdateWithoutCategoryInput = {
@@ -81881,6 +83867,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -81895,6 +83882,7 @@ export namespace Prisma {
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
@@ -81908,6 +83896,7 @@ export namespace Prisma {
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ForumCreateManyParentForumInput = {
@@ -81919,6 +83908,7 @@ export namespace Prisma {
     isLocked?: boolean
     isTournamentForum?: boolean
     categoryId?: string | null
+    legacyId?: string | null
   }
 
   export type TopicCreateManyForumInput = {
@@ -81932,6 +83922,7 @@ export namespace Prisma {
     views?: number
     authorId: string
     tournamentId?: string | null
+    legacyId?: string | null
   }
 
   export type ForumUpdateWithoutParentForumInput = {
@@ -81942,6 +83933,7 @@ export namespace Prisma {
     allowedRoles?: StringFieldUpdateOperationsInput | string
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
@@ -81956,6 +83948,7 @@ export namespace Prisma {
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
@@ -81969,6 +83962,7 @@ export namespace Prisma {
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicUpdateWithoutForumInput = {
@@ -81980,6 +83974,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
@@ -81998,6 +83993,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
@@ -82014,6 +84010,7 @@ export namespace Prisma {
     views?: IntFieldUpdateOperationsInput | number
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateManyTopicInput = {
@@ -82026,6 +84023,7 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    legacyId?: string | null
   }
 
   export type TopicFollowCreateManyTopicInput = {
@@ -82046,6 +84044,7 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
@@ -82062,6 +84061,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
   }
@@ -82076,6 +84076,7 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicFollowUpdateWithoutTopicInput = {
@@ -82219,6 +84220,9 @@ export namespace Prisma {
     quizBestScore?: number
     quizStreak?: number
     quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
   }
 
   export type UserUpdateWithoutRoleConfigInput = {
@@ -82240,6 +84244,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -82299,6 +84306,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -82358,6 +84368,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TournamentTeamMemberCreateManyTeamInput = {
@@ -82747,6 +84760,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -82807,6 +84823,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -82866,6 +84885,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUpdateWithoutLiguesInput = {
@@ -82887,6 +84909,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -82947,6 +84972,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -83006,6 +85034,9 @@ export namespace Prisma {
     quizBestScore?: IntFieldUpdateOperationsInput | number
     quizStreak?: IntFieldUpdateOperationsInput | number
     quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ResourceTagUpdateWithoutResourcesInput = {

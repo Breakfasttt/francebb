@@ -158,7 +158,10 @@ exports.Prisma.UserScalarFieldEnum = {
   quizTotalScore: 'quizTotalScore',
   quizBestScore: 'quizBestScore',
   quizStreak: 'quizStreak',
-  quizAttemptsCount: 'quizAttemptsCount'
+  quizAttemptsCount: 'quizAttemptsCount',
+  legacyId: 'legacyId',
+  forumactifName: 'forumactifName',
+  hasFinishedOnboarding: 'hasFinishedOnboarding'
 };
 
 exports.Prisma.BlockScalarFieldEnum = {
@@ -225,7 +228,8 @@ exports.Prisma.CategoryScalarFieldEnum = {
   name: 'name',
   description: 'description',
   order: 'order',
-  allowedRoles: 'allowedRoles'
+  allowedRoles: 'allowedRoles',
+  legacyId: 'legacyId'
 };
 
 exports.Prisma.ForumScalarFieldEnum = {
@@ -237,7 +241,8 @@ exports.Prisma.ForumScalarFieldEnum = {
   isLocked: 'isLocked',
   isTournamentForum: 'isTournamentForum',
   categoryId: 'categoryId',
-  parentForumId: 'parentForumId'
+  parentForumId: 'parentForumId',
+  legacyId: 'legacyId'
 };
 
 exports.Prisma.TopicScalarFieldEnum = {
@@ -251,7 +256,8 @@ exports.Prisma.TopicScalarFieldEnum = {
   views: 'views',
   forumId: 'forumId',
   authorId: 'authorId',
-  tournamentId: 'tournamentId'
+  tournamentId: 'tournamentId',
+  legacyId: 'legacyId'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
@@ -264,7 +270,8 @@ exports.Prisma.PostScalarFieldEnum = {
   isModerated: 'isModerated',
   moderationReason: 'moderationReason',
   moderatedBy: 'moderatedBy',
-  isDeleted: 'isDeleted'
+  isDeleted: 'isDeleted',
+  legacyId: 'legacyId'
 };
 
 exports.Prisma.ConversationScalarFieldEnum = {
@@ -559,6 +566,15 @@ exports.Prisma.QuizQuestionSuggestionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LegacyMemberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  forumactifName: 'forumactifName',
+  nafNumber: 'nafNumber',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -621,7 +637,8 @@ exports.Prisma.ModelName = {
   QuizQuestion: 'QuizQuestion',
   QuizAttempt: 'QuizAttempt',
   QuizDailyWinner: 'QuizDailyWinner',
-  QuizQuestionSuggestion: 'QuizQuestionSuggestion'
+  QuizQuestionSuggestion: 'QuizQuestionSuggestion',
+  LegacyMember: 'LegacyMember'
 };
 
 /**

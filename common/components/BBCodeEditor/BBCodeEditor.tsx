@@ -401,7 +401,7 @@ TEXTE À FORMATER :
       <input type="file" accept="image/*" ref={fileInputRef} style={{ display: "none" }} onChange={handleImageUpload} />
 
       <div className="editor-toolbar" style={{ background: "var(--glass-bg)", padding: "0.4rem", borderBottom: "1px solid var(--glass-border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.4rem", position: "relative", zIndex: 10, borderRadius: "8px 8px 0 0" }}>
-        <div style={{ display: "flex", gap: "0.15rem", alignItems: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.15rem", alignItems: "center" }}>
           <Tooltip text="Gras">
             <button type="button" onClick={() => insertTag("[b]", "[/b]")} className="toolbar-btn"><Bold size={16} /></button>
           </Tooltip>

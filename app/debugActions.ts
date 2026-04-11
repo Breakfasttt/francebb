@@ -1,52 +1,61 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
-const ROLES = [
-  { id: "user_test_superadmin", name: "SuperAdmin Test", role: "SUPERADMIN", email: "superadmin@test.com" },
-  { id: "user_test_admin", name: "Admin Test", role: "ADMIN", email: "admin@test.com" },
-  { id: "user_test_moderator", name: "Modérateur Test", role: "MODERATOR", email: "modo@test.com" },
-  { id: "user_test_rtc", name: "RTC Test", role: "RTC", email: "rtc@test.com" },
-  { id: "user_test_chefligue", name: "Chef Ligue Test", role: "CHEF_LIGUE", email: "chefligue@test.com" },
-  { id: "user_test_coach1", name: "Coach 1 Test", role: "COACH", email: "coach1@test.com" },
-];
-
-export async function seedMockUsers() {
-  if (process.env.NODE_ENV !== "development") return { success: false, message: "Only available in local dev." };
+export async function getTestUsers() {
+  if (process.env.NODE_ENV !== "development") return [];
   
-  try {
-    const baseRolesData = [
-      { name: "SUPERADMIN", label: "Super Admin", color: "#eab308", power: 100, isBaseRole: true },
-      { name: "ADMIN", label: "Administrateur", color: "#ef4444", power: 90, isBaseRole: true },
-      { name: "MODERATOR", label: "Modérateur", color: "#22c55e", power: 70, isBaseRole: true },
-      { name: "RTC", label: "RTC", color: "#3b82f6", power: 50, isBaseRole: true },
-      { name: "CHEF_LIGUE", label: "Chef de ligue", color: "#a855f7", power: 40, isBaseRole: true },
-      { name: "COACH", label: "Coach", color: "#888888", power: 10, isBaseRole: true },
-    ];
+  return await prisma.user.findMany({
+    where: {
+      OR: [
+        { email: { contains: "@test.com" } },
+        { id: { startsWith: "test_" } },
+        { id: { startsWith: "user_test_" } }
+      ]
+    },
+    select: {
+      id: true,
+      name: true,
+      role: true,
+      image: true
+    },
+    orderBy: { name: "asc" }
+  });
+}
 
-    for (const roleDef of baseRolesData) {
-      await prisma.roleConfig.upsert({
-        where: { name: roleDef.name },
-        update: { label: roleDef.label, color: roleDef.color, power: roleDef.power, isBaseRole: roleDef.isBaseRole },
-        create: roleDef
-      });
+export async function createQuickTestUser(name: string, role: string = "COACH") {
+  if (process.env.NODE_ENV !== "development") throw new Error("Only in dev");
+
+  const id = `test_${name.toLowerCase().replace(/\s+/g, "_")}_${Math.floor(Math.random() * 1000)}`;
+  
+  const user = await prisma.user.create({
+    data: {
+      id,
+      name,
+      email: `${id}@test.com`,
+      role,
+      image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`,
+      hasFinishedOnboarding: true // Par défaut pour les tests
     }
+  });
 
-    for (const r of ROLES) {
-      await prisma.user.upsert({
-        where: { id: r.id },
-        update: { role: r.role, name: r.name },
-        create: {
-          id: r.id,
-          name: r.name,
-          email: r.email,
-          role: r.role,
-          image: `https://api.dicebear.com/7.x/avataaars/svg?seed=${r.name}`
+  return { success: true, userId: user.id };
+}
+
+// Nettoyage des vieux tests si besoin (optionnel)
+export async function clearTestUsers() {
+    if (process.env.NODE_ENV !== "development") throw new Error("Only in dev");
+    
+    await prisma.user.deleteMany({
+        where: {
+            OR: [
+                { email: { contains: "@test.com" } },
+                { id: { startsWith: "test_" } }
+            ],
+            role: { not: "SUPERADMIN" } // Sécurité
         }
-      });
-    }
-    return { success: true, message: "Roles & Mock users seeded successfully!" };
-  } catch (error: any) {
-    return { success: false, message: error.message };
-  }
+    });
+    
+    return { success: true };
 }

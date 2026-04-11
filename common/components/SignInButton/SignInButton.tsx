@@ -14,8 +14,9 @@ interface SignInButtonProps {
 export function SignInButton({ user }: SignInButtonProps) {
 
   const handleDisconnect = () => {
-    document.cookie = `simulated_user_id=DISCONNECTED; path=/; max-age=31536000`;
-    window.location.reload();
+    import("next-auth/react").then(({ signOut }) => {
+      signOut({ callbackUrl: "/" });
+    });
   };
 
   if (!user) {

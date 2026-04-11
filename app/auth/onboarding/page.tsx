@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 import OnboardingForm from "./OnboardingForm";
+import OnboardingSuccess from "./OnboardingSuccess";
 import "../login/page.css";
 import "./onboarding.css";
 
@@ -11,27 +13,33 @@ export const metadata = {
 export default async function OnboardingPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect("/auth/login");
   }
 
-  if (session.user.hasFinishedOnboarding) {
-    redirect("/");
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    include: { ligues: true }
+  });
+
+  if (!user) {
+    redirect("/auth/login");
   }
 
   return (
     <main className="login-container">
-      <div className="login-card onboarding-card">
+      <div className="onboarding-wrapper">
         <h1 className="login-title">Bienvenue Coach !</h1>
-        <p className="onboarding-subtitle">
-          Dernière étape avant de fouler le gazon : personnalisez votre profil.
-        </p>
-
-        <OnboardingForm defaultName={session.user.name || ""} />
-
-        <p className="login-footer">
-          Vous pourrez modifier tout cela plus tard dans votre profil.
-        </p>
+        {user.hasFinishedOnboarding ? (
+          <OnboardingSuccess />
+        ) : (
+          <>
+            <p className="onboarding-subtitle">
+              Dernière étape avant de fouler le gazon : personnalisez votre profil complet.
+            </p>
+            <OnboardingForm user={user} />
+          </>
+        )}
       </div>
     </main>
   );

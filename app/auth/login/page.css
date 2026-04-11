@@ -31,7 +31,7 @@
   margin-bottom: 2.5rem;
   font-size: 2.2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--foreground) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

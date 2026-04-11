@@ -85,8 +85,7 @@ export default async function LoginPage(props: {
                 }
               }}
             >
-              <div className="input-group">
-                <label htmlFor="email">Adresse email</label>
+              <div className="input-with-icon-wrapper">
                 <div className="input-with-icon">
                   <Mail size={18} />
                   <input
@@ -103,6 +102,24 @@ export default async function LoginPage(props: {
                 Recevoir un lien magique
               </button>
             </form>
+          )}
+
+          {/* Dev Login (Development Only) */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="dev-login-section" style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
+              <p style={{ fontSize: '0.8rem', opacity: 0.6, textAlign: 'center', marginBottom: '1rem' }}>Mode Développement</p>
+              <form
+                action={async () => {
+                  "use server";
+                  // On tente de se connecter avec l'admin par défaut
+                  await signIn("dev-login", { userId: "user_test_admin", redirectTo: callbackUrl });
+                }}
+              >
+                <button type="submit" className="login-method-button" style={{ background: 'linear-gradient(135deg, #ff0055, #ff5500)', border: 'none' }}>
+                  🚀 Connexion Dev (Admin)
+                </button>
+              </form>
+            </div>
           )}
         </div>
 

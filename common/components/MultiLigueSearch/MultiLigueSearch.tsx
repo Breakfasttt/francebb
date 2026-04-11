@@ -155,7 +155,7 @@ export default function MultiLigueSearch({
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               onFocus={() => query.length >= 2 && setShowResults(true)}
-              style={{ height: "42px" }}
+              style={{ height: "42px", paddingLeft: "2.5rem" }}
             />
             
             {isLoading && (
