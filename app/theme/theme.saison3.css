@@ -50,10 +50,10 @@
   --btn-classic-border: rgba(0, 65, 117, 0.2);
   --btn-classic-hover: rgba(0, 65, 117, 0.15);
 
-  --btn-cta-bg: var(--primary);
+  --btn-cta-bg: var(--secondary);
   --btn-cta-text: var(--header-foreground);
-  --btn-cta-glow: rgba(var(--primary-rgb), 0.3);
-  --btn-cta-hover: var(--primary-hover);
+  --btn-cta-glow: rgba(var(--accent-rgb), 0.2);
+  --btn-cta-hover: #00305a;
   --btn-cta-shiny: rgba(255, 255, 255, 0.25);
 
   --btn-danger-bg: #b91c1c;

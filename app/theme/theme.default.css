@@ -51,11 +51,11 @@
   --btn-classic-border: var(--glass-border);
   --btn-classic-hover: rgba(255, 255, 255, 0.12);
 
-  --btn-cta-bg: var(--primary);
-  --btn-cta-text: var(--header-foreground);
-  --btn-cta-glow: rgba(var(--primary-rgb), 0.4);
-  --btn-cta-hover: var(--primary-hover);
-  --btn-cta-shiny: rgba(255, 255, 255, 0.2);
+  --btn-cta-bg: var(--accent);
+  --btn-cta-text: #000000;
+  --btn-cta-glow: rgba(var(--accent-rgb), 0.4);
+  --btn-cta-hover: #ffea00;
+  --btn-cta-shiny: rgba(255, 255, 255, 0.4);
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;

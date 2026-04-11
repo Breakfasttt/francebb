@@ -43,10 +43,6 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
         isLoading={isPending}
         icon={isLocked ? Unlock : Lock}
         fullWidth
-        style={{ 
-          background: isLocked ? 'var(--success)' : 'var(--danger)',
-          borderColor: isLocked ? 'var(--success)' : 'var(--danger)',
-        }}
       >
         {label}
       </AdminButton>
