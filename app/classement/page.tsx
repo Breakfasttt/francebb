@@ -28,6 +28,7 @@ import AdminButton from "@/common/components/Button/AdminButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import DangerButton from "@/common/components/Button/DangerButton";
+import ExplainButton from "@/common/components/Button/ExplainButton";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { 
   getRanking, 
@@ -180,13 +181,12 @@ export default function ClassementPage() {
           )}
         </div>
 
-        <button 
-          className="cdf-help-trigger" 
+        <ExplainButton 
+          icon={<HelpCircle size={16} />} 
           onClick={() => setIsHelpOpen(true)}
         >
-          <HelpCircle size={16} />
-          <span>Comment sont calculés les points ?</span>
-        </button>
+          Comment sont calculés les points ?
+        </ExplainButton>
       </div>
 
       {loading ? (

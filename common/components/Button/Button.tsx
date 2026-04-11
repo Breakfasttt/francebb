@@ -10,7 +10,7 @@ import { LucideIcon } from "lucide-react";
  * Gère le rendu conditionnel (bouton ou lien), les états de chargement et les icônes.
  */
 
-export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge";
+export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge" | "explain";
 
 interface ButtonBaseProps {
   children: React.ReactNode;

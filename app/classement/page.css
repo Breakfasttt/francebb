@@ -338,27 +338,7 @@
 /* Responsive déplacé dans page-mobile.css */
 
 
-.cdf-help-trigger {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: var(--accent-transparent);
-  border: 1px solid var(--accent-transparent);
-  color: var(--accent);
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
 
-.cdf-help-trigger:hover {
-  background: var(--accent);
-  color: black;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--accent-transparent);
-}
 
 .cdf-help-content {
   color: var(--foreground);

@@ -185,6 +185,21 @@
   transform: translateY(-1px);
 }
 
+/* Variant: Explain (Small explanatory clickable text, orange/accent) */
+.bb-button.variant-explain {
+  background: var(--accent-transparent);
+  color: var(--accent);
+  border: 1px solid var(--accent-transparent);
+}
+
+.bb-button.variant-explain:hover:not(:disabled) {
+  background: var(--accent);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--accent-transparent);
+}
+
+
 /* Loading Spinner */
 .btn-spinner {
   width: 18px;
