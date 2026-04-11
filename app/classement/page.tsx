@@ -231,9 +231,13 @@ export default function ClassementPage() {
         <div className="ranking-cards-grid">
           {ranking.map((res, idx) => (
             <PremiumCard key={idx} className={`ranking-item-card rank-${idx + 1}`}>
-              <div className="card-rank-badge">{idx + 1}</div>
-              
-              <div className="card-main-info">
+              <div className="ranking-card-body">
+                <div className="rank-side-section">
+                  <div className="card-rank-badge">{idx + 1}</div>
+                </div>
+                
+                <div className="rank-main-section">
+                  <div className="card-main-info">
                 <div className="coach-identity">
                   <div className="coach-display">
                     <span className="coach-name">{res.name}</span>
@@ -288,7 +292,9 @@ export default function ClassementPage() {
                   ))}
                 </div>
               )}
-            </PremiumCard>
+            </div>
+          </div>
+        </PremiumCard>
           ))}
         </div>
       )}
