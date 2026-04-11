@@ -1,0 +1,18 @@
+.onboarding-card {
+  max-width: 500px;
+}
+
+.onboarding-subtitle {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.onboarding-card .magic-link-form {
+  margin-top: 1rem;
+}
+
+.onboarding-card .login-method-button {
+  margin-top: 1rem;
+}

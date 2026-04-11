@@ -94,6 +94,7 @@ model User {
   quizSuggestions         QuizQuestionSuggestion[]
   legacyId                String?                  @unique // ID d'origine Forumactif
   forumactifName          String?                  // Ancien pseudo Forumactif
+  hasFinishedOnboarding   Boolean                  @default(false)
 }
 
 model Block {

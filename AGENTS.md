@@ -42,11 +42,17 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 - Lucide React pour les icônes
 - react-hot-toast pour les notifications
 
-## PRISMA :
+## PRISMA & BDD :
 - Toujours utiliser des opérations type-safe
 - Préférer les transactions pour les opérations multi-étapes
 - Utiliser `include` pour le eager loading, jamais de N+1
 - Pagination offset-based avec `take`/`skip`
+- **SETUP INITIAL** : La configuration initiale des données (rôles, ref data, structure forum) est centralisée dans `bdd/firstSetup.ts`.
+- **RÈGLES BDD** : 
+    - NE JAMAIS SUPPRIMER `bdd/firstSetup.ts`.
+    - NE JAMAIS MODIFIER les données existantes dans ce fichier sans accord explicite.
+    - NE JAMAIS RESET la base de données (`migrate reset` ou `deleteMany` global).
+    - Toujours privilégier l'idempotence (`upsert`).
 
 ## SÉCURITÉ :
 - Toujours vérifier la session auth avant toute action serveur

@@ -86,10 +86,20 @@ Vercel est l'endroit où votre site sera "hébergé" et accessible via une adres
 | Nom de la Variable (Key) | Valeur (Value) | Comment l'obtenir ? |
 | :--- | :--- | :--- |
 | `DATABASE_URL` | `libsql://...` | L'URL obtenue à l'étape 2 (Ajoutez `?authToken=VOTRE_TOKEN` à la fin !) |
-| `AUTH_SECRET` | *(Texte au hasard)* | Tapez une phrase longue et compliquée. |
+| `AUTH_SECRET` | *(Texte au hasard)* | Tapez une phrase longue et compliquée (Min 32 chars). |
+| `SUPERADMIN_EMAILS` | `email1@..` | Liste d'emails séparés par des virgules pour les droits admin. |
+| `DISCORD_CLIENT_ID` | `...` | Créer une app sur `discord.com/developers`. |
+| `DISCORD_CLIENT_SECRET` | `...` | Obtenu sur le portail développeur Discord. |
+| `GOOGLE_CLIENT_ID` | `...` | Créer un projet sur `console.cloud.google.com`. |
+| `GOOGLE_CLIENT_SECRET` | `...` | Obtenu sur le portail Google Cloud. |
+| `SMTP_HOST` | `smtp.resend.com` | Hôte SMTP de votre fournisseur mail. |
+| `SMTP_PORT` | `465` | Port SMTP (généralement 465 ou 587). |
+| `SMTP_USER` | `resend` ou `apiKey` | Nom d'utilisateur SMTP. |
+| `SMTP_PASSWORD` | `votre_mdp` | Mot de passe SMTP (ou clé API). |
+| `EMAIL_FROM` | `noreply@..` | L'adresse expéditrice autorisée. |
 | `ENCRYPTION_KEY` | *(Texte au hasard)* | Une autre phrase longue. |
 | `NEXT_PUBLIC_SITE_URL` | `https://mon-site.vercel.app` | Mettez l'URL que Vercel vous donnera. |
-| `NEXT_PUBLIC_IMGBB_API_KEY` | *(Votre clé)* | Clé gratuite sur `imgbb.com` pour les images. |
+| `NEXT_PUBLIC_IMGBB_API_KEY` | *(Votre clé)* | Clé gratuite sur `imgbb.com`. |
 
 5.  Cliquez sur le bouton bleu **"Deploy"**.
 
@@ -140,4 +150,4 @@ Si vous ne voulez pas de l'adresse par défaut `...vercel.app`, vous pouvez util
 *   **Le site est blanc / Erreur 500** : Allez dans l'onglet **"Logs"** sur Vercel pour lire l'erreur en rouge.
 
 ---
-*Guide mis à jour le : 26 Mars 2026. Bon courage Coach ! 🏈*
+*Guide mis à jour le : 11 Avril 2026. Bon courage Coach ! 🏈*

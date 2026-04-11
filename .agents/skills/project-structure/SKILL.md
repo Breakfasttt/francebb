@@ -13,9 +13,11 @@ Ce document sert de référence pour comprendre l'organisation du code, la répa
 - **`app/`** : Cœur de l'application (Next.js App Router). Contient les pages, layouts et la logique spécifique aux routes.
 - **`common/`** : Ressources transversales partagées (Composants UI atomiques, types globaux).
 - **`lib/`** : Logique métier, utilitaires et configurations (Prisma, BBCode, Rôles).
-- **`prisma/`** : Schéma de base de données, migrations et scripts de seed.
+- **`prisma/`** : Schéma de base de données et migrations.
+- **`bdd/`** : Scripts de configuration initiale et de setup pérenne (`firstSetup.ts`).
 - **`public/`** : Assets statiques (Images, Smileys, Polices).
-- **`styles/`** : Styles CSS de base et styles spécifiques à la landing page.
+- **`scripts/`** : Scripts utilitaires temporaires ou de test.
+- **`styles/`** : Styles CSS de base et globaux.
 
 ---
 
@@ -69,11 +71,19 @@ Ce dossier regroupe la logique "headless" partagée entre les Server Actions et 
 
 ---
 
-## 🗄️ Répertoire `prisma/`
-
 - **`schema.prisma`** : Définition du modèle de données (User, Category, Topic, Post, Tournament, League).
 - **`migrations/`** : Historique versionné des modifications SQL.
-- **`seed.ts`** : Données initiales pour peupler un nouvel environnement de développement.
+- **`seed.ts`** : Wrapper appelant `bdd/firstSetup.ts`. NE JAMAIS utiliser pour reset les données.
+
+---
+
+## 💾 Répertoire `bdd/` (Setup & Data Integrity)
+
+- **`firstSetup.ts`** : LE script de référence pour initialiser les données immuables (Rôles, Catégories Forum, Données de référence).
+- **Règles Strictes** :
+    - Fichier protégé : ne jamais supprimer ni modifier les données de base sans accord.
+    - Idempotence obligatoire : utiliser systématiquement `upsert`.
+    - Aucune suppression massive autorisée.
 
 ---
 

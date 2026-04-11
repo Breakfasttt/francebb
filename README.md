@@ -31,6 +31,8 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 - **Messagerie Privée** — Système de conversations privées avec notifications en temps réel et compteur de messages non-lus.
 
 ### 🛡️ Administration & Sécurité
+- **Authentification Hybride** — Connexion via Discord, Google ou Email (Magic Link).
+- **Import Legacy** — Système prêt pour lier les anciens comptes Forumactif (mapping pseudo/email).
 - **Rôles (RBAC)** — Système granulaire de permissions (SUPERADMIN, ADMIN, MODERATOR, RTC, CHEF_LIGUE, COACH).
 - **Modération** — Outils complets pour bannir, archiver, déplacer ou supprimer des contenus.
 - **Configuration** — Panneau d'administration pour gérer les données de référence et les paramètres du site.
@@ -42,7 +44,8 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 - **Framework** : [Next.js 16](https://nextjs.org) (App Router)
 - **Langage** : [TypeScript](https://www.typescriptlang.org)
 - **Base de Données** : [LibSQL](https://github.com/tursodatabase/libsql) (compatible SQLite) via [Prisma 7](https://www.prisma.io)
-- **Authentification** : [NextAuth v5](https://authjs.dev)
+- **Authentification** : [Auth.js v5](https://authjs.dev) (Discord, Google, Magic Links)
+- **Email** : [Resend](https://resend.com) ou SMTP générique via Nodemailer
 - **Style** : Vanilla CSS & Tailwind (variables CSS prioritaires)
 - **Composants** : [React 19](https://react.dev), [Lucide React](https://lucide.dev)
 - **Notifications** : [react-hot-toast](https://react-hot-toast.com)
@@ -65,10 +68,22 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
    ```
 
 3. **Variables d'environnement** (`.env`) :
-   ```env
-   DATABASE_URL="file:./dev.db"
-   AUTH_SECRET="votre-secret-tres-long"
-   ```
+    ```env
+    DATABASE_URL="file:./dev.db"
+    AUTH_SECRET="votre-secret-tres-long"
+    
+    # Authentification (OAuth & SMTP)
+    DISCORD_CLIENT_ID="..."
+    DISCORD_CLIENT_SECRET="..."
+    GOOGLE_CLIENT_ID="..."
+    GOOGLE_CLIENT_SECRET="..."
+    
+    SMTP_HOST="smtp.resend.com"
+    SMTP_PORT="465"
+    SMTP_USER="resend"
+    SMTP_PASSWORD="..."
+    EMAIL_FROM="votre-email@domaine.fr"
+    ```
 
 ### Initialisation & Lancement
 

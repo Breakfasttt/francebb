@@ -1,9 +1,8 @@
 import NextAuth from "next-auth";
-import Discord from "next-auth/providers/discord";
-import Google from "next-auth/providers/google";
-import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { authConfig } from "./auth.config";
+import Nodemailer from "next-auth/providers/nodemailer";
 import type { DefaultSession } from "next-auth";
 
 /**
@@ -14,25 +13,22 @@ declare module "next-auth" {
     user: {
       id: string;
       role: string;
+      hasFinishedOnboarding: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
     role?: string;
+    hasFinishedOnboarding?: boolean;
   }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" },
   providers: [
-    Discord({
-      clientId: process.env.DISCORD_CLIENT_ID,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    }),
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
+    ...authConfig.providers,
     Nodemailer({
       server: {
         host: process.env.SMTP_HOST,
@@ -46,87 +42,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     /**
-     * Callback de connexion : 
-     * - Gère les droits SuperAdmin via le .env
-     * - Gère le mapping avec les anciens comptes Forumactif
+     * Callback JWT : injecte les infos utilisateur dans le token.
      */
-    async signIn({ user, account, profile }) {
-      if (!user.email) return false;
-
-      // 1. Vérification SuperAdmin
-      const superAdminEmails = (process.env.SUPERADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase());
-      const isSuperAdmin = superAdminEmails.includes(user.email.toLowerCase());
-
-      // 2. Recherche d'un mapping legacy (Forumactif)
-      const legacyMember = await prisma.legacyMember.findUnique({
-        where: { email: user.email.toLowerCase() }
-      });
-
-      // 3. Mise à jour de l'utilisateur s'il existe déjà ou va être créé
-      // Note: Auth.js v5 gère la création automatique, mais on peut injecter des données ici via le DB Adapter.
-      // Dans le cas du signin, l'utilisateur en base peut déjà exister.
-      const dbUser = await prisma.user.findUnique({
-        where: { email: user.email.toLowerCase() }
-      });
-
-      if (dbUser) {
-        const updates: any = {};
-        
-        // Appliquer le rôle SuperAdmin si configuré
-        if (isSuperAdmin && dbUser.role !== "SUPERADMIN") {
-          updates.role = "SUPERADMIN";
-        }
-
-        // Lier les infos legacy si non fait
-        if (legacyMember && !dbUser.legacyId) {
-          updates.legacyId = legacyMember.id;
-          updates.forumactifName = legacyMember.forumactifName;
-          if (legacyMember.nafNumber && !dbUser.nafNumber) {
-            updates.nafNumber = legacyMember.nafNumber;
-          }
-        }
-
-        if (Object.keys(updates).length > 0) {
-          await prisma.user.update({
-            where: { id: dbUser.id },
-            data: updates
-          });
-        }
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role || "COACH";
+        token.hasFinishedOnboarding = user.hasFinishedOnboarding || false;
       }
-
-      return true;
+      if (trigger === "update" && session) {
+        token.hasFinishedOnboarding = session.hasFinishedOnboarding;
+        token.name = session.name;
+      }
+      return token;
     },
 
     /**
      * Callback de session : transmet le rôle et l'ID au client.
      */
-    async session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-        session.user.role = user.role || "COACH";
+    async session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
+        session.user.hasFinishedOnboarding = token.hasFinishedOnboarding as boolean;
       }
       return session;
     },
   },
   events: {
-    /**
-     * Au moment de la création du compte (premier login) :
-     * - On vérifie si c'est un SuperAdmin par email.
-     * - On vérifie s'il y a un mapping Legacy Forumactif.
-     */
     async createUser({ user }) {
       if (!user.email) return;
 
       const updates: any = {};
 
-      // 1. Check SuperAdmin
       const superAdminEmails = (process.env.SUPERADMIN_EMAILS || "").split(",").map(e => e.trim().toLowerCase());
       if (superAdminEmails.includes(user.email.toLowerCase())) {
         updates.role = "SUPERADMIN";
       }
 
-      // 2. Check Legacy Mapping
       const legacyMember = await prisma.legacyMember.findUnique({
         where: { email: user.email.toLowerCase() }
       });
