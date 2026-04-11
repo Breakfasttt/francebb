@@ -30,14 +30,61 @@
 }
 
 /* Icons styling inside button */
-.bb-button .btn-icon {
+.bb-button .bb-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
 
-.bb-button:hover:not(:disabled) .btn-icon {
+.bb-button:hover:not(:disabled) .bb-btn-icon {
   transform: scale(1.1);
 }
+
+/* Size Variants */
+.bb-button.size-xs {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  gap: 0.4rem;
+}
+
+.bb-button.size-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  gap: 0.6rem;
+}
+
+.bb-button.size-md {
+  padding: 0.8rem 1.6rem;
+  font-size: 0.95rem;
+  border-radius: 12px;
+  gap: 0.8rem;
+}
+
+.bb-button.size-lg {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 16px;
+  gap: 1rem;
+}
+
+/* Icon Only Support */
+.bb-button.icon-only {
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.bb-button.icon-only.size-xs { width: 24px; height: 24px; }
+.bb-button.icon-only.size-sm { width: 32px; height: 32px; }
+.bb-button.icon-only.size-md { width: 42px; height: 42px; }
+.bb-button.icon-only.size-lg { width: 52px; height: 52px; }
 
 /* Variant: Classic */
 .bb-button.variant-classic {
@@ -120,6 +167,22 @@
   background: var(--btn-admin-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+/* Variant: Badge (Small discrete links) */
+.bb-button.variant-badge {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(4px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bb-button.variant-badge:hover:not(:disabled) {
+  background: var(--primary-transparent);
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
 }
 
 /* Loading Spinner */

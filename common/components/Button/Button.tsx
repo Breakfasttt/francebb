@@ -10,7 +10,7 @@ import { LucideIcon } from "lucide-react";
  * Gère le rendu conditionnel (bouton ou lien), les états de chargement et les icônes.
  */
 
-export type ButtonVariant = "classic" | "cta" | "danger" | "admin";
+export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge";
 
 interface ButtonBaseProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ interface ButtonBaseProps {
   fullWidth?: boolean;
   className?: string;
   disabled?: boolean;
+  size?: "xs" | "sm" | "md" | "lg";
 }
 
 // Props pour le type Bouton
@@ -49,14 +50,17 @@ export default function Button({
   fullWidth = false,
   className = "",
   disabled = false,
+  size = "md",
   ...props
 }: ButtonProps) {
   
   const combinedClassName = [
     "bb-button",
     `variant-${variant}`,
+    `size-${size}`,
     fullWidth ? "full-width" : "",
     isLoading ? "loading" : "",
+    !children ? "icon-only" : "",
     className
   ].filter(Boolean).join(" ");
 
@@ -66,19 +70,20 @@ export default function Button({
     
     // Si c'est déjà un élément React (ex: <Search />)
     if (React.isValidElement(iconProp)) {
-      return <span className="btn-icon-wrapper">{iconProp}</span>;
+      return <span className="bb-btn-icon">{iconProp}</span>;
     }
 
     // Si c'est un composant (ex: Search)
     const IconComponent = iconProp;
-    return <IconComponent className="btn-icon" size={20} />;
+    const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
+    return <IconComponent className="bb-btn-icon" size={iconSize} />;
   };
 
   const content = (
     <>
       {isLoading && <span className="btn-spinner" />}
       {!isLoading && renderIcon(Icon, "left")}
-      <span className="btn-text">{children}</span>
+      {children && <span className="btn-text">{children}</span>}
       {!isLoading && renderIcon(Icon, "right")}
     </>
   );

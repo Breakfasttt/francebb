@@ -10,6 +10,7 @@ import PostActions from "./PostActions";
 import SharePostButton from "./SharePostButton";
 import ReportPostButton from "./ReportPostButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import BadgeButton from "@/common/components/Button/BadgeButton";
 
 interface PostItemProps {
   post: any;
@@ -147,26 +148,19 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
 
           <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
-            <ClassicButton 
+            <BadgeButton 
               href={`/spy/${post.author.id}`}
               icon={User}
-              size="sm"
             >
               PROFIL
-            </ClassicButton>
+            </BadgeButton>
             {post.author.id !== currentUserId && (
-              <ClassicButton 
+              <BadgeButton 
                 href={`/profile?tab=pm&recipientId=${post.author.id}`}
                 icon={Mail}
-                size="sm"
-                style={{ 
-                  background: "rgba(34, 197, 94, 0.1)", 
-                  color: "var(--success)",
-                  borderColor: "var(--success)"
-                }}
               >
                 MP
-              </ClassicButton>
+              </BadgeButton>
             )}
           </div>
         </div>

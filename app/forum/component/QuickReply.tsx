@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MessageSquare } from "lucide-react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";

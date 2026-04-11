@@ -144,7 +144,6 @@ export default function PostActions({
               onClick={handleQuote}
               icon={MessageSquare}
               size="sm"
-              style={{ width: '32px', height: '32px', justifyContent: 'center' }}
             />
             <span className="tooltip-text">Citer</span>
           </div>
@@ -156,7 +155,7 @@ export default function PostActions({
                 href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
                 icon={Pencil}
                 size="sm"
-                style={{ width: '32px', height: '32px', justifyContent: 'center', background: 'var(--primary)', color: 'white', border: 'none' }}
+                style={{ background: 'var(--primary)', color: 'white', border: 'none' }}
               />
               <span className="tooltip-text">{isTournament && isFirstPost ? "Modifier tournoi" : "Modifier"}</span>
             </div>
@@ -169,7 +168,6 @@ export default function PostActions({
                 onClick={() => setIsDeleteModalOpen(true)}
                 icon={Trash2}
                 size="sm"
-                style={{ width: '32px', height: '32px', justifyContent: 'center' }}
               />
               <span className="tooltip-text">Supprimer</span>
             </div>
