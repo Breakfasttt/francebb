@@ -170,7 +170,7 @@ export default async function ArticleDetailPage({
                   filter: article.isModerated ? 'grayscale(0.5)' : 'none',
                   transition: 'all 0.3s'
                 }}
-                dangerouslySetInnerHTML={{ __html: parseBBCode(article.content) }} 
+                dangerouslySetInnerHTML={{ __html: parseBBCode(article.content, undefined, sessionUser?.id) }} 
               />
             </div>
           ) : (

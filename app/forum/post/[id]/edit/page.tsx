@@ -111,7 +111,7 @@ export default async function EditPostPage({
                   </div>
                   <div 
                     style={{ paddingLeft: '1.5rem', fontSize: '0.95rem', color: 'var(--text-muted)', maxHeight: '100px', overflow: 'hidden', maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
-                    dangerouslySetInnerHTML={{ __html: parseBBCode(latest.content, quoteStatusMap) }}
+                    dangerouslySetInnerHTML={{ __html: parseBBCode(latest.content, quoteStatusMap, session?.user?.id) }}
                   />
                 </PremiumCard>
               ))}

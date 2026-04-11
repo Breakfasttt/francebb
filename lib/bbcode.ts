@@ -57,7 +57,7 @@ function sanitizeStyle(value: string, type: 'color' | 'size'): string {
 /**
  * A simple BBCode parser that escapes HTML to prevent XSS and replaces known tags.
  */
-export function parseBBCode(text: string, postStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>): string {
+export function parseBBCode(text: string, postStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>, currentUserId?: string): string {
   if (!text) return "";
 
   // 1. Escape basic HTML tags to prevent XSS
@@ -137,7 +137,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   }
 
   // 5. Quotes (Unified Tabbed Design)
-  html = html.replace(/\[quote(?:=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*))?\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, content) => {
+  html = html.replace(/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, userName, content) => {
     let quoteContent = '';
     if (postId && postStatusMap && postStatusMap[postId]) {
       const status = postStatusMap[postId];
@@ -151,7 +151,10 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     const tabs = [];
     tabs.push(`<div style="background: var(--primary); color: var(--header-foreground); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--primary); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
     if (userId) {
-      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="/profile?id=${userId}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${userId}</a></div>`);
+      const isMe = currentUserId === userId;
+      const profileHref = isMe ? '/profile' : `/spy/${userId}`;
+      const displayName = userName || userId;
+      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
     }
     if (postId) {
       tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
@@ -168,7 +171,11 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">${url}</a>`;
   });
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
-  html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, "<a href=\"/profile?id=$1\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"mention\" style=\"color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;\">@$2</a>");
+  html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, (match, mId, mName) => {
+    const isMe = currentUserId === mId;
+    const href = isMe ? '/profile' : `/spy/${mId}`;
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="mention" style="color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;">@${mName}</a>`;
+  });
 
   // 7. Replace Images
   html = html.replace(

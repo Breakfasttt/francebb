@@ -33,52 +33,53 @@ export default async function RootLayout({
   let userRole: UserRole = "COACH";
   let isBanned = false;
   let userTheme = "saison3";
+  let pendingModCount = 0;
+  let unreadCount = 0;
 
   if (session?.user?.id) {
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { role: true, isBanned: true, theme: true }
-    });
-    if (user) {
-      userRole = user.role as UserRole;
-      isBanned = user.isBanned;
-      userTheme = user.theme || "saison3";
+    try {
+      // 1. Fetch user specific data and global counts in parallel
+      const [user, pmCount] = await Promise.all([
+        prisma.user.findUnique({
+          where: { id: session.user.id },
+          select: { role: true, isBanned: true, theme: true }
+        }),
+        prisma.privateMessage.count({
+          where: {
+            conversation: {
+              OR: [
+                { user1Id: session.user.id },
+                { user2Id: session.user.id }
+              ]
+            },
+            authorId: { not: session.user.id },
+            readAt: null
+          }
+        })
+      ]);
+
+      if (user) {
+        userRole = user.role as UserRole;
+        isBanned = user.isBanned;
+        userTheme = user.theme || "saison3";
+        unreadCount = pmCount;
+
+        // 2. If moderator, fetch moderation counts in parallel
+        if (isModerator(userRole)) {
+          const [reports, resources] = await Promise.all([
+            prisma.moderationReport.count({ where: { status: "PENDING" } }),
+            prisma.resource.count({ where: { status: "PENDING" } })
+          ]);
+          pendingModCount = reports + resources;
+        }
+      }
+    } catch (error) {
+      console.error("Layout data fetching error:", error);
     }
   }
 
   const isMod = isModerator(userRole);
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
-
-  let pendingModCount = 0;
-  if (isMod) {
-    try {
-      const [pendingReports, pendingResources] = await Promise.all([
-        prisma.moderationReport.count({ where: { status: "PENDING" } }),
-        prisma.resource.count({ where: { status: "PENDING" } })
-      ]);
-      pendingModCount = pendingReports + pendingResources;
-    } catch (error) {
-       console.error("Error fetching pending mod count:", error);
-    }
-  }
-
-  let unreadCount = 0;
-  if (session?.user?.id) {
-    try {
-      unreadCount = await prisma.privateMessage.count({
-        where: {
-          conversation: {
-            OR: [
-              { user1Id: session.user.id },
-              { user2Id: session.user.id }
-            ]
-          },
-          authorId: { not: session.user.id },
-          readAt: null
-        }
-      });
-    } catch {}
-  }
 
   return (
     <html lang="fr" suppressHydrationWarning>

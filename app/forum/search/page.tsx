@@ -23,8 +23,8 @@ function getDescendantForumIds(allForums: any[], rootId: string): string[] {
 }
 
 // Highlight search word
-function highlightKeyword(text: string, query: string) {
-  if (!query) return parseBBCode(text, {});
+function highlightKeyword(text: string, query: string, currentUserId?: string) {
+  if (!query) return parseBBCode(text, {}, currentUserId);
   
   const stripped = text.replace(/\[.*?\]/g, ""); // strip bbcode
   const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, "gi");
@@ -227,7 +227,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                     lineHeight: "1.5",
                     borderLeft: "3px solid var(--primary)"
                   }}>
-                    <div dangerouslySetInnerHTML={{ __html: highlightKeyword(post.content, q) }} />
+                    <div dangerouslySetInnerHTML={{ __html: highlightKeyword(post.content, q, session?.user?.id) }} />
                   </div>
                 </div>
               ))

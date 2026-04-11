@@ -47,7 +47,7 @@ export default function PostActions({
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
 
   const handleQuote = () => {
-    const quoteContent = `[quote=${authorId}|${postId}]${content}[/quote]\n`;
+    const quoteContent = `[quote=${authorId}|${postId}|${authorName}]${content}[/quote]\n`;
     const quickReply = document.getElementById('quick-reply-area');
     if (quickReply) {
       window.dispatchEvent(new CustomEvent('bbcode-insert-text', { detail: quoteContent }));

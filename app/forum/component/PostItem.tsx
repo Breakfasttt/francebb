@@ -397,7 +397,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     wordBreak: 'break-word',
                     opacity: post.isModerated ? 0.6 : 1
                   }}
-                  dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap) }}
+                  dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap, currentUserId) }}
                 />
 
                 {post.author.signature && (
@@ -410,7 +410,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     fontStyle: 'italic',
                     maxWidth: '100%',
                     overflow: 'hidden'
-                  }} dangerouslySetInnerHTML={{ __html: parseBBCode(post.author.signature) }} />
+                  }} dangerouslySetInnerHTML={{ __html: parseBBCode(post.author.signature, undefined, currentUserId) }} />
                 )}
               </div>
             ) : (
