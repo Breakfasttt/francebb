@@ -120,7 +120,7 @@ export default async function ForumSidebar({
 
           {/* Posts Non Lus */}
           {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
-            <PremiumCard className="sidebar-widget unread-widget">
+            <PremiumCard className="sidebar-widget unread-widget" noOverflow>
               <div className="sidebar-widget-group">
                 <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
                   Posts non lus ({unreadTopics})

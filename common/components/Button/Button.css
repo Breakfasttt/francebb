@@ -81,10 +81,10 @@
   gap: 0;
 }
 
-.bb-button.icon-only.size-xs { width: 24px; height: 24px; }
-.bb-button.icon-only.size-sm { width: 32px; height: 32px; }
-.bb-button.icon-only.size-md { width: 42px; height: 42px; }
-.bb-button.icon-only.size-lg { width: 52px; height: 52px; }
+.bb-button.icon-only.size-xs { min-width: 28px; min-height: 28px; padding: 0; }
+.bb-button.icon-only.size-sm { min-width: 36px; min-height: 36px; padding: 0; }
+.bb-button.icon-only.size-md { min-width: 48px; min-height: 48px; padding: 0; }
+.bb-button.icon-only.size-lg { min-width: 58px; min-height: 58px; padding: 0; }
 
 /* Variant: Classic */
 .bb-button.variant-classic {

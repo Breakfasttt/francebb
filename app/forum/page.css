@@ -36,7 +36,6 @@
 
 .category-header.accordion-header:hover {
   background: var(--primary-transparent);
-  transform: translateX(4px);
   border-left-width: 8px;
 }
 
@@ -120,7 +119,6 @@
 
 .forum-item:hover {
   background: var(--primary-transparent);
-  transform: translateX(8px);
   border-left: 6px solid var(--primary);
   box-shadow: -10px 0 20px rgba(0, 0, 0, 0.2);
 }

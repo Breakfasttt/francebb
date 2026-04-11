@@ -26,7 +26,7 @@ import "./page.css";
 import "./page-mobile.css";
 
 
-type ProfileTab = "followed" | "articles" | "ressources" | "activity" | "edit" | "palmares" | "pm" | "settings" | "blocked";
+type ProfileTab = "followed" | "articles" | "ressources" | "activity" | "edit" | "pm" | "settings" | "blocked";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -61,7 +61,6 @@ export default function ProfilePage() {
     if (tab === "edit") return "edit";
     if (tab === "articles") return "articles";
     if (tab === "ressources") return "ressources";
-    if (tab === "palmares") return "palmares";
     if (tab === "pm") return "pm";
     if (tab === "activity") return "activity";
     if (tab === "settings") return "settings";
@@ -219,14 +218,6 @@ export default function ProfilePage() {
 
           {activeTab === "edit" && (
             <ProfileEdit user={user} postCount={stats.postCount} onUpdate={() => window.location.reload()} />
-          )}
-
-          {activeTab === "palmares" && (
-            <PremiumCard className="empty-state fade-in">
-              <Trophy size={48} />
-              <h3>Palmarès NAF</h3>
-              <p>Cette fonctionnalité sera prochainement synchronisée avec votre profil NAF.</p>
-            </PremiumCard>
           )}
 
           {activeTab === "pm" && (

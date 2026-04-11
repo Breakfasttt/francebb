@@ -92,7 +92,6 @@ export default function ProfileSidebar({
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
     { id: "ressources", label: "Mes ressources", icon: <Layout size={18} /> },
-    { id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> },
     { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "blocked", label: "Utilisateurs bloqués", icon: <UserX size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
@@ -100,7 +99,6 @@ export default function ProfileSidebar({
   ] : [
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "articles", label: "Articles", icon: <FileText size={18} /> },
-    ...(user.nafNumber ? [{ id: "palmares", label: "Palmarès NAF", icon: <Trophy size={18} /> }] : []),
   ]).map(item => ({ ...item }));
 
   const regionLabels: Record<string, string> = {

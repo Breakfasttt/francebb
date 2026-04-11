@@ -19,7 +19,7 @@ import "./page.css";
 import "./page-mobile.css";
 
 
-type ProfileTab = "activity" | "palmares" | "articles";
+type ProfileTab = "activity" | "articles";
 
 export default function SpyProfilePage() {
   const { data: session, status } = useSession();
@@ -37,7 +37,6 @@ export default function SpyProfilePage() {
   const [isBlocked, setIsBlocked] = useState(false);
 
   const sanitizeTab = (tab: string | null): ProfileTab => {
-    if (tab === "palmares") return "palmares";
     if (tab === "articles") return "articles";
     return "activity";
   };
@@ -140,13 +139,6 @@ export default function SpyProfilePage() {
             <ProfileArticles userId={user.id} isOwnProfile={false} />
           )}
 
-          {activeTab === "palmares" && (
-            <EmptyState 
-              icon={<Trophy size={48} />}
-              title="Palmarès NAF"
-              description="Ce coach n'a pas encore de palmarès enregistré."
-            />
-          )}
         </div>
       </div>
     </main>

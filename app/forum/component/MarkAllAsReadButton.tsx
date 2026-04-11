@@ -24,12 +24,13 @@ export default function MarkAllAsReadButton() {
 
   return (
     <>
+    <Tooltip text="Tout marquer comme lu">
       <ClassicButton
         onClick={() => setIsConfirming(true)}
-        style={{ color: 'var(--text-muted)', cursor: 'pointer', width: 'auto' }}
+        style={{ color: 'var(--text-muted)', cursor: 'pointer', height: '100%' }}
         icon={CheckCheck}
-        title="Tout marquer comme lu"
       />
+    </Tooltip>
 
       <Modal
         isOpen={isConfirming}

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Trophy, Clock, MessageSquare } from "lucide-react";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 import Pagination from "@/common/components/Pagination/Pagination";
 import toast from "react-hot-toast";
 import BackButton from "@/common/components/BackButton/BackButton";

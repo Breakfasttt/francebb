@@ -8,6 +8,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createArticle, updateArticle } from "@/app/articles/actions";
 import toast from "react-hot-toast";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
+import TagSelector from "@/common/components/TagSelector/TagSelector";
 import "./ArticleForm.css";
 import "./ArticleForm-mobile.css";
 
@@ -29,9 +30,26 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(initialData?.title || "");
   const [content, setContent] = useState(initialData?.content || "");
-  const [tags, setTags] = useState(initialData?.tags.join(", ") || "");
+  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
   const [ligueId, setLigueId] = useState(initialData?.ligueId || "");
   const [ligueCustom, setLigueCustom] = useState(initialData?.ligueCustom || "");
+
+  // Charger les suggestions de tags au montage
+  React.useEffect(() => {
+    async function fetchTags() {
+      try {
+        const res = await fetch("/api/articles/tags");
+        if (res.ok) {
+          const data = await res.json();
+          setTagSuggestions(data.map((t: any) => t.name));
+        }
+      } catch (err) {
+        console.error("Failed to fetch tags suggestions:", err);
+      }
+    }
+    fetchTags();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +62,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("tags", tags);
+    formData.append("tags", tags.join(","));
     formData.append("ligueId", ligueId);
     formData.append("ligueCustom", ligueCustom);
 
@@ -92,17 +110,15 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
         </div>
 
         <div className="form-group">
-          <label htmlFor="tags">Tags (séparés par des virgules)</label>
-          <input
-            id="tags"
-            type="text"
+          <label htmlFor="tags">Tags de l'article</label>
+          <TagSelector 
             value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            placeholder="Ex: Stratégie, Guide, Orques"
-            className="tags-input"
+            onChange={setTags}
+            suggestions={tagSuggestions}
+            placeholder="Ex: Stratégie, Guide, Orques..."
           />
           <small className="form-info">
-            <Info size={12} /> Les nouveaux tags seront créés automatiquement.
+            <Info size={12} /> Appuyez sur Entrée pour ajouter un tag. Les nouveaux tags seront créés automatiquement.
           </small>
         </div>
 

@@ -773,7 +773,10 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           style={{ width: "100%", height: isPreview ? "200px" : "100%", padding: "1rem", background: "var(--glass-bg)", border: "none", color: "var(--foreground)", resize: "vertical", outline: "none", fontSize: "1rem", fontFamily: "inherit" }}
         />
         {isPreview && (
-          <div className="editor-preview" style={{ width: "100%", minHeight: "150px", maxHeight: "400px", padding: "1.5rem", background: "transparent", color: "var(--foreground)", overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: parseBBCode(content) || "<em style='color: var(--text-muted);'>Aucun contenu...</em>" }} />
+          <>
+            <div style={{ height: "1px", width: "100%", background: "var(--glass-border)" }} />
+            <div className="editor-preview" style={{ width: "100%", minHeight: "150px", maxHeight: "400px", padding: "1.5rem", background: "transparent", color: "var(--foreground)", overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: parseBBCode(content) || "<em style='color: var(--text-muted);'>Aucun contenu...</em>" }} />
+          </>
         )}
       </div>
 
