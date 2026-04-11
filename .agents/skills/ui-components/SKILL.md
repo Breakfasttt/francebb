@@ -47,6 +47,19 @@ Navigation multipage avec saisie directe du numéro de page.
 ### 📏 BBCodeEditor
 Éditeur riche pour les messages du forum et les MPs.
 
+### 🔘 Boutons (`common/components/Button/`)
+Le projet utilise un système de boutons typés pour garantir la cohérence des actions utilisateur. **Ne jamais utiliser d'autres styles de boutons.**
+- `ClassicButton` : Le bouton par défaut (Glassmorphism). Utilisé pour la navigation secondaire, les annulations ou les actions neutres.
+- `CTAButton` : "Call To Action". Bouton brillant ("shiny") de couleur vive (Ambre/Vert/Bleu selon le thème). **Réservé aux actions positives principales** (Répondre, Enregistrer, Valider).
+- `DangerButton` : Bouton rouge. **Réservé exclusivement aux actions destructives** (Supprimer, Bannir, Réinitialiser).
+- `AdminButton` : Bouton violet. **Réservé aux actions de modération et d'administration** (Verrouiller, Déplacer, Épingler).
+- `BadgeButton` : Bouton miniature compact. Utilisé pour les liens discrets dans les interfaces denses (Profil, MP dans les sidebars).
+
+**Règles d'utilisation** :
+- **Tailles** : Utiliser la prop `size` (`xs`, `sm`, `md`, `lg`). `md` est le défaut.
+- **Icônes** : Toujours utiliser une icône de `lucide-react`. 
+- **Server Components** : Pour éviter les erreurs de sérialisation, passez l'élément JSX : `icon={<Icon size={18} />}`.
+
 ### 🔘 BackButton / PageHeader
 Standardisation du haut des pages (retour, fil d'ariane).
 

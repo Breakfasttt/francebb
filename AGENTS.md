@@ -60,6 +60,13 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 
 ## DESIGN & UI :
 - Avant de créer un composant, **consulte SYSTEMATIQUEMENT** : `.agents/skills/ui-components/SKILL.md`
+- **BOUTONS** : Utiliser exclusivement les 5 variantes standardisées :
+    - `ClassicButton` (Usage général, glassmorphism)
+    - `CTAButton` (Appel à l'action, effet "shiny", couleur vive)
+    - `DangerButton` (Actions destructives, rouge)
+    - `AdminButton` (Modération et Administration, violet)
+    - `BadgeButton` (Liens discrets, profil, MP dans les sidebars)
+- **ARCHITECTURE** : Pour les Server Components, passer l'icône sous forme d'élément JSX : `icon={<Icon size={18} />}`.
 - **THÈMES** : Ne jamais écrire de couleurs en dur. Utiliser les variables CSS.
 - **ICÔNES** : Lucide React exclusivement.
 - **UX** : Utiliser `PremiumCard` (Glassmorphism) et `Toast` pour les notifications.

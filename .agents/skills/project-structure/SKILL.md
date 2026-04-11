@@ -55,6 +55,7 @@ Regroupe les composants UI réutilisables. Chaque composant possède son propre 
 
 **Composants Clés :**
 - `PremiumCard` : Base pour l'effet glassmorphism.
+- `Button` : Système de 5 variantes standardisées (Classic, CTA, Danger, Admin, Badge).
 - `UserAvatar` : Affichage standardisé des utilisateurs.
 - `BBCodeEditor` : Éditeur de texte riche pour le forum.
 - `Navbar` / `PageHeader` / `Pagination` : Éléments de structure globale.
