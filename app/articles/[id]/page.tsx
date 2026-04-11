@@ -107,7 +107,7 @@ export default async function ArticleDetailPage({
           <div className="sidebar-section article-actions">
             {canEdit && (
               <>
-                <ClassicButton href={`/articles/edit/${article.id}`} icon={Edit3} fullWidth>
+                <ClassicButton href={`/articles/edit/${article.id}`} icon={<Edit3 size={18} />} fullWidth>
                   Modifier
                 </ClassicButton>
                 <DeleteArticleButton articleId={article.id} />

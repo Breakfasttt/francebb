@@ -90,19 +90,17 @@ export default async function ArticlesPage({
       />
 
       <div className="articles-layout">
-        <ArticleFilterSidebar availableTags={availableTags} />
+        <ArticleFilterSidebar 
+          availableTags={availableTags} 
+          isAuthenticated={!!session}
+        />
 
         <div className="articles-content">
           <div className="articles-top-actions">
             <div className="results-count">
-              <strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}
+              <FileText size={16} className="results-icon" />
+              <span><strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}</span>
             </div>
-            {session && (
-              <Link href="/articles/create" className="create-article-btn">
-                <Plus size={18} />
-                Créer un article
-              </Link>
-            )}
           </div>
 
           {articles.length > 0 ? (

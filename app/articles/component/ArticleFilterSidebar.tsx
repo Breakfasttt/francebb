@@ -2,18 +2,20 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, Tag as TagIcon, User, ArrowDownAz, Grid, List, RotateCcw } from "lucide-react";
+import { Search, Tag as TagIcon, User, ArrowDownAz, Grid, List, RotateCcw, Plus } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
+import CTAButton from "@/common/components/Button/CTAButton";
 import "./ArticleFilterSidebar.css";
 import "./ArticleFilterSidebar-mobile.css";
 
 
 interface ArticleFilterSidebarProps {
   availableTags: string[];
+  isAuthenticated?: boolean;
 }
 
-export default function ArticleFilterSidebar({ availableTags }: ArticleFilterSidebarProps) {
+export default function ArticleFilterSidebar({ availableTags, isAuthenticated }: ArticleFilterSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -57,6 +59,14 @@ export default function ArticleFilterSidebar({ availableTags }: ArticleFilterSid
 
   return (
     <aside className="article-filter-sidebar">
+      {isAuthenticated && (
+        <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
+          <CTAButton href="/articles/create" as="link" fullWidth icon={<Plus size={18} />}>
+            Créer un article
+          </CTAButton>
+        </div>
+      )}
+
       <PremiumCard className="filter-card">
         {/* Section Recherche & Vue */}
         <div className="filter-section">

@@ -12,6 +12,8 @@ import { useSession } from "next-auth/react";
 import ResourceCard from "./component/ResourceCard/ResourceCard";
 import ResourceFilterSidebar from "./component/ResourceFilterSidebar/ResourceFilterSidebar";
 import Pagination from "@/common/components/Pagination/Pagination";
+import { Layout } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { getResources, deleteResourceAction } from "./actions";
 import { isModerator, isAdmin } from "@/lib/roles";
@@ -27,6 +29,7 @@ export default function RessourcesPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
 
   // État pour suppression
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -42,6 +45,7 @@ export default function RessourcesPage() {
     
     setResources(data.resources);
     setTotalPages(data.totalPages);
+    setTotal(data.total);
     setLoading(false);
   }, [searchQuery, selectedTags, page]);
 
@@ -94,10 +98,10 @@ export default function RessourcesPage() {
 
         <div className="ressources-content">
           <div className="ressources-top-actions">
-            <Link href="/ressources/submit" className="submit-resource-btn">
-              <Plus size={18} />
-              Soumettre une ressource
-            </Link>
+            <div className="results-count">
+              <Layout size={16} className="results-icon" />
+              <span><strong>{total}</strong> ressource{total > 1 ? "s" : ""} trouvée{total > 1 ? "s" : ""}</span>
+            </div>
           </div>
 
           {loading ? (

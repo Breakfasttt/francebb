@@ -523,65 +523,7 @@
 /* Responsive déplacé dans page-mobile.css */
 
 
-/* Admin Archive Buttons */
-.admin-action-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: 1px solid transparent;
-  white-space: nowrap;
-}
-
-.archive-btn {
-  background: var(--accent);
-  color: black;
-}
-
-.archive-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--accent-transparent);
-}
-
 .admin-actions-group {
   display: flex;
   gap: 0.5rem;
-}
-
-.edit-archive-btn {
-  background: var(--glass-bg);
-  border-color: var(--glass-border);
-  color: var(--foreground);
-}
-
-.edit-archive-btn:hover {
-  background: var(--accent-transparent);
-  border-color: var(--accent);
-}
-
-.delete-archive-btn.danger {
-  background: rgba(255, 102, 102, 0.1);
-  border-color: rgba(255, 102, 102, 0.2);
-  color: #ff6666;
-}
-
-.delete-archive-btn.danger:hover {
-  background: #cc3333;
-  color: white;
-}
-
-.manual-archive-btn.outline {
-  background: none;
-  border-color: var(--glass-border);
-  color: var(--text-muted);
-}
-
-.manual-archive-btn.outline:hover {
-  border-color: var(--accent);
-  color: var(--accent);
 }

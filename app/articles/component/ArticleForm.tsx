@@ -9,6 +9,8 @@ import { createArticle, updateArticle } from "@/app/articles/actions";
 import toast from "react-hot-toast";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import "./ArticleForm.css";
 import "./ArticleForm-mobile.css";
 
@@ -148,22 +150,20 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
         </div>
 
         <div className="form-actions">
-          <button 
-            type="button" 
-            className="cancel-btn"
+          <ClassicButton 
             onClick={() => router.back()}
             disabled={loading}
+            icon={<X size={18} />}
           >
-            <X size={18} /> Annuler
-          </button>
-          <button 
+            Annuler
+          </ClassicButton>
+          <CTAButton 
             type="submit" 
-            className="submit-btn" 
-            disabled={loading}
+            isLoading={loading}
+            icon={<Save size={18} />}
           >
-            <Save size={18} /> 
-            {loading ? "Traitement..." : isEdit ? "Mettre à jour" : "Publier l'article"}
-          </button>
+            {isEdit ? "Mettre à jour" : "Publier l'article"}
+          </CTAButton>
         </div>
       </PremiumCard>
     </form>

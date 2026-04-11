@@ -17,35 +17,36 @@
 
 .articles-top-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem; /* Réduit pour s'aligner avec la sidebar */
+  height: 48px; 
 }
 
 .results-count {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-}
-
-.create-article-btn {
+  background: var(--glass-bg);
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  background: var(--primary);
-  color: white;
-  padding: 0.7rem 1.4rem;
-  border-radius: 10px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 15px rgba(194, 29, 29, 0.2);
+  gap: 0.7rem;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(10px);
 }
 
-.create-article-btn:hover {
-  transform: translateY(-2px);
-  background: var(--primary-hover);
-  box-shadow: 0 6px 20px rgba(194, 29, 29, 0.4);
+.results-icon {
+  color: var(--primary);
+  opacity: 0.8;
 }
+
+.results-count strong {
+  color: var(--foreground);
+}
+
+
 
 /* Grid View */
 .articles-grid {

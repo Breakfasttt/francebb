@@ -6,6 +6,7 @@ import { getUserResources, deleteResourceAction } from "@/app/ressources/actions
 import { Loader2, Clock, CheckCircle, XCircle, AlertCircle, ExternalLink, Layout, Edit, Trash2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Pagination from "@/common/components/Pagination/Pagination";
+import EmptyState from "@/common/components/EmptyState/EmptyState";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -82,17 +83,25 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
 
   return (
     <div className="profile-resources fade-in">
-      <div className="section-header-pm" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+      <div className="section-header-pm">
         <Layout size={20} className="header-icon" />
         <h3 className="activity-box-title">Mes ressources soumises</h3>
-        <span className="resources-count">{resources.length}</span>
+        {resources.length > 0 && <span className="resources-count">{resources.length}</span>}
       </div>
-
-      {resources.length === 0 ? (
-        <PremiumCard className="empty-state-resource">
-          <p>Vous n'avez pas encore soumis de ressources.</p>
-        </PremiumCard>
-      ) : (
+      
+      <div className="resources-content-wrapper" style={{ marginTop: '2rem' }}>
+        {resources.length === 0 ? (
+          <EmptyState 
+            icon={<Layout size={48} />}
+            title="Aucune ressource soumise"
+            description="Vous n'avez pas encore partagé de ressources avec la communauté."
+            action={
+              <Link href="/ressources" className="resource-preview-link">
+                Voir toutes les ressources <ExternalLink size={14} />
+              </Link>
+            }
+          />
+        ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {resources.map((res) => (
             <PremiumCard key={res.id} className="resource-submission-card">
@@ -132,8 +141,9 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
               onPageChange={setPage}
             />
           </div>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       <ConfirmModal 
         isOpen={!!deletingId}
@@ -207,10 +217,8 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
           text-decoration: none;
           font-weight: 600;
         }
-        .empty-state-resource {
-          padding: 3rem !important;
-          text-align: center;
-          opacity: 0.6;
+        .resources-content-wrapper {
+          width: 100%;
         }
         .action-icon-btn {
           background: var(--glass-bg);

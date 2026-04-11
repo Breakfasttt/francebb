@@ -24,6 +24,10 @@ import {
 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Modal from "@/common/components/Modal/Modal";
+import AdminButton from "@/common/components/Button/AdminButton";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { 
   getRanking, 
@@ -143,35 +147,36 @@ export default function ClassementPage() {
           </select>
 
           {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
-            <button className="admin-action-btn archive-btn" onClick={() => setIsArchiveConfirmOpen(true)}>
-              <Shield size={16} /> Archiver
-            </button>
+            <AdminButton 
+              icon={<Shield size={16} />} 
+              onClick={() => setIsArchiveConfirmOpen(true)}
+            >
+              Archiver
+            </AdminButton>
           )}
 
           {isMod && filter.startsWith("CDF_") && isSelectedYearArchived && (
             <div className="admin-actions-group">
-              <button 
-                className="admin-action-btn edit-archive-btn" 
+              <ClassicButton 
                 onClick={() => router.push(`/classement/edit-archive?year=${currentYearData?.year}`)}
               >
                 Modifier l'archive
-              </button>
+              </ClassicButton>
               {isAdminUser && (
-                <button className="admin-action-btn delete-archive-btn danger" onClick={() => setIsDeleteConfirmOpen(true)}>
+                <DangerButton onClick={() => setIsDeleteConfirmOpen(true)}>
                   Supprimer
-                </button>
+                </DangerButton>
               )}
             </div>
           )}
 
           {isMod && (
-            <button 
-              className="admin-action-btn manual-archive-btn outline" 
+            <AdminButton 
               onClick={() => router.push('/classement/edit-archive')}
               title="Ajouter une archive manuellement"
             >
               + Manuel
-            </button>
+            </AdminButton>
           )}
         </div>
 

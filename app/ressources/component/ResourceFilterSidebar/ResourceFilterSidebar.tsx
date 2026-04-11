@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, Tag as TagIcon, Grid, List } from "lucide-react";
+import { Search, Tag as TagIcon, Grid, List, Plus } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
+import CTAButton from "@/common/components/Button/CTAButton";
 import { getResourceTags } from "../../actions";
 import "./ResourceFilterSidebar.css";
 import "./ResourceFilterSidebar-mobile.css";
@@ -40,6 +41,12 @@ export default function ResourceFilterSidebar({
 
   return (
     <aside className="resource-filter-sidebar">
+      <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
+        <CTAButton href="/ressources/submit" as="link" fullWidth icon={<Plus size={18} />}>
+          Soumettre une ressource
+        </CTAButton>
+      </div>
+
       <PremiumCard className="filter-card">
         <div className="filter-section">
           <div className="filter-header-row">
