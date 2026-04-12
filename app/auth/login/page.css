@@ -185,3 +185,143 @@
   font-size: 0.85rem;
   margin-bottom: 1.5rem;
 }
+
+/* Dev Login Section */
+.dev-login-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(var(--primary-rgb, 139, 92, 246), 0.05);
+  border-radius: 20px;
+  border: 1px dashed rgba(var(--primary-rgb, 139, 92, 246), 0.2);
+  animation: slideIn 0.3s ease-out;
+  text-align: left;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dev-login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.dev-back-button {
+  background: none;
+  border: none;
+  color: var(--foreground);
+  opacity: 0.4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  transition: opacity 0.2s;
+}
+
+.dev-back-button:hover {
+  opacity: 1;
+}
+
+.dev-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--foreground);
+  opacity: 0.5;
+  font-weight: 700;
+}
+
+.dev-users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.dev-user-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  background: rgba(var(--foreground-rgb), 0.03);
+  border: 1px solid rgba(var(--foreground-rgb), 0.08);
+  border-radius: 12px;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.dev-user-card:hover {
+  background: rgba(var(--foreground-rgb), 0.07);
+  transform: translateX(4px);
+}
+
+.dev-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dev-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--primary);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dev-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.dev-user-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--foreground);
+}
+
+.dev-user-role {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  font-weight: 600;
+  margin: 0;
+  color: var(--foreground);
+  text-transform: uppercase;
+}
+
+.dev-user-id {
+  font-size: 0.65rem;
+  opacity: 0.3;
+  color: var(--foreground);
+}
+
+.dev-no-users {
+  text-align: center;
+  padding: 1.5rem;
+  opacity: 0.5;
+  font-size: 0.85rem;
+  color: var(--foreground);
+}
+
+.dev-actions {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--foreground-rgb), 0.1);
+}
+

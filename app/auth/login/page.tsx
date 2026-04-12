@@ -1,6 +1,9 @@
-import { signIn } from "@/auth";
+import { signIn, auth } from "@/auth";
+import { redirect } from "next/navigation";
 import "./page.css";
 import { Mail, LogIn } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import DevLoginSection from "./DevLoginSection";
 
 export const metadata = {
   title: "Connexion - BBFrance",
@@ -9,8 +12,14 @@ export const metadata = {
 export default async function LoginPage(props: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
+  const session = await auth();
   const searchParams = await props.searchParams;
   const callbackUrl = searchParams.callbackUrl || "/";
+
+  if (session) {
+    redirect(callbackUrl);
+  }
+
   const error = searchParams.error;
 
   const isDiscordEnabled = !!(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET);
@@ -18,6 +27,28 @@ export default async function LoginPage(props: {
   const isEmailEnabled = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
 
   const hasAnyMethod = isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
+  
+  // Récupération des comptes de test en mode dev (aligné avec DebugAuthWidget)
+  const devUsers = process.env.NODE_ENV === "development" 
+    ? await prisma.user.findMany({
+        where: {
+          AND: [
+            { id: { not: "system" } },
+            {
+              OR: [
+                { email: { contains: "@test.com" } },
+                { id: { startsWith: "test_" } },
+                { id: { startsWith: "user_test_" } },
+                { role: { in: ["SUPERADMIN", "ADMIN", "MODERATOR"] } }
+              ]
+            }
+          ]
+        },
+        select: { id: true, name: true, email: true, role: true, image: true },
+        take: 10,
+        orderBy: { name: "asc" }
+      })
+    : [];
 
   return (
     <main className="login-container">
@@ -106,20 +137,10 @@ export default async function LoginPage(props: {
 
           {/* Dev Login (Development Only) */}
           {process.env.NODE_ENV === "development" && (
-            <div className="dev-login-section" style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
-              <p style={{ fontSize: '0.8rem', opacity: 0.6, textAlign: 'center', marginBottom: '1rem' }}>Mode Développement</p>
-              <form
-                action={async () => {
-                  "use server";
-                  // On tente de se connecter avec l'admin par défaut
-                  await signIn("dev-login", { userId: "user_test_admin", redirectTo: callbackUrl });
-                }}
-              >
-                <button type="submit" className="login-method-button" style={{ background: 'linear-gradient(135deg, #ff0055, #ff5500)', border: 'none' }}>
-                  🚀 Connexion Dev (Admin)
-                </button>
-              </form>
-            </div>
+            <DevLoginSection 
+              initialUsers={devUsers} 
+              callbackUrl={callbackUrl} 
+            />
           )}
         </div>
 

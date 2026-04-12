@@ -1,6 +1,6 @@
-import { PrismaClient } from "./generated-client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { questions as quizQuestions } from "../app/bbquizz/data/questions";
+import { PrismaClient } from "./generated-client";
 
 /**
  * Script de configuration initiale (First Setup) de la base de données BBFrance.
@@ -54,7 +54,7 @@ async function firstSetup() {
 
   // 3. Données de référence (Régions, Depts, Plateformes, Éditions)
   console.log("--- Configuration des données de référence...");
-  
+
   const refDataGroups = [
     {
       group: "COACH_REGION",
@@ -119,9 +119,9 @@ async function firstSetup() {
     {
       group: "TOURNAMENT_FORMAT",
       data: [
-         { key: "Evolutif", label: "Évolutif", order: 1 },
-         { key: "Resurrection", label: "Résurrection", order: 2 },
-         { key: "Other", label: "Autre", order: 3 },
+        { key: "Evolutif", label: "Évolutif", order: 1 },
+        { key: "Resurrection", label: "Résurrection", order: 2 },
+        { key: "Other", label: "Autre", order: 3 },
       ]
     }
   ];
@@ -187,9 +187,9 @@ async function firstSetup() {
       let forum = await prisma.forum.findUnique({ where: { name: f.name } });
       if (!forum) {
         forum = await prisma.forum.create({
-          data: { 
-            name: f.name, 
-            description: f.description, 
+          data: {
+            name: f.name,
+            description: f.description,
             categoryId: category.id,
             isTournamentForum: f.isTournamentForum || false
           }
@@ -197,8 +197,8 @@ async function firstSetup() {
       } else {
         await prisma.forum.update({
           where: { id: forum.id },
-          data: { 
-            description: f.description, 
+          data: {
+            description: f.description,
             isTournamentForum: f.isTournamentForum || false,
             categoryId: category.id
           }
