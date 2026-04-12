@@ -1,4 +1,4 @@
-import { PrismaClient } from "../prisma/generated-client";
+import { PrismaClient } from "./generated-client";
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { questions as quizQuestions } from "../app/bbquizz/data/questions";
 
@@ -171,23 +171,39 @@ async function firstSetup() {
   ];
 
   for (const cat of forumData) {
-    const category = await prisma.category.upsert({
-      where: { name: cat.name },
-      update: { order: cat.order },
-      create: { name: cat.name, order: cat.order }
-    });
+    let category = await prisma.category.findUnique({ where: { name: cat.name } });
+    if (!category) {
+      category = await prisma.category.create({
+        data: { name: cat.name, order: cat.order }
+      });
+    } else {
+      await prisma.category.update({
+        where: { id: category.id },
+        data: { order: cat.order }
+      });
+    }
 
     for (const f of cat.forums) {
-      const forum = await prisma.forum.upsert({
-        where: { name: f.name },
-        update: { description: f.description, isTournamentForum: f.isTournamentForum || false },
-        create: { 
-          name: f.name, 
-          description: f.description, 
-          categoryId: category.id,
-          isTournamentForum: f.isTournamentForum || false
-        }
-      });
+      let forum = await prisma.forum.findUnique({ where: { name: f.name } });
+      if (!forum) {
+        forum = await prisma.forum.create({
+          data: { 
+            name: f.name, 
+            description: f.description, 
+            categoryId: category.id,
+            isTournamentForum: f.isTournamentForum || false
+          }
+        });
+      } else {
+        await prisma.forum.update({
+          where: { id: forum.id },
+          data: { 
+            description: f.description, 
+            isTournamentForum: f.isTournamentForum || false,
+            categoryId: category.id
+          }
+        });
+      }
 
       // Topic d'accueil si vide
       const topicCount = await prisma.topic.count({ where: { forumId: forum.id } });

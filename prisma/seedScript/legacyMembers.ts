@@ -1,4 +1,4 @@
-import { prisma } from "../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 /**
  * Script de pré-remplissage des membres Forumactif.

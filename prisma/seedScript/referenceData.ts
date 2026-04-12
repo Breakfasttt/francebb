@@ -1,9 +1,9 @@
-import { PrismaClient } from "../prisma/generated-client/index.js";
+import { PrismaClient } from "../generated-client/index.js";
 // @ts-ignore
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 
 const path = require("path");
-const adapter = new PrismaLibSql({ url: `file:${path.join(__dirname, "..", "dev.db")}` });
+const adapter = new PrismaLibSql({ url: `file:${path.join(__dirname, "..", "..", "dev.db")}` });
 const prisma = new PrismaClient({ adapter } as any);
 
 async function main() {

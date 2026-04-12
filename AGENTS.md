@@ -47,11 +47,12 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
 - Préférer les transactions pour les opérations multi-étapes
 - Utiliser `include` pour le eager loading, jamais de N+1
 - Pagination offset-based avec `take`/`skip`
-- **SETUP INITIAL** : La configuration initiale des données (rôles, ref data, structure forum) est centralisée dans `bdd/firstSetup.ts`.
+- **SETUP INITIAL** : La configuration initiale des données (rôles, ref data, structure forum) est centralisée dans `prisma/firstSetup.ts`.
+- **SPECIFIC SEEDS** : Les scripts de seeding spécialisés (import legacy, données spécifiques) se trouvent dans `prisma/seedScript/`.
 - **RÈGLES BDD** : 
-    - NE JAMAIS SUPPRIMER `bdd/firstSetup.ts`.
+    - NE JAMAIS SUPPRIMER `prisma/firstSetup.ts`.
     - NE JAMAIS MODIFIER les données existantes dans ce fichier sans accord explicite.
-    - NE JAMAIS RESET la base de données (`migrate reset` ou `deleteMany` global).
+    - NE JAMAIS RESET la base de données (`migrate reset` ou `deleteMany` global) sans s'assurer que le script de seed est à jour.
     - Toujours privilégier l'idempotence (`upsert`).
 
 ## SÉCURITÉ :

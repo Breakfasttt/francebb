@@ -11,7 +11,7 @@ async function main() {
   console.log("🌱 Déclenchement du seed via firstSetup...");
   
   try {
-    const scriptPath = path.join(process.cwd(), "bdd", "firstSetup.ts");
+    const scriptPath = path.join(process.cwd(), "prisma", "firstSetup.ts");
     // Utilisation de ts-node pour exécuter le setup initial de manière isolée
     execSync(`npx ts-node ${scriptPath}`, { stdio: "inherit" });
   } catch (error) {

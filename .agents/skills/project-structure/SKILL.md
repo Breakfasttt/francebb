@@ -13,10 +13,9 @@ Ce document sert de référence pour comprendre l'organisation du code, la répa
 - **`app/`** : Cœur de l'application (Next.js App Router). Contient les pages, layouts et la logique spécifique aux routes.
 - **`common/`** : Ressources transversales partagées (Composants UI atomiques, types globaux).
 - **`lib/`** : Logique métier, utilitaires et configurations (Prisma, BBCode, Rôles).
-- **`prisma/`** : Schéma de base de données et migrations.
-- **`bdd/`** : Scripts de configuration initiale et de setup pérenne (`firstSetup.ts`).
+- **`prisma/`** : Schéma de base de données, migrations, configurations et scripts de seeding (`firstSetup.ts` et `seedScript/`).
 - **`public/`** : Assets statiques (Images, Smileys, Polices).
-- **`scripts/`** : Scripts utilitaires temporaires ou de test.
+- **`scripts/`** : Scripts utilitaires temporaires ou de test (non liés à la BDD).
 - **`styles/`** : Styles CSS de base et globaux.
 
 ---
@@ -72,19 +71,17 @@ Ce dossier regroupe la logique "headless" partagée entre les Server Actions et 
 
 ---
 
+## 🗄️ Répertoire `prisma/` (Data Architecture)
 - **`schema.prisma`** : Définition du modèle de données (User, Category, Topic, Post, Tournament, League).
 - **`migrations/`** : Historique versionné des modifications SQL.
-- **`seed.ts`** : Wrapper appelant `bdd/firstSetup.ts`. NE JAMAIS utiliser pour reset les données.
+- **`seed.ts`** : Wrapper appelant `firstSetup.ts`.
+- **`firstSetup.ts`** : Script de référence pour initialiser les données immuables (Rôles, Catégories Forum, Données de référence).
+- **`seedScript/`** : Scripts de seeding spécifiques ou outils d'import (ex: `legacyMembers.ts`).
 
----
-
-## 💾 Répertoire `bdd/` (Setup & Data Integrity)
-
-- **`firstSetup.ts`** : LE script de référence pour initialiser les données immuables (Rôles, Catégories Forum, Données de référence).
-- **Règles Strictes** :
-    - Fichier protégé : ne jamais supprimer ni modifier les données de base sans accord.
-    - Idempotence obligatoire : utiliser systématiquement `upsert`.
-    - Aucune suppression massive autorisée.
+### Règles Strictes de Seeding
+- Idempotence obligatoire : utiliser systématiquement `upsert`.
+- Ne jamais supprimer de données globales dans les scripts de seed.
+- Préférer `firstSetup.ts` pour tout ce qui est structurel au projet.
 
 ---
 

@@ -53685,16 +53685,16 @@ export namespace Prisma {
 
   export type CategoryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    name?: string
     legacyId?: string
     AND?: CategoryWhereInput | CategoryWhereInput[]
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
-    name?: StringFilter<"Category"> | string
     description?: StringNullableFilter<"Category"> | string | null
     order?: IntFilter<"Category"> | number
     allowedRoles?: StringFilter<"Category"> | string
     forums?: ForumListRelationFilter
-  }, "id" | "legacyId">
+  }, "id" | "name" | "legacyId">
 
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
@@ -53761,11 +53761,11 @@ export namespace Prisma {
 
   export type ForumWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    name?: string
     legacyId?: string
     AND?: ForumWhereInput | ForumWhereInput[]
     OR?: ForumWhereInput[]
     NOT?: ForumWhereInput | ForumWhereInput[]
-    name?: StringFilter<"Forum"> | string
     description?: StringNullableFilter<"Forum"> | string | null
     order?: IntFilter<"Forum"> | number
     allowedRoles?: StringFilter<"Forum"> | string
@@ -53777,7 +53777,7 @@ export namespace Prisma {
     subForums?: ForumListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     topics?: TopicListRelationFilter
-  }, "id" | "legacyId">
+  }, "id" | "name" | "legacyId">
 
   export type ForumOrderByWithAggregationInput = {
     id?: SortOrder

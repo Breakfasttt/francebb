@@ -173,7 +173,7 @@ model Tournament {
 
 model Category {
   id           String  @id @default(cuid())
-  name         String
+  name         String  @unique
   description  String?
   order        Int     @default(0)
   allowedRoles String  @default("ALL")
@@ -183,7 +183,7 @@ model Category {
 
 model Forum {
   id                String    @id @default(cuid())
-  name              String
+  name              String    @unique
   description       String?
   order             Int       @default(0)
   allowedRoles      String    @default("ALL")
