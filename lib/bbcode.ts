@@ -123,10 +123,12 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0; clear: both;' />");
 
   // 3. Spoilers (Body-First structure for persistent size)
-  html = html.replace(/\[spoiler(?:=(.*?))?\]([\s\S]*?)\[\/spoiler\]/gi, (match, title, content) => {
-    const trimmedContent = content.trim();
-    return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box" onclick="this.classList.add('revealed')"><div class="bb-spoiler-body">${trimmedContent}<button class="bb-spoiler-rehide" title="Recouvrir le bloc" onclick="event.stopPropagation(); this.closest('.bb-spoiler-box').classList.remove('revealed');">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
-  });
+  while (/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i.test(html)) {
+    html = html.replace(/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i, (match, title, content) => {
+      const trimmedContent = content.trim();
+      return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box" onclick="this.classList.add('revealed')"><div class="bb-spoiler-body">${trimmedContent}<button class="bb-spoiler-rehide" title="Recouvrir le bloc" onclick="event.stopPropagation(); this.closest('.bb-spoiler-box').classList.remove('revealed');">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
+    });
+  }
 
   // 4. Accordions
   while (/\[accordion=(.*?)\]((?:(?!\[accordion\])[\s\S])*?)\[\/accordion\]/i.test(html)) {
@@ -137,30 +139,32 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   }
 
   // 5. Quotes (Unified Tabbed Design)
-  html = html.replace(/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]([\s\S]*?)\[\/quote\]/gi, (match, userId, postId, userName, content) => {
-    let quoteContent = '';
-    if (postId && postStatusMap && postStatusMap[postId]) {
-      const status = postStatusMap[postId];
-      if (status.isDeleted) {
-        quoteContent = `<div style="text-align: center; color: var(--text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
-      } else if (status.isModerated) {
-        quoteContent = `<div style="text-align: center; color: var(--danger); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
+  while (/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]((?:(?!\[quote)[\s\S])*?)\[\/quote\]/i.test(html)) {
+    html = html.replace(/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]((?:(?!\[quote)[\s\S])*?)\[\/quote\]/i, (match, userId, postId, userName, content) => {
+      let quoteContent = '';
+      if (postId && postStatusMap && postStatusMap[postId]) {
+        const status = postStatusMap[postId];
+        if (status.isDeleted) {
+          quoteContent = `<div style="text-align: center; color: var(--text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
+        } else if (status.isModerated) {
+          quoteContent = `<div style="text-align: center; color: var(--danger); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
+        }
       }
-    }
-    const displayContent = (quoteContent || content).trim();
-    const tabs = [];
-    tabs.push(`<div style="background: var(--primary); color: var(--header-foreground); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--primary); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
-    if (userId) {
-      const isMe = currentUserId === userId;
-      const profileHref = isMe ? '/profile' : `/spy/${userId}`;
-      const displayName = userName || userId;
-      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
-    }
-    if (postId) {
-      tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
-    }
-    return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--glass-border); border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-secondary); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
-  });
+      const displayContent = (quoteContent || content).trim();
+      const tabs = [];
+      tabs.push(`<div style="background: var(--primary); color: var(--header-foreground); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--primary); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
+      if (userId) {
+        const isMe = currentUserId === userId;
+        const profileHref = isMe ? '/profile' : `/spy/${userId}`;
+        const displayName = userName || userId;
+        tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
+      }
+      if (postId) {
+        tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
+      }
+      return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--glass-border); border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-secondary); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
+    });
+  }
 
   // 6. Links
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, (match, url, content) => {
@@ -228,18 +232,13 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
     return items.split(/\[\*\]/gi).map(item => `<li>${item.trim()}</li>`).join("");
   };
 
-  while (/\[list\]([\s\S]*?)\[\/list\]/i.test(html)) {
-    html = html.replace(/\[list\]([\s\S]*?)\[\/list\]/i, (match, content) => {
-      const cleanContent = content.replace(/\r\n|\r|\n/g, "");
-      return `<ul style="margin: 0.8rem 0; padding-left: 1.5rem; list-style-type: disc;">${parseListItems(cleanContent)}</ul>`;
-    });
-  }
-  while (/\[list=(-|1|a|i)\]([\s\S]*?)\[\/list\]/i.test(html)) {
-    html = html.replace(/\[list=(-|1|a|i)\]([\s\S]*?)\[\/list\]/i, (match, type, content) => {
-      let listStyle = "decimal"; let tag = "ol";
-      if (type === "-") { listStyle = "dash"; tag = "ul"; }
-      else if (type === "a") listStyle = "lower-alpha";
-      else if (type === "i") listStyle = "lower-roman";
+  while (/\[list(?:=(-|1|a|i))?\]((?:(?!\[list)[\s\S])*?)\[\/list\]/i.test(html)) {
+    html = html.replace(/\[list(?:=(-|1|a|i))?\]((?:(?!\[list)[\s\S])*?)\[\/list\]/i, (match, type, content) => {
+      let listStyle = "disc"; let tag = "ul";
+      if (type === "1") { listStyle = "decimal"; tag = "ol"; }
+      else if (type === "-") { listStyle = "dash"; tag = "ul"; }
+      else if (type === "a") { listStyle = "lower-alpha"; tag = "ol"; }
+      else if (type === "i") { listStyle = "lower-roman"; tag = "ol"; }
       const cleanContent = content.replace(/\r\n|\r|\n/g, "");
       return `<${tag} style="margin: 0.8rem 0; padding-left: 1.5rem; list-style-type: ${listStyle};">${parseListItems(cleanContent)}</${tag}>`;
     });
@@ -263,8 +262,8 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   }
 
   // 11. Gallery [gallery]URL1,URL2,URL3[/gallery]
-  while (/\[gallery(?:=(\d))?\]([\s\S]*?)\[\/gallery\]/i.test(html)) {
-    html = html.replace(/\[gallery(?:=(\d))?\]([\s\S]*?)\[\/gallery\]/i, (match, cols, content) => {
+  while (/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i.test(html)) {
+    html = html.replace(/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i, (match, cols, content) => {
       const urls = content.trim().split(/[\n,]/).map((u: string) => u.trim()).filter((u: string) => u);
       const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${url}" alt="Gallery" loading="lazy" /></div>`).join("");
       return `<div class="bb-gallery">${images}</div>`;
@@ -316,7 +315,12 @@ export function parseInlineBBCode(text: string): string {
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2");
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2");
-  html = html.replace(/\[quote\]((?:(?!\[quote\])[\s\S])*?)\[\/quote\]/gi, "« $1 »");
+  while (/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]((?:(?!\[quote)[\s\S])*?)\[\/quote\]/i.test(html)) {
+    html = html.replace(/\[quote(?:=([^|\]]+)\|?([a-zA-Z0-9_-]*)(?:\|([^\]]*))?)?\]((?:(?!\[quote)[\s\S])*?)\[\/quote\]/i, (match, userId, postId, userName, content) => {
+      const displayName = userName || userId;
+      return displayName ? `« ${displayName} a écrit: ${content} »` : `« ${content} »`;
+    });
+  }
   html = html.replace(/\[spoiler\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler");
   html = html.replace(/\[spoiler=(.*?)\](.*?)\[\/spoiler\]/gi, "⚠️ Spoiler: $1");
   html = html.replace(/\[accordion=(.*?)\](.*?)\[\/accordion\]/gi, "📋 Accordion: $1");

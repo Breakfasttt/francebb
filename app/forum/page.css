@@ -446,7 +446,7 @@
   transform: scale(0.98);
 }
 
-.bb-spoiler-box.revealed .bb-spoiler-body {
+.bb-spoiler-box.revealed > .bb-spoiler-body {
   opacity: 1;
   filter: blur(0);
   pointer-events: auto;
@@ -473,7 +473,7 @@
   background-size: 8px 8px;
 }
 
-.bb-spoiler-box.revealed .bb-spoiler-mask {
+.bb-spoiler-box.revealed > .bb-spoiler-mask {
   /* Animation Thanos Snap (Dissolution) */
   opacity: 0;
   visibility: hidden;
