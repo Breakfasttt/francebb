@@ -16,6 +16,7 @@ import ReportModal from "@/common/components/ReportModal/ReportModal";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
+import { isModerator as checkIsModerator } from "@/lib/roles";
 import "../page.css";
 
 interface ProfileSidebarProps {
@@ -235,19 +236,21 @@ export default function ProfileSidebar({
             <ClassicButton onClick={() => setShowReportModal(true)} icon={AlertTriangle} fullWidth>
               Signaler
             </ClassicButton>
-            <ClassicButton 
-              onClick={() => setShowBlockModal(true)} 
-              isLoading={isPending}
-              icon={UserX}
-              fullWidth
-              style={{ 
-                background: isBlocked ? "var(--success)" : undefined,
-                color: isBlocked ? "white" : undefined,
-                borderColor: isBlocked ? "var(--success)" : undefined
-              }}
-            >
-              {isBlocked ? "Débloquer" : "Bloquer"}
-            </ClassicButton>
+            {!checkIsModerator(user.role) && (
+              <ClassicButton 
+                onClick={() => setShowBlockModal(true)} 
+                isLoading={isPending}
+                icon={UserX}
+                fullWidth
+                style={{ 
+                  background: isBlocked ? "var(--success)" : undefined,
+                  color: isBlocked ? "white" : undefined,
+                  borderColor: isBlocked ? "var(--success)" : undefined
+                }}
+              >
+                {isBlocked ? "Débloquer" : "Bloquer"}
+              </ClassicButton>
+            )}
             {isModerator && (
               <AdminButton
                 onClick={() => setShowBanModal(true)}
