@@ -4,7 +4,7 @@ import React, { useTransition, useState, useEffect } from "react";
 import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
-import { Mail, Ban, Trash2, CheckCircle2 } from "lucide-react";
+import { Mail, Ban, Trash2, CheckCircle2, Search, Shield, Globe, Trophy } from "lucide-react";
 import toast from "react-hot-toast";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -189,54 +189,66 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   return (
     <PremiumCard className="members-table-card fade-in">
-      <div className="members-filter-bar">
-        <div className="filter-group">
-          <label className="filter-label">Recherche</label>
-          <input 
-            type="text" 
-            placeholder="Nom du coach..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="filter-input"
-          />
+      <div className="members-filter-section">
+        <div className="members-search-wrapper">
+          <div className="search-input-group">
+            <Search size={18} className="search-icon" />
+            <input 
+              type="text" 
+              placeholder="Rechercher un coach par son nom..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="premium-search-input"
+            />
+          </div>
         </div>
 
-        <ClassicSelect 
-          label="Rôle"
-          value={selectedRole}
-          onChange={(e) => setSelectedRole(e.target.value)}
-        >
-          <option value="">Tous les rôles</option>
-          {Object.entries(ROLE_LABELS).map(([val, label]) => (
-            <option key={val} value={val}>{label}</option>
-          ))}
-        </ClassicSelect>
-    
-        <ClassicSelect 
-          label="Région"
-          value={selectedRegion}
-          onChange={(e) => setSelectedRegion(e.target.value)}
-        >
-          <option value="">Toutes les régions</option>
-          {allRegions.map(region => (
-            <option key={region.key} value={region.key}>{region.label}</option>
-          ))}
-        </ClassicSelect>
-    
-        <ClassicSelect 
-          label="Ligue"
-          value={selectedLigue}
-          onChange={(e) => setSelectedLigue(e.target.value)}
-        >
-          <option value="">Toutes les ligues</option>
-          {allLigues.map(ligue => (
-            <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
-          ))}
-        </ClassicSelect>
+        <div className="members-filters-grid">
+          <ClassicSelect 
+            label="Rôle"
+            icon={<Shield size={14} />}
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value)}
+          >
+            <option value="">Tous les rôles</option>
+            {Object.entries(ROLE_LABELS).map(([val, label]) => (
+              <option key={val} value={val}>{label}</option>
+            ))}
+          </ClassicSelect>
+      
+          <ClassicSelect 
+            label="Région"
+            icon={<Globe size={14} />}
+            value={selectedRegion}
+            onChange={(e) => setSelectedRegion(e.target.value)}
+          >
+            <option value="">Toutes les régions</option>
+            {allRegions.map(region => (
+              <option key={region.key} value={region.key}>{region.label}</option>
+            ))}
+          </ClassicSelect>
+      
+          <ClassicSelect 
+            label="Ligue"
+            icon={<Trophy size={14} />}
+            value={selectedLigue}
+            onChange={(e) => setSelectedLigue(e.target.value)}
+          >
+            <option value="">Toutes les ligues</option>
+            {allLigues.map(ligue => (
+              <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
+            ))}
+          </ClassicSelect>
 
-        <ClassicButton onClick={resetFilters}>
-          Réinitialiser
-        </ClassicButton>
+          <div className="filter-actions">
+            <ClassicButton 
+              onClick={resetFilters}
+              className="reset-btn-full"
+            >
+              Réinitialiser
+            </ClassicButton>
+          </div>
+        </div>
       </div>
 
       <div className="members-list-container">
