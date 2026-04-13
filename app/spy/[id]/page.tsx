@@ -77,6 +77,10 @@ export default function SpyProfilePage() {
     }
 
     if (status !== "loading") {
+      if (!session) {
+        router.push(`/auth/login?callback=/spy/${id}`);
+        return;
+      }
       fetchData();
     }
   }, [id, session, status]);

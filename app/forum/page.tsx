@@ -16,15 +16,17 @@ export const dynamic = "force-dynamic";
 
 export default async function ForumPage() {
   const session = await auth();
-  if (!session) redirect("/auth/login?callback=/forum");
-
   const userId = session?.user?.id;
 
   const categories = await prisma.category.findMany({
+    where: !userId ? { allowedRoles: "ALL" } : undefined,
     orderBy: { order: "asc" },
     include: {
       forums: {
-        where: { parentForumId: null },
+        where: { 
+          parentForumId: null,
+          ...( !userId ? { allowedRoles: "ALL" } : {} )
+        },
         orderBy: { order: "asc" },
         include: {
           _count: {
@@ -44,6 +46,7 @@ export default async function ForumPage() {
             }
           },
           subForums: {
+            where: !userId ? { allowedRoles: "ALL" } : {},
             include: {
               topics: {
                 include: {
@@ -73,7 +76,7 @@ export default async function ForumPage() {
           <DeletionToast />
           {categories.map((category) => {
             // Check if category has any unread topics (including sub-forums)
-            const categoryHasNew = category.forums.some(forum => {
+            const categoryHasNew = userId ? category.forums.some(forum => {
               const directUnread = forum.topics.some(topic => {
                 const view = topic.topicViews[0];
                 return !view || topic.updatedAt > view.lastViewedAt;
@@ -85,13 +88,14 @@ export default async function ForumPage() {
                 })
               );
               return directUnread || subUnread;
-            });
+            }) : false;
 
             return (
               <ForumCategory 
                 key={category.id} 
                 category={category} 
                 categoryHasNew={categoryHasNew} 
+                currentUserId={userId}
               />
             );
           })}

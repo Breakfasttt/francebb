@@ -322,7 +322,7 @@ export default function TopicSidebar({
               </div>
             )}
 
-            {(!(isLocked || isForumLocked) || isModerator) && (
+            {currentUserId && (!(isLocked || isForumLocked) || isModerator) && (
               <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={MessageSquare}>
                 Répondre
               </CTAButton>

@@ -136,6 +136,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   if (!topic) notFound();
 
+  // Sécurité : Accès restreint si non "ALL" pour les invités
+  if (!currentUserId && topic.forum.allowedRoles !== "ALL") {
+    redirect("/auth/login?callback=/forum/topic/" + id);
+  }
+
   // Si c'est un tournoi et qu'on n'est pas sur la page 1, on récupère le premier message
   let firstPostForTournament = null;
   if (topic.tournament && currentPage > 1) {
@@ -264,9 +269,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             ))}
           </div>
 
-          {(!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
+          {currentUserId && (!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
             <QuickReply topicId={id} />
-          ) : (
+          ) : !currentUserId ? null : (
             <div id="quick-reply-area" style={{
               padding: '3rem 2rem',
               textAlign: 'center',

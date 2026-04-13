@@ -139,14 +139,16 @@ export default function PostActions({
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: '0.4rem' }}>
           
           {/* Citer */}
-          <div className="tooltip-wrapper">
-            <ClassicButton 
-              onClick={handleQuote}
-              icon={MessageSquare}
-              size="sm"
-            />
-            <span className="tooltip-text">Citer</span>
-          </div>
+          {currentUserId && (
+            <div className="tooltip-wrapper">
+              <ClassicButton 
+                onClick={handleQuote}
+                icon={MessageSquare}
+                size="sm"
+              />
+              <span className="tooltip-text">Citer</span>
+            </div>
+          )}
 
           {/* Modifier */}
           {canEdit && (

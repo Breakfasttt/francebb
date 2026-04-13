@@ -29,6 +29,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     include: {
       category: true,
       subForums: {
+        where: !userId ? { allowedRoles: "ALL" } : {},
         orderBy: { order: "asc" },
         take: MAX_SUBFORUMS,
         include: {
@@ -53,6 +54,11 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   });
 
   if (!forum) notFound();
+
+  // Sécurité : Accès restreint si non "ALL" pour les invités
+  if (!userId && forum.allowedRoles !== "ALL") {
+    redirect("/auth/login?callback=/forum/" + id);
+  }
 
   // Count total topics for pagination
   const totalTopics = await prisma.topic.count({ where: { forumId: id } });
@@ -82,10 +88,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     }
   });
 
-  const forumHasNew = topics.some(topic => {
+  const forumHasNew = userId ? topics.some(topic => {
     const view = topic.topicViews[0];
     return !view || topic.updatedAt > view.lastViewedAt;
-  });
+  }) : false;
 
   const breadcrumbs = [];
   if (forum.parentForum) {
@@ -122,10 +128,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px' }}>
             {forum.subForums.map((sub) => {
               const lastTopic = sub.topics[0];
-              const subHasNew = sub.topics.some(topic => {
+              const subHasNew = userId ? sub.topics.some(topic => {
                 const view = topic.topicViews[0];
                 return !view || topic.updatedAt > view.lastViewedAt;
-              });
+              }) : false;
 
               return (
                 <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>
@@ -194,7 +200,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
         {topics.length > 0 ? topics.map((topic) => {
           const topicView = topic.topicViews[0];
-          const topicHasNew = !topicView || topic.updatedAt > topicView.lastViewedAt;
+          const topicHasNew = userId ? (!topicView || topic.updatedAt > topicView.lastViewedAt) : false;
 
           return (
             <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`}>

@@ -82,7 +82,7 @@ export default async function ForumSidebar({
           )}
 
           {/* Nouveau Sujet / Tournoi */}
-          {forumId && (!isLocked || canCreateForum) && (
+          {session && forumId && (!isLocked || canCreateForum) && (
             <PremiumCard className="sidebar-widget nav-widget">
               {isTournamentForum && (
                 <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
@@ -119,7 +119,7 @@ export default async function ForumSidebar({
           </PremiumCard>
 
           {/* Posts Non Lus */}
-          {!forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
+          {session && !forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
             <PremiumCard className="sidebar-widget unread-widget" noOverflow>
               <div className="sidebar-widget-group">
                 <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>

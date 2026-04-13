@@ -8,9 +8,10 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 interface CategoryProps {
   category: any;
   categoryHasNew: boolean;
+  currentUserId?: string;
 }
 
-export default function ForumCategory({ category, categoryHasNew }: CategoryProps) {
+export default function ForumCategory({ category, categoryHasNew, currentUserId }: CategoryProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -50,11 +51,11 @@ export default function ForumCategory({ category, categoryHasNew }: CategoryProp
         <div className="forums-list animate-fade-in">
           {category.forums.map((forum: any) => {
             const lastTopic = forum.topics[0];
-            const directUnread = forum.topics.some((topic: any) => {
+            const directUnread = currentUserId && forum.topics.some((topic: any) => {
               const view = topic.topicViews[0];
               return !view || topic.updatedAt > view.lastViewedAt;
             });
-            const subUnread = forum.subForums.some((sub: any) =>
+            const subUnread = currentUserId && forum.subForums.some((sub: any) =>
               sub.topics.some((topic: any) => {
                 const view = topic.topicViews[0];
                 return !view || topic.updatedAt > view.lastViewedAt;

@@ -17,6 +17,9 @@ export const dynamic = "force-dynamic";
 const POSTS_PER_PAGE = 20;
 
 export default async function UnreadPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const session = await auth();
+  if (!session) redirect("/auth/login?callback=/forum/unread");
+
   const { page: pageStr } = await searchParams;
   const currentPage = Math.max(1, parseInt(pageStr || "1", 10));
   const { topics: unreadTopics, total } = await getUnreadTopics(currentPage, POSTS_PER_PAGE);

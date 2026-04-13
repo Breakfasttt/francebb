@@ -147,22 +147,24 @@ const PostItem: React.FC<PostItemProps> = ({
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
-            <BadgeButton 
-              href={`/spy/${post.author.id}`}
-              icon={User}
-            >
-              PROFIL
-            </BadgeButton>
-            {post.author.id !== currentUserId && (
+          {currentUserId && (
+            <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
               <BadgeButton 
-                href={`/profile?tab=pm&recipientId=${post.author.id}`}
-                icon={Mail}
+                href={`/spy/${post.author.id}`}
+                icon={User}
               >
-                MP
+                PROFIL
               </BadgeButton>
-            )}
-          </div>
+              {post.author.id !== currentUserId && (
+                <BadgeButton 
+                  href={`/profile?tab=pm&recipientId=${post.author.id}`}
+                  icon={Mail}
+                >
+                  MP
+                </BadgeButton>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
