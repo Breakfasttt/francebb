@@ -13,6 +13,7 @@ import { useTheme } from "next-themes";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -322,9 +323,9 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         </div>
 
         <div className="form-actions-edit">
-          <button type="submit" className="btn-save" disabled={isPending}>
-            {isPending ? <Loader2 size={18} className="animate-spin" /> : "Sauvegarder le profil"}
-          </button>
+          <CTAButton type="submit" isLoading={isPending} padding="1rem 2.5rem">
+            Sauvegarder le profil
+          </CTAButton>
         </div>
       </form>
 
@@ -478,12 +479,6 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .theme-info { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.85rem; }
 
         .form-actions-edit { display: flex; justify-content: flex-end; margin-top: 1rem; }
-        .btn-save {
-          background: var(--primary); color: var(--header-foreground); border: none;
-          padding: 1rem 2.5rem; border-radius: 8px; font-size: 0.9rem;
-          font-weight: 700; cursor: pointer; transition: all 0.2s;
-        }
-        .btn-save:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(194, 29, 29, 0.3); }
 
         .animate-spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
