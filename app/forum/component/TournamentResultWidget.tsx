@@ -5,6 +5,10 @@ import { Trophy, ChevronLeft, ChevronRight, Edit2, Swords, User as UserIcon, Che
 import Link from 'next/link';
 import './TournamentResultWidget.css';
 import './TournamentResultWidget-mobile.css';
+import AdminButton from '@/common/components/Button/AdminButton';
+import CTAButton from '@/common/components/Button/CTAButton';
+import ClassicButton from '@/common/components/Button/ClassicButton';
+import ToggleButton from '@/common/components/Button/ToggleButton';
 
 
 interface TournamentMatch {
@@ -82,13 +86,19 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
         </div>
         <div className="header-right">
           {canEdit && hasResults && (
-            <Link href={`/forum/tournament/${tournamentId}/results`} className="edit-results-btn" onClick={(e) => e.stopPropagation()}>
-              <Edit2 size={14} /> Modifier
-            </Link>
+            <div onClick={(e) => e.stopPropagation()}>
+              <AdminButton 
+                size="sm" 
+                icon={<Edit2 size={14} />} 
+                onClick={() => window.location.href = `/forum/tournament/${tournamentId}/results`}
+              >
+                Modifier
+              </AdminButton>
+            </div>
           )}
-          <button className="toggle-expand-btn">
+          <div className="toggle-expand-btn" style={{ opacity: 0.6 }}>
             {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-          </button>
+          </div>
         </div>
       </div>
 
@@ -99,21 +109,37 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                <Trophy size={40} className="empty-icon-small" />
                <p className="empty-desc-small">Le tournoi est terminé ! Les résultats n&apos;ont pas encore été publiés.</p>
                {canEdit && (
-                 <Link href={`/forum/tournament/${tournamentId}/results`} className="publish-results-btn-small">
-                   <Edit2 size={14} /> Publier les résultats
-                 </Link>
+                 <CTAButton 
+                   size="sm" 
+                   onClick={() => window.location.href = `/forum/tournament/${tournamentId}/results`}
+                   icon={<Edit2 size={14} />}
+                 >
+                   Publier les résultats
+                 </CTAButton>
                )}
             </div>
           ) : (
             <>
               {hasRounds && (
-                <div className="widget-view-toggle">
-                  <button className={`toggle-btn ${activeTab === 'ranking' ? 'active' : ''}`} onClick={() => setActiveTab('ranking')}>
-                    <Trophy size={14} /> Classement
-                  </button>
-                  <button className={`toggle-btn ${activeTab === 'matches' ? 'active' : ''}`} onClick={() => setActiveTab('matches')}>
-                    <Swords size={14} /> Matchs
-                  </button>
+                <div className="widget-view-toggle" style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', background: 'rgba(0,0,0,0.1)', padding: '4px', borderRadius: '12px' }}>
+                  <ToggleButton 
+                    active={activeTab === 'ranking'} 
+                    onClick={() => setActiveTab('ranking')}
+                    icon={<Trophy size={14} />}
+                    size="sm"
+                    fullWidth
+                  >
+                    Classement
+                  </ToggleButton>
+                  <ToggleButton 
+                    active={activeTab === 'matches'} 
+                    onClick={() => setActiveTab('matches')}
+                    icon={<Swords size={14} />}
+                    size="sm"
+                    fullWidth
+                  >
+                    Matchs
+                  </ToggleButton>
                 </div>
               )}
 
@@ -167,16 +193,12 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                   {currentRound && (
                     <div className="matches-toggle-inner">
                       <div className="round-navigation" style={{ marginTop: '0' }}>
-                        <button className="round-nav-btn" onClick={handlePrevRound} disabled={rounds.length <= 1}>
-                          <ChevronLeft size={18} />
-                        </button>
+                        <ClassicButton size="sm" onClick={handlePrevRound} disabled={rounds.length <= 1} icon={<ChevronLeft size={18} />} />
                         <div className="round-info">
                           <span className="current-round-label">Ronde {currentRound.roundNumber}</span>
                           <span className="round-matches-count">{currentRound.matches.length} matchs</span>
                         </div>
-                        <button className="round-nav-btn" onClick={handleNextRound} disabled={rounds.length <= 1}>
-                          <ChevronRight size={18} />
-                        </button>
+                        <ClassicButton size="sm" onClick={handleNextRound} disabled={rounds.length <= 1} icon={<ChevronRight size={18} />} />
                       </div>
 
                       <div className="matches-linear-list">

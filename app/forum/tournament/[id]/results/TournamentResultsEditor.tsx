@@ -16,6 +16,10 @@ import {
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
+import CTAButton from '@/common/components/Button/CTAButton';
+import ClassicButton from '@/common/components/Button/ClassicButton';
+import DangerButton from '@/common/components/Button/DangerButton';
+import ToggleButton from '@/common/components/Button/ToggleButton';
 import { saveTournamentResults, parseNafReport } from '@/app/tournaments/actions';
 import { 
   DndContext, 
@@ -142,7 +146,7 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
         />
       </td>
       <td>
-        <button className="delete-row-btn" onClick={() => removeResult(idx)}><Trash2 size={14} /></button>
+        <DangerButton size="sm" onClick={() => removeResult(idx)} icon={<Trash2 size={14} />} title="Supprimer" />
       </td>
     </tr>
   );
@@ -249,12 +253,16 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
   const autoSortResults = (data: any[]) => {
     return [...data].sort((a, b) => {
-      if ((parseFloat(b.points) || 0) !== (parseFloat(a.points) || 0)) return (parseFloat(b.points) || 0) - (parseFloat(a.points) || 0);
+      const pA = parseFloat(a.points) || 0;
+      const pB = parseFloat(b.points) || 0;
+      if (pB !== pA) return pB - pA;
       if ((parseInt(b.wins) || 0) !== (parseInt(a.wins) || 0)) return (parseInt(b.wins) || 0) - (parseInt(a.wins) || 0);
       if ((parseInt(a.losses) || 0) !== (parseInt(b.losses) || 0)) return (parseInt(a.losses) || 0) - (parseInt(b.losses) || 0);
       return (parseInt(b.casualties) || 0) - (parseInt(a.casualties) || 0);
     }).map((r, i) => ({ ...r, rank: i + 1 }));
   };
+
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -411,14 +419,14 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
   return (
     <div className="results-editor">
-      <div className="editor-top-actions" style={{ justifyContent: 'flex-start', gap: '1rem' }}>
-        <button className="save-btn" onClick={handleSave} disabled={isSaving}>
-          <Save size={16} /> {isSaving ? "Publication..." : "Publier les résultats"}
-        </button>
-        <label className="import-btn">
-          <Upload size={16} /> Rapport NAF XML
-          <input type="file" onChange={handleFileUpload} hidden disabled={isParsing} />
-        </label>
+      <div className="editor-top-actions" style={{ justifyContent: 'flex-start', gap: '1rem', background: 'none', border: 'none', padding: 0 }}>
+        <CTAButton onClick={handleSave} disabled={isSaving} icon={<Save size={16} />}>
+          {isSaving ? "Publication..." : "Publier les résultats"}
+        </CTAButton>
+        <ClassicButton onClick={() => fileInputRef.current?.click()} disabled={isParsing} icon={<Upload size={16} />}>
+          {isParsing ? "Import..." : "Rapport NAF XML"}
+        </ClassicButton>
+        <input type="file" ref={fileInputRef} onChange={handleFileUpload} hidden />
       </div>
 
       <div className="naf-disclaimer">
@@ -430,13 +438,21 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         </div>
       </div>
 
-      <div className="editor-tabs">
-        <button className={`tab-btn ${activeTab === 'ranking' ? 'active' : ''}`} onClick={() => setActiveTab('ranking')}>
+      <div className="editor-tabs" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: 'none' }}>
+        <ToggleButton 
+          onClick={() => setActiveTab('ranking')} 
+          active={activeTab === 'ranking'}
+          style={{ width: '200px', borderRadius: '12px' }}
+        >
           <Trophy size={16} /> Classement Global
-        </button>
-        <button className={`tab-btn ${activeTab === 'matches' ? 'active' : ''}`} onClick={() => setActiveTab('matches')}>
+        </ToggleButton>
+        <ToggleButton 
+          onClick={() => setActiveTab('matches')} 
+          active={activeTab === 'matches'}
+          style={{ width: '200px', borderRadius: '12px' }}
+        >
           <Swords size={16} /> Rondes & Matchs
-        </button>
+        </ToggleButton>
       </div>
 
       <PremiumCard className="editor-content-card">
@@ -444,13 +460,13 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
           <div className="ranking-section">
             <div className="section-header">
               <h3>Classement du tournoi</h3>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button className="add-item-btn secondary" onClick={() => setResults(autoSortResults(results))}>
-                   <Trophy size={14} /> Trier par rang
-                </button>
-                <button className="add-item-btn" onClick={handleAddCoach}>
-                  <Plus size={14} /> Ajouter un coach
-                </button>
+              <div style={{ display: 'flex', gap: '0.75rem' }}>
+                <ClassicButton size="sm" onClick={() => setResults(autoSortResults(results))} icon={<Trophy size={14} />}>
+                   Trier par rang
+                </ClassicButton>
+                <CTAButton size="sm" onClick={handleAddCoach} icon={<Plus size={14} />}>
+                  Ajouter un coach
+                </CTAButton>
               </div>
             </div>
             
@@ -503,9 +519,9 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
           <div className="rounds-section">
             <div className="section-header">
               <h3>Détail des matchs par ronde</h3>
-              <button className="add-item-btn" onClick={addRound}>
-                <Plus size={14} /> Ajouter une ronde
-              </button>
+              <CTAButton size="sm" onClick={addRound} icon={<Plus size={14} />}>
+                Ajouter une ronde
+              </CTAButton>
             </div>
 
             {rounds.map((round: any, rIdx: number) => (
@@ -513,16 +529,14 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                 <div className="round-header">
                   <h4>Ronde {round.roundNumber}</h4>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button className="mini-btn-action" onClick={() => addMatch(rIdx)}>
-                      <Plus size={12} /> Nouveau Match
-                    </button>
-                    <button className="mini-btn-action danger" onClick={() => {
+                    <ClassicButton size="sm" onClick={() => addMatch(rIdx)} icon={<Plus size={12} />}>
+                      Nouveau Match
+                    </ClassicButton>
+                    <DangerButton size="sm" onClick={() => {
                       const updated = [...rounds];
                       updated.splice(rIdx, 1);
                       setRounds(updated);
-                    }}>
-                      <Trash2 size={12} />
-                    </button>
+                    }} icon={<Trash2 size={12} />} />
                   </div>
                 </div>
 
@@ -564,9 +578,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                         </datalist>
                       </div>
 
-                      <button className="delete-match-btn" onClick={() => removeMatch(rIdx, mIdx)}>
-                        <Trash2 size={12} />
-                      </button>
+                      <DangerButton size="sm" onClick={() => removeMatch(rIdx, mIdx)} icon={<Trash2 size={12} />} title="Supprimer le match" />
                     </div>
                   ))}
                   {round.matches.length === 0 && <p className="empty-hint">Aucun match dans cette ronde.</p>}

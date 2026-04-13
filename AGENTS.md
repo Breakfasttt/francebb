@@ -67,6 +67,7 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
     - `DangerButton` (Actions destructives, rouge)
     - `AdminButton` (Modération et Administration, violet)
     - `BadgeButton` (Liens discrets, profil, MP dans les sidebars)
+    - `ToggleButton` (États actifs et onglets, change de style quand `active={true}`)
     - `ExplainButton` (Aide et explications, couleur d'accentuation or/jaune)
 - **ARCHITECTURE** : Pour les Server Components, passer l'icône sous forme d'élément JSX : `icon={<Icon size={18} />}`.
 

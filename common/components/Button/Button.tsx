@@ -10,11 +10,12 @@ import { LucideIcon } from "lucide-react";
  * Gère le rendu conditionnel (bouton ou lien), les états de chargement et les icônes.
  */
 
-export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge" | "explain";
+export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge" | "explain" | "toggle";
 
 interface ButtonBaseProps {
   children: React.ReactNode;
   variant?: ButtonVariant;
+  active?: boolean;
   icon?: React.ElementType | React.ReactNode;
   iconPosition?: "left" | "right";
   isLoading?: boolean;
@@ -51,6 +52,7 @@ export default function Button({
   className = "",
   disabled = false,
   size = "md",
+  active = false,
   ...props
 }: ButtonProps) {
   
@@ -60,6 +62,7 @@ export default function Button({
     `size-${size}`,
     fullWidth ? "full-width" : "",
     isLoading ? "loading" : "",
+    active ? "active" : "",
     !children ? "icon-only" : "",
     className
   ].filter(Boolean).join(" ");

@@ -199,6 +199,31 @@
   box-shadow: 0 4px 12px var(--accent-transparent);
 }
 
+/* Variant: Toggle */
+.bb-button.variant-toggle {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bb-button.variant-toggle:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--foreground);
+}
+
+.bb-button.variant-toggle.active {
+  background: var(--accent);
+  color: #111;
+  border-color: var(--accent);
+  box-shadow: 0 4px 15px var(--accent-transparent);
+}
+
+.bb-button.variant-toggle.active:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
 
 /* Loading Spinner */
 .btn-spinner {

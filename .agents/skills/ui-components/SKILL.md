@@ -54,6 +54,7 @@ Le projet utilise un système de boutons typés pour garantir la cohérence des 
 - `DangerButton` : Bouton rouge. **Réservé exclusivement aux actions destructives** (Supprimer, Bannir, Réinitialiser).
 - `AdminButton` : Bouton violet. **Réservé aux actions de modération et d'administration** (Verrouiller, Déplacer, Épingler).
 - `BadgeButton` : Bouton miniature compact. Utilisé pour les liens discrets dans les interfaces denses (Profil, MP dans les sidebars).
+- `ToggleButton` : Utilisé pour les bascules d'état et les onglets (tabs). Possède une prop `active={boolean}` pour changer radicalement son aspect.
 - `ExplainButton` : Bouton d'aide et d'explication. Utilisé pour les textes cliquables déclenchant des modales d'aide ou des explications. Couleur : Or/Accentuation.
 
 **Règles d'utilisation** :
