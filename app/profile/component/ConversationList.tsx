@@ -10,6 +10,8 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface ConversationListProps {
   onSelectConversation: (id: string) => void;
@@ -121,13 +123,14 @@ export default function ConversationList({ onSelectConversation, initialRecipien
                     </span>
                   )}
                 </div>
-                <button 
+                <CTAButton 
                   disabled={user.isFull}
                   onClick={() => handleStartConversation(user.id)}
-                  className="start-btn"
+                  size="sm"
+                  icon={<Plus size={14} />}
                 >
-                  <Plus size={14} /> {user.isFull ? "Pleine" : "Discuter"}
-                </button>
+                  {user.isFull ? "Pleine" : "Discuter"}
+                </CTAButton>
               </div>
             ))}
           </PremiumCard>

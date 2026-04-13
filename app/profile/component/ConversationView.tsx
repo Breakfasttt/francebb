@@ -15,6 +15,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface ConversationViewProps {
   conversationId: string;
@@ -94,9 +99,9 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
   return (
     <div className="conversation-view-container fade-in">
       <header className="conv-view-header">
-        <button className="back-btn" onClick={onBack}>
-          <Inbox size={18} /> Boîte de réception
-        </button>
+        <ClassicButton onClick={onBack} icon={<Inbox size={18} />}>
+          Boîte de réception
+        </ClassicButton>
         <div className="recipient-display">
           {recipient && (
             <>
@@ -120,9 +125,9 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
             </>
           )}
         </div>
-        <button className="btn-primary delete-btn-new" onClick={() => setIsDeleteModalOpen(true)}>
-          <Archive size={16} /> <span>Archiver la conversation</span>
-        </button>
+        <DangerButton onClick={() => setIsDeleteModalOpen(true)} icon={<Archive size={16} />}>
+           Archiver la conversation
+        </DangerButton>
       </header>
 
       <ConfirmModal
@@ -165,9 +170,14 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           />
           <div className="reply-actions">
             <p className="hint">Support BBCode activé</p>
-            <button type="submit" disabled={sending || !content.trim()} className="btn-primary">
-              <Send size={16} /> {sending ? "Envoi..." : "Répondre"}
-            </button>
+            <CTAButton 
+              type="submit" 
+              disabled={sending || !content.trim()}
+              isLoading={sending}
+              icon={<Send size={16} />}
+            >
+              Répondre
+            </CTAButton>
           </div>
         </form>
       </PremiumCard>
@@ -239,35 +249,6 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           justify-content: space-between;
           align-items: center;
           padding-bottom: 0.5rem;
-        }
-        .back-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--glass-border);
-          color: #aaa;
-          cursor: pointer;
-          font-weight: 700;
-          transition: all 0.2s;
-          padding: 0.6rem 1.2rem;
-          border-radius: 8px;
-          height: auto;
-          font-size: 0.85rem;
-        }
-        .back-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: #fff;
-          border-color: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
-        }
-        .delete-btn-new {
-          padding: 0.6rem 1.2rem;
-          height: auto;
-          font-size: 0.85rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
         }
         .recipient-display {
           display: flex;
