@@ -1330,6 +1330,9 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     ligueCustom: formData.get("ligueCustom") as string || null,
   };
 
+  const isTeamNew = formData.get("isTeam") === "on";
+  const hasFormatChanged = isTeamNew !== tournament.isTeam;
+
   // Seul l'organisateur (ou modérateur) peut changer les commissaires
   if (isOrganizer || isMod) {
     const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
@@ -1338,20 +1341,29 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     };
   }
 
-  await prisma.$transaction([
-    prisma.tournament.update({
+  await prisma.$transaction(async (tx) => {
+    // Si le format a changé, on vide les inscriptions pour éviter les incohérences
+    if (hasFormatChanged) {
+      await tx.tournamentRegistration.deleteMany({ where: { tournamentId } });
+      await tx.tournamentTeamMember.deleteMany({ where: { team: { tournamentId } } });
+      await tx.tournamentTeam.deleteMany({ where: { tournamentId } });
+    }
+
+    await tx.tournament.update({
       where: { id: tournamentId },
       data: updateData
-    }),
-    prisma.topic.update({
+    });
+
+    await tx.topic.update({
       where: { id: topicId },
       data: { title }
-    }),
-    prisma.post.update({
+    });
+
+    await tx.post.update({
       where: { id: firstPostId },
       data: { content }
-    })
-  ]);
+    });
+  });
 
   revalidatePath(`/forum/topic/${topicId}`);
   // On récupère le forumId du topic si possible pour revalider la liste
