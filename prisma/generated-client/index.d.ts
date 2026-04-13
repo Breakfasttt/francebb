@@ -7645,6 +7645,10 @@ export namespace Prisma {
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
+    notifPm: boolean | null
+    notifMention: boolean | null
+    notifFollowedTopic: boolean | null
+    notifNewsletter: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -7670,6 +7674,10 @@ export namespace Prisma {
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
+    notifPm: boolean | null
+    notifMention: boolean | null
+    notifFollowedTopic: boolean | null
+    notifNewsletter: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -7695,6 +7703,10 @@ export namespace Prisma {
     legacyId: number
     forumactifName: number
     hasFinishedOnboarding: number
+    notifPm: number
+    notifMention: number
+    notifFollowedTopic: number
+    notifNewsletter: number
     _all: number
   }
 
@@ -7736,6 +7748,10 @@ export namespace Prisma {
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
+    notifPm?: true
+    notifMention?: true
+    notifFollowedTopic?: true
+    notifNewsletter?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -7761,6 +7777,10 @@ export namespace Prisma {
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
+    notifPm?: true
+    notifMention?: true
+    notifFollowedTopic?: true
+    notifNewsletter?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -7786,6 +7806,10 @@ export namespace Prisma {
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
+    notifPm?: true
+    notifMention?: true
+    notifFollowedTopic?: true
+    notifNewsletter?: true
     _all?: true
   }
 
@@ -7898,6 +7922,10 @@ export namespace Prisma {
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean
+    notifPm: boolean
+    notifMention: boolean
+    notifFollowedTopic: boolean
+    notifNewsletter: boolean
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -7942,6 +7970,10 @@ export namespace Prisma {
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     articles?: boolean | User$articlesArgs<ExtArgs>
@@ -8007,6 +8039,10 @@ export namespace Prisma {
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8033,6 +8069,10 @@ export namespace Prisma {
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8059,9 +8099,13 @@ export namespace Prisma {
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8177,6 +8221,10 @@ export namespace Prisma {
       legacyId: string | null
       forumactifName: string | null
       hasFinishedOnboarding: boolean
+      notifPm: boolean
+      notifMention: boolean
+      notifFollowedTopic: boolean
+      notifNewsletter: boolean
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -8661,6 +8709,10 @@ export namespace Prisma {
     readonly legacyId: FieldRef<"User", 'String'>
     readonly forumactifName: FieldRef<"User", 'String'>
     readonly hasFinishedOnboarding: FieldRef<"User", 'Boolean'>
+    readonly notifPm: FieldRef<"User", 'Boolean'>
+    readonly notifMention: FieldRef<"User", 'Boolean'>
+    readonly notifFollowedTopic: FieldRef<"User", 'Boolean'>
+    readonly notifNewsletter: FieldRef<"User", 'Boolean'>
   }
     
 
@@ -52292,7 +52344,11 @@ export namespace Prisma {
     quizAttemptsCount: 'quizAttemptsCount',
     legacyId: 'legacyId',
     forumactifName: 'forumactifName',
-    hasFinishedOnboarding: 'hasFinishedOnboarding'
+    hasFinishedOnboarding: 'hasFinishedOnboarding',
+    notifPm: 'notifPm',
+    notifMention: 'notifMention',
+    notifFollowedTopic: 'notifFollowedTopic',
+    notifNewsletter: 'notifNewsletter'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -53062,6 +53118,10 @@ export namespace Prisma {
     legacyId?: StringNullableFilter<"User"> | string | null
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
+    notifPm?: BoolFilter<"User"> | boolean
+    notifMention?: BoolFilter<"User"> | boolean
+    notifFollowedTopic?: BoolFilter<"User"> | boolean
+    notifNewsletter?: BoolFilter<"User"> | boolean
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -53126,6 +53186,10 @@ export namespace Prisma {
     legacyId?: SortOrderInput | SortOrder
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
+    notifPm?: SortOrder
+    notifMention?: SortOrder
+    notifFollowedTopic?: SortOrder
+    notifNewsletter?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     moderatedArticles?: ArticleOrderByRelationAggregateInput
     articles?: ArticleOrderByRelationAggregateInput
@@ -53193,6 +53257,10 @@ export namespace Prisma {
     quizAttemptsCount?: IntFilter<"User"> | number
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
+    notifPm?: BoolFilter<"User"> | boolean
+    notifMention?: BoolFilter<"User"> | boolean
+    notifFollowedTopic?: BoolFilter<"User"> | boolean
+    notifNewsletter?: BoolFilter<"User"> | boolean
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -53257,6 +53325,10 @@ export namespace Prisma {
     legacyId?: SortOrderInput | SortOrder
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
+    notifPm?: SortOrder
+    notifMention?: SortOrder
+    notifFollowedTopic?: SortOrder
+    notifNewsletter?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -53290,6 +53362,10 @@ export namespace Prisma {
     legacyId?: StringNullableWithAggregatesFilter<"User"> | string | null
     forumactifName?: StringNullableWithAggregatesFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolWithAggregatesFilter<"User"> | boolean
+    notifPm?: BoolWithAggregatesFilter<"User"> | boolean
+    notifMention?: BoolWithAggregatesFilter<"User"> | boolean
+    notifFollowedTopic?: BoolWithAggregatesFilter<"User"> | boolean
+    notifNewsletter?: BoolWithAggregatesFilter<"User"> | boolean
   }
 
   export type BlockWhereInput = {
@@ -56255,6 +56331,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -56319,6 +56399,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -56381,6 +56465,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -56445,6 +56533,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -56508,6 +56600,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -56532,6 +56628,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -56557,6 +56657,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type BlockCreateInput = {
@@ -60034,6 +60138,10 @@ export namespace Prisma {
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
+    notifPm?: SortOrder
+    notifMention?: SortOrder
+    notifFollowedTopic?: SortOrder
+    notifNewsletter?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -60066,6 +60174,10 @@ export namespace Prisma {
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
+    notifPm?: SortOrder
+    notifMention?: SortOrder
+    notifFollowedTopic?: SortOrder
+    notifNewsletter?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -60091,6 +60203,10 @@ export namespace Prisma {
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
+    notifPm?: SortOrder
+    notifMention?: SortOrder
+    notifFollowedTopic?: SortOrder
+    notifNewsletter?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -65719,6 +65835,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -65782,6 +65902,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -65859,6 +65983,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -65922,6 +66050,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -65983,6 +66115,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -66046,6 +66182,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -66123,6 +66263,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -66186,6 +66330,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -68681,6 +68829,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68744,6 +68896,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68810,6 +68966,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -68873,6 +69033,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -68950,6 +69114,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69013,6 +69181,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69085,6 +69257,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69148,6 +69324,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -69295,6 +69475,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69358,6 +69542,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69567,6 +69755,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -69630,6 +69822,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -69805,6 +70001,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -69868,6 +70068,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -70038,6 +70242,10 @@ export namespace Prisma {
     legacyId?: StringNullableFilter<"User"> | string | null
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
+    notifPm?: BoolFilter<"User"> | boolean
+    notifMention?: BoolFilter<"User"> | boolean
+    notifFollowedTopic?: BoolFilter<"User"> | boolean
+    notifNewsletter?: BoolFilter<"User"> | boolean
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -70517,6 +70725,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -70580,6 +70792,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -70861,6 +71077,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -70924,6 +71144,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71081,6 +71305,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71144,6 +71372,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71210,6 +71442,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71273,6 +71509,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71428,6 +71668,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71491,6 +71735,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71563,6 +71811,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -71626,6 +71878,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -71748,6 +72004,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71811,6 +72071,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -71877,6 +72141,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -71940,6 +72208,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72042,6 +72314,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72105,6 +72381,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72177,6 +72457,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72240,6 +72524,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72317,6 +72605,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72380,6 +72672,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72482,6 +72778,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72545,6 +72845,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72676,6 +72980,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72739,6 +73047,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72861,6 +73173,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72924,6 +73240,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72985,6 +73305,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73048,6 +73372,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -73114,6 +73442,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73177,6 +73509,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -73289,6 +73625,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73352,6 +73692,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73424,6 +73768,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73487,6 +73835,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73589,6 +73941,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73652,6 +74008,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -73764,6 +74124,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -73827,6 +74191,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -73929,6 +74297,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -73991,6 +74363,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74117,6 +74493,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -74180,6 +74560,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74302,6 +74686,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74365,6 +74753,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74426,6 +74818,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -74489,6 +74885,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74566,6 +74966,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -74629,6 +75033,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -74690,6 +75098,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -74753,6 +75165,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -74941,6 +75357,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75004,6 +75424,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75182,6 +75606,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75245,6 +75673,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -75452,6 +75884,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75515,6 +75951,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75709,6 +76149,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75772,6 +76216,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -75876,6 +76324,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75939,6 +76391,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -76033,6 +76489,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76096,6 +76556,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76284,6 +76748,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -76347,6 +76815,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -76572,6 +77044,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -76635,6 +77111,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -76701,6 +77181,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -76764,6 +77248,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -76932,6 +77420,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -76995,6 +77487,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -77067,6 +77563,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -77130,6 +77630,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -77284,6 +77788,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77347,6 +77855,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77461,6 +77973,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -77524,6 +78040,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -77669,6 +78189,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77732,6 +78256,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77913,6 +78441,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77976,6 +78508,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78042,6 +78578,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78105,6 +78645,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78198,6 +78742,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78261,6 +78809,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78370,6 +78922,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78433,6 +78989,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78499,6 +79059,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78562,6 +79126,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78639,6 +79207,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78702,6 +79274,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78774,6 +79350,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78837,6 +79417,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78898,6 +79482,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78961,6 +79549,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79038,6 +79630,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79101,6 +79697,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79162,6 +79762,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79225,6 +79829,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79317,6 +79925,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79380,6 +79992,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79512,6 +80128,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79575,6 +80195,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79763,6 +80387,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79826,6 +80454,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80287,6 +80919,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80350,6 +80986,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80416,6 +81056,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80479,6 +81123,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80573,6 +81221,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -80636,6 +81288,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80708,6 +81364,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -80771,6 +81431,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80855,6 +81519,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80918,6 +81586,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80995,6 +81667,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81058,6 +81734,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -81119,6 +81799,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81182,6 +81866,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -81259,6 +81947,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81322,6 +82014,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -81383,6 +82079,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81446,6 +82146,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -81523,6 +82227,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81586,6 +82294,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -83720,6 +84432,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -83783,6 +84499,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -83845,6 +84565,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -84223,6 +84947,10 @@ export namespace Prisma {
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
   }
 
   export type UserUpdateWithoutRoleConfigInput = {
@@ -84247,6 +84975,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -84309,6 +85041,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -84371,6 +85107,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type TournamentTeamMemberCreateManyTeamInput = {
@@ -84763,6 +85503,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -84826,6 +85570,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -84888,6 +85636,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUpdateWithoutLiguesInput = {
@@ -84912,6 +85664,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -84975,6 +85731,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -85037,6 +85797,10 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ResourceTagUpdateWithoutResourcesInput = {

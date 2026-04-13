@@ -161,7 +161,11 @@ exports.Prisma.UserScalarFieldEnum = {
   quizAttemptsCount: 'quizAttemptsCount',
   legacyId: 'legacyId',
   forumactifName: 'forumactifName',
-  hasFinishedOnboarding: 'hasFinishedOnboarding'
+  hasFinishedOnboarding: 'hasFinishedOnboarding',
+  notifPm: 'notifPm',
+  notifMention: 'notifMention',
+  notifFollowedTopic: 'notifFollowedTopic',
+  notifNewsletter: 'notifNewsletter'
 };
 
 exports.Prisma.BlockScalarFieldEnum = {

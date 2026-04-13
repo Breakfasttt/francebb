@@ -570,12 +570,32 @@ export async function deleteAccount() {
         data: { authorId: ghostId }
       });
 
+      await tx.tournamentResult.updateMany({
+        where: { userId },
+        data: { userId: ghostId }
+      });
+
+      await tx.tournamentMatch.updateMany({
+        where: { coach1UserId: userId },
+        data: { coach1UserId: ghostId }
+      });
+
+      await tx.tournamentMatch.updateMany({
+        where: { coach2UserId: userId },
+        data: { coach2UserId: ghostId }
+      });
+
+      await tx.rankingArchive.updateMany({
+        where: { archivedById: userId },
+        data: { archivedById: ghostId }
+      });
+
       await tx.resource.updateMany({
         where: { authorId: userId },
         data: { authorId: ghostId }
       });
 
-      // 4. Supprimer l'utilisateur lui-même (sauf si SUPERADMIN)
+      // 5. Supprimer l'utilisateur lui-même (sauf si SUPERADMIN)
       if (session.user.role === "SUPERADMIN") {
         await tx.user.update({
           where: { id: userId },
@@ -633,11 +653,16 @@ export async function updateNotificationSettings(settings: {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Non connecté");
 
-  await prisma.user.update({
-    where: { id: session.user.id },
-    data: settings
-  });
+  try {
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: settings
+    });
 
-  revalidatePath("/profile");
-  return { success: true };
+    revalidatePath("/profile");
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur updateNotificationSettings:", error);
+    return { success: false, error: "Erreur lors de la mise à jour des paramètres" };
+  }
 }
