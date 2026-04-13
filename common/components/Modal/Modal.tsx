@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import ClassicButton from "../Button/ClassicButton";
 import CTAButton from "../Button/CTAButton";
 import DangerButton from "../Button/DangerButton";
+import AdminButton from "../Button/AdminButton";
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,7 +16,7 @@ interface ModalProps {
   children?: React.ReactNode;
   confirmText?: string;
   cancelText?: string;
-  variant?: "danger" | "primary";
+  variant?: "danger" | "primary" | "admin";
   maxWidth?: string;
 }
 
@@ -40,6 +41,32 @@ export default function Modal({
 
   if (!isOpen || !mounted) return null;
 
+  const renderConfirmButton = () => {
+    if (!onConfirm) return null;
+
+    if (variant === 'danger') {
+      return (
+        <DangerButton onClick={onConfirm}>
+          {confirmText || "Confirmer"}
+        </DangerButton>
+      );
+    }
+
+    if (variant === 'admin') {
+      return (
+        <AdminButton onClick={onConfirm}>
+          {confirmText || "Confirmer"}
+        </AdminButton>
+      );
+    }
+
+    return (
+      <CTAButton onClick={onConfirm}>
+        {confirmText || "Confirmer"}
+      </CTAButton>
+    );
+  };
+
   return createPortal(
     <div className="modal-overlay">
       <div className="modal-content">
@@ -51,17 +78,7 @@ export default function Modal({
           <ClassicButton onClick={onClose}>
             {cancelText || "Annuler"}
           </ClassicButton>
-          {onConfirm && (
-            variant === 'danger' ? (
-              <DangerButton onClick={onConfirm}>
-                {confirmText || "Confirmer"}
-              </DangerButton>
-            ) : (
-              <CTAButton onClick={onConfirm}>
-                {confirmText || "Confirmer"}
-              </CTAButton>
-            )
-          )}
+          {renderConfirmButton()}
         </div>
       </div>
 

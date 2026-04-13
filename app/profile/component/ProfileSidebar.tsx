@@ -11,6 +11,7 @@ import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useTransition, useEffect } from "react";
+import toast from "react-hot-toast";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -18,6 +19,14 @@ import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
 import { isModerator as checkIsModerator } from "@/lib/roles";
 import "../page.css";
+
+const BAN_REASONS = [
+  "Spam / Publicité",
+  "Harcèlement / Insultes",
+  "Contenu inapproprié / NSFW",
+  "Bot",
+  "Autre (préciser ci-dessous)"
+];
 
 interface ProfileSidebarProps {
   user: any;
@@ -28,6 +37,7 @@ interface ProfileSidebarProps {
   isModerator?: boolean;
   onContact?: () => void;
   isBlockedInitial?: boolean;
+  onRefresh?: () => void;
 }
 
 export default function ProfileSidebar({
@@ -38,11 +48,13 @@ export default function ProfileSidebar({
   onTabChange,
   isModerator = false,
   onContact,
-  isBlockedInitial = false
+  isBlockedInitial = false,
+  onRefresh
 }: ProfileSidebarProps) {
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
   const [banReason, setBanReason] = useState("");
+  const [banDetails, setBanDetails] = useState("");
   const [showReportModal, setShowReportModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [isBlocked, setIsBlocked] = useState(isBlockedInitial);
@@ -64,25 +76,40 @@ export default function ProfileSidebar({
 
   const handleToggleBan = () => {
     if (!user.isBanned && !banReason.trim()) {
-      alert("Une raison est obligatoire pour bannir un utilisateur.");
+      toast.error("Une raison est obligatoire pour bannir un utilisateur.");
       return;
     }
 
     startTransition(async () => {
-      await toggleBanUser(user.id, banReason.trim());
-      setShowBanModal(false);
-      setBanReason("");
+      try {
+        const fullReason = banDetails.trim() 
+          ? `[${banReason}] ${banDetails.trim()}` 
+          : banReason;
+          
+        const res = await toggleBanUser(user.id, !user.isBanned, fullReason);
+        if (res.success) {
+          toast.success(!user.isBanned ? "Utilisateur banni" : "Utilisateur débanni");
+          setShowBanModal(false);
+          setBanReason("");
+          setBanDetails("");
+          router.refresh();
+          if (onRefresh) onRefresh();
+        }
+      } catch (err: any) {
+        toast.error(err.message || "Erreur de bannissement");
+      }
     });
   };
 
   const handleToggleBlock = () => {
     startTransition(async () => {
       try {
-        const res = await toggleBlockUser(user.id);
         setIsBlocked(res.isBlocked);
         setShowBlockModal(false);
+        router.refresh();
+        if (onRefresh) onRefresh();
       } catch (err: any) {
-        alert(err.message);
+        toast.error(err.message || "Erreur de blocage");
         setShowBlockModal(false);
       }
     });
@@ -275,34 +302,71 @@ export default function ProfileSidebar({
         onClose={() => setShowBanModal(false)}
         onConfirm={handleToggleBan}
         title={user.isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
-        variant={user.isBanned ? "primary" : "danger"}
+        variant={!user.isBanned ? "admin" : "primary"}
+        confirmText={!user.isBanned ? "Confirmer le bannissement" : "Débannir l'utilisateur"}
       >
-        <p style={{ marginBottom: user.isBanned ? '0' : '1.5rem' }}>
-          {user.isBanned 
-            ? `Voulez-vous vraiment débannir ${user.name} ?` 
-            : `Voulez-vous vraiment bannir ${user.name} ? Veuillez indiquer un motif.`}
+        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+          {!user.isBanned 
+            ? `Vous êtes sur le point de bannir ${user.name}. Cette action restreindra son accès au forum et masquera ses messages.` 
+            : `Souhaitez-vous vraiment restaurer l'accès de ${user.name} ?`
+          }
         </p>
 
         {!user.isBanned && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            <label style={{ fontSize: '0.85rem', opacity: 0.7, fontWeight: 600 }}>Raison du bannissement</label>
-            <textarea
-              value={banReason}
-              onChange={(e) => setBanReason(e.target.value)}
-              placeholder="Ex: Spam, propos inappropriés..."
-              style={{
-                width: '100%',
-                background: 'rgba(0,0,0,0.2)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: '8px',
-                padding: '0.8rem',
-                color: 'white',
-                minHeight: '80px',
-                outline: 'none',
-                resize: 'none'
-              }}
-              autoFocus
-            />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            <div className="ban-reasons-group">
+              <label style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.8rem', display: 'block', opacity: 0.9 }}>
+                Raison du bannissement
+              </label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {BAN_REASONS.map(r => (
+                  <button 
+                    key={r}
+                    type="button"
+                    onClick={() => setBanReason(r)}
+                    style={{
+                      textAlign: 'left',
+                      padding: '0.8rem 1rem',
+                      background: banReason === r ? 'var(--primary-transparent)' : 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid',
+                      borderColor: banReason === r ? 'var(--primary)' : 'var(--glass-border)',
+                      borderRadius: '8px',
+                      color: banReason === r ? 'var(--primary)' : 'var(--foreground)',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: banReason === r ? 700 : 400,
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="ban-details-group">
+              <label style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.8rem', display: 'block', opacity: 0.9 }}>
+                Précisions additionnelles
+              </label>
+              <textarea 
+                value={banDetails}
+                onChange={(e) => setBanDetails(e.target.value)}
+                placeholder="Détaillez le motif ici..."
+                style={{
+                  width: '100%',
+                  background: 'var(--glass-bg)',
+                  border: '1px solid var(--glass-border)',
+                  borderRadius: '12px',
+                  padding: '1rem',
+                  color: 'var(--foreground)',
+                  minHeight: '100px',
+                  outline: 'none',
+                  resize: 'none',
+                  fontFamily: 'inherit',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
           </div>
         )}
       </Modal>

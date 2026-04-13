@@ -33,6 +33,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedLigue, setSelectedLigue] = useState<string>("");
   const [selectedRegion, setSelectedRegion] = useState<string>("");
+  const [banDetails, setBanDetails] = useState("");
   
   type SortConfig = { key: "name" | "role" | "naf" | "region" | "ligue"; direction: "asc" | "desc" } | null;
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
@@ -69,25 +70,35 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   const handleToggleBanClick = (userId: string, currentBanStatus: boolean, userName: string) => {
     setBanReason("");
+    setBanDetails("");
     setBanModal({ isOpen: true, userId, isBanning: !currentBanStatus, userName });
   };
 
-  const confirmBanToggle = () => {
+  async function confirmBanToggle() {
     if (banModal.isBanning && !banReason.trim()) {
-      toast.error("La raison est obligatoire pour bannir un utilisateur.");
+      toast.error("Veuillez sélectionner une raison");
       return;
     }
+
     startTransition(async () => {
       try {
-        await toggleBanUser(banModal.userId, banModal.isBanning, banReason.trim());
-        toast.success(`Utilisateur ${!banModal.isBanning ? 'débanni' : 'banni'} avec succès`);
-      } catch (error: any) {
-        toast.error(error.message);
-      } finally {
-        setBanModal({ isOpen: false, userId: "", isBanning: false, userName: "" });
+        const fullReason = banDetails.trim() 
+          ? `[${banReason}] ${banDetails.trim()}` 
+          : banReason;
+
+        const res = await toggleBanUser(banModal.userId, banModal.isBanning, fullReason);
+        if (res.success) {
+          toast.success(banModal.isBanning ? "Utilisateur banni" : "Utilisateur débanni");
+          setBanModal(v => ({...v, isOpen: false}));
+          setBanReason("");
+          setBanDetails("");
+          router.refresh();
+        }
+      } catch (err: any) {
+        toast.error(err.message || "Erreur lors de l'opération");
       }
     });
-  };
+  }
 
   const handleDeleteClick = (userId: string, userName: string) => {
     setDeleteModal({ isOpen: true, userId, userName });
@@ -98,6 +109,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       try {
         await deleteUser(deleteModal.userId);
         toast.success("Utilisateur supprimé définitivement");
+        router.refresh();
       } catch (error: any) {
         toast.error(error.message);
       } finally {
@@ -423,8 +435,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         onClose={() => setBanModal(v => ({...v, isOpen: false}))}
         onConfirm={confirmBanToggle}
         title={banModal.isBanning ? "Bannir l'utilisateur" : "Débannir l'utilisateur"}
-        variant={banModal.isBanning ? "danger" : "primary"}
         confirmText={banModal.isBanning ? "Bannir" : "Débannir"}
+        variant={banModal.isBanning ? "admin" : "primary"}
       >
         <p style={{ color: '#ccc', marginBottom: '1rem', lineHeight: 1.5 }}>
           {banModal.isBanning 
@@ -434,25 +446,56 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         </p>
         
         {banModal.isBanning && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontSize: '0.85rem', color: '#888', fontWeight: 600 }}>Raison du bannissement (obligatoire)</label>
-            <input 
-              type="text" 
-              value={banReason}
-              onChange={(e) => setBanReason(e.target.value)}
-              placeholder="Ex: Spam répété, insulte..."
-              style={{
-                background: 'rgba(0,0,0,0.2)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: '6px',
-                padding: '0.8rem',
-                color: 'white',
-                outline: 'none',
-                width: '100%',
-                boxSizing: 'border-box'
-              }}
-              autoFocus
-            />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            <div className="ban-reasons-group">
+              <label style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block' }}>Raison du bannissement</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {BAN_REASONS.map(r => (
+                  <button 
+                    key={r}
+                    type="button"
+                    onClick={() => setBanReason(r)}
+                    style={{
+                      textAlign: 'left',
+                      padding: '0.7rem 1rem',
+                      background: banReason === r ? 'var(--primary-transparent)' : 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid',
+                      borderColor: banReason === r ? 'var(--primary)' : 'var(--glass-border)',
+                      borderRadius: '8px',
+                      color: banReason === r ? 'var(--primary)' : 'var(--foreground)',
+                      cursor: 'pointer',
+                      fontSize: '0.9rem',
+                      fontWeight: banReason === r ? 700 : 400,
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="ban-details-group">
+              <label style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block' }}>Précisions additionnelles</label>
+              <textarea 
+                value={banDetails}
+                onChange={(e) => setBanDetails(e.target.value)}
+                placeholder="Détaillez le motif si nécessaire..."
+                style={{
+                  background: 'var(--glass-bg)',
+                  border: '1px solid var(--glass-border)',
+                  borderRadius: '12px',
+                  padding: '1rem',
+                  color: 'var(--foreground)',
+                  outline: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box',
+                  minHeight: '100px',
+                  fontFamily: 'inherit',
+                  resize: 'none'
+                }}
+              />
+            </div>
           </div>
         )}
       </Modal>

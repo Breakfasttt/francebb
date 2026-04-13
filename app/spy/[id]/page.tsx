@@ -85,6 +85,28 @@ export default function SpyProfilePage() {
     }
   }, [id, session, status]);
 
+  const refreshData = async () => {
+    if (!id) return;
+    try {
+      const response = await fetch(`/api/users/${id}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      }
+      const userStats = await getUserStats(id);
+      setStats(userStats);
+      const userActivities = await getUserActivity(id);
+      setActivities(userActivities);
+      
+      if (session?.user?.id) {
+        const blockedIds = await getBlockedUsersIds();
+        setIsBlocked(blockedIds.includes(id));
+      }
+    } catch (error) {
+      console.error("Error refreshing spy profile data:", error);
+    }
+  };
+
   useEffect(() => {
     const tab = sanitizeTab(tabParam);
     if (tab !== activeTab) {
@@ -132,6 +154,7 @@ export default function SpyProfilePage() {
           isModerator={isModerator}
           onContact={handleContact}
           isBlockedInitial={isBlocked}
+          onRefresh={refreshData}
         />
 
         <div className="profile-main-content">

@@ -42,32 +42,30 @@ export async function updateProfile(formData: FormData) {
   return { success: true };
 }
 
-export async function toggleBanUser(userId: string, reason?: string) {
+export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
   const session = await auth();
   if (!isModerator(session?.user?.role)) throw new Error("Action non autorisée");
 
-  const user = await prisma.user.findUnique({
+  const target = await prisma.user.findUnique({
     where: { id: userId },
-    select: { isBanned: true }
+    select: { id: true, isBanned: true }
   });
 
-  if (!user) throw new Error("Utilisateur introuvable");
-
-  const isBanning = !user.isBanned;
+  if (!target) throw new Error("Utilisateur introuvable");
 
   await prisma.user.update({
     where: { id: userId },
     data: { 
-      isBanned: isBanning,
-      banReason: isBanning ? (reason || "Bannissement manuel") : null
+      isBanned,
+      banReason: isBanned ? (reason || "Bannissement manuel") : null
     }
   });
 
   await logModerationAction(
-    isBanning ? "USER_BANNED" : "USER_UNBANNED",
+    isBanned ? "USER_BANNED" : "USER_UNBANNED",
     userId,
     "USER",
-    isBanning ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
+    isBanned ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
   );
 
   revalidatePath(`/spy/${userId}`);
