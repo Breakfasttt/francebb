@@ -251,7 +251,7 @@ export default function ProfileSidebar({
                 {isBlocked ? "Débloquer" : "Bloquer"}
               </ClassicButton>
             )}
-            {isModerator && (
+            {isModerator && !checkIsModerator(user.role) && (
               <AdminButton
                 onClick={() => setShowBanModal(true)}
                 isLoading={isPending}
