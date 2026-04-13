@@ -23,6 +23,9 @@ import {
   updateRegistrationStatus
 } from "../actions";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface RegistrationModuleProps {
   tournament: any;
@@ -115,16 +118,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
           </button>
 
           {tournament.registrationsLocked && (
-            <div className="registration-locked-notice" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.4rem', 
-              fontSize: '0.75rem', 
-              color: 'var(--accent)', 
-              fontWeight: 700,
-              padding: '0 1rem',
-              textTransform: 'uppercase'
-            }}>
+            <div className="registration-locked-notice">
               <AlertCircle size={14} /> Inscriptions Closes
             </div>
           )}
@@ -135,21 +129,21 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
               {tournament.isTeam ? (
                 /* Équipe : Cacher le bouton si bloqué, sinon afficher le bouton d'inscription */
                 !isActionBlocked && (
-                  <button className="reg-btn primary mini" onClick={() => setIsExpanded(true)} disabled={isPending}>
-                    <Plus size={16} /> Inscrire une équipe
-                  </button>
+                  <CTAButton size="sm" onClick={() => setIsExpanded(true)} disabled={isPending} icon={<Plus size={16} />}>
+                    Inscrire une équipe
+                  </CTAButton>
                 )
               ) : (
                 /* Individuel : Toujours montrer "Annuler" si déjà inscrit. Si non inscrit, cacher "Me pré-inscrire" si bloqué. */
                 isRegistered ? (
-                  <button className="reg-btn danger mini" onClick={handleLeave} disabled={isPending}>
-                    <UserMinus size={16} /> Annuler
-                  </button>
+                  <DangerButton size="sm" onClick={handleLeave} disabled={isPending} icon={<UserMinus size={16} />}>
+                    Annuler
+                  </DangerButton>
                 ) : (
                   !isActionBlocked && (
-                    <button className="reg-btn primary mini" onClick={handleJoin} disabled={isPending}>
-                      <UserPlus size={16} /> Me pré-inscrire
-                    </button>
+                    <CTAButton size="sm" onClick={handleJoin} disabled={isPending} icon={<UserPlus size={16} />}>
+                      Me pré-inscrire
+                    </CTAButton>
                   )
                 )
               )}
@@ -285,12 +279,12 @@ function RegistrationItem({ item, type, canManage, showPayment }: any) {
                 onChange={handlePaymentStatus}
                 disabled={isPending}
                 size="sm"
-                containerStyle={{ minWidth: "100px" }}
+                containerStyle={{ minWidth: "120px" }}
               >
-                <option value="NOT_PAID">En attente</option>
-                <option value="PAID">Payé</option>
-                <option value="AT_TOURNAMENT">Sur place</option>
-                <option value="GUEST">Invité</option>
+                <option value="NOT_PAID">🚫 En attente</option>
+                <option value="PAID">✅ Payé</option>
+                <option value="AT_TOURNAMENT">🏠 Sur place</option>
+                <option value="GUEST">🎁 Invité</option>
               </ClassicSelect>
             )}
 

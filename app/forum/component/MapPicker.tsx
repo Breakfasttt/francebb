@@ -4,7 +4,9 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Search, MapPin, Check, X } from "lucide-react";
+import { Search, MapPin, Check, X, Loader2 } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 /**
  * Composant interne pour gérer les clics sur la carte
@@ -121,9 +123,9 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
             className="search-input"
           />
         </div>
-        <button type="submit" disabled={isSearching} className="search-submit">
-          {isSearching ? "..." : "Rechercher"}
-        </button>
+        <CTAButton type="submit" isLoading={isSearching} style={{ height: 'auto', minWidth: '120px' }}>
+          Rechercher
+        </CTAButton>
       </form>
 
       <div className="map-wrapper">
@@ -154,17 +156,16 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
           <span className="address-text">{address || (position ? `${position[0].toFixed(5)}, ${position[1].toFixed(5)}` : "Cliquez sur la carte pour choisir un lieu")}</span>
         </div>
         <div className="picker-actions">
-          <button type="button" onClick={onCancel} className="btn-cancel">
-            <X size={18} /> Annuler
-          </button>
-          <button 
-            type="button" 
+          <ClassicButton onClick={onCancel} icon={X}>
+            Annuler
+          </ClassicButton>
+          <CTAButton 
             onClick={() => position && onSelect(position[0], position[1], address)} 
             disabled={!position}
-            className="btn-valid"
+            icon={Check}
           >
-            <Check size={18} /> Valider ce lieu
-          </button>
+            Valider ce lieu
+          </CTAButton>
         </div>
       </div>
 
@@ -172,117 +173,107 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
         .map-picker-container {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
-          height: 500px;
-          min-width: 300px;
+          gap: 1.2rem;
+          height: 550px;
+          width: 100%;
+          min-width: 600px;
         }
 
         .map-search-bar {
           display: flex;
-          gap: 0.5rem;
+          gap: 0.8rem;
+          align-items: stretch;
         }
 
         .search-input-wrapper {
           position: relative;
           flex: 1;
+          display: flex;
+          align-items: center;
         }
 
         .search-icon {
           position: absolute;
-          left: 10px;
+          left: 14px;
           top: 50%;
           transform: translateY(-50%);
           color: var(--text-muted);
+          z-index: 2;
+          pointer-events: none;
         }
 
         .search-input {
           width: 100%;
-          padding: 0.6rem 0.6rem 0.6rem 2.2rem;
-          background: rgba(255, 255, 255, 0.05);
+          padding: 0.8rem 1rem 0.8rem 2.8rem;
+          background: var(--input-bg);
           border: 1px solid var(--glass-border);
-          border-radius: 8px;
+          border-radius: 12px;
           color: var(--foreground);
+          font-size: 1rem;
           outline: none;
+          transition: all 0.2s;
         }
-
-        .search-submit {
-          padding: 0 1rem;
-          background: var(--primary);
-          color: white;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 600;
+        
+        .search-input:focus {
+          border-color: var(--primary);
+          background: var(--background);
+          box-shadow: 0 0 0 3px var(--primary-transparent);
         }
 
         .map-wrapper {
           flex: 1;
-          border-radius: 12px;
+          border-radius: 16px;
           overflow: hidden;
           border: 1px solid var(--glass-border);
           position: relative;
           z-index: 1;
+          box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
         }
 
         .map-picker-footer {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.2rem;
+          padding-top: 0.5rem;
+          border-top: 1px solid var(--glass-border);
         }
 
         .selected-address {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.85rem;
-          color: var(--text-muted);
-          background: rgba(255, 255, 255, 0.03);
-          padding: 0.5rem;
-          border-radius: 6px;
+          gap: 0.8rem;
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          background: var(--glass-bg);
+          padding: 0.8rem 1rem;
+          border-radius: 10px;
+          border: 1px solid var(--glass-border);
         }
 
         .address-text {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          font-weight: 500;
         }
 
         .picker-actions {
           display: flex;
           justify-content: flex-end;
-          gap: 0.8rem;
+          gap: 1rem;
         }
 
-        .btn-cancel, .btn-valid {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 0.6rem 1.2rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 700;
-          transition: all 0.2s;
-          border: none;
-        }
-
-        .btn-cancel {
-          background: rgba(255, 255, 255, 0.05);
-          color: var(--foreground);
-        }
-
-        .btn-valid {
-          background: var(--primary);
-          color: white;
-        }
-
-        .btn-valid:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        .btn-valid:hover:not(:disabled) {
-          transform: translateY(-2px);
-          filter: brightness(1.1);
+        @media (max-width: 768px) {
+          .map-picker-container {
+             min-width: 100%;
+             height: 600px;
+          }
+          .picker-actions {
+            flex-direction: column-reverse;
+          }
+          .picker-actions :global(button) {
+            width: 100%;
+          }
         }
       `}</style>
     </div>

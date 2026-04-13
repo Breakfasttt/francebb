@@ -55,10 +55,10 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '0.5rem' }}>
             <CTAButton 
               type="submit" 
-              style={{ width: '100%' }}
+              style={{ width: '100%', whiteSpace: 'normal', lineHeight: '1.2', padding: '0.8rem 1rem' }}
               className={isTournament ? 'accent-btn' : ''}
             >
-              {submitLabel.toUpperCase()}
+              {submitLabel}
             </CTAButton>
             <ClassicButton 
               href={`/forum/${forumId}`} 

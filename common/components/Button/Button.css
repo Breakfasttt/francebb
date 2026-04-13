@@ -219,4 +219,6 @@
 /* Full Width Utility */
 .bb-button.full-width {
   width: 100%;
+  white-space: normal;
+  line-height: 1.2;
 }

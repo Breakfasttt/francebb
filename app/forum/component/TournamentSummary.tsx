@@ -2,6 +2,7 @@ import React from 'react';
 import { Trophy, Calendar, MapPin, Users, Coins, Info, CheckCircle2, XCircle, ExternalLink, Monitor, Shield, Layers } from 'lucide-react';
 import Link from 'next/link';
 import { parseInlineBBCode } from '@/lib/bbcode';
+import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import './TournamentSummary.css';
 
 interface TournamentSummaryProps {
@@ -78,48 +79,44 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
   }
 
   return (
-    <div className="tournament-summary-card">
+    <PremiumCard className="tournament-summary-card">
       <div className="summary-header">
         <div className="trophy-icon">
           <Trophy size={24} />
         </div>
         <div className="header-text" style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+          <div className="header-title-row">
+            <div className="header-title-badges">
                 {tournament.isCancelled ? (
-                    <span style={{ background: '#c21d1d', color: 'white', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '4px', fontWeight: 900, letterSpacing: '1px', boxShadow: '0 0 15px rgba(194, 29, 29, 0.4)' }}>
-                        ANNULÉ
-                    </span>
+                    <span className="status-badge cancelled">ANNULÉ</span>
                 ) : tournament.isFinished ? (
-                    <span style={{ background: '#444', color: '#ccc', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '4px', fontWeight: 900, letterSpacing: '1px', border: '1px solid #555' }}>
-                        TERMINÉ
-                    </span>
+                    <span className="status-badge finished">TERMINÉ</span>
                 ) : null}
-                <h2 style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.name) }} />
+                <h2 dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.name) }} />
             </div>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <div className="tournament-badges">
                 {tournament.isTeam && (
-                    <span className="team-badge" style={{ background: 'var(--accent)', color: '#000', fontSize: '0.7rem', padding: '2px 8px', borderRadius: '4px', fontWeight: 800 }}>
+                    <span className="team-badge">
                         PAR ÉQUIPE DE {tournament.coachsPerTeam}
                     </span>
                 )}
                 {championships.map(c => (
-                    <span key={c.label} style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--accent)', fontSize: '0.7rem', padding: '2px 6px', border: '1px solid var(--accent)', borderRadius: '4px', fontWeight: 700 }}>
+                    <span key={c.label} className="championship-badge">
                         {c.label}
                     </span>
                 ))}
             </div>
           </div>
           {(tournament.ligue || tournament.ligueCustom) && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.2rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              <Shield size={12} color="var(--accent)" />
+            <div className="organizer-row">
+              <Shield size={12} />
               <span>Organisé par : </span>
               {tournament.ligue ? (
-                <Link href={`/ligue/${tournament.ligue.id}`} style={{ color: 'var(--accent)', fontWeight: 700, textDecoration: 'none' }}>
+                <Link href={`/ligue/${tournament.ligue.id}`} className="ligue-link">
                   {tournament.ligue.name}
                 </Link>
               ) : (
-                <span style={{ color: 'var(--foreground)', fontWeight: 700 }}>{tournament.ligueCustom}</span>
+                <span className="ligue-name-custom">{tournament.ligueCustom}</span>
               )}
             </div>
           )}
@@ -145,16 +142,15 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
                   href={gmapsUrl} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="address-link" 
-                  style={{ color: 'white', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  className="address-link"
                 >
-                  <strong style={{ color: 'var(--accent)', textDecoration: 'underline' }}>{displayAddress}</strong>
+                  <strong>{displayAddress}</strong>
                   <ExternalLink size={12} />
                 </a>
               ) : (
                 <span className="text-muted">{tournament.location}</span>
               )}
-              <div style={{ fontSize: '0.9rem', color: '#888' }}>
+              <div className="location-details">
                 {tournament.ville}{tournament.departement && ` (${tournament.departement})`}
               </div>
             </div>
@@ -178,7 +174,7 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             <span className="value">
                 {tournament.price != null ? `${tournament.price} €` : 'N/A'}
                 {(tournament.priceMeals || tournament.priceLodging) && (
-                    <div style={{ fontSize: '0.75rem', color: '#888', marginTop: '0.2rem' }}>
+                    <div className="price-details">
                         {tournament.priceMeals && `Repas: +${tournament.priceMeals}€ `}
                         {tournament.priceLodging && `Dodo: +${tournament.priceLodging}€`}
                     </div>
@@ -234,7 +230,7 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
           <span>Accueil vendredi</span>
         </div>
       </div>
-    </div>
+    </PremiumCard>
   );
 };
 

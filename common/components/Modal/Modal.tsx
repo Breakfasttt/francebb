@@ -13,6 +13,7 @@ interface ModalProps {
   confirmText?: string;
   cancelText?: string;
   variant?: "danger" | "primary";
+  maxWidth?: string;
 }
 
 export default function Modal({ 
@@ -24,7 +25,8 @@ export default function Modal({
   children,
   confirmText,
   cancelText,
-  variant = "primary"
+  variant = "primary",
+  maxWidth = "550px"
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -72,22 +74,26 @@ export default function Modal({
 
         .modal-content {
           background: var(--card-bg);
+          backdrop-filter: blur(16px);
           border: 1px solid var(--glass-border);
-          border-radius: 16px;
+          border-radius: 20px;
           padding: 2.5rem;
-          max-width: 500px;
+          max-width: ${maxWidth};
           width: 100%;
-          box-shadow: var(--glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.37));
-          animation: modalAppear 0.3s ease-out;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          position: relative;
         }
 
         h2 {
           color: var(--primary);
-          margin-bottom: 1.2rem;
-          font-size: 1.8rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: -0.02em;
+          margin-bottom: 1.5rem;
+          font-size: 1.5rem;
+          font-weight: 700;
+          letter-spacing: -0.01em;
+          border-bottom: 2px solid var(--primary-transparent);
+          padding-bottom: 0.8rem;
+          display: inline-block;
         }
 
         p {

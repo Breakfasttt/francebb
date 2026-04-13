@@ -580,6 +580,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
         isOpen={isMapModalOpen}
         onClose={() => setIsMapModalOpen(false)}
         title="Localisation du tournoi"
+        maxWidth="850px"
       >
         <MapPicker 
           initialCenter={lat && lng ? [lat, lng] : undefined}
