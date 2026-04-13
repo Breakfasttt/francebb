@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import ClassicButton from "../Button/ClassicButton";
+import CTAButton from "../Button/CTAButton";
+import DangerButton from "../Button/DangerButton";
 
 interface ModalProps {
   isOpen: boolean;
@@ -45,13 +48,19 @@ export default function Modal({
         {children}
         
         <div className="modal-actions">
-          <button onClick={onClose} className="btn-secondary">
+          <ClassicButton onClick={onClose}>
             {cancelText || "Annuler"}
-          </button>
+          </ClassicButton>
           {onConfirm && (
-            <button onClick={onConfirm} className={`btn-confirm ${variant === 'danger' ? 'btn-danger' : 'btn-primary'}`}>
-              {confirmText || "Confirmer"}
-            </button>
+            variant === 'danger' ? (
+              <DangerButton onClick={onConfirm}>
+                {confirmText || "Confirmer"}
+              </DangerButton>
+            ) : (
+              <CTAButton onClick={onConfirm}>
+                {confirmText || "Confirmer"}
+              </CTAButton>
+            )
           )}
         </div>
       </div>
@@ -109,51 +118,6 @@ export default function Modal({
           gap: 1rem;
           justify-content: flex-end;
           margin-top: 2rem;
-        }
-
-        .btn-secondary {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          padding: 0.8rem 1.8rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 600;
-          transition: all 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-          background: var(--primary-transparent);
-          border-color: var(--primary);
-        }
-
-        .btn-danger {
-          background: var(--danger, #c21d1d);
-          border: none;
-          color: white;
-          padding: 0.8rem 1.8rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 700;
-          transition: all 0.2s ease;
-          box-shadow: 0 4px 15px rgba(194, 29, 29, 0.3);
-        }
-
-        .btn-primary {
-          background: var(--primary);
-          border: none;
-          color: white;
-          padding: 0.8rem 1.8rem;
-          border-radius: 8px;
-          cursor: pointer;
-          font-weight: 700;
-          transition: all 0.2s ease;
-          box-shadow: 0 4px 15px var(--btn-shadow);
-        }
-
-        .btn-primary:hover, .btn-danger:hover {
-          filter: brightness(1.1);
-          transform: translateY(-2px);
         }
 
         @keyframes modalAppear {

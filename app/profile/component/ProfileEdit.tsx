@@ -488,10 +488,103 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
         .animate-spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        .avatar-gen-modal {
+          display: flex;
+          flex-direction: column;
+          gap: 1.5rem;
+          align-items: center;
+        }
+
+        .gen-preview {
+          width: 180px;
+          height: 180px;
+          border-radius: 20px;
+          background: rgba(0, 0, 0, 0.2);
+          border: 2px solid var(--primary-transparent);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+        }
+
+        .gen-preview img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        .gen-field {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .gen-field label {
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: var(--text-muted);
+          text-transform: uppercase;
+        }
+
+        .gen-styles-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 0.8rem;
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+
+        .style-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--glass-border);
+          border-radius: 12px;
+          padding: 0.6rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          color: var(--foreground);
+          outline: none;
+        }
+
+        .style-item:hover {
+          background: rgba(255, 255, 255, 0.07);
+          border-color: var(--primary-transparent);
+          transform: translateY(-2px);
+        }
+
+        .style-item.active {
+          border-color: var(--primary);
+          background: var(--primary-transparent);
+          box-shadow: 0 0 15px var(--primary-transparent);
+        }
+
+        .style-item img {
+          width: 40px;
+          height: 40px;
+          border-radius: 6px;
+        }
+
+        .style-item span {
+          font-size: 0.65rem;
+          font-weight: 800;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+        }
+
         @media (max-width: 768px) {
           .avatar-studio-box { grid-template-columns: 1fr; }
           .studio-preview-pane { border-right: none; padding-right: 0; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
           .form-row-grid { grid-template-columns: 1fr; }
+          .gen-styles-grid { grid-template-columns: repeat(2, 1fr); }
         }
       `}</style>
     </PremiumCard>
