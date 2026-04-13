@@ -12,6 +12,8 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 
+import "./page.css";
+
 export const dynamic = "force-dynamic";
 
 function getDescendantForumIds(allForums: any[], rootId: string): string[] {
@@ -39,7 +41,7 @@ function highlightKeyword(text: string, query: string, currentUserId?: string) {
   if (start > 0) snippet = "..." + snippet;
   if (end < stripped.length) snippet = snippet + "...";
 
-  return snippet.replace(regex, `<span style="background: rgba(255, 200, 0, 0.3); color: #fff; padding: 0 2px; border-radius: 2px;">$1</span>`);
+  return snippet.replace(regex, `<span class="search-highlight">$1</span>`);
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -146,13 +148,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const totalPages = Math.max(1, Math.ceil(totalMatches / POSTS_PER_PAGE));
 
   return (
-    <div className="forum-container fade-in">
+    <div className="container search-page-container fade-in">
       <PageHeader
         title="Recherche Avancée"
         subtitle="Trouvez exactement ce que vous cherchez parmi tous les forums."
         backHref="/forum"
         backTitle="Retour au forum"
-        style={{ maxWidth: "1000px", margin: "0 auto 3rem auto" }}
       />
 
       <SearchForm 
@@ -165,69 +166,54 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
       />
 
       {hasPerformedSearch && (
-        <div className="search-results-section" style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <h2>Résultats pour votre recherche ({totalMatches} trouvé{totalMatches > 1 ? 's' : ''})</h2>
+        <div className="search-results-section">
+          <div className="search-results-header">
+            <h2>Résultats pour votre recherche ({totalMatches} trouvé{totalMatches > 1 ? 's' : ''})</h2>
+          </div>
           
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", marginTop: "1rem" }}>
             {posts.length === 0 ? (
-              <div style={{ padding: "3rem", textAlign: "center", background: "rgba(255,255,255,0.02)", borderRadius: "12px", color: "var(--text-muted)" }}>
+              <div style={{ padding: "4rem", textAlign: "center", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "16px", color: "var(--text-muted)" }}>
                 Aucun résultat ne correspond à vos filtres. Essayez d'élargir votre recherche.
               </div>
             ) : (
               posts.map(post => (
-                <div key={post.id} style={{
-                  background: "var(--glass-bg)",
-                  border: "1px solid var(--glass-border)",
-                  borderRadius: "12px",
-                  padding: "1.5rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.8rem",
-                  transition: "transform 0.2s, box-shadow 0.2s"
-                }} className="hover:border-primary/50">
+                <div key={post.id} className="post-result-card">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
                     <div>
-                      <h3 style={{ margin: 0, fontSize: "1.1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        {post.topic.tournamentId && <Trophy size={16} style={{ color: "white", opacity: 0.7 }} />}
-                        <Link href={`/forum/topic/${post.topicId}#${post.id}`} style={{ color: "white", textDecoration: "none" }} className="hover:text-primary transition-colors">
+                      <h3 className="post-result-title">
+                        {post.topic.tournamentId && <Trophy size={18} style={{ color: "var(--accent)", opacity: 0.8 }} />}
+                        <Link href={`/forum/topic/${post.topicId}#${post.id}`}>
                           Sujet: {post.topic.title}
                         </Link>
                       </h3>
-                      <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "0.4rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
-                        <span>Dans <strong style={{color:"var(--text-secondary)"}}>{post.topic.forum.name}</strong></span>
+                      <div className="post-result-meta">
+                        <span>Dans <strong>{post.topic.forum.name}</strong></span>
                         <span>•</span>
-                        <span>Par <strong style={{color:"var(--primary)"}}>{post.author.name}</strong></span>
+                        <span>Par <strong className="author-name">{post.author.name}</strong></span>
                         <span>•</span>
                         <span title={new Date(post.createdAt).toLocaleString("fr-FR")}>
-                          Message posté il y a {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: fr })}
+                          Posté il y a {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: fr })}
                         </span>
                         
                         <span style={{ margin: "0 0.5rem", width: "1px", height: "12px", background: "var(--glass-border)" }}></span>
                         
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: "var(--text-muted)" }} title="Vues du sujet">
-                          <Eye size={14} /> {post.topic.views || 0}
+                        <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }} title="Vues du sujet">
+                          <Eye size={16} /> {post.topic.views || 0}
                         </span>
                         <span>•</span>
-                        <span title={new Date(post.topic.updatedAt).toLocaleString("fr-FR")} style={{ color: "var(--text-muted)" }}>
-                          Dernier msg: {new Date(post.topic.updatedAt).toLocaleDateString("fr-FR")} à {new Date(post.topic.updatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+                        <span title={new Date(post.topic.updatedAt).toLocaleString("fr-FR")}>
+                          Dernier msg: {new Date(post.topic.updatedAt).toLocaleDateString("fr-FR")}
                         </span>
                       </div>
                     </div>
                     
-                    <ClassicButton href={`/forum/topic/${post.topicId}#${post.id}`} style={{ padding: "0.4rem 1rem", fontSize: "0.85rem" }}>
-                      Voir le message
+                    <ClassicButton href={`/forum/topic/${post.topicId}#${post.id}`} size="sm">
+                      Voir
                     </ClassicButton>
                   </div>
                   
-                  <div style={{ 
-                    padding: "1rem", 
-                    background: "rgba(0,0,0,0.2)", 
-                    borderRadius: "8px",
-                    color: "var(--foreground)",
-                    fontSize: "0.95rem",
-                    lineHeight: "1.5",
-                    borderLeft: "3px solid var(--primary)"
-                  }}>
+                  <div className="post-result-snippet">
                     <div dangerouslySetInnerHTML={{ __html: highlightKeyword(post.content, q, session?.user?.id) }} />
                   </div>
                 </div>
@@ -236,11 +222,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           </div>
 
           {totalPages > 1 && (
-            <Pagination 
-              currentPage={page}
-              totalPages={totalPages}
-              baseUrl={`/forum/search?q=${q}&forumId=${forumId}&author=${authorQuery}&date=${dateStr}&sortBy=${sortBy}`}
-            />
+            <div style={{ marginTop: "3rem", display: "flex", justifyContent: "center" }}>
+              <Pagination 
+                currentPage={page}
+                totalPages={totalPages}
+                baseUrl={`/forum/search?q=${q}&forumId=${forumId}&author=${authorQuery}&date=${dateStr}&sortBy=${sortBy}`}
+              />
+            </div>
           )}
         </div>
       )}

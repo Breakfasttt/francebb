@@ -21,8 +21,8 @@ export default async function TournamentsPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const session = await auth();
-  if (!session) redirect("/auth/login?callback=/tournaments");
+  // La page est accessible à tous
+  // const session = await auth();
 
   const params = await searchParams;
 

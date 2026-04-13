@@ -62,78 +62,49 @@ export default function SearchForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="forum-board" style={{
-      maxWidth: "1000px",
-      margin: "0 auto 2rem auto",
-      padding: "1.5rem",
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.2rem",
-      background: "var(--glass-bg)",
-      border: "1px solid var(--glass-border)",
-      borderRadius: "12px",
-    }}>
+    <form onSubmit={handleSubmit} className="search-form-card">
       {/* Ligne 1 : Mots-clés */}
-      <div style={{ position: "relative" }}>
-        <input 
-          type="text" 
-          placeholder="Mots-clés à rechercher..." 
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          style={{ 
-            width: "100%", 
-            padding: "0.8rem 1rem 0.8rem 2.5rem", 
-            fontSize: "1.1rem",
-            background: "rgba(255,255,255,0.03)", 
-            border: "1px solid rgba(255,255,255,0.1)", 
-            color: "#eee", 
-            borderRadius: "8px" 
-          }}
-          autoFocus
-        />
-        <Search size={20} style={{ position: "absolute", left: "0.8rem", top: "50%", transform: "translateY(-50%)", color: "#888" }} />
+      <div className="search-input-group">
+        <label>
+          <Search size={14} /> Mots-clés
+        </label>
+        <div className="search-main-input-wrapper">
+          <input 
+            type="text" 
+            placeholder="Rechercher des messages ou des sujets..." 
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="search-main-input"
+            autoFocus
+          />
+          <Search size={20} className="search-icon" />
+        </div>
       </div>
 
       {/* Ligne 2 : Filtres avancés */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+      <div className="search-filters-grid">
         
         {/* Auteur */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-          <label style={{ fontSize: "0.85rem", color: "#aaa", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+        <div className="search-input-group">
+          <label>
             <User size={14} /> Auteur
           </label>
           <input 
             type="text" 
-            placeholder="Pseudo ex: Admin..." 
+            placeholder="Ex: Admin, Nuffle..." 
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            style={{ 
-              width: "100%",
-              padding: "0.6rem 1rem",
-              background: "rgba(255,255,255,0.03)", 
-              border: "1px solid rgba(255,255,255,0.1)", 
-              color: "#eee", 
-              borderRadius: "8px" 
-            }}
           />
         </div>
 
         {/* Forum cible */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-          <label style={{ fontSize: "0.85rem", color: "#aaa", display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            <FolderTree size={14} /> Rechercher dans
+        <div className="search-input-group">
+          <label>
+            <FolderTree size={14} /> Forum
           </label>
           <select 
             value={forumId} 
             onChange={(e) => setForumId(e.target.value)}
-            style={{ 
-              width: "100%",
-              padding: "0.6rem 1rem",
-              background: "rgba(255,255,255,0.03)", 
-              border: "1px solid rgba(255,255,255,0.1)", 
-              color: "#eee", 
-              borderRadius: "8px" 
-            }}
           >
             <option value="">Tous les forums</option>
             {forums.map(f => (
@@ -145,21 +116,13 @@ export default function SearchForm({
         </div>
 
         {/* Date */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-          <label style={{ fontSize: "0.85rem", color: "#aaa", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+        <div className="search-input-group">
+          <label>
             <Calendar size={14} /> Date
           </label>
           <select 
             value={date} 
             onChange={(e) => setDate(e.target.value)}
-            style={{ 
-              width: "100%",
-              padding: "0.6rem 1rem",
-              background: "rgba(255,255,255,0.03)", 
-              border: "1px solid rgba(255,255,255,0.1)", 
-              color: "#eee", 
-              borderRadius: "8px" 
-            }}
           >
             <option value="all">Toutes les dates</option>
             <option value="7d">Depuis 7 jours</option>
@@ -169,21 +132,13 @@ export default function SearchForm({
         </div>
         
         {/* Trier par */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-          <label style={{ fontSize: "0.85rem", color: "#aaa", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+        <div className="search-input-group">
+          <label>
             <Filter size={14} /> Trier par
           </label>
           <select 
             value={sortBy} 
             onChange={(e) => setSortBy(e.target.value)}
-            style={{ 
-              width: "100%",
-              padding: "0.6rem 1rem",
-              background: "rgba(255,255,255,0.03)", 
-              border: "1px solid rgba(255,255,255,0.1)", 
-              color: "#eee", 
-              borderRadius: "8px" 
-            }}
           >
             <option value="desc">Plus récents d'abord</option>
             <option value="asc">Plus anciens d'abord</option>
@@ -192,7 +147,7 @@ export default function SearchForm({
 
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "1.5rem" }}>
         <CTAButton 
           type="submit" 
           isLoading={isPending}
