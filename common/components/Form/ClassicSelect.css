@@ -59,6 +59,49 @@
   transform: translateY(-50%) rotate(180deg);
 }
 
+.classic-select-icon-left {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.classic-select-field:focus ~ .classic-select-icon-left {
+  color: var(--primary);
+}
+
+.classic-select-wrapper.has-icon .classic-select-field {
+  padding-left: 2.8rem;
+}
+
+.classic-select-container.sm .classic-select-icon-left {
+  left: 0.7rem;
+}
+
+.classic-select-container.sm .classic-select-wrapper.has-icon .classic-select-field {
+  padding-left: 2.2rem;
+}
+
+/* Sizes */
+.classic-select-container.sm .classic-select-field {
+  padding: 0.4rem 2rem 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.classic-select-container.sm .classic-select-arrow {
+  right: 0.6rem;
+}
+
+.classic-select-container.sm .classic-select-label {
+  font-size: 0.75rem;
+}
+
 /* Base style for options to ensure contrast with theme */
 .classic-select-field option {
   background-color: var(--card-bg, #fff);

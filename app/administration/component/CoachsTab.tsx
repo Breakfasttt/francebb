@@ -10,6 +10,7 @@ import { getAllRoles, searchCoaches, updateCoachRole } from "../actions";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface CoachsTabProps {
   currentUserRole: UserRole;
@@ -133,17 +134,18 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
 
               <div className="user-actions">
                 {canManage ? (
-                  <select
-                    className="role-select"
+                  <ClassicSelect
                     value={user.role}
                     onChange={(e) => handleRoleChange(user.id, e.target.value)}
                     disabled={isPending}
+                    size="sm"
+                    containerStyle={{ minWidth: "150px" }}
                   >
                     <option value={user.role} disabled>{user.role} (Actuel)</option>
                     {availableRoles.map(role => (
                       <option key={role.name} value={role.name}>{role.name}</option>
                     ))}
-                  </select>
+                  </ClassicSelect>
                 ) : (
                   <div className="locked-badge">
                     <ShieldAlert size={16} />

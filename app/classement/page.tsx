@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Modal from "@/common/components/Modal/Modal";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import AdminButton from "@/common/components/Button/AdminButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -132,10 +133,10 @@ export default function ClassementPage() {
 
       <div className="ranking-filters-bar">
         <div className="filter-controls">
-          <select 
-            className="ranking-select" 
+          <ClassicSelect 
             value={filter} 
             onChange={(e) => setFilter(e.target.value as RankingFilter)}
+            containerStyle={{ minWidth: "350px" }}
           >
             {availableYears.map(y => (
               <option key={y.year} value={`CDF_${y.year}`}>
@@ -145,7 +146,7 @@ export default function ClassementPage() {
             <option value="ROLLING">🔄 Classement Glissant (12 mois)</option>
             <option value="ROSTER">🏹 Meilleur Coach par Roster</option>
             <option value="HOF">🏛️ Hall of Fame (Palmarès HISTORIQUE)</option>
-          </select>
+          </ClassicSelect>
 
           {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
             <AdminButton 

@@ -6,6 +6,7 @@ import { Search, Tag as TagIcon, User, ArrowDownAz, Grid, List, RotateCcw, Plus 
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import "./ArticleFilterSidebar.css";
 import "./ArticleFilterSidebar-mobile.css";
 
@@ -135,19 +136,16 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
         {/* Section Tri */}
         <div className="filter-section">
           <h4 className="filter-title">Trier par</h4>
-          <div className="search-input-wrapper">
-            <ArrowDownAz className="search-icon" size={18} />
-            <select 
-              className="search-input select-input"
+            <ClassicSelect 
               value={searchParams.get("sort") || "date_desc"}
               onChange={(e) => handleApplyFilter("sort", e.target.value)}
+              icon={ArrowDownAz}
             >
               <option value="date_desc">Plus récents</option>
               <option value="date_asc">Plus anciens</option>
               <option value="title_asc">Titre (A-Z)</option>
               <option value="reactions_desc">Plus populaires</option>
-            </select>
-          </div>
+            </ClassicSelect>
         </div>
 
         <button className="reset-filter-btn" onClick={handleReset}>

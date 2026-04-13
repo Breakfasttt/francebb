@@ -14,6 +14,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
 
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import "./MembersTable.css";
 
 const USERS_PER_PAGE = 25;
@@ -200,47 +201,38 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           />
         </div>
 
-        <div className="filter-group">
-          <label className="filter-label">Rôle</label>
-          <select 
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
-            className="filter-input"
-          >
-            <option value="">Tous les rôles</option>
-            {Object.entries(ROLE_LABELS).map(([val, label]) => (
-              <option key={val} value={val}>{label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label className="filter-label">Région</label>
-          <select 
-            value={selectedRegion}
-            onChange={(e) => setSelectedRegion(e.target.value)}
-            className="filter-input"
-          >
-            <option value="">Toutes les régions</option>
-            {allRegions.map(region => (
-              <option key={region.key} value={region.key}>{region.label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="filter-group">
-          <label className="filter-label">Ligue</label>
-          <select 
-            value={selectedLigue}
-            onChange={(e) => setSelectedLigue(e.target.value)}
-            className="filter-input"
-          >
-            <option value="">Toutes les ligues</option>
-            {allLigues.map(ligue => (
-              <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
-            ))}
-          </select>
-        </div>
+        <ClassicSelect 
+          label="Rôle"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value)}
+        >
+          <option value="">Tous les rôles</option>
+          {Object.entries(ROLE_LABELS).map(([val, label]) => (
+            <option key={val} value={val}>{label}</option>
+          ))}
+        </ClassicSelect>
+    
+        <ClassicSelect 
+          label="Région"
+          value={selectedRegion}
+          onChange={(e) => setSelectedRegion(e.target.value)}
+        >
+          <option value="">Toutes les régions</option>
+          {allRegions.map(region => (
+            <option key={region.key} value={region.key}>{region.label}</option>
+          ))}
+        </ClassicSelect>
+    
+        <ClassicSelect 
+          label="Ligue"
+          value={selectedLigue}
+          onChange={(e) => setSelectedLigue(e.target.value)}
+        >
+          <option value="">Toutes les ligues</option>
+          {allLigues.map(ligue => (
+            <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
+          ))}
+        </ClassicSelect>
 
         <ClassicButton onClick={resetFilters}>
           Réinitialiser
@@ -334,17 +326,17 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   {showRoles && (
                     <td>
                       {canEdit ? (
-                        <select 
+                        <ClassicSelect 
                           value={user.role}
                           disabled={isPending}
                           onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
-                          className="action-select"
+                          size="sm"
                         >
                           <option value={user.role} disabled>Changer le rôle...</option>
                           {selectableRoles.map(role => (
                             <option key={role} value={role}>{ROLE_LABELS[role]}</option>
                           ))}
-                        </select>
+                        </ClassicSelect>
                       ) : (
                         <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
                       )}

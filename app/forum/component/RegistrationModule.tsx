@@ -22,6 +22,7 @@ import {
   leaveTournament, 
   updateRegistrationStatus
 } from "../actions";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface RegistrationModuleProps {
   tournament: any;
@@ -279,17 +280,18 @@ function RegistrationItem({ item, type, canManage, showPayment }: any) {
         {canManage && (
           <>
             {showPayment && (
-              <select 
-                className="mini-select"
+              <ClassicSelect 
                 defaultValue={item.paymentStatus}
                 onChange={handlePaymentStatus}
                 disabled={isPending}
+                size="sm"
+                containerStyle={{ minWidth: "100px" }}
               >
                 <option value="NOT_PAID">En attente</option>
                 <option value="PAID">Payé</option>
                 <option value="AT_TOURNAMENT">Sur place</option>
                 <option value="GUEST">Invité</option>
-              </select>
+              </ClassicSelect>
             )}
 
             <div className="move-buttons">

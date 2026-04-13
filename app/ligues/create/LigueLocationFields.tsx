@@ -6,6 +6,7 @@ import { DEPARTMENTS_BY_REGION, REGION_BY_DEPARTMENT } from "@/lib/france";
 import { Map, Save, Globe, Check } from "lucide-react";
 import dynamic from "next/dynamic";
 import Modal from "@/common/components/Modal/Modal";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 const MapPicker = dynamic(() => import("../../forum/component/MapPicker"), { 
   ssr: false,
@@ -49,53 +50,48 @@ export default function LigueLocationFields({
       <input type="hidden" name="lat" value={lat ?? ""} />
       <input type="hidden" name="lng" value={lng ?? ""} />
 
-      <div className="form-group">
-        <label>Zone Géographique (NAF/Téléphone) *</label>
-        <select name="geographicalZone" required className="admin-input">
-          <option value="">Sélectionner une zone</option>
-          {coachRegions.map((r: any) => (
-            <option key={r.key} value={r.key}>{r.label}</option>
-          ))}
-        </select>
-      </div>
+      <ClassicSelect 
+        label="Zone Géographique (NAF/Téléphone) *" 
+        name="geographicalZone" 
+        required
+      >
+        <option value="">Sélectionner une zone</option>
+        {coachRegions.map((r: any) => (
+          <option key={r.key} value={r.key}>{r.label}</option>
+        ))}
+      </ClassicSelect>
 
       <div className="form-group">
         <label>Ville siège</label>
         <input type="text" name="ville" className="admin-input" placeholder="Ex: Lyon" />
       </div>
 
-      <div className="form-group">
-        <label>Région administrative</label>
-        <select 
-            name="region" 
-            className="admin-input"
-            value={selectedRegion}
-            onChange={(e) => {
-                setSelectedRegion(e.target.value);
-                setSelectedDept("");
-            }}
-        >
-          <option value="">Toutes les régions</option>
-          {franceRegions.map((r: any) => (
-             <option key={r.key} value={r.key}>{r.label}</option>
-          ))}
-        </select>
-      </div>
+      <ClassicSelect 
+        label="Région administrative" 
+        name="region"
+        value={selectedRegion}
+        onChange={(e) => {
+            setSelectedRegion(e.target.value);
+            setSelectedDept("");
+        }}
+      >
+        <option value="">Toutes les régions</option>
+        {franceRegions.map((r: any) => (
+           <option key={r.key} value={r.key}>{r.label}</option>
+        ))}
+      </ClassicSelect>
 
-      <div className="form-group">
-        <label>Département</label>
-        <select 
-            name="departement" 
-            className="admin-input"
-            value={selectedDept}
-            onChange={handleDeptChange}
-        >
-          <option value="">Sélectionner</option>
-          {filteredDepartments.map((d: any) => (
-             <option key={d.key} value={d.label}>{d.label}</option>
-          ))}
-        </select>
-      </div>
+      <ClassicSelect 
+        label="Département" 
+        name="departement"
+        value={selectedDept}
+        onChange={handleDeptChange}
+      >
+        <option value="">Sélectionner</option>
+        {filteredDepartments.map((d: any) => (
+           <option key={d.key} value={d.label}>{d.label}</option>
+        ))}
+      </ClassicSelect>
 
       <div className="form-group" style={{ gridColumn: 'span 2' }}>
         <label>Lieu habituel / Adresse exacte</label>

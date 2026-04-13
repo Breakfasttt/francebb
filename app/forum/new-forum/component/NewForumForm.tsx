@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface Forum {
   id: string;
@@ -91,57 +92,49 @@ export default function NewForumForm({
         <div className="form-group">
           <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 600 }}>Type et Emplacement</label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div>
-              <label htmlFor="categoryId" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Catégorie principale</label>
-              <select
-                id="categoryId"
-                name="categoryId"
-                value={selectedCat}
-                onChange={(e) => {
-                  setSelectedCat(e.target.value);
-                  setSelectedParent(""); // Reset parent quand on change de catégorie
-                }}
-                style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
-              >
-                <option value="">-- Aucune (Sous-forum) --</option>
-                {categories.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="parentForumId" style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>Forum parent (optionnel)</label>
-              <select
-                id="parentForumId"
-                name="parentForumId"
-                value={selectedParent}
-                onChange={(e) => setSelectedParent(e.target.value)}
-                style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
-              >
-                <option value="">-- Aucun (Top-level) --</option>
-                {availableParents.map(f => (
-                  <option key={f.id} value={f.id}>{f.name}</option>
-                ))}
-              </select>
-            </div>
+            <ClassicSelect
+              label="Catégorie principale"
+              id="categoryId"
+              name="categoryId"
+              value={selectedCat}
+              onChange={(e) => {
+                setSelectedCat(e.target.value);
+                setSelectedParent(""); // Reset parent quand on change de catégorie
+              }}
+            >
+              <option value="">-- Aucune (Sous-forum) --</option>
+              {categories.map(c => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </ClassicSelect>
+
+            <ClassicSelect
+              label="Forum parent (optionnel)"
+              id="parentForumId"
+              name="parentForumId"
+              value={selectedParent}
+              onChange={(e) => setSelectedParent(e.target.value)}
+            >
+              <option value="">-- Aucun (Top-level) --</option>
+              {availableParents.map(f => (
+                <option key={f.id} value={f.id}>{f.name}</option>
+              ))}
+            </ClassicSelect>
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="afterId" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Insérer après</label>
-          <select
-            id="afterId"
-            name="afterId"
-            defaultValue={siblings.length > 0 ? siblings[siblings.length - 1].id : "START"}
-            key={`${selectedCat}-${selectedParent}`} // Force le re-render du select quand on change d'endroit
-            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
-          >
-            <option value="START">-- Au début --</option>
-            {siblings.map(s => (
-              <option key={s.id} value={s.id}>Après: {s.name}</option>
-            ))}
-          </select>
-        </div>
+        <ClassicSelect
+          label="Insérer après"
+          id="afterId"
+          name="afterId"
+          defaultValue={siblings.length > 0 ? siblings[siblings.length - 1].id : "START"}
+          key={`${selectedCat}-${selectedParent}`} // Force le re-render du select quand on change d'endroit
+        >
+          <option value="START">-- Au début --</option>
+          {siblings.map(s => (
+            <option key={s.id} value={s.id}>Après: {s.name}</option>
+          ))}
+        </ClassicSelect>
 
 
 

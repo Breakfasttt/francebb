@@ -3,6 +3,7 @@
 import React from "react";
 import { Search, MapPin } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface LigueFiltersProps {
   initialQuery?: string;
@@ -54,15 +55,18 @@ export default function LigueFilters({ initialQuery = "", initialRegion = "", co
             </form>
         </div>
         
-        <div className="region-filter">
-            <MapPin size={18} />
-            <select name="region" onChange={handleRegionChange} defaultValue={initialRegion}>
-                <option value="">Toutes les zones</option>
-                {coachRegions.map(r => (
-                    <option key={r.key} value={r.key}>{r.label}</option>
-                ))}
-            </select>
-        </div>
+        <ClassicSelect 
+          name="region" 
+          onChange={handleRegionChange} 
+          defaultValue={initialRegion}
+          icon={MapPin}
+          containerStyle={{ minWidth: "220px" }}
+        >
+            <option value="">Toutes les zones</option>
+            {coachRegions.map(r => (
+                <option key={r.key} value={r.key}>{r.label}</option>
+            ))}
+        </ClassicSelect>
     </div>
   );
 }

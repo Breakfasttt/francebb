@@ -5,6 +5,7 @@ import Modal from "@/common/components/Modal/Modal";
 import { moveTopic } from "@/app/forum/actions";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface MoveTopicModalProps {
   isOpen: boolean;
@@ -36,25 +37,16 @@ export default function MoveTopicModal({ isOpen, onClose, topicId, allForums }: 
           Sélectionnez le forum de destination pour ce sujet :
         </p>
         
-        <select
+        <ClassicSelect
           value={selectedForumId}
           onChange={(e) => setSelectedForumId(e.target.value)}
-          style={{
-            width: '100%',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '8px',
-            color: 'white',
-            padding: '0.8rem',
-            marginBottom: '1.5rem',
-            outline: 'none'
-          }}
+          containerStyle={{ marginBottom: "1.5rem" }}
         >
-          <option value="" disabled style={{ background: '#1a1a20' }}>Choisir un forum...</option>
+          <option value="" disabled>Choisir un forum...</option>
           {allForums.map(f => (
-            <option key={f.id} value={f.id} style={{ background: '#1a1a20' }}>{f.name}</option>
+            <option key={f.id} value={f.id}>{f.name}</option>
           ))}
-        </select>
+        </ClassicSelect>
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
           <ClassicButton onClick={onClose}>

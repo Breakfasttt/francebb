@@ -16,6 +16,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight, Palette } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -173,13 +174,10 @@ export default function OnboardingForm({ user }: { user: any }) {
                 <label>Numéro NAF</label>
                 <input name="nafNumber" defaultValue={formData.nafNumber} placeholder="Ex: 12345" />
              </div>
-             <div className="form-group">
-                <label>Région</label>
-                <select name="region" defaultValue={formData.region}>
-                   <option value="">Choisissez...</option>
-                   {regions.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
-                </select>
-             </div>
+              <ClassicSelect label="Région" name="region" defaultValue={formData.region}>
+                 <option value="">Choisissez...</option>
+                 {regions.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
+              </ClassicSelect>
              <div className="form-group full-width">
                 <label>Équipe fétiche</label>
                 <input name="equipe" defaultValue={formData.equipe} placeholder="Ex: The Red Barons" />

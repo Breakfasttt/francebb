@@ -2,6 +2,7 @@ import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { TokenData, PlayerRosterInfo } from '../page';
 import Token from './Token';
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import './FigurineBox.css';
 
 interface FigurineBoxProps {
@@ -31,10 +32,11 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
     <div ref={setNodeRef} className={`figurine-box ${team} ${isOver ? 'drag-over' : ''} ${isLoading ? 'loading' : ''}`}>
       <div className="box-header">
         <label>{team === 'blue' ? 'Équipe Bleue' : 'Équipe Rouge'}</label>
-        <select 
+        <ClassicSelect 
           onChange={(e) => onRosterSelect(e.target.value)} 
           defaultValue=""
-          className="roster-select-box"
+          size="sm"
+          containerStyle={{ width: "160px" }}
         >
           <option value="" disabled>Choisir Roster</option>
           {rosterList.map(r => (
@@ -42,7 +44,7 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
               {r.name}
             </option>
           ))}
-        </select>
+        </ClassicSelect>
       </div>
       <div className="box-content">
         {roster.length === 0 ? (

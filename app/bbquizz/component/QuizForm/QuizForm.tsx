@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { PlusCircle, Save, Undo2 } from "lucide-react";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import "./QuizForm.css";
 import "./QuizForm-mobile.css";
 import { translateCategory } from "../../utils";
@@ -52,22 +53,19 @@ export default function QuizForm({
       <form onSubmit={handleSubmit} className="quiz-form">
         <h2 className="form-title">{title}</h2>
         
-        <div className="form-group">
-          <label htmlFor="category">Catégorie</label>
-          <select 
-            id="category"
-            value={formData.category} 
-            onChange={e => setFormData({...formData, category: e.target.value})}
-            className="form-select"
-          >
-            <option>Règles</option>
-            <option>Lore / Univers</option>
-            <option>Compétences</option>
-            <option>Équipes</option>
-            <option>Star Players</option>
-            <option>Autre</option>
-          </select>
-        </div>
+        <ClassicSelect 
+          label="Catégorie"
+          id="category"
+          value={formData.category} 
+          onChange={e => setFormData({...formData, category: e.target.value})}
+        >
+          <option>Règles</option>
+          <option>Lore / Univers</option>
+          <option>Compétences</option>
+          <option>Équipes</option>
+          <option>Star Players</option>
+          <option>Autre</option>
+        </ClassicSelect>
 
         <div className="form-group">
           <label htmlFor="question">Question</label>

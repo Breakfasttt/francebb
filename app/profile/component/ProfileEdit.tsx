@@ -12,6 +12,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useTheme } from "next-themes";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -239,15 +240,17 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
               <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
             </div>
 
-            <div className="form-group">
-              <label>Région de tournoi</label>
-              <select name="region" value={formData.region} onChange={handleChange}>
-                <option value="">Sélectionnez une région</option>
-                {regions.map(r => (
-                  <option key={r.key} value={r.key}>{r.label}</option>
-                ))}
-              </select>
-            </div>
+            <ClassicSelect 
+              label="Région de tournoi" 
+              name="region" 
+              value={formData.region} 
+              onChange={handleChange}
+            >
+              <option value="">Sélectionnez une région</option>
+              {regions.map(r => (
+                <option key={r.key} value={r.key}>{r.label}</option>
+              ))}
+            </ClassicSelect>
 
             <div className="form-group">
               <label>Équipe Blood Bowl principale</label>

@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { updateLigue } from "@/app/ligues/actions";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "@/app/ligues/create/UserSearchWrapper";
 import { Shield, MapPin, Globe, Users, Info, Save } from "lucide-react";
@@ -93,27 +94,32 @@ export default async function EditLiguePage({
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div className="form-group">
-                  <label>Zone Géographique (NAF/Téléphone) *</label>
-                  <select name="geographicalZone" required className="admin-input" defaultValue={ligue.geographicalZone || ""}>
-                    {coachRegions.map(r => (
-                      <option key={r.key} value={r.key}>{r.label}</option>
-                    ))}
-                  </select>
-                </div>
+                <ClassicSelect 
+                  label="Zone Géographique (NAF/Téléphone) *" 
+                  name="geographicalZone" 
+                  required 
+                  defaultValue={ligue.geographicalZone || ""}
+                >
+                  {coachRegions.map(r => (
+                    <option key={r.key} value={r.key}>{r.label}</option>
+                  ))}
+                </ClassicSelect>
+
                 <div className="form-group">
                   <label>Ville siège</label>
                   <input type="text" name="ville" className="admin-input" defaultValue={ligue.ville || ""} />
                 </div>
-                <div className="form-group">
-                  <label>Département</label>
-                  <select name="departement" className="admin-input" defaultValue={ligue.departement || ""}>
-                    <option value="">Sélectionner</option>
-                    {departments.map(d => (
-                       <option key={d.key} value={d.label}>{d.label}</option>
-                    ))}
-                  </select>
-                </div>
+
+                <ClassicSelect 
+                  label="Département" 
+                  name="departement" 
+                  defaultValue={ligue.departement || ""}
+                >
+                  <option value="">Sélectionner</option>
+                  {departments.map(d => (
+                     <option key={d.key} value={d.label}>{d.label}</option>
+                  ))}
+                </ClassicSelect>
                 <div className="form-group">
                   <label>Région administrative</label>
                   <input type="text" name="region" className="admin-input" defaultValue={ligue.region || ""} />

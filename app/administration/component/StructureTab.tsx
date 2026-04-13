@@ -19,6 +19,7 @@ import {
   updateCategory, updateForum
 } from "../actionsStructure";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 import {
   closestCenter, DndContext, DragEndEvent, DragOverlay,
@@ -570,10 +571,10 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           <div className="panel-field">
             <label>Droits d&apos;accès minimum</label>
             <p>Rôle minimum requis pour y accéder.</p>
-            <select className="default-input" value={formAllowedRoles} onChange={e => setFormAllowedRoles(e.target.value)} disabled={isPending}>
+            <ClassicSelect value={formAllowedRoles} onChange={e => setFormAllowedRoles(e.target.value)} disabled={isPending}>
               <option value="ALL">🌐 Public (ALL)</option>
               {availableDbRoles.map(r => (<option key={r.name} value={r.name}>{r.label} et supérieurs</option>))}
-            </select>
+            </ClassicSelect>
           </div>
 
 

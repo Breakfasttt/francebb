@@ -14,6 +14,7 @@ import UserSearch from "@/common/components/UserSearch/UserSearch";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import dynamic from "next/dynamic";
 import Modal from "@/common/components/Modal/Modal";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 const MapPicker = dynamic(() => import("./MapPicker"), { 
   ssr: false,
@@ -242,46 +243,44 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
 
               <SectionSeparator icon={<MapPin size={18} />} title="Lieu / Localisation" />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <div className="form-group">
-                  <label>Région de tournoi (NAF)</label>
-                  <select name="tRegionNAF" className="admin-input" defaultValue={initialData?.regionNAF || ""}>
-                    <option value="">Sélectionner</option>
-                    {referenceData.coachRegions.map(r => (
+                <ClassicSelect 
+                  label="Région de tournoi (NAF)" 
+                  name="tRegionNAF" 
+                  defaultValue={initialData?.regionNAF || ""}
+                >
+                  <option value="">Sélectionner</option>
+                  {referenceData.coachRegions.map(r => (
+                    <option key={r.key} value={r.key}>{r.label}</option>
+                  ))}
+                </ClassicSelect>
+
+                <ClassicSelect 
+                  label="Région (France)" 
+                  name="tRegion" 
+                  value={selectedRegion}
+                  onChange={(e) => {
+                      setSelectedRegion(e.target.value);
+                      setSelectedDept("");
+                  }}
+                >
+                  <option value="">Sélectionner</option>
+                  {referenceData.franceRegions.map(r => (
                       <option key={r.key} value={r.key}>{r.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Région (France)</label>
-                  <select 
-                    name="tRegion" 
-                    className="admin-input" 
-                    value={selectedRegion}
-                    onChange={(e) => {
-                        setSelectedRegion(e.target.value);
-                        setSelectedDept("");
-                    }}
-                  >
-                    <option value="">Sélectionner</option>
-                    {referenceData.franceRegions.map(r => (
-                        <option key={r.key} value={r.key}>{r.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Département</label>
-                  <select 
-                    name="tDept" 
-                    className="admin-input" 
-                    value={selectedDept}
-                    onChange={(e) => setSelectedDept(e.target.value)}
-                  >
-                    <option value="">Sélectionner</option>
-                    {filteredDepartments.map(d => (
-                        <option key={d.key} value={d.key}>{d.label}</option>
-                    ))}
-                  </select>
-                </div>
+                  ))}
+                </ClassicSelect>
+
+                <ClassicSelect 
+                  label="Département" 
+                  name="tDept" 
+                  value={selectedDept}
+                  onChange={(e) => setSelectedDept(e.target.value)}
+                >
+                  <option value="">Sélectionner</option>
+                  {filteredDepartments.map(d => (
+                      <option key={d.key} value={d.key}>{d.label}</option>
+                  ))}
+                </ClassicSelect>
+
                 <div className="form-group">
                   <label>Ville</label>
                   <input type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex: Lyon" className="admin-input" />
@@ -370,22 +369,15 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                       }}
                     />
                   </div>
-                  <div className="form-group">
-                    <label>Système d&apos;appariement</label>
-                    <select 
-                      className="admin-input" 
-                      value={pairingType} 
-                      onChange={(e) => setPairingType(e.target.value as any)}
-                    >
-                      <option value="INDIVIDUEL">Individuel (Partiel)</option>
-                      <option value="EQUIPE">Par équipe (Total)</option>
-                    </select>
-                    <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.4rem', marginBottom: 0 }}>
-                      {pairingType === "INDIVIDUEL" 
-                        ? "Scores individuels (ex: Coupe de France)." 
-                        : "Appariements et scores collectifs."}
-                    </p>
-                  </div>
+                  
+                  <ClassicSelect 
+                    label="Système d'appariement"
+                    value={pairingType} 
+                    onChange={(e) => setPairingType(e.target.value as any)}
+                  >
+                    <option value="INDIVIDUEL">Individuel (Partiel)</option>
+                    <option value="EQUIPE">Par équipe (Total)</option>
+                  </ClassicSelect>
                 </div>
               )}
 
@@ -470,38 +462,45 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
 
               <SectionSeparator icon={<Monitor size={18} />} title="Plateforme & Édition" />
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-                <div className="form-group">
-                  <label>Plateforme</label>
-                  <select name="tPlatform" className="admin-input" defaultValue={initialData?.platform || "Tabletop"}>
-                    {referenceData.platforms.map(p => (
-                        <option key={p.key} value={p.key}>{p.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Édition du jeu</label>
-                  <select name="tGame" className="admin-input" defaultValue={initialData?.gameEdition || "BB2025"}>
-                    {referenceData.gameEditions.map(g => (
-                        <option key={g.key} value={g.key}>{g.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Format de tournoi</label>
-                  <select name="tStructure" className="admin-input" defaultValue={initialData?.structure || "Resurrection"}>
-                    {referenceData.tournamentFormats.map(s => (
-                        <option key={s.key} value={s.key}>{s.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Type de tournoi</label>
-                  <select name="tournamentType" className="admin-input" defaultValue={initialData?.tournamentType || "SWISS"}>
-                    {referenceData.tournamentTypes.map(t => (
-                        <option key={t.key} value={t.key}>{t.label}</option>
-                    ))}
-                  </select>
-                </div>
+                <ClassicSelect 
+                  label="Plateforme" 
+                  name="tPlatform" 
+                  defaultValue={initialData?.platform || "Tabletop"}
+                >
+                  {referenceData.platforms.map(p => (
+                      <option key={p.key} value={p.key}>{p.label}</option>
+                  ))}
+                </ClassicSelect>
+
+                <ClassicSelect 
+                  label="Édition du jeu" 
+                  name="tGame" 
+                  defaultValue={initialData?.gameEdition || "BB2025"}
+                >
+                  {referenceData.gameEditions.map(g => (
+                      <option key={g.key} value={g.key}>{g.label}</option>
+                  ))}
+                </ClassicSelect>
+
+                <ClassicSelect 
+                  label="Format de tournoi" 
+                  name="tStructure" 
+                  defaultValue={initialData?.structure || "Resurrection"}
+                >
+                  {referenceData.tournamentFormats.map(s => (
+                      <option key={s.key} value={s.key}>{s.label}</option>
+                  ))}
+                </ClassicSelect>
+
+                <ClassicSelect 
+                  label="Type de tournoi" 
+                  name="tournamentType" 
+                  defaultValue={initialData?.tournamentType || "SWISS"}
+                >
+                  {referenceData.tournamentTypes.map(t => (
+                      <option key={t.key} value={t.key}>{t.label}</option>
+                  ))}
+                </ClassicSelect>
               </div>
               <div className="form-group" style={{ marginTop: '1rem' }}>
                 <label>Ruleset (Pack de règles)</label>

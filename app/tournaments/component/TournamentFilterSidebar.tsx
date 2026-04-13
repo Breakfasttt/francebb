@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
@@ -167,19 +168,17 @@ export default function TournamentFilterSidebar() {
           <div className="section-content">
             {section.filters.map((filter, j) => (
                <div key={j} className="filter-item">
-                 {filter.type === "select" ? (
-                   <>
-                     <label>{filter.label}</label>
-                     <select 
-                       value={searchParams.get(filter.name) || "Toutes"}
-                       onChange={(e) => handleFilterChange(filter.name, e.target.value === "Toutes" ? "" : e.target.value)}
-                     >
-                       {(filter as any).options?.map((opt: string) => {
-                         const [val, label] = opt.includes('|') ? opt.split('|') : [opt, opt];
-                         return <option key={val} value={val}>{label}</option>;
-                       })}
-                     </select>
-                   </>
+                  {filter.type === "select" ? (
+                   <ClassicSelect
+                     label={filter.label}
+                     value={searchParams.get(filter.name) || "Toutes"}
+                     onChange={(e) => handleFilterChange(filter.name, e.target.value === "Toutes" ? "" : e.target.value)}
+                   >
+                     {(filter as any).options?.map((opt: string) => {
+                       const [val, label] = opt.includes('|') ? opt.split('|') : [opt, opt];
+                       return <option key={val} value={val}>{label}</option>;
+                     })}
+                   </ClassicSelect>
                  ) : filter.type === "checkbox" ? (
                    <label className="checkbox-label">
                      <input 

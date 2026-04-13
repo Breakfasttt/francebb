@@ -2,6 +2,7 @@
 
 import { X, Clock, LayoutGrid, LayoutList } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 interface ActiveFiltersProps {
   currentSort: string;
@@ -110,20 +111,12 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
           </button>
         </div>
 
-        <div className="sort-box-compact" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', minWidth: '220px' }}>
-          <Clock size={16} color="var(--accent)" />
-          <select 
-            value={currentSort} 
+        <div className="sort-box-compact" style={{ flex: 1, minWidth: "220px" }}>
+          <ClassicSelect
+            value={currentSort}
             onChange={(e) => handleSortChange(e.target.value)}
-            style={{ 
-              flex: 1, 
-              background: 'var(--glass-bg)', 
-              border: '1px solid var(--glass-border)', 
-              borderRadius: '6px', 
-              padding: '0.4rem', 
-              color: 'var(--foreground)',
-              fontSize: '0.85rem'
-            }}
+            icon={Clock}
+            containerStyle={{ gap: 0 }}
           >
             <option value="date_asc">Date (plus proche)</option>
             <option value="date_desc">Date (plus lointain)</option>
@@ -131,7 +124,7 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
             <option value="price_desc">Prix (décroissant)</option>
             <option value="participants_asc">Places (croissant)</option>
             <option value="participants_desc">Places (décroissant)</option>
-          </select>
+          </ClassicSelect>
         </div>
       </div>
     </div>
