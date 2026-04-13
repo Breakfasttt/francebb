@@ -35,7 +35,8 @@
   justify-content: center;
   align-items: stretch;
   gap: 0.8rem;
-  max-width: 1200px; /* Augmenté pour 5 colonnes */
+  max-width: 1200px;
+  /* Augmenté pour 5 colonnes */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -173,7 +174,7 @@
   align-items: flex-start;
   margin-bottom: 0.2rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .column {
@@ -183,7 +184,8 @@
 
 .section-title {
   font-size: 0.9rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 1.5rem;
+  /* Augmenté pour laisser de la place aux badges absolus */
   color: var(--foreground);
   font-weight: 900;
   border-left: 5px solid var(--accent);
@@ -199,53 +201,59 @@
 }
 
 .tournament-home-card {
-  padding: 1.2rem !important;
-  height: 120px !important;
-  min-height: 120px;
+  padding: 2.2rem 1.2rem 1.2rem 1.2rem !important;
+  min-height: 150px;
+  height: auto !important;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
   overflow: visible !important;
   background: var(--home-card-bg) !important;
+  position: relative;
 }
 
 .tournament-home-card:hover {
   transform: translateY(-8px) !important;
   border-color: var(--primary) !important;
-  box-shadow: 0 10px 40px rgba(194, 29, 29, 0.6) !important;
+  box-shadow: 0 10px 40px var(--primary-transparent) !important;
   z-index: 50;
 }
 
 .tourney-status-badge {
-  font-size: 0.6rem;
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  font-size: 0.65rem;
   font-weight: 900;
-  padding: 0.2rem 0.6rem;
+  padding: 0.3rem 0.8rem;
   background: var(--primary);
-  color: var(--badge-text);
-  border-radius: 4px;
-  margin-bottom: 0.4rem;
-  align-self: flex-start;
+  color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px var(--primary-transparent);
+  z-index: 10;
 }
 
 .tourney-title {
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
+  font-size: 1.05rem;
+  margin: 0 0 0.8rem 0;
   font-weight: 900;
-  line-height: 1.6 !important;
-  height: auto !important;
-  white-space: nowrap;
-  overflow: visible !important;
-  text-overflow: ellipsis;
+  line-height: 1.3;
   color: var(--foreground);
 }
 
 .tourney-meta {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.75rem;
+  gap: 0.6rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.tourney-meta svg {
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
 .see-all-link-compact {
@@ -261,21 +269,22 @@
 .random-article-wrapper {
   background: var(--home-card-bg) !important;
   border-radius: 16px;
-  padding: 1.2rem;
+  padding: 1.5rem;
   border: 1px solid var(--home-card-border);
   display: flex;
   flex-direction: column;
-  height: 120px !important;
-  min-height: 120px;
+  height: 140px !important;
+  min-height: 140px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  justify-content: center;
 }
 
 .random-article-wrapper:hover {
   transform: translateY(-8px) !important;
   border-color: var(--primary) !important;
-  box-shadow: 0 10px 40px rgba(194, 29, 29, 0.6) !important;
+  box-shadow: 0 10px 40px var(--primary-transparent) !important;
   z-index: 50;
 }
 
@@ -315,7 +324,7 @@
   color: var(--text-muted);
   font-size: 0.7rem;
   text-decoration: none;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   margin-top: 0.4rem;
 }
 
