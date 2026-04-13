@@ -423,6 +423,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         onClose={() => setBanModal(v => ({...v, isOpen: false}))}
         onConfirm={confirmBanToggle}
         title={banModal.isBanning ? "Bannir l'utilisateur" : "Débannir l'utilisateur"}
+        variant={banModal.isBanning ? "danger" : "primary"}
+        confirmText={banModal.isBanning ? "Bannir" : "Débannir"}
       >
         <p style={{ color: '#ccc', marginBottom: '1rem', lineHeight: 1.5 }}>
           {banModal.isBanning 
@@ -453,19 +455,6 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             />
           </div>
         )}
-
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
-          <ClassicButton onClick={() => setBanModal(v => ({...v, isOpen: false}))}>
-            Annuler
-          </ClassicButton>
-          <AdminButton 
-            onClick={confirmBanToggle} 
-            isLoading={isPending}
-            style={{ background: banModal.isBanning ? '#ef4444' : '#22c55e', color: 'white', borderColor: banModal.isBanning ? '#ef4444' : '#22c55e' }}
-          >
-            Confirmer
-          </AdminButton>
-        </div>
       </Modal>
 
       <Modal 

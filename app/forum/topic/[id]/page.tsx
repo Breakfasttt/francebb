@@ -115,7 +115,12 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           skip,
           take: POSTS_PER_PAGE,
           include: {
-            author: { include: { ligues: true } },
+            author: { 
+              include: { 
+                ligues: true,
+                _count: { select: { posts: true } }
+              } 
+            },
             moderator: true,
             reactions: true
           }
@@ -148,7 +153,12 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       where: { topicId: id },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
       include: {
-        author: { include: { ligues: true } },
+        author: { 
+          include: { 
+            ligues: true,
+            _count: { select: { posts: true } }
+          } 
+        },
         moderator: true,
         reactions: true
       }

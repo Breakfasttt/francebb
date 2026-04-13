@@ -49,11 +49,6 @@ export default function UserAvatar({ image, name, postCount = 0, size = 48, clas
       )}
       <div className={`avatar-frame-border rank-${rank}`} />
       
-      {isBanned && (
-        <div className="avatar-banned-overlay">
-          BAN
-        </div>
-      )}
     </div>
   );
 }
