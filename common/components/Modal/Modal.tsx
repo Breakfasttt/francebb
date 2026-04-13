@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { X } from "lucide-react";
 import ClassicButton from "../Button/ClassicButton";
 import CTAButton from "../Button/CTAButton";
 import DangerButton from "../Button/DangerButton";
@@ -36,10 +37,22 @@ export default function Modal({
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") onClose();
+  }, [onClose]);
+
   useEffect(() => {
     setMounted(true);
-    return () => setMounted(false);
-  }, []);
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+      setMounted(false);
+    };
+  }, [isOpen, handleKeyDown]);
 
   if (!isOpen || !mounted) return null;
 
@@ -70,8 +83,12 @@ export default function Modal({
   };
 
   return createPortal(
-    <div className="modal-overlay">
-      <div className="modal-content" style={{ maxWidth }}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" style={{ maxWidth }} onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose} title="Fermer">
+          <X size={20} />
+        </button>
+        
         <h2>{title}</h2>
         {message && <p>{message}</p>}
         {children}
@@ -106,7 +123,7 @@ export default function Modal({
           background: var(--card-bg);
           backdrop-filter: blur(16px);
           border: 1px solid var(--glass-border);
-          border-radius: 20px;
+          border-radius: 24px;
           padding: 2.5rem;
           max-width: ${maxWidth};
           width: 100%;
@@ -115,12 +132,38 @@ export default function Modal({
           position: relative;
         }
 
+        .modal-close-btn {
+          position: absolute;
+          top: 1.5rem;
+          right: 1.5rem;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--glass-border);
+          color: var(--foreground);
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          opacity: 0.6;
+          z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+          opacity: 1;
+          background: rgba(255, 255, 255, 0.1);
+          transform: rotate(90deg);
+        }
+
         h2 {
           color: var(--primary);
           margin-bottom: 1.5rem;
           font-size: 1.5rem;
-          font-weight: 700;
-          letter-spacing: -0.01em;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
           border-bottom: 2px solid var(--primary-transparent);
           padding-bottom: 0.8rem;
           display: inline-block;
