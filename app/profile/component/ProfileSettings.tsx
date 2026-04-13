@@ -1,7 +1,7 @@
 import { useTransition, useState } from "react";
-import { ShieldAlert, Trash2, Mail, LogOut, KeyRound } from "lucide-react";
+import { ShieldAlert, Trash2, Mail, LogOut, KeyRound, Bell, CheckCircle2, XCircle } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { deleteAccount } from "../actions";
+import { deleteAccount, updateNotificationSettings } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
 import toast from "react-hot-toast";
 
@@ -11,8 +11,35 @@ interface ProfileSettingsProps {
 
 export default function ProfileSettings({ user }: ProfileSettingsProps) {
   const [isDeleting, startDeletion] = useTransition();
+  const [isSavingNotif, startSavingNotif] = useTransition();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showFinalModal, setShowFinalModal] = useState(false);
+
+  // Notifications state
+  const [notifSettings, setNotifSettings] = useState({
+    notifPm: user.notifPm ?? true,
+    notifMention: user.notifMention ?? true,
+    notifFollowedTopic: user.notifFollowedTopic ?? true,
+    notifNewsletter: user.notifNewsletter ?? true,
+  });
+
+  const handleUpdateNotif = (key: string, value: boolean) => {
+    const newSettings = { ...notifSettings, [key]: value };
+    setNotifSettings(newSettings);
+
+    startSavingNotif(async () => {
+      try {
+        const result = await updateNotificationSettings(newSettings);
+        if (result.success) {
+          toast.success("Préférences de notification mises à jour");
+        }
+      } catch (err) {
+        toast.error("Erreur lors de la mise à jour");
+        // Revert on error
+        setNotifSettings(notifSettings);
+      }
+    });
+  };
 
   const handleDeleteAccount = () => {
     startDeletion(async () => {
@@ -28,6 +55,9 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
     });
   };
 
+  const hasDiscord = user.accounts?.some((a: any) => a.provider === "discord");
+  const hasGoogle = user.accounts?.some((a: any) => a.provider === "google");
+
   return (
     <PremiumCard className="profile-settings-view fade-in">
       <div className="section-header-pm" style={{ marginBottom: '2rem' }}>
@@ -35,6 +65,7 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
         <h3 className="activity-box-title">Gestion du compte & Sécurité</h3>
       </div>
 
+      {/* Authentication */}
       <div className="settings-section">
         <h4 className="settings-subtitle"><KeyRound size={16} /> Authentification</h4>
         <div className="auth-providers-list">
@@ -44,27 +75,65 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
               <span className="auth-label">Email de connexion</span>
               <span className="auth-value">{user.email || "Non renseigné"}</span>
             </div>
-            <span className="auth-status">Actif</span>
+            <span className="auth-status"><CheckCircle2 size={12} /> Actif</span>
           </div>
 
-          <div className="auth-item discord-item disabled">
+          <div className={`auth-item ${hasDiscord ? 'active' : 'disabled'}`}>
              <div className="auth-info">
               <span className="auth-label">Discord</span>
-              <span className="auth-value">Non lié</span>
+              <span className="auth-value">{hasDiscord ? "Compte lié" : "Non lié"}</span>
             </div>
-             <button className="link-btn">Lier</button>
+            {hasDiscord ? (
+              <span className="auth-status"><CheckCircle2 size={12} /> Lié</span>
+            ) : (
+              <XCircle size={18} className="inactive-icon" />
+            )}
           </div>
 
-          <div className="auth-item google-item disabled">
+          <div className={`auth-item ${hasGoogle ? 'active' : 'disabled'}`}>
              <div className="auth-info">
               <span className="auth-label">Google</span>
-              <span className="auth-value">Non lié</span>
+              <span className="auth-value">{hasGoogle ? "Compte lié" : "Non lié"}</span>
             </div>
-             <button className="link-btn">Lier</button>
+            {hasGoogle ? (
+              <span className="auth-status"><CheckCircle2 size={12} /> Lié</span>
+            ) : (
+              <XCircle size={18} className="inactive-icon" />
+            )}
           </div>
         </div>
       </div>
 
+      {/* Email Notifications */}
+      <div className="settings-section">
+        <h4 className="settings-subtitle"><Bell size={16} /> Notifications par mail</h4>
+        <div className="notif-settings-list">
+          {[
+            { id: 'notifPm', label: 'Messages Privés', desc: "Nouveau message dans votre boîte de réception" },
+            { id: 'notifMention', label: 'Mentions', desc: "Quelqu'un vous cite dans un sujet" },
+            { id: 'notifFollowedTopic', label: 'Sujets suivis', desc: "Nouveau message dans un sujet que vous suivez" },
+            { id: 'notifNewsletter', label: 'Newsletter & Annonces', desc: "Informations importantes sur la plateforme" },
+          ].map((item) => (
+            <div key={item.id} className="notif-item">
+              <div className="notif-info">
+                <span className="notif-label-inner">{item.label}</span>
+                <span className="notif-desc">{item.desc}</span>
+              </div>
+              <label className="switch">
+                <input 
+                  type="checkbox" 
+                  checked={(notifSettings as any)[item.id]} 
+                  onChange={(e) => handleUpdateNotif(item.id, e.target.checked)}
+                  disabled={isSavingNotif}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Danger Zone */}
       <div className="settings-section danger-zone">
         <h4 className="settings-subtitle danger"><Trash2 size={16} /> Zone de danger</h4>
         <div className="danger-box">
@@ -195,6 +264,96 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           cursor: not-allowed;
           opacity: 0.5;
         }
+        .notif-settings-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1.2rem;
+        }
+        .notif-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.2rem;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid var(--glass-border);
+          border-radius: 12px;
+          transition: all 0.2s;
+        }
+        .notif-item:hover {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: var(--primary-transparent);
+        }
+        .notif-info {
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
+        }
+        .notif-label-inner {
+          font-size: 0.95rem;
+          font-weight: 700;
+          color: var(--foreground);
+        }
+        .notif-desc {
+          font-size: 0.75rem;
+          color: var(--text-muted);
+        }
+        .inactive-icon {
+          color: var(--text-muted);
+          opacity: 0.3;
+        }
+
+        /* Toggle Switch UI */
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 44px;
+          height: 24px;
+          flex-shrink: 0;
+        }
+        .switch input { 
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: var(--glass-border);
+          transition: .4s;
+          border: 1px solid var(--glass-border);
+        }
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 18px;
+          width: 18px;
+          left: 2px;
+          bottom: 2px;
+          background-color: white;
+          transition: .4s;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider {
+          background-color: var(--primary);
+          border-color: var(--primary);
+        }
+        input:focus + .slider {
+          box-shadow: 0 0 1px var(--primary);
+        }
+        input:checked + .slider:before {
+          transform: translateX(20px);
+        }
+        .slider.round {
+          border-radius: 24px;
+        }
+        .slider.round:before {
+          border-radius: 50%;
+        }
+
         .danger-box {
           display: flex;
           justify-content: space-between;

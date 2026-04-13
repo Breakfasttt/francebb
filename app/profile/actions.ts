@@ -593,3 +593,21 @@ export async function updateTheme(theme: string) {
   revalidatePath("/", "layout");
   return { success: true };
 }
+
+export async function updateNotificationSettings(settings: {
+  notifPm: boolean;
+  notifMention: boolean;
+  notifFollowedTopic: boolean;
+  notifNewsletter: boolean;
+}) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non connecté");
+
+  await prisma.user.update({
+    where: { id: session.user.id },
+    data: settings
+  });
+
+  revalidatePath("/profile");
+  return { success: true };
+}
