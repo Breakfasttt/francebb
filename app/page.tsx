@@ -141,9 +141,8 @@ export default async function Home() {
                     as={t.topic ? Link : 'div'} 
                     href={t.topic ? `/forum/topic/${t.topic.id}` : undefined}
                     hoverEffect 
-                    className="tournament-home-card overflow-visible"
+                    className="tournament-home-card"
                   >
-                    <div className="tourney-status-badge">À VENIR</div>
                     <h3 className="tourney-title">{t.topic?.title || t.name || "Tournoi sans titre"}</h3>
                     <div className="tourney-meta">
                       <MapPin size={12} /> <span>{t.location || "Lieu à définir"}</span>
@@ -157,31 +156,25 @@ export default async function Home() {
                 <p className="empty-msg">Aucun tournoi prévu.</p>
               )}
             </div>
-            <Link href="/tournaments" className="see-all-link-compact">
-              Agenda Complet
-            </Link>
           </div>
 
-              <div className="column article-column">
-                <h2 className="section-title">Article Aléatoire</h2>
-                {selectedArticle ? (
-                  <>
-                    <div className="random-article-wrapper">
-                      <Link href={`/articles/${selectedArticle.id}`} className="home-article-link">
-                        <div className="home-article-content">
-                          <BookOpen size={16} className="icon-accent" style={{ marginBottom: '0.4rem' }} />
-                          <h3 className="home-article-title">{selectedArticle.title}</h3>
-                          <div className="home-article-meta">
-                            par <span className="author-name">{selectedArticle.author?.name || "Anonyme"}</span>
-                          </div>
-                        </div>
-                      </Link>
+          <div className="column article-column">
+            <h2 className="section-title">Article Aléatoire</h2>
+            {selectedArticle ? (
+              <>
+                <div className="random-article-wrapper">
+                  <Link href={`/articles/${selectedArticle.id}`} className="home-article-link">
+                    <div className="home-article-content">
+                      <BookOpen size={16} className="icon-accent" style={{ marginBottom: '0.4rem' }} />
+                      <h3 className="home-article-title">{selectedArticle.title}</h3>
+                      <div className="home-article-meta">
+                        par <span className="author-name">{selectedArticle.author?.name || "Anonyme"}</span>
+                      </div>
                     </div>
-                    <Link href="/articles" className="see-all-link-compact">
-                      Tous les articles
-                    </Link>
-                  </>
-                ) : (
+                  </Link>
+                </div>
+              </>
+            ) : (
               <div className="empty-article-box">
                 <FileText size={40} opacity={0.3} />
                 <p>Aucun article publié.</p>

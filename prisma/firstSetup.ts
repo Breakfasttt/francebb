@@ -247,13 +247,27 @@ async function firstSetup() {
   for (const res of systemResources) {
     await prisma.resource.upsert({
       where: { id: res.id },
-      update: { isSystem: true, status: "APPROVED" },
+      update: { 
+        isSystem: true, 
+        status: "APPROVED",
+        tags: {
+          connectOrCreate: {
+            where: { name: "officiel" },
+            create: { name: "officiel" }
+          }
+        }
+      },
       create: {
-        id: res.id,
         ...res,
         status: "APPROVED",
         isSystem: true,
-        authorId: systemUserId
+        authorId: systemUserId,
+        tags: {
+          connectOrCreate: {
+            where: { name: "officiel" },
+            create: { name: "officiel" }
+          }
+        }
       }
     });
   }
