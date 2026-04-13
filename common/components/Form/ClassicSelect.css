@@ -1,0 +1,75 @@
+.classic-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.classic-select-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.classic-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.classic-select-field {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.8rem 2.5rem 0.8rem 1.2rem;
+  font-size: 1rem;
+  background: var(--input-bg, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--glass-border);
+  color: var(--foreground);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  outline: none;
+  cursor: pointer;
+}
+
+.classic-select-field:focus {
+  border-color: var(--primary);
+  background: var(--input-focus-bg, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 0 0 3px var(--primary-transparent);
+}
+
+.classic-select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.classic-select-field:focus + .classic-select-arrow {
+  color: var(--primary);
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Base style for options to ensure contrast with theme */
+.classic-select-field option {
+  background-color: var(--card-bg, #fff);
+  color: var(--foreground, #000);
+  padding: 10px;
+}
+
+/* Responsive specifics */
+@media (max-width: 768px) {
+  .classic-select-field {
+    padding: 0.7rem 2.2rem 0.7rem 1rem;
+    font-size: 0.95rem;
+  }
+}

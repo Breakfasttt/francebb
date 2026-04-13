@@ -69,6 +69,13 @@ Tu es un développeur senior TypeScript spécialisé Next.js et Prisma.
     - `BadgeButton` (Liens discrets, profil, MP dans les sidebars)
     - `ExplainButton` (Aide et explications, couleur d'accentuation or/jaune)
 - **ARCHITECTURE** : Pour les Server Components, passer l'icône sous forme d'élément JSX : `icon={<Icon size={18} />}`.
+
+### 📋 Formulaires (`common/components/Form/`)
+- `ClassicSelect` : Composant de liste déroulante (droplist) standardisé.
+    - **Usage** : Filtrage, sélection de catégories, options de compte.
+    - **Style** : Theme-aware, flèche personnalisée, supporte les icônes de gauche.
+    - **Règle** : Toujours utiliser `ClassicSelect` au lieu de `<select>` natif pour garantir la cohérence visuelle.
+- **SELECTS / LISTES** : Utiliser exclusivement `ClassicSelect` pour les formulaires.
 - **THÈMES** : Ne jamais écrire de couleurs en dur. Utiliser les variables CSS.
 - **ICÔNES** : Lucide React exclusivement.
 - **UX** : Utiliser `PremiumCard` (Glassmorphism) et `Toast` pour les notifications.

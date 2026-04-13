@@ -163,7 +163,7 @@ label {
 }
 
 select option {
-  background-color: var(--secondary);
+  background-color: var(--card-bg); /* Use card-bg which is usually theme-friendly */
   color: var(--foreground);
 }
 

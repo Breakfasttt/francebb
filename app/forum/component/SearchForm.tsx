@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Filter, Calendar, User, FolderTree, Loader2 } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
 
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
+
 export interface ForumOption {
   id: string;
   name: string;
@@ -98,52 +100,43 @@ export default function SearchForm({
         </div>
 
         {/* Forum cible */}
-        <div className="search-input-group">
-          <label>
-            <FolderTree size={14} /> Forum
-          </label>
-          <select 
-            value={forumId} 
-            onChange={(e) => setForumId(e.target.value)}
-          >
-            <option value="">Tous les forums</option>
-            {forums.map(f => (
-              <option key={f.id} value={f.id}>
-                {"\u00A0".repeat(f.level * 4)}{f.level > 0 ? "↳ " : ""}{f.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ClassicSelect
+          label="Forum"
+          icon={FolderTree}
+          value={forumId}
+          onChange={(e) => setForumId(e.target.value)}
+        >
+          <option value="">Tous les forums</option>
+          {forums.map(f => (
+            <option key={f.id} value={f.id}>
+              {"\u00A0".repeat(f.level * 4)}{f.level > 0 ? "↳ " : ""}{f.name}
+            </option>
+          ))}
+        </ClassicSelect>
 
         {/* Date */}
-        <div className="search-input-group">
-          <label>
-            <Calendar size={14} /> Date
-          </label>
-          <select 
-            value={date} 
-            onChange={(e) => setDate(e.target.value)}
-          >
-            <option value="all">Toutes les dates</option>
-            <option value="7d">Depuis 7 jours</option>
-            <option value="30d">Depuis 1 mois</option>
-            <option value="1y">Depuis 1 an</option>
-          </select>
-        </div>
+        <ClassicSelect
+          label="Date"
+          icon={Calendar}
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        >
+          <option value="all">Toutes les dates</option>
+          <option value="7d">Depuis 7 jours</option>
+          <option value="30d">Depuis 1 mois</option>
+          <option value="1y">Depuis 1 an</option>
+        </ClassicSelect>
         
         {/* Trier par */}
-        <div className="search-input-group">
-          <label>
-            <Filter size={14} /> Trier par
-          </label>
-          <select 
-            value={sortBy} 
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="desc">Plus récents d'abord</option>
-            <option value="asc">Plus anciens d'abord</option>
-          </select>
-        </div>
+        <ClassicSelect
+          label="Trier par"
+          icon={Filter}
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="desc">Plus récents d'abord</option>
+          <option value="asc">Plus anciens d'abord</option>
+        </ClassicSelect>
 
       </div>
 
