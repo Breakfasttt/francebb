@@ -508,19 +508,7 @@ export async function deleteAccount() {
 
   try {
     await prisma.$transaction(async (tx) => {
-      // 1. Supprimer les données privées et sensibles
-      await tx.account.deleteMany({ where: { userId } });
-      await tx.session.deleteMany({ where: { userId } });
-      await tx.topicView.deleteMany({ where: { userId } });
-      await tx.postReaction.deleteMany({ where: { userId } });
-      await tx.mention.deleteMany({ where: { OR: [{ mentionerId: userId }, { mentionedUserId: userId }] } });
-      
-      // 2. Supprimer les messages privés et conversations associées
-      await tx.privateMessage.deleteMany({ where: { authorId: userId } });
-      await tx.conversation.deleteMany({ where: { OR: [{ user1Id: userId }, { user2Id: userId }] } });
-
-      // 3. Anonymiser l'activité publique pour ne pas casser la structure du forum
-      // On vérifie si l'utilisateur "Ghost" existe, sinon on le crée
+      // 1. Définir l'utilisateur de secours (Ghost) pour l'anonymisation
       const ghostId = "ghost_coach";
       let ghost = await tx.user.findUnique({ where: { id: ghostId } });
       if (!ghost) {
@@ -530,11 +518,28 @@ export async function deleteAccount() {
             name: "Coach Inconnu",
             email: "ghost@breakfasttt.fr",
             role: "COACH",
-            isBanned: true // Pour éviter toute connexion
+            isBanned: true
           }
         });
       }
 
+      // 2. Supprimer les données privées, éphémères ou sensibles
+      await tx.account.deleteMany({ where: { userId } });
+      await tx.session.deleteMany({ where: { userId } });
+      await tx.topicView.deleteMany({ where: { userId } });
+      await tx.postReaction.deleteMany({ where: { userId } });
+      await tx.articleReaction.deleteMany({ where: { userId } });
+      await tx.mention.deleteMany({ where: { OR: [{ mentionerId: userId }, { mentionedUserId: userId }] } });
+      await tx.tournamentRegistration.deleteMany({ where: { userId } });
+      await tx.tournamentMercenary.deleteMany({ where: { userId } });
+      await tx.tournamentTeamMember.deleteMany({ where: { userId } });
+      await tx.quizAttempt.deleteMany({ where: { userId } });
+      
+      // 3. Supprimer les messages privés et conversations associées
+      await tx.privateMessage.deleteMany({ where: { authorId: userId } });
+      await tx.conversation.deleteMany({ where: { OR: [{ user1Id: userId }, { user2Id: userId }] } });
+
+      // 4. Anonymiser l'activité publique (Forum, Articles, Ligues, Tournois, Quiz)
       await tx.topic.updateMany({
         where: { authorId: userId },
         data: { authorId: ghostId }
@@ -543,6 +548,31 @@ export async function deleteAccount() {
       await tx.post.updateMany({
         where: { authorId: userId },
         data: { authorId: ghostId, content: "[Ce message a été supprimé suite à la clôture du compte]" }
+      });
+
+      await tx.article.updateMany({
+        where: { authorId: userId },
+        data: { authorId: ghostId }
+      });
+
+      await tx.ligue.updateMany({
+        where: { creatorId: userId },
+        data: { creatorId: ghostId }
+      });
+
+      await tx.tournamentTeam.updateMany({
+        where: { captainId: userId },
+        data: { captainId: ghostId }
+      });
+
+      await tx.quizQuestionSuggestion.updateMany({
+        where: { authorId: userId },
+        data: { authorId: ghostId }
+      });
+
+      await tx.resource.updateMany({
+        where: { authorId: userId },
+        data: { authorId: ghostId }
       });
 
       // 4. Supprimer l'utilisateur lui-même (sauf si SUPERADMIN)
