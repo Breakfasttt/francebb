@@ -19,6 +19,14 @@ import "./MembersTable.css";
 
 const USERS_PER_PAGE = 25;
 
+const BAN_REASONS = [
+  "Spam / Publicité",
+  "Harcèlement / Insultes",
+  "Contenu inapproprié / NSFW",
+  "Bot",
+  "Autre (préciser ci-dessous)"
+];
+
 interface Props {
   users: any[];
   currentUserRole: UserRole;

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { isModerator } from "@/lib/roles";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import "./CreateTopicSidebar.css";
 
 interface CreateTopicSidebarProps {
@@ -19,7 +20,7 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
   return (
     <aside className="forum-sidebar">
       <div className="sidebar-sticky-inner">
-        <div className="sidebar-widget" style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+        <PremiumCard style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
           <h3 style={{ 
             display: 'flex', 
             alignItems: 'center', 
@@ -57,17 +58,18 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
               type="submit" 
               style={{ width: '100%', whiteSpace: 'normal', lineHeight: '1.2', padding: '0.8rem 1rem' }}
               className={isTournament ? 'accent-btn' : ''}
+              fullWidth
             >
               {submitLabel}
             </CTAButton>
             <ClassicButton 
               href={`/forum/${forumId}`} 
-              style={{ width: '100%' }}
+              fullWidth
             >
               Annuler
             </ClassicButton>
           </div>
-        </div>
+        </PremiumCard>
       </div>
     </aside>
   );

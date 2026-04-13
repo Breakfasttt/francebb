@@ -7,6 +7,7 @@ import { createLigue } from "@/app/ligues/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "./UserSearchWrapper";
 import LigueLocationFields from "./LigueLocationFields";
+import CTAButton from "@/common/components/Button/CTAButton";
 import { Shield, MapPin, Globe, Users, Info } from "lucide-react";
 import "./page.css";
 import "./page-mobile.css";
@@ -110,9 +111,14 @@ export default async function CreateLiguePage() {
               <input type="hidden" name="commissaireIds" id="commissaireIdsInput" />
 
               <div style={{ marginTop: '1rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
-                <button type="submit" className="btn-primary w-full" style={{ padding: '1rem' }}>
-                  <Shield size={18} /> Créer la Ligue
-                </button>
+                <CTAButton 
+                  type="submit" 
+                  fullWidth 
+                  icon={<Shield size={18} />}
+                  size="lg"
+                >
+                  Créer la Ligue
+                </CTAButton>
               </div>
             </PremiumCard>
           </aside>

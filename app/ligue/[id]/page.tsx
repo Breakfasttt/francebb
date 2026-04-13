@@ -8,6 +8,8 @@ import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { isModerator } from "@/lib/roles";
 import Link from "next/link";
 import { parseBBCode } from "@/lib/bbcode";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 import "./id.css";
 import "./id-mobile.css";
 
@@ -117,18 +119,29 @@ export default async function LigueDetailPage({
           {canEdit && (
             <PremiumCard className="admin-actions-card">
               <h3>Gestion Ligue</h3>
-              <div className="action-buttons">
-                <Link href={`/ligue/edit/${ligue.id}`} className="btn-action">
-                  <Settings size={18} /> Modifier les infos
-                </Link>
+              <div className="action-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                <AdminButton 
+                  href={`/ligue/edit/${ligue.id}`} 
+                  fullWidth 
+                  icon={<Settings size={18} />}
+                >
+                  Modifier les infos
+                </AdminButton>
+
                 {canManage && (
                   <>
-                    <button className="btn-action">
-                      <ArrowLeftRight size={18} /> Transférer propriété
-                    </button>
-                    <button className="btn-action danger">
-                      <Trash2 size={18} /> Supprimer la ligue
-                    </button>
+                    <AdminButton 
+                      fullWidth 
+                      icon={<ArrowLeftRight size={18} />}
+                    >
+                      Transférer propriété
+                    </AdminButton>
+                    <DangerButton 
+                      fullWidth 
+                      icon={<Trash2 size={18} />}
+                    >
+                      Supprimer la ligue
+                    </DangerButton>
                   </>
                 )}
               </div>

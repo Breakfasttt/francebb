@@ -18,6 +18,7 @@ interface ModalProps {
   cancelText?: string;
   variant?: "danger" | "primary" | "admin";
   maxWidth?: string;
+  hideFooter?: boolean;
 }
 
 export default function Modal({ 
@@ -30,7 +31,8 @@ export default function Modal({
   confirmText,
   cancelText,
   variant = "primary",
-  maxWidth = "550px"
+  maxWidth = "550px",
+  hideFooter = false
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -69,17 +71,19 @@ export default function Modal({
 
   return createPortal(
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" style={{ maxWidth }}>
         <h2>{title}</h2>
         {message && <p>{message}</p>}
         {children}
         
-        <div className="modal-actions">
-          <ClassicButton onClick={onClose}>
-            {cancelText || "Annuler"}
-          </ClassicButton>
-          {renderConfirmButton()}
-        </div>
+        {!hideFooter && (
+          <div className="modal-actions">
+            <ClassicButton onClick={onClose}>
+              {cancelText || "Annuler"}
+            </ClassicButton>
+            {renderConfirmButton()}
+          </div>
+        )}
       </div>
 
       <style jsx>{`

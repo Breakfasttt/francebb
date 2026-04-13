@@ -130,6 +130,8 @@ export default function LigueLocationFields({
         isOpen={isMapModalOpen}
         onClose={() => setIsMapModalOpen(false)}
         title="Localisation de la ligue"
+        hideFooter={true}
+        maxWidth="800px"
       >
         <MapPicker 
           initialCenter={lat && lng ? [lat, lng] : undefined}

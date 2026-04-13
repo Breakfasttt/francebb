@@ -45,6 +45,11 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
   const [searchQuery, setSearchQuery] = useState(initialSearch || "");
   const [isSearching, setIsSearching] = useState(false);
   const [address, setAddress] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const center: [number, number] = useMemo(() => initialCenter || [46.603354, 1.888334], [initialCenter]);
 
@@ -129,25 +134,27 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
       </form>
 
       <div className="map-wrapper">
-        <MapContainer 
-          center={center} 
-          zoom={initialCenter ? 16 : 6} 
-          style={{ height: "100%", width: "100%" }}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <MapEvents onClick={handleMapClick} />
-          {position && <Marker position={position} draggable={true} eventHandlers={{
-            dragend: (e) => {
-              const marker = e.target;
-              const pos = marker.getLatLng();
-              handleMapClick(pos.lat, pos.lng);
-            }
-          }} />}
-          {position && <MapRecenter coords={position} />}
-        </MapContainer>
+        {isMounted && (
+          <MapContainer 
+            center={center} 
+            zoom={initialCenter ? 16 : 6} 
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <MapEvents onClick={handleMapClick} />
+            {position && <Marker position={position} draggable={true} eventHandlers={{
+              dragend: (e) => {
+                const marker = e.target;
+                const pos = marker.getLatLng();
+                handleMapClick(pos.lat, pos.lng);
+              }
+            }} />}
+            {position && <MapRecenter coords={position} />}
+          </MapContainer>
+        )}
       </div>
 
       <div className="map-picker-footer">
