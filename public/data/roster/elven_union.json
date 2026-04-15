@@ -1,8 +1,8 @@
 {
-  "name": "Elven Union",
+  "name": "Union Elfique",
   "roster": [
     {
-      "name": "Elf Lineman",
+      "name": "Trois-quart Elfe",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -17,7 +17,7 @@
       "cost": 65000
     },
     {
-      "name": "Elf Thrower",
+      "name": "Lanceur Elfe",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -25,15 +25,15 @@
       "pa": "2+",
       "av": "8+",
       "skills": [
-        "Pass",
-        "Hail Mary Pass"
+        "Passe",
+        "Passe Désespérée"
       ],
       "primary": "GAP",
       "secondary": "F",
       "cost": 75000
     },
     {
-      "name": "Elf Catcher",
+      "name": "Receveur Elfe",
       "qty": "0-4",
       "ma": "8",
       "st": "3",
@@ -41,16 +41,16 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Nerves of Steel",
-        "Diving Catch"
+        "Réception",
+        "Nerfs d’Acier",
+        "Réception Plongeante"
       ],
       "primary": "GA",
       "secondary": "F",
       "cost": 100000
     },
     {
-      "name": "Elf Blitzer",
+      "name": "Blitzer Elfe",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -58,8 +58,8 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Block",
-        "Side Step"
+        "Blocage",
+        "Glissade Contrôlée"
       ],
       "primary": "GA",
       "secondary": "FP",
@@ -67,6 +67,6 @@
     }
   ],
   "specialRules": [
-    "Elf Kingdom League"
+    "Ligue des Royaumes Elfiques"
   ]
 }

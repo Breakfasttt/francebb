@@ -1,8 +1,8 @@
 {
-  "name": "Bretonnian Team",
+  "name": "Bretonniens",
   "roster": [
     {
-      "name": "Squire",
+      "name": "Écuyer Bretonnien",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,14 +10,31 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Wrestle"
+        "Lutte"
       ],
       "primary": "G",
-      "secondary": "AS",
+      "secondary": "AF",
       "cost": 50000
     },
     {
-      "name": "Knight Thrower",
+      "name": "Receveur Chevalier",
+      "qty": "0-2",
+      "ma": "7",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Intrépide",
+        "Nerfs d’Acier",
+        "Réception"
+      ],
+      "primary": "AG",
+      "secondary": "F",
+      "cost": 85000
+    },
+    {
+      "name": "Lanceur Chevalier",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -25,33 +42,16 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Dauntless",
-        "Nerves of Steel",
-        "Pass"
+        "Intrépide",
+        "Nerfs d’Acier",
+        "Passe"
       ],
       "primary": "GP",
-      "secondary": "AS",
+      "secondary": "AF",
       "cost": 80000
     },
     {
-      "name": "Knight Catcher",
-      "qty": "0-2",
-      "ma": "7",
-      "st": "3",
-      "ag": "3+",
-      "pa": "4+",
-      "av": "9+",
-      "skills": [
-        "Catch",
-        "Dauntless",
-        "Nerves of Steel"
-      ],
-      "primary": "GA",
-      "secondary": "S",
-      "cost": 85000
-    },
-    {
-      "name": "Grail Knight",
+      "name": "Chevalier du Graal",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -59,13 +59,16 @@
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Dauntless",
-        "Steady Footing"
+        "Blocage",
+        "Intrépide",
+        "Appuis Sûrs"
       ],
-      "primary": "GS",
+      "primary": "GF",
       "secondary": "A",
       "cost": 95000
     }
+  ],
+  "specialRules": [
+    "Classique du Vieux Monde"
   ]
 }

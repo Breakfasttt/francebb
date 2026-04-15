@@ -1,8 +1,8 @@
 {
-  "name": "Slann (NAF)",
+  "name": "Slanns (NAF)",
   "roster": [
     {
-      "name": "Slann Lineman",
+      "name": "Trois-quart Slann",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,16 +10,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Diving Tackle",
-        "Leap",
-        "Very Long Legs"
+        "Tacle Plongeant",
+        "Saut",
+        "Très Longues Jambes"
       ],
       "primary": "GA",
       "secondary": "SF",
       "cost": 60000
     },
     {
-      "name": "Slann Catcher",
+      "name": "Receveur Slann",
       "qty": "0-4",
       "ma": "7",
       "st": "2",
@@ -27,16 +27,16 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Diving Catch",
-        "Leap",
-        "Very Long Legs"
+        "Réception Plongeante",
+        "Saut",
+        "Très Longues Jambes"
       ],
       "primary": "GA",
       "secondary": "SF",
       "cost": 80000
     },
     {
-      "name": "Slann Blitzer",
+      "name": "Blitzer Slann",
       "qty": "0-4",
       "ma": "7",
       "st": "3",
@@ -44,16 +44,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Diving Tackle",
-        "Leap",
-        "Very Long Legs"
+        "Tacle Plongeant",
+        "Saut",
+        "Très Longues Jambes"
       ],
       "primary": "GA",
       "secondary": "S",
-      "cost": 120000
+      "cost": 110000
     },
     {
-      "name": "Kroxigor",
+      "name": "Kroxigor (Gros Bras)",
       "qty": "0-1",
       "ma": "6",
       "st": "5",
@@ -61,11 +61,11 @@
       "pa": "-",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Prehensile Tail",
-        "Thick Skull"
+        "Cerveau Lent",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Queue Préhensile",
+        "Crâne Épais"
       ],
       "primary": "F",
       "secondary": "ASG",
@@ -73,6 +73,6 @@
     }
   ],
   "specialRules": [
-    "Lustrian Super-league"
+    "Super-ligue de Lustrie"
   ]
 }

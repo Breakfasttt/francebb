@@ -2,7 +2,7 @@
   "name": "Gnomes",
   "roster": [
     {
-      "name": "Gnome Lineman",
+      "name": "Trois-quart Gnome",
       "qty": "0-16",
       "ma": "5",
       "st": "2",
@@ -10,17 +10,17 @@
       "pa": "4+",
       "av": "7+",
       "skills": [
-        "Jump Up",
-        "Right Stuff",
-        "Stunty",
-        "Wrestle"
+        "Rétablissement",
+        "Poids Plume",
+        "Minus",
+        "Lutte"
       ],
       "primary": "A",
       "secondary": "SGF",
       "cost": 40000
     },
     {
-      "name": "Wood Fox",
+      "name": "Renard Sylvestre",
       "qty": "0-2",
       "ma": "7",
       "st": "2",
@@ -28,17 +28,17 @@
       "pa": "-",
       "av": "6+",
       "skills": [
-        "Dodge",
-        "My Ball",
-        "Side Step",
-        "Stunty"
+        "Esquive",
+        "Mon Ballon !",
+        "Glissade Contrôlée",
+        "Minus"
       ],
       "primary": "-",
       "secondary": "A",
       "cost": 50000
     },
     {
-      "name": "Gnome Illusionist",
+      "name": "Illusionniste Gnome",
       "qty": "0-2",
       "ma": "5",
       "st": "2",
@@ -46,17 +46,17 @@
       "pa": "3+",
       "av": "7+",
       "skills": [
-        "Jump Up",
-        "Stunty",
-        "Trickster",
-        "Wrestle"
+        "Rétablissement",
+        "Minus",
+        "Farceur",
+        "Lutte"
       ],
       "primary": "AP",
       "secondary": "SG",
       "cost": 50000
     },
     {
-      "name": "Gnome Beastmaster",
+      "name": "Belluaire Gnome",
       "qty": "0-2",
       "ma": "5",
       "st": "2",
@@ -64,17 +64,17 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Guard",
-        "Jump Up",
-        "Stunty",
-        "Wrestle"
+        "Garde",
+        "Rétablissement",
+        "Minus",
+        "Lutte"
       ],
       "primary": "A",
       "secondary": "SGF",
       "cost": 55000
     },
     {
-      "name": "Altern Forest Treeman",
+      "name": "Homme-arbre (Gros Bras)",
       "qty": "0-2",
       "ma": "2",
       "st": "6",
@@ -82,17 +82,21 @@
       "pa": "5+",
       "av": "11+",
       "skills": [
-        "Mighty Blow (+1)",
-        "Stand Firm",
-        "Strong Arm",
-        "Take Root",
-        "Thick Skull",
-        "Throw Team-Mate",
-        "Timmm-ber!"
+        "Châtaigne",
+        "Stabilité",
+        "Bras Musclé",
+        "Prendre Racine",
+        "Crâne Épais",
+        "Lancer de Coéquipier",
+        "Timmm-ber !"
       ],
       "primary": "F",
       "secondary": "AGP",
       "cost": 120000
     }
+  ],
+  "specialRules": [
+    "Coupe du Dé à Coudre Halfling",
+    "Ligue Sylvestre"
   ]
 }

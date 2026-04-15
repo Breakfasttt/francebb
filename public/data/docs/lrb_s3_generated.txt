@@ -3,11 +3,11 @@
 
 
 
-             Règles Bonifiées
-Livre de Règles
+             è g l es  B on if ié e s
+L ivre d e R
               Saison 3
                                      par Chroniques d’un Empire Oublié
-    Ce document est proposé aux joueurs de Blood Bowl qui désirent avoir dans un même fascicule, l’ensemble des
+    Ce document est proposé aux joueurs de Blood Bowl qui désirent avoir dans un même fascicule, l’ensemble des
     règles qui sont disséminées dans diverses productions de Games Workshop dans le cadre de la Saison 3.
     Certaines de ces productions n’ont pas leurs équivalents en français. Elles ont été traduites par Barbarus et
     corrigées par Pileouface avant d’être intégrées dans ce document « vivant ». Il est ainsi complété au fur et à
@@ -43,7 +43,7 @@ Règles et Règlements !.....................................................20 
     Profils de Joueurs et Tests de Caractéristiques !.........25                                  Elfes Sylvains..........................................................94
     État de Joueur !............................................................26                Élus du Chaos.........................................................95
 Les Règles de Blood Bowl................................................28                        Gnomes...................................................................95
-    Un match en deux mi-temps !......................................28                           Gobelins..................................................................96
+    Un match en deux ml-temps !......................................28                           Gobelins..................................................................96
     Le début d’une Phase !................................................30                      Halflings...................................................................96
     Le Tour d’Équipe !........................................................32                  Hauts Elfes..............................................................97
     Actions de Mouvement !...............................................35                       Hommes–lézards....................................................97
@@ -69,7 +69,7 @@ Compétences et Traits !....................................................69  
         Agilité.......................................................................71   Feuilles de Références....................................................114
         Force.......................................................................72     Fiche d’équipe.................................................................117
         Générale..................................................................73
-  JOUER À BLOOD BOWL !
+  JOUER À BLOOD BOWL !
 
   B
        lood Bowl est indéniablement le plus grand des jeux du Vieux Monde, et ses légions de fans en
@@ -130,11 +130,11 @@ Compétences et Traits !....................................................69  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 3
-  UNE LONGUE HISTOIRE !
+  UNE LONGUE HISTOIRE !
 
 
   I
-    ly a fort longtemps de cela, avant que les humains ne sortent de leurs grottes, que les Elfes ne
+    l y a fort longtemps de cela, avant que les humains ne sortent de leurs grottes, que les Elfes ne
     découvrent les propriétés de fixation capillaire de la graisse de cocatrix, et avant même que les
     nains ne fassent l’expérience de leurs premières gueules de bois, vivaient les Anciens. Ces êtres
   mythiques jouissaient d’une puissance incroyable et ils laissèrent de nombreuses merveilles aux
@@ -152,7 +152,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Jeu Sacré…
 
 
-   IL YA UN CERTAIN TEMPS                                                    Un vieux nain binoclard fut envoyé pour cette
+   IL Y A UN CERTAIN TEMPS                                                    Un vieux nain binoclard fut envoyé pour cette
   Quelque part dans le Vieux Monde, deux armées                               mission, car il maîtrisait les langues antiques, et ne
   s’étripaient joyeusement sur un champ de bataille                           constituerait pas une grosse perte si les orques
   abreuvé de sang. Mais elles se battaient depuis les                         décidaient de le manger. Il s’acquitta donc de sa
@@ -196,7 +196,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                  – http://empireoublie.free.fr –   Page 4
-   ROZE-EL ET LA CRÉATION DE LA NAF                              DJIMM THORP ET LE LIVRE DE RÈGLES
+   ROZE-EL ET LA CRÉATION DE LA NAF                              DJIMM THORP ET LE LIVRE DE RÈGLES
   Suite à cette première partie de Football Amoricain            OFFICIEL
   de Nuffle de l’époque moderne, beaucoup de                     La gestion de la NAF revint à Djimm Thorp,
   spectateurs furent pris d’une ferveur quasi                    l’assistant le plus doué de Roze-El, qui s’attela à
@@ -261,7 +261,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –          Page 5
-   JORGE HELLHOUND              ET     L’ÈRE     DE    LA        Malgré tout, de plus en plus de spectateurs se
+   JORGE HELLHOUND              ET     L’ÈRE     DE    LA        Malgré tout, de plus en plus de spectateurs se
    CORPORATION                                                   détournaient vers de plus petits tournois et ligues
                                                                  non affiliés à la NAF, et celle-ci peinait à attirer de
   Djimm Thorp prit sa retraite en 2429 et fut remplacé           nouveaux fans. Seuls les supporters les plus
@@ -337,7 +337,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –         Page 6
-  L’ÈRE DU JEU LIBRE !
+  L’ÈRE DU JEU LIBRE !
   Le Blood Bowl était toujours pratiqué dans le monde             Le Dungeon Bowl vint remplir les longs mois d’hiver.
   entier, mais quelque chose manquait. Certains                   Lors de cette compétition annuelle des ligues des
   disaient que la petite flamme avait disparu, celle qui          Collèges de Magie, les étudiants s’affrontent dans
@@ -385,7 +385,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                              De l’action comme s’il en pleuvait !          Trophée Open de Spike ! Magazine.
     DE LA VIOLENCE DÉBRIDÉE!
                                              Dans l’enceinte du mythique Stade              Venez assister au premier Majeur
-   Venez profiter du cadre de violence       Mémoriel de l’Empereur LuitpoldI,            de l’année Blood Bowl, qui propose
+   Venez profiter du cadre de violence       Mémoriel de l’Empereur Luitpold I,            de l’année Blood Bowl, qui propose
        ultime offert par les Dieux du         venez vivre l’expérience du Blood                  des matchs mythiques et
        Chaos. Découvrez des cieux                Bowl Classic, le plus grand                d’incroyables prix à gagner. Et ne
       déchirés par des phénomènes             événement sportif de l’année. Les            manquez pas la cérémonie annuelle
@@ -402,7 +402,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –             Page 7
-  BLOOD BOWL À TRAVERS LE MONDE
+  BLOOD BOWL À TRAVERS LE MONDE
   Le premier Blood Bowl Classic se tint en 2490, deux
   ans après les scandales de la finale du Championnat
   de 2488. Depuis lors, le Blood Bowl n’a cessé de se
@@ -475,7 +475,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –         Page 8
-   BRETONNIE                                                     ATHEL LOREN
+   BRETONNIE                                                     ATHEL LOREN
   La noblesse de Bretonnie snobait autrefois le Blood            Le royaume sylvestre d’Athel Loren est connu pour
   Bowl, car il n’y avait point d’honneur à jouer à ce sport      trois choses : ses fiel-follets qui attirent et font
   qui plaisait tant aux péquenauds. Mais cette posture           disparaître les voyageurs, ses fascinants concours de
@@ -542,7 +542,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Classic.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –         Page 9
-   ÉTENDUES NORDIQUES                                             MONTAGNES DU BORD DU MONDE
+   ÉTENDUES NORDIQUES                                             MONTAGNES DU BORD DU MONDE
   Jadis, le spectacle des drakkars nordiques                      Jadis considérées comme les limites du monde connu,
   apparaissant à l’horizon constituait un présage de mort         les Montagnes du Bord du Monde séparent le pays
   pour les peuples du Vieux Monde. Désormais, leur                des hommes des terres orientales. Au cœur de ces
@@ -562,7 +562,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                   « vraies » règles du Blood Bowl édictées par les
    DÉSOLATIONS DU CHAOS                                           premiers prêtres de Nuffle, et quand la GARR affirme
   Au nord du royaume glacé de Norsca s’étendent les               que de telles règles sont abusives, celle-ci fait l’objet
-  Désolations du Chaos. Il ya bien longtemps, quatre             d’insultes bien senties. Pourtant, certains Nains
+  Désolations du Chaos. Il y a bien longtemps, quatre             d’insultes bien senties. Pourtant, certains Nains
   sinistres divinités ont tenté de prendre le contrôle du         n’hésitent pas à jouer avec la règle, la tolérance du
   Vieux Monde et d’y exercer leur domination                      Roule-mort étant l’exemple le plus frappant. Les
   démoniaque. Pour ce faire, elles ont percé dans le              matchs qui ont lieu dans les forteresses naines sont
@@ -608,11 +608,11 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –   Page 10
-   MONTAGNES DU DEUIL                                            NEHEKHARA
-  S’il ya bien une chose qu’un Ogre aime encore plus            Les imposants stades-pyramides de Nehekhara
+   MONTAGNES DU DEUIL                                            NEHEKHARA
+  S’il y a bien une chose qu’un Ogre aime encore plus            Les imposants stades-pyramides de Nehekhara
   que de vastes quantités de nourriture, c’est la violence       attestent de la popularité du Blood Bowl (ou du moins,
   débridée. La popularité du Blood Bowl au sein des              d’une de ses antiques variantes) dans ce vénérable
-  Royaumes Ogres n’est donc guère surprenante. Les               royaume. Des hiéroglyphes indiquent qu’il ya bien
+  Royaumes Ogres n’est donc guère surprenante. Les               royaume. Des hiéroglyphes indiquent qu’il y a bien
   Ogres solitaires sont monnaie courante dans le Vieux           longtemps de cela, de puissantes équipes
   Monde (les humains en recrutent régulièrement pour             s’affrontaient pour divertir leurs prêtres-souverains.
   ajouter du muscle à leur jeu), mais les équipes                Les meilleurs joueurs se voyaient offrir des terres, des
@@ -675,7 +675,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 11
-  La noblesse d’Ulthuan exerce un contrôle presque                  Ces corpulents amphibiens affalés dans leurs
+  La noblesse d’Ulthuan exerce un contrôle presque                  Ces corpulents amphibiens affalés dans leurs
   total sur les affaires des Hauts Elfes, et ces dernières          palanquins se sont assurés que chacune de leur cités-
   années, celle-ci a exprimé son mécontentement vis-à-              temples soit dotée d’un stade de Blood Bowl, afin
   vis des équipes de l’Union Elfique, des Elfes                     qu’ils n’aient pas à voyager bien loin pour assister a un
@@ -742,10 +742,10 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –    Page 12
-  LE PANTHÉON DU BLOOD BOWL !
+  LE PANTHÉON DU BLOOD BOWL !
 
   L
-        etrophée du Blood Bowl est, sans l’ombre d’un doute, la récompense la plus prestigieuse du Jeu
+        e trophée du Blood Bowl est, sans l’ombre d’un doute, la récompense la plus prestigieuse du Jeu
         Sacré de Nuffle. Du sang a été répandu, des dos ont été poignardés et des légendes se sont forgées
         pour avoir la chance de mettre la main sur ce prix très convoité. D’innombrables équipes ont donné
   tout ce qu’elles avaient pour essayer de remporter le Blood Bowl, souvent pour échouer aux portes du
@@ -806,7 +806,7 @@ ANNÉE    #         VAINQUEURS                 FINALISTES            SCORE ANNÉ
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                   – http://empireoublie.free.fr –               Page 13
-  LES STATISTIQUES DE JIM JOHNSON !
+  LES STATISTIQUES DE JIM JOHNSON !
 
 
   L
@@ -875,7 +875,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 14
-   LE PLUS DE TOUCHDOWNS CONCÉDÉS                                        DÉFAITE AVEC LE PLUS DE TOUCHDOWNS :
+   LE PLUS DE TOUCHDOWNS CONCÉDÉS                                        DÉFAITE AVEC LE PLUS DE TOUCHDOWNS :
    (CUMULÉS) : REIKLAND REAVERS (31)                                     ATHELORN AVENGERS (4)
   JIM : Une fois encore, ce n’est pas une grande                         JIM : Marquer quatre touchdowns est un exploit en
   surprise puisqu’ils ont joué le plus de finales, mais les              soi ; alors imaginez ce que ça fait d’en marquer quatre
@@ -890,7 +890,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
    PLUS HAUTE MOYENNE DE TOUCHDOWNS
    CONCÉDÉS
    (+ DE 2 MATCHS) : DA DEFF SKWAD (3,5)
-  JIM : S’il ya bien trois équipes qui ont concédé en
+  JIM : S’il y a bien trois équipes qui ont concédé en
   moyenne plus de touchdowns en finale, les Shiretown
   Stuffers (5), les Greenfield Grasshuggers (5) et les Evil
   Gits (6) n’ont tous joué qu’une seule finale. L’équipe
@@ -905,7 +905,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
    GREEN FIELD GRASSHUGGERS
                                                                          LE PLUS DE FINALES SANS MARQUER UN
   JIM : On se demande encore comment les Greenfield                      TOUCHDOWN : DA DEFF SKWAD (2)
-  Grasshuggers ont réussi à se qualifier pour la XVIe
+  Grasshuggers ont réussi à se qualifier pour la XVI e
   finale du Blood Bowl, mais ils l’ont fait ! La moitié du               JIM : L’équipe Da Deff Skwad détient cet humiliant
   Moot a acheté ses tickets pour l’occasion (et l’autre a                record pour être la seule équipe à n’avoir jamais
   trouvé un moyen de se faufiler dans le stade !). Et si                 marqué le moindre touchdown en deux finales. Bien
@@ -943,7 +943,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)             – http://empireoublie.free.fr –        Page 15
-  INDISPENSABLES DU JEU !
+  INDISPENSABLES DU JEU !
 
   V
         ous aurez besoin de plusieurs objets pour disputer une partie de Blood Bowl. Des Terrains et
@@ -958,7 +958,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
   O
-          ntrouve des terrains de Blood Bowl dans le monde entier ; des jungles moites de Lustrie, où
+          n trouve des terrains de Blood Bowl dans le monde entier ; des jungles moites de Lustrie, où
           des stades antiques occupent le site d’anciennes cités dissimulées par les arbres, aux
           banquises de Norsca, où les zones d’en-but sont creusées dans la glace et le permafrost,
   jalonnées d’immenses structures en bois, en passant par des endroits plus exotiques encore. Certains
@@ -966,7 +966,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   de quelques bancs, tandis que d’autres sont des stades grandioses capables d’accueillir des milliers
   de supporters.
   Quel que soit le stade en question, que le terrain soit temporaire ou jouisse de la splendeur du Memorial
-  Stadium de l’Empereur LuitpoldI (foyer du Blood Bowl !), il obéira aux règles de dimensions telles qu’elles
+  Stadium de l’Empereur Luitpold I (foyer du Blood Bowl !), il obéira aux règles de dimensions telles qu’elles
   sont établies dans le Livre de Nuffle, que suivent scrupuleusement les membres de la Guilde des Arbitres et
   Régulateurs Réunis (GARR).
 
@@ -987,7 +987,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
      2. COULOIRS LATÉRAUX : Ce sont les zones de                    en bonne santé se tiennent prêts à jouer au
      part et d’autre du terrain, courant d’une Zone                 prochain Coup d’Envoi.
      d’En-but à l’autre. Elles font quatre cases de                 2. BOX DES JOUEURS KO : C’est ici qu’on place
-     large.                                                         les joueursK.-O. dans l’attente qu’ils se
+     large.                                                         les joueurs K.-O. dans l’attente qu’ils se
      3. LIGNES DE TOUCHE : Elles courent d’une                      rétablissent pour reprendre le match.
      Zone d’En-But à l’autre et délimitent le bord du               3. BOX DES JOUEURS ÉLIMINÉS : Ici se
      terrain.                                                       trouvent les joueurs qui ne peuvent plus prendre
@@ -1012,7 +1012,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 16
-  L’ÉQUIPEMENT DU SPORT !
+  L’ÉQUIPEMENT DU SPORT !
 
 
   L
@@ -1075,7 +1075,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 17
-  GABARIT DE RENVOI                                              DÉS DE BLOOD BOWL
+  GABARIT DE RENVOI                                              DÉS DE BLOOD BOWL
   Parfois, on vous demandera de déterminer la                    Blood Bowl utilise divers dés pour déterminer l’issue
   direction de quelque chose en utilisant le Gabarit de          des actions. Les blocages, les passes, les esquives,
   Renvoi. En général, il s’agira d’un Renvoi, mais il            etc., sont déterminés en lançant différents types de
@@ -1127,7 +1127,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
    10                                                            que vous jetez.
 
    11                                                            D16
-   12                                                            Enfin, il ya un dé à seize faces, marquées de 1 à
+   12                                                            Enfin, il y a un dé à seize faces, marquées de 1 à
                                                                  16. Il s’agit probablement du dé que vous jetterez le
    13                                                            moins pendant un match, toutefois, quand une règle
                                                                  vous demande de jeter un D16, c’est ce dé que
@@ -1138,7 +1138,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 18
-   PIONS DE BLOOD BOWL                                           PION DE FOURCHETTE – VIOLET
+   PIONS DE BLOOD BOWL                                           PION DE FOURCHETTE – VIOLET
 
   Voici les différents types de pions que vous                   La Compétence Fourchette (voir page 77) signifie
   rencontrerez lors d’un match de Blood Bowl, et vous            que les joueurs affectés ne peuvent pas fournir de
@@ -1163,11 +1163,11 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   ventre (comme c’était le cas dans les éditions
   précédentes). Il se trouve au verso du pion À Terre,           Le pion de ballon a deux faces, l’une montrant que
   Ce qui veut dire que lorsqu’un joueur passe de                 le ballon est libre et l’autre montrant qu’un joueur
-  Sonné àÀ Terre, vous pouvez simplement retourner              est en possession du ballon. La face « in
+  Sonné à À Terre, vous pouvez simplement retourner              est en possession du ballon. La face « in
   ce pion.                                                       possession » est aussi encochée pour permettre d’y
                                                                  loger un joueur sur un socle de 32 mm, afin de
   PION DÉCONCENTRÉ – BLEU                                        repérer la position du ballon au premier coup d’œil !
-  Nombre d’effets à Blood Bowl confèrent l’état                  Il ya même un trou afin d’y ficher un ballon de
+  Nombre d’effets à Blood Bowl confèrent l’état                  Il y a même un trou afin d’y ficher un ballon de
   Déconcentré à un joueur (voir page 26). Utiliser ce            Blood Bowl muni d’un picot si vous voulez
   pion est un bon moyen de voir quels joueurs sont               accentuer le décorum.
   Déconcentrés et n’ont donc pas de Zone de Tacle,
@@ -1195,10 +1195,10 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 19
-  RÈGLES ET RÈGLEMENTS !
+  RÈGLES ET RÈGLEMENTS !
 
   L
-        eBlood Bowl est un jeu palpitant aux traditions séculaires, gouverné par des règles plus
+        e Blood Bowl est un jeu palpitant aux traditions séculaires, gouverné par des règles plus
         anciennes qu’on ne l’imagine. C’est du moins la position officielle. En vérité, le jeu du Blood
         Bowl tel qu’on le connaît de nos jours a été traduit à la hâte à partir du Livre de Nuffle par un
   Nain aussi myope que sénile qui, après avoir rendu son premier jet, passa les décennies suivantes à
@@ -1220,7 +1220,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
   B
-         lood Bowl est un jeu riche d’équipes et de joueurs aussi fascinants qu’uniques, si bien que se
+         lood Bowl est un jeu riche d’équipe s et de joueurs aussi fascinants qu’uniques, si bien que se
          présenteront à vous des situations que ce livre de règles ne semble pas couvrir
          exhaustivement. Par exemple, il peut arriver que vous ne trouviez pas la règle ou la page exacte
   dont vous avez besoin en pleine partie, ou que vous rencontriez des désaccords sur l’interprétation
@@ -1258,7 +1258,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –        Page 20
-   PRINCIPES IMPORTANTS
+   PRINCIPES IMPORTANTS
   • Adressez un geste respectueux à votre adversaire             • Quand vous jetez les dés, assurez-vous que tout le
   avant le début de la partie, comme lui souhaiter bonne         monde puisse les voir, et autorisez votre adversaire à
   chance, lui offrir une poignée de main, etc.                   examiner le résultat avant de ramasser les dés.
@@ -1327,7 +1327,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 21
-  JETS DE PLUSIEURS DÉS                                          RELANCES
+  JETS DE PLUSIEURS DÉS                                          RELANCES
   Les règles demandent parfois à un Coach de « jeter             À Blood Bowl, les Coachs auront l’occasion de
   2D6 ». C’est un jet de plusieurs dés. Dans ce cas, on          relancer un ou plusieurs de leurs dés, ce qui est
   jette deux D6 et on additionne leurs résultats pour un         souvent une bonne chose, car même les plans les
@@ -1372,7 +1372,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   JETS NATURELS                                                  Relances d’Équipe à disposition pendant le match,
   Un jet naturel est le nombre exact donné par un dé,            achetées pour leur fiche. Une équipe commence
   sans tenir compte des modificateurs éventuels.                 toujours le match avec toutes ses Relances d’Équipe,
-  Certaines règles stipuleront qu’unX naturel est               et celles utilisées à la première mi-temps d’un match
+  Certaines règles stipuleront qu’un X naturel est               et celles utilisées à la première mi-temps d’un match
   nécessaire pour réussir dans une situation donnée, ou          sont restituées pour la seconde. Ceci signifie qu’une
   déclencher une règle spéciale.                                 équipe commence toujours une mi-temps avec toutes
                                                                  ses Relances d’Équipe. Les Relances d’Équipe non
@@ -1400,12 +1400,12 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –     Page 22
-   MI-TEMPS, ROUNDS ET TOURS
+   MI-TEMPS, ROUNDS ET TOURS
   Plusieurs termes servent à définir le temps écoulé lors d’un match. Clarifions ici chacun d’eux :
   • MATCH – La durée totale de la partie que vous jouez. Un match se compose de deux mi-temps.
-  • MI-TEMPS – Il ya deux mi-temps dans un match, chacune composée de huit Rounds.
+  • Ml-TEMPS – Il y a deux mi-temps dans un match, chacune composée de huit Rounds.
   • ROUND – Un Round consiste en deux Tours, un pour chaque Coach. Le Round 1 se composera du Tour 1
-  du Coach A et du Tour 1 du CoachB.
+  du Coach A et du Tour 1 du Coach B.
   • TOUR – Un Tour est le moment où un Coach peut activer chacun de ses joueurs sur le terrain. Un Coach a
   huit Tours par mi-temps, un par Round.
 
@@ -1462,7 +1462,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –    Page 23
-   LE TURNOVER
+   LE TURNOVER
   Une des plus importantes mécaniques de Blood                    LE SAVIEZ-VOUS…
   Bowl est celle du « Turnover ». Nombre                          Les matchs étaient autrefois joués jusqu’à ce qu’une
   d’événements     malencontreux      causeront    un             équipe inscrive 3 Touchdowns, sans limite de temps.
@@ -1527,7 +1527,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –       Page 24
-  PROFILS DE JOUEURS ET TESTS DE CARACTÉRISTIQUES !
+  PROFILS DE JOUEURS ET TESTS DE CARACTÉRISTIQUES !
 
 
   L
@@ -1596,7 +1596,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 25
-  ÉTAT DE JOUEUR !
+  ÉTAT DE JOUEUR !
 
 
   D
@@ -1666,7 +1666,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 26
-                                                                 Mis À Terre
+                                                                 Mis À Terre
    NOTE DU CONCEPTEUR : COUCHER LES FIGURINES
    Dans les versions précédentes du jeu, nous avions             Quand un joueur est Mis À Terre, il ne court aucun
    pour coutume d’allonger les figurines sur le terrain          risque de se blesser ; parfois, cela relève même du
@@ -1723,7 +1723,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                  équipe, alors un Turnover s’ensuit. Quand un joueur
    LE SAVIEZ-VOUS…                                               est Plaqué, placez un pion À Terre à côté de lui puis
    Depuis l’incident des Screaming Shrubberies en                faites un Jet d’Armure pour le joueur. Si l’armure du
-   2490, le Stadium de l’Empereur LuitpoldI d’Altdorf           joueur est pénétrée, alors il risque une blessure
+   2490, le Stadium de l’Empereur Luitpold I d’Altdorf           joueur est pénétrée, alors il risque une blessure
    déploie un régiment de jardiniers armés de tronçonneuses      comme décrit en page 41. Si le joueur était en
    sur le terrain en présence d’équipes de Nurgle !              possession du ballon, celui-ci Rebondit depuis la
                                                                  case où le joueur se trouve.
@@ -1732,7 +1732,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –    Page 27
-  LES RÈGLES DE BLOOD BOWL
+  LES RÈGLES DE BLOOD BOWL
 
   M
           aintenant que nous avons passé au crible les principes importants, il est temps de les mettre
@@ -1803,7 +1803,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –    Page 28
-  La Séquence d’Avant Match se déroule comme                              Par exemple : Les Brionne Barons déterminent leur
+  La Séquence d’Avant Match se déroule comme                              Par exemple : Les Brionne Barons déterminent leur
   suit :                                                                  Facteur de Popularité pour un match. Leur Coach jette un
                                                                           D3 pour leurs Fans Occasionnels et obtient un 2. Il
   • LES FANS : Les Coachs déterminent combien de fans
@@ -1880,7 +1880,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)              – http://empireoublie.free.fr –        Page 29
-  LE DÉBUT D’UNE PHASE !
+  LE DÉBUT D’UNE PHASE !
 
 
   U
@@ -1955,7 +1955,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –        Page 30
-  PLACER LE COUP D’ENVOI                                           LE COUP D’ENVOI DÉVIE
+  PLACER LE COUP D’ENVOI                                           LE COUP D’ENVOI DÉVIE
   Le Coach de l’équipe qui engage place le ballon sur              Il n’est pas rare que le botter parte n’importe où ; en
   n’importe quelle case de la moitié de terrain                    fait, c’est même plus probable qu’un coup de pied
   adverse. Il s’agit de la case cible, là où le joueur a           précis ! Après avoir placé le ballon, celui-ci Dévie de
@@ -2017,7 +2017,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –    Page 31
-  CE QUI MONTE DOIT REDESCENDRE…                                 REMISES EN JEU
+  CE QUI MONTE DOIT REDESCENDRE…                                 REMISES EN JEU
   Une fois l’Événement de Coup d’Envoi entièrement
                                                                  Le ballon doit atterrir dans la moitié de terrain
   résolu, le ballon atterrit sur la case où il se trouve.
@@ -2026,7 +2026,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                  ballon finit par sortir du terrain ou franchir la Ligne
   Rebondira immédiatement depuis cette case.
                                                                  d’Engagement pour atteindre la moitié de terrain de
-  S’il ya un joueur sur cette case, alors celui-ci peut         l’équipe qui engage, que ce soit a cause d’une
+  S’il y a un joueur sur cette case, alors celui-ci peut         l’équipe qui engage, que ce soit a cause d’une
   immédiatement essayer de Réceptionner le ballon                Déviation, d’un Rebond ou autre cela cause une
   en faisant un Test d’Agilité. Si le test est réussi, il        Remise en Jeu.
   prend immédiatement possession du ballon. Si le
@@ -2045,7 +2045,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
   U
-         nvrai match de Blood Bowl est un événement effréné, où des arbitres s’efforcent de
+         n vrai match de Blood Bowl est un événement effréné, où des arbitres s’efforcent de
          constamment maîtriser le marasme qui s’est emparé du terrain et tentent d’exercer une once de
          contrôle sur les joueurs. Sur une table de jeu, le match est divisé en une série de Rounds et de
   Tours, afin que les Coachs ne perdent pas le fil de la partie et que tout le monde sache exactement ce
@@ -2088,7 +2088,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 32
-  Toutefois, vous n’êtes pas obligé d’annoncer l’Action
+  Toutefois, vous n’êtes pas obligé d’annoncer l’Action
                                                                  ACTION DE BLITZ
   si vous ne souhaitez plus l’effectuer, mais le joueur
   comptera comme ayant annoncé cette Action même                 Pour faire simple, une Action de Blitz combine une
@@ -2153,7 +2153,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 33
-  ACTIONS SPÉCIALES                                              RENONCER À UNE ACTIVATION
+  ACTIONS SPÉCIALES                                              RENONCER À UNE ACTIVATION
   Nombre de Compétences et de Traits offrent à un                Il peut arriver que vous ne souhaitiez pas activer un
   joueur l’option d’annoncer une Action Spéciale.                joueur de votre équipe, auquel cas vous pouvez
   Certaines Actions Spéciales permettront aussi à un             annoncer qu’il va renoncer à son activation. En ce
@@ -2224,7 +2224,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
       Mouvement, avant qu’il effectue l’Action de Passe.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –         Page 34
-  ACTIONS DE MOUVEMENT !
+  ACTIONS DE MOUVEMENT !
 
   Q     uand un joueur effectue une Action de Mouvement, il peut se déplacer sur le terrain d’autant de
         cases que son Mouvement. Les joueurs peuvent se déplacer dans n’importe quelle direction, y
@@ -2284,7 +2284,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)        – http://empireoublie.free.fr –   Page 35
-   BONDIR PAR-DESSUS DES JOUEURS
+   BONDIR PAR-DESSUS DES JOUEURS
   Lors d’une Action de Mouvement, un joueur peut tenter de Bondir par-dessus les joueurs À
   Terre ou Sonnés jusqu’à une case inoccupée au-delà. Un joueur qui tente de Bondir par-
   dessus un autre joueur ainsi peut tenter de Bondir sur case inoccupée adjacente au joueur
@@ -2345,7 +2345,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –   Page 36
-   FONCER
+   FONCER
   Chaque fois qu’un joueur effectue une Action qui                 Un joueur peut tenter de Foncer au maximum
   inclut une Action de Mouvement, il peut tenter de                deux fois pendant son activation. Si, quand un
   donner plus de lui-même et pour aller un peu plus                joueur tente de Foncer, cela nécessite plusieurs
@@ -2402,7 +2402,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
                                                                    Cette fois, le Trois-quart Humain veut annoncer une
-                                                                   Action de Sécurisation du Ballon ; toutefois, il ya un
+                                                                   Action de Sécurisation du Ballon ; toutefois, il y a un
                                                                    Trois-quart Orque adverse à 2 cases du ballon. De fait,
                                                                    le Trois-quart Humain ne peut pas annoncer d’Action de
                                                                    Sécurisation du Ballon pour l’instant.
@@ -2411,11 +2411,11 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –    Page 37
-  ACTIONS DE BLOCAGE !
+  ACTIONS DE BLOCAGE !
 
 
   L
-        eBlood Bowl est un sport violent, où les tacles fracassants et l’usage disproportionné de la
+        e Blood Bowl est un sport violent, où les tacles fracassants et l’usage disproportionné de la
         force sont activement encouragés, à la fois par les fans et les officiels ! Tant qu’on n’utilise pas
         d’arme, presque tout est autorisé pour bloquer un joueur, et un déluge de coups de poing est
   tout aussi valable qu’un tacle bien placé pour mettre un adversaire au sol ; aux yeux des fans, le
@@ -2473,11 +2473,11 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   seul pour maximiser les chances de le plaquer au               fournir un Soutien Défensif, il doit Marquer le joueur
   sol.                                                           qui effectue l’Action de Blocage et il ne doit être
                                                                  Marqué par aucun autre joueur adverse.
-  Il ya deux types de Soutien : Offensif et Défensif.
+  Il y a deux types de Soutien : Offensif et Défensif.
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –      Page 38
-                                                                 DÉS DE BLOCAGE
+                                                                 DÉS DE BLOCAGE
                                                                  Quand un joueur effectue une Action de Blocage, il
                                                                  utilise un ou plusieurs Dés de Blocage spéciaux
                                                                  pour déterminer l’issue. Leur nombre dépend des
@@ -2544,7 +2544,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 39
-   CHOISIR ET APPLIQUER LE RÉSULTAT                              POUSSÉES À LA CHAÎNE
+   CHOISIR ET APPLIQUER LE RÉSULTAT                              POUSSÉES À LA CHAÎNE
   Quand on fait une Action de Blocage, c’est toujours            S’il n’y a pas de case inoccupée sur laquelle
   le Coach du joueur qui effectue l’Action de Blocage            déplacer un joueur Repoussé, alors il est Repoussé
   qui jette les Dés de Blocage. Toutefois, le Coach qui          sur une case contenant un autre joueur, ce qui
@@ -2597,7 +2597,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 40
-  ACTIONS DE BLITZ !
+  ACTIONS DE BLITZ !
 
 
   P
@@ -2667,7 +2667,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 41
-  JOUEURS MINUS                                                  Rate le prochain match
+  JOUEURS MINUS                                                  Rate le prochain match
   S’il faut faire un Jet de Blessure pour un joueur avec
   le Trait Minus, alors utilisez le Tableau de Blessure          En Jeu en Ligue, quand un joueur rate son prochain
   de Minus ci-dessous au lieu du tableau standard.               match, il n’est pas éligible pour la prochaine partie
@@ -2744,7 +2744,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 42
-   PRENDRE SA REVANCHE
+   PRENDRE SA REVANCHE
                                                                    « J’agressais pô ! Et mêm’ si k’j’agressais, j’vois pô
   La vengeance est un lieu commun du monde de                      l’problèm’ ! »
   Blood Bowl ; un joueur blessé est enclin à nourrir                                                               Gobbo le Noir
@@ -2759,7 +2759,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Élimination dont le résultat est Amoché, Blessure
   Sérieuse ou Séquelle, et qu’il est forcé de rater son          Si on utilise un Apothicaire pour Rafistoler un joueur
   prochain match, jetez un D6. Sur 4+, ce joueur                 KO alors on ne retire pas le joueur du terrain pour le
-  gagne le Trait Haine (X) oùX est 1 Mot-clé qu’a le            placer dans le Box des Joueurs KO de sa Fosse
+  gagne le Trait Haine (X) où X est 1 Mot-clé qu’a le            placer dans le Box des Joueurs KO de sa Fosse
   joueur qui a causé l’Élimination, au choix du Coach            normalement. À la place, le joueur devient Sonné
   du joueur blessé. Il ne peut pas s’agir des Mots-clés          sur la case qu’il occupe. Si le joueur a été mis KO
   suivants : Gros Bras, Blitzer, Bloqueur, Receveur,             après avoir été Blessé par le Public, il est placé
@@ -2814,7 +2814,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   d’Agression.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –        Page 43
-  Par exemple : Un Blitzer Orque a annoncé une Action
+  Par exemple : Un Blitzer Orque a annoncé une Action
   d’Agression et a fini son Action de Mouvement adjacent à       CONTESTER LA DÉCISION
   un Trois-quart Humain. Il fait un Jet d’Armure pour le         Quand un joueur est Expulsé, quelle qu’en soit la
   Trois-quart Humain, en appliquant un modificateur de +1        raison, son Coach peut tenter de Contester la
@@ -2883,7 +2883,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                  ce n’est en rien une obligation.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –    Page 44
-  MESURER LA PORTÉE                                              TESTER LA PRÉCISION
+  MESURER LA PORTÉE                                              TESTER LA PRÉCISION
   Après avoir annoncé la case cible, vous devez
                                                                  Le joueur qui effectue l’Action de Passe doit à
   mesurer la portée jusqu’à elle pour déterminer le
@@ -2955,7 +2955,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 45
-  • Si le joueur tente d’intercepter une Passe Précise,          Si on demande à un joueur À Terre ou Sonné, ou à
+  • Si le joueur tente d’intercepter une Passe Précise,          Si on demande à un joueur À Terre ou Sonné, ou à
   appliquez un modificateur de -3.                               un joueur qui est Déconcentré, de Réceptionner un
   • Si le joueur tente d’intercepter une Passe Imprécise,        ballon, il rate automatiquement le Test d’Agilité et le
   appliquez un modificateur de -2.                               ballon Rebondit.
@@ -3025,7 +3025,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   ci-dessus.                                                     pour déterminer la direction du Renvoi.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 46
-  ACTIONS DE TRANSMISSION !
+  ACTIONS DE TRANSMISSION !
 
 
   L
@@ -3097,7 +3097,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –       Page 47
-  La case cible sera sous l’une des deux sections de             Lancer Superbe
+  La case cible sera sous l’une des deux sections de             Lancer Superbe
   la Réglette expliquées ci-dessous :
                                                                  Si le Test de Capacité de Passe est réussi, ou si le
   • I : Lancer Rapide                                            jet est un 6 naturel, alors le lancer est un Lancer
@@ -3166,7 +3166,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 48
-  ATTERRIR SUR UNE CASE OCCUPÉE
+  ATTERRIR SUR UNE CASE OCCUPÉE
                                                                    LE SAVIEZ-VOUS…
   Si, après avoir déterminé la case finale où le joueur
                                                                    L’équipe de Halflings des Stunted Stoutfellows a pu
@@ -3237,7 +3237,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –         Page 49
-  TEMPORISER                                                     Si un joueur pouvant marquer un Touchdown sans
+  TEMPORISER                                                     Si un joueur pouvant marquer un Touchdown sans
   Il arrive qu’un Coach souhaite marquer le plus tard            faire de jet de dé, et qu’on aurait donc pu considérer
   possible lors de la mi-temps, et choisisse de jouer la         comme en train de Temporiser, déclare une Action
   montre en s’abstenant de marquer alors qu’il                   de Passe ou une Action de Transmission, et s’il finit
@@ -3303,7 +3303,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 50
-  RÉTABLISSEMENT DES JOUEURS KO                                  REMPORTER LE MATCH
+  RÉTABLISSEMENT DES JOUEURS KO                                  REMPORTER LE MATCH
   Si un Coach a un ou plusieurs joueurs dans le Box
                                                                  Quand le match prend fin, l’équipe qui a marqué le
   des Joueurs KO de sa Fosse, ceux-ci peuvent
@@ -3365,7 +3365,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 51
-  RECRUTER UNE ÉQUIPE DE BLOOD BOWL
+  RECRUTER UNE ÉQUIPE DE BLOOD BOWL
 
   M
           aintenant que vous savez comment disputer un match, il est temps de vous expliquer
@@ -3379,7 +3379,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
   I
-     lexiste plusieurs Fiches d’Équipe différentes à votre disposition, que vous trouverez en pages 92-
+     l existe plusieurs Fiches d’Équipe différentes à votre disposition, que vous trouverez en pages 92-
      106. Chacune d’elles listera plusieurs informations importantes, comme quels joueurs peuvent être
      recrutés pour cette équipe, leur profil, dont leurs Frais d’Embauche, le coût des Relances d’Équipe,
   toute Règle Spéciale concernant l’équipe, les Ligues pour lesquelles l’équipe peut jouer, et bien
@@ -3389,7 +3389,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Quand vous recrutez votre équipe, vous devrez                  Le Budget de Sélection d’Équipe est la quantité de
   remplir une Liste d’Équipe. Elle contient des                  pièces d’or que votre équipe doit dépenser lorsque
   champs pour noter chaque joueur recruté, son nom,              vous la rassemblez. Quand vous commencez une
-  son poste, ses Frais d’Embauche et son profil. Il ya          équipe en Jeu en Ligue, vous aurez en général un
+  son poste, ses Frais d’Embauche et son profil. Il y a          équipe en Jeu en Ligue, vous aurez en général un
   aussi un champ pour noter ses Points de Star                   Budget de Sélection d’Équipe de 1 000 000 de
   Player (PSP), qui servent à améliorer le joueur ; ne           pièces d’or ; il s’agit de la valeur la plus courante
   vous préoccupez pas de ceci pour l’heure, nous                 pour une équipe débutante. En Jeu Hors-concours
@@ -3440,7 +3440,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 52
-  En Jeu en Ligue, il arrivera que vous ayez moins de            ACHETER DES RELANCES D’ÉQUIPE
+  En Jeu en Ligue, il arrivera que vous ayez moins de            ACHETER DES RELANCES D’ÉQUIPE
   11 joueurs sur votre Liste d’Équipe, en raison des
                                                                  N’importe quelle équipe peut acheter des Relances
   blessures ou, pire, des morts que peuvent subir vos
@@ -3515,7 +3515,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 53
-   AUTRES INFORMATIONS                                           TRÉSORERIE
+   AUTRES INFORMATIONS                                           TRÉSORERIE
   Vous aurez besoin de noter une poignée d’autres                Après avoir recruté votre équipe, toutes les pièces
   choses sur la Liste d’Équipe de votre équipe, dont le          d’or restantes sont consignées dans la Trésorerie
   nombre de ses Fans Dévoués, sa Trésorerie et sa                de votre équipe. En matchs de Jeu Hors-concours
@@ -3561,7 +3561,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 54
-  JEU EN LIGUE
+  JEU EN LIGUE
 
   L
         a façon la plus répandue de jouer à Blood Bowl est sans conteste dans le cadre d’une ligue.
@@ -3576,7 +3576,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   terrain !
   Quoi qu’il en soit, une chose est certaine. Le temps que la ligue touche à sa fin et que les play-offs soient à
   portée de main des quelques équipes encore debout, les vétérans endurcis par la compétition ne
-  ressembleront plus à la bleusaille au visage poupin qui a chaussé les crampons pour la première fois il ya
+  ressembleront plus à la bleusaille au visage poupin qui a chaussé les crampons pour la première fois il y a
   bien des matchs !
 
 
@@ -3584,7 +3584,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
   L
-        eJeu en Ligue est un système qui relie vos matchs de Blood Bowl et voit vos équipes se
+        e Jeu en Ligue est un système qui relie vos matchs de Blood Bowl et voit vos équipes se
         développer au fil des parties. Ainsi, de nouvelles étapes viennent s’ajouter au début et à la fin du
         match, représentant les maintes situations qui s’enchaînent lors d’une ligue. Les Coachs doivent
   aussi tenir le compte des Points de Star Player et des Éliminations lors du match, deux points que
@@ -3630,7 +3630,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 55
-   COUPS DE POUCE                                                CONSIGNER LES RÉSULTATS ET LES GAINS
+   COUPS DE POUCE                                                CONSIGNER LES RÉSULTATS ET LES GAINS
   Avant toute Rencontre de Ligue, les équipes ont le             Chaque Coach consigne l’issue du match sur sa
   droit de dépenser des pièces d’or de leur Trésorerie           Feuille de Résultat de Match, et note les
   ou de leur Petite Monnaie pour acheter des Coups               informations suivantes :
@@ -3705,7 +3705,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                  Caractéristique de Fans Dévoués reste la même.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –     Page 56
-   AMÉLIORATION DE JOUEUR                                        Interception
+   AMÉLIORATION DE JOUEUR                                        Interception
   Pendant une ligue, les joueurs de votre équipe                 Quand un joueur Intercepte avec succès une Action
   gagnent de l’expérience grâce à leurs efforts sur le           de Passe faite par un joueur adverse, il gagne 2
   terrain. Cette expérience leur permet de gagner de             PSP.
@@ -3774,7 +3774,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 57
-  Tableau des Améliorations
+  Tableau des Améliorations
                         Déterminer au hasard une       Choisir une             Choisir une                Amélioration de
                          Compétence Principale     Compétence Principale   Compétence Secondaire          caractéristique
    Expérimenté
@@ -3818,13 +3818,13 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   génère une au hasard (pour moins de PSP, comme                      1              Améliorez de 1 l’AR du joueur.
   le Tableau des Améliorations l’indique) ou s’il en                  2         Améliorez de 1 l’AR ou la CP du joueur.
   choisit une. Ensuite, déduisez la quantité de PSP
-                                                                     3-4     Améliorez de 1 l’AR, leM ou la CP du joueur.
+                                                                     3-4     Améliorez de 1 l’AR, le M ou la CP du joueur.
   requise des PSP accumulés sur le profil du joueur.
-                                                                      5         Améliorez de 1 leM ou la CP du joueur.
+                                                                      5         Améliorez de 1 le M ou la CP du joueur.
   De plus, certaines Compétences sont listées
-                                                                      6          Améliorez de 1 l’AG ou leM du joueur.
+                                                                      6          Améliorez de 1 l’AG ou le M du joueur.
   comme des Compétences d’Élite. Si un joueur
-  gagne une Compétence d’Élite, augmentez sa                          7          Améliorez de 1 l’AG ou laF du joueur.
+  gagne une Compétence d’Élite, augmentez sa                          7          Améliorez de 1 l’AG ou la F du joueur.
   valeur de 10 000 pièces d’or supplémentaires.                       8     Améliorez de 1 la Caractéristique de votre choix.
   Si le joueur choisit sa Compétence, ajoutez-la                   Si un joueur ne souhaite pas prendre l’Amélioration
   simplement au profil du joueur sur votre Liste                   de Caractéristique qu’il a tirée, il peut choisir une
@@ -3844,7 +3844,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –       Page 58
-  Quand vous améliorez le Mouvement ou la Force                  EMBAUCHES, RENVOIS
+  Quand vous améliorez le Mouvement ou la Force                  EMBAUCHES, RENVOIS
   d’un joueur, augmentez simplement de 1 le nombre.              ET RETRAITE TEMPORAIRE
   Quand vous améliorez l’Agilité ou la Capacité de
   Passe d’un joueur, réduisez de 1 le nombre devant              Le Blood Bowl est un sport violent qui ne manque
@@ -3912,7 +3912,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 59
-   ERREURS COÛTEUSES
+   ERREURS COÛTEUSES
   Après chaque match de Blood Bowl, une équipe voit                 Après chaque Rencontre de
   ses efforts récompensés par de l’or. Elle ajoute ces              Ligue, si une équipe a au
   gains à sa Trésorerie, si bien que certaines équipes              moins 100 000 pièces d’or
@@ -3975,7 +3975,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –       Page 60
-   CONCÉDER LE MATCH                                             CONCÉDER SANS PÉNALITÉ
+   CONCÉDER LE MATCH                                             CONCÉDER SANS PÉNALITÉ
   Il est rare qu’une équipe de Blood Bowl concède un             Parfois, une équipe est trop malmenée pour
   match. La plupart des joueurs sont trop fiers pour             envisager de continuer, et même les fans les plus
   abandonner, et ils savent que leurs supporters ne le           acharnés sont assez lucides pour s’en rendre
@@ -3991,14 +3991,14 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
                                                                  2 à 0, sauf s’il avait déjà marqué plus de
   verront sa décision d’un mauvais œil !
                                                                  Touchdowns, auquel cas il compte comme ayant
-  Un Coach peut décider de Concéder un match au                  gagné Xà 0, oùX est le nombre de Touchdowns
+  Un Coach peut décider de Concéder un match au                  gagné X à 0, où X est le nombre de Touchdowns
   début de n’importe lequel de ses Tours. Si une                 qu’il a marqués jusqu’ici.
   équipe Concède, les points suivants se produisent :
                                                                  Toutefois, l’équipe ne subit aucune autre des
   • Son adversaire gagne automatiquement 2 à 0,                  pénalités listées dans les règles pour avoir Concédé
   sauf s’il avait déjà marqué plus de Touchdowns,                le Match ; elle a déjà bien assez souffert !
-  auquel cas il compte comme ayant gagné Xà 0, où
-  Xest le nombre de Touchdowns qu’il a marqués
+  auquel cas il compte comme ayant gagné X à 0, où
+  X est le nombre de Touchdowns qu’il a marqués
   jusqu’ici.
   • Il ne peut élire JDM aucun de ses joueurs ; à la
   place, son adversaire peut élire un deuxième JDM
@@ -4006,7 +4006,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   • Il ne génère aucun Gain, et son adversaire reçoit
   des Gains égaux à la totalité de l’Affluence des
   Fans plus le nombre de Touchdowns qu’il a
-  marquésx 10 000 pièces d’or.
+  marqués x 10 000 pièces d’or.
   • Tout Point de Star Player que l’équipe a gagné
   pendant le match est perdu.
   • La Caractéristique de Fans Dévoués de l’équipe
@@ -4035,7 +4035,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Pour organiser une ligue, vous aurez besoin d’au               SAISONS
   moins quatre équipes, mais il n’y a aucune limite
                                                                  L’unité de durée d’une ligue s’appelle une Saison,
-  haute ; toutefois, plus il ya d’équipes, plus cela
+  haute ; toutefois, plus il y a d’équipes, plus cela
                                                                  divisée entre la Saison Normale et les Play-offs.
   représentera du travail pour le Commissaire de
                                                                  Une ligue peut compter une unique Saison, ou
@@ -4050,7 +4050,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 61
-  DIVISIONS                                                      MATCHS AMICAUX
+  DIVISIONS                                                      MATCHS AMICAUX
   Une fois que le Commissaire de Ligue sait combien              Certains Coachs voudront peut-être jouer des
   d’équipes participent à la Saison, il doit décider du          matchs Amicaux contre d’autres Coachs pour
   nombre de Divisions qu’elle compte. Chaque                     s’exercer ou simplement pour jouer plus. C’est tout
@@ -4120,7 +4120,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 62
-  SE QUALIFIER POUR LES PLAY-OFFS                                TROPHÉES DE CHOIX
+  SE QUALIFIER POUR LES PLAY-OFFS                                TROPHÉES DE CHOIX
   Avant que la Saison commence, le Commissaire de                Une fois les finales disputées, et que le
   Ligue indique clairement le nombre d’équipes qui se            Commissaire de Ligue a présenté les récompenses
   qualifieront pour les Play-offs. Mieux vaut qu’il              promises au cours de la ligue, on offre un prix en
@@ -4134,9 +4134,9 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   plus performantes en termes de Points de Ligue
                                                                  Ligue.
   prises à parts égales dans chaque Division. Par
-  exemple, s’il ya quatre Divisions et huit équipes à           On octroie ces Gains après la dernière Séquence
+  exemple, s’il y a quatre Divisions et huit équipes à           On octroie ces Gains après la dernière Séquence
   qualifier, alors il doit s’agir des deux premières             d’Après Match et on ne les prend donc pas en
-  équipes de chaque Division. S’il ya trois Divisions           compte à l’étape Erreurs Coûteuses. Ainsi, on ne
+  équipes de chaque Division. S’il y a trois Divisions           compte à l’étape Erreurs Coûteuses. Ainsi, on ne
   et huit équipes à qualifier, alors les deux premières          peut pas perdre ces Gains sitôt après les avoir
   équipes de chaque division, ainsi que les deux                 gagnés !
   meilleures équipes classées troisièmes, se
@@ -4186,7 +4186,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 63
-  REPOS & RÉCRÉATION                                             RÉ-ENRÔLEMENT
+  REPOS & RÉCRÉATION                                             RÉ-ENRÔLEMENT
   La Pause Hors Saison donne aux joueurs blessés le              Une fois qu’une équipe a calculé son Budget de Ré-
   temps de reposer leurs os endoloris, de se laisser             enrôlement, elle peut commencer à Ré-enrôler ses
   ausculter par un apothicaire et de se préparer à la            joueurs. Certains individus cruciaux de la Saison
@@ -4251,7 +4251,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   trop important sur les autres.                                 nouvelle Saison !
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –      Page 64
-  JEU ÉGAL
+  JEU ÉGAL
 
   L
         es ligues ne sont pas la seule façon de jouer à Blood Bowl et certains Coachs n’ont pas de
@@ -4319,7 +4319,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –    Page 65
-   POINTS DE STAR PLAYER                                         ACHETER DES COMPÉTENCES
+   POINTS DE STAR PLAYER                                         ACHETER DES COMPÉTENCES
   Puisque votre Liste d’Équipe est déjà établie lors             Acheter une Compétence Principale à un joueur
   d’un match en Jeu Égal et que vous avez déjà                   coûte 1 Point de Compétence. Il n’y a pas de limite
   décidé des Compétences, les joueurs ne génèrent                au nombre de Compétences Principales qu’une
@@ -4386,7 +4386,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –        Page 66
-  Certains Star Players ont un tel impact sur le match
+  Certains Star Players ont un tel impact sur le match
   qu’on parle de Méga-stars. Les Méga-stars coûtent
   4 Points de Compétence au lieu de 2 Points de
   Compétence.
@@ -4431,7 +4431,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
   T
          out le monde n’a pas le temps de s’investir dans une ligue, et d’aucuns ne sont pas attirés par
-         les tournois et autres week-ends de jeu. Pour ces Coachs, il ya le Jeu Hors-concours, qui leur
+         les tournois et autres week-ends de jeu. Pour ces Coachs, il y a le Jeu Hors-concours, qui leur
          donne la liberté d’explorer le Blood Bowl de la façon qui leur convient le mieux.
   La nature flexible du Jeu Hors-concours est idéale pour les Coachs qui veulent tester quelque chose de
   différent. Peut-être veulent-ils augmenter le nombre de Star Players autorisés dans chaque équipe, ou jouer
@@ -4458,7 +4458,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –     Page 67
-   MATCHS HISTORIQUES                                            ADONNEZ-VOUS À LA CRÉATIVITÉ
+   MATCHS HISTORIQUES                                            ADONNEZ-VOUS À LA CRÉATIVITÉ
   Nombre de publications pour Blood Bowl                         Le Jeu Hors-concours est le contexte parfait pour
   fournissent des listes historiques qui dépeignent              que les Coachs s’adonnent à leur créativité, en
   certaines des équipes les plus célèbres du jeu sacré           offrant l’occasion de personnaliser des éléments du
@@ -4504,7 +4504,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 68
-  COMPÉTENCES ET TRAITS !
+  COMPÉTENCES ET TRAITS !
 
   N
           ombre de joueurs ont divers Traits et Compétences qui affectent leur manière de se comporter
@@ -4528,7 +4528,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   joueur en question, et d’autres en Secondaires, qui nécessitent un investissement de PSP supérieur de la part
   du joueur. Tous les joueurs n’ont pas accès à toutes les catégories de Compétence.
   La façon dont les joueurs gagnent de nouvelles Compétences en jeu en Ligue est expliquée en page 57.
-  Par exemple : Un Blitzer des Rois des Tombes aG etF listés sous Principales, et A etS sous Secondaires. Ceci signifie
+  Par exemple : Un Blitzer des Rois des Tombes a G et F listés sous Principales, et A et S sous Secondaires. Ceci signifie
   qu’il a accès aux Compétences Générales et de Force en Principales, et aux Compétences d’Agilité et Scélérates en
   Secondaires.
 
@@ -4566,7 +4566,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 69
-   TABLEAU DE COMPÉTENCES
+   TABLEAU DE COMPÉTENCES
   Voici ci-dessous la liste complète des différentes Compétences et les catégories auxquelles elles
   appartiennent. Quand vous déterminez au hasard une Compétence pour un joueur, choisissez d’abord une
   des catégories de Compétence éligibles pour ce joueur, puis jetez deux D6, l’un après l’autre. Le premier dé
@@ -4627,7 +4627,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                    – http://empireoublie.free.fr –         Page 70
-  LISTE DES COMPÉTENCES ET TRAITS !
+  LISTE DES COMPÉTENCES ET TRAITS !
   Vous trouverez ici la description de chaque Compétence et Trait qu’on trouve actuellement dans le jeu.
 
        AGILITÉ
@@ -4708,7 +4708,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –      Page 71
-       FORCE
+       FORCE
 
   BAGARREUR                                   Active              DANS LE MILLE                                   Active
   Quand ce joueur annonce une Action de Blocage, il peut          Quand ce joueur effectue une Action de Lancer de
@@ -4791,7 +4791,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –     Page 72
-       GÉNÉRALE
+       GÉNÉRALE
 
   APPUIS SÛRS                                        Active       LUTTE                                              Active
   Chaque fois que ce joueur est censé être Plaqué ou              Quand ce joueur effectue une Action de Blocage, ou
@@ -4859,7 +4859,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –      Page 73
-       MUTATIONS
+       MUTATIONS
 
   BRAS SUPPLÉMENTAIRES                     Active                PRÉSENCE PERTURBANTE*                          Passive
   Ce joueur applique un modificateur de +1 au Test               Tout joueur adverse qui effectue une Action de Passe,
@@ -4922,7 +4922,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –      Page 74
-       PASSE
+       PASSE
 
   CANONNIER                                     Active           PASSE                                          Active
   Quand ce joueur effectue une Action de Passe qui est           Ce joueur peut relancer tout Test de Capacité de Passe
@@ -5008,7 +5008,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –    Page 75
-       SCÉLÉRATE
+       SCÉLÉRATE
 
   AGRESSEUR SOLITAIRE                            Active
                                                                  POURSUITE                                       Active
@@ -5078,7 +5078,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –      Page 76
-       TRAITS
+       TRAITS
 
   ANIMOSITÉ (X)*                                    Actif        Si le joueur botté était en possession du ballon, celui-ci
   Chaque fois que ce joueur tente d’effectuer une Action de      Rebondit depuis la case où il se trouve.
@@ -5157,7 +5157,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –    Page 77
-  CONTAGIEUX                                       Passif          Ce joueur peut utiliser l’Action Spéciale de Gerbe de
+  CONTAGIEUX                                       Passif          Ce joueur peut utiliser l’Action Spéciale de Gerbe de
   Une fois par match, quand un joueur ayant ce Trait inflige       Vomi pour remplacer l’Action de Blocage faite dans le
   une Élimination à un joueur adverse suite à une Action de        cadre d’une Action de Blitz s’il le souhaite, mais son
   Blocage, et que le joueur subit un résultat Mort sur son         activation prend quand même fin sitôt qu’il a effectué
@@ -5236,7 +5236,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)     – http://empireoublie.free.fr –     Page 78
-  MONTÉ SUR RESSORT                               Actif             REGARD HYPNOTIQUE                                   Actif
+  MONTÉ SUR RESSORT                               Actif             REGARD HYPNOTIQUE                                   Actif
   Pendant son mouvement, un joueur ayant ce Trait peut              Quand on active ce joueur, il peut annoncer une Action
   tenter de s’Élancer par-dessus une unique case                    Spéciale de Regard Hypnotique ; il n’y a pas de limite au
   adjacente, peu importe ce qu’il se trouve sur la case.            nombre de joueurs qui peuvent annoncer cette Action
@@ -5317,7 +5317,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –      Page 79
-  SOIF DE SANG (X+)*                                  Passif       TIMMM–BER !                                      Passif
+  SOIF DE SANG (X+)*                                  Passif       TIMMM–BER !                                      Passif
   Chaque fois qu’on active ce joueur, après avoir annoncé          Si un joueur a un Mouvement de 2 ou moins et tente de
   son action, il doit jeter un D6, en ajoutant 1 au jet s’il a     se relever, appliquez un modificateur de +1 au jet pour se
   annoncé une Action de Blocage ou une Action de Blitz. Si         relever pour chaque coéquipier Debout Démarqué
@@ -5393,7 +5393,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –      Page 80
-  COUPS DE POUCE !
+  COUPS DE POUCE !
 
   L
         ’argent coule toujours à flots autour des matchs de Blood Bowl, et à l’approche du coup d’envoi,
@@ -5461,7 +5461,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 81
-   0-3 PRIÈRES À NUFFLE
+   0-3 PRIÈRES À NUFFLE
   10 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                     Pour chaque Prière à Nuffle qu’une équipe achète,
   Il n’est pas rare que les équipes, les coachs et les               jetez un D16 (en relançant tout résultat qu’une
   fans en appellent à une intervention divine lors d’un              équipe a déjà obtenu) et consultez le Tableau des
@@ -5536,7 +5536,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)         – http://empireoublie.free.fr –       Page 82
-   0-5 COACHS ASSISTANTS À TEMPS PARTIEL                         0-1 MAGE MÉTÉO
+   0-5 COACHS ASSISTANTS À TEMPS PARTIEL                         0-1 MAGE MÉTÉO
   20 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                 25 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE
   Tout le monde est un expert ou, du moins, prétend              La météo est au mieux imprévisible, et certains
   l’être ! Les équipes ont l’habitude de payer une               propriétaires de stade paient rubis sur l’ongle un
@@ -5605,7 +5605,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 83
-   0-8 ENTRAÎNEMENT SUPPLÉMENTAIRE                               0-1 DÉBUTANTS DÉCHAÎNÉS
+   0-8 ENTRAÎNEMENT SUPPLÉMENTAIRE                               0-1 DÉBUTANTS DÉCHAÎNÉS
   100 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                150 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE
   Il est déjà compliqué de réunir l’équipe pour qu’elle          AVEC LA RÈGLE SPÉCIALE TROIS-QUARTS À VIL PRIX
   s’entraîne en temps normal, alors imaginez quand               Certains coachs renforcent les rangs de leur équipe
@@ -5677,7 +5677,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –       Page 84
-   0-1 ARBITRE PARTIAL                                           0-1 STAFF CÉLÈBRE
+   0-1 ARBITRE PARTIAL                                           0-1 STAFF CÉLÈBRE
   PRIX VARIABLE                                                  PRIX VARIABLE
   Il n’y a pas que les joueurs qui deviennent des                Nombre de membres de staff sont devenus aussi
   vedettes ; certains arbitres se font une réputation            célèbres que les joueurs qu’ils encadrent. La plupart
@@ -5715,7 +5715,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
    Une équipe qui a embauché un Représentant de
    Ligue Louche gagne les bénéfices suivants :                    Pour la durée du match, appliquez un modificateur
                                                                   de +1 au jet chaque fois que vous faites un jet pour
-   Œil Attentif                                                   le rétablissement d’un joueurK.-O.
+   Œil Attentif                                                   le rétablissement d’un joueur K.-O.
 
    Immédiatement après qu’un joueur adverse a                     Sagesse des Nains
    effectué une Action d’Agression, s’il n’a pas été
@@ -5739,7 +5739,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 85
-   0-3 JOUEURS MERCENAIRES                                       0-2 STAR PLAYERS
+   0-3 JOUEURS MERCENAIRES                                       0-2 STAR PLAYERS
   PRIX VARIABLE – ACCESSIBLE À TOUTE ÉQUIPE                      PRIX VARIABLE – ACCESSIBLE À DIVERSES ÉQUIPES
   Pour chaque joueur contractuel, il y en a des                  Les Star Players sont les meilleurs joueurs à jamais
   dizaines d’autres prêts à revêtir un maillot contre            avoir foulé la terre sacrée de Nuffle. Ce sont des
@@ -5787,7 +5787,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 86
-   0-1 SORCIER                                                     Tout joueur Debout touché par la boule de feu est
+   0-1 SORCIER                                                     Tout joueur Debout touché par la boule de feu est
                                                                    immédiatement Plaqué et on applique un
   PRIX VARIABLE – ACCESSIBLE À TOUTE ÉQUIPE                        modificateur de +1 au Jet d’Armure. On fait
   Les Collèges de Magie sont de grands fans du                     immédiatement un Jet d’Armure pour tout joueur À
@@ -5809,7 +5809,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   SORCIER : SORCIER-SPORTIF                                        sa case.
 
   150 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                  Une Grenouille a le profil suivant :
-  Les Sorciers-sportifs sont là pour épater la galerie                              Compétences & Traits          MF AG CP AR
+  Les Sorciers-sportifs sont là pour épater la galerie                              Compétences & Traits          M F AG CP AR
   dans un déluge de sortilèges et autres tours                      Grenouille       Esquive, Microbe, Minus,
   spectaculaires. Les boules de feu montent du                        Grenouille,    Sans Ballon, Saut, Très      5   1   2+   –    5
                                                                          Spécial     Longue Jambes
@@ -5854,7 +5854,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)           – http://empireoublie.free.fr –       Page 87
-  LES ÉQUIPES DE BLOOD BOWL !
+  LES ÉQUIPES DE BLOOD BOWL !
 
 
   D
@@ -5925,7 +5925,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –    Page 88
-  RÈGLES SPÉCIALES !
+  RÈGLES SPÉCIALES !
 
 
   L
@@ -5989,7 +5989,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 89
-  Une fois par match, si un joueur adverse ayant une             CAPITAINE
+  Une fois par match, si un joueur adverse ayant une             CAPITAINE
   Force de 4 ou moins et n’ayant pas le Trait Minus
                                                                  Certaines équipes pratiquent le Blood Bowl depuis
   subit un résultat Mort lors du jet sur le Tableau
@@ -6068,7 +6068,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 90
-  Voici un aperçu de ce que chaque Catégorie signifie :
+  Voici un aperçu de ce que chaque Catégorie signifie :
   • La Catégorie 1 est pour les équipes les plus                   • La Catégorie 4 est réservée aux équipes les plus
   performantes du jeu, celles qui ont tous les outils              faibles (mais souvent les plus amusantes) de Blood
   nécessaires pour affronter les autres équipes et qui             Bowl. Il s’agit souvent des équipes de « Minus »,
@@ -6134,9 +6134,9 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
     était difficile de leur enfiler un maillot.
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –   Page 91
-   ALLIANCE DU VIEUX MONDE
+   ALLIANCE DU VIEUX MONDE
   ÉQUIPES CÉLÈBRES : MIDDENHEIM MAULERS, AVERLAND ALL-STARS, BLUCHEIM BERSERKERS
-  Il ya de nombreuses cités dans le Vieux Monde, dont la plupart sont des métropoles grouillantes
+  Il y a de nombreuses cités dans le Vieux Monde, dont la plupart sont des métropoles grouillantes
   aux cultures diverses et variées. Même si ces cités abritent principalement des Humains, on y
   retrouve régulièrement des Nains et des Halflings venus faire du commerce ou faire bénéficier les
   citadins de leur artisanat. Bien entendu, ces races peuvent également se mélanger sur les terrains
@@ -6199,7 +6199,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)              – http://empireoublie.free.fr –    Page 92
-   BAS-FONDS
+   BAS-FONDS
   ÉQUIPES CÉLÈBRES : UNDERWORLD CREEPERS, CRAGMERE CRITTERS, FUN GAL COWBOYS
   Il est étrange de constater ce qui unit les individus ; il s’agit parfois d’un respect mutuel, parfois d’un
   intérêt commun ou l’adoration d’une seule et même équipe ; et parfois, il s’agit simplement du fait
@@ -6212,7 +6212,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   eux bien moins affectés vis-à-vis de cette relation), toutes les parties bénéficient de cet arrangement, surtout quand il est
   question de faire infuser les divers champignons hallucinogènes des peaux-vertes dans les élixirs de malepierre des
   hommes-rats !
-   QTE          POSTE            COÛTM           F   AG CP AR                  COMPÉTENCES & TRAITS                      P     S
+   QTE          POSTE            COÛT M           F   AG CP AR                  COMPÉTENCES & TRAITS                      P     S
    0–16 Trois-quart Gobelin       40k         6   2   3+   4+   8+   Esquive, Poids Plume, Minus                         ASM    GPF
          Trois-quart Gobelin
     0–6 Trois-quart Snotlings     15k         5   1   3+   4+   6+   Esquive, Insignifiant, Poids Plume, Minus,          ASM    G
@@ -6265,7 +6265,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)             – http://empireoublie.free.fr –    Page 93
-   ELFES NOIRS
+   ELFES NOIRS
   ÉQUIPES CÉLÈBRES : NAGGAROTH NIGHlWINGS, DARKSIDE COWBOYS, DARK ARK SERPENTS
   Les Elfes Noirs ont tourné le dos aux valeurs elfiques traditionnelles de noblesse, de beau jeu, de
   passes gracieuses et de soin outrageusement maniaque porté à l’apparence. Au lieu de ça, ils
@@ -6306,7 +6306,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   entraînés au corps à corps et capables de venir à bout de n’importe quelle cible. Les autres
   membres de l’équipe excellent dans le jeu de passe et passent des heures à s’entraîner pour parfaire leurs passes de
   précision et leurs réceptions acrobatiques.
-   QTE        POSTE         COÛTM       FAG CP        AR              COMPÉTENCES & TRAITS                        P    S
+   QTE        POSTE         COÛT M       F AG CP        AR              COMPÉTENCES & TRAITS                        P    S
    0–16 Trois-quart         65k     7    3   2+   3+    8+                                                         GA     F
         Trois-quart Elfe
    0–2 Lanceur              85k     7    3   2+   2+    8+    Passe, Libération Contrôlée                          GAP    F
@@ -6324,7 +6324,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)    – http://empireoublie.free.fr –       Page 94
-   ÉLUS DU CHAOS
+   ÉLUS DU CHAOS
   ÉQUIPES CÉLÈBRES : DOOM LORDS, EVERCHOSEN, SKULLS OF KATAM
   Le Blood Bowl semble encore plus populaire chez les adorateurs des Dieux du Chaos que chez les
   peuples civilisés. Cela tient peut-être à l’allure de secte des clubs de supporters, à la violence
@@ -6335,7 +6335,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   auxquels viennent s’ajouter des Élus surhumains, des Minotaures assoiffés de sang, de sinistres
   Ogres ou de fétides Trolls, tous déterminés à prouver leur valeur sur le terrain en écrasant tous
   leurs adversaires au nom de leur divinité tutélaire.
-   QTE          POSTE            COÛTM       FAG CP AR                             COMPÉTENCES & TRAITS                       P    S
+   QTE          POSTE            COÛT M       F AG CP AR                             COMPÉTENCES & TRAITS                       P    S
    0–16 Trois-quart Homme-Bête    55k    6    3        3+       3+    9+ Cornes, Crâne Épais                                   GM ASFP
         Trois-quart Homme-Bête
     0–4 Élu du Chaos              100k   5    4        3+       5+ 10+ Clef de Bras                                            GFM   AS
@@ -6367,7 +6367,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   ou deux Hommes-arbres pour protéger leur ligne. Ce qui est plus surprenant pour l’équipe adverse, ce sont les Renards
   qui les accompagnent, surtout quand l’un d’entre eux s’empare du ballon avant de se carapater vers l’En-but adverse
   pour marquer !
-   QTE        POSTE        COÛTM         F    AG           CP       AR              COMPÉTENCES & TRAITS                       P    S
+   QTE        POSTE        COÛT M         F    AG           CP       AR              COMPÉTENCES & TRAITS                       P    S
    0-16 Trois-quart Gnome 40k       5     2       3+        4+       7+   Rétablissement, Poids Plume, Minus, Lutte             A    SGF
         Trois-quart Gnome
    0-2 Renard Sylvestre    50k      7     2       2+        -        6+   Esquive, Mon ballon, Glissade Contrôlée, Minus        -     A
@@ -6385,7 +6385,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                 – http://empireoublie.free.fr –      Page 95
-   GOBELINS
+   GOBELINS
   ÉQUIPES CÉLÈBRES : SCARCRAG SNIVELLERS, LOWDOWN RATS, THE GREENBOYZ
   Les Gobelins sont la lie du monde du Blood Bowl. Bruyants, odieux et totalement insensibles au
   degré de nuisance qu’ils induisent chez les autres, les Gobelins se retrouvent fréquemment autour
@@ -6397,7 +6397,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   autant de chances de lancer leurs petits équipiers à travers tout le terrain pour leur faire marquer un
   touchdown spectaculaire que de les mâchouiller un air absent ! Les équipes de Gobelins ne sont donc guère
   performantes, mais par Nuffle, qu elles sont divertissantes.
-   QTE        POSTE        COÛTM         F    AG   CP       AR              COMPÉTENCES & TRAITS                        P    S
+   QTE        POSTE        COÛT M         F    AG   CP       AR              COMPÉTENCES & TRAITS                        P    S
    0–16 Trois-quart Gobelin 40k      6    2    3+       4+   8+    Esquive, Poids Plume, Minus                          AS    GFP
         Trois-quart Gobelin
    0–1 Cinglé               40k      6    2    3+       –    8+    Tronçonneuse, Arme Secrète, Minus, Sans le Ballon     S    AGF
@@ -6425,7 +6425,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   rapidité ou l’agilité des Elfes, ni la robustesse des Nains. Ils sont trop petits pour lancer ou attraper
   décemment la balle, et leurs courtes jambes couronnées par de larges bedaines les empêchent de
   courir bien vite. Mais ce que les équipes de Halflings perdent en qualité de jeu, elles le compensent
-  en quantité, et alignent généralement bien plus de joueurs que les autres, surtout quand il ya un
+  en quantité, et alignent généralement bien plus de joueurs que les autres, surtout quand il y a un
   grand buffet à la clé, auquel cas c’est la moitié du Moot qui s’engage ! Ce qui sauve les équipes de
   Halflings, c’est que nombre d’entre elles ont noué une alliance avec les Hommes-arbres qui vivent
   dans les forêts du Moot. Si une équipe parvient à apporter deux de ces béhémoths boisés sur le
@@ -6447,13 +6447,13 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)          – http://empireoublie.free.fr –      Page 96
-   HAUTS ELFES
+   HAUTS ELFES
   ÉQUIPES CÉLÈBRES : GALADRIETH GLADATIOR, DRAGONS DE CALEDOR
   La première fois que le Blood Bowl est arrivé en Ulthuan, il fut accueilli par moult soupirs exaspérés
   et toute une galerie de mines renfrognés, car il ne semblait être rien de plus que la confrontation de
   deux équipes de barbares se jetant l’une sur l’autre. Toutefois, il fut rapidement évident qu’il y avait
   d’autres façons de pratiquer ce sport, et dans les années qui suivirent, les équipes de Hauts Elfes
-  révolutionnèrent le jeu de passe de la discipline. Il ya bien des avantages à gagner (par opposition
+  révolutionnèrent le jeu de passe de la discipline. Il y a bien des avantages à gagner (par opposition
   à massacrer l’adversaire, ce qui n’est pas toujours la même chose !), et leurs plus agiles joueurs
   sont des parangons de l’aspect le plus gracieux du sport. Le seul véritable problème avec les Hauts
   Elfes, c’est qu’ils sont parfois aussi difficiles sur le choix de leur adversaire que sur le lieu ou la date
@@ -6479,7 +6479,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   C’est une chose admise parmi les historiens du Blood Bowl que les Hommes-lézards furent l’une
   des premières races à jouer au Jeu Sacré. Les découvertes d’immenses temples-stades,
   d’antiques bas-reliefs représentant des matchs, et autres reliques datant pour certaines de plus de
-  8 000 ans semblent corroborer ces affirmations, même si le jeu qui se jouait il ya plusieurs
+  8 000 ans semblent corroborer ces affirmations, même si le jeu qui se jouait il y a plusieurs
   millénaires de cela n’avait sans doute pas grand-chose à voir avec la version moderne. Quoi qu’il
   en soit, les Hommes-lézards ont eu un profond impact sur la scène sportive au fil des dernières
   années, et on les retrouve de plus en plus souvent dans les stades de Lustrie et d’ailleurs. Leurs
@@ -6504,7 +6504,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)        – http://empireoublie.free.fr –      Page 97
-   HORREURS NÉCROMANTIQUES
+   HORREURS NÉCROMANTIQUES
   ÉQUIPES CÉLÈBRES :           WOLFENBURG            CRYPT-STEALERS,        BRUENDAR          GRIMJACKS,        PUMPKIN-PATCH
   PETRIFIERS
   La mort n’est pas toujours synonyme de fin de carrière, et de nombreux joueurs prometteurs partis
@@ -6544,7 +6544,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   d’agression. À l’inverse, face à une équipe de Nains tentant d’engluer le jeu, ils peuvent essayer de
   déborder leurs adversaires et de les prendre de vitesse. Bien qu’elles ne soient les meilleures en
   rien, les équipes d’Humains sont bonnes en tout !
-   QTE        POSTE        COÛTM         F     AG    CP   AR              COMPÉTENCES & TRAITS                         P    S
+   QTE        POSTE        COÛT M         F     AG    CP   AR              COMPÉTENCES & TRAITS                         P    S
    0–16 Trois-quart Humain 50k      6     3     3+    4+   9+                                                           G    ASF
         Trois-quart Humain
    0–3 Aspirant Halfling     30k    5     2     3+    4+   7+   Esquive, Poids Plume, Minus                             A    SGF
@@ -6564,7 +6564,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)        – http://empireoublie.free.fr –       Page 98
-   KHORNE
+   KHORNE
   ÉQUIPES CÉLÈBRES : SKULL-TRIBE SLAUGHTERERS, BLOODSOAKED BRUISERS, KHORNE’S KILLERS
   De toutes les équipes qui vénèrent le Chaos, celles de Khorne sont de loin les plus violentes et les
   plus assoiffées de sang. Pour celles-ci, le Blood Bowl est avant tout une affaire de sang ! Les
@@ -6577,7 +6577,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   appétence pour le carnage, la mutilation et le meurtre, les équipes de Khorne ont parfois tendance à oublier cette petite
   chose ovale que l’on nomme le ballon. Mais leurs fans n’en ont cure, car pour eux, les vrais vainqueurs sont ceux qui ont
   abattu tous leurs ennemis !
-   QTE         POSTE          COÛTM        F      AG CP AR                  COMPÉTENCES & TRAITS                         P    S
+   QTE         POSTE          COÛT M        F      AG CP AR                  COMPÉTENCES & TRAITS                         P    S
    0–16 Maraudeur Sanglant     50k     6    3      3+   4+   8+   Frénésie                                               GM    ASF
         Trois-quart Humain
    0–2 Khorngors               70k     6    3      3+   4+   9+   Cornes, Juggernaut, Rétablissement, Crâne Épais        GFM ASP
@@ -6604,7 +6604,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   idéaux : robustes, puissantes et enragées, elles sont capables d’envoyer les adversaires imprudents à la tombe plus tôt
   que prévu. Mais ce que les fans aiment par-dessus tout, c’est d’assister en direct au « recrutement » d’un joueur de
   l’équipe adverse !
-   QTE         POSTE          COÛTM        F      AG CP AR                  COMPÉTENCES & TRAITS                         P    S
+   QTE         POSTE          COÛT M        F      AG CP AR                  COMPÉTENCES & TRAITS                         P    S
    0–16 Trois-quart Squelette 40k      5     3     4+   6+   8+   Régénération, Crâne Épais                               G    ASF
         Trois-quart Humain Squelette Mort-Vivant
    0–16 3/4 Zombie             40k     4     3     4+   6+   9+   Fourchette, Régénération, Instable                     SG    AF
@@ -6622,7 +6622,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)          – http://empireoublie.free.fr –       Page 99
-   NAINS
+   NAINS
   ÉQUIPES CÉLÈBRES : DWARF GIANTS, WARHAMMERERS, GRUDGE BEARERS
   Les Nains furent l’une des premières races à jouer à la version moderne du Blood Bowl; après tout,
   ce fut l’un des leurs, le légendaire Roze-El, qui a traduit l’antique Grimoire de Nuffle. En
@@ -6662,7 +6662,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   n’emploient pas seulement des Nains du Chaos : l’ossature de l’équipe est formée de Hobgobelins,
   qui écopent du sale boulot, des Centaures-taureaux mutants endossent le rôle de Blitzers, tandis que de terribles
   Minotaures déchaînent leur violence pour la gloire de Hashut.
-   QTE          POSTE            COÛTM        F     AG CP AR                            COMPÉTENCES & TRAITS                    P    S
+   QTE          POSTE            COÛT M        F     AG CP AR                            COMPÉTENCES & TRAITS                    P    S
    0–16 Trois-quart Hobgobelin    40k     6    3     3+       4+        8+                                                       S    GFA
         Trois-quart Gobelin
     0-2 Surineur Sournois         60k     6    3     3+       5+        8+     Poursuite, Poignard                              SG    FA
@@ -6682,7 +6682,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                    – http://empireoublie.free.fr –   Page 100
-   NOBLESSE IMPÉRIALE
+   NOBLESSE IMPÉRIALE
   ÉQUIPES CÉLÈBRES : BOGENHAFEN BARONS, OSTERMARK DUKES, AVERLAND EARLS
   Nombreux sont les nobles de l’Empire à éprouver un profond amour pour le Blood Bowl tout en
   bénéficiant d’immenses richesses : la combinaison idéale pour former une équipe privée. Si
@@ -6742,7 +6742,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)             – http://empireoublie.free.fr –   Page 101
-   NURGLE
+   NURGLE
   ÉQUIPES CÉLÈBRES : NURGLE’S ROTTERS, BILE-CITY BLIGHTKINGS, DISEASED DESTROYERS
   Les joueurs de Nurgle sont à l’image de leur divinité: lents, lourds, putrides et abominablement
   résistants. Leurs équipes font lentement monter la balle telle une fièvre miasmatique le long du
@@ -6754,7 +6754,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   affectés d’innombrables maladies. Et aucune équipe ne serait complète sans un Rejeton Putride,
   un joueur si choyé par le Dieu de la Peste qu’il n’est plus qu’une masse de chair palpitante et suintante de pus. Quand
   une équipe de Nurgle entre sur le terrain, il n’y a pas que l’enthousiasme des fans qui est contagieux !
-   QTE         POSTE             COÛTM             F   AG CP AR                 COMPÉTENCES & TRAITS                       P     S
+   QTE         POSTE             COÛT M             F   AG CP AR                 COMPÉTENCES & TRAITS                       P     S
    0–16 Trois-quart Putrescent   40k        5       3   4+   6+   9+   Décomposition, Contagieux                           SGM    AF
         Trois-quart Humain
    0–2 Pestigor                  70k        6       3   3+   4+   9+   Cornes, Contagieux, Régénération, Crâne Épais,      GMF APS
@@ -6781,7 +6781,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   Naturellement, leurs résultats sont très mitigés : tout dépend de si les Ogres choisissent d’écouter
   leurs alliés microscopiques et de répandre le carnage chez l’ennemi, ou s’ils restent stupidement sur place pendant que
   leurs adversaires courent autour d’eux !
-   QTE        POSTE          COÛTM             F       AG CP AR                 COMPÉTENCES & TRAITS                      P      S
+   QTE        POSTE          COÛT M             F       AG CP AR                 COMPÉTENCES & TRAITS                      P      S
    0–16 Trois-quart Gnoblar  15k        5       1       3+   4+   6+   Esquive, Poids Plume, Minus, Glissade Contrôlée,    AS     G
         Trois-quart Gnoblar                                            Microbe
    0–5 Bloqueur Ogre         140k       5       5       4+   5+   10+ Cerveau Lent, Châtaigne, Crâne Épais,                F     ASGP
@@ -6796,7 +6796,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)              – http://empireoublie.free.fr –    Page 102
-   ORQUES
+   ORQUES
   ÉQUIPES CÉLÈBRES : THE GOUGED EVE, DA DEFF SKWAD, GREEN DESTROYERS
   Les Orques pratiquent le Blood Bowl moderne depuis sa découverte. En fait, ce fut un Orque qui
   exhuma accidentellement l’antique Sanctuaire de Nuffle. Et depuis lors, les Orques jouent au Blood
@@ -6808,7 +6808,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   des coachs et du public. Mais tout ne tourne pas autour de la bagarre, et certaines équipes
   progressistes aiment emporter un ou deux Gobelins afin qu’ils s’occupent de cette chose qu’on appelle le ballon pendant
   que les grands peaux-vertes s’adonnent à la bonne vieille baston !
-   QTE        POSTE        COÛTM        F    AG    CP    AR              COMPÉTENCES & TRAITS                     P    S
+   QTE        POSTE        COÛT M        F    AG    CP    AR              COMPÉTENCES & TRAITS                     P    S
    0–16 Trois-quart Orque   50k     5     3    3+   4+    10+                                                      GF   AS
         Trois-quart Orque
    0–4 Trois-quart Gobelin 40k      6     2    3+   3+    8+    Esquive, Poids Plume, Minus                        AS   GFP
@@ -6854,7 +6854,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)      – http://empireoublie.free.fr –   Page 103
-   RENÉGATS DU CHAOS
+   RENÉGATS DU CHAOS
   ÉQUIPES CÉLÈBRES : MONGREL HORDE, CHAOS ALL-STARS, HOWLING-HILLS HELLIONS
   Parias, désaxés, tricheurs invétérés, divas, boulets… autant de mots employés pour décrire les
   rebuts qui composent les equipes de Renégats du Chaos. Pour la plupart, ces joueurs ont été virés
@@ -6905,7 +6905,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   blessures qui auraient dû les renvoyer sous le sable. À leurs côtés se dressent les Gardiens des
   Tombes, ces immenses êtres momifiés qui montaient jadis la garde devant les tombeaux de leurs souverains viennent
   désormais dominer le centre des terrains de Blood Bowl.
-   QTE          POSTE          COÛTM       F      AG CP AR                   COMPÉTENCES & TRAITS                        P     S
+   QTE          POSTE          COÛT M       F      AG CP AR                   COMPÉTENCES & TRAITS                        P     S
    0–16 Trois-quart Squelette 40k      5     3      4+   6+   8+   Régénération, Crâne Épais                              G    ASF
         Trois-quart Humain Squelette Mort-Vivant
    0–2 Lanceur                 65k     6     3      4+   3+   9+   Passe, Régénération, Prise sûre, Crâne Épais          GP    ASF
@@ -6921,7 +6921,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)             – http://empireoublie.free.fr –   Page 104
-   SKAVENS
+   SKAVENS
   ÉQUIPES CÉLÈBRES : SKAVENBLIGHT SCRAMBLERS, WARPFIRE WANDERERS, SNICK-TAIL SCUTTLERS
   Depuis que le Blood Bowl s’est répandu dans les différentes cités souterraines et réseaux d’égouts
   du Vieux Monde, il est devenu très populaire chez ceux qui résident dans ces profondeurs putrides.
@@ -6962,7 +6962,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
   pousse de nombreux arbitres à baisser les bras ! Cela fait largement les affaires des Snotlings, qui
   en profitent pour faire entrer leurs Lance-champis, R’bondisseurs, Échassiers ainsi que leurs
   célèbres Chariots à Pompe sur le terrain !
-   QTE         POSTE            COÛTM          F       AG CP AR                  COMPÉTENCES & TRAITS                         P     S
+   QTE         POSTE            COÛT M          F       AG CP AR                  COMPÉTENCES & TRAITS                         P     S
    0–16 Trois-quart Snotling     15k        5       1   3+   4+   6+   Esquive, Poids Plume, Minus, Glissade Contrôlée,        AS    G
         Trois-quart Snotling                                           Microbe, Insignifiant
    0–2 R’bondisseur              20k        6       1   3+   4+   6+   Esquive, Monté sur Ressort, Minus, Poids Plume,         AS    G
@@ -6983,7 +6983,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)              – http://empireoublie.free.fr –       Page 105
-   UNION ELFIQUE
+   UNION ELFIQUE
   ÉQUIPES CÉLÈBRES : ELFHEIM EAGLES, CELESTIAL COMETS, SAPHERY SKYHAWKS
   Les équipes de l’Union Elfique furent créées après la chute de la NAF, qui a eu pour conséquence
   de jeter de nombreux joueurs elfiques à la rue, expulsés comme des malpropres de leurs équipes,
@@ -7039,7 +7039,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)       – http://empireoublie.free.fr –     Page 106
-  LES STARS PLAYERS !
+  LES STARS PLAYERS !
 
   L
          es Star Players sont les légendes de la discipline, des joueurs qui se sont forgé une réputation
@@ -7091,7 +7091,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)   – http://empireoublie.free.fr –   Page 107
-Nom                                   Compétences & Traits                                        Équipes               Coût    M       F   AG CP AR
+Nom                                   Compétences & Traits                                        Équipes               Coût    M       F   AG CP AR
 Akhorne l’Écureuil                    Griffes,    Intrépide,     Esquive, Frénésie, Toutes
     VO : Akhorne the Squirell         Rétablissement, Solitaire (4+), Sans Ballon,                                       80k     7      1    2+   –    6+
                                       Glissade contrôlée, Minus, Microbe.
@@ -7119,7 +7119,7 @@ Boa Kon’ssstriktor                    Esquive,    Glissade       Contrôlée, 
                                       Hypnotique, Solitaire (4+).
         Homme-serpent, Coureur           Regarde-moi Dans les Yeux : Une fois par match, si Boa commence son activation en Marquant un joueur
                                       adverse en possession du ballon il peut jeter un D6. Sur 1, rien ne ’se passe. Sur 2+, le joueur adverse perd
-                                      le ballon, Boa prend immédiatement possessmn dut>allon, et l’activation de Boa prend immédiatement fin.
+                                      le ballon, Boa prend immédiatement possessmn du t>allon, et l’activation de Boa prend immédiatement fin.
 Bolgrot l’Écrabouilleur               Châtaigne, Lancer de Coéquipier, Projection, Bagarre des Terres
        VO : Ripper Bolgrot            Solitaire (4+), Régénération, Dans le Mille. Arides                               250k     5      6    5+   4+   10+
                                                                                    Défi des Bas-Fonds
@@ -7136,7 +7136,7 @@ Capt’aine Karina Von                  Esquive, Regard Hypnotique, Régénérat
 Riesz                                 Rétablissement, Soif de Sang (2+), Solitaire (4+).                                230k     7      4    2+   3+   9+
   VO : Captain Karina Von Riesz
                 Vampire, Coureur        Morceau de Choix : Une fois par match, quand Karin a rate un jet de Soif de Sang, elle a le droit de
-                                      mordre un joueur adverse ayant 3 ou moins enF comme si c’était un coéquipier Trois-quart Sbire. Cette règle
+                                      mordre un joueur adverse ayant 3 ou moins en F comme si c’était un coéquipier Trois-quart Sbire. Cette règle
                                       spéciale ne permet pas à Karina de mordre des Star Players.
 Cindy Piffretarte                     Arme Secrète, Bombardier,              Esquive,      Minus, Classique du Vieux
       VO : Cindy Piewhistle           Précision, Solitaire (4+)                                   Monde
@@ -7163,7 +7163,7 @@ Eldril Fendlabise                     Esquive, Nerfs d’Acier, Réception,     
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                             – http://empireoublie.free.fr –       Page 108
-Érable Hautbocage                     Bagarreur, Châtaigne, Crâne Épais, Projection, Ligue Sylvestre
+Érable Hautbocage                     Bagarreur, Châtaigne, Crâne Épais, Projection, Ligue Sylvestre
                                                                                                                    210k     3     5    5+    5+   11+
      VO : Maple Highgrove             Solitaire (4+), Stabilité, Tentacules.
          Homme-arbre, Gros Bras         Sarments Cruels : Une fois par mi-temps, quand Maple annonce une Action de Blocage, il peut le faire
@@ -7173,7 +7173,7 @@ Estelle La Veneaux                    Esquive, Garde, Glissade Contrôlée, Pré
                                                                                                                    190k     6     3    3+    4+    8+
                                       Perturbante, Solitaire (4+).                 Lustrie
               Humain, Trois-quart       Malédiction Funeste : Une fois par match, au début de l’activation d’Estelle, elle a le droit de choisir un
-                                      joueur adverseâ 5 cases ou moins d’elle puis de jeter un D6. Sur 2+, le joueur choisi devient Déconcentré et
+                                      joueur adverse â 5 cases ou moins d’elle puis de jeter un D6. Sur 2+, le joueur choisi devient Déconcentré et
                                       on ne peut pas l’activer au Tour suivant de son équipe.
 Fungus le Cinglé                      Arme Secrète, Chaîne & Boulet, Châtaigne, Bagarre des Terres
      VO : Fungus The Loon             Minus, Sans Ballon, Solitaire (4+).       Arides,                            80k      4     7    3+     -    8+
@@ -7215,7 +7215,7 @@ Crumbleofruit                         Esquive, Minus, Poids Plume, Prise Sûre, 
 Grashnak Noirsabot                    Châtaigne, Cornes, Crâne Épais, Frénésie, Fureur Clash du Chaos
                                                                                                                    240k     6     6    4+    6+    9+
     VO : Grashnak Blackhoof           Débridée, Solitaire (4+).
-            Minotaure, Gros Bras        Encorné par le Taureau : Une fois par match, quandG rashnak effectue une Action de Blocage dans le
+            Minotaure, Gros Bras        Encorné par le Taureau : Une fois par match, quand G rashnak effectue une Action de Blocage dans le
                                       cadre d’une Action de Blitz, il peut lancer 1 Dé de Blocage supplémentaire contre le joueur adverse quelle
                                       que soit sa Force, jusqu’à un maximum de 3 Dés de Blocage. Si Grashnak effectue une seconde Action de
                                       Blocage en raison de la Compétence Frénésie, la seconde Action de Blocage bénéficie aussi de cette règle.
@@ -7235,7 +7235,7 @@ Griff Oberwald                        Blocage, Équilibre,    Esquive,   Parade,
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                      – http://empireoublie.free.fr –        Page 109
-Grim Croc d’Acier                     Solitaire (4+), Blocage, Intrépide, Frénésie, Haine Super-ligue du Bord
+Grim Croc d’Acier                     Solitaire (4+), Blocage, Intrépide, Frénésie, Haine Super-ligue du Bord
                                                                                                                      190k     5      4     3+    6+        9+
        VO : Grim Ironjaw              (Gros Bras), Blocage Multiple, Crâne Épais.         du Monde
                     Nain, Spécial       Tueur : Une fois par match, quand un Gros Bras adverse est Plaqué suite à une Action de Blocage
@@ -7311,7 +7311,7 @@ Jordel Flêchevive                     Appuis Sûrs, Blocage, Esquive, Glissade 
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                        – http://empireoublie.free.fr –         Page 110
-Josef Bugman                            Blocage, Crâne Épais, Ivrogne, Parade, Solitaire Classique du Vieux
+Josef Bugman                            Blocage, Crâne Épais, Ivrogne, Parade, Solitaire Classique du Vieux
                                         (4+), Tacle, Provocation.                        Monde, Super-ligue          180k     5     3    3+    4+    9+
                                                                                          du Bord du Monde
                      Nain, Bloqueur       Robustesse des Nains : Une fois par match, quand on pénètre l’armure de Josef suite à un Jet d’Armure,
@@ -7345,7 +7345,7 @@ Max Éclaterate                          Arme Secrète,      Sans    Ballon,    
                    Humain, Spécial        Carnage Maximal : Une fois par match, après que Max a effectué une Action Spéciale d’Attaque de
                                         Tronçonneuse, il peut immédiatement effectuer une autre Action Spéciale d’Attaque de Tronçonneuse qui
                                         cible un joueur adverse différent.
-Morg ‘n’Thorg                          Solitaire (4+), Blocage, Châtaigne, Crâne Épais, Toutes sauf Spot de
+Morg ‘n’ Thorg                          Solitaire (4+), Blocage, Châtaigne, Crâne Épais, Toutes sauf Spot de
                                         Lancer de Coéquipier, Haine (Morts-vivants), Sylvanie                        340k     6     6    3+    4+   11+
                                         Dans le Mille.
                    Ogre, Gros Bras         La Baliste : Une fois par match, quand Morg effectue une action de Lancer de Coéquipier, il peut relancer
@@ -7390,7 +7390,7 @@ Rashnak Lamedansledos                   Glissade Contrôlée, Poignard, Poursuit
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                        – http://empireoublie.free.fr –        Page 111
-Rodney Pêchegardon                    Solitaire (4+), Réception, Réception plongeante, Ligue Sylvestre
+Rodney Pêchegardon                    Solitaire (4+), Réception, Réception plongeante, Ligue Sylvestre
      VO : Rodney Roachbait            Rétablissement, Glissade contrôlée, Sur le ballon,                           70k     6     2    3+    4+    7+
                                       Minus, Lutte.
                   Gnome, Spécial        Prise du Jour : Une fois par mi-temps, si Rodney est Debout et commence son activation à 3 cases ou
@@ -7430,7 +7430,7 @@ Skrâne Demitaille                     Crâne Épais, Nerfs d’Acier, Passe, Pr
                                                                                     du Monde
      Nain, Squelette, Mort-vivant,      Fort en Jeu de Passe : Une fois par match, quand Skrull effectue une Action de Passe, il peut modifier le
                          Lanceur
-                                      résultat du Test de Compétence de Passe de la valeur de sa caractéristique deF, jusqu’à unmaximum de 6.
+                                      résultat du Test de Compétence de Passe de la valeur de sa caractéristique de F, jusqu’à unmaximum de 6.
 Skrorg Gelfourure                     Blocage,   Châtaigne,      Griffes,   Juggernaut, Classique du Vieux
       VO : Skrorg Snowpelt            Présence Perturbante, Solitaire (4+).             Monde
                                                                                                                   240k     5     5    4+    6+    9+
@@ -7438,7 +7438,7 @@ Skrorg Gelfourure                     Blocage,   Châtaigne,      Griffes,   Jug
                                                                                         du Monde
                   Yéti, Gros Bras       Faire Vibrer le Public:Une fois par match, quand Skrorg provoque le retrait d’un joueur adverse en raison
                                       d’une Élimination suite à une Action de Blocage, le Cocach de Skrorg gagne 1 Relance d’Équipe jusqu’à la fin
-                                      de la Phase en cours. Si cette Relance d’Équipe n’a pas été utilisée d’ici la finde la Phase, elle est perdue.
+                                      de la Phase en cours. Si cette Relance d’Équipe n’a pas été utilisée d’ici la find e la Phase, elle est perdue.
 Lucien                                Blocage, Châtaigne, Solitaire (4+), Tacle.            Ligue des
                                                                                                                            7     3    2+    3+    9+
                       Elfe, Blitzer                                                         Royaumes Elfiques
@@ -7468,7 +7468,7 @@ Varag Mâche Goule                     Solitaire  (4+),  Blocage,      Rétablis
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                      – http://empireoublie.free.fr –       Page 112
-Vrilléclaire Eclalumineux            Glissade Contrôlée, Minus, Parade, Présence Ligue Sylvestre
+Vrilléclaire Eclalumineux            Glissade Contrôlée, Minus, Parade, Présence Ligue Sylvestre
                                                                                                                  110k     7     2    3+    5+    7+
    VO : Swiftvine Glimmershad        Perturbante, Solitaire (4+).
               Fiel-Follet, Spécial     Explosion de Fureur : Une fois par mi-temps, tant qu’elel est debout au début de son activation, Vrilléclaire
@@ -7517,14 +7517,14 @@ Zolcath le Zoat                      Châtaigne, Équilibre, Juggernaut, Présen
                                      prochaine activation.
   Certains champions sont définis comme des Méga-Star dans le cadre des règles dédiées au Jeu Égal, il s’agit
   de :
-  • Griff Oberwald,                                      • H'thark l’Implacable,                         • Morg ‘n’Thorg.
+  • Griff Oberwald,                                      • H'thark l’Implacable,                         • Morg ‘n’ Thorg.
   • Hakflem Pointu,                                      • Ivan « l'Animal » Suaire,
 
 
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                     – http://empireoublie.free.fr –       Page 113
-     FEUILLES DE RÉFÉRENCES
+     FEUILLES DE RÉFÉRENCES
 1 – CHOIX DU TERRAIN                            Règles optionnelles
 2 – FACTEUR DE POPULARITÉ :                     Chaque coach calcule son FP. FP = FANS DÉVOUÉS (FD) + 1D3
 3 – TIRAGE MÉTÉO : Chaque coach jette 1D6 (météos optionnelles disponibles en extension)
@@ -7571,7 +7571,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
           Chandelle : 1 joueur « Démarqué » peut se placer sur la case où va tomber la balle sans               Valdingue : (x) fois 1D8 de
  5                                                                                                              direction.
-          tenir compte de sonM.
+          tenir compte de son M.
                                                                                                                 Rebond : 1D8 sur de direction.
           Fans en Folie : Chaque coach jette 1D6+Cheerleaders, le meilleur (les 2 si égalité) a
  6
@@ -7584,19 +7584,19 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
  9
           case sans condition.
           Charge : 1D3+3 joueurs « Démarqués », au moment du Coup d’Envoi, de l’équipe qui
-          engage peuvent être activés pour une action deM, l’un d’entre eux peut faire 1 Blitz (avec
+          engage peuvent être activés pour une action de M, l’un d’entre eux peut faire 1 Blitz (avec
 10
           1 Blocage ou 1 action Spéciale), un autre peut Lancer un Coéquipier, 1 autre peut Botter
           un Coéquipier. Ce tour « gratuit » s’arrête si 1 joueur actif « Chute » ou « est Plaqué ».
           En-cas Suspect : Chaque coach jette 1D6, le coach ayant le plus mauvais résultat                      Renvoi du Public : 2D6 cases
           désigne 1 de ses joueurs, sur le terrain, au hasard (si égalité, les deux coachs désignent 1          sur D6 de direction.
 11
-          joueur au hasard). Sur 2+ avec 1D6, ce joueur a -1 Met -1 AR. Sur 1 il est placé dans le
+          joueur au hasard). Sur 2+ avec 1D6, ce joueur a -1 M et -1 AR. Sur 1 il est placé dans le
           Box des réserves.
           Invasion du Terrain : Chaque coach jette 1D6+FP, le plus mauvais désigne 1D3 de ses
 12        joueurs, sur le terrain, au hasard (si égalité, les deux coachs désignent 1D3 joueur au
           hasard). Ces joueurs sont « Mis à Terre » et « Sonnés ».
- Modificateurs d’Agilité                                         Actions possibles d’un joueur après activation :
+ Modificateurs d’Agilité                                         Actions possibles d’un joueur après activation :
                                                                  - Mouvement (se relever, se déplacer, ramasser le ballon, se déplacer).
  Esquiver (sortir d’une case marquée)                      +0    - Sécuriser le ballon (se relever, se déplacer, ramasser le ballon – 1 seul par tour d’équipe).
  Par joueur adverse marquant la case cible                 -1    - Bloquer.
@@ -7620,7 +7620,7 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
  Réceptionner sur Passe Précise                            +0     Sécuriser le ballon : 2+, pas à moins de 2 cases d’1 adversaire Debout, non Déconcentré.
                                                                   Impossible pour Gros Bras et Instable.
         Après 1 Rebond                                     -1
-                                                                  Blocage : Comparaison desF + Soutien.
+                                                                  Blocage : Comparaison des F + Soutien.
         Renvoi par le Public                               -1     Soutien : Doit « marquer » et être « non marqué ».
                                                                   Chuter, Être Plaqué : test d’AR + BL. Dans le Public BL directe.
  Par joueur adverse marquant le joueur                     -1     Passe imprécise : Valdingue (3) à partir de la cible.
@@ -7687,14 +7687,14 @@ Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)  
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                           – http://empireoublie.free.fr –             Page 115
-1 – GAINS                  = ((Somme des FP)/2 +(TD inscrit par l’équipe)) x 10 000 po.
+1 – GAINS                  = ((Somme des FP)/2 +(TD inscrit par l’équipe)) x 10 000 po.
 
 2 – FANS DÉVOUÉS
 Coach gagnant jette 1D6, le perdant 1D6 (pas de jet en cas de match nul). Si le coach gagnant obtient un résultat supérieur ou égal à son niveau de Fans
 Dévoués, il augmente ce dernier d’un point. Si le perdant fait un jet inférieur à son niveau de Fans Dévoués, il diminue ce dernier d’un point.
 
                                                                             3 - AMÉLIORATIONS
-       Niveau                Au hasard uneP            Choisir uneP          Choisir uneS        Amélioration de carac                     Améliorations de carac
+       Niveau                Au hasard une P            Choisir une P          Choisir une S        Amélioration de carac                     Améliorations de carac
 1 – Expérimenté                   3 PSP                    6 PSP                  10 PSP                    14 PSP                    D8                     Carac
 2 – Vétéran                       4 PSP                    8 PSP                  12 PSP                    16 PSP                        1                  +1AR
 3 – Future Star                   6 PSP                    12 PSP                 16 PSP                    20 PSP                        2              +1CP ou +1AR
@@ -7707,9 +7707,9 @@ Dévoués, il augmente ce dernier d’un point. Si le perdant fait un jet infér
 
                            M : 1/9 - F : 1/8 - AG : 6+/1+ - CP : 6+/1+ - AR : 3+/11+ Augmentations ne permettent pas de dépasser le max.
  Carac min/max
-                           Maximum de 2 hausses sur les carac, peut choisir uneP ou Sà la place (sans récupération de PSP dépensés).
+                           Maximum de 2 hausses sur les carac, peut choisir une P ou S à la place (sans récupération de PSP dépensés).
 
- 1er    2e                     TIRAGE AU HASARD DE COMPÉTENCES (Eindique les compétences Élites +10 kpo supplémetaires)
+ 1er    2e                     TIRAGE AU HASARD DE COMPÉTENCES (E indique les compétences Élites +10 kpo supplémetaires)
  D6     D6              Agilité                   Force                Générale                Mutations                       Passe                           Scélérate
            1   Réception                   Clé de Bras           BlocageE             Main Démesurée               Précision                             Joueur Déloyal
            2   Réception Plongeante        Bagarreur             Intrépide            Griffes                      Canonnier                             Fourchette
@@ -7764,7 +7764,7 @@ Incident mineur : –1D3 x 10 000 po                           Catastrophe : per
 
 
 Blood Bowl – Livre de Règles Bonifiées Saison 3 (Mise à jour au 19/03/26)                                  – http://empireoublie.free.fr –                  Page 116
-        Logo           Nom de l’équipe :                                                    Coach :                                 Relances :            x   0 000 =
+        Logo           Nom de l’équipe :                                                    Coach :                                 Relances :            x   0 000 =
                          FICHE D’ÉQUIPE                                                     Points de ligue :                       Assistants :          x 10 000 =
                        Équipe :                                                             Fans Dévoués :                          Cheerleaders :        x 10 000 =
                        Stade :                                                              Trésorerie :                            Apothicaire :         x 50 000 =
@@ -7797,7 +7797,7 @@ N°          NOM       POSTE       M    F    AG CP     AR               COMPÉTE
                                               –          –                                                                                –              –
 
                                       Blood Bowl – Règles condensées, compilées par Ace                         – http://empireoublie.free.fr –
-  Blood Bowl est une marque de Games Workshop Limited, utilisée sans autorisation, utilisée sans volonté de préjudice ou
+  Blood Bowl est une marque de Games Workshop Limited, utilisée sans autorisation, utilisée sans volonté de préjudice ou
   comme opposition à leur copyright. Ce document n’est en aucun cas officiel et n’est aucunement approuvé par Games
   Workshop Limited. Games Workshop, le logo Games Workshop, Blood Bowl, les logos et symboles Blood Bowl, ainsi que
   toutes les marques, noms, lieux, personnages, races, illustrations et images associés aux univers de Warhammer et au

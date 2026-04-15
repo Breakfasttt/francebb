@@ -1,8 +1,8 @@
 {
-  "name": "Norse",
+  "name": "Nordiques",
   "roster": [
     {
-      "name": "Norse Raider Lineman",
+      "name": "Pillard Nordique",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,17 +10,16 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Block",
-        "Thick Skull",
-        "Drunk",
-        "Unstable"
+        "Blocage",
+        "Crâne Épais",
+        "Ivrogne"
       ],
       "primary": "G",
       "secondary": "APF",
       "cost": 50000
     },
     {
-      "name": "Beer Boar",
+      "name": "Sanglier de Secours",
       "qty": "0-2",
       "ma": "5",
       "st": "1",
@@ -28,18 +27,18 @@
       "pa": "-",
       "av": "6+",
       "skills": [
-        "Dodge",
-        "No Hands",
-        "Stunty",
-        "Titchy",
-        "Pick-me-up"
+        "Esquive",
+        "Sans Ballon",
+        "Minus",
+        "Microbe",
+        "Petit Remontant"
       ],
       "primary": "-",
       "secondary": "A",
       "cost": 20000
     },
     {
-      "name": "Norse Berserker",
+      "name": "Berserker Nordique",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -47,9 +46,9 @@
       "pa": "5+",
       "av": "8+",
       "skills": [
-        "Block",
-        "Frenzy",
-        "Jump Up"
+        "Blocage",
+        "Frénésie",
+        "Rétablissement"
       ],
       "primary": "GF",
       "secondary": "AP",
@@ -64,10 +63,10 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Dauntless",
-        "Pass",
-        "Strip Ball"
+        "Réception",
+        "Intrépide",
+        "Passe",
+        "Arracher le Ballon"
       ],
       "primary": "AGP",
       "secondary": "F",
@@ -82,15 +81,14 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Frenzy",
-        "Unstable"
+        "Frénésie"
       ],
       "primary": "GF",
       "secondary": "A",
       "cost": 105000
     },
     {
-      "name": "Yhetee",
+      "name": "Yeti (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -98,11 +96,11 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Loner (4+)",
-        "Claws",
-        "Disturbing Presence",
-        "Frenzy",
-        "Unchanelled Fury"
+        "Solitaire (4+)",
+        "Griffes",
+        "Présence Perturbante",
+        "Frénésie",
+        "Fureur débridée"
       ],
       "primary": "F",
       "secondary": "GA",
@@ -110,7 +108,7 @@
     }
   ],
   "specialRules": [
-    "Old World Classic",
-    "Chaos Clash"
+    "Favoris de Khorne",
+    "Capitaine"
   ]
 }

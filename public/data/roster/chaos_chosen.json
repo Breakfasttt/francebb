@@ -1,8 +1,8 @@
 {
-  "name": "Chaos Chosen",
+  "name": "Élus du Chaos",
   "roster": [
     {
-      "name": "Beastman Runner",
+      "name": "Trois-quart Homme-Bête",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,15 +10,15 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Horns",
-        "Thick Skull"
+        "Cornes",
+        "Crâne Épais"
       ],
       "primary": "GM",
       "secondary": "ASFP",
       "cost": 55000
     },
     {
-      "name": "Chaos Chosen Warrior",
+      "name": "Élu du Chaos",
       "qty": "0-4",
       "ma": "5",
       "st": "4",
@@ -26,14 +26,14 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Arm Bar"
+        "Clef de Bras"
       ],
       "primary": "GFM",
       "secondary": "AS",
       "cost": 100000
     },
     {
-      "name": "Chaos Troll",
+      "name": "Troll (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -41,20 +41,20 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Always Hungry",
-        "Loner (4+)",
-        "Projectile Vomit",
-        "Mighty Blow (+1)",
-        "Really Stupid",
-        "Regeneration",
-        "Throw Team-Mate"
+        "Toujours Affamé",
+        "Solitaire (4+)",
+        "Gerbe de Vomi",
+        "Châtaigne",
+        "Gros Débile",
+        "Régénération",
+        "Lancer de Coéquipier"
       ],
       "primary": "FM",
       "secondary": "GAP",
       "cost": 115000
     },
     {
-      "name": "Chaos Ogre",
+      "name": "Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -62,18 +62,18 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Thick Skull",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Throw Team-Mate"
+        "Cerveau Lent",
+        "Crâne Épais",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Lancer de Coéquipier"
       ],
       "primary": "FM",
       "secondary": "GA",
       "cost": 140000
     },
     {
-      "name": "Chaos Minotaur",
+      "name": "Minotaure (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -81,12 +81,12 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Loner (4+)",
-        "Frenzy",
-        "Horns",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Unchanelled Fury"
+        "Solitaire (4+)",
+        "Frénésie",
+        "Cornes",
+        "Châtaigne",
+        "Crâne Épais",
+        "Fureur Débridée"
       ],
       "primary": "FM",
       "secondary": "GA",
@@ -94,6 +94,6 @@
     }
   ],
   "specialRules": [
-    "Favoured of..."
+    "Clash du Chaos"
   ]
 }

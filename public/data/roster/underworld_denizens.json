@@ -1,25 +1,8 @@
 {
-  "name": "Underworld Denizens",
+  "name": "Défi des Bas-Fonds",
   "roster": [
     {
-      "name": "Underworld Goblin Lineman",
-      "qty": "0-16",
-      "ma": "6",
-      "st": "2",
-      "ag": "3+",
-      "pa": "4+",
-      "av": "8+",
-      "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
-      ],
-      "primary": "ASM",
-      "secondary": "GPF",
-      "cost": 40000
-    },
-    {
-      "name": "Underworld Snotling",
+      "name": "Trois-quart Snotling des Bas-Fonds",
       "qty": "0-6",
       "ma": "5",
       "st": "1",
@@ -27,19 +10,36 @@
       "pa": "4+",
       "av": "6+",
       "skills": [
-        "Dodge",
-        "Insignificant",
-        "Right Stuff",
-        "Stunty",
-        "Side Step",
-        "Titchy"
+        "Esquive",
+        "Insignifiant",
+        "Poids Plume",
+        "Minus",
+        "Glissade Contrôlée",
+        "Microbe"
       ],
       "primary": "ASM",
       "secondary": "G",
       "cost": 15000
     },
     {
-      "name": "Clanrat",
+      "name": "Trois-quart Gobelin des Bas-Fonds",
+      "qty": "0-6",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Esquive",
+        "Poids Plume",
+        "Minus"
+      ],
+      "primary": "ASM",
+      "secondary": "GPF",
+      "cost": 40000
+    },
+    {
+      "name": "Rat des Clans des Bas-Fonds",
       "qty": "0-3",
       "ma": "7",
       "st": "3",
@@ -47,14 +47,14 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Animosity (Goblins)"
+        "Animosité (Gobelins et Snotlings)"
       ],
       "primary": "SGM",
       "secondary": "AF",
       "cost": 50000
     },
     {
-      "name": "Underworld Skaven Thrower",
+      "name": "Lanceur Skaven des Bas-Fonds",
       "qty": "0-1",
       "ma": "7",
       "st": "3",
@@ -62,16 +62,16 @@
       "pa": "2+",
       "av": "8+",
       "skills": [
-        "Animosity (Goblins)",
-        "Pass",
-        "Sure Hands"
+        "Animosité (Gobelins et Snotlings)",
+        "Passe",
+        "Prise Sûre"
       ],
       "primary": "GMP",
       "secondary": "ASF",
       "cost": 80000
     },
     {
-      "name": "Gutter Runner",
+      "name": "Coureur d’Égout des Bas-Fonds",
       "qty": "0-1",
       "ma": "9",
       "st": "2",
@@ -79,16 +79,16 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Animosity (Goblins)",
-        "Dodge",
-        "Stab"
+        "Animosité (Gobelins et Snotlings)",
+        "Esquive",
+        "Poignard"
       ],
       "primary": "ASGM",
       "secondary": "F",
       "cost": 85000
     },
     {
-      "name": "Underworld Skaven Blitzer",
+      "name": "Blitzer Skaven des Bas-Fonds",
       "qty": "0-1",
       "ma": "8",
       "st": "3",
@@ -96,16 +96,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Animosity (Goblins)",
-        "Block",
-        "Strip Ball"
+        "Animosité (Gobelins et Snotlings)",
+        "Blocage",
+        "Arracher le Ballon"
       ],
       "primary": "GMF",
       "secondary": "AS",
       "cost": 90000
     },
     {
-      "name": "Underworld Troll",
+      "name": "Troll des Bas-Fonds (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -113,20 +113,20 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Always Hungry",
-        "Loner (4+)",
-        "Projectile Vomit",
-        "Mighty Blow (+1)",
-        "Really Stupid",
-        "Regeneration",
-        "Throw Team-Mate"
+        "Toujours Affamé",
+        "Solitaire (4+)",
+        "Gerbe de Vomi",
+        "Châtaigne",
+        "Gros Débile",
+        "Régénération",
+        "Lancer de Coéquipier"
       ],
       "primary": "MF",
       "secondary": "GAP",
       "cost": 115000
     },
     {
-      "name": "Underworld Rat Ogre",
+      "name": "Rat Ogre des Bas-Fonds (Gros Bras)",
       "qty": "0-1",
       "ma": "6",
       "st": "5",
@@ -134,11 +134,11 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Animal Savagery",
-        "Frenzy",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Prehensile Tail"
+        "Sauvagerie Animale",
+        "Frénésie",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Queue Préhensile"
       ],
       "primary": "MF",
       "secondary": "GA",
@@ -146,6 +146,6 @@
     }
   ],
   "specialRules": [
-    "Bribery and Corruption"
+    "Chantage & Corruption"
   ]
 }

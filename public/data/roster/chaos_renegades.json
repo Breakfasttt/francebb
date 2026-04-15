@@ -1,40 +1,23 @@
 {
-  "name": "Chaos Renegades",
+  "name": "Renégats du Chaos",
   "roster": [
     {
-      "name": "Renegade Human Lineman",
-      "qty": "0-12",
+      "name": "Humain Renégat",
+      "qty": "0-16",
       "ma": "6",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Animosity (All)"
+        "Animosité (tous coéquipiers)"
       ],
       "primary": "SGM",
       "secondary": "AF",
       "cost": 50000
     },
     {
-      "name": "Renegade Human Thrower",
-      "qty": "0-1",
-      "ma": "6",
-      "st": "3",
-      "ag": "3+",
-      "pa": "3+",
-      "av": "9+",
-      "skills": [
-        "Animosity (All)",
-        "Pass",
-        "Sure Hands"
-      ],
-      "primary": "SGMP",
-      "secondary": "AF",
-      "cost": 75000
-    },
-    {
-      "name": "Renegade Goblin",
+      "name": "Gobelin Renégat",
       "qty": "0-1",
       "ma": "6",
       "st": "2",
@@ -42,17 +25,17 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Animosity (All)",
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
+        "Animosité (tous coéquipiers)",
+        "Esquive",
+        "Minus",
+        "Poids Plume"
       ],
       "primary": "ASM",
       "secondary": "GP",
       "cost": 40000
     },
     {
-      "name": "Renegade Orc",
+      "name": "Orque Renégat",
       "qty": "0-1",
       "ma": "5",
       "st": "3",
@@ -60,14 +43,14 @@
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Animosity (All)"
+        "Animosité (tous coéquipiers)"
       ],
       "primary": "SGM",
       "secondary": "AF",
       "cost": 50000
     },
     {
-      "name": "Renegade Skaven",
+      "name": "Skaven Renégat",
       "qty": "0-1",
       "ma": "7",
       "st": "3",
@@ -75,14 +58,14 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Animosity (All)"
+        "Animosité (tous coéquipiers)"
       ],
       "primary": "GSM",
       "secondary": "AF",
       "cost": 50000
     },
     {
-      "name": "Renegade Dark Elf",
+      "name": "Elfe Noir Renégat",
       "qty": "0-1",
       "ma": "6",
       "st": "3",
@@ -90,14 +73,31 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Animosity (All)"
+        "Animosité (tous coéquipiers)"
       ],
       "primary": "SGAM",
       "secondary": "F",
       "cost": 65000
     },
     {
-      "name": "Renegade Troll",
+      "name": "Lanceur Humain Renégat",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Animosité (tous coéquipiers)",
+        "Passe",
+        "Prise Sûre"
+      ],
+      "primary": "SGMP",
+      "secondary": "AF",
+      "cost": 75000
+    },
+    {
+      "name": "Troll Renégat (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -105,20 +105,20 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Always Hungry",
-        "Loner (4+)",
-        "Projectile Vomit",
-        "Mighty Blow (+1)",
-        "Really Stupid",
-        "Regeneration",
-        "Throw Team-Mate"
+        "Toujours Affamé",
+        "Solitaire (4+)",
+        "Gerbe de Vomi",
+        "Châtaigne",
+        "Gros Débile",
+        "Régénération",
+        "Lancer de Coéquipier"
       ],
       "primary": "F",
       "secondary": "GAMP",
       "cost": 115000
     },
     {
-      "name": "Renegade Ogre",
+      "name": "Ogre Renégat (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -126,18 +126,18 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Throw Team-Mate"
+        "Cerveau Lent",
+        "Crâne Épais",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Lancer de Coéquipier"
       ],
       "primary": "F",
       "secondary": "GAM",
       "cost": 140000
     },
     {
-      "name": "Renegade Minotaur",
+      "name": "Minotaure Renégat (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -145,19 +145,19 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Loner (4+)",
-        "Frenzy",
-        "Horns",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Unchanelled Fury"
+        "Solitaire(4+)",
+        "Frénésie",
+        "Cornes",
+        "Châtaigne",
+        "Crâne Épais",
+        "Fureur Débridée"
       ],
       "primary": "F",
       "secondary": "GAM",
       "cost": 150000
     },
     {
-      "name": "Renegade Rat Ogre",
+      "name": "Rat Ogre Renégat (Gros Bras)",
       "qty": "0-1",
       "ma": "6",
       "st": "5",
@@ -165,11 +165,11 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Animal Savagery",
-        "Frenzy",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Prehensile Tail"
+        "Sauvagerie Animale",
+        "Frénésie",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Queue Préhensile"
       ],
       "primary": "F",
       "secondary": "GAM",
@@ -177,6 +177,6 @@
     }
   ],
   "specialRules": [
-    "Favoured of..."
+    "Clash du Chaos"
   ]
 }

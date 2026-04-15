@@ -1,8 +1,8 @@
 {
-  "name": "Nurgle Team",
+  "name": "Nurgle",
   "roster": [
     {
-      "name": "Rotter Lineman",
+      "name": "Trois-quart Putrescent",
       "qty": "0-16",
       "ma": "5",
       "st": "3",
@@ -10,32 +10,12 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Decay",
-        "Plague Ridden"
+        "Décomposition",
+        "Contagieux"
       ],
-      "primary": "G",
-      "secondary": "AMS",
+      "primary": "SGM",
+      "secondary": "AF",
       "cost": 40000
-    },
-    {
-      "name": "Bloater",
-      "qty": "0-4",
-      "ma": "4",
-      "st": "4",
-      "ag": "4+",
-      "pa": "6+",
-      "av": "10+",
-      "skills": [
-        "Disturbing Presence",
-        "Foul Appearance",
-        "Plague Ridden",
-        "Regeneration",
-        "Stand Firm",
-        "Unsteady"
-      ],
-      "primary": "GS",
-      "secondary": "AM",
-      "cost": 110000
     },
     {
       "name": "Pestigor",
@@ -46,18 +26,38 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Horns",
-        "Plague Ridden",
-        "Regeneration",
-        "Steady Footing",
-        "Thick Skull"
+        "Appuis Sûrs",
+        "Cornes",
+        "Contagieux",
+        "Régénération",
+        "Crâne Épais"
       ],
-      "primary": "GSM",
-      "secondary": "A",
-      "cost": 70000
+      "primary": "GMF",
+      "secondary": "APS",
+      "cost": 75000
     },
     {
-      "name": "Rotspawn",
+      "name": "Boursouflé",
+      "qty": "0-4",
+      "ma": "4",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Présence Perturbante",
+        "Répulsion",
+        "Contagieux",
+        "Régénération",
+        "Instable",
+        "Stabilité"
+      ],
+      "primary": "GMF",
+      "secondary": "AS",
+      "cost": 110000
+    },
+    {
+      "name": "Rejeton Putride (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -65,15 +65,22 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Disturbing Presence",
-        "Foul Appearance",
-        "Loner (4+)",
-        "Mighty Blow",
-        "Pick-me-up"
+        "Solitaire (4+)",
+        "Répulsion",
+        "Présence Perturbante",
+        "Châtaigne",
+        "Contagieux",
+        "Gros Débile",
+        "Régénération",
+        "Tentacules"
       ],
-      "primary": "S",
-      "secondary": "AGM",
+      "primary": "F",
+      "secondary": "GSM",
       "cost": 140000
     }
+  ],
+  "specialRules": [
+    "Favoris de Nurgle",
+    "Bagarreurs"
   ]
 }

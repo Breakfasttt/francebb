@@ -1,21 +1,23 @@
 {
-  "name": "Old World Alliance Team",
+  "name": "Alliance du Vieux Monde",
   "roster": [
     {
-      "name": "Old World Human Lineman",
+      "name": "Trois-quart Humain",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "9+",
-      "skills": [],
+      "skills": [
+        "Loner (3+)"
+      ],
       "primary": "G",
-      "secondary": "AS",
+      "secondary": "FA",
       "cost": 50000
     },
     {
-      "name": "Old World Halfling Hopefuls",
+      "name": "Aspirant Halfling",
       "qty": "0-3",
       "ma": "5",
       "st": "2",
@@ -23,49 +25,16 @@
       "pa": "4+",
       "av": "7+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
+        "Minus",
+        "Esquive",
+        "Poids Plume"
       ],
       "primary": "A",
-      "secondary": "GS",
+      "secondary": "GF",
       "cost": 30000
     },
     {
-      "name": "Old World Dwarf Lineman",
-      "qty": "0-3",
-      "ma": "4",
-      "st": "3",
-      "ag": "4+",
-      "pa": "5+",
-      "av": "10+",
-      "skills": [
-        "Block",
-        "Defensive",
-        "Thick Skull"
-      ],
-      "primary": "GS",
-      "secondary": "A",
-      "cost": 70000
-    },
-    {
-      "name": "Old World Human Thrower",
-      "qty": "0-1",
-      "ma": "6",
-      "st": "3",
-      "ag": "3+",
-      "pa": "3+",
-      "av": "9+",
-      "skills": [
-        "Pass",
-        "Sure Hands"
-      ],
-      "primary": "GP",
-      "secondary": "AS",
-      "cost": 75000
-    },
-    {
-      "name": "Old World Human Catcher",
+      "name": "Receveur Humain",
       "qty": "0-1",
       "ma": "8",
       "st": "3",
@@ -73,15 +42,49 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Dodge"
+        "Esquive",
+        "Réception"
       ],
       "primary": "GA",
-      "secondary": "S",
+      "secondary": "PF",
       "cost": 75000
     },
     {
-      "name": "Old World Dwarf Runner",
+      "name": "Trois-quart Nain (Vieux Monde)",
+      "qty": "0-3",
+      "ma": "4",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Défenseur",
+        "Blocage",
+        "Crâne Épais",
+        "Solitaire (3+)"
+      ],
+      "primary": "SG",
+      "secondary": "F",
+      "cost": 70000
+    },
+    {
+      "name": "Lanceur Humain",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Passe",
+        "Prise Sûre"
+      ],
+      "primary": "GP",
+      "secondary": "FA",
+      "cost": 75000
+    },
+    {
+      "name": "Coureur Nain",
       "qty": "0-1",
       "ma": "6",
       "st": "3",
@@ -89,16 +92,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Sprint",
-        "Sure Hands",
-        "Thick Skull"
+        "Crâne Épais",
+        "Prise Sûre",
+        "Sprint"
       ],
       "primary": "GP",
-      "secondary": "AS",
+      "secondary": "FA",
       "cost": 80000
     },
     {
-      "name": "Old World Human Blitzer",
+      "name": "Blitzer Humain",
       "qty": "0-1",
       "ma": "7",
       "st": "3",
@@ -106,34 +109,15 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Block",
-        "Tackle"
+        "Blocage",
+        "Tacle"
       ],
-      "primary": "GS",
+      "primary": "GF",
       "secondary": "A",
       "cost": 85000
     },
     {
-      "name": "Old World Dwarf Troll Slayer",
-      "qty": "0-1",
-      "ma": "5",
-      "st": "3",
-      "ag": "4+",
-      "pa": "5+",
-      "av": "9+",
-      "skills": [
-        "Block",
-        "Dauntless",
-        "Frenzy",
-        "Hatred (Troll)",
-        "Thick Skull"
-      ],
-      "primary": "GS",
-      "secondary": "A",
-      "cost": 95000
-    },
-    {
-      "name": "Old World Dwarf Blitzer",
+      "name": "Blitzer Nain",
       "qty": "0-1",
       "ma": "5",
       "st": "3",
@@ -141,38 +125,36 @@
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Diving Tackle",
-        "Tackle",
-        "Thick Skull"
+        "Crâne Épais",
+        "Blocage",
+        "Tacle",
+        "Tacle Plongeant"
       ],
-      "primary": "GS",
-      "secondary": "A",
+      "primary": "GF",
+      "secondary": "P",
       "cost": 100000
     },
     {
-      "name": "Altern Forest Treeman",
+      "name": "Tueur de Troll Nain",
       "qty": "0-1",
-      "ma": "2",
-      "st": "6",
-      "ag": "5+",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
       "pa": "5+",
-      "av": "11+",
+      "av": "9+",
       "skills": [
-        "Mighty Blow",
-        "Stand Firm",
-        "Strong Arm",
-        "Take Root",
-        "Thick Skull",
-        "Throw Team-mate",
-        "Timmm-ber!"
+        "Crâne Épais",
+        "Blocage",
+        "Intrépide",
+        "Frénésie",
+        "Haine (Troll)"
       ],
-      "primary": "S",
-      "secondary": "AG",
-      "cost": 120000
+      "primary": "GF",
+      "secondary": "A",
+      "cost": 95000
     },
     {
-      "name": "Ogre",
+      "name": "Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -180,15 +162,39 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (3+)",
-        "Mighty Blow",
-        "Thick Skull",
-        "Throw Team-mate"
+        "Cerveau Lent",
+        "Crâne Épais",
+        "Solitaire (3+)",
+        "Châtaigne",
+        "Lancer de Coéquipier"
       ],
-      "primary": "S",
-      "secondary": "AG",
+      "primary": "F",
+      "secondary": "GA",
       "cost": 140000
+    },
+    {
+      "name": "Homme-arbre (Gros Bras)",
+      "qty": "0-1",
+      "ma": "2",
+      "st": "6",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Châtaigne",
+        "Stabilité",
+        "Bras Musclé",
+        "Prendre Racine",
+        "Crâne Épais",
+        "Lancer de Coéquipier",
+        "Timmm-ber !"
+      ],
+      "primary": "F",
+      "secondary": "AGP",
+      "cost": 120000
     }
+  ],
+  "specialRules": [
+    "Classique du Vieux Monde"
   ]
 }

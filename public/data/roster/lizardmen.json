@@ -1,24 +1,24 @@
 {
-  "name": "Lizardmen",
+  "name": "Hommes-Lézards",
   "roster": [
     {
-      "name": "Skink Runner",
-      "qty": "0-12",
+      "name": "Trois-quart Skink",
+      "qty": "0-16",
       "ma": "8",
       "st": "2",
       "ag": "3+",
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Stunty"
+        "Esquive",
+        "Minus"
       ],
       "primary": "A",
-      "secondary": "SGPF",
+      "secondary": "GSPF",
       "cost": 60000
     },
     {
-      "name": "Chameleon Skink",
+      "name": "Skink Caméléon",
       "qty": "0-2",
       "ma": "7",
       "st": "2",
@@ -26,30 +26,33 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "On the Ball",
-        "Shadowing",
-        "Stunty"
+        "Esquive",
+        "Sur le Ballon",
+        "Poursuite",
+        "Minus"
       ],
       "primary": "AP",
-      "secondary": "SG",
+      "secondary": "GSF",
       "cost": 70000
     },
     {
-      "name": "Saurus Blocker",
+      "name": "Bloqueur Saurus",
       "qty": "0-6",
       "ma": "6",
       "st": "4",
       "ag": "5+",
       "pa": "6+",
       "av": "10+",
-      "skills": [],
-      "primary": "G",
-      "secondary": "AS",
-      "cost": 85000
+      "skills": [
+        "Juggernaut",
+        "Instable"
+      ],
+      "primary": "GF",
+      "secondary": "A",
+      "cost": 90000
     },
     {
-      "name": "Kroxigor",
+      "name": "Kroxigor (Gros Bras)",
       "qty": "0-1",
       "ma": "6",
       "st": "5",
@@ -57,18 +60,18 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Prehensile Tail",
-        "Thick Skull"
+        "Cerveau Lent",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Crâne Épais",
+        "Queue Préhensile"
       ],
       "primary": "F",
-      "secondary": "ASG",
+      "secondary": "AG",
       "cost": 140000
     }
   ],
   "specialRules": [
-    "Lustrian Super-league"
+    "Super-ligue de Lustrie"
   ]
 }

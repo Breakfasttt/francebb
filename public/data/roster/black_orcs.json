@@ -1,8 +1,8 @@
 {
-  "name": "Black Orcs",
+  "name": "Orques Noirs",
   "roster": [
     {
-      "name": "Goblin Bruiser",
+      "name": "Malabar Gobelin",
       "qty": "0-16",
       "ma": "6",
       "st": "2",
@@ -10,17 +10,17 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty",
-        "Thick Skull"
+        "Esquive",
+        "Poids Plume",
+        "Minus",
+        "Crâne Épais"
       ],
       "primary": "AS",
       "secondary": "GPF",
       "cost": 45000
     },
     {
-      "name": "Black Orc",
+      "name": "Orque Noir",
       "qty": "0-6",
       "ma": "4",
       "st": "4",
@@ -28,15 +28,15 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Brawler",
-        "Grab"
+        "Bagarreur",
+        "Projection"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 90000
     },
     {
-      "name": "Trained Troll",
+      "name": "Troll Entraîné (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -44,13 +44,12 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Loner (4+)",
-        "Always Hungry",
-        "Really Stupid",
-        "Mighty Blow (+1)",
-        "Projectile Vomit",
-        "Regeneration",
-        "Throw Team-Mate"
+        "Toujours Affamé",
+        "Gros Débile",
+        "Châtaigne",
+        "Lancer de Coéquipier",
+        "Gerbe de Vomi",
+        "Régénération"
       ],
       "primary": "F",
       "secondary": "AGP",
@@ -58,7 +57,7 @@
     }
   ],
   "specialRules": [
-    "Bribery and Corruption",
-    "Badlands Brawl"
+    "Chantage & Corruption",
+    "Bagarre des Terres Arides"
   ]
 }

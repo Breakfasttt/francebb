@@ -2,7 +2,7 @@
   "name": "Ogres",
   "roster": [
     {
-      "name": "Gnoblar Lineman",
+      "name": "Trois-quart Gnoblar",
       "qty": "0-16",
       "ma": "5",
       "st": "1",
@@ -10,18 +10,18 @@
       "pa": "4+",
       "av": "6+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty",
-        "Side Step",
-        "Titchy"
+        "Esquive",
+        "Poids Plume",
+        "Minus",
+        "Glissade Contrôlée",
+        "Microbe"
       ],
       "primary": "AS",
       "secondary": "G",
       "cost": 15000
     },
     {
-      "name": "Ogre Blocker",
+      "name": "Bloqueur Ogre (Gros Bras)",
       "qty": "0-5",
       "ma": "5",
       "st": "5",
@@ -29,17 +29,17 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Throw Team-Mate"
+        "Cerveau Lent",
+        "Châtaigne",
+        "Crâne Épais",
+        "Lancer de Coéquipier"
       ],
       "primary": "F",
       "secondary": "ASGP",
       "cost": 140000
     },
     {
-      "name": "Ogre Punter",
+      "name": "Botteur Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -47,10 +47,10 @@
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Kick Team-Mate"
+        "Cerveau Lent",
+        "Châtaigne",
+        "Crâne Épais",
+        "Botter de Coéquipier"
       ],
       "primary": "PF",
       "secondary": "ASG",
@@ -58,8 +58,6 @@
     }
   ],
   "specialRules": [
-    "Badlands Brawl",
-    "Old World Classic",
-    "Cheap Gits"
+    "Bagarre des Terres Arides"
   ]
 }

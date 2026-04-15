@@ -1,8 +1,8 @@
 {
-  "name": "Amazons",
+  "name": "Amazones",
   "roster": [
     {
-      "name": "Eagle Warrior Linewoman",
+      "name": "Guerrière Aigle (Trois-quart)",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,14 +10,14 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge"
+        "Esquive"
       ],
       "primary": "G",
       "secondary": "FA",
       "cost": 50000
     },
     {
-      "name": "Python Warrior Thrower",
+      "name": "Guerrière Python (Lanceuse)",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -25,17 +25,17 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "On the Ball",
-        "Pass",
-        "Safe Pass"
+        "Esquive",
+        "Passe",
+        "Sur le Ballon",
+        "Passe Assurée"
       ],
       "primary": "GP",
       "secondary": "FA",
       "cost": 80000
     },
     {
-      "name": "Piranha Warrior Blitzer",
+      "name": "Guerrière Piranha (Blitzer)",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -43,16 +43,16 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Jump Up",
-        "Hit and Run"
+        "Esquive",
+        "Rétablissement",
+        "Frappe-et-Court"
       ],
       "primary": "GA",
       "secondary": "F",
       "cost": 90000
     },
     {
-      "name": "Jaguar Warrior Blocker",
+      "name": "Guerrière Jaguar (Bloqueuse)",
       "qty": "0-2",
       "ma": "6",
       "st": "4",
@@ -60,12 +60,15 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Dodge",
-        "Defensive"
+        "Esquive",
+        "Défenseur"
       ],
       "primary": "GF",
       "secondary": "A",
       "cost": 110000
     }
+  ],
+  "specialRules": [
+    "Super-ligue de Lustrie"
   ]
 }

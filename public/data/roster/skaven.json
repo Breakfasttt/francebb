@@ -1,8 +1,8 @@
 {
-  "name": "Skaven",
+  "name": "Skavens",
   "roster": [
     {
-      "name": "Clanrat Lineman",
+      "name": "Rat des Clans (Trois-quart)",
       "qty": "0-16",
       "ma": "7",
       "st": "3",
@@ -11,11 +11,11 @@
       "av": "8+",
       "skills": [],
       "primary": "G",
-      "secondary": "ASM",
+      "secondary": "ASMF",
       "cost": 50000
     },
     {
-      "name": "Skaven Thrower",
+      "name": "Lanceur Skaven",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -23,15 +23,15 @@
       "pa": "2+",
       "av": "8+",
       "skills": [
-        "Pass",
-        "Sure Hands"
+        "Passe",
+        "Prise Sûre"
       ],
       "primary": "GP",
-      "secondary": "ASM",
-      "cost": 85000
+      "secondary": "ASMF",
+      "cost": 80000
     },
     {
-      "name": "Gutter Runner",
+      "name": "Coureur d'Égouts",
       "qty": "0-4",
       "ma": "9",
       "st": "2",
@@ -39,48 +39,50 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge"
+        "Esquive",
+        "Poignard"
       ],
-      "primary": "A",
-      "secondary": "GSM",
+      "primary": "GA",
+      "secondary": "FMS",
       "cost": 85000
     },
     {
-      "name": "Skaven Blitzer",
+      "name": "Blitzer Skaven",
       "qty": "0-2",
-      "ma": "7",
+      "ma": "8",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Block"
+        "Blocage",
+        "Arracher le Ballon"
       ],
-      "primary": "G",
-      "secondary": "ASM",
+      "primary": "GF",
+      "secondary": "AMS",
       "cost": 90000
     },
     {
-      "name": "Rat Ogre",
+      "name": "Rat Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "6",
       "st": "5",
       "ag": "4+",
-      "pa": "-",
+      "pa": "6+",
       "av": "9+",
       "skills": [
-        "Animal Savagery",
-        "Frenzy",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Prehensile Tail"
+        "Sauvagerie Animale",
+        "Frénésie",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Queue Préhensile"
       ],
       "primary": "F",
-      "secondary": "ASM",
+      "secondary": "AGM",
       "cost": 150000
     }
   ],
   "specialRules": [
-    "Underworld Deeps"
+    "Défi des Bas-Fonds"
   ]
 }

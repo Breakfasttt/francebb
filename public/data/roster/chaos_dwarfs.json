@@ -1,8 +1,8 @@
 {
-  "name": "Chaos Dwarfs",
+  "name": "Nains du Chaos",
   "roster": [
     {
-      "name": "Hobgoblin Lineman",
+      "name": "Trois-quart Hobgobelin",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -15,7 +15,7 @@
       "cost": 40000
     },
     {
-      "name": "Sneaky Stabber",
+      "name": "Surineur Sournois",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -23,15 +23,15 @@
       "pa": "5+",
       "av": "8+",
       "skills": [
-        "Shadowing",
-        "Stab"
+        "Poursuite",
+        "Poignard"
       ],
       "primary": "SG",
       "secondary": "FA",
       "cost": 60000
     },
     {
-      "name": "Chaos Dwarf Blocker",
+      "name": "Bloqueur Nain du Chaos",
       "qty": "0-4",
       "ma": "4",
       "st": "3",
@@ -39,16 +39,16 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Iron Skin",
-        "Thick Skull"
+        "Blocage",
+        "Peau de Fer",
+        "Crâne épais"
       ],
       "primary": "GF",
       "secondary": "ASM",
       "cost": 70000
     },
     {
-      "name": "Forgeflame",
+      "name": "Forgeflamme",
       "qty": "0-2",
       "ma": "5",
       "st": "3",
@@ -56,17 +56,17 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Brawler",
-        "Fire Breath",
-        "Disturbing Presence",
-        "Thick Skull"
+        "Bagarreur",
+        "Souffle Ardent",
+        "Présence Perturbante",
+        "Crâne épais"
       ],
       "primary": "GF",
       "secondary": "AM",
       "cost": 80000
     },
     {
-      "name": "Bull Centaur",
+      "name": "Centaure Taureau",
       "qty": "0-2",
       "ma": "6",
       "st": "4",
@@ -75,16 +75,16 @@
       "av": "10+",
       "skills": [
         "Sprint",
-        "Sure Feet",
-        "Thick Skull",
-        "Unstable"
+        "Équilibre",
+        "Crâne épais",
+        "Instable"
       ],
       "primary": "GF",
       "secondary": "ASM",
       "cost": 130000
     },
     {
-      "name": "Chaos Dwarf Minotaur",
+      "name": "Minotaure (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -92,12 +92,12 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Loner (4+)",
-        "Frenzy",
-        "Horns",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Unchanelled Fury"
+        "Solitaire (4+)",
+        "Frénésie",
+        "Cornes",
+        "Châtaigne",
+        "Crâne Épais",
+        "Fureur Débridée"
       ],
       "primary": "MF",
       "secondary": "GA",
@@ -105,8 +105,6 @@
     }
   ],
   "specialRules": [
-    "Favoured of Hashut",
-    "Chaos Clash",
-    "Badlands Brawl"
+    "Favoris de Hashut"
   ]
 }

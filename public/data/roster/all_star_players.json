@@ -1,4 +1,1245 @@
 {
   "name": "All Star Players",
-  "roster": []
+  "roster": [
+    {
+      "name": "Akhorne l'Écureuil",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "1",
+      "ag": "2+",
+      "pa": "-",
+      "av": "6+",
+      "skills": [
+        "Griffes",
+        "Intrépide",
+        "Esquive",
+        "Frénésie",
+        "Glissade Contrôlée",
+        "Minus",
+        "Microbe",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Rage Aveugle : Akhorne peut relancer le D6 lors du jet d’Intrépide.",
+      "cost": 80000,
+      "playsFor": [
+        "Toutes"
+      ]
+    },
+    {
+      "name": "Anqi Panqi",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "4",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Instable",
+        "Projection",
+        "Solitaire (4+)",
+        "Stabilité"
+      ],
+      "specialAbility": "Coup Sauvage : Peut relancer certains ou tous les dés de Blocage lors d'une action de blocage (1x par match).",
+      "cost": 190000,
+      "playsFor": [
+        "Super-Ligue de Lustrie"
+      ]
+    },
+    {
+      "name": "Barik Tirloin",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "4+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Arme Secrète",
+        "Canonnier",
+        "Crâne Épais",
+        "Passe",
+        "Passe Désespérée",
+        "Prise Sûre",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Et Boum ! : Relance les déviations de Passe Désespérée et donne +1 aux alliés pour la réception.",
+      "cost": 80000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Bilerot Vomipeau",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Agresseur Solitaire",
+        "Instable",
+        "Joueur Déloyal",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Régurgitation Putride : Peut utiliser l'action Spéciale Gerbe de Vomi (1x par mi-temps), même après un blocage.",
+      "cost": 180000,
+      "playsFor": [
+        "Favoris de Nurgle"
+      ]
+    },
+    {
+      "name": "Boa Kon’ssstriktor",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Esquive",
+        "Glissade Contrôlée",
+        "Libération Hypnotique",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Regarde-moi Dans les Yeux : Peut voler le ballon à un adversaire marqué au début de son activation sur 2+.",
+      "cost": 180000,
+      "playsFor": [
+        "Super-Ligue de Lustrie"
+      ]
+    },
+    {
+      "name": "Bolgrot l’Écrabouilleur (Ripper)",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "6",
+      "ag": "5+",
+      "pa": "4+",
+      "av": "10+",
+      "skills": [
+        "Châtaigne (+1)",
+        "Lancer de Coéquipier",
+        "Projection",
+        "Régénération",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Cerveau des Trolls : Peut relancer un unique dé (hors jet d'armure/blessure) par mi-temps.",
+      "cost": 250000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Boomer Morvonez",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Arme Secrète",
+        "Bombardier",
+        "Esquive",
+        "Minus",
+        "Poids Plume",
+        "Précision",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Ka boum ! : Peut faire exploser une bombe réceptionnée par l'adversaire immédiatement.",
+      "cost": 80000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Capitaine Karina Von Riesz",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "4",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Esquive",
+        "Regard Hypnotique",
+        "Régénération",
+        "Soif de Sang (2+)",
+        "Rétablissement",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Morceau de Choix : Peut mordre un adversaire (ST 3-) sur un échec de Soif de Sang.",
+      "cost": 230000,
+      "playsFor": [
+        "Spot de Sylvanie"
+      ]
+    },
+    {
+      "name": "Cindy Piffretarte",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "2",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "7+",
+      "skills": [
+        "Arme Secrète",
+        "Bombardier",
+        "Esquive",
+        "Minus",
+        "Précision",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Buffet à Volonté : Peut lancer 2 bombes au cours d'une même action (risque d'expulsion).",
+      "cost": 100000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Coupe du Dé à Coudre"
+      ]
+    },
+    {
+      "name": "Comte Luthor von Drakenborg",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Glissade Contrôlée",
+        "Regard Hypnotique",
+        "Régénération",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Star du Show : Gagne une relance d'équipe temporaire s'il marque un Touchdown.",
+      "cost": 300000,
+      "playsFor": [
+        "Spot de Sylvanie"
+      ]
+    },
+    {
+      "name": "Eldril Fendlabise",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Esquive",
+        "Nerfs d’Acier",
+        "Réception",
+        "Regard Hypnotique",
+        "Sur le Ballon",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Danse Hypnotisante : Peut relancer le dé lors d'un Regard Hypnotique (1x par mi-temps).",
+      "cost": 220000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Érable Hautbocage",
+      "qty": "0-1",
+      "ma": "3",
+      "st": "5",
+      "ag": "5+",
+      "pa": "5+",
+      "av": "11+",
+      "skills": [
+        "Bagarreur",
+        "Châtaigne (+1)",
+        "Crâne Épais",
+        "Projection",
+        "Solitaire (4+)",
+        "Stabilité",
+        "Tentacules"
+      ],
+      "specialAbility": "Sarments Cruels : Peut bloquer un adversaire à 2 cases de distance (1x par mi-temps).",
+      "cost": 210000,
+      "playsFor": [
+        "Ligue Sylvestre"
+      ]
+    },
+    {
+      "name": "Estelle La Veneaux",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Esquive",
+        "Garde",
+        "Glissade Contrôlée",
+        "Présence Perturbante",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Malédiction Funeste : Peut empêcher un adversaire proche d'être activé au tour suivant sur 2+.",
+      "cost": 190000,
+      "playsFor": [
+        "Super-Ligue de Lustrie"
+      ]
+    },
+    {
+      "name": "Fungus le Cinglé",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "7",
+      "ag": "3+",
+      "pa": "-",
+      "av": "8+",
+      "skills": [
+        "Arme Secrète",
+        "Chaîne & Boulet",
+        "Châtaigne (+1)",
+        "Minus",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Derviche Tourbillonnant : Peut relancer le dé de direction de son déplacement (1x par mi-temps).",
+      "cost": 80000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Grak & Crumbleberry",
+      "qty": "0-1",
+      "ma": "5/5",
+      "st": "5/2",
+      "ag": "4+/3+",
+      "pa": "4+/5+",
+      "av": "10+/7+",
+      "skills": [
+        "Grak: Châtaigne, Solitaire; Crumble: Esquive, Minus, Prise Sûre"
+      ],
+      "specialAbility": "Je Te Porte : Grak peut transporter Crumberry lors de son activation.",
+      "cost": 250000,
+      "playsFor": [
+        "Toutes"
+      ]
+    },
+    {
+      "name": "Gloriel Efflorescente",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "2",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "8+",
+      "skills": [
+        "Esquive",
+        "Glissade Contrôlée",
+        "Passe",
+        "Précision",
+        "Prise Sûre",
+        "Solitaire (3+)"
+      ],
+      "specialAbility": "Tout ou Rien : Gagne la compétence Passe Désespérée lors de son activation (1x par match).",
+      "cost": 150000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Glotl Stop",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "6",
+      "ag": "5+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Châtaigne (+1)",
+        "Crâne Épais",
+        "Frénésie",
+        "Queue Préhensile",
+        "Stabilité",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Sauvagerie Primordiale : Peut cibler un adversaire sur un échec de Sauvagerie Animale.",
+      "cost": 260000,
+      "playsFor": [
+        "Super-Ligue de Lustrie"
+      ]
+    },
+    {
+      "name": "Glart Lavollée",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Griffes",
+        "Juggernaut",
+        "Projection",
+        "Stabilité",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Ruée Frénétique : Peut gagner Frénésie lors d'une action de Blitz (1x par mi-temps).",
+      "cost": 190000,
+      "playsFor": [
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Gobbo le Noir",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Bombardier",
+        "Esquive",
+        "Glissade Contrôlée",
+        "Minus",
+        "Poignard",
+        "Présence Perturbante",
+        "Solitaire (3+)"
+      ],
+      "specialAbility": "Agression bonus : Peut effectuer une agression gratuite par tour.",
+      "cost": 225000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Favoris de Khorne"
+      ]
+    },
+    {
+      "name": "Grashnak Noirsabot",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "4",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Châtaigne (+1)",
+        "Cornes",
+        "Crâne Épais",
+        "Frénésie",
+        "Fureur Débridée",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Encorné par le Taureau : Lance 1 dé de blocage supplémentaire en Blitz (max 3).",
+      "cost": 300000,
+      "playsFor": [
+        "Clash du Chaos"
+      ]
+    },
+    {
+      "name": "Gretchen Wächter",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Esquive",
+        "Glissade Contrôlée",
+        "Poursuite",
+        "Présence Perturbante",
+        "Rétablissement",
+        "Sans Ballon",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Éthérée : N'a pas besoin de jet d'esquive pour quitter une zone de tacle (1x par match).",
+      "cost": 180000,
+      "playsFor": [
+        "Spot de Sylvanie"
+      ]
+    },
+    {
+      "name": "Griff Oberwald",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "4",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Équilibre",
+        "Esquive",
+        "Parade",
+        "Sprint",
+        "Solitaire (3+)"
+      ],
+      "specialAbility": "Grand Professionnel : Peut appliquer un bonus de +1 à un test d'Agilité après le jet.",
+      "cost": 300000,
+      "playsFor": [
+        "Classique du Vieux Monde"
+      ]
+    },
+    {
+      "name": "Grim Croc d’Acier",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Intrépide",
+        "Frénésie",
+        "Haine (Gros Bras)",
+        "Blocage Multiple",
+        "Crâne Épais",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Tueur : Donne +1 au jet d'armure ou blessure après avoir plaqué un Gros Bras.",
+      "cost": 180000,
+      "playsFor": [
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Grombrindal",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Châtaigne (+1)",
+        "Crâne Épais",
+        "Équilibre",
+        "Esquive en Force",
+        "Intrépide",
+        "Solitaire (4+)",
+        "Stabilité"
+      ],
+      "specialAbility": "Sagesse du Nain Blanc : Donne une compétence (Châtaigne, Équilibre, etc.) à un allié proche.",
+      "cost": 210000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Grondant Peaudemouton",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Blocage",
+        "Cornes",
+        "Juggernaut",
+        "Crâne Épais",
+        "Solitaire (4+)",
+        "Tacle"
+      ],
+      "specialAbility": "Bélier : Donne +1 au jet d'armure ou blessure après avoir plaqué un adversaire.",
+      "cost": 160000,
+      "playsFor": [
+        "Coupe du Dé à Coudre"
+      ]
+    },
+    {
+      "name": "Guffle Gouffrapus",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "4",
+      "ag": "3+",
+      "pa": "6+",
+      "av": "9+",
+      "skills": [
+        "Contagieux",
+        "Grande Gueule",
+        "Nerfs d’Acier",
+        "Répulsion",
+        "Solitaire (4+)",
+        "Sur le Ballon"
+      ],
+      "specialAbility": "Casse-croûte : Peut effectuer un jet d'armure immédiat contre un porteur de balle marqué.",
+      "cost": 190000,
+      "playsFor": [
+        "Favoris de Nurgle"
+      ]
+    },
+    {
+      "name": "Hakflem Pointu",
+      "qty": "0-1",
+      "ma": "9",
+      "st": "3",
+      "ag": "2+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Bras Supplémentaires",
+        "Deux Têtes",
+        "Esquive",
+        "Queue Préhensile",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Traître : Peut voler le ballon à un allié adjacent, le plaquant au passage sans Turnover.",
+      "cost": 210000,
+      "playsFor": [
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Helmut Wulf",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Arme Secrète",
+        "Pro",
+        "Sans Ballon",
+        "Stabilité",
+        "Tronçonneuse",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Vieux Pro : Peut utiliser sa compétence Pro pour relancer un jet d'Armure.",
+      "cost": 140000,
+      "playsFor": [
+        "Classique du Vieux Monde"
+      ]
+    },
+    {
+      "name": "H’thark l’Implacable",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "6",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Crâne Épais",
+        "Défenseur",
+        "Équilibre",
+        "Solitaire (4+)",
+        "Sprint"
+      ],
+      "specialAbility": "Elan Implacable : Peut relancer un unique dé de blocage en action de Blitz.",
+      "cost": 300000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Favoris de Hashut"
+      ]
+    },
+    {
+      "name": "Ivan l'Animal Deathshroud",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Arracher le Ballon",
+        "Blocage",
+        "Haine (Nain)",
+        "Solitaire (4+)",
+        "Tacle"
+      ],
+      "specialAbility": "Fléau des Nains : Donne +1 au jet d'armure/blessure (ou +2 contre les Nains).",
+      "cost": 170000,
+      "playsFor": [
+        "Spot de Sylvanie"
+      ]
+    },
+    {
+      "name": "Ivar Eriksson",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Garde",
+        "Solitaire (4+)",
+        "Tacle"
+      ],
+      "specialAbility": "Maraudage : Permet à un allié proche de se déplacer d'une case pour marquer un adversaire.",
+      "cost": 170000,
+      "playsFor": [
+        "Classique du Vieux Monde"
+      ]
+    },
+    {
+      "name": "Jeremiah Kool",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Esquive",
+        "Délestage",
+        "Glissade Contrôlée",
+        "Solitaire (4+)",
+        "Sur le Ballon"
+      ],
+      "specialAbility": "La Lame Éclair : Peut utiliser Poignard avant d'effectuer son mouvement normal.",
+      "cost": 215000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Jordell Flêchevive",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "3",
+      "ag": "1+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Appuis Sûrs",
+        "Blocage",
+        "Esquive",
+        "Glissade Contrôlée",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Vif comme la Bise : Réussit un test d'esquive, saut ou foncer sur 2+ (1x par match).",
+      "cost": 280000,
+      "playsFor": [
+        "Ligue Sylvestre"
+      ]
+    },
+    {
+      "name": "Josef Bugman",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Crâne Épais",
+        "Ivrogne",
+        "Parade",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Robustesse des Nains : Peut faire relancer un jet d'armure adverse réussi contre lui.",
+      "cost": 150000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Karla Von Kill",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Blocage",
+        "Esquive",
+        "Intrépide",
+        "Rétablissement",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Indomptable : Double sa force contre la cible lors d'un test d'Intrépide réussi.",
+      "cost": 200000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue de Lustrie"
+      ]
+    },
+    {
+      "name": "Kiroth Krakeneye",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Présence Perturbante",
+        "Répulsion",
+        "Sur le Ballon",
+        "Tacle",
+        "Tentacules",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Encre Noire : Peut déconcentrer un adversaire marqué au début de son activation.",
+      "cost": 140000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Kreek Rustgouger",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Arme Secrète",
+        "Chaîne & Boulet",
+        "Châtaigne (+1)",
+        "Queue Préhensile",
+        "Sans Ballon",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Je Reviendrai ! : Peut éviter une expulsion sur 4+.",
+      "cost": 180000,
+      "playsFor": [
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Kria the Shatterer",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "4",
+      "ag": "3+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Esquive",
+        "Intrépide",
+        "Lutte",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Séquelle : Double les chances d'élimination sur un blocage (1x par match).",
+      "cost": 210000,
+      "playsFor": [
+        "Bagarre des Terres Arides"
+      ]
+    },
+    {
+      "name": "Lucien Swift",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "3+",
+      "av": "8+",
+      "skills": [
+        "Blocage",
+        "Esquive",
+        "Glissade Contrôlée",
+        "Sur le Ballon",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Tandem : Relance un dé de blocage si Valen Swift marque aussi la cible.",
+      "cost": 160000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Valen Swift",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "3",
+      "ag": "2+",
+      "pa": "2+",
+      "av": "9+",
+      "skills": [
+        "Nerfs d’Acier",
+        "Passe",
+        "Passe Assurée",
+        "Précision",
+        "Prise Sûre",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Tandem : Ne subit aucun malus de portée vers Lucien Swift.",
+      "cost": 140000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques"
+      ]
+    },
+    {
+      "name": "Max Spleenripper",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "7",
+      "ag": "4+",
+      "pa": "-",
+      "av": "10+",
+      "skills": [
+        "Arme Secrète",
+        "Frénésie",
+        "Sans Ballon",
+        "Tronçonneuse",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Fureur aveugle : Peut relancer ses jets de tronçonneuse.",
+      "cost": 180000,
+      "playsFor": [
+        "Favoris de Khorne"
+      ]
+    },
+    {
+      "name": "Morg 'n' Thorg",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "6",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "11+",
+      "skills": [
+        "Blocage",
+        "Châtaigne (+1)",
+        "Crâne Épais",
+        "Lancer de Coéquipier",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Balle de Morg : Relance n'importe quel dé (hors armure/blessure) par match.",
+      "cost": 340000,
+      "playsFor": [
+        "Toutes (sauf Favoris de...)"
+      ]
+    },
+    {
+      "name": "Nobbla Blackwart",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "4",
+      "ag": "4+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Arme Secrète",
+        "Saboteur",
+        "Sans Ballon",
+        "Tronçonneuse",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Vaurien : Peut agresser un joueur déjà plaque sans Turnover.",
+      "cost": 130000,
+      "playsFor": [
+        "Bagarre des Terres Arides"
+      ]
+    },
+    {
+      "name": "Deeproot Strongbranch",
+      "qty": "0-1",
+      "ma": "2",
+      "st": "7",
+      "ag": "5+",
+      "pa": "4+",
+      "av": "11+",
+      "skills": [
+        "Châtaigne (+1)",
+        "Dans le Mille",
+        "Lancer de Coéquipier",
+        "Stabilité",
+        "Prendre Racine",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Force de la Nature : Ne peut pas être repousse.",
+      "cost": 280000,
+      "playsFor": [
+        "Moot"
+      ]
+    },
+    {
+      "name": "Rodney Roachbait",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "7+",
+      "skills": [
+        "Rétablissement",
+        "Glissade Contrôlée",
+        "Sur le Ballon",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Soutireur : Peut ramasser le ballon au milieu d'adversaires sans malus.",
+      "cost": 70000,
+      "playsFor": [
+        "Défi des Bas-Fonds"
+      ]
+    },
+    {
+      "name": "Scrappa Sorehead",
+      "qty": "0-1",
+      "ma": "7",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "8+",
+      "skills": [
+        "Minus",
+        "Poids Plume",
+        "Sur Ressort",
+        "Sprint",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Boing ! : Peut ignorer un jet de Chute une fois par match.",
+      "cost": 120000,
+      "playsFor": [
+        "Bagarre des Terres Arides"
+      ]
+    },
+    {
+      "name": "Skrorg Gelfourure",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Châtaigne (+1)",
+        "Griffes",
+        "Juggernaut",
+        "Présence Perturbante",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Faire Vibrer le Public : Gagne une relance temporaire s'il élimine un adversaire.",
+      "cost": 270000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Skrull Halfheight",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "4+",
+      "pa": "3+",
+      "av": "9+",
+      "skills": [
+        "Prise Sûre",
+        "Régénération",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Coup d'œil : Peut relancer un jet de passe.",
+      "cost": 150000,
+      "playsFor": [
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Thorsson Gueuledebière",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "4",
+      "ag": "4+",
+      "pa": "-",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Crâne Épais",
+        "Ivrogne",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Coup de Fût : Peut plaquer un adversaire proche sur 3+ (met fin à l'activation).",
+      "cost": 130000,
+      "playsFor": [
+        "Classique du Vieux Monde"
+      ]
+    },
+    {
+      "name": "Varag Mâche-Goule",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "5",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Châtaigne (+1)",
+        "Crâne Épais",
+        "Rétablissement",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Krazer et Klater : Peut relancer le jet d'Armure sur un plaquage réussi.",
+      "cost": 260000,
+      "playsFor": [
+        "Bagarre des Terres Arides",
+        "Favoris de Khorne"
+      ]
+    },
+    {
+      "name": "Vrilléclaire Eclalumineux",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Glissade Contrôlée",
+        "Minus",
+        "Parade",
+        "Présence Perturbante",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Explosion de Fureur : Peut utiliser Poignard avant de s'éloigner de 3 cases.",
+      "cost": 120000,
+      "playsFor": [
+        "Ligue Sylvestre"
+      ]
+    },
+    {
+      "name": "Whilhelm Chaney",
+      "qty": "0-1",
+      "ma": "8",
+      "st": "4",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Frénésie",
+        "Griffes",
+        "Lutte",
+        "Réception",
+        "Régénération",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Mutilation Sauvage : Peut relancer un jet de blessure.",
+      "cost": 220000,
+      "playsFor": [
+        "Spot de Sylvanie"
+      ]
+    },
+    {
+      "name": "Willow Rosebark",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "4",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Crâne Épais",
+        "Glissade Contrôlée",
+        "Intrépide",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Fureur Sylvestre : Peut relancer un dé de blocage si elle est plaque.",
+      "cost": 160000,
+      "playsFor": [
+        "Ligue Sylvestre"
+      ]
+    },
+    {
+      "name": "Withergrasp Doubledrool",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Deux Têtes",
+        "Lutte",
+        "Queue Préhensile",
+        "Répulsion",
+        "Solitaire (4+)",
+        "Tacle",
+        "Tentacules"
+      ],
+      "specialAbility": "Attention ! : Compte comme ayant Esquive face à un blocage (1x par mi-temps).",
+      "cost": 170000,
+      "playsFor": [
+        "Favoris de Nurgle"
+      ]
+    },
+    {
+      "name": "Zug la Bête",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Blocage",
+        "Châtaigne (+1)",
+        "Instable",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Coup Destructeur : Donne +1 au jet d'armure sur un plaquage réussi.",
+      "cost": 220000,
+      "playsFor": [
+        "Classique du Vieux Monde",
+        "Super-Ligue du Bord du Monde"
+      ]
+    },
+    {
+      "name": "Zzharg Madeye",
+      "qty": "0-1",
+      "ma": "4",
+      "st": "4",
+      "ag": "4+",
+      "pa": "3+",
+      "av": "10+",
+      "skills": [
+        "Arme Secrète",
+        "Canonnier",
+        "Crâne Épais",
+        "Nerfs d’Acier",
+        "Passe Désespérée",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Poudre Noire : Peut toucher un adversaire proche sur 3+ (jet d'armure direct).",
+      "cost": 130000,
+      "playsFor": [
+        "Favoris de Hashut"
+      ]
+    },
+    {
+      "name": "Zolcath le Zoat",
+      "qty": "0-1",
+      "ma": "5",
+      "st": "5",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "10+",
+      "skills": [
+        "Châtaigne (+1)",
+        "Équilibre",
+        "Juggernaut",
+        "Présence Perturbante",
+        "Queue Préhensile",
+        "Régénération",
+        "Solitaire (4+)"
+      ],
+      "specialAbility": "Énigme : Peut supprimer la zone de tacle d'un adversaire proche.",
+      "cost": 220000,
+      "playsFor": [
+        "Ligue des Royaumes Elfiques",
+        "Super-Ligue de Lustrie"
+      ]
+    }
+  ]
 }

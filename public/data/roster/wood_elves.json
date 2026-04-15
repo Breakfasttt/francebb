@@ -1,21 +1,21 @@
 {
-  "name": "Wood Elf Team",
+  "name": "Elfes Sylvains",
   "roster": [
     {
-      "name": "Wood Elf Lineman",
-      "qty": "0-12",
+      "name": "Trois-quart Elfe Sylvain",
+      "qty": "0-16",
       "ma": "7",
       "st": "3",
       "ag": "2+",
       "pa": "3+",
       "av": "8+",
       "skills": [],
-      "primary": "G",
-      "secondary": "AS",
-      "cost": 65000
+      "primary": "GA",
+      "secondary": "F",
+      "cost": 70000
     },
     {
-      "name": "Wood Elf Thrower",
+      "name": "Lanceur Elfe Sylvain",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -23,32 +23,31 @@
       "pa": "2+",
       "av": "8+",
       "skills": [
-        "Pass",
-        "Safe Pair of Hands"
+        "Passe"
       ],
-      "primary": "GP",
-      "secondary": "AS",
-      "cost": 85000
+      "primary": "GAP",
+      "secondary": "F",
+      "cost": 95000
     },
     {
-      "name": "Wood Elf Catcher",
-      "qty": "0-2",
+      "name": "Receveur Elfe Sylvain",
+      "qty": "0-4",
       "ma": "8",
       "st": "2",
       "ag": "2+",
-      "pa": "3+",
+      "pa": "4+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Dodge",
+        "Réception",
+        "Esquive",
         "Sprint"
       ],
       "primary": "GA",
-      "secondary": "S",
+      "secondary": "FP",
       "cost": 90000
     },
     {
-      "name": "Wardancer",
+      "name": "Danseur de Guerre",
       "qty": "0-2",
       "ma": "8",
       "st": "3",
@@ -56,16 +55,16 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Block",
-        "Dodge",
-        "Leap"
+        "Blocage",
+        "Esquive",
+        "Saut"
       ],
       "primary": "GA",
-      "secondary": "S",
-      "cost": 130000
+      "secondary": "FP",
+      "cost": 125000
     },
     {
-      "name": "Loren Forest Treeman",
+      "name": "Homme-arbre (Gros Bras)",
       "qty": "0-1",
       "ma": "2",
       "st": "6",
@@ -73,17 +72,21 @@
       "pa": "5+",
       "av": "11+",
       "skills": [
-        "Loner (4+)",
-        "Mighty Blow",
-        "Stand Firm",
-        "Strong Arm",
-        "Take Root",
-        "Thick Skull",
-        "Throw Team-mate"
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Stabilité",
+        "Bras Musclé",
+        "Prendre Racine",
+        "Crâne Épais",
+        "Lancer de Coéquipier"
       ],
-      "primary": "S",
-      "secondary": "AG",
+      "primary": "F",
+      "secondary": "AGP",
       "cost": 120000
     }
+  ],
+  "specialRules": [
+    "Ligue des Royaumes Elfiques",
+    "Ligue Sylvestre"
   ]
 }

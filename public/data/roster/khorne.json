@@ -1,8 +1,8 @@
 {
-  "name": "Khorne Team",
+  "name": "Khorne",
   "roster": [
     {
-      "name": "Bloodborn Marauder Lineman",
+      "name": "Maraudeur Sanglant",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,26 +10,11 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Frenzy"
+        "Frénésie"
       ],
-      "primary": "G",
-      "secondary": "AMS",
+      "primary": "GM",
+      "secondary": "ASF",
       "cost": 50000
-    },
-    {
-      "name": "Bloodseeker",
-      "qty": "0-4",
-      "ma": "5",
-      "st": "4",
-      "ag": "4+",
-      "pa": "6+",
-      "av": "10+",
-      "skills": [
-        "Frenzy"
-      ],
-      "primary": "GS",
-      "secondary": "AM",
-      "cost": 105000
     },
     {
       "name": "Khorngor",
@@ -40,17 +25,32 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Horns",
+        "Cornes",
         "Juggernaut",
-        "Jump Up",
-        "Thick Skull"
+        "Rétablissement",
+        "Crâne Épais"
       ],
-      "primary": "GSM",
-      "secondary": "A",
+      "primary": "GFM",
+      "secondary": "ASP",
       "cost": 70000
     },
     {
-      "name": "Bloodspawn",
+      "name": "Rabatteur Sanglant",
+      "qty": "0-4",
+      "ma": "5",
+      "st": "4",
+      "ag": "4+",
+      "pa": "6+",
+      "av": "10+",
+      "skills": [
+        "Frénésie"
+      ],
+      "primary": "GFM",
+      "secondary": "AS",
+      "cost": 105000
+    },
+    {
+      "name": "Rejeton Sanglant (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -58,15 +58,19 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Claws",
-        "Frenzy",
-        "Loner (4+)",
-        "Mighty Blow",
-        "Unchannelled Fury"
+        "Griffes",
+        "Frénésie",
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Fureur Débridée"
       ],
-      "primary": "S",
-      "secondary": "AGM",
+      "primary": "FM",
+      "secondary": "AG",
       "cost": 160000
     }
+  ],
+  "specialRules": [
+    "Favoris de Khorne",
+    "Clash du Chaos"
   ]
 }

@@ -1,8 +1,8 @@
 {
-  "name": "Dwarf Team",
+  "name": "Nains",
   "roster": [
     {
-      "name": "Dwarf Blocker Lineman",
+      "name": "Trois-quart Nain",
       "qty": "0-16",
       "ma": "4",
       "st": "3",
@@ -10,16 +10,16 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Defensive",
-        "Thick Skull"
+        "Blocage",
+        "Défenseur",
+        "Crâne épais"
       ],
       "primary": "GS",
-      "secondary": "A",
+      "secondary": "F",
       "cost": 70000
     },
     {
-      "name": "Dwarf Runner",
+      "name": "Coureur Nain",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -27,35 +27,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Sprint",
-        "Sure Hands",
-        "Thick Skull"
+        "Prise Sûre",
+        "Crâne épais",
+        "Sprint"
       ],
       "primary": "GP",
-      "secondary": "AS",
+      "secondary": "F",
       "cost": 80000
     },
     {
-      "name": "Troll Slayer",
-      "qty": "0-2",
-      "ma": "5",
-      "st": "3",
-      "ag": "4+",
-      "pa": "5+",
-      "av": "9+",
-      "skills": [
-        "Block",
-        "Dauntless",
-        "Frenzy",
-        "Hatred (Troll)",
-        "Thick Skull"
-      ],
-      "primary": "GS",
-      "secondary": "A",
-      "cost": 95000
-    },
-    {
-      "name": "Dwarf Blitzer",
+      "name": "Blitzer Nain",
       "qty": "0-2",
       "ma": "5",
       "st": "3",
@@ -63,17 +44,36 @@
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Diving Tackle",
-        "Tackle",
-        "Thick Skull"
+        "Blocage",
+        "Tacle",
+        "Tacle Plongeant",
+        "Crâne épais"
       ],
-      "primary": "GS",
-      "secondary": "A",
+      "primary": "GF",
+      "secondary": "P",
       "cost": 100000
     },
     {
-      "name": "Deathroller",
+      "name": "Tueur de Troll",
+      "qty": "0-2",
+      "ma": "5",
+      "st": "3",
+      "ag": "4+",
+      "pa": "5+",
+      "av": "9+",
+      "skills": [
+        "Blocage",
+        "Intrépide",
+        "Frénésie",
+        "Crâne épais",
+        "Haine (Troll)"
+      ],
+      "primary": "GF",
+      "secondary": "S",
+      "cost": 95000
+    },
+    {
+      "name": "Roule-Mort (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "7",
@@ -81,18 +81,22 @@
       "pa": "-",
       "av": "11+",
       "skills": [
-        "Break Tackle",
-        "Dirty Player",
+        "Esquive en Force",
+        "Joueur Déloyal",
         "Juggernaut",
-        "Loner (4+)",
-        "Mighty Blow",
-        "No Ball",
-        "Secret Weapon",
-        "Stand Firm"
+        "Solitaire (4+)",
+        "Châtaigne",
+        "Sans le Ballon",
+        "Arme Secrète",
+        "Stabilité"
       ],
-      "primary": "S",
-      "secondary": "AG",
+      "primary": "SF",
+      "secondary": "G",
       "cost": 170000
     }
+  ],
+  "specialRules": [
+    "Chantage & Corruption",
+    "Super-ligue du Bord du Monde"
   ]
 }

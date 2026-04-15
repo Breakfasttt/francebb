@@ -2,7 +2,7 @@
   "name": "Vampires",
   "roster": [
     {
-      "name": "Thrall Lineman",
+      "name": "Trois-quart Sbire",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -15,7 +15,7 @@
       "cost": 40000
     },
     {
-      "name": "Vampire Runner",
+      "name": "Coureur Vampire",
       "qty": "0-2",
       "ma": "8",
       "st": "3",
@@ -23,16 +23,16 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Hypnotic Gaze",
-        "Regeneration",
-        "Blood Lust (2+)"
+        "Regard Hypnotique",
+        "Régénération",
+        "Soif de Sang (2+)"
       ],
       "primary": "AG",
       "secondary": "FP",
       "cost": 100000
     },
     {
-      "name": "Vampire Thrower",
+      "name": "Lanceur Vampire",
       "qty": "0-2",
       "ma": "6",
       "st": "4",
@@ -40,17 +40,17 @@
       "pa": "2+",
       "av": "9+",
       "skills": [
-        "Pass",
-        "Hypnotic Gaze",
-        "Regeneration",
-        "Blood Lust (2+)"
+        "Passe",
+        "Regard Hypnotique",
+        "Régénération",
+        "Soif de Sang (2+)"
       ],
       "primary": "AGP",
       "secondary": "F",
       "cost": 110000
     },
     {
-      "name": "Vampire Blitzer",
+      "name": "Blitzer Vampire",
       "qty": "0-2",
       "ma": "6",
       "st": "4",
@@ -59,16 +59,16 @@
       "av": "9+",
       "skills": [
         "Juggernaut",
-        "Hypnotic Gaze",
-        "Regeneration",
-        "Blood Lust (3+)"
+        "Regard Hypnotique",
+        "Régénération",
+        "Soif de Sang (3+)"
       ],
       "primary": "AGF",
       "secondary": "-",
       "cost": 110000
     },
     {
-      "name": "Vargheist",
+      "name": "Vargheist (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -76,11 +76,11 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Frenzy",
-        "Claws",
-        "Regeneration",
-        "Blood Lust (3+)",
-        "Loner (4+)"
+        "Frénésie",
+        "Griffes",
+        "Régénération",
+        "Soif de Sang (3+)",
+        "Solitaire (4+)"
       ],
       "primary": "F",
       "secondary": "AG",
@@ -88,7 +88,7 @@
     }
   ],
   "specialRules": [
-    "Masters of Undeath",
-    "Sylvanian Spot"
+    "Maître de la Non-Vie",
+    "Spot de Sylvanie"
   ]
 }

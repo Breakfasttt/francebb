@@ -1,8 +1,8 @@
 {
-  "name": "Orcs",
+  "name": "Orques",
   "roster": [
     {
-      "name": "Orc Lineman",
+      "name": "Trois-quart Orque",
       "qty": "0-16",
       "ma": "5",
       "st": "3",
@@ -10,12 +10,12 @@
       "pa": "4+",
       "av": "10+",
       "skills": [],
-      "primary": "G",
-      "secondary": "ASF",
+      "primary": "GF",
+      "secondary": "AS",
       "cost": 50000
     },
     {
-      "name": "Goblin",
+      "name": "Trois-quart Gobelin",
       "qty": "0-4",
       "ma": "6",
       "st": "2",
@@ -23,16 +23,16 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
+        "Esquive",
+        "Poids Plume",
+        "Minus"
       ],
-      "primary": "A",
-      "secondary": "SGP",
+      "primary": "AS",
+      "secondary": "GFP",
       "cost": 40000
     },
     {
-      "name": "Orc Thrower",
+      "name": "Lanceur Orque",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -40,49 +40,49 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Pass",
-        "Sure Hands"
+        "Passe",
+        "Prise Sûre"
       ],
       "primary": "GP",
       "secondary": "ASF",
       "cost": 75000
     },
     {
-      "name": "Orc Blitzer",
-      "qty": "0-4",
+      "name": "Blitzer Orque",
+      "qty": "0-2",
       "ma": "6",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "10+",
       "skills": [
-        "Block",
-        "Punt"
+        "Blocage",
+        "Esquive en Force"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 85000
     },
     {
-      "name": "Big Un Blocker",
-      "qty": "0-4",
+      "name": "Bloqueur Kosto",
+      "qty": "0-2",
       "ma": "5",
       "st": "4",
       "ag": "4+",
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Mighty Blow (+1)",
-        "Taunt",
-        "Thick Skull",
-        "Unstable"
+        "Châtaigne",
+        "Provocation",
+        "Crâne Épais",
+        "Instable"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 95000
     },
     {
-      "name": "Trained Troll",
+      "name": "Troll (Gros Bras)",
       "qty": "0-1",
       "ma": "4",
       "st": "5",
@@ -90,13 +90,13 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Loner (4+)",
-        "Always Hungry",
-        "Really Stupid",
-        "Mighty Blow (+1)",
-        "Projectile Vomit",
-        "Regeneration",
-        "Throw Team-Mate"
+        "Toujours Affamé",
+        "Solitaire (4+)",
+        "Gerbe de Vomi",
+        "Châtaigne",
+        "Gros Débile",
+        "Régénération",
+        "Lancer de Coéquipier"
       ],
       "primary": "F",
       "secondary": "AGP",
@@ -104,6 +104,7 @@
     }
   ],
   "specialRules": [
-    "Badlands Brawl"
+    "Bagarreurs Brutaux",
+    "Capitaine"
   ]
 }

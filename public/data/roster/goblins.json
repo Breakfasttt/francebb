@@ -1,116 +1,134 @@
 {
-  "name": "Goblins",
+  "name": "Gobelins",
   "roster": [
     {
-      "name": "Goblin Lineman",
+      "name": "Trois-quart Gobelin",
       "qty": "0-16",
       "ma": "6",
       "st": "2",
       "ag": "3+",
-      "pa": "3+",
+      "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
+        "Esquive",
+        "Poids Plume",
+        "Minus"
       ],
       "primary": "AS",
       "secondary": "GFP",
       "cost": 40000
     },
     {
-      "name": "Goblin Bombardier",
-      "qty": "0-2",
+      "name": "Cinglé",
+      "qty": "0-1",
       "ma": "6",
       "st": "2",
       "ag": "3+",
-      "pa": "3+",
+      "pa": "-",
+      "av": "8+",
+      "skills": [
+        "Tronçonneuse",
+        "Arme Secrète",
+        "Minus",
+        "Sans le Ballon"
+      ],
+      "primary": "S",
+      "secondary": "AGF",
+      "cost": 40000
+    },
+    {
+      "name": "Bomba",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "4+",
       "av": "8+",
       "skills": [
         "Bombardier",
-        "Dodge",
-        "Secret Weapon",
-        "Stunty"
+        "Esquive",
+        "Arme Secrète",
+        "Minus"
       ],
-      "primary": "AS",
-      "secondary": "GFP",
+      "primary": "SP",
+      "secondary": "AGF",
       "cost": 45000
     },
     {
-      "name": "Goblin Fanatic",
-      "qty": "0-2",
+      "name": "Ouligan’",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "5+",
+      "av": "8+",
+      "skills": [
+        "Joueur Déloyal",
+        "Présence Perturbante",
+        "Esquive",
+        "Poids Plume",
+        "Minus",
+        "Provocation"
+      ],
+      "primary": "AS",
+      "secondary": "GF",
+      "cost": 60000
+    },
+    {
+      "name": "Planeur de la Mort",
+      "qty": "0-1",
+      "ma": "6",
+      "st": "2",
+      "ag": "3+",
+      "pa": "6+",
+      "av": "8+",
+      "skills": [
+        "Esquive",
+        "Poids Plume",
+        "Minus",
+        "Piqué"
+      ],
+      "primary": "A",
+      "secondary": "SGF",
+      "cost": 65000
+    },
+    {
+      "name": "Fanatique",
+      "qty": "0-1",
       "ma": "3",
       "st": "7",
       "ag": "3+",
       "pa": "-",
       "av": "8+",
       "skills": [
-        "Ball & Chain",
-        "No Hands",
-        "Secret Weapon",
-        "Stunty"
+        "Chaîne & Boulet",
+        "Sans le Ballon",
+        "Arme Secrète",
+        "Minus"
       ],
-      "primary": "S",
-      "secondary": "GAF",
+      "primary": "SF",
+      "secondary": "AG",
       "cost": 70000
     },
     {
-      "name": "Goblin Looney",
-      "qty": "0-2",
-      "ma": "6",
-      "st": "2",
-      "ag": "3+",
-      "pa": "3+",
-      "av": "8+",
-      "skills": [
-        "Chainsaw",
-        "No Hands",
-        "Secret Weapon",
-        "Stunty"
-      ],
-      "primary": "AS",
-      "secondary": "GFP",
-      "cost": 40000
-    },
-    {
-      "name": "Goblin Pogoer",
-      "qty": "0-2",
+      "name": "Échassier",
+      "qty": "0-1",
       "ma": "7",
       "st": "2",
       "ag": "3+",
-      "pa": "3+",
+      "pa": "4+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Jump Up",
-        "Pogo Stick",
-        "Stunty"
+        "Esquive",
+        "Monté sur Ressort",
+        "Minus"
       ],
-      "primary": "AS",
-      "secondary": "GFP",
+      "primary": "A",
+      "secondary": "GFS",
       "cost": 75000
     },
     {
-      "name": "'Ooligan",
-      "qty": "0-2",
-      "ma": "6",
-      "st": "2",
-      "ag": "3+",
-      "pa": "3+",
-      "av": "8+",
-      "skills": [
-        "Disturbing Presence",
-        "Dodge",
-        "Foul Appearance",
-        "Right Stuff",
-        "Stunty"
-      ],
-      "primary": "AS",
-      "secondary": "GFP",
-      "cost": 65000
-    },
-    {
-      "name": "Trained Troll",
+      "name": "Troll (Gros Bras)",
       "qty": "0-2",
       "ma": "4",
       "st": "5",
@@ -118,19 +136,19 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Always Hungry",
-        "Really Stupid",
-        "Mighty Blow (+1)",
-        "Throw Team-Mate",
-        "Projectile Vomit",
-        "Regeneration"
+        "Toujours Affamé",
+        "Gros Débile",
+        "Châtaigne",
+        "Lancer de Coéquipier",
+        "Gerbe de Vomi",
+        "Régénération"
       ],
-      "primary": "MF",
-      "secondary": "GAP",
+      "primary": "F",
+      "secondary": "AGP",
       "cost": 115000
     }
   ],
   "specialRules": [
-    "Bribery and Corruption"
+    "Chantage & Corruption"
   ]
 }

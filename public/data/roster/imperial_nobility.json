@@ -1,8 +1,8 @@
 {
-  "name": "Imperial Nobility Team",
+  "name": "Noblesse Impériale",
   "roster": [
     {
-      "name": "Imperial Retainer Lineman",
+      "name": "Valet Impérial",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -10,30 +10,14 @@
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Fend"
+        "Parade"
       ],
       "primary": "G",
-      "secondary": "AS",
+      "secondary": "AF",
       "cost": 45000
     },
     {
-      "name": "Bodyguard",
-      "qty": "0-4",
-      "ma": "5",
-      "st": "3",
-      "ag": "3+",
-      "pa": "4+",
-      "av": "9+",
-      "skills": [
-        "Stand Firm",
-        "Wrestle"
-      ],
-      "primary": "GS",
-      "secondary": "A",
-      "cost": 85000
-    },
-    {
-      "name": "Imperial Thrower",
+      "name": "Lanceur Impérial",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -41,13 +25,29 @@
       "pa": "2+",
       "av": "9+",
       "skills": [
-        "Give and Go",
-        "Pass",
+        "Passe",
+        "Transmission dans la Course",
         "Pro"
       ],
       "primary": "GP",
-      "secondary": "AS",
+      "secondary": "AF",
       "cost": 75000
+    },
+    {
+      "name": "Garde du Corps",
+      "qty": "0-4",
+      "ma": "5",
+      "st": "3",
+      "ag": "3+",
+      "pa": "4+",
+      "av": "9+",
+      "skills": [
+        "Stabilité",
+        "Lutte"
+      ],
+      "primary": "GF",
+      "secondary": "A",
+      "cost": 85000
     },
     {
       "name": "Noble Blitzer",
@@ -58,16 +58,16 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Block",
-        "Catch",
+        "Blocage",
+        "Réception",
         "Pro"
       ],
       "primary": "GA",
-      "secondary": "S",
+      "secondary": "PF",
       "cost": 90000
     },
     {
-      "name": "Ogre",
+      "name": "Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -75,15 +75,18 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (3+)",
-        "Mighty Blow",
-        "Thick Skull",
-        "Throw Team-mate"
+        "Cerveau Lent",
+        "Solitaire (3+)",
+        "Châtaigne",
+        "Crâne Épais",
+        "Lancer de Coéquipier"
       ],
-      "primary": "S",
+      "primary": "F",
       "secondary": "AG",
       "cost": 140000
     }
+  ],
+  "specialRules": [
+    "Classique du Vieux Monde"
   ]
 }

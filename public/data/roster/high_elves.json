@@ -1,21 +1,21 @@
 {
-  "name": "High Elves",
+  "name": "Hauts Elfes",
   "roster": [
     {
-      "name": "High Elf Lineman",
+      "name": "Trois-quart Elfe",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
       "ag": "2+",
-      "pa": "4+",
+      "pa": "3+",
       "av": "9+",
       "skills": [],
-      "primary": "G",
-      "secondary": "AFP",
-      "cost": 70000
+      "primary": "GA",
+      "secondary": "FP",
+      "cost": 65000
     },
     {
-      "name": "High Elf Thrower",
+      "name": "Lanceur Elfe",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -23,31 +23,31 @@
       "pa": "2+",
       "av": "9+",
       "skills": [
-        "Pass",
-        "Safe Pass"
+        "Passe",
+        "Passe Assurée",
+        "Perce-Nuages"
       ],
-      "primary": "GP",
-      "secondary": "AF",
+      "primary": "GAP",
+      "secondary": "F",
       "cost": 100000
     },
     {
-      "name": "High Elf Catcher",
+      "name": "Receveur Elfe",
       "qty": "0-4",
       "ma": "8",
       "st": "3",
       "ag": "2+",
-      "pa": "4+",
+      "pa": "3+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Dodge"
+        "Réception"
       ],
       "primary": "GA",
-      "secondary": "FP",
+      "secondary": "F",
       "cost": 90000
     },
     {
-      "name": "High Elf Blitzer",
+      "name": "Blitzer Elfe",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -55,11 +55,14 @@
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Block"
+        "Blocage"
       ],
       "primary": "GA",
       "secondary": "FP",
       "cost": 100000
     }
+  ],
+  "specialRules": [
+    "Ligue des Royaumes Elfiques"
   ]
 }

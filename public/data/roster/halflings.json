@@ -2,7 +2,7 @@
   "name": "Halflings",
   "roster": [
     {
-      "name": "Halfling Hopeful",
+      "name": "Aspirant Halfling",
       "qty": "0-16",
       "ma": "5",
       "st": "2",
@@ -10,17 +10,16 @@
       "pa": "4+",
       "av": "7+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty",
-        "Insignificant"
+        "Esquive",
+        "Poids Plume",
+        "Minus"
       ],
       "primary": "A",
       "secondary": "SGF",
       "cost": 30000
     },
     {
-      "name": "Hefty Halfling",
+      "name": "Balaise Halfling",
       "qty": "0-2",
       "ma": "5",
       "st": "2",
@@ -28,17 +27,16 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Fend",
-        "Sure Hands",
-        "Right Stuff",
-        "Stunty"
+        "Esquive",
+        "Parade",
+        "Minus"
       ],
-      "primary": "A",
+      "primary": "AP",
       "secondary": "SGF",
       "cost": 50000
     },
     {
-      "name": "Halfling Catcher",
+      "name": "Receveur Halfling",
       "qty": "0-2",
       "ma": "5",
       "st": "2",
@@ -46,18 +44,18 @@
       "pa": "4+",
       "av": "7+",
       "skills": [
-        "Catch",
-        "Dodge",
-        "Diving Catch",
-        "Right Stuff",
-        "Stunty"
+        "Réception",
+        "Esquive",
+        "Poids Plume",
+        "Minus",
+        "Sprint"
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 50000
+      "cost": 55000
     },
     {
-      "name": "Altern Forest Treeman",
+      "name": "Homme-arbre (Gros Bras)",
       "qty": "0-2",
       "ma": "2",
       "st": "6",
@@ -65,13 +63,13 @@
       "pa": "5+",
       "av": "11+",
       "skills": [
-        "Mighty Blow (+1)",
-        "Stand Firm",
-        "Strong Arm",
-        "Take Root",
-        "Thick Skull",
-        "Throw Team-Mate",
-        "Timmm-ber!"
+        "Châtaigne",
+        "Stabilité",
+        "Bras Musclé",
+        "Prendre Racine",
+        "Crâne Épais",
+        "Lancer de Coéquipier",
+        "Timmm-ber !"
       ],
       "primary": "F",
       "secondary": "AGP",
@@ -79,6 +77,7 @@
     }
   ],
   "specialRules": [
-    "Halfling Master Chef"
+    "Coupe du Dé à Coudre Halfling",
+    "Ligue Sylvestre"
   ]
 }

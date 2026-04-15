@@ -1,8 +1,8 @@
 {
-  "name": "Humans",
+  "name": "Humains",
   "roster": [
     {
-      "name": "Human Lineman",
+      "name": "Trois-quart Humain",
       "qty": "0-16",
       "ma": "6",
       "st": "3",
@@ -15,7 +15,7 @@
       "cost": 50000
     },
     {
-      "name": "Halfling Hopeful",
+      "name": "Aspirant Halfling",
       "qty": "0-3",
       "ma": "5",
       "st": "2",
@@ -23,32 +23,32 @@
       "pa": "4+",
       "av": "7+",
       "skills": [
-        "Dodge",
-        "Right Stuff",
-        "Stunty"
+        "Esquive",
+        "Poids Plume",
+        "Minus"
       ],
       "primary": "A",
       "secondary": "SGF",
       "cost": 30000
     },
     {
-      "name": "Human Catcher",
-      "qty": "0-4",
+      "name": "Receveur",
+      "qty": "0-2",
       "ma": "8",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "8+",
       "skills": [
-        "Catch",
-        "Dodge"
+        "Réception",
+        "Esquive"
       ],
       "primary": "GA",
       "secondary": "SFP",
       "cost": 75000
     },
     {
-      "name": "Human Thrower",
+      "name": "Lanceur",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -56,31 +56,31 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Pass",
-        "Sure Hands"
+        "Passe",
+        "Prise Sûre"
       ],
       "primary": "GP",
       "secondary": "ASF",
       "cost": 75000
     },
     {
-      "name": "Human Blitzer",
-      "qty": "0-4",
+      "name": "Blitzer",
+      "qty": "0-2",
       "ma": "7",
       "st": "3",
       "ag": "3+",
       "pa": "4+",
       "av": "9+",
       "skills": [
-        "Block",
-        "Tackle"
+        "Blocage",
+        "Tacle"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 85000
     },
     {
-      "name": "Ogre",
+      "name": "Ogre (Gros Bras)",
       "qty": "0-1",
       "ma": "5",
       "st": "5",
@@ -88,18 +88,18 @@
       "pa": "5+",
       "av": "10+",
       "skills": [
-        "Bone Head",
-        "Loner (4+)",
-        "Mighty Blow (+1)",
-        "Thick Skull",
-        "Throw Team-Mate"
+        "Cerveau Lent",
+        "Solitaire (3+)",
+        "Châtaigne",
+        "Crâne Épais",
+        "Lancer de Coéquipier"
       ],
       "primary": "F",
-      "secondary": "ASGP",
+      "secondary": "AG",
       "cost": 140000
     }
   ],
   "specialRules": [
-    "Old World Classic"
+    "Classique du Vieux Monde"
   ]
 }

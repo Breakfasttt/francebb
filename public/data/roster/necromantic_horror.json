@@ -1,8 +1,8 @@
 {
-  "name": "Necromantic Horror",
+  "name": "Horreurs Nécromantiques",
   "roster": [
     {
-      "name": "Zombie",
+      "name": "Trois-quart Zombie",
       "qty": "0-16",
       "ma": "4",
       "st": "3",
@@ -10,16 +10,14 @@
       "pa": "6+",
       "av": "9+",
       "skills": [
-        "Fork",
-        "Unstable",
-        "Regeneration"
+        "Régénération"
       ],
       "primary": "SG",
       "secondary": "AF",
       "cost": 40000
     },
     {
-      "name": "Ghoul Runner",
+      "name": "Coureur Goule",
       "qty": "0-2",
       "ma": "7",
       "st": "3",
@@ -27,15 +25,15 @@
       "pa": "3+",
       "av": "8+",
       "skills": [
-        "Dodge",
-        "Regeneration"
+        "Esquive",
+        "Régénération"
       ],
       "primary": "AG",
       "secondary": "SPF",
       "cost": 75000
     },
     {
-      "name": "Wraith",
+      "name": "Spectre",
       "qty": "0-2",
       "ma": "6",
       "st": "3",
@@ -43,18 +41,18 @@
       "pa": "-",
       "av": "9+",
       "skills": [
-        "Block",
-        "Foul Appearance",
-        "No Hands",
-        "Regeneration",
-        "Side Step"
+        "Blocage",
+        "Répulsion",
+        "Sans le Ballon",
+        "Régénération",
+        "Glissade Contrôlée"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 85000
     },
     {
-      "name": "Flesh Golem",
+      "name": "Golem de Chair",
       "qty": "0-2",
       "ma": "4",
       "st": "4",
@@ -62,17 +60,16 @@
       "pa": "6+",
       "av": "10+",
       "skills": [
-        "Regeneration",
-        "Stand Firm",
-        "Thick Skull",
-        "Unstable"
+        "Régénération",
+        "Stabilité",
+        "Crâne Épais"
       ],
       "primary": "GF",
       "secondary": "AS",
       "cost": 110000
     },
     {
-      "name": "Werewolf",
+      "name": "Loup-garou",
       "qty": "0-2",
       "ma": "8",
       "st": "3",
@@ -80,9 +77,9 @@
       "pa": "3+",
       "av": "9+",
       "skills": [
-        "Claws",
-        "Frenzy",
-        "Regeneration"
+        "Griffes",
+        "Frénésie",
+        "Régénération"
       ],
       "primary": "AG",
       "secondary": "SPF",
@@ -90,7 +87,7 @@
     }
   ],
   "specialRules": [
-    "Masters of Undeath",
-    "Sylvanian Spot"
+    "Maîtres de la Non-Vie",
+    "Spot de Sylvanie"
   ]
 }
