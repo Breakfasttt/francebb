@@ -12,10 +12,12 @@ interface TagSelectorProps {
   className?: string;
 }
 
+const EMPTY_ARRAY: string[] = [];
+
 const TagSelector: React.FC<TagSelectorProps> = ({
   value,
   onChange,
-  suggestions = [],
+  suggestions = EMPTY_ARRAY,
   placeholder = "Ajouter un tag...",
   className = ""
 }) => {

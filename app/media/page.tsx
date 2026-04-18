@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default async function MediaPage() {
   const settings = await prisma.siteSetting.findMany({
     where: {
-      key: { in: ["twitch_channels", "youtube_channels", "youtube_api_key"] }
+      key: { in: ["twitch_channels", "youtube_channels"] }
     }
   });
 

@@ -2,15 +2,16 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
-import { Save, Loader2, Globe, Link as LinkIcon, Video, Youtube } from "lucide-react";
+import { Save, Globe, Link as LinkIcon, Video, Youtube, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import TagSelector from "@/common/components/TagSelector/TagSelector";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 export default function GeneralTab() {
   const [discordInvite, setDiscordInvite] = useState("");
-  const [twitchChannels, setTwitchChannels] = useState("");
-  const [youtubeChannels, setYoutubeChannels] = useState("");
-  const [youtubeApiKey, setYoutubeApiKey] = useState("");
+  const [twitchChannels, setTwitchChannels] = useState<string[]>([]);
+  const [youtubeChannels, setYoutubeChannels] = useState<string[]>([]);
   
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -18,17 +19,15 @@ export default function GeneralTab() {
   useEffect(() => {
     async function loadSettings() {
       try {
-        const [invite, twitch, youtube, yApiKey] = await Promise.all([
+        const [invite, twitch, youtube] = await Promise.all([
           getSiteSetting("discord_invite"),
           getSiteSetting("twitch_channels"),
           getSiteSetting("youtube_channels"),
-          getSiteSetting("youtube_api_key"),
         ]);
         
         setDiscordInvite(invite || "");
-        setTwitchChannels(twitch || "");
-        setYoutubeChannels(youtube || "");
-        setYoutubeApiKey(yApiKey || "");
+        setTwitchChannels(twitch?.split(",").map(c => c.trim()).filter(Boolean) || []);
+        setYoutubeChannels(youtube?.split(",").map(c => c.trim()).filter(Boolean) || []);
       } catch (error) {
         console.error("Failed to load settings:", error);
       } finally {
@@ -43,9 +42,8 @@ export default function GeneralTab() {
       try {
         await Promise.all([
           updateSiteSetting("discord_invite", discordInvite),
-          updateSiteSetting("twitch_channels", twitchChannels),
-          updateSiteSetting("youtube_channels", youtubeChannels),
-          updateSiteSetting("youtube_api_key", youtubeApiKey),
+          updateSiteSetting("twitch_channels", twitchChannels.join(",")),
+          updateSiteSetting("youtube_channels", youtubeChannels.join(",")),
         ]);
         toast.success("Paramètres mis à jour !");
       } catch (err) {
@@ -112,16 +110,14 @@ export default function GeneralTab() {
               </div>
               <div>
                 <h4 className="section-title">Streams Twitch</h4>
-                <p className="section-desc">Chaînes à surveiller (séparées par des virgules).</p>
+                <p className="section-desc">Chaînes à surveiller.</p>
               </div>
             </div>
             <div className="input-wrapper">
-              <input
-                type="text"
+              <TagSelector
                 value={twitchChannels}
-                onChange={(e) => setTwitchChannels(e.target.value)}
-                placeholder="bloody_owl, fumbll_network..."
-                className="premium-input-field"
+                onChange={setTwitchChannels}
+                placeholder="Ex: bloody_owl, fumbll_network..."
               />
             </div>
           </section>
@@ -133,54 +129,28 @@ export default function GeneralTab() {
               </div>
               <div>
                 <h4 className="section-title">Chaînes YouTube</h4>
-                <p className="section-desc">IDs des chaînes pour les vidéos (séparés par des virgules).</p>
+                <p className="section-desc">IDs des chaînes (UC...).</p>
               </div>
             </div>
             <div className="input-wrapper">
-              <input
-                type="text"
+              <TagSelector
                 value={youtubeChannels}
-                onChange={(e) => setYoutubeChannels(e.target.value)}
-                placeholder="UC_x5XG1OV2P6uWXO-..."
-                className="premium-input-field"
+                onChange={setYoutubeChannels}
+                placeholder="Ex: UC_x5XG1OV2P6uWXO-..."
               />
             </div>
           </section>
         </div>
 
-        {/* API Keys Section */}
-        <section className="settings-section">
-          <div className="section-header">
-            <div className="icon-badge">
-              <Youtube size={18} />
-            </div>
-            <div>
-              <h4 className="section-title">Clés API Externes</h4>
-              <p className="section-desc">Nécessaires pour les fonctionnalités Media (Stats YouTube).</p>
-            </div>
-          </div>
-          <div className="input-wrapper">
-            <label style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.4rem", display: "block" }}>YouTube Data API Key</label>
-            <input
-              type="password"
-              value={youtubeApiKey}
-              onChange={(e) => setYoutubeApiKey(e.target.value)}
-              placeholder="AIzaSy..."
-              className="premium-input-field"
-            />
-          </div>
-        </section>
-
         {/* Action Bar */}
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
-          <button
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>
+          <CTAButton
             onClick={handleSave}
-            disabled={isPending}
-            className={`action-btn-save ${isPending ? 'pending' : ''}`}
+            isLoading={isPending}
+            icon={<Save size={18} />}
           >
-            {isPending ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
-            <span>Enregistrer les modifications</span>
-          </button>
+            Enregistrer les modifications
+          </CTAButton>
         </div>
       </div>
 
@@ -239,30 +209,6 @@ export default function GeneralTab() {
           outline: none;
           border-color: var(--primary);
           box-shadow: 0 0 0 3px var(--primary-transparent);
-        }
-        .action-btn-save {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 0.8rem 1.8rem;
-          background: var(--primary);
-          color: white;
-          border: none;
-          border-radius: 10px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          box-shadow: 0 4px 15px var(--btn-shadow);
-        }
-        .action-btn-save:hover {
-          filter: brightness(1.1);
-          transform: translateY(-2px);
-          box-shadow: 0 6px 20px var(--btn-shadow);
-        }
-        .action-btn-save:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none;
         }
         .pending {
           filter: grayscale(0.5);
