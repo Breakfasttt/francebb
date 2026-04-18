@@ -10,6 +10,7 @@ import { useState } from "react";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import PostReactions from "@/app/forum/component/PostReactions";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface PostActionsProps {
   postId: string;
@@ -106,25 +107,27 @@ export default function PostActions({
           {isModerator && (
             <div>
               {!isModerated ? (
-                <AdminButton 
-                  onClick={() => setIsModModalOpen(true)}
-                  title="Modérer ce message"
-                  icon={ShieldAlert}
-                  size="sm"
-                  style={{ background: 'rgba(var(--danger-rgb), 0.1)', color: 'var(--danger)', borderColor: 'var(--danger)' }}
-                >
-                  Modérer
-                </AdminButton>
+                <Tooltip text="Modérer ce message">
+                  <AdminButton 
+                    onClick={() => setIsModModalOpen(true)}
+                    icon={ShieldAlert}
+                    size="sm"
+                    style={{ background: 'rgba(var(--danger-rgb), 0.1)', color: 'var(--danger)', borderColor: 'var(--danger)' }}
+                  >
+                    Modérer
+                  </AdminButton>
+                </Tooltip>
               ) : (
-                <AdminButton 
-                  onClick={() => setIsRestoreModalOpen(true)}
-                  title="Restaurer ce message"
-                  icon={ShieldCheck}
-                  size="sm"
-                  style={{ background: 'rgba(var(--success-rgb), 0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}
-                >
-                  Restaurer
-                </AdminButton>
+                <Tooltip text="Restaurer ce message">
+                  <AdminButton 
+                    onClick={() => setIsRestoreModalOpen(true)}
+                    icon={ShieldCheck}
+                    size="sm"
+                    style={{ background: 'rgba(var(--success-rgb), 0.1)', color: 'var(--success)', borderColor: 'var(--success)' }}
+                  >
+                    Restaurer
+                  </AdminButton>
+                </Tooltip>
               )}
             </div>
           )}
@@ -140,73 +143,40 @@ export default function PostActions({
           
           {/* Citer */}
           {currentUserId && (
-            <div className="tooltip-wrapper">
+            <Tooltip text="Citer">
               <ClassicButton 
                 onClick={handleQuote}
                 icon={MessageSquare}
                 size="sm"
               />
-              <span className="tooltip-text">Citer</span>
-            </div>
+            </Tooltip>
           )}
 
           {/* Modifier */}
           {canEdit && (
-            <div className="tooltip-wrapper">
+            <Tooltip text={isTournament && isFirstPost ? "Modifier tournoi" : "Modifier"}>
               <ClassicButton 
                 href={isTournament && isFirstPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${postId}/edit`} 
                 icon={Pencil}
                 size="sm"
                 style={{ background: 'var(--primary)', color: 'white', border: 'none' }}
               />
-              <span className="tooltip-text">{isTournament && isFirstPost ? "Modifier tournoi" : "Modifier"}</span>
-            </div>
+            </Tooltip>
           )}
 
           {/* Supprimer */}
           {isAuthor && (
-            <div className="tooltip-wrapper">
+            <Tooltip text="Supprimer">
               <DangerButton 
                 onClick={() => setIsDeleteModalOpen(true)}
                 icon={Trash2}
                 size="sm"
               />
-              <span className="tooltip-text">Supprimer</span>
-            </div>
+            </Tooltip>
           )}
         </div>
       </div>
 
-      <style jsx>{`
-        .tooltip-wrapper {
-          position: relative;
-          display: inline-flex;
-        }
-        .tooltip-text {
-          visibility: hidden;
-          background-color: var(--footer-bg);
-          color: var(--header-foreground);
-          text-align: center;
-          padding: 4px 10px;
-          border-radius: 6px;
-          position: absolute;
-          z-index: 100;
-          bottom: 125%;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 0;
-          transition: opacity 0.3s;
-          font-size: 0.7rem;
-          white-space: nowrap;
-          box-shadow: var(--glass-shadow);
-          border: 1px solid var(--glass-border);
-          pointer-events: none;
-        }
-        .tooltip-wrapper:hover .tooltip-text {
-          visibility: visible;
-          opacity: 1;
-        }
-      `}</style>
 
       <ModerationModal 
         isOpen={isModModalOpen} 

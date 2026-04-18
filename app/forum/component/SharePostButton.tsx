@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Share2, Check } from "lucide-react";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface SharePostButtonProps {
   postId: string;
@@ -11,7 +12,6 @@ interface SharePostButtonProps {
 
 export default function SharePostButton({ postId, topicId, page }: SharePostButtonProps) {
   const [copied, setCopied] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   async function handleShare() {
     const url = `${window.location.origin}/forum/topic/${topicId}?page=${page}#post-${postId}`;
@@ -21,71 +21,27 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
   }
 
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-      <button
-        onClick={handleShare}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-        className="share-post-btn"
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: copied ? 'var(--success)' : 'var(--text-muted)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2px 4px',
-          borderRadius: '4px',
-          transition: 'all 0.2s ease'
-        }}
-      >
-        {copied ? <Check size={13} /> : <Share2 size={13} />}
-      </button>
-
-      {showTooltip && !copied && (
-        <div style={{
-          position: 'absolute',
-          bottom: '125%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: 'var(--footer-bg)',
-          color: 'var(--header-foreground)',
-          padding: '4px 10px',
-          borderRadius: '6px',
-          fontSize: '0.7rem',
-          whiteSpace: 'nowrap',
-          zIndex: 100,
-          pointerEvents: 'none',
-          boxShadow: 'var(--glass-shadow)',
-          border: '1px solid var(--glass-border)',
-          animation: 'fadeInUp 0.2s ease-out'
-        }}>
-          Partager ce post
-        </div>
-      )}
-
-      {copied && (
-        <div style={{
-          position: 'absolute',
-          bottom: '125%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background: '#22c55e',
-          color: 'white',
-          fontSize: '0.7rem',
-          fontWeight: 600,
-          padding: '4px 10px',
-          borderRadius: '6px',
-          whiteSpace: 'nowrap',
-          pointerEvents: 'none',
-          zIndex: 100,
-          boxShadow: '0 4px 12px rgba(34,197,94,0.3)',
-          animation: 'fadeInUp 0.2s ease-out'
-        }}>
-          Lien copié !
-        </div>
-      )}
+    <>
+      <Tooltip text={copied ? "Lien copié !" : "Partager ce post"}>
+        <button
+          onClick={handleShare}
+          className="share-post-btn"
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: copied ? 'var(--success)' : 'var(--text-muted)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '2px 4px',
+            borderRadius: '4px',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          {copied ? <Check size={13} /> : <Share2 size={13} />}
+        </button>
+      </Tooltip>
 
       <style jsx>{`
         .share-post-btn:hover {
@@ -93,6 +49,6 @@ export default function SharePostButton({ postId, topicId, page }: SharePostButt
           background: var(--glass-bg) !important;
         }
       `}</style>
-    </div>
+    </>
   );
 }

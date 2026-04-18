@@ -63,8 +63,6 @@ export default async function MembersPage() {
             <span>Membres</span>
           </div>
         }
-        backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <MembersTable 

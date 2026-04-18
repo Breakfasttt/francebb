@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AlertTriangle } from "lucide-react";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 
 interface ReportPostButtonProps {
@@ -14,26 +15,27 @@ export default function ReportPostButton({ postId, authorName }: ReportPostButto
 
   return (
     <>
-      <button 
-        onClick={() => setShowModal(true)}
-        className="action-icon-btn"
-        title="Signaler ce message"
-        style={{
-          background: 'none',
-          border: 'none',
-          color: 'var(--text-muted)',
-          cursor: 'pointer',
-          padding: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'color 0.2s ease'
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--danger)'}
-        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
-      >
-        <AlertTriangle size={16} />
-      </button>
+      <Tooltip text="Signaler ce message">
+        <button 
+          onClick={() => setShowModal(true)}
+          className="action-icon-btn"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--danger)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+        >
+          <AlertTriangle size={16} />
+        </button>
+      </Tooltip>
 
       <ReportModal 
         isOpen={showModal}

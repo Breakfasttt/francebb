@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { SmilePlus } from "lucide-react";
 import { togglePostReaction } from "@/app/forum/actions";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface Reaction {
   emoji: string;
@@ -83,34 +84,34 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
       {Object.entries(grouped).map(([emoji, { count, hasReacted }]) => (
-        <button
-          key={emoji}
-          title={hasReacted ? "Retirer votre réaction" : "Réagir"}
-          onClick={() => handleToggle(emoji)}
-          disabled={isPending || !currentUserId}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.4rem",
-            padding: "0.3rem 0.6rem",
-            borderRadius: "20px",
-            border: hasReacted ? "1px solid var(--primary)" : "1px solid var(--glass-border)",
-            background: hasReacted ? "var(--primary-transparent)" : "var(--glass-bg)",
-            color: hasReacted ? "var(--primary)" : "var(--text-muted)",
-            cursor: currentUserId ? (isPending ? "wait" : "pointer") : "default",
-            fontSize: "0.85rem",
-            transition: "all 0.2s"
-          }}
-          className={currentUserId ? "hover-brightness" : ""}
-        >
-          <span>{emoji}</span>
-          <span style={{ fontWeight: 700, color: hasReacted ? "var(--primary)" : "var(--foreground)" }}>{count}</span>
-        </button>
+        <Tooltip key={emoji} text={hasReacted ? "Retirer votre réaction" : "Réagir"}>
+          <button
+            onClick={() => handleToggle(emoji)}
+            disabled={isPending || !currentUserId}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.3rem 0.6rem",
+              borderRadius: "20px",
+              border: hasReacted ? "1px solid var(--primary)" : "1px solid var(--glass-border)",
+              background: hasReacted ? "var(--primary-transparent)" : "var(--glass-bg)",
+              color: hasReacted ? "var(--primary)" : "var(--text-muted)",
+              cursor: currentUserId ? (isPending ? "wait" : "pointer") : "default",
+              fontSize: "0.85rem",
+              transition: "all 0.2s"
+            }}
+            className={currentUserId ? "hover-brightness" : ""}
+          >
+            <span>{emoji}</span>
+            <span style={{ fontWeight: 700, color: hasReacted ? "var(--primary)" : "var(--foreground)" }}>{count}</span>
+          </button>
+        </Tooltip>
       ))}
 
       {currentUserId && (
         <div style={{ position: "relative" }}>
-          <div className="tooltip-wrapper">
+          <Tooltip text="Réagir">
             <button
               onClick={() => setShowPicker(!showPicker)}
               style={{
@@ -130,8 +131,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
             >
               <SmilePlus size={14} />
             </button>
-            <span className="tooltip-text">Réagir</span>
-          </div>
+          </Tooltip>
 
           {showPicker && (
             <>
@@ -180,34 +180,6 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
       )}
 
       <style jsx>{`
-        .tooltip-wrapper {
-          position: relative;
-          display: inline-flex;
-        }
-        .tooltip-text {
-          visibility: hidden;
-          background-color: var(--footer-bg);
-          color: var(--header-foreground);
-          text-align: center;
-          padding: 4px 10px;
-          border-radius: 6px;
-          position: absolute;
-          z-index: 100;
-          bottom: 125%;
-          left: 50%;
-          transform: translateX(-50%);
-          opacity: 0;
-          transition: opacity 0.3s;
-          font-size: 0.7rem;
-          white-space: nowrap;
-          box-shadow: var(--glass-shadow);
-          border: 1px solid var(--glass-border);
-          pointer-events: none;
-        }
-        .tooltip-wrapper:hover .tooltip-text {
-          visibility: visible;
-          opacity: 1;
-        }
         .hover-border-accent:hover {
           border-color: var(--accent) !important;
           border-style: solid !important;

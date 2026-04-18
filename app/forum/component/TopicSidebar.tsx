@@ -40,6 +40,7 @@ import DangerButton from "@/common/components/Button/DangerButton";
 
 import LockButton from "@/app/forum/component/LockButton";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface TopicSidebarProps {
   topicId: string;
@@ -298,10 +299,12 @@ export default function TopicSidebar({
               <h3 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Sujet
               </h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600 }} title={`${views.toLocaleString("fr-FR")} vues`}>
-                 <Eye size={13} />
-                 <span>{views.toLocaleString("fr-FR")}</span>
-              </div>
+              <Tooltip text={`${views.toLocaleString("fr-FR")} vues`}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600 }}>
+                   <Eye size={13} />
+                   <span>{views.toLocaleString("fr-FR")}</span>
+                </div>
+              </Tooltip>
             </div>
 
             {(isLocked || isForumLocked) && (

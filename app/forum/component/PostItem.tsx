@@ -13,6 +13,8 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import BadgeButton from "@/common/components/Button/BadgeButton";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 
+import Tooltip from "@/common/components/Tooltip/Tooltip";
+
 interface PostItemProps {
   post: any;
   index: number;
@@ -120,14 +122,14 @@ const PostItem: React.FC<PostItemProps> = ({
                   <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} /> 
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center' }}>
                     {post.author.ligues?.map((ligue: any) => (
-                      <Link 
-                        key={ligue.id} 
-                        href={`/ligue/${ligue.id}`} 
-                        title={ligue.name}
-                        style={{ color: 'var(--foreground)', textDecoration: 'none', fontWeight: 600, background: 'rgba(34, 197, 94, 0.1)', padding: '0 4px', borderRadius: '4px' }}
-                      >
-                        {ligue.acronym || ligue.name}
-                      </Link>
+                      <Tooltip key={ligue.id} text={ligue.name}>
+                        <Link 
+                          href={`/ligue/${ligue.id}`} 
+                          style={{ color: 'var(--foreground)', textDecoration: 'none', fontWeight: 600, background: 'rgba(34, 197, 94, 0.1)', padding: '0 4px', borderRadius: '4px' }}
+                        >
+                          {ligue.acronym || ligue.name}
+                        </Link>
+                      </Tooltip>
                     ))}
                     {post.author.ligueCustom && (
                       <span style={{ fontStyle: 'italic', opacity: 0.8 }}>{post.author.ligueCustom}</span>
