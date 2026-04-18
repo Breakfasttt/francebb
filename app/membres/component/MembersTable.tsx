@@ -381,11 +381,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                           onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
                           isLoading={isPending}
                           size="sm"
-                          style={{ 
-                            background: user.isBanned ? "#22c55e" : "#ef4444", 
-                            color: "white",
-                            borderColor: user.isBanned ? "#22c55e" : "#ef4444" 
-                          }}
+                          variant={user.isBanned ? "primary" : "admin"}
                         >
                           {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
                         </AdminButton>
@@ -446,7 +442,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         confirmText={banModal.isBanning ? "Bannir" : "Débannir"}
         variant={banModal.isBanning ? "admin" : "primary"}
       >
-        <p style={{ color: '#ccc', marginBottom: '1rem', lineHeight: 1.5 }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: 1.5 }}>
           {banModal.isBanning 
             ? `Vous êtes sur le point de bannir ${banModal.userName}. Veuillez indiquer la raison du bannissement.`
             : `Voulez-vous vraiment débannir ${banModal.userName} ?`
@@ -514,14 +510,14 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         onConfirm={confirmDelete}
         title="Suppression définitive"
       >
-        <p style={{ color: '#fca5a5', lineHeight: 1.5 }}>
+        <p style={{ color: 'var(--danger)', lineHeight: 1.5 }}>
           <strong>ATTENTION :</strong> Cette action est <strong>IRRÉVERSIBLE</strong>.
         </p>
-        <p style={{ color: '#ccc', marginTop: '0.5rem', lineHeight: 1.5 }}>
+        <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.5 }}>
           Toutes les données de {deleteModal.userName} (messages, topics, conversations privées) 
           seront supprimées définitivement de la base de données.
         </p>
-        <p style={{ color: '#eab308', marginTop: '1rem', lineHeight: 1.5, background: 'rgba(234, 179, 8, 0.1)', padding: '0.8rem', borderRadius: '6px', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+        <p style={{ color: 'var(--accent)', marginTop: '1rem', lineHeight: 1.5, background: 'var(--primary-transparent)', padding: '0.8rem', borderRadius: '6px', border: '1px solid var(--glass-border)' }}>
           <strong>RAPPEL SUPERADMIN :</strong> Cette option ne doit être utilisée <strong>QUE</strong> pour purger les faux comptes, les comptes buggés, ou vider les comptes abandonnés/fantômes. 
           Pour les cas classiques de modération, privilégiez le bannissement.
         </p>

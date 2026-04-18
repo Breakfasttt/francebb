@@ -250,58 +250,69 @@ export default function ConversationList({ onSelectConversation, initialRecipien
           top: 100%;
           left: 0;
           right: 0;
-          margin-top: 0.5rem;
-          z-index: 100;
+          margin-top: 0.8rem;
+          z-index: 1000;
           padding: 0.5rem;
-          max-height: 350px;
+          max-height: 400px;
           overflow-y: auto;
-          background: var(--nav-bg); /* Use nav-bg for dropdown solidity */
+          background: var(--card-bg) !important;
           border: 1px solid var(--glass-border);
-          box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+          box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+          backdrop-filter: blur(15px);
+          border-radius: 12px;
         }
         .search-result-item {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 0.8rem 1rem;
-          border-radius: 8px;
-          transition: background 0.2s;
+          padding: 1rem;
+          border-radius: 10px;
+          transition: all 0.2s ease;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+          margin-bottom: 0.2rem;
+        }
+        .search-result-item:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
         }
         .search-result-item:hover {
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--primary-transparent);
+          transform: translateX(5px);
         }
         .user-info {
           display: flex;
           align-items: center;
-          gap: 0.8rem;
+          gap: 1rem;
         }
         .user-avatar-sm {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
           object-fit: cover;
+          border: 1px solid var(--glass-border);
         }
         .user-avatar-sm-placeholder {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background: var(--primary);
-          color: white;
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          background: var(--primary-transparent);
+          color: var(--primary);
+          border: 1px solid var(--primary);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 700;
-          font-size: 0.8rem;
+          font-weight: 800;
+          font-size: 1rem;
         }
         .mailbox-full-badge {
           display: flex;
           align-items: center;
           gap: 4px;
-          padding: 2px 8px;
-          background: rgba(194, 29, 29, 0.15);
-          color: var(--primary);
-          border-radius: 4px;
-          font-size: 0.65rem;
+          padding: 4px 10px;
+          background: rgba(var(--danger-rgb, 194, 29, 29), 0.15);
+          color: var(--danger);
+          border-radius: 6px;
+          font-size: 0.7rem;
           font-weight: 800;
           text-transform: uppercase;
         }

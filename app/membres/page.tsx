@@ -7,6 +7,7 @@ import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ArrowLeft, Users } from "lucide-react";
+import "./page.css";
 
 export const dynamic = "force-dynamic";
 
