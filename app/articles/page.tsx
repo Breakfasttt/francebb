@@ -66,7 +66,11 @@ export default async function ArticlesPage({
       skip,
       take: limit,
       include: {
-        author: true,
+        author: {
+          include: {
+            _count: { select: { posts: true } }
+          }
+        },
         tags: true,
         _count: { select: { reactions: true } }
       }

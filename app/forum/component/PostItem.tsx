@@ -13,6 +13,8 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import BadgeButton from "@/common/components/Button/BadgeButton";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 
+import { isModerator } from "@/lib/roles";
+
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface PostItemProps {
@@ -84,6 +86,7 @@ const PostItem: React.FC<PostItemProps> = ({
           size={90}
           isBanned={isBannedAuthor}
           selectedRank={post.author.avatarFrame}
+          isModerator={isModerator(post.author.role)}
         />
 
         <div style={{ width: '100%' }}>

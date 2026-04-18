@@ -48,7 +48,8 @@ async function firstSetup() {
       id: systemUserId,
       name: "Système",
       email: "system@bbfrance.fr",
-      role: "SUPERADMIN"
+      role: "SUPERADMIN",
+      theme: "saison3"
     }
   });
 

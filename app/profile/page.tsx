@@ -21,6 +21,7 @@ import ProfileResources from "@/app/profile/component/ProfileResources";
 import ProfileBlockedUsers from "@/app/profile/component/ProfileBlockedUsers";
 import { getUserStats, getUserActivity } from "@/app/profile/actions";
 import { getFollowedTopics } from "@/app/forum/actions";
+import { isModerator as checkIsModerator } from "@/lib/roles";
 import Pagination from "@/common/components/Pagination/Pagination";
 import "./page.css";
 import "./page-mobile.css";
@@ -121,8 +122,7 @@ export default function ProfilePage() {
   if (loading || status === "loading") return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Chargement...</div>;
   if (!user) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Utilisateur introuvable.</div>;
 
-  const userRole = (session?.user as any)?.role;
-  const isModerator = userRole === "ADMIN" || userRole === "MODERATOR";
+  const isModerator = checkIsModerator((session?.user as any)?.role);
 
   return (
     <main className="container profile-page-container">
@@ -215,7 +215,12 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "edit" && (
-            <ProfileEdit user={user} postCount={stats.postCount} onUpdate={() => window.location.reload()} />
+            <ProfileEdit 
+              user={user} 
+              postCount={stats.postCount} 
+              onUpdate={() => window.location.reload()} 
+              isModerator={isModerator}
+            />
           )}
 
           {activeTab === "pm" && (

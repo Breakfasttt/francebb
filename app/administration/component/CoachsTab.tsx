@@ -1,7 +1,7 @@
 "use client";
 
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import { getRolePower, UserRole } from "@/lib/roles";
+import { getRolePower, UserRole, isModerator } from "@/lib/roles";
 import { Search, Users, ShieldAlert, Loader2 } from "lucide-react";
 import Pagination from "@/common/components/Pagination/Pagination";
 import { useEffect, useState, useTransition } from "react";
@@ -121,7 +121,14 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           return (
             <div key={user.id} className={`user-item ${isSuper ? 'super-item' : ''}`}>
               <div className="user-info">
-                <UserAvatar image={user.image} name={user.name} size={40} postCount={user._count?.posts || 0} selectedRank={user.avatarFrame} />
+                <UserAvatar 
+                  image={user.image} 
+                  name={user.name} 
+                  size={40} 
+                  postCount={user._count?.posts || 0} 
+                  selectedRank={user.avatarFrame} 
+                  isModerator={isModerator(user.role)}
+                />
                 <div className="user-text">
                   <strong>{user.name}</strong>
                   <StatusBadge 

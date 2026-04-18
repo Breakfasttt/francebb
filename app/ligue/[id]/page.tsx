@@ -25,8 +25,16 @@ export default async function LigueDetailPage({
   const ligue = await prisma.ligue.findUnique({
     where: { id },
     include: {
-      creator: true,
-      commissaires: true,
+      creator: {
+        include: {
+          _count: { select: { posts: true } }
+        }
+      },
+      commissaires: {
+        include: {
+          _count: { select: { posts: true } }
+        }
+      },
       _count: {
         select: { tournaments: true, members: true }
       },
@@ -152,7 +160,14 @@ export default async function LigueDetailPage({
             <h3>Commissaires</h3>
             <div className="user-list">
               <div className="user-item owner">
-                <UserAvatar image={ligue.creator.image} name={ligue.creator.name || ""} size={32} />
+                <UserAvatar 
+                  image={ligue.creator.image} 
+                  name={ligue.creator.name || ""} 
+                  size={32} 
+                  postCount={ligue.creator._count?.posts || 0}
+                  selectedRank={ligue.creator.avatarFrame}
+                  isModerator={isModerator(ligue.creator.role)}
+                />
                 <div className="user-info">
                   <span className="user-name">{ligue.creator.name}</span>
                   <span className="user-role-badge">Chef de Ligue</span>
@@ -160,7 +175,14 @@ export default async function LigueDetailPage({
               </div>
               {ligue.commissaires.map(c => (
                 <div key={c.id} className="user-item">
-                  <UserAvatar image={c.image} name={c.name || ""} size={32} />
+                  <UserAvatar 
+                    image={c.image} 
+                    name={c.name || ""} 
+                    size={32} 
+                    postCount={c._count?.posts || 0}
+                    selectedRank={c.avatarFrame}
+                    isModerator={isModerator(c.role)}
+                  />
                   <div className="user-info">
                     <span className="user-name">{c.name}</span>
                     <span className="user-role-badge commissaire">Commissaire</span>

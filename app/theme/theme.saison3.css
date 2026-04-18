@@ -24,6 +24,8 @@
   --danger: #9e1d1d;
   --warning: #f59e0b;
   --success: #15803d;
+  --highlight: #ffcc00; /* Vibrant Blood Bowl Yellow for titles */
+  --highlight-hover: #e6b800;
   --header-foreground: #f2efe1;
   --category-hover-bg: rgba(0, 30, 60, 0.3);
   --theme-overlay: rgba(255, 255, 255, 0.15);
@@ -63,4 +65,39 @@
   --btn-admin-bg: #6d28d9;
   --btn-admin-text: #ffffff;
   --btn-admin-hover: #5b21b6;
+}
+
+/* Specific Component Overrides for Saison 3 Rulebook Style */
+[data-theme='saison3'] .page-header-title {
+  color: var(--highlight);
+  text-transform: uppercase;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 2px 2px 0px rgba(0, 65, 117, 0.3); /* Navy shadow for yellow text */
+}
+
+[data-theme='saison3'] .page-header-subtitle {
+  color: var(--secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+[data-theme='saison3'] .premium-card {
+  border-width: 2px;
+  box-shadow: 6px 6px 0px rgba(0, 65, 117, 0.1); /* Blocky shadow like layout boxes */
+}
+
+[data-theme='saison3'] .nav-container {
+  border-bottom: 4px solid var(--secondary);
+}
+
+[data-theme='saison3'] h3, 
+[data-theme='saison3'] h2 {
+  color: var(--secondary);
+  text-transform: uppercase;
+  font-style: italic;
+  border-left: 4px solid var(--primary);
+  padding-left: 10px;
 }

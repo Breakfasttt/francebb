@@ -22,7 +22,17 @@ const RANKS_LIST: RankOption[] = [
   { id: "grand-master", label: "Grand Master", min: 10000 },
 ];
 
-export default function RankSelect({ value, onSelect, postCount }: { value: string, onSelect: (v: string) => void, postCount: number }) {
+export default function RankSelect({ 
+  value, 
+  onSelect, 
+  postCount, 
+  isModerator = false 
+}: { 
+  value: string, 
+  onSelect: (v: string) => void, 
+  postCount: number,
+  isModerator?: boolean 
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
@@ -50,7 +60,7 @@ export default function RankSelect({ value, onSelect, postCount }: { value: stri
       {isOpen && (
         <div className="rank-select-dropdown fade-in">
           {RANKS_LIST.map((rank) => {
-            const isLocked = rank.min && postCount < rank.min;
+            const isLocked = !isModerator && rank.min && postCount < rank.min;
             const isSelected = value === rank.id;
 
             return (

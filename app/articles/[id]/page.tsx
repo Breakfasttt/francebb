@@ -42,7 +42,11 @@ export default async function ArticleDetailPage({
   const article = await prisma.article.findUnique({
     where: { id },
     include: {
-      author: true,
+      author: {
+        include: {
+          _count: { select: { posts: true } }
+        }
+      },
       tags: true,
       reactions: {
         include: { user: { select: { name: true } } }
@@ -71,7 +75,14 @@ export default async function ArticleDetailPage({
       <div className="article-layout">
         <aside className="article-sidebar">
           <div className="sidebar-section author-card">
-            <UserAvatar image={article.author.image} name={article.author.name} size={80} />
+            <UserAvatar 
+              image={article.author.image} 
+              name={article.author.name} 
+              size={80} 
+              postCount={article.author._count?.posts || 0}
+              selectedRank={article.author.avatarFrame}
+              isModerator={isModerator(article.author.role)}
+            />
             <div className="author-details">
               <span className="author-label">Écrit par</span>
               <Link href={`/profile?id=${article.authorId}`} className="author-name">

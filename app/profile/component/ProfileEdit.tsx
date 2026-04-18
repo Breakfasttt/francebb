@@ -32,9 +32,10 @@ interface ProfileEditProps {
   user: any;
   postCount: number;
   onUpdate?: () => void;
+  isModerator?: boolean;
 }
 
-export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditProps) {
+export default function ProfileEdit({ user, postCount, onUpdate, isModerator = false }: ProfileEditProps) {
   const [formData, setFormData] = useState({
     name: user.name || "",
     image: user.image || "",
@@ -184,10 +185,12 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
           <div className="avatar-studio-box">
             <div className="studio-preview-pane">
               <UserAvatar
+                key={`${formData.image}-${formData.avatarFrame}`}
                 image={formData.image}
                 selectedRank={formData.avatarFrame as Rank}
                 size={140}
                 postCount={postCount}
+                isModerator={isModerator}
               />
               <div className="preview-label">Aperçu</div>
             </div>
@@ -223,6 +226,7 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
                   value={formData.avatarFrame}
                   onSelect={(frame) => setFormData(prev => ({ ...prev, avatarFrame: frame }))}
                   postCount={postCount}
+                  isModerator={isModerator}
                 />
                 <input type="hidden" name="avatarFrame" value={formData.avatarFrame} />
               </div>
@@ -296,12 +300,12 @@ export default function ProfileEdit({ user, postCount, onUpdate }: ProfileEditPr
              <label className="section-label-inner"><Palette size={16} /> Apparence du site</label>
              <div className="theme-grid">
                {[
+                 { id: 'saison3', label: 'Saison 3 (défaut)', icon: <Sparkles size={14} /> },
                  { id: 'dark', label: 'Sombre', icon: <Moon size={14} /> },
                  { id: 'light', label: 'Clair', icon: <Sun size={14} /> },
                  { id: 'blood', label: 'Blood', icon: <Droplets size={14} /> },
                  { id: 'malpierre', label: 'Malpierre', icon: <Sparkles size={14} /> },
                  { id: 'nehekhara', label: 'Néhékhara', icon: <Sparkles size={14} /> },
-                 { id: 'saison3', label: 'Saison 3', icon: <Sparkles size={14} /> },
                  { id: 'naf', label: 'NAF', icon: <Sparkles size={14} /> },
                ].map(t => (
                  <button

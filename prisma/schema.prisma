@@ -46,9 +46,20 @@ model User {
   isBanned                Boolean                  @default(false)
   banReason               String?
   avatarFrame             String?                  @default("auto")
-  theme                   String                   @default("dark")
+  theme                   String                   @default("saison3")
   equipe                  String?
   ligueCustom             String?
+  quizTotalScore          Int                      @default(0)
+  quizBestScore           Int                      @default(0)
+  quizStreak              Int                      @default(0)
+  quizAttemptsCount       Int                      @default(0)
+  legacyId                String?                  @unique
+  forumactifName          String?
+  hasFinishedOnboarding   Boolean                  @default(false)
+  notifPm                 Boolean                  @default(true)
+  notifMention            Boolean                  @default(true)
+  notifFollowedTopic      Boolean                  @default(true)
+  notifNewsletter         Boolean                  @default(true)
   accounts                Account[]
   moderatedArticles       Article[]                @relation("ModeratedArticles")
   articles                Article[]
@@ -67,6 +78,10 @@ model User {
   posts                   Post[]
   postReactions           PostReaction[]
   privateMessages         PrivateMessage[]         @relation("SentPrivateMessages")
+  quizAttempts            QuizAttempt[]
+  dailyWins               QuizDailyWinner[]
+  quizSuggestions         QuizQuestionSuggestion[]
+  rankingArchives         RankingArchive[]
   submittedResources      Resource[]               @relation("SubmittedResources")
   sessions                Session[]
   topics                  Topic[]
@@ -80,26 +95,10 @@ model User {
   tournamentResults       TournamentResult[]
   captainTeams            TournamentTeam[]         @relation("TeamCaptain")
   teamMemberships         TournamentTeamMember[]
-  rankingArchives         RankingArchive[]
   roleConfig              RoleConfig               @relation(fields: [role], references: [name])
   commissaireLigues       Ligue[]                  @relation("LigueCommissaires")
   ligues                  Ligue[]                  @relation("LigueMembers")
   commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
-  quizAttempts            QuizAttempt[]
-  dailyWins               QuizDailyWinner[]
-  quizTotalScore          Int                      @default(0)
-  quizBestScore           Int                      @default(0)
-  quizStreak              Int                      @default(0)
-  quizAttemptsCount       Int                      @default(0)
-  quizSuggestions         QuizQuestionSuggestion[]
-  legacyId                String?                  @unique // ID d'origine Forumactif
-  forumactifName          String?                  // Ancien pseudo Forumactif
-  hasFinishedOnboarding   Boolean                  @default(false)
-  // Paramètres de notifications mail
-  notifPm                 Boolean                  @default(true)
-  notifMention            Boolean                  @default(true)
-  notifFollowedTopic      Boolean                  @default(true)
-  notifNewsletter         Boolean                  @default(true)
 }
 
 model Block {
@@ -152,11 +151,9 @@ model Tournament {
   platform            String?                  @default("Tabletop")
   isNAF               Boolean                  @default(false)
   isCDF               Boolean                  @default(false)
-  typeCDF             String?                  @default("INDIVIDUEL")
   isCGO               Boolean                  @default(false)
   isTGE               Boolean                  @default(false)
   isTSC               Boolean                  @default(false)
-  tournamentType      String?                  @default("SWISS")
   isFinished          Boolean                  @default(false)
   isCancelled         Boolean                  @default(false)
   organizerId         String
@@ -165,6 +162,8 @@ model Tournament {
   lat                 Float?
   lng                 Float?
   registrationsLocked Boolean                  @default(false)
+  typeCDF             String?                  @default("INDIVIDUEL")
+  tournamentType      String?                  @default("SWISS")
   topic               Topic?
   ligue               Ligue?                   @relation("LigueTournaments", fields: [ligueId], references: [id])
   organizer           User                     @relation(fields: [organizerId], references: [id])
@@ -182,8 +181,8 @@ model Category {
   description  String?
   order        Int     @default(0)
   allowedRoles String  @default("ALL")
+  legacyId     String? @unique
   forums       Forum[]
-  legacyId     String?  @unique
 }
 
 model Forum {
@@ -196,11 +195,11 @@ model Forum {
   isTournamentForum Boolean   @default(false)
   categoryId        String?
   parentForumId     String?
+  legacyId          String?   @unique
   parentForum       Forum?    @relation("SubForums", fields: [parentForumId], references: [id])
   subForums         Forum[]   @relation("SubForums")
   category          Category? @relation(fields: [categoryId], references: [id])
   topics            Topic[]
-  legacyId          String?   @unique
 }
 
 model Topic {
@@ -215,13 +214,13 @@ model Topic {
   forumId      String
   authorId     String
   tournamentId String?       @unique
+  legacyId     String?       @unique
   posts        Post[]
   tournament   Tournament?   @relation(fields: [tournamentId], references: [id])
   author       User          @relation(fields: [authorId], references: [id])
   forum        Forum         @relation(fields: [forumId], references: [id])
   follows      TopicFollow[]
   topicViews   TopicView[]
-  legacyId     String?     @unique
 }
 
 model Post {
@@ -235,12 +234,12 @@ model Post {
   moderationReason String?
   moderatedBy      String?
   isDeleted        Boolean        @default(false)
+  legacyId         String?        @unique
   mentions         Mention[]
   moderator        User?          @relation("ModeratedPosts", fields: [moderatedBy], references: [id])
   author           User           @relation(fields: [authorId], references: [id])
   topic            Topic          @relation(fields: [topicId], references: [id])
   reactions        PostReaction[]
-  legacyId         String?        @unique
 }
 
 model Conversation {
@@ -331,7 +330,7 @@ model RankingArchive {
   id           String   @id @default(cuid())
   year         Int      @unique
   name         String
-  data         String   // JSON stringified ranking data
+  data         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   archivedById String
@@ -521,7 +520,6 @@ model TournamentResult {
   id            String     @id @default(cuid())
   tournamentId  String
   coachName     String
-  nafNumber     String?
   userId        String?
   roster        String?
   wins          Int        @default(0)
@@ -533,6 +531,7 @@ model TournamentResult {
   autoCalculate Boolean    @default(true)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  nafNumber     String?
   user          User?      @relation(fields: [userId], references: [id])
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 
@@ -568,6 +567,69 @@ model TournamentMatch {
   round            TournamentRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
 }
 
+model QuizQuestion {
+  id           String   @id @default(cuid())
+  category     String
+  question     String
+  imageUrl     String?
+  options      String
+  correctIndex Int
+  explanation  String?
+  timesCorrect Int      @default(0)
+  timesOption0 Int      @default(0)
+  timesOption1 Int      @default(0)
+  timesOption2 Int      @default(0)
+  timesOption3 Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model QuizAttempt {
+  id         String   @id @default(cuid())
+  userId     String
+  score      Int
+  correct    Int
+  total      Int      @default(20)
+  duration   Int
+  jokersUsed Int      @default(0)
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model QuizDailyWinner {
+  date   DateTime @id
+  userId String
+  score  Int
+  streak Int      @default(1)
+  user   User     @relation(fields: [userId], references: [id])
+}
+
+model QuizQuestionSuggestion {
+  id           String   @id @default(cuid())
+  category     String
+  question     String
+  imageUrl     String?
+  options      String
+  correctIndex Int
+  explanation  String?
+  authorId     String
+  status       String   @default("PENDING")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  author       User     @relation(fields: [authorId], references: [id])
+}
+
+model LegacyMember {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  forumactifName String
+  nafNumber      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([email])
+}
+
 enum RegistrationStatus {
   PRE_REGISTERED
   REGISTERED
@@ -580,67 +642,4 @@ enum PaymentStatus {
   AT_TOURNAMENT
   GUEST
   DEPANNAGE
-}
-
-model QuizQuestion {
-  id            String   @id @default(cuid())
-  category      String
-  question      String
-  imageUrl      String?
-  options       String   // JSON stringified array [opt1, opt2, opt3, opt4]
-  correctIndex  Int
-  explanation   String?
-  timesCorrect  Int      @default(0)
-  timesOption0  Int      @default(0)
-  timesOption1  Int      @default(0)
-  timesOption2  Int      @default(0)
-  timesOption3  Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
-
-model QuizAttempt {
-  id          String   @id @default(cuid())
-  userId      String
-  score       Int
-  correct     Int
-  total       Int      @default(20)
-  duration    Int      // en secondes
-  jokersUsed  Int      @default(0)
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
-}
-
-model QuizDailyWinner {
-  date      DateTime @id
-  userId    String
-  score     Int
-  streak    Int      @default(1)
-  user      User     @relation(fields: [userId], references: [id])
-}
-
-model QuizQuestionSuggestion {
-  id            String   @id @default(cuid())
-  category      String
-  question      String
-  imageUrl      String?
-  options       String   // JSON stringified array [opt1, opt2, opt3, opt4]
-  correctIndex  Int
-  explanation   String?
-  authorId      String
-  status        String   @default("PENDING") // PENDING, APPROVED, REJECTED
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  author        User     @relation(fields: [authorId], references: [id])
-}
-
-model LegacyMember {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  forumactifName String
-  nafNumber      String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  @@index([email])
 }

@@ -11,9 +11,22 @@ interface UserAvatarProps {
   className?: string; 
   isBanned?: boolean;
   selectedRank?: Rank | null;
+  isModerator?: boolean;
 }
 
 export type Rank = "auto" | "none" | "bronze" | "silver" | "gold" | "platinum" | "diamond" | "master" | "grand-master";
+
+export const RANK_REQUIREMENTS: Record<Rank, number> = {
+  "auto": 0,
+  "none": 0,
+  "bronze": 100,
+  "silver": 300,
+  "gold": 700,
+  "platinum": 1000,
+  "diamond": 2000,
+  "master": 4000,
+  "grand-master": 10000
+};
 
 export const getRank = (postCount: number): Rank => {
   if (postCount >= 10000) return "grand-master";
@@ -26,8 +39,27 @@ export const getRank = (postCount: number): Rank => {
   return "none";
 };
 
-export default function UserAvatar({ image, name, postCount = 0, size = 48, className = "", isBanned, selectedRank }: UserAvatarProps) {
-  const rank = (!selectedRank || selectedRank === "auto") ? getRank(postCount) : selectedRank;
+export default function UserAvatar({ 
+  image, 
+  name, 
+  postCount = 0, 
+  size = 48, 
+  className = "", 
+  isBanned, 
+  selectedRank,
+  isModerator = false 
+}: UserAvatarProps) {
+  let rank = (!selectedRank || selectedRank === "auto") ? getRank(postCount) : selectedRank;
+  
+  // Si ce n'est pas automatique/aucun et que l'utilisateur n'est pas modo, 
+  // on vérifie si le rang est débloqué.
+  if (rank !== "none" && rank !== "auto" && !isModerator) {
+    const minPosts = RANK_REQUIREMENTS[rank] || 0;
+    if (postCount < minPosts) {
+      rank = getRank(postCount);
+    }
+  }
+
   const containerSize = size + 12; 
 
   return (

@@ -163,6 +163,7 @@ export default function ProfileSidebar({
             size={120} 
             isBanned={user.isBanned}
             selectedRank={user.avatarFrame}
+            isModerator={checkIsModerator(user.role)}
           />
         </div>
 

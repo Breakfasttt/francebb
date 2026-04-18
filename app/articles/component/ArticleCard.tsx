@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Clock, User, MessageCircle, AlertTriangle, Eye } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import { isModerator } from "@/lib/roles";
 import { stripBBCode } from "@/lib/bbcode";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -32,7 +33,14 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
         </div>
         
         <div className="list-col-author">
-          <UserAvatar image={article.author.image} name={article.author.name} size={24} />
+          <UserAvatar 
+            image={article.author.image} 
+            name={article.author.name} 
+            size={24} 
+            postCount={article.author._count?.posts || 0}
+            selectedRank={article.author.avatarFrame}
+            isModerator={isModerator(article.author.role)}
+          />
           <span className="article-author-name">{article.author.name}</span>
         </div>
 
@@ -79,7 +87,14 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
 
       <div className="article-footer">
         <div className="article-author-info">
-          <UserAvatar image={article.author.image} name={article.author.name} size={32} />
+          <UserAvatar 
+            image={article.author.image} 
+            name={article.author.name} 
+            size={32} 
+            postCount={article.author._count?.posts || 0}
+            selectedRank={article.author.avatarFrame}
+            isModerator={isModerator(article.author.role)}
+          />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <span className="article-author-name">{article.author.name}</span>
             <span className="article-date">
