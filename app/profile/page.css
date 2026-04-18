@@ -4,11 +4,13 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch; /* Garantit que les enfants prennent toute la largeur */
 }
 
 .profile-page-container {
   padding-top: 2rem;
   padding-bottom: 4rem;
+  width: 100%;
 }
 
 
@@ -23,16 +25,23 @@
 }
 
 .profile-content-layout {
-  display: flex;
+  display: flex !important;
   gap: 4.5rem; /* Augmenté pour éviter tout chevauchement avec les onglets dockés */
   align-items: flex-start;
   margin-top: 2rem;
+  width: 100% !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  min-height: 850px;
 }
 
 .profile-main-content {
-  flex: 1;
+  flex: 1 0 0 !important; /* Crucial : prend tout l'espace pour caler la sidebar à gauche */
   min-width: 0;
-  padding-right: 1.5rem; /* Vital to show card shadows and borders on the right */
+  padding-right: 1.5rem; /* Vital pour les ombres et bordures sur le côté droit */
+  min-height: 800px;
 }
 
 .empty-state {
@@ -341,10 +350,11 @@
 
 /* Profile Sidebar Overrides */
 .profile-sidebar-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 230px; /* Réduit pour plus de compacité */
-  flex-shrink: 0;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 230px !important;
+  flex: 0 0 230px !important; /* Bloqué à 230px sur l'axe X */
+  flex-shrink: 0 !important;
   position: sticky;
   top: 6.5rem;
   align-self: flex-start;

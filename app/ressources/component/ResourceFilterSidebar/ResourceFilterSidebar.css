@@ -1,6 +1,7 @@
 .resource-filter-sidebar {
-  width: 320px;
-  flex-shrink: 0;
+  width: 320px !important;
+  flex: 0 0 320px !important;
+  flex-shrink: 0 !important;
   position: sticky;
   top: 7rem;
   align-self: flex-start;

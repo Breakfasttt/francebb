@@ -1,5 +1,7 @@
 .article-filter-sidebar {
-  width: 100%;
+  width: 320px !important;
+  flex: 0 0 320px !important;
+  flex-shrink: 0 !important;
 }
 
 .article-filter-sidebar .filter-card {

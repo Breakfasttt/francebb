@@ -29,7 +29,12 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--foreground);
 }
 
@@ -58,15 +63,18 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 2rem; /* Réduction du padding pour resserrer la hauteur */
+  padding: 0.5rem 2rem;
+  /* Réduction du padding pour resserrer la hauteur */
   background: var(--nav-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 2px solid var(--accent); /* Un vrai liseret qui marque la séparation */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Profondeur pour casser le côté "flat" */
+  border-bottom: 2px solid var(--accent);
+  /* Un vrai liseret qui marque la séparation */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  /* Profondeur pour casser le côté "flat" */
 }
 
 .nav-icon-capsule {
@@ -86,7 +94,7 @@ label {
 .nav-icon-capsule:hover {
   transform: translateY(-2px);
   background: var(--nav-btn-hover-bg);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .logo {
@@ -105,11 +113,13 @@ label {
   flex: 1;
   width: 100%;
   position: relative;
-  padding-bottom: 3rem; /* Spacing for fixed footer */
+  padding-bottom: 3rem;
+  /* Spacing for fixed footer */
 }
 
 .main-layout-wrapper:has(.home-page-fixed) {
-  padding-bottom: 4rem !important; /* Laisse de la place au footer */
+  padding-bottom: 4rem !important;
+  /* Laisse de la place au footer */
   z-index: 1100;
 }
 
@@ -163,7 +173,8 @@ label {
 }
 
 select option {
-  background-color: var(--card-bg); /* Use card-bg which is usually theme-friendly */
+  background-color: var(--card-bg);
+  /* Use card-bg which is usually theme-friendly */
   color: var(--foreground);
 }
 

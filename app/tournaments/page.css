@@ -4,25 +4,34 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch; /* Garantit que les enfants prennent toute la largeur */
 }
 
 /* Styles spécifiques à la page Tournois (app/tournaments/page.tsx) */
 
 .tournaments-container {
   padding-top: 1rem;
+  width: 100%;
 }
 
 .search-layout {
-  display: grid;
+  display: grid !important;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
   align-items: start;
+  width: 100% !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  min-height: 800px;
 }
 
 .results-wrapper {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  min-width: 0; /* Évite que le contenu ne pousse la grille */
 }
 
 /* Grille de résultats */
@@ -492,4 +501,3 @@
 
 
 /* Responsive déplacé dans page-mobile.css */
-

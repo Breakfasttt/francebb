@@ -4,20 +4,25 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch !important;
 }
 
 .forum-container {
-  max-width: 1400px;
+  width: 100% !important;
+  max-width: 1400px !important;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .forum-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
+  display: grid !important;
+  grid-template-columns: 1fr 300px !important;
   gap: 2.5rem;
   align-items: start;
-  min-height: calc(100vh - 6.5rem);
+  width: 100% !important;
+  min-height: 850px !important;
   padding-bottom: 5rem;
+  box-sizing: border-box;
 }
 
 .forum-main-content {
@@ -195,7 +200,9 @@
 .forum-sidebar {
   display: block;
   align-self: stretch;
-  /* Forces the container to be the full height of the grid row */
+  width: 300px !important;
+  flex: 0 0 300px !important;
+  flex-shrink: 0 !important;
 }
 
 .sidebar-sticky-inner {

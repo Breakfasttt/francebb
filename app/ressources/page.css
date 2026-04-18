@@ -4,23 +4,33 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch; /* Garantit que les enfants prennent toute la largeur */
 }
 
 .ressources-page {
   padding-bottom: 5rem;
+  width: 100%;
 }
 
 .ressources-layout {
-  display: flex;
+  display: flex !important;
   gap: 2.5rem;
   margin-top: 2rem;
+  width: 100% !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  align-items: flex-start;
+  min-height: 800px;
 }
 
 .ressources-content {
-  flex: 1;
+  flex: 1 0 0 !important; /* Force l'occupation de l'espace pour caler la sidebar */
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  min-width: 0;
 }
 
 .ressources-top-actions {
@@ -76,6 +86,7 @@
   padding: 5rem 0;
   gap: 1rem;
   color: var(--text-muted);
+  min-height: 400px;
 }
 
 .empty-results {
@@ -133,4 +144,3 @@
 
 
 /* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
-
