@@ -115,7 +115,8 @@ export default function BBSchemePage() {
       try {
         const resp = await fetch('/data/roster/all_star_players.json');
         const data = await resp.json();
-        setAllStarPlayers(data.roster);
+        const sortedStars = data.roster.sort((a: any, b: any) => a.name.localeCompare(b.name));
+        setAllStarPlayers(sortedStars);
       } catch (e) {
         console.error("Failed to fetch star players", e);
       }
@@ -226,14 +227,53 @@ export default function BBSchemePage() {
 
   useEffect(() => {
     const rosterList = [
-      "all_star_players", "amazons", "black_orcs", "bretonnians", "chaos_chosen", 
+      "amazons", "black_orcs", "bretonnians", "chaos_chosen", 
       "chaos_dwarfs", "chaos_renegades", "dark_elves", "dwarves", "elven_union", 
       "gnomes", "goblins", "halflings", "high_elves", "humans", "imperial_nobility", 
       "khorne", "lizardmen", "necromantic_horror", "norse", "nurgle", "ogres", 
       "old_world_alliance", "orcs", "shambling_undead", "skaven", "slann_(naf)", 
       "snotlings", "tomb_kings", "underworld_denizens", "vampires", "wood_elves"
     ];
-    setRosters(rosterList.map(r => ({ name: r.replace(/_/g, ' ').toUpperCase(), file: r })));
+
+    const translationMap: Record<string, string> = {
+      "amazons": "Amazones",
+      "black_orcs": "Orques Noirs",
+      "bretonnians": "Bretonniens",
+      "chaos_chosen": "Élus du Chaos",
+      "chaos_dwarfs": "Nains du Chaos",
+      "chaos_renegades": "Renégats du Chaos",
+      "dark_elves": "Elfes Noirs",
+      "dwarves": "Nains",
+      "elven_union": "Union Elfique",
+      "gnomes": "Gnomes",
+      "goblins": "Gobelins",
+      "halflings": "Halfelins",
+      "high_elves": "Hauts Elfes",
+      "humans": "Humains",
+      "imperial_nobility": "Noblesse Impériale",
+      "khorne": "Élus de Khorne",
+      "lizardmen": "Hommes-Lézards",
+      "necromantic_horror": "Horreur Nécromantique",
+      "norse": "Nordiques",
+      "nurgle": "Élus de Nurgle",
+      "ogres": "Ogres",
+      "old_world_alliance": "Alliance du Vieux Monde",
+      "orcs": "Orques",
+      "shambling_undead": "Morts-Vivants",
+      "skaven": "Skavens",
+      "slann_(naf)": "Slanns (NAF)",
+      "snotlings": "Snotlings",
+      "tomb_kings": "Rois des Tombes",
+      "underworld_denizens": "Habitants des Bas-Fonds",
+      "vampires": "Vampires",
+      "wood_elves": "Elfes Sylvains",
+      "all_star_players": "Star Players"
+    };
+
+    setRosters(rosterList.map(r => ({ 
+      name: translationMap[r] || r.replace(/_/g, ' ').toUpperCase(), 
+      file: r 
+    })).sort((a, b) => a.name.localeCompare(b.name)));
   }, []);
 
   const spawnRosterTokens = (team: 'blue' | 'red', roster: RosterData) => {
@@ -624,9 +664,9 @@ export default function BBSchemePage() {
         </div>
         <div className="header-right">
           {isStarPlayerSelected && (
-            <div className="star-player-selector" style={{ marginRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ fontSize: '0.75rem', opacity: 0.7, fontWeight: 700 }}>STAR:</span>
-              <ClassicSelect 
+          <div className="star-player-selector" style={{ marginRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 900, textShadow: '1px 1px 0px rgba(0,0,0,0.5)' }}>STAR:</span>
+            <ClassicSelect 
                 onChange={(e) => handleStarPlayerSelect(e.target.value)} 
                 value={selectedToken?.playerInfo?.name === "Star Player" ? "aucun" : selectedToken?.playerInfo?.name || "aucun"}
                 size="sm"
@@ -642,7 +682,7 @@ export default function BBSchemePage() {
             </div>
           )}
           <div className="credits-link">
-            <span>Inspiré de <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a></span>
+          <span>Inspiré par <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a></span>
           </div>
         </div>
       </header>

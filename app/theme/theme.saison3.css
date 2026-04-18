@@ -150,6 +150,98 @@
   }
 }
 
+/* BBScheme Specific Overrides for Saison 3 */
+[data-theme='saison3'] .bbscheme-page {
+  padding-top: 60px; /* Perfectly match Navbar height */
+  background-color: #1a110a; /* Rulebook black/brown */
+}
+
+[data-theme='saison3'] .tool-header {
+  border-bottom: 4px solid var(--primary);
+}
+
+/* Fix BackButton in the compact toolbar */
+[data-theme='saison3'] .tool-header .back-button {
+  width: 42px;
+  height: 42px;
+  border-width: 3px;
+}
+
+[data-theme='saison3'] .tool-btn.active {
+  background: var(--highlight) !important; /* Golden Yellow active state */
+  color: #1a110a !important;
+}
+
+[data-theme='saison3'] .status-tool-icon {
+  color: var(--highlight);
+}
+
+[data-theme='saison3'] .zoom-bar input[type="range"] {
+  accent-color: var(--highlight);
+}
+
+[data-theme='saison3'] .figurine-box, 
+[data-theme='saison3'] .dugout-zone {
+  background: #f2efe1; /* Parchment instead of white/glass */
+  border: 4px solid var(--secondary);
+  border-radius: 4px; /* Blocky rulebook feel */
+}
+
+[data-theme='saison3'] .box-header {
+  background: var(--secondary);
+  color: var(--highlight);
+}
+
+[data-theme='saison3'] .blue .box-header label, 
+[data-theme='saison3'] .red .box-header label {
+  color: var(--highlight); /* Yellow titles on Navy headers */
+}
+
+[data-theme='saison3'] .player-type-info,
+[data-theme='saison3'] .box-content,
+[data-theme='saison3'] .empty-message {
+  color: #1a110a;
+}
+
+[data-theme='saison3'] .zoom-bar svg {
+  color: #ffffff;
+}
+
+[data-theme='saison3'] .credits-link {
+  color: #ffffff;
+  opacity: 0.9;
+}
+
+[data-theme='saison3'] .credits-link a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+[data-theme='saison3'] .roster-select-box {
+  background: #ffffff;
+  color: #1a110a;
+  border-color: var(--secondary);
+}
+
+[data-theme='saison3'] .classic-select-field {
+  background: #ffffff !important;
+  color: #1a110a !important;
+  border: 4px solid var(--secondary) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme='saison3'] .classic-select-arrow {
+  color: var(--secondary);
+}
+
+[data-theme='saison3'] .tool-layout {
+  background: #efebdd; /* Parchment workspace background */
+}
+
+[data-theme='saison3'] .title-modern span {
+  color: var(--highlight) !important;
+}
+
 [data-theme='saison3'] .page-header-subtitle {
   color: var(--secondary);
   font-weight: 700;

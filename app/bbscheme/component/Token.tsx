@@ -34,8 +34,10 @@ const Token: React.FC<TokenProps> = ({
   // Custom Initials Logic
   const getInitials = (name: string) => {
     if (!name) return "";
-    const words = name.split(/\s+/);
-    if (words.length === 1) return name.substring(0, 1).toUpperCase();
+    // Ignorer le contenu entre parenthèses pour l'acronyme
+    const cleanName = name.replace(/\([^)]*\)/g, '').trim();
+    const words = cleanName.split(/\s+/);
+    if (words.length === 1) return cleanName.substring(0, 1).toUpperCase();
     return words.map(word => word[0]).join("").toUpperCase();
   };
 
