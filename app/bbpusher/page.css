@@ -168,6 +168,16 @@
   position: relative;
   border: 1px solid var(--glass-border);
   box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+  cursor: grab;
+}
+
+.pitch-viewport.has-selection {
+  cursor: crosshair;
+}
+
+.pitch-viewport.panning {
+  cursor: grabbing;
+  user-select: none;
 }
 
 .pitch-resizer {

@@ -20,9 +20,11 @@ import {
   Wand2,
   Undo2,
   MousePointer2,
-  Pencil
+  Pencil,
+  Star
 } from "lucide-react";
 import Link from "next/link";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import BackButton from "@/common/components/BackButton/BackButton";
 import { toast } from "react-hot-toast";
 
@@ -104,7 +106,94 @@ export default function BBPusherPage() {
   const [baseScale, setBaseScale] = useState(0.8);
   const [zoom, setZoom] = useState(1); 
   const [showTooltips, setShowTooltips] = useState(true);
+  const [allStarPlayers, setAllStarPlayers] = useState<PlayerRosterInfo[]>([]);
   const resizerRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchStarPlayers = async () => {
+      try {
+        const resp = await fetch('/data/roster/all_star_players.json');
+        const data = await resp.json();
+        setAllStarPlayers(data.roster);
+      } catch (e) {
+        console.error("Failed to fetch star players", e);
+      }
+    };
+    fetchStarPlayers();
+  }, []);
+
+  // Panning UI
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
+
+  const handlePanningStart = (e: React.MouseEvent) => {
+    if (selectedId || activeTool !== 'select' || !viewportRef.current) return;
+    if ((e.target as HTMLElement).closest('button')) return;
+    setIsPanning(true);
+    setPanStart({
+      x: e.clientX,
+      y: e.clientY,
+      scrollLeft: viewportRef.current.scrollLeft,
+      scrollTop: viewportRef.current.scrollTop
+    });
+  };
+
+  const handlePanningMove = (e: React.MouseEvent) => {
+    if (!isPanning || !viewportRef.current) return;
+    const dx = e.clientX - panStart.x;
+    const dy = e.clientY - panStart.y;
+    viewportRef.current.scrollLeft = panStart.scrollLeft - dx;
+    viewportRef.current.scrollTop = panStart.scrollTop - dy;
+  };
+
+  const handlePanningEnd = () => {
+    setIsPanning(false);
+  };
+
+  const handleStarPlayerSelect = (starName: string) => {
+    if (!selectedId) return;
+    
+    saveToHistory(tokens, drawings);
+
+    if (starName === "aucun") {
+      setTokens(prev => prev.map(t => {
+        if (t.id === selectedId) {
+          return {
+            ...t,
+            playerInfo: {
+              name: "Star Player",
+              qty: "0-2",
+              ma: "?", st: "?", ag: "?", pa: "?", av: "?",
+              skills: ["Compétences variables"],
+              primary: "", secondary: "",
+              cost: 0 
+            }
+          };
+        }
+        return t;
+      }));
+      toast.success("Reset Star Player");
+      return;
+    }
+
+    const star = allStarPlayers.find(s => s.name === starName);
+    if (!star) return;
+
+    setTokens(prev => prev.map(t => {
+      if (t.id === selectedId) {
+        return {
+          ...t,
+          playerInfo: { ...star }
+        };
+      }
+      return t;
+    }));
+    toast.success(`${star.name} sélectionné !`);
+  };
+
+  const isStarPlayerSelected = selectedId?.includes('-star-');
+  const selectedToken = tokens.find(t => t.id === selectedId);
 
   // -- Scaling Logic --
   const handleResize = useCallback(() => {
@@ -518,9 +607,27 @@ export default function BBPusherPage() {
           </div>
         </div>
         <div className="header-right">
-           <div className="credits-link">
-             Inspiré de <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a>
-           </div>
+          {isStarPlayerSelected && (
+            <div className="star-player-selector" style={{ marginRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.75rem', opacity: 0.7, fontWeight: 700 }}>STAR:</span>
+              <ClassicSelect 
+                onChange={(e) => handleStarPlayerSelect(e.target.value)} 
+                value={selectedToken?.playerInfo?.name === "Star Player" ? "aucun" : selectedToken?.playerInfo?.name || "aucun"}
+                size="sm"
+                containerStyle={{ width: "180px" }}
+              >
+                <option value="aucun">Aucun (Générique)</option>
+                {allStarPlayers.map((star, idx) => (
+                  <option key={`star-opt-${idx}`} value={star.name}>
+                    {star.name} ({star.cost / 1000}k)
+                  </option>
+                ))}
+              </ClassicSelect>
+            </div>
+          )}
+          <div className="credits-link">
+            <span>Inspiré de <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a></span>
+          </div>
         </div>
       </header>
 
@@ -597,7 +704,14 @@ export default function BBPusherPage() {
             </div>
           </div>
 
-          <div className="pitch-viewport">
+          <div 
+            ref={viewportRef}
+            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''}`}
+            onMouseDown={handlePanningStart}
+            onMouseMove={handlePanningMove}
+            onMouseUp={handlePanningEnd}
+            onMouseLeave={handlePanningEnd}
+          >
             <div ref={resizerRef} className="pitch-resizer" style={{ width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`, height: `${(rotation === 90 ? 1308 : 758) * finalScale}px` }}>
               <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                 <Pitch 

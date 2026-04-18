@@ -90,8 +90,13 @@ const Token: React.FC<TokenProps> = ({
         ) : (
           <div className="token-visual">
             <div className="token-base">
-               {token.playerInfo?.name === "Star Player" ? (
-                 <Star size={24} fill="#ffd700" color="#ffd700" strokeWidth={3} className="star-icon" />
+               {token.id.includes('-star-') ? (
+                 <div className="star-token-content">
+                    <Star size={20} fill="#ffd700" color="#ffd700" strokeWidth={2} className="star-icon" />
+                    {token.playerInfo && token.playerInfo.name !== "Star Player" && (
+                      <span className="token-number star-initials">{initial}</span>
+                    )}
+                 </div>
                ) : (
                  initial && <span className="token-number">{initial}</span>
                )}
