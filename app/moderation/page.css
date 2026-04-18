@@ -1,28 +1,34 @@
 .moderation-page-wrapper {
-  padding-top: 0.5rem;
-  max-width: 1400px;
+  padding-top: 0;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch !important; /* Force l'étirement global */
 }
 
 .moderation-container {
-    padding-bottom: 5rem;
+  padding: 0.5rem 1rem 5rem 1rem !important;
+  min-height: 850px !important;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .moderation-content-layout {
-    display: flex;
-    gap: 2.5rem;
-    align-items: flex-start;
-    margin-top: 2rem;
+  display: flex;
+  gap: 2.5rem;
+  align-items: stretch !important;
+  flex: 1;
+  width: 100% !important; /* Bloqué à 100% pour éviter le rétrécissement */
 }
 
 .moderation-main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    min-width: 0; /* Prevent flex blow-out */
+  flex: 1 0 0 !important; /* Force l'occupation de TOUT l'espace restant */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
 }
 
 .moderation-table {

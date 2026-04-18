@@ -30,6 +30,7 @@ import {
   useSortable, verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { createPortal } from "react-dom";
 
 interface StructureTabProps {
   currentUserRole: UserRole;
@@ -42,7 +43,7 @@ function SortableCategoryItem({ category, onEditClick, children }: any) {
     id: `cat-${category.id}`,
     data: { type: 'Category', category }
   });
-  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
+  const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -80,7 +81,7 @@ function SortableForumItem({
     id: `forum-${forum.id}`,
     data: { type: 'Forum', forum }
   });
-  const style = { transform: CSS.Transform.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
+  const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
   const [expanded, setExpanded] = useState(false);
   const hasSubForums = (forum.subForums?.length || 0) > 0;
 
@@ -529,17 +530,20 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
               </div>
             </SortableContext>
 
-            <DragOverlay>
-              {activeId && (
-                <div className="forum-block drag-ghost">
-                  <div className="forum-row">
-                    <GripVertical size={16} style={{ color: 'var(--text-muted)' }} />
-                    <FolderGit2 size={15} color="var(--primary)" />
-                    <strong style={{ color: 'var(--foreground)', fontSize: '0.9rem' }}>{getActiveName()}</strong>
+            {createPortal(
+              <DragOverlay dropAnimation={null}>
+                {activeId && (
+                  <div className="forum-block drag-ghost" style={{ width: '400px' }}>
+                    <div className="forum-row">
+                      <GripVertical size={16} style={{ color: 'var(--text-muted)' }} />
+                      <FolderGit2 size={15} color="var(--primary)" />
+                      <strong style={{ color: 'var(--foreground)', fontSize: '0.9rem' }}>{getActiveName()}</strong>
+                    </div>
                   </div>
-                </div>
-              )}
-            </DragOverlay>
+                )}
+              </DragOverlay>,
+              document.body
+            )}
           </DndContext>
         )}
       </div>

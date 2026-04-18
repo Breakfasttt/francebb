@@ -140,7 +140,7 @@ export default function ReferenceDataTab() {
   }, {});
 
   return (
-    <PremiumCard className="reference-data-tab fade-in" style={{ padding: '2.5rem' }}>
+    <PremiumCard className="reference-data-tab fade-in" noOverflow style={{ padding: '2rem' }}>
       <div className="tab-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
         <div>
           <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.6rem', fontWeight: 800 }}>
@@ -161,8 +161,8 @@ export default function ReferenceDataTab() {
       <div className="info-box-admin" style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', padding: '1.2rem', borderRadius: '16px', marginBottom: '2.5rem', display: 'flex', gap: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5 }}>
         <Info size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: '2px' }} />
         <p style={{ margin: 0 }}>
-          Les données sont regroupées. Le <strong style={{ color: 'var(--foreground)' }}>Groupe</strong> détermine où la donnée est affichée (ex: COACH_REGION, REGION_FRANCE). 
-          La <strong style={{ color: 'var(--foreground)' }}>Clé</strong> est la valeur technique stockée en BDD, le <strong style={{ color: 'var(--foreground)' }}>Libellé</strong> est le texte affiché à l'utilisateur.
+          Les données sont regroupées. Le <strong style={{ color: 'var(--foreground)' }}>Groupe</strong> détermine où la donnée est affichée. 
+          La <strong style={{ color: 'var(--foreground)' }}>Clé</strong> est la valeur technique, le <strong style={{ color: 'var(--foreground)' }}>Libellé</strong> est le texte affiché.
         </p>
       </div>
 
@@ -225,49 +225,50 @@ export default function ReferenceDataTab() {
             Groupe : <span style={{ color: 'var(--primary)', marginLeft: '0.5rem' }}>{group}</span>
           </h3>
           
-          <div className="ref-table" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-            <div className="ref-row header" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1rem 1.5rem', background: 'var(--glass-bg-accent, rgba(255,255,255,0.03))', borderRadius: '12px', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              <div>Clé</div>
-              <div>Libellé</div>
-              <div>Ordre</div>
-              <div>Statut</div>
-              <div style={{ textAlign: 'right' }}>Actions</div>
-            </div>
-
-            {groupedData[group].map((item: ReferenceData) => (
-              <div key={item.id} className={`ref-row-item ${editingId === item.id ? 'editing' : ''}`}>
-                {editingId === item.id ? (
-                  <div className="edit-row-container" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '2px solid var(--primary)', alignItems: 'center', boxShadow: '0 0 20px var(--btn-shadow)' }}>
-                    <input className="premium-input-field text-accent compact" value={editForm.key} onChange={e => setEditForm({...editForm, key: e.target.value})} />
-                    <input className="premium-input-field compact" value={editForm.label} onChange={e => setEditForm({...editForm, label: e.target.value})} />
-                    <input className="premium-input-field compact" type="number" value={editForm.order} onChange={e => setEditForm({...editForm, order: parseInt(e.target.value) || 0})} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                        <input type="checkbox" checked={editForm.isActive} onChange={e => setEditForm({...editForm, isActive: e.target.checked})} className="premium-checkbox" />
-                        <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>Actif</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem' }}>
-                      <button onClick={handleSaveEdit} className="action-row-btn success" title="Enregistrer"><Check size={18} /></button>
-                      <button onClick={handleCancelEdit} className="action-row-btn" title="Annuler"><X size={18} /></button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="static-row-container" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '1px solid var(--glass-border)', alignItems: 'center', transition: 'all 0.2s' }}>
-                    <div className="key-display-badge">{item.key}</div>
-                    <div style={{ fontWeight: 700, fontSize: '1rem' }}>{item.label}</div>
-                    <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{item.order}</div>
-                    <div>
-                      <span className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
-                        {item.isActive ? "ACTIF" : "INACTIF"}
-                      </span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem' }}>
-                      <button onClick={() => handleStartEdit(item)} className="action-row-btn" title="Modifier"><Edit2 size={16} /></button>
-                      <button onClick={() => handleDelete(item.id)} className="action-row-btn danger" title="Supprimer"><Trash2 size={16} /></button>
-                    </div>
-                  </div>
-                )}
+          <div className="ref-table-container" style={{ width: '100%', overflowX: 'auto', paddingBottom: '1.5rem' }}>
+            <div className="ref-table" style={{ minWidth: '650px', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              <div className="ref-row header" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 60px 100px 90px', gap: '1rem', padding: '1rem 1.5rem', background: 'var(--glass-bg-accent, rgba(255,255,255,0.03))', borderRadius: '12px', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <div>Clé</div>
+                <div>Libellé</div>
+                <div style={{ textAlign: 'center' }}>Ordre</div>
+                <div style={{ textAlign: 'center' }}>Statut</div>
+                <div style={{ textAlign: 'right', paddingRight: '8px' }}>Action</div>
               </div>
-            ))}
+
+              {groupedData[group].map((item: ReferenceData) => (
+                <div key={item.id} className={`ref-row-item ${editingId === item.id ? 'editing' : ''}`}>
+                  {editingId === item.id ? (
+                    <div className="edit-row-container" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 60px 100px 90px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '2px solid var(--primary)', alignItems: 'center', boxShadow: '0 0 20px var(--btn-shadow)' }}>
+                      <input className="premium-input-field text-accent compact" value={editForm.key} onChange={e => setEditForm({...editForm, key: e.target.value})} title="Clé" />
+                      <input className="premium-input-field compact" value={editForm.label} onChange={e => setEditForm({...editForm, label: e.target.value})} title="Libellé" />
+                      <input className="premium-input-field compact" type="number" value={editForm.order} onChange={e => setEditForm({...editForm, order: parseInt(e.target.value) || 0})} title="Ordre" />
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                          <input type="checkbox" checked={editForm.isActive} onChange={e => setEditForm({...editForm, isActive: e.target.checked})} className="premium-checkbox" title="Actif ?" />
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
+                        <button onClick={handleSaveEdit} className="action-row-btn success" title="Enregistrer"><Check size={18} /></button>
+                        <button onClick={handleCancelEdit} className="action-row-btn" title="Annuler"><X size={18} /></button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="static-row-container" style={{ display: 'grid', gridTemplateColumns: '130px 1fr 60px 100px 90px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '1px solid var(--glass-border)', alignItems: 'center', transition: 'all 0.2s' }}>
+                      <div className="key-display-badge" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={item.key}>{item.key}</div>
+                      <div style={{ fontWeight: 700, fontSize: '1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={item.label}>{item.label}</div>
+                      <div style={{ color: 'var(--text-secondary)', fontWeight: 600, textAlign: 'center' }}>{item.order}</div>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <span className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
+                          {item.isActive ? "ACTIF" : "INACTIF"}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
+                        <button onClick={() => handleStartEdit(item)} className="action-row-btn" title="Modifier"><Edit2 size={16} /></button>
+                        <button onClick={() => handleDelete(item.id)} className="action-row-btn danger" title="Supprimer"><Trash2 size={16} /></button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       ))}
