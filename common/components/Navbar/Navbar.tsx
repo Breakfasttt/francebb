@@ -51,8 +51,8 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
                 position: 'absolute',
                 top: '-5px',
                 right: '-5px',
-                background: '#ef4444', // Rouge vif pour la modération
-                color: 'white',
+                background: 'var(--danger)',
+                color: '#ffffff',
                 borderRadius: '50%',
                 width: '18px',
                 height: '18px',
@@ -62,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
                 alignItems: 'center',
                 justifyContent: 'center',
                 lineHeight: 1,
-                boxShadow: '0 0 10px rgba(239, 68, 68, 0.5)'
+                boxShadow: '0 0 10px rgba(239, 68, 68, 0.3)'
               }}>
                 {pendingModCount > 9 ? '9+' : pendingModCount}
               </span>

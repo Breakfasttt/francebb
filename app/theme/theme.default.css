@@ -25,6 +25,8 @@
   --danger: #ff4444;
   --warning: #f59e0b;
   --success: #22c55e;
+  --highlight: #ffd700;
+  --highlight-hover: #ffea00;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(194, 29, 29, 0.25);
   --theme-overlay: rgba(255, 255, 255, 0.15);
@@ -33,6 +35,7 @@
   --nav-btn-border: rgba(255, 255, 255, 0.3);
   --nav-btn-color: #ffffff;
   --badge-text: #ffffff;
+  --accent-foreground: #0a0a0c;
   
   /* Home Page Specifics */
   --home-card-bg: rgba(26, 26, 32, 0.7);
@@ -42,6 +45,7 @@
 
   /* RGB variants for transparency effects */
   --accent-rgb: 255, 215, 0;
+  --accent-transparent: rgba(255, 215, 0, 0.15);
   --success-rgb: 34, 197, 94;
   --primary-rgb: 194, 29, 29;
 

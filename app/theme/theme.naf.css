@@ -24,6 +24,8 @@
   --danger: #ef4444;
   --warning: #facc15;
   --success: #39ff14;
+  --highlight: #e6b000;
+  --highlight-hover: #c99a00;
   --header-foreground: #011b33; /* Deep Navy text on yellow buttons */
   --category-hover-bg: rgba(1, 43, 93, 0.6);
   --theme-overlay: rgba(255, 255, 255, 0.2);
@@ -32,6 +34,7 @@
   --nav-btn-border: rgba(255, 255, 255, 0.45);
   --nav-btn-color: #ffffff;
   --badge-text: #011b33;
+  --accent-foreground: #011b33;
 
   /* Home Page Specifics */
   --home-card-bg: rgba(0, 43, 93, 0.4);
@@ -41,6 +44,7 @@
 
   /* RGB variants for transparency effects */
   --accent-rgb: 255, 255, 255;
+  --accent-transparent: rgba(255, 255, 255, 0.15);
   --success-rgb: 57, 255, 20;
   --primary-rgb: 230, 176, 0;
 

@@ -1,9 +1,8 @@
 .carte-page-fixed {
-  height: calc(100vh - 100px); /* Ajustement pour donner plus d'air au footer */
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  padding: 1.5rem 2rem 3rem 2rem; /* Augmentation du padding bottom */
+  padding: 1.5rem 2rem 3rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -12,8 +11,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0; /* Important pour flex-grow avec overflow */
+  min-height: 0;
   margin-top: 1rem;
+  overflow: hidden;
 }
 
 /* Surcharge des styles du CarteClient pour le mode fixed */
