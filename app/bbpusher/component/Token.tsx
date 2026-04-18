@@ -1,5 +1,4 @@
 import React from "react";
-import { useDraggable } from "@dnd-kit/core";
 import { TokenData, ToolType } from "../page";
 import { 
   HelpCircle, 
@@ -12,12 +11,23 @@ interface TokenProps {
   token: TokenData;
   isOverlay?: boolean;
   activeTool?: ToolType;
-  rotation?: number; // Pitch rotation
-  hasBall?: boolean; // If this player is carrying a ball
-  showTooltip?: boolean; // Global toggle
+  rotation?: number; 
+  hasBall?: boolean; 
+  showTooltip?: boolean; 
+  onClick?: () => void;
+  isSelected?: boolean;
 }
 
-const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 0, hasBall, showTooltip = true }) => {
+const Token: React.FC<TokenProps> = ({ 
+  token, 
+  isOverlay, 
+  activeTool, 
+  rotation = 0, 
+  hasBall, 
+  showTooltip = true,
+  onClick,
+  isSelected
+}) => {
   const isBall = token.type === 'ball';
   const isCarried = !!token.attachedToId;
   
@@ -54,21 +64,9 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
     return `${Math.floor(num / 1000)}k`;
   };
   
-  // Drag restriction logic
-  let canDrag = true;
-  if (activeTool === 'player') canDrag = !isBall;
-  if (activeTool === 'ball') canDrag = isBall;
-  if (activeTool === 'status' || activeTool === 'draw' || activeTool === 'eraser') canDrag = false;
-
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-    id: token.id,
-    disabled: !canDrag || isOverlay
-  });
-
   const style: React.CSSProperties = {
-    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-    zIndex: isDragging ? 1000 : (isBall ? 70 : 10),
-    pointerEvents: (isBall && isCarried && activeTool === 'select') ? 'none' : (isDragging && !isOverlay ? 'none' : 'auto')
+    zIndex: (isBall ? 70 : 10),
+    cursor: 'pointer'
   };
 
   const visualStyle: React.CSSProperties = {
@@ -77,14 +75,10 @@ const Token: React.FC<TokenProps> = ({ token, isOverlay, activeTool, rotation = 
 
   return (
     <div 
-      ref={(node) => {
-        setNodeRef(node);
-        (containerRef as any).current = node;
-      }} 
+      ref={containerRef}
       style={style} 
-      className={`token-container ${token.type} ${token.status} ${token.location} ${isOverlay ? 'overlay' : ''} ${isDragging && !isOverlay ? 'dragging-source' : ''} ${isBall ? 'ball-token' : 'player-token'}`}
-      {...listeners} 
-      {...attributes}
+      className={`token-container ${token.type} ${token.status} ${token.location} ${isOverlay ? 'overlay' : ''} ${isBall ? 'ball-token' : 'player-token'} ${isSelected ? 'selected' : ''}`}
+      onClick={(e) => { e.stopPropagation(); onClick?.(); }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

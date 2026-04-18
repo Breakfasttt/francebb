@@ -1,5 +1,4 @@
 import React from "react";
-import { useDroppable } from "@dnd-kit/core";
 import { TokenData } from "../page";
 import Token from "./Token";
 import "./Dugout.css";
@@ -7,11 +6,14 @@ import "./Dugout.css";
 interface DugoutProps {
   team: 'blue' | 'red';
   tokens: TokenData[];
-  activeId: string | null;
+  onTokenClick: (id: string) => void;
+  onZoneClick: (zone: TokenData['location']) => void;
+  selectedId: string | null;
   showTooltips?: boolean;
+  allTokens?: TokenData[];
 }
 
-const Dugout: React.FC<DugoutProps> = ({ team, tokens, activeId, showTooltips }) => {
+const Dugout: React.FC<DugoutProps> = ({ team, tokens, onTokenClick, onZoneClick, selectedId, showTooltips, allTokens = [] }) => {
   const zones: { id: TokenData['location']; label: string }[] = [
     { id: 'reserve', label: 'Réserves' },
     { id: 'ko', label: 'K.O.' },
@@ -29,8 +31,11 @@ const Dugout: React.FC<DugoutProps> = ({ team, tokens, activeId, showTooltips })
             team={team} 
             zone={zone} 
             tokens={tokens.filter(t => t.location === zone.id)} 
-            activeId={activeId}
+            onTokenClick={onTokenClick}
+            onZoneClick={() => onZoneClick(zone.id)}
+            selectedId={selectedId}
             showTooltips={showTooltips}
+            allTokens={allTokens}
           />
         ))}
       </div>
@@ -42,30 +47,35 @@ interface ZoneProps {
   team: string;
   zone: { id: TokenData['location']; label: string };
   tokens: TokenData[];
-  activeId: string | null;
+  onTokenClick: (id: string) => void;
+  onZoneClick: () => void;
+  selectedId: string | null;
   showTooltips?: boolean;
+  allTokens: TokenData[];
 }
 
-const DugoutZone: React.FC<ZoneProps> = ({ team, zone, tokens, activeId, showTooltips }) => {
-  const { setNodeRef, isOver } = useDroppable({
-    id: `dugout-${team}-${zone.id}`,
-  });
-
+const DugoutZone: React.FC<ZoneProps> = ({ team, zone, tokens, onTokenClick, onZoneClick, selectedId, showTooltips, allTokens }) => {
   return (
     <div 
-      ref={setNodeRef} 
-      className={`dugout-zone ${isOver ? 'drag-over' : ''}`}
+      className="dugout-zone"
+      onClick={onZoneClick}
     >
       <span className="zone-label">{zone.label}</span>
       <div className="zone-tokens">
-        {tokens.map(token => (
-          <div key={token.id} className="token-wrapper" style={{ 
-            opacity: token.id === activeId ? 0 : 1,
-            visibility: token.id === activeId ? 'hidden' : 'visible' 
-          }}>
-            <Token token={token} showTooltip={showTooltips} />
-          </div>
-        ))}
+        {tokens.map(token => {
+          const carriedBall = allTokens.find(t => t.type === 'ball' && t.attachedToId === token.id);
+          return (
+            <div key={token.id} className="token-wrapper">
+              <Token 
+                token={token} 
+                showTooltip={showTooltips} 
+                onClick={() => onTokenClick(token.id)} 
+                isSelected={selectedId === token.id}
+                hasBall={!!carriedBall}
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

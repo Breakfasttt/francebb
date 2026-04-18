@@ -14,6 +14,20 @@
 .token-container:active { cursor: grabbing; }
 .token-container.overlay { cursor: grabbing; transform: scale(1.1) !important; z-index: 9999; }
 
+.token-container.selected {
+  outline: 3px solid #ffeb3b;
+  outline-offset: 4px;
+  box-shadow: 0 0 20px rgba(255, 235, 59, 0.6);
+  animation: selectedPulse 2s infinite;
+  z-index: 100;
+}
+
+@keyframes selectedPulse {
+  0% { outline-color: #ffeb3b; box-shadow: 0 0 20px rgba(255, 235, 59, 0.6); }
+  50% { outline-color: #fbc02d; box-shadow: 0 0 35px rgba(255, 235, 59, 1); }
+  100% { outline-color: #ffeb3b; box-shadow: 0 0 20px rgba(255, 235, 59, 0.6); }
+}
+
 .token-container.dragging-source {
   visibility: hidden !important;
   opacity: 0 !important;
@@ -132,7 +146,7 @@
   position: absolute;
   top: -12px;
   right: -12px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,5));
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   animation: floatSmall 1.5s infinite alternate ease-in-out;
   z-index: 300;
 }

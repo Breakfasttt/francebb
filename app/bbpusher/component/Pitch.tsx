@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useDroppable } from "@dnd-kit/core";
 import { TokenData, ToolType, DrawingPath } from "../page";
 import Token from "@/app/bbpusher/component/Token";
 import "./Pitch.css";
@@ -7,7 +6,8 @@ import "./Pitch.css";
 interface PitchProps {
   tokens: TokenData[];
   onSquareClick: (x: number, y: number) => void;
-  activeId: string | null;
+  onTokenClick: (id: string) => void;
+  selectedId: string | null;
   activeTool: ToolType;
   drawings: DrawingPath[];
   onDrawUpdate: (drawings: DrawingPath[]) => void;
@@ -19,7 +19,8 @@ interface PitchProps {
 const Pitch: React.FC<PitchProps> = ({ 
   tokens, 
   onSquareClick, 
-  activeId, 
+  onTokenClick,
+  selectedId, 
   activeTool,
   drawings,
   onDrawUpdate,
@@ -38,12 +39,12 @@ const Pitch: React.FC<PitchProps> = ({
   const squares = [];
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      const tokensAtPos = displayTokens.filter(t => t.x === x && t.y === y && t.id !== activeId);
+      const tokensAtPos = displayTokens.filter(t => t.x === x && t.y === y);
       squares.push(
         <Square 
           key={`${x}-${y}`} x={x} y={y} onClick={() => onSquareClick(x, y)} 
           tokens={tokensAtPos} allTokens={tokens} activeTool={activeTool} rotation={rotation}
-          showTooltips={showTooltips}
+          showTooltips={showTooltips} onTokenClick={onTokenClick} selectedId={selectedId}
         />
       );
     }
@@ -136,16 +137,15 @@ const Pitch: React.FC<PitchProps> = ({
 interface SquareProps {
   x: number; y: number; onClick: () => void;
   tokens: TokenData[]; allTokens: TokenData[]; activeTool: ToolType; rotation: number;
-  showTooltips?: boolean;
+  showTooltips?: boolean; onTokenClick: (id: string) => void; selectedId: string | null;
 }
 
-const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips }) => {
-  const { setNodeRef, isOver } = useDroppable({ id: `${x}-${y}` });
+const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips, onTokenClick, selectedId }) => {
   const isEndZone = x === 0 || x === 25;
   const isWideZoneLine = (y === 3 || y === 10) && (x > 0 && x < 25);
   return (
     <div 
-      ref={setNodeRef} className={`pitch-square ${isEndZone ? 'ez' : ''} ${isOver ? 'drag-over' : ''} ${isWideZoneLine ? 'wide-line' : ''}`}
+      className={`pitch-square ${isEndZone ? 'ez' : ''} ${isWideZoneLine ? 'wide-line' : ''}`}
       onClick={() => { if (activeTool !== 'draw') onClick(); }}
     >
       <div className="square-token-container">
@@ -153,7 +153,15 @@ const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activ
           const carriedBall = allTokens.find(t => t.type === 'ball' && t.attachedToId === token.id);
           return (
             <div key={token.id} className="token-wrapper">
-              <Token token={token} activeTool={activeTool} rotation={rotation} hasBall={!!carriedBall} showTooltip={showTooltips} />
+              <Token 
+                token={token} 
+                activeTool={activeTool} 
+                rotation={rotation} 
+                hasBall={!!carriedBall} 
+                showTooltip={showTooltips} 
+                onClick={() => onTokenClick(token.id)}
+                isSelected={selectedId === token.id}
+              />
             </div>
           );
         })}

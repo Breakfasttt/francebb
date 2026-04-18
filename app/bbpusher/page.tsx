@@ -6,24 +6,12 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { 
-  DndContext, 
-  DragOverlay, 
-  PointerSensor, 
-  useSensor, 
-  useSensors,
-  DragStartEvent,
-  DragEndEvent,
-  defaultDropAnimationSideEffects,
-} from "@dnd-kit/core";
-import { 
   Eraser, 
   Share2, 
   Trash2, 
-  ArrowLeft,
   RotateCw,
   Anchor,
   HelpCircle,
-  Users,
   Maximize,
   Minimize,
   Eye,
@@ -97,9 +85,11 @@ interface HistoryState {
 }
 
 export default function BBPusherPage() {
-  const [tokens, setTokens] = useState<TokenData[]>([]);
+  const [tokens, setTokens] = useState<TokenData[]>([
+    { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }
+  ]);
   const [activeTool, setActiveTool] = useState<ToolType>('select');
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [rotation, setRotation] = useState(0); 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [drawings, setDrawings] = useState<DrawingPath[]>([]);
@@ -116,8 +106,6 @@ export default function BBPusherPage() {
   const [showTooltips, setShowTooltips] = useState(true);
   const resizerRef = useRef<HTMLDivElement>(null);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
-
   // -- Scaling Logic --
   const handleResize = useCallback(() => {
     if (!resizerRef.current) return;
@@ -132,7 +120,6 @@ export default function BBPusherPage() {
   }, [rotation]);
 
   useEffect(() => {
-    // List of available rosters from standard names
     const rosterList = [
       "all_star_players", "amazons", "black_orcs", "bretonnians", "chaos_chosen", 
       "chaos_dwarfs", "chaos_renegades", "dark_elves", "dwarves", "elven_union", 
@@ -186,8 +173,9 @@ export default function BBPusherPage() {
 
     setTokens(prev => {
       // CLEAR ALL existing tokens of the same team (pitch, dugout, or wherever)
-      const otherTeamTokens = prev.filter(t => t.type !== team);
-      return [...otherTeamTokens, ...newTokens];
+      const otherTeamTokens = prev.filter(t => t.type !== team && t.type !== 'ball');
+      const ball = prev.find(t => t.type === 'ball');
+      return [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
     });
   };
 
@@ -209,7 +197,7 @@ export default function BBPusherPage() {
       const enrichedData = { ...data, roster: [...data.roster, starPlayerInfo] };
 
       if (team === 'blue') setBlueRoster(enrichedData); else setRedRoster(enrichedData);
-      spawnRosterTokens(team, data); // We can still pass data, spawnRosterTokens already injects stars
+      spawnRosterTokens(team, data);
       toast.success(`Roster ${data.name} chargé pour l'équipe ${team === 'blue' ? 'bleue' : 'rouge'}`);
     } catch (e) {
       toast.error("Échec du chargement du roster");
@@ -254,124 +242,216 @@ export default function BBPusherPage() {
     toast.success("Action annulée");
   };
 
-  const handleDragStart = (event: DragStartEvent) => {
-    saveToHistory(tokens, drawings);
-    setActiveId(event.active.id as string);
-    const activeToken = tokens.find(t => t.id === event.active.id);
-    if (activeToken && activeToken.location !== 'pitch') setActiveTool('select');
-  };
+  const handleTokenClick = (tokenId: string) => {
+    if (selectedId === tokenId) {
+      setSelectedId(null);
+      return;
+    }
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveId(null);
-    if (!over) return;
+    if (activeTool === 'eraser') {
+      const token = tokens.find(t => t.id === tokenId);
+      if (token && token.type !== 'ball') {
+        saveToHistory(tokens, drawings);
+        setTokens(prev => prev.filter(t => t.id !== tokenId));
+      }
+      return;
+    }
 
-    const activeToken = tokens.find(t => t.id === active.id);
-    if (!activeToken) return;
+    if (activeTool === 'status') {
+      const p = tokens.find(t => t.id === tokenId && t.type !== 'ball');
+      if (p) {
+        saveToHistory(tokens, drawings);
+        setTokens(prev => prev.map(t => (t.id === p.id) ? { ...t, status: ['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'][(['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'].indexOf(t.status) + 1) % 6] as TokenStatus } : t));
+      }
+      return;
+    }
 
-    const overId = over.id as string;
+    const clickedToken = tokens.find(t => t.id === tokenId);
+    if (!clickedToken) return;
 
-    // --- CONSTRAINTS CHECK ---
-    const team = activeToken.type;
-    const teamTokens = tokens.filter(t => t.type === team);
-    const playersInAction = teamTokens.filter(t => t.location !== 'box');
-    const onPitchCount = teamTokens.filter(t => t.location === 'pitch').length;
-
-    // A. Handle movement to DUGZOUT
-    if (overId.startsWith('dugout-')) {
-      if (activeToken.type === 'ball') { toast.error("Le ballon reste sur le terrain"); return; }
-      
-      const [_, targetTeam, zone] = overId.split('-');
-      if (targetTeam !== activeToken.type) { toast.error("C'est la fosse adverse !"); return; }
-      
-      // Limit 16 check (if coming from box)
-      if (activeToken.location === 'box' && playersInAction.length >= 16) {
-        toast.error("Capacité maximale de l'équipe (16) atteinte !");
+    // Ball attachment logic
+    const selectedToken = tokens.find(t => t.id === selectedId);
+    if (selectedToken?.type === 'ball' && clickedToken.type !== 'ball') {
+      if (clickedToken.location !== 'pitch') {
+        setSelectedId(tokenId);
         return;
       }
-
+      saveToHistory(tokens, drawings);
       setTokens(prev => prev.map(t => {
-        if (t.id === activeToken.id) return { ...t, location: zone as TokenLocation, x: -1, y: -1, attachedToId: undefined };
-        if (t.type === 'ball' && t.attachedToId === activeToken.id) return { ...t, attachedToId: undefined };
+        if (t.id === selectedToken.id) return { ...t, x: clickedToken.x, y: clickedToken.y, attachedToId: clickedToken.id, location: clickedToken.location };
         return t;
       }));
+      setSelectedId(clickedToken.id);
+      toast.success("Balle récupérée !");
       return;
     }
 
-    // B. Handle movement to FIGURINE BOX
-    if (overId.startsWith('box-')) {
-      const [_, targetTeam] = overId.split('-');
-      if (targetTeam !== activeToken.type) { toast.error("C'est la boîte adverse !"); return; }
-      
-      setTokens(prev => prev.map(t => {
-        if (t.id === activeToken.id) return { ...t, location: 'box', x: -1, y: -1, attachedToId: undefined };
-        if (t.type === 'ball' && t.attachedToId === activeToken.id) return { ...t, attachedToId: undefined };
-        return t;
-      }));
+    // Selecting a carried ball selects the carrier
+    if (clickedToken.type === 'ball' && clickedToken.attachedToId) {
+      setSelectedId(clickedToken.attachedToId);
       return;
     }
 
-    // C. Handle movement to PITCH (Square coordinates 0-0 style)
-    if (/^\d+-\d+$/.test(overId)) {
-      const [overX, overY] = overId.split('-').map(Number);
-      
-      // Constraint checks for pitch
-      if (activeToken.type !== 'ball' ) {
-        // Limit 16 check (if coming from box)
-        if (activeToken.location === 'box' && playersInAction.length >= 16) {
-          toast.error("Capacité maximale de l'équipe (16) atteinte !");
-          return;
-        }
-        // Limit 14 on pitch
-        if (activeToken.location !== 'pitch' && onPitchCount >= 14) {
-          toast.error("Déjà 14 joueurs sur le terrain !");
-          return;
-        }
-        // Overlap check
-        const playerAtTarget = tokens.find(t => t.x === overX && t.y === overY && t.type !== 'ball' && t.id !== activeToken.id);
-        if (playerAtTarget) { toast.error("Case déjà occupée"); return; }
-      }
+    setSelectedId(tokenId);
+  };
 
-      let caughtBall = false;
-      const newTokens = tokens.map(t => {
-        if (t.id === activeToken.id) {
-          if (t.type === 'ball') {
-            const player = tokens.find(p => p.x === overX && p.y === overY && p.type !== 'ball');
-            return { ...t, x: overX, y: overY, location: 'pitch' as TokenLocation, attachedToId: player?.id };
-          }
-          return { ...t, x: overX, y: overY, location: 'pitch' as TokenLocation };
-        }
-        // Move carried ball along
-        if (t.type === 'ball' && activeToken.type !== 'ball') {
-           if (t.attachedToId === activeToken.id) return { ...t, x: overX, y: overY };
-           // Pickup ball if moving onto it
-           if (t.x === overX && t.y === overY) { 
-             caughtBall = true; 
-             return { ...t, x: overX, y: overY, attachedToId: activeToken.id }; 
-           }
-        }
-        return t;
-      }) as TokenData[];
-      
-      setTokens(newTokens);
-      if (caughtBall) toast.success("Balle récupérée !");
+  const movePlayerToZone = (tokenId: string, zone: TokenLocation) => {
+    const player = tokens.find(t => t.id === tokenId);
+    if (!player || player.type === 'ball') return;
+
+    saveToHistory(tokens, drawings);
+
+    setTokens(prev => prev.map(t => {
+      // Move player and detach ball if any
+      if (t.id === player.id) return { ...t, location: zone, x: -1, y: -1 };
+      // Move carried ball along to the zone (but remain attached)
+      if (t.type === 'ball' && t.attachedToId === player.id) return { ...t, location: zone, x: -1, y: -1 };
+      return t;
+    }));
+  };
+
+  const handleZoneClick = (team: 'blue' | 'red', zone: TokenLocation) => {
+    if (!selectedId) return;
+    const selectedToken = tokens.find(t => t.id === selectedId);
+    if (!selectedToken || selectedToken.type === 'ball') return;
+
+    if (selectedToken.type !== team) {
+      toast.error(`C'est la zone adverse !`);
+      return;
     }
+
+    // Constraint: 16 total per team
+    const teamTokens = tokens.filter(t => t.type === team);
+    const playersInAction = teamTokens.filter(t => t.location !== 'box');
+    if (selectedToken.location === 'box' && playersInAction.length >= 16) {
+      toast.error("Capacité maximale de l'équipe (16) atteinte !");
+      return;
+    }
+
+    movePlayerToZone(selectedId, zone);
+  };
+
+  const handleBoxClick = (team: 'blue' | 'red') => {
+    if (!selectedId) return;
+    const selectedToken = tokens.find(t => t.id === selectedId);
+    if (!selectedToken || selectedToken.type === 'ball') return;
+    if (selectedToken.type !== team) {
+      toast.error(`C'est la boîte adverse !`);
+      return;
+    }
+    movePlayerToZone(selectedId, 'box');
   };
 
   const handleSquareClick = (x: number, y: number) => {
-    if (activeTool === 'select' || activeTool === 'draw') return;
-    saveToHistory(tokens, drawings);
-    if (activeTool === 'eraser') { setTokens(prev => prev.filter(t => t.x !== x || t.y !== y)); setDrawings([]); return; }
+    if (activeTool === 'draw') return;
+    
+    if (activeTool === 'eraser') { 
+      const tAtPos = tokens.find(t => t.x === x && t.y === y && t.type !== 'ball');
+      if (tAtPos) {
+        saveToHistory(tokens, drawings);
+        setTokens(prev => prev.filter(t => t.id !== tAtPos.id));
+      }
+      setDrawings([]); 
+      return; 
+    }
+
     if (activeTool === 'status') {
       const p = tokens.find(t => t.x === x && t.y === y && t.type !== 'ball');
-      if (p) setTokens(prev => prev.map(t => (t.id === p.id) ? { ...t, status: ['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'][(['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'].indexOf(t.status) + 1) % 6] as TokenStatus } : t));
+      if (p) {
+        saveToHistory(tokens, drawings);
+        setTokens(prev => prev.map(t => (t.id === p.id) ? { ...t, status: ['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'][(['up', 'prone', 'stunned', 'bonehead', 'stupid', 'fourchette'].indexOf(t.status) + 1) % 6] as TokenStatus } : t));
+      }
       return;
     }
-    if (activeTool === 'ball') {
-      const p = tokens.find(t => t.x === x && t.y === y && t.type !== 'ball');
-      setTokens(prev => [...prev.filter(t => t.type !== 'ball'), { id: `ball-${Date.now()}`, type: 'ball', x, y, status: 'up', location: 'pitch', attachedToId: p?.id } as TokenData]);
-      setActiveTool('select');
+
+    if (!selectedId) return;
+
+    const selectedToken = tokens.find(t => t.id === selectedId);
+    if (!selectedToken) return;
+
+    saveToHistory(tokens, drawings);
+
+    // Movement constraints
+    if (selectedToken.type !== 'ball') {
+      const teamTokens = tokens.filter(t => t.type === selectedToken.type);
+      const playersInAction = teamTokens.filter(t => t.location !== 'box');
+      const onPitchCount = teamTokens.filter(t => t.location === 'pitch').length;
+
+      if (selectedToken.location === 'box' && playersInAction.length >= 16) {
+        toast.error("Capacité maximale de l'équipe (16) atteinte !");
+        return;
+      }
+      if (selectedToken.location !== 'pitch' && onPitchCount >= 14) {
+        toast.error("Déjà 14 joueurs sur le terrain !");
+        return;
+      }
+      const playerAtTarget = tokens.find(t => t.x === x && t.y === y && t.type !== 'ball' && t.id !== selectedToken.id);
+      if (playerAtTarget) { toast.error("Case déjà occupée"); return; }
     }
+
+    let caughtBall = false;
+    const newTokens = tokens.map(t => {
+      if (t.id === selectedToken.id) {
+        if (t.type === 'ball') {
+          const player = tokens.find(p => p.x === x && p.y === y && p.type !== 'ball');
+          return { ...t, x, y, location: 'pitch' as TokenLocation, attachedToId: player?.id };
+        }
+        return { ...t, x, y, location: 'pitch' as TokenLocation };
+      }
+      // Move carried ball along
+      if (t.type === 'ball' && selectedToken.type !== 'ball') {
+         if (t.attachedToId === selectedToken.id) return { ...t, x, y };
+         // Pickup ball if moving onto it
+         if (t.x === x && t.y === y) { 
+           caughtBall = true; 
+           return { ...t, x, y, attachedToId: selectedToken.id }; 
+         }
+      }
+      return t;
+    }) as TokenData[];
+    
+    setTokens(newTokens);
+    if (caughtBall) toast.success("Balle récupérée !");
+  };
+
+  const findNearestFreeSquare = (x: number, y: number, currentTokens: TokenData[]): { x: number, y: number } => {
+    const COLS = 26;
+    const ROWS = 15;
+    
+    const isSquareOccupied = (tx: number, ty: number) => {
+      return currentTokens.some(t => t.location === 'pitch' && t.x === tx && t.y === ty && t.type !== 'ball');
+    };
+
+    if (!isSquareOccupied(x, y)) return { x, y };
+
+    // Spiral search for nearest free square
+    for (let r = 1; r < 5; r++) {
+      for (let dx = -r; dx <= r; dx++) {
+        for (let dy = -r; dy <= r; dy++) {
+          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && !isSquareOccupied(nx, ny)) {
+            return { x: nx, y: ny };
+          }
+        }
+      }
+    }
+    return { x, y };
+  };
+
+  const handleDetachBall = () => {
+    const ball = tokens.find(t => t.type === 'ball');
+    if (!ball || !ball.attachedToId) return;
+
+    const carrier = tokens.find(t => t.id === ball.attachedToId);
+    if (!carrier) return;
+
+    saveToHistory(tokens, drawings);
+    const dropPos = findNearestFreeSquare(carrier.x, carrier.y, tokens);
+
+    setTokens(prev => prev.map(t => t.type === 'ball' ? { ...t, attachedToId: undefined, x: dropPos.x, y: dropPos.y } : t));
+    toast.success("Balle lâchée sur une case libre");
   };
 
   const handleFullscreen = () => {
@@ -385,7 +465,10 @@ export default function BBPusherPage() {
   const carrier = ballItem?.attachedToId ? tokens.find(t => t.id === ballItem.attachedToId) : null;
 
   return (
-    <main className={`bbpusher-page ${isFullscreen ? 'fullscreen' : ''}`}>
+    <main 
+      className={`bbpusher-page ${isFullscreen ? 'fullscreen' : ''}`}
+      onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
+    >
       <header className="tool-header">
         <div className="header-left">
           <BackButton href="/ressources" title="Retour" />
@@ -402,8 +485,16 @@ export default function BBPusherPage() {
           <div className="tool-group">
             <Tooltip text="Sélect. intelligente" position="bottom"><button className={`tool-btn ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button></Tooltip>
             <Tooltip text="Annotation" position="bottom"><button className={`tool-btn ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} color="#ef4444" /></button></Tooltip>
-            <Tooltip text="Joueurs" position="bottom"><button className={`tool-btn ${activeTool === 'player' ? 'active' : ''}`} onClick={() => setActiveTool('player')}><Users size={18} /></button></Tooltip>
-            <Tooltip text="Ballon" position="bottom"><button className={`tool-btn ${activeTool === 'ball' ? 'active' : ''}`} onClick={() => setActiveTool('ball')}><BallIcon size={18} /></button></Tooltip>
+            <Tooltip text={ballItem?.attachedToId ? "Détacher le ballon du joueur" : "Ballon libre (au sol)"} position="bottom">
+              <button 
+                className={`tool-btn`} 
+                onClick={handleDetachBall}
+                disabled={!ballItem?.attachedToId}
+                style={{ opacity: !ballItem?.attachedToId ? 0.4 : 1 }}
+              >
+                <BallIcon size={18} />
+              </button>
+            </Tooltip>
             <Tooltip text="État du joueur" position="bottom"><button className={`tool-btn ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} className="status-tool-icon" /></button></Tooltip>
             <Tooltip text="Gomme / Effacer annotations" position="bottom"><button className={`tool-btn ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => setActiveTool('eraser')}><Eraser size={18} /></button></Tooltip>
           </div>
@@ -436,8 +527,12 @@ export default function BBPusherPage() {
       <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Pusher">
         <div className="help-content">
           <section className="help-section">
-            <h3><MousePointer2 size={16} /> Sélection intelligente</h3>
-            <p>Outils par défaut. Permet de déplacer n'importe quel élément. Si un joueur passe sur le ballon, il le ramasse automatiquement.</p>
+            <h3><MousePointer2 size={16} /> Sélection & Déplacement</h3>
+            <p>Cliquez sur un joueur ou le ballon pour le sélectionner. Cliquez ensuite sur une case du terrain, une zone de la fosse ou dans la réserve pour le déplacer.</p>
+          </section>
+          <section className="help-section">
+            <h3><BallIcon size={16} /> Gestion du Ballon</h3>
+            <p>Pour attacher le ballon à un joueur : sélectionnez le ballon puis cliquez sur le joueur. Une fois attaché, le bouton "Ballon" de la barre d'outils devient une ancre pour détacher la balle.</p>
           </section>
           <section className="help-section">
             <h3><Pencil size={16} /> Annotation</h3>
@@ -446,14 +541,6 @@ export default function BBPusherPage() {
           <section className="help-section">
             <h3><Wand2 size={16} /> États du joueur</h3>
             <p>Cliquez sur un joueur pour changer son état : <strong>Couché</strong>, <strong>Sonné</strong>, <strong>Cerveau Lent</strong> (Os), <strong>Débile</strong> (Crocs) ou <strong>Féroce</strong> (Fourchette).</p>
-          </section>
-          <section className="help-section">
-            <h3><Anchor size={16} /> Gestion du Ballon</h3>
-            <p>Le ballon peut être déplacé librement ou attaché à un joueur. Utilisez le bouton "Ancre" qui apparaît à côté du porteur pour faire tomber la balle.</p>
-          </section>
-          <section className="help-section">
-            <h3><Undo2 size={16} /> Annuler & Fosses</h3>
-            <p>Utilisez "Annuler" pour revenir en arrière. Glissez les joueurs vers les zones latérales (KO, Blessés) pour les sortir du terrain.</p>
           </section>
         </div>
         <style jsx>{`
@@ -469,64 +556,93 @@ export default function BBPusherPage() {
         onClose={() => setIsClearModalOpen(false)}
         onConfirm={async () => {
           saveToHistory(tokens, drawings);
-          setTokens([]);
+          setTokens([{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }]);
           setDrawings([]);
           setIsClearModalOpen(false);
+          setSelectedId(null);
           toast.success("Plateau tactique vidé");
         }}
         title="Tout vider"
-        message="Voulez-vous vraiment vider tout le plateau ? Cela effacera tous les joueurs et toutes les annotations."
+        message="Voulez-vous vraiment vider tout le plateau ? Cela effacera tous les joueurs et toutes les annotations. Le ballon sera remis au centre."
         confirmLabel="Tout vider"
         isDanger={true}
       />
-+
 
       <div className="tool-layout">
-        <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-          <div className="work-area">
-            <div className="global-team-area blue">
-              <FigurineBox 
+        <div className="work-area">
+          <div className="global-team-area blue">
+            <FigurineBox 
+              team="blue" 
+              roster={blueRoster?.roster || []} 
+              tokens={tokens.filter(t => t.type === 'blue' && t.location === 'box')}
+              rosterList={rosters}
+              onRosterSelect={(file) => handleRosterSelect('blue', file)}
+              onTokenClick={handleTokenClick}
+              onBoxClick={() => handleBoxClick('blue')}
+              selectedId={selectedId}
+              isLoading={isBlueLoading}
+              showTooltips={showTooltips}
+              allTokens={tokens}
+            />
+            <div className="dugout-container">
+              <Dugout 
                 team="blue" 
-                roster={blueRoster?.roster || []} 
-                tokens={tokens.filter(t => t.type === 'blue' && t.location === 'box')}
-                rosterList={rosters}
-                onRosterSelect={(file) => handleRosterSelect('blue', file)}
-                isLoading={isBlueLoading}
-                showTooltips={showTooltips}
-              />
-              <div className="dugout-container">
-                <Dugout team="blue" tokens={tokens.filter(t => t.type === 'blue' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))} activeId={activeId} showTooltips={showTooltips} />
-              </div>
-            </div>
-
-            <div className="pitch-viewport">
-              <div ref={resizerRef} className="pitch-resizer" style={{ width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`, height: `${(rotation === 90 ? 1308 : 758) * finalScale}px` }}>
-                <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
-                  <Pitch tokens={tokens.filter(t => t.location === 'pitch')} onSquareClick={handleSquareClick} activeId={activeId} activeTool={activeTool} drawings={drawings} onDrawUpdate={(d) => { saveToHistory(tokens, drawings); setDrawings(d); }} rotation={rotation} finalScale={finalScale} showTooltips={showTooltips} />
-                  {carrier && <button className="drop-ball-btn" style={{ left: `${carrier.x * 50 + 60}px`, top: `${carrier.y * 50}px` }} onClick={() => { saveToHistory(tokens, drawings); setTokens(prev => prev.map(t => t.id === ballItem!.id ? { ...t, attachedToId: undefined, y: Math.min(14, carrier!.y + 1) } : t)); }} title="Lâcher"><Anchor size={14} /></button>}
-                </div>
-              </div>
-            </div>
-
-            <div className="global-team-area red">
-              <div className="dugout-container">
-                <Dugout team="red" tokens={tokens.filter(t => t.type === 'red' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))} activeId={activeId} showTooltips={showTooltips} />
-              </div>
-              <FigurineBox 
-                team="red" 
-                roster={redRoster?.roster || []} 
-                tokens={tokens.filter(t => t.type === 'red' && t.location === 'box')}
-                rosterList={rosters}
-                onRosterSelect={(file) => handleRosterSelect('red', file)}
-                isLoading={isRedLoading}
-                showTooltips={showTooltips}
+                tokens={tokens.filter(t => t.type === 'blue' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))} 
+                onTokenClick={handleTokenClick}
+                onZoneClick={(zone) => handleZoneClick('blue', zone)}
+                selectedId={selectedId} 
+                showTooltips={showTooltips} 
+                allTokens={tokens}
               />
             </div>
           </div>
-          <DragOverlay dropAnimation={{ sideEffects: defaultDropAnimationSideEffects({ styles: { active: { opacity: '0.4' } } }) }}>
-            {activeId ? <Token token={tokens.find(t => t.id === activeId)!} isOverlay activeTool={activeTool} rotation={rotation} hasBall={!!tokens.find(t => t.type === 'ball' && t.attachedToId === activeId)} showTooltip={false} /> : null}
-          </DragOverlay>
-        </DndContext>
+
+          <div className="pitch-viewport">
+            <div ref={resizerRef} className="pitch-resizer" style={{ width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`, height: `${(rotation === 90 ? 1308 : 758) * finalScale}px` }}>
+              <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
+                <Pitch 
+                  tokens={tokens.filter(t => t.location === 'pitch')} 
+                  onSquareClick={handleSquareClick} 
+                  onTokenClick={handleTokenClick}
+                  selectedId={selectedId} 
+                  activeTool={activeTool} 
+                  drawings={drawings} 
+                  onDrawUpdate={(d) => { saveToHistory(tokens, drawings); setDrawings(d); }} 
+                  rotation={rotation} 
+                  finalScale={finalScale} 
+                  showTooltips={showTooltips} 
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="global-team-area red">
+            <div className="dugout-container">
+              <Dugout 
+                team="red" 
+                tokens={tokens.filter(t => t.type === 'red' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))} 
+                onTokenClick={handleTokenClick}
+                onZoneClick={(zone) => handleZoneClick('red', zone)}
+                selectedId={selectedId} 
+                showTooltips={showTooltips} 
+                allTokens={tokens}
+              />
+            </div>
+            <FigurineBox 
+              team="red" 
+              roster={redRoster?.roster || []} 
+              tokens={tokens.filter(t => t.type === 'red' && t.location === 'box')}
+              rosterList={rosters}
+              onRosterSelect={(file) => handleRosterSelect('red', file)}
+              onTokenClick={handleTokenClick}
+              onBoxClick={() => handleBoxClick('red')}
+              selectedId={selectedId}
+              isLoading={isRedLoading}
+              showTooltips={showTooltips}
+              allTokens={tokens}
+            />
+          </div>
+        </div>
       </div>
     </main>
   );

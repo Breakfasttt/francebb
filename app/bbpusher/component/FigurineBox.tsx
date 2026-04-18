@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDroppable } from '@dnd-kit/core';
 import { TokenData, PlayerRosterInfo } from '../page';
 import Token from './Token';
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
@@ -8,11 +7,15 @@ import './FigurineBox.css';
 interface FigurineBoxProps {
   team: 'blue' | 'red';
   roster: PlayerRosterInfo[];
-  tokens: TokenData[]; // Tokens currently in the box
+  tokens: TokenData[]; 
   rosterList: { name: string; file: string }[];
   onRosterSelect: (file: string) => void;
+  onTokenClick: (id: string) => void;
+  onBoxClick: () => void;
+  selectedId: string | null;
   isLoading?: boolean;
   showTooltips?: boolean;
+  allTokens?: TokenData[];
 }
 
 const FigurineBox: React.FC<FigurineBoxProps> = ({ 
@@ -21,15 +24,21 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
   tokens, 
   rosterList, 
   onRosterSelect, 
+  onTokenClick,
+  onBoxClick,
+  selectedId,
   isLoading,
-  showTooltips
+  showTooltips,
+  allTokens = []
 }) => {
-  const { setNodeRef, isOver } = useDroppable({
-    id: `box-${team}`,
-  });
-
   return (
-    <div ref={setNodeRef} className={`figurine-box ${team} ${isOver ? 'drag-over' : ''} ${isLoading ? 'loading' : ''}`}>
+    <div 
+      className={`figurine-box ${team} ${isLoading ? 'loading' : ''}`}
+      onClick={(e) => { 
+        if ((e.target as HTMLElement).closest('.tokens-list') || (e.target as HTMLElement).closest('.box-header')) return; 
+        onBoxClick(); 
+      }}
+    >
       <div className="box-header">
         <label>{team === 'blue' ? 'Équipe Bleue' : 'Équipe Rouge'}</label>
         <ClassicSelect 
@@ -63,13 +72,19 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
                   <span className="player-qty">({player.qty})</span>
                 </div>
                 <div className="tokens-list">
-                  {playerTokens.map(token => (
-                    <Token 
-                      key={token.id} 
-                      token={token} 
-                      showTooltip={showTooltips}
-                    />
-                  ))}
+                  {playerTokens.map(token => {
+                    const carriedBall = allTokens.find(t => t.type === 'ball' && t.attachedToId === token.id);
+                    return (
+                      <Token 
+                        key={token.id} 
+                        token={token} 
+                        showTooltip={showTooltips}
+                        onClick={() => onTokenClick(token.id)}
+                        isSelected={selectedId === token.id}
+                        hasBall={!!carriedBall}
+                      />
+                    );
+                  })}
                   {playerTokens.length === 0 && <div className="empty-slot">Vidé</div>}
                 </div>
               </div>
