@@ -86,7 +86,7 @@ export default async function ArticlesPage({
       <PageHeader 
         title="Articles & Chroniques" 
         subtitle="Découvrez les dernières news, guides et récits de la communauté."
-        backHref="/" 
+        backHref="/"
       />
 
       <div className="articles-layout">

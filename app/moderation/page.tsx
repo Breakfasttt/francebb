@@ -81,8 +81,6 @@ export default function ModerationPage() {
       <PageHeader 
         title={<><span>Modération</span></>}
         subtitle="Suivi des signalements et audit des actions"
-        backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <div className="moderation-content-layout">

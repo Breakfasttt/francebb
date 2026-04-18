@@ -576,7 +576,7 @@ export default function BBSchemePage() {
     >
       <header className="tool-header">
         <div className="header-left">
-          <BackButton href="/ressources" title="Retour" />
+          <BackButton href="/" title="Retour" />
           <div className="title-group">
             <h1 className="title-modern">BB<span>Scheme</span></h1>
           </div>

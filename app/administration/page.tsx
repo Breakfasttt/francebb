@@ -76,8 +76,6 @@ export default function AdministrationPage() {
       <PageHeader 
         title={<><span>Administration</span></>}
         subtitle="Gestion avancée de la plateforme"
-        backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <div className="admin-content-layout">

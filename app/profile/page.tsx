@@ -129,8 +129,6 @@ export default function ProfilePage() {
       <PageHeader
         title="Mon Compte"
         subtitle="Gérez vos informations et votre activité"
-        backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <div className="profile-content-layout">

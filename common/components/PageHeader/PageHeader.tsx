@@ -9,8 +9,8 @@ interface PageHeaderProps {
   title: ReactNode;
   /** Un sous-titre optionnel */
   subtitle?: ReactNode;
-  /** Le lien de retour. Si défini, affiche le BackButton à gauche. */
-  backHref?: string;
+  /** Le lien de retour. Si omis, utilisera router.back(). Si défini sur null, n'affiche pas de bouton. */
+  backHref?: string | null;
   /** Titre au survol du BackButton */
   backTitle?: string;
   /** Style inline pour le header */
@@ -32,7 +32,7 @@ export default function PageHeader({
 }: PageHeaderProps) {
   return (
     <header className={`page-header-container ${className}`.trim()} style={style}>
-      {backHref && (
+      {backHref !== null && (
         <div className="page-header-back-wrapper">
           <BackButton 
             href={backHref} 

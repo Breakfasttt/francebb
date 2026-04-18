@@ -68,7 +68,6 @@ export default async function ForumPage() {
         title={<>Le Forum France <span>Blood Bowl</span></>}
         subtitle="L'espace de discussion de la communauté Blood Bowl française"
         backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <div className="forum-layout">
