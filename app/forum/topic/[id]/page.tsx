@@ -209,7 +209,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           </span>
         }
         subtitle={<span style={{ color: 'var(--accent)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />}
-        backHref={`/forum/${topic.forumId}`}
         backTitle="Retour au forum"
       />
 

@@ -59,6 +59,7 @@ export default async function LiguesPage({
       <PageHeader 
         title="L'Annuaire des Ligues" 
         subtitle="Trouvez votre club et rejoignez la communauté"
+        backHref="/"
       />
 
       <main className="container">

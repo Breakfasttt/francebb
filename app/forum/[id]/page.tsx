@@ -113,8 +113,6 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           </span>
         }
         subtitle={forum.description}
-        backHref="/forum"
-        backTitle="Retour au forum"
       />
  
       <main className="container forum-container">
