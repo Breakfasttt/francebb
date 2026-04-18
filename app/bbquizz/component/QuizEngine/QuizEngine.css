@@ -17,9 +17,10 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Aligner en haut */
   align-items: center;
   width: 100%;
+  padding-top: 0;
 }
 
 .quiz-welcome-card, .quiz-result-card {
