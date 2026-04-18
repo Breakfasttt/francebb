@@ -77,12 +77,14 @@ export default function RessourcesPage() {
   const user = session?.user as any;
 
   return (
-    <main className="container ressources-page">
+    <div className="resources-page-wrapper">
       <PageHeader
         title="Ressources"
         subtitle="Outils et guides pour les coachs de Blood Bowl France"
         backHref="/"
       />
+
+      <main className="container ressources-page">
 
       <div className="ressources-layout">
         <ResourceFilterSidebar 
@@ -161,5 +163,6 @@ export default function RessourcesPage() {
         isDanger
       />
     </main>
+    </div>
   );
 }

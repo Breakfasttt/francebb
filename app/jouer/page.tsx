@@ -113,7 +113,6 @@ export default async function HowToPlayPage() {
           </div>
         </PremiumCard>
       </footer>
-      </footer>
     </main>
     </div>
   );

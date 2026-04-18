@@ -86,12 +86,14 @@ export default async function ArticlesPage({
   const availableTags = allTags.map((t) => t.name);
 
   return (
-    <main className="container articles-page">
+    <div className="articles-page-wrapper">
       <PageHeader 
         title="Articles & Chroniques" 
         subtitle="Découvrez les dernières news, guides et récits de la communauté."
         backHref="/"
       />
+
+      <main className="container articles-page">
 
       <div className="articles-layout">
         <ArticleFilterSidebar 
@@ -134,5 +136,6 @@ export default async function ArticlesPage({
         </div>
       </div>
     </main>
+    </div>
   );
 }

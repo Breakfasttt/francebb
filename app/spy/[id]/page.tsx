@@ -136,13 +136,15 @@ export default function SpyProfilePage() {
   };
 
   return (
-    <main className="container profile-page-container">
+    <div className="spy-page-wrapper">
       <PageHeader 
         title={<>Profil de <span>{user.name}</span></>} 
         subtitle={`Consultez le profil de ${user.name}`}
         backHref="/"
         backTitle="Retour à l'accueil"
       />
+
+      <main className="container profile-page-container">
 
       <div className="profile-content-layout">
         <ProfileSidebar
@@ -169,5 +171,6 @@ export default function SpyProfilePage() {
         </div>
       </div>
     </main>
+    </div>
   );
 }

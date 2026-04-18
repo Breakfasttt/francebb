@@ -57,12 +57,9 @@ export default async function MembersPage() {
   return (
     <div className="members-page">
       <PageHeader
-        title={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <Users size={32} className="text-secondary" />
-            <span>Membres</span>
-          </div>
-        }
+        title="Membres"
+        subtitle="Annuaire des coachs de la communauté"
+        backHref="/"
       />
 
       <main className="container">

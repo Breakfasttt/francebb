@@ -137,18 +137,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 140px;
 }
 
 :root .page-header-back-wrapper {
-  position: static !important;
-  transform: none !important;
+  position: absolute !important;
+  left: 3rem;
+  top: 50%;
+  transform: translateY(-50%) !important;
 }
 
 :root .page-header-content {
   max-width: none;
   width: auto;
-  text-align: left;
+  text-align: center;
 }
 
 :root .page-header-title,

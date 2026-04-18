@@ -1,5 +1,9 @@
 .ligues-page {
   padding-top: 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .ligues-top-bar {

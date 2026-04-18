@@ -59,6 +59,7 @@ export default async function LigueDetailPage({
     <div className="ligue-detail-page">
       <PageHeader 
         title={`${ligue.name} (${ligue.acronym})`} 
+        subtitle={`Informations et classement de la ligue ${ligue.name}`}
         backHref="/ligues" 
       />
 

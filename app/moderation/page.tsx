@@ -77,11 +77,13 @@ export default function ModerationPage() {
   if (!isModerator(userRole)) return null;
 
   return (
-    <main className="container moderation-container">
+    <div className="moderation-page-wrapper">
       <PageHeader 
         title={<><span>Modération</span></>}
         subtitle="Suivi des signalements et audit des actions"
       />
+
+      <main className="container moderation-container">
 
       <div className="moderation-content-layout">
         <ModerationSidebar activeTab={activeTab} onTabChange={handleTabChange} counts={counts} />
@@ -121,5 +123,6 @@ export default function ModerationPage() {
         </div>
       </div>
     </main>
+    </div>
   );
 }

@@ -72,11 +72,13 @@ export default function AdministrationPage() {
   const isSuperAdmin = getRolePower(userRole) >= ROLE_POWER.SUPERADMIN;
 
   return (
-    <main className="container admin-container">
+    <div className="admin-page-wrapper">
       <PageHeader 
         title={<><span>Administration</span></>}
         subtitle="Gestion avancée de la plateforme"
       />
+
+      <main className="container admin-container">
 
       <div className="admin-content-layout">
         <AdminSidebar activeTab={activeTab} onTabChange={handleTabChange} isSuperAdmin={isSuperAdmin} />
@@ -111,5 +113,6 @@ export default function AdministrationPage() {
         </div>
       </div>
     </main>
+    </div>
   );
 }
