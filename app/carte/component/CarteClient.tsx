@@ -120,26 +120,28 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
           display: flex;
           align-items: center;
           gap: 1rem;
-          pointer-events: none;
+          pointer-events: auto; /* Changed to auto so buttons are clickable */
           will-change: transform;
         }
 
         .sliding-toggle {
           display: flex;
-          background: #141414;
+          background: var(--card-bg);
           padding: 4px;
           border-radius: 50px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid var(--glass-border);
           position: relative;
           pointer-events: auto;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+          /* Removed backdrop-filter to prevent text blur */
+          isolation: isolate;
         }
 
         .fullscreen-toggle-btn {
             pointer-events: auto;
-            background: #141414;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--foreground);
             width: 44px;
             height: 44px;
             border-radius: 50%;
@@ -148,11 +150,13 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            /* Removed backdrop-filter to prevent icon blur */
         }
 
         .fullscreen-toggle-btn:hover {
             background: var(--primary);
+            color: white;
             transform: scale(1.1);
             border-color: var(--primary);
         }
@@ -166,7 +170,8 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
           background: var(--primary);
           border-radius: 50px;
           transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 10px rgba(194, 29, 29, 0.4);
+          box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.4);
+          z-index: 0;
         }
 
         .sliding-bg.ligues {
@@ -182,18 +187,17 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
           padding: 0.6rem 1.5rem;
           border: none;
           background: none;
-          color: rgba(255, 255, 255, 0.9);
+          color: var(--text-muted);
           font-weight: 800;
           font-size: 0.85rem;
           cursor: pointer;
           transition: color 0.3s;
           white-space: nowrap;
-          text-rendering: optimizeLegibility;
           -webkit-font-smoothing: antialiased;
         }
 
         .toggle-option.active {
-          color: white;
+          color: white; /* Active text on primary background always looks best white */
         }
 
         .map-loading {
@@ -207,10 +211,11 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
         }
         .no-points-msg {
            text-align: center;
-           color: var(--text-muted);
+           color: var(--foreground); /* More visible */
+           font-weight: 700;
            font-style: italic;
-           font-size: 0.9rem;
-           margin-top: 0.5rem;
+           font-size: 0.95rem;
+           margin: 0;
         }
         .map-legend {
           flex-shrink: 0;
@@ -219,11 +224,12 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
           left: 50%;
           transform: translateX(-50%);
           z-index: 1000;
-          background: rgba(0, 0, 0, 0.7);
-          padding: 0.5rem 1.2rem;
+          background: var(--card-bg);
+          padding: 0.8rem 1.5rem;
           border-radius: 50px;
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(12px);
+          border: 1px solid var(--glass-border);
+          box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
       `}</style>
     </div>

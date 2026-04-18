@@ -22,10 +22,11 @@ export default async function CartePage() {
   return (
     <div className="carte-page-fixed">
       <PageHeader 
-        title={<><Map className="icon-accent" size={32} /> La Carte du Blood Bowl</>}
-        subtitle="Localisez les prochains tournois et les ligues à travers la France"
+        title={<><Map className="icon-accent" size={24} /> La Carte du Blood Bowl</>}
+        subtitle="Localisez les tournois et les ligues à travers la France"
         backHref="/"
         backTitle="Accueil"
+        className="map-page-header"
       />
 
       <div className="carte-content-body">

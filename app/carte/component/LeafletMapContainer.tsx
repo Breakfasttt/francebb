@@ -68,7 +68,7 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
 
   return (
     <MapContainer 
-      center={center} 
+      center={[46.2276, 2.2137]} 
       zoom={6} 
       style={{ height: "100%", width: "100%", borderRadius: isFullscreen ? "0" : "24px" }}
       scrollWheelZoom={true}
