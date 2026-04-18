@@ -2,13 +2,13 @@
 [data-theme='blood'] {
   --background: #120000;
   --bg-gradient: radial-gradient(circle at 50% 50%, #3a0000 0%, #0a0000 100%);
-  --foreground: #fdeaea;
-  --primary: #ff0000;
-  --primary-hover: #cc0000;
-  --secondary: #2d0a0a;
-  --accent: #ff4d4d;
-  --card-bg: rgba(50, 0, 0, 0.5);
-  --glass-border: rgba(255, 0, 0, 0.25);
+  --foreground: #f2d9d9;
+  --primary: #9e1313;
+  --primary-hover: #7b0d0d;
+  --secondary: #1a0505;
+  --accent: #bc3e3e;
+  --card-bg: rgba(30, 0, 0, 0.6);
+  --glass-border: rgba(158, 19, 19, 0.3);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
   --nav-bg: rgba(20, 0, 0, 0.92);
   --footer-bg: rgba(15, 0, 0, 0.98);
@@ -16,16 +16,16 @@
   --text-secondary: #e0a0a0;
   --glass-bg: rgba(30, 0, 0, 0.5);
   --btn-shadow: rgba(255, 0, 0, 0.15);
-  --unread-marker: #ff4d4d;
-  --primary-transparent: rgba(255, 0, 0, 0.2);
-  --category-header-bg: rgba(120, 0, 0, 0.4);
-  --admin-bg: rgba(100, 0, 0, 0.1);
-  --admin-border: rgba(255, 0, 0, 0.3);
-  --danger: #ff0000;
-  --warning: #ffcc00;
-  --success: #39ff14;
-  --highlight: #ff4d4d;
-  --highlight-hover: #ff0000;
+  --unread-marker: #9e1313;
+  --primary-transparent: rgba(158, 19, 19, 0.15);
+  --category-header-bg: rgba(90, 0, 0, 0.5);
+  --admin-bg: rgba(90, 0, 0, 0.08);
+  --admin-border: rgba(158, 19, 19, 0.4);
+  --danger: #9e1313;
+  --warning: #cc9900;
+  --success: #2d6622;
+  --highlight: #bc3e3e;
+  --highlight-hover: #a11b1b;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(120, 0, 0, 0.4);
   --theme-overlay: rgba(255, 0, 0, 0.2);
@@ -43,10 +43,10 @@
   --home-mini-btn-color: #ff4d4d;
 
   /* RGB variants for transparency effects */
-  --accent-rgb: 255, 77, 77;
-  --accent-transparent: rgba(255, 77, 77, 0.15);
-  --success-rgb: 57, 255, 20;
-  --primary-rgb: 255, 0, 0;
+  --accent-rgb: 188, 62, 62;
+  --accent-transparent: rgba(188, 62, 62, 0.15);
+  --success-rgb: 45, 102, 34;
+  --primary-rgb: 158, 19, 19;
 
   /* Button System */
   --btn-classic-bg: var(--glass-bg);

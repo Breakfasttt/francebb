@@ -2,31 +2,31 @@
 [data-theme='malpierre'] {
   --background: #020a02;
   --bg-gradient: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
-  --foreground: #e6ffe6;
+  --foreground: #d9ead9;
   --primary: #0a4d0a;
   /* Dark Warpstone Green */
-  --primary-hover: #0d610d;
-  --secondary: #0c250c;
-  --accent: #9bff70;
-  --card-bg: rgba(0, 30, 5, 0.45);
-  --glass-border: rgba(57, 255, 20, 0.25);
+  --primary-hover: #083d08;
+  --secondary: #061506;
+  --accent: #5e9e42;
+  --card-bg: rgba(0, 20, 5, 0.6);
+  --glass-border: rgba(94, 158, 66, 0.3);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
   --nav-bg: rgba(2, 10, 2, 0.92);
   --footer-bg: rgba(1, 5, 1, 0.98);
   --text-muted: #5bb35b;
-  --text-secondary: #8cfc00;
-  --glass-bg: rgba(0, 25, 0, 0.5);
-  --btn-shadow: rgba(57, 255, 20, 0.12);
-  --unread-marker: #39ff14;
-  --primary-transparent: rgba(10, 77, 10, 0.35);
-  --category-header-bg: rgba(10, 50, 10, 0.5);
+  --text-secondary: #5e9e42;
+  --glass-bg: rgba(0, 20, 0, 0.5);
+  --btn-shadow: rgba(94, 158, 66, 0.15);
+  --unread-marker: #2d6622;
+  --primary-transparent: rgba(10, 77, 10, 0.25);
+  --category-header-bg: rgba(10, 45, 10, 0.6);
   --admin-bg: rgba(10, 77, 10, 0.08);
-  --admin-border: rgba(57, 255, 20, 0.3);
-  --danger: #ff4444;
-  --warning: #eab308;
-  --success: #39ff14;
-  --highlight: #9bff70;
-  --highlight-hover: #7acc00;
+  --admin-border: rgba(94, 158, 66, 0.3);
+  --danger: #992222;
+  --warning: #cc9900;
+  --success: #2d7d32;
+  --highlight: #5e9e42;
+  --highlight-hover: #4c8a32;
   --header-foreground: var(--foreground);
   --category-hover-bg: rgba(10, 77, 10, 0.3);
   --theme-overlay: rgba(255, 255, 255, 0.15);
@@ -44,9 +44,9 @@
   --home-mini-btn-color: #39ff14;
 
   /* RGB variants for transparency effects */
-  --accent-rgb: 155, 255, 112;
-  --accent-transparent: rgba(155, 255, 112, 0.15);
-  --success-rgb: 57, 255, 20;
+  --accent-rgb: 94, 158, 66;
+  --accent-transparent: rgba(94, 158, 66, 0.15);
+  --success-rgb: 45, 125, 50;
   --primary-rgb: 10, 77, 10;
 
   /* BackButton System */
