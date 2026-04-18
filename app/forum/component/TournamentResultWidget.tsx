@@ -121,7 +121,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
           ) : (
             <>
               {hasRounds && (
-                <div className="widget-view-toggle" style={{ display: 'flex', gap: '0.75rem', marginBottom: '1rem', background: 'rgba(0,0,0,0.1)', padding: '4px', borderRadius: '12px' }}>
+                <div className="widget-view-toggle">
                   <ToggleButton 
                     active={activeTab === 'ranking'} 
                     onClick={() => setActiveTab('ranking')}
@@ -192,7 +192,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                 <div className="matches-view-container">
                   {currentRound && (
                     <div className="matches-toggle-inner">
-                      <div className="round-navigation" style={{ marginTop: '0' }}>
+                      <div className="round-navigation">
                         <ClassicButton size="sm" onClick={handlePrevRound} disabled={rounds.length <= 1} icon={<ChevronLeft size={18} />} />
                         <div className="round-info">
                           <span className="current-round-label">Ronde {currentRound.roundNumber}</span>
@@ -206,7 +206,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                           <div key={match.id} className="match-linear-row">
                             <div className="match-table-num">T{match.tableNumber || '-'}</div>
                             <div className="match-participant left">
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'flex-end' }}>
+                              <div className="participant-header">
                                 {match.coach1TD > match.coach2TD && <Trophy size={14} color="var(--accent)" />}
                                 <span className="participant-name">{match.coach1Name}</span>
                               </div>
@@ -218,7 +218,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                               <span className={`score-val ${match.coach2TD > match.coach1TD ? 'bold' : ''}`}>{match.coach2TD}</span>
                             </div>
                             <div className="match-participant right">
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                              <div className="participant-header">
                                 <span className="participant-name">{match.coach2Name}</span>
                                 {match.coach2TD > match.coach1TD && <Trophy size={14} color="var(--accent)" />}
                               </div>

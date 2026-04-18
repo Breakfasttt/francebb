@@ -1,5 +1,4 @@
 import { 
-  getUnreadMessagesCount, 
   getRecentPosts, 
   getRandomPostUrl, 
   getUnreadTopicsCount,
@@ -42,7 +41,6 @@ export default async function ForumSidebar({
   currentPage?: number;
   totalPages?: number;
 }) {
-  const unreadMessages = await getUnreadMessagesCount();
   const recentPosts = await getRecentPosts(3);
   const unreadTopics = await getUnreadTopicsCount();
   const subForumCount = parentForumId ? await getSubForumCount(parentForumId) : 0;
@@ -71,15 +69,6 @@ export default async function ForumSidebar({
             </PremiumCard>
           )}
 
-          {/* Messages Privés */}
-          {unreadMessages > 0 && (
-            <PremiumCard className="sidebar-widget message-widget animate-pulse-subtle">
-              <Link href="/forum/messages" className="widget-link">
-                <Mail size={20} className="text-secondary" />
-                <span>{unreadMessages} message{unreadMessages > 1 ? 's' : ''} privé{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}</span>
-              </Link>
-            </PremiumCard>
-          )}
 
           {/* Nouveau Sujet / Tournoi */}
           {session && forumId && (!isLocked || canCreateForum) && (
