@@ -1,12 +1,15 @@
 /* Thème Nehekhara — sombre, ambre doré, inspiré Tomb Kings */
 [data-theme='nehekhara'] {
-  --background: #0b0e14; /* Deep Charcoal/Modern Black */
+  --background: #0b0e14;
+  /* Deep Charcoal/Modern Black */
   --bg-gradient: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%);
   --foreground: #f1f5f9;
-  --primary: #d97706; /* Amber Gold (Tomb Kings inspiration) */
+  --primary: #d97706;
+  /* Amber Gold (Tomb Kings inspiration) */
   --primary-hover: #b45309;
   --secondary: #1e293b;
-  --accent: #115e59; /* Modern Teal/Nil Green */
+  --accent: #115e59;
+  /* Modern Teal/Nil Green */
   --card-bg: rgba(15, 23, 42, 0.8);
   --glass-border: rgba(217, 119, 6, 0.25);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
@@ -19,7 +22,8 @@
   --unread-marker: #fbbf24;
   --primary-transparent: rgba(217, 119, 6, 0.15);
   --category-header-bg: rgba(217, 119, 6, 0.12);
-  --admin-bg: rgba(17, 94, 89, 0.05); /* Teal for admin */
+  --admin-bg: rgba(17, 94, 89, 0.05);
+  /* Teal for admin */
   --admin-border: rgba(17, 94, 89, 0.3);
   --danger: #ef4444;
   --warning: #fbbf24;
@@ -59,7 +63,7 @@
   --btn-cta-glow: rgba(var(--primary-rgb), 0.4);
   --btn-cta-hover: var(--primary-hover);
   --btn-cta-shiny: rgba(255, 255, 255, 0.2);
-  
+
   /* Component-Specific variables for BBScheme/Tools parity */
   --tool-bg: var(--background);
   --tool-box-bg: var(--card-bg);
@@ -88,18 +92,18 @@
   --header-container-padding: 3rem 2rem;
   --header-container-margin-top: -2rem;
   --header-title-family: inherit;
-  --header-title-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  --header-title-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   --header-title-weight: 800;
   --header-subtitle-color: var(--primary);
   --header-subtitle-weight: 700;
 
   /* BackButton System */
-  --back-btn-size: 36px;
-  --back-btn-bg: var(--card-bg);
-  --back-btn-icon-color: var(--foreground);
-  --back-btn-border: 1px solid var(--glass-border);
-  --back-btn-radius: 8px;
-  --back-btn-shadow: 0 4px 12px var(--glass-shadow);
+  --back-btn-size: 60px;
+  --back-btn-bg: #444444;
+  --back-btn-icon-color: #ffd700;
+  --back-btn-border: 4px solid #ffd700;
+  --back-btn-radius: 50%;
+  --back-btn-shadow: 0 4px 10px rgba(0, 0, 0, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.2);
 
   /* Global Component Style */
   --card-border-width: 1px;
@@ -160,3 +164,23 @@
   font-weight: var(--header-subtitle-weight);
 }
 
+/* BackButton Token Style Override (Standardized Saison 3 look) */
+[data-theme='nehekhara'] .back-button {
+  background: var(--back-btn-bg) !important;
+  border: var(--back-btn-border) !important;
+  border-radius: var(--back-btn-radius) !important;
+  width: var(--back-btn-size) !important;
+  height: var(--back-btn-size) !important;
+  color: var(--back-btn-icon-color) !important;
+  box-shadow: var(--back-btn-shadow) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+[data-theme='nehekhara'] .back-button:hover {
+  transform: scale(1.1) rotate(-10deg) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  border-color: #ffd700 !important;
+}

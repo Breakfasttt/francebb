@@ -1,28 +1,28 @@
 /* Thème Light — clair, gris doux */
 [data-theme='light'] {
-  --background: #f0f1f4;
-  /* Soft grey-white */
-  --bg-gradient: linear-gradient(135deg, #f0f1f4 0%, #d8dae0 100%);
-  --foreground: #1c1c21;
+  --background: #e5e7eb;
+  /* Darker grey-white for better depth */
+  --bg-gradient: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+  --foreground: #111827;
   --primary: #c21d1d;
-  --primary-hover: #a11818;
-  --secondary: #d1d5db;
-  /* Slightly darker secondary for contrast */
+  --primary-hover: #991b1b;
+  --secondary: #cbd5e1;
+  /* Steel blue-grey secondary */
   --accent: #b8860b;
   /* Bronze/Alt Gold */
-  --card-bg: rgba(255, 255, 255, 0.75);
-  --glass-border: rgba(0, 0, 0, 0.25);
-  --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
-  --nav-bg: rgba(240, 241, 244, 0.95);
-  --footer-bg: rgba(240, 241, 244, 0.98);
-  --text-muted: #4b5563;
-  --text-secondary: #374151;
-  --glass-bg: rgba(255, 255, 255, 0.5);
-  --btn-shadow: rgba(0, 0, 0, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.15);
+  --glass-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --nav-bg: rgba(229, 231, 235, 0.95);
+  --footer-bg: rgba(229, 231, 235, 0.98);
+  --text-muted: #374151;
+  --text-secondary: #1f2937;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --btn-shadow: rgba(0, 0, 0, 0.05);
   --unread-marker: #8b4513;
   /* Darker Bronze for unread */
   --primary-transparent: rgba(194, 29, 29, 0.12);
-  --category-header-bg: rgba(194, 29, 29, 0.08);
+  --category-header-bg: rgba(184, 134, 11, 0.12);
   --admin-bg: rgba(0, 0, 0, 0.03);
   --admin-border: rgba(0, 0, 0, 0.15);
   --danger: #b91c1c;
@@ -30,8 +30,8 @@
   --success: #15803d;
   --highlight: #b8860b;
   --highlight-hover: #9b7109;
-  --header-foreground: #ffffff;
-  --category-hover-bg: rgba(0, 0, 0, 0.05);
+  --header-foreground: #111827;
+  --category-hover-bg: rgba(184, 134, 11, 0.22);
   --theme-overlay: rgba(0, 0, 0, 0.08);
   --nav-btn-bg: rgba(0, 0, 0, 0.08);
   --nav-btn-hover-bg: rgba(0, 0, 0, 0.15);
@@ -84,7 +84,7 @@
   --input-radius: 10px;
 
   /* PageHeader System (Stripe Layout Override) */
-  --header-container-bg: rgba(255, 255, 255, 0.4);
+  --header-container-bg: #d1d5db;
   --header-container-border-bottom: 4px solid var(--primary);
   --header-container-margin-x: -50vw;
   --header-container-left: 50%;
@@ -92,18 +92,18 @@
   --header-container-padding: 3rem 2rem;
   --header-container-margin-top: -2rem;
   --header-title-family: inherit;
-  --header-title-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+  --header-title-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
   --header-title-weight: 800;
   --header-subtitle-color: var(--primary);
   --header-subtitle-weight: 700;
 
   /* BackButton System */
-  --back-btn-size: 36px;
-  --back-btn-bg: var(--card-bg);
+  --back-btn-size: 60px;
+  --back-btn-bg: #ffffff;
   --back-btn-icon-color: var(--foreground);
-  --back-btn-border: 1px solid var(--glass-border);
-  --back-btn-radius: 8px;
-  --back-btn-shadow: 0 4px 12px var(--glass-shadow);
+  --back-btn-border: 4px solid var(--primary);
+  --back-btn-radius: 50%;
+  --back-btn-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 1);
 
   /* Global Component Style */
   --card-border-width: 1px;
@@ -162,4 +162,25 @@
 [data-theme='light'] .page-header-subtitle {
   color: var(--header-subtitle-color);
   font-weight: var(--header-subtitle-weight);
+}
+
+/* BackButton Token Style Override (Standardized Saison 3 look) */
+[data-theme='light'] .back-button {
+  background: var(--back-btn-bg) !important;
+  border: var(--back-btn-border) !important;
+  border-radius: var(--back-btn-radius) !important;
+  width: var(--back-btn-size) !important;
+  height: var(--back-btn-size) !important;
+  color: var(--back-btn-icon-color) !important;
+  box-shadow: var(--back-btn-shadow) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+[data-theme='light'] .back-button:hover {
+  transform: scale(1.1) rotate(-10deg) !important;
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.2) !important;
+  border-color: var(--primary) !important;
 }

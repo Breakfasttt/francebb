@@ -82,7 +82,7 @@
   --input-color: var(--foreground);
   --input-border: 1px solid var(--glass-border);
   --input-radius: 10px;
-  
+
   /* PageHeader System (Stripe Layout Override) */
   --header-container-bg: var(--secondary);
   --header-container-border-bottom: 4px solid var(--highlight);
@@ -92,10 +92,18 @@
   --header-container-padding: 3rem 2rem;
   --header-container-margin-top: -2rem;
   --header-title-family: inherit;
-  --header-title-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+  --header-title-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
   --header-title-weight: 800;
   --header-subtitle-color: var(--highlight);
   --header-subtitle-weight: 700;
+
+  /* BackButton System */
+  --back-btn-size: 60px;
+  --back-btn-bg: var(--secondary);
+  --back-btn-icon-color: var(--highlight);
+  --back-btn-border: 4px solid var(--highlight);
+  --back-btn-radius: 50%;
+  --back-btn-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.3);
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;
@@ -148,4 +156,25 @@
 [data-theme='naf'] .page-header-subtitle {
   color: var(--header-subtitle-color);
   font-weight: var(--header-subtitle-weight);
+}
+
+/* BackButton Token Style Override (Standardized Saison 3 look) */
+[data-theme='naf'] .back-button {
+  background: var(--back-btn-bg) !important;
+  border: var(--back-btn-border) !important;
+  border-radius: var(--back-btn-radius) !important;
+  width: var(--back-btn-size) !important;
+  height: var(--back-btn-size) !important;
+  color: var(--back-btn-icon-color) !important;
+  box-shadow: var(--back-btn-shadow) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+[data-theme='naf'] .back-button:hover {
+  transform: scale(1.1) rotate(-10deg) !important;
+  box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4) !important;
+  border-color: #ffffff !important;
 }
