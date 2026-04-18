@@ -4,10 +4,16 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch !important;
 }
 
 .classement-page {
   padding-bottom: 5rem;
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 0 auto;
+  box-sizing: border-box;
+  min-height: 850px !important;
 }
 
 .ranking-filters-bar {
@@ -528,4 +534,152 @@
 .admin-actions-group {
   display: flex;
   gap: 0.5rem;
+}
+
+/* Roster Ranking Specific Styles */
+.roster-ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.roster-top-card {
+  padding: 0 !important;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex !important;
+  flex-direction: column;
+}
+
+.roster-top-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.roster-card-inner {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+
+.roster-icon-section {
+  width: 60px;
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.roster-medal {
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
+
+.roster-main-section {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.roster-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.roster-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--foreground);
+  border-left: 3px solid var(--accent);
+  padding-left: 0.8rem;
+  line-height: 1.2;
+}
+
+.roster-score {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.roster-score small {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.roster-coach-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--primary-transparent);
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  margin-top: 0.5rem;
+}
+
+.coach-avatar-circle {
+  width: 32px;
+  height: 32px;
+  background: var(--accent-transparent);
+  color: var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.coach-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.coach-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.coach-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.roster-spy-link {
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.roster-spy-link:hover {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .roster-ranking-grid {
+    grid-template-columns: 1fr;
+  }
 }
