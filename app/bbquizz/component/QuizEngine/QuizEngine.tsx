@@ -4,16 +4,16 @@
  */
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { getRandomQuizQuestions, submitQuizAttempt, getCommunityStats } from "../../actions";
-import { toast } from "react-hot-toast";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
-import { Loader2, Zap, Users, Scissors, FastForward, Award, Trophy, Brain, PlusCircle, MinusCircle, Plus, Edit2, Check } from "lucide-react";
-import "./QuizEngine.css";
-import { useRouter } from "next/navigation";
 import { isModerator } from "@/lib/roles";
+import { Award, Brain, Check, Edit2, FastForward, Loader2, MinusCircle, Plus, PlusCircle, Scissors, Trophy, Users, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { getCommunityStats, getRandomQuizQuestions, submitQuizAttempt } from "../../actions";
 import { translateCategory } from "../../utils";
+import "./QuizEngine.css";
 
 interface Question {
   category: string;
@@ -135,11 +135,11 @@ export default function QuizEngine({ session }: { session: any }) {
   // Auto-advance logic in result phase
   useEffect(() => {
     if (phase !== "result") return;
-    
+
     const autoTimer = setTimeout(() => {
       handleNext();
     }, 5000); // 5 secondes d'attente avant la suite
-    
+
     return () => clearTimeout(autoTimer);
   }, [phase, handleNext]);
 
@@ -154,7 +154,7 @@ export default function QuizEngine({ session }: { session: any }) {
       jokersUsed: [], // Could be improved to track which were used
     });
     setIsSubmitting(false);
-    
+
     if (result) {
       setTimeout(() => toast.success("Score enregistré !"), 0);
     }
@@ -205,7 +205,7 @@ export default function QuizEngine({ session }: { session: any }) {
             <Brain className="size-16 text-primary mb-4" />
             <h1>Prêt pour le quizz ?</h1>
             <p>
-              Testez vos connaissances sur l'univers de Blood Bowl. 
+              Testez vos connaissances sur l'univers de Blood Bowl.
               20 questions, des jokers et le Panthéon à la clé.
             </p>
             <ul className="quiz-rules-list">
@@ -215,9 +215,9 @@ export default function QuizEngine({ session }: { session: any }) {
             </ul>
             <div className="quiz-start-actions">
               <button className="quiz-btn primary" onClick={startQuiz}>
-                Commencer le match !
+                Commencer le quizz !
               </button>
-              
+
               <div className="quiz-admin-actions">
                 <button className="quiz-btn outline" onClick={() => openManagement("suggest")}>
                   <Plus size={16} /> Proposer
@@ -311,7 +311,7 @@ export default function QuizEngine({ session }: { session: any }) {
               const isHidden = hiddenOptions.includes(idx);
               const isCorrect = idx === currentQ.correctIndex;
               const isSelected = selectedOption === idx;
-              
+
               let className = "option-btn";
               if (phase === "result") {
                 if (isCorrect) className += " correct";
@@ -361,9 +361,9 @@ export default function QuizEngine({ session }: { session: any }) {
           <div className="quiz-footer-actions">
             <div className="quiz-jokers">
               <Tooltip text="50/50 : Supprime deux mauvaises réponses">
-                <button 
-                  className="joker-btn" 
-                  disabled={!jokers.fiftyFifty || phase !== "answering"} 
+                <button
+                  className="joker-btn"
+                  disabled={!jokers.fiftyFifty || phase !== "answering"}
                   onClick={useFiftyFifty}
                 >
                   <Scissors className="size-5" />
@@ -371,9 +371,9 @@ export default function QuizEngine({ session }: { session: any }) {
                 </button>
               </Tooltip>
               <Tooltip text="Avis mondial : Affiche le choix de la communauté">
-                <button 
-                  className="joker-btn" 
-                  disabled={!jokers.community || phase !== "answering"} 
+                <button
+                  className="joker-btn"
+                  disabled={!jokers.community || phase !== "answering"}
                   onClick={useCommunity}
                 >
                   <Users className="size-5" />
@@ -381,9 +381,9 @@ export default function QuizEngine({ session }: { session: any }) {
                 </button>
               </Tooltip>
               <Tooltip text="Sauter : Passe à la question suivante (1 seule fois)">
-                <button 
-                  className="joker-btn" 
-                  disabled={!jokers.skip} 
+                <button
+                  className="joker-btn"
+                  disabled={!jokers.skip}
                   onClick={useSkip}
                 >
                   <Zap className="size-5" />
