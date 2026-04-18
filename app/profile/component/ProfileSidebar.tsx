@@ -71,7 +71,7 @@ export default function ProfileSidebar({
     onTabChange(id);
     const params = new URLSearchParams(searchParams.toString());
     params.set("tab", id);
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const handleToggleBan = () => {

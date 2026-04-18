@@ -60,7 +60,6 @@ export default async function MembersPage() {
       <PageHeader
         title="Membres"
         subtitle="Annuaire des coachs de la communauté"
-        backHref="/"
       />
 
       <main className="container">

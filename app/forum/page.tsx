@@ -67,7 +67,6 @@ export default async function ForumPage() {
       <PageHeader
         title={<>Le Forum France <span>Blood Bowl</span></>}
         subtitle="L'espace de discussion de la communauté Blood Bowl française"
-        backHref="/"
       />
 
       <main className="container forum-container">

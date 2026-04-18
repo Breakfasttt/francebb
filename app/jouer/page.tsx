@@ -57,8 +57,6 @@ export default async function HowToPlayPage() {
       <PageHeader 
         title={<><span>Guide du Coach</span></>}
         subtitle="Tout ce qu'il faut savoir pour débuter l'aventure Blood Bowl en France"
-        backHref="/"
-        backTitle="Retour à l'accueil"
       />
 
       <main className="container how-to-play-page">

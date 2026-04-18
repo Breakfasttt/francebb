@@ -12,7 +12,15 @@ export default async function CartePage() {
   const [nextTournaments, ligues] = await Promise.all([
     prisma.tournament.findMany({
       where: { date: { gte: new Date() } },
-      select: { id: true, name: true, location: true, lat: true, lng: true, date: true }
+      select: { 
+        id: true, 
+        name: true, 
+        location: true, 
+        lat: true, 
+        lng: true, 
+        date: true,
+        topic: { select: { id: true } }
+      }
     }),
     prisma.ligue.findMany({
       select: { id: true, name: true, ville: true, lat: true, lng: true }
@@ -24,8 +32,6 @@ export default async function CartePage() {
       <PageHeader 
         title={<><Map className="icon-accent" size={24} /> La Carte du Blood Bowl</>}
         subtitle="Localisez les tournois et les ligues à travers la France"
-        backHref="/"
-        backTitle="Accueil"
         className="map-page-header"
       />
 

@@ -99,7 +99,6 @@ export default async function TournamentsPage({
     <div className="tournaments-page">
       <PageHeader 
         title="Tous les Tournois" 
-        backHref="/" 
       />
 
       <main className="container tournaments-container">

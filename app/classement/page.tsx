@@ -123,7 +123,6 @@ export default function ClassementPage() {
       <PageHeader
         title="Championnat de France"
         subtitle="Le Panthéon des meilleurs coachs et de la communauté Blood Bowl France"
-        backHref="/"
       />
 
       <main className="container classement-page">

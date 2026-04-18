@@ -27,7 +27,6 @@ export default async function QuizPage() {
       <PageHeader 
         title="Quizz Blood Bowl" 
         subtitle="Devenez une encyclopédie vivante de la NAF"
-        backHref="/"
       />
 
       <main className="container">
