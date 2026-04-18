@@ -289,6 +289,124 @@ async function firstSetup() {
     }
   }
 
+  // 7. Paramètres du site (Guide du Débutant)
+  console.log("--- Configuration des paramètres du site (Guide)...");
+  const siteSettings = [
+    {
+      key: "how_to_play_what_is_bb",
+      value: `[size=1.5rem][color=#c21d1d]Le Sport le plus Brutal du Vieux Monde[/color][/size]
+[hr]
+Blood Bowl est un mélange détonnant de [b]football américain[/b] et de [b]fantasy parodique[/b]. Dans cet univers inspiré de Warhammer, la guerre a été remplacée par un sport sacré où tous les coups sont permis.
+
+[b]Le principe est simple :[/b]
+Deux équipes s'affrontent sur un terrain de 26 cases de long. Le but est de porter le ballon dans la zone d'en-but adverse pour marquer un touchdown. 
+
+[list]
+[*] [b]Tactique :[/b] Gérez vos placements et vos probabilités. Chaque action (ramasser le ballon, faire une passe, bloquer un adversaire) demande un jet de dés.
+[*] [b]Violence :[/b] Écrasez vos adversaires pour libérer le passage. Les blessures (et parfois les morts) font partie intégrante du spectacle !
+[*] [b]Races :[/b] Humains, Orcs, Elfes Sylvain, Nains, Skavens... chaque race possède un style de jeu radicalement différent.
+[/list]
+
+[i]Préparez vos protège-tibias, car sur le terrain, personne ne vous entendra crier (à part les fans en délire) ![/i]`
+    },
+    {
+      key: "how_to_play_platforms",
+      value: `[size=1.5rem][color=#c21d1d]Trois Façons de Fouler le Gazon[/color][/size]
+[hr]
+Il existe plusieurs manières de pratiquer Blood Bowl, que vous préfériez le contact physique des figurines ou le confort de votre fauteuil de gaming.
+
+[b]1. Le Jeu de Plateau (Tabletop)[/b]
+C'est le format original ("Vis-à-vis"). On y joue avec des figurines peintes sur un plateau en carton. C'est ici que bat le cœur de la communauté française. C'est social, stratégique et visuellement magnifique.
+
+[b]2. Fumbbl (L'expérience gratuite)[/b]
+[url=https://fumbbl.com]Fumbbl[/url] est une plateforme gratuite et historique fonctionnant sur navigateur. Très axée sur la stratégie pure, elle permet de jouer des ligues compétitives avec des coachs du monde entier sur presque n'importe quel ordinateur.
+
+[b]3. Blood Bowl 3 (Le jeu vidéo)[/b]
+Développé par Cyanide, c'est l'adaptation moderne sur PC, PS5 et Xbox. Idéal pour apprendre les règles de la dernière édition (BB2020) avec des graphismes 3D et une gestion automatique des points de règle.
+
+[spoiler=Lequel choisir ?]Tous ! La plupart des coachs commencent par le jeu vidéo pour apprendre les bases, puis rejoignent une ligue locale pour l'ambiance et les tournois de vis-à-vis.[/spoiler]`
+    },
+    {
+      key: "how_to_play_community",
+      value: `[size=1.5rem][color=#c21d1d]La Force de la Communauté Française[/color][/size]
+[hr]
+Vous n'êtes pas seul ! La France possède l'une des communautés les plus actives au monde.
+
+[b]Le Forum France Blood Bowl[/b]
+C'est le point de ralliement officiel. Vous y trouverez les annonces de tournois, les discussions tactiques et les petites annonces.
+
+[b]Le Discord FBB[/b]
+Pour discuter en temps réel, demander des conseils de peinture ou organiser des matchs en ligne. [url=https://discord.gg/V8D8XbZ]Cliquez ici pour rejoindre[/url].
+
+[b]Trouver une Ligue Locale[/b]
+Rien ne vaut de jouer régulièrement dans un club. Que vous soyez à Paris (Lutece Cup), Nantes (BN), Lyon (LBB) ou partout ailleurs, il y a probablement une ligue près de chez vous.
+[list]
+[*] [b]Lutece Cup :[/b] La plus grosse ligue de Paris.
+[*] [b]La BN :[/b] Des coachs passionnés dans l'Ouest.
+[*] [b]L'Azur Bowl :[/b] Pour jouer sous le soleil du Sud.
+[/list]
+Consultez notre [url=/carte]Carte des Ligues[/url] pour trouver votre futur club !`
+    },
+    {
+      key: "how_to_play_tournaments",
+      value: `[size=1.5rem][color=#c21d1d]L'Adrénaline des Tournois[/color][/size]
+[hr]
+Participer à un tournoi est l'expérience ultime. Presque chaque week-end, une ville de France accueille un événement.
+
+[b]Comment ça se passe ?[/b]
+Un tournoi dure généralement 2 jours (5 ou 6 matchs). Vous venez avec votre équipe, rencontrez différents adversaires et partagez des repas (souvent de la bière et des burgers) entre passionnés.
+
+[b]Comment s'inscrire ?[/b]
+[list=1]
+[*] Consultez le calendrier sur [url=https://www.teamfrancebb.fr/tournois/]le calendrier fédéral[/url] ou la section Tournois du forum.
+[*] Manifestez votre intérêt sur le sujet dédié.
+[*] Réglez votre inscription (souvent entre 15€ et 30€).
+[*] Préparez votre "Roster" (feuille d'équipe) selon le règlement spécifique du tournoi.
+[/list]
+
+[accordion=Le sac du tournoyeur]N'oubliez pas vos dés, vos figurines, votre réglette, mais surtout votre bonne humeur ! Les tournois sont avant tout des moments de convivialité.[/accordion]`
+    },
+    {
+      key: "how_to_play_naf_cdf_rtc",
+      value: `[size=1.5rem][color=#c21d1d]Les Structures et la Compétition[/color][/size]
+[hr]
+Pour ceux qui aiment le classement et le prestige, Blood Bowl est très structuré en France.
+
+[b]La NAF (Association Internationale)[/b]
+C'est l'organisme mondial. Adhérer à la NAF (env. 10€) vous donne un numéro unique et un classement Elo mondial. Chaque année, vous recevez également des dés de blocage exclusifs.
+
+[b]Les RTC (Regroupement Territorial de Clubs)[/b]
+La France est divisée en 5 zones géographiques (Nord-Est, Nord-Ouest, Île-de-France, Sud-Est et Sud-Ouest). Chaque zone est gérée par un coordinateur (le [b]RTC[/b]) qui fait le lien entre la NAF et les clubs locaux, valide les tournois et anime sa région.
+
+[b]Le Championnat de France (CdF)[/b]
+C'est le grand rassemblement annuel de la communauté. Contrairement aux tournois classiques individuels, le CdF se joue généralement par [b]équipes de clubs[/b]. C'est l'événement le plus attendu pour l'esprit de corps et la compétition nationale.
+
+[b]Le Système de Points CdF :[/b] Pour le classement individuel annuel, vous devez performer dans plusieurs zones différentes pour espérer décrocher le titre, ce qui encourage les coachs à voyager partout en France !`
+    },
+    {
+      key: "how_to_play_challenges",
+      value: `[size=1.5rem][color=#c21d1d]Les Challenges Régionaux[/color][/size]
+[hr]
+En plus du circuit national, de nombreuses régions organisent leurs propres trophées pour récompenser la régularité locale.
+
+[list]
+[*] [b]Challenge du Grand Ouest (CGO) :[/b] Regroupe les tournois de Bretagne, Normandie et Pays de la Loire.
+[*] [b]Trophée du Grand Est (TGE) :[/b] Pour les coachs de l'Est de la France.
+[*] [b]Sud-Est et Sud-Ouest :[/b] Des circuits dynamiques pour les coachs du littoral.
+[/list]
+
+Ces challenges permettent d'avoir des objectifs à taille humaine et de créer des rivalités amicales entre clubs voisins. Chaque challenge possède son propre classement et ses récompenses en fin de saison.`
+    }
+  ];
+
+  for (const setting of siteSettings) {
+    await prisma.siteSetting.upsert({
+      where: { key: setting.key },
+      update: {}, // On ne l'écrase pas s'il existe déjà
+      create: setting
+    });
+  }
+
   console.log("✅ Setup initial terminé avec succès !");
 }
 
