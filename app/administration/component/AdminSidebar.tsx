@@ -1,8 +1,8 @@
 "use client";
 
-import { Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, ShieldCheck, Users, Settings, Wrench, BookOpen } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
+import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
 
 export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay";
 
@@ -17,7 +17,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
     { id: "general", label: "Configuration", icon: <Globe size={18} /> },
     { id: "roles", label: "Gestion des Rôles", icon: <ShieldCheck size={18} /> },
     { id: "coachs", label: "Membres & Accès", icon: <Users size={18} /> },
-    { id: "structure", label: "Structure Forums", icon: <LayoutList size={18} /> },
+    { id: "structure", label: "Structure Forum", icon: <LayoutList size={18} /> },
     { id: "reference", label: "Données de Référence", icon: <Database size={18} /> },
     { id: "howtoplay", label: "Guide du Débutant", icon: <BookOpen size={18} /> },
   ];
@@ -41,7 +41,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
 
       <div className="sidebar-group">
         <h3 className="group-label"><Settings size={14} /> GÉNÉRAL</h3>
-        <TabSystem 
+        <TabSystem
           items={standardTabs}
           activeTab={activeTab}
           onTabChange={(id) => onTabChange(id as AdminTab)}
@@ -54,7 +54,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
         <div className="sidebar-group advanced-group">
           <div className="sidebar-separator"></div>
           <h3 className="group-label danger-label"><Wrench size={14} /> AVANCÉ</h3>
-          <TabSystem 
+          <TabSystem
             items={advancedTabs}
             activeTab={activeTab}
             onTabChange={(id) => onTabChange(id as AdminTab)}
