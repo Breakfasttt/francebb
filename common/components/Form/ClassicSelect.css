@@ -27,10 +27,10 @@
   -webkit-appearance: none;
   padding: 0.8rem 2.5rem 0.8rem 1.2rem;
   font-size: 1rem;
-  background: var(--input-bg, rgba(255, 255, 255, 0.05));
-  border: 1px solid var(--glass-border);
-  color: var(--foreground);
-  border-radius: 10px;
+  background: var(--input-bg);
+  border: var(--input-border);
+  color: var(--input-color, var(--foreground));
+  border-radius: var(--input-radius);
   transition: all 0.2s ease;
   outline: none;
   cursor: pointer;
@@ -102,10 +102,10 @@
   font-size: 0.75rem;
 }
 
-/* Base style for options to ensure contrast with theme */
+/* Base style for options to ensure contrast with theme - Always solid */
 .classic-select-field option {
-  background-color: var(--card-bg, #fff);
-  color: var(--foreground, #000);
+  background-color: var(--background, #fff);
+  color: var(--foreground, #111);
   padding: 10px;
 }
 

@@ -243,18 +243,23 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
+          width: 100%;
+          box-sizing: border-box;
+          padding-right: 1rem; /* Prevent clipping at the container level */
         }
         .conv-view-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding-bottom: 0.5rem;
+          gap: 1rem;
+          flex-wrap: wrap;
         }
         .recipient-display {
           display: flex;
           align-items: center;
           gap: 0.8rem;
-          background: rgba(255, 255, 255, 0.02);
+          background: var(--glass-bg);
           padding: 0.4rem 1rem;
           border-radius: 100px;
           border: 1px solid var(--glass-border);
@@ -269,25 +274,25 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #666;
+          color: var(--text-muted);
         }
         .recipient-name-text {
           font-size: 0.85rem;
-          color: #888;
+          color: var(--text-muted);
         }
         .recipient-name-text strong {
-          color: #eee;
+          color: var(--foreground);
         }
         .recipient-actions {
           display: flex;
           align-items: center;
           padding-left: 0.5rem;
-          border-left: 1px solid rgba(255,255,255,0.05);
+          border-left: 1px solid var(--glass-border);
         }
         .icon-action-btn {
           background: transparent;
           border: none;
-          color: #555;
+          color: var(--text-muted);
           cursor: pointer;
           display: flex;
           align-items: center;
@@ -297,12 +302,12 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           transition: all 0.2s;
         }
         .report-btn-small:hover {
-          color: #ef4444;
-          background: rgba(239, 68, 68, 0.1);
+          color: var(--danger);
+          background: var(--primary-transparent);
         }
         :global(.reply-box) {
           padding: 1.5rem !important;
-          background: rgba(255, 255, 255, 0.03) !important;
+          background: var(--glass-bg) !important;
         }
         .reply-actions {
           display: flex;
@@ -312,17 +317,17 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         }
         .hint {
           font-size: 0.8rem;
-          color: #555;
+          color: var(--text-muted);
           margin: 0;
         }
         .pm-disclaimer {
           display: flex;
           gap: 0.8rem;
           padding: 1rem 1.5rem;
-          background: rgba(255, 215, 0, 0.02);
-          border: 1px solid rgba(255, 215, 0, 0.1);
+          background: var(--admin-bg);
+          border: 1px solid var(--admin-border);
           border-radius: 8px;
-          color: #777;
+          color: var(--text-secondary);
           font-size: 0.8rem;
           line-height: 1.4;
           margin-bottom: 0.5rem;
@@ -331,22 +336,28 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           margin: 0;
         }
         .pm-disclaimer strong {
-          color: #999;
+          color: var(--foreground);
+          font-weight: 800;
         }
         .messages-list {
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
+          width: 100%;
         }
         :global(.message-item) {
           display: flex;
           padding: 1.5rem !important;
           gap: 1.5rem;
-          background: rgba(255, 255, 255, 0.02) !important;
-          border-left: 2px solid transparent !important;
+          background: var(--glass-bg) !important;
+          border: 1.5px solid var(--glass-border) !important;
+          border-left-width: 4px !important;
+          box-sizing: border-box;
+          width: 100% !important;
+          margin-bottom: 0.5rem;
         }
         :global(.message-item.is-self) {
-          background: rgba(255, 255, 255, 0.04) !important;
+          background: var(--primary-transparent) !important;
           border-left-color: var(--primary) !important;
         }
         .message-sidebar {
@@ -362,18 +373,19 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           height: 48px;
           border-radius: 50%;
           object-fit: cover;
+          border: 1px solid var(--glass-border);
         }
         .author-avatar-placeholder {
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--glass-bg);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #444;
+          color: var(--text-muted);
         }
         .author-name {
           font-size: 0.75rem;
           font-weight: 700;
-          color: #aaa;
+          color: var(--text-muted);
           text-align: center;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -381,24 +393,28 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
         }
         .message-content-wrapper {
           flex: 1;
+          min-width: 0;
+          overflow: hidden;
         }
         .message-meta {
           display: flex;
           align-items: center;
           gap: 0.4rem;
           font-size: 0.75rem;
-          color: #555;
+          color: var(--text-muted);
           margin-bottom: 0.8rem;
         }
         .message-body {
-          color: #ccc;
+          color: var(--foreground);
           line-height: 1.6;
           font-size: 1rem;
+          word-break: break-word;
+          overflow-wrap: break-word;
         }
         .loading-state {
           padding: 3rem;
           text-align: center;
-          color: #666;
+          color: var(--text-muted);
         }
         .pagination {
           display: flex;
@@ -408,9 +424,9 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
           margin-top: 2rem;
         }
         .btn-pagination {
-          background: rgba(255, 255, 255, 0.05);
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          color: white;
+          color: var(--foreground);
           padding: 0.5rem 1rem;
           border-radius: 6px;
           cursor: pointer;

@@ -9,7 +9,7 @@
   background-color: #0c0c14;
   overflow: hidden;
   z-index: 500;
-  padding-top: 78px;
+  padding-top: 60px; /* Aligned with site Navbar */
   padding-bottom: 42px;
 }
 

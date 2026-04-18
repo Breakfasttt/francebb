@@ -23,6 +23,8 @@
 
 .profile-main-content {
   flex: 1;
+  min-width: 0;
+  padding-right: 1.5rem; /* Vital to show card shadows and borders on the right */
 }
 
 .empty-state {

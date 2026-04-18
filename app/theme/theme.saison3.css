@@ -8,7 +8,7 @@
   --secondary: #004175; /* Rulebook Navy */
   --accent: #004175; /* Navy for clean headers */
   --card-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 65, 117, 0.25);
+  --glass-border: rgba(0, 64, 117, 0.4);
   --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.15);
   --nav-bg: #9e1d1d; /* Solid Imperial Red Nav */
   --footer-bg: #1a110a;
@@ -29,9 +29,9 @@
   --header-foreground: #f2efe1;
   --category-hover-bg: rgba(0, 30, 60, 0.3);
   --theme-overlay: rgba(255, 255, 255, 0.15);
-  --nav-btn-bg: rgba(0, 65, 117, 0.08);
-  --nav-btn-hover-bg: rgba(0, 65, 117, 0.15);
-  --nav-btn-border: rgba(0, 65, 117, 0.25);
+  --nav-btn-bg: var(--secondary); /* Navy base for contrast on red header */
+  --nav-btn-hover-bg: #00305a;
+  --nav-btn-border: rgba(255, 255, 255, 0.2);
   --nav-btn-color: #f2efe1;
   --badge-text: #f2efe1;
   --accent-foreground: #f2efe1;
@@ -48,6 +48,53 @@
   --success-rgb: 21, 128, 61;
   --primary-rgb: 158, 29, 29;
 
+  --btn-cta-shiny: rgba(255, 255, 255, 0.25);
+  
+  /* Component-Specific variables for BBScheme/Tools parity */
+  --tool-bg: #1a110a;
+  --tool-box-bg: #f2efe1;
+  --tool-box-border: var(--secondary);
+  --tool-box-header-bg: var(--secondary);
+  --tool-box-header-text: var(--highlight);
+  --tool-text: #1a110a;
+  --tool-workspace-bg: #efebdd;
+  --tool-tooltip-bg: #f2efe1;
+  --tool-tooltip-border: var(--secondary);
+  --tool-tooltip-text: #1a110a;
+  --tool-tooltip-stat-val: var(--primary);
+  --tool-tooltip-stat-label: var(--secondary);
+
+  --input-bg: #ffffff;
+  --input-color: #1a110a;
+  --input-border: 4px solid var(--secondary);
+  --input-radius: 4px;
+
+  /* PageHeader System */
+  --header-container-bg: var(--secondary);
+  --header-container-border-bottom: 8px solid var(--primary);
+  --header-container-margin-x: calc(-50vw + 50%);
+  --header-container-padding: 3rem 2rem;
+  --header-container-margin-top: -2rem;
+  --header-title-family: 'Inter', system-ui, sans-serif;
+  --header-title-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  --header-title-weight: 1000;
+  --header-subtitle-color: var(--secondary);
+  --header-subtitle-weight: 700;
+
+  /* BackButton System */
+  --back-btn-size: 60px;
+  --back-btn-bg: radial-gradient(circle at 30% 30%, #ffdf00 0%, #b8860b 100%);
+  --back-btn-icon-color: #1a110a;
+  --back-btn-border: 4px solid #9e1d1d;
+  --back-btn-radius: 50%;
+  --back-btn-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.4);
+
+  /* Global Component Style */
+  --card-border-width: 2px;
+  --card-shadow-custom: 6px 6px 0px rgba(0, 65, 117, 0.1);
+  --heading-decoration-border: 4px solid var(--primary);
+  --nav-border-bottom: 4px solid var(--secondary);
+
   /* Button System */
   --btn-classic-bg: rgba(0, 65, 117, 0.08); /* Navy hint */
   --btn-classic-text: var(--foreground);
@@ -58,7 +105,6 @@
   --btn-cta-text: var(--header-foreground);
   --btn-cta-glow: rgba(var(--accent-rgb), 0.2);
   --btn-cta-hover: #00305a;
-  --btn-cta-shiny: rgba(255, 255, 255, 0.25);
 
   --btn-danger-bg: #b91c1c;
   --btn-danger-text: #ffffff;
@@ -69,24 +115,48 @@
   --btn-admin-hover: #5b21b6;
 }
 
+/* Navbar Buttons Contrast Fix for Saison 3 */
+[data-theme='saison3'] .nav .nav-icon-capsule,
+[data-theme='saison3'] .nav .user-capsule,
+[data-theme='saison3'] .nav .bb-button.variant-classic {
+  color: var(--nav-btn-color) !important;
+  border-color: var(--nav-btn-border) !important;
+}
+
+[data-theme='saison3'] .nav .user-name {
+  color: var(--nav-btn-color) !important;
+}
+
+/* Badge visibility on Red Header */
+[data-theme='saison3'] .nav .nav-icon-capsule span {
+  background: var(--highlight) !important;
+  color: var(--secondary) !important; /* Navy text on yellow badge */
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.4) !important;
+}
+
+[data-theme='saison3'] .nav .bb-button.variant-classic:hover {
+  background: var(--nav-btn-hover-bg) !important;
+  color: #ffffff !important;
+}
+
 /* Specific Component Overrides for Saison 3 Rulebook Style */
 [data-theme='saison3'] .page-header-container {
-  background: var(--secondary); /* Navy Stripe */
-  padding: 3rem 2rem;
-  margin-top: -2rem !important; /* Cancel container top padding to glue to navbar */
+  background: var(--header-container-bg);
+  padding: var(--header-container-padding);
+  margin-top: var(--header-container-margin-top) !important;
   margin-bottom: 4rem;
   width: 100vw;
   position: relative;
   left: 50%;
   right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  margin-left: var(--header-container-margin-x);
+  margin-right: var(--header-container-margin-x);
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-  border-bottom: 8px solid var(--primary); /* Thick Red line below navy stripe */
+  border-bottom: var(--header-container-border-bottom);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2.5rem; /* Gap between button and title */
+  gap: 2.5rem;
 }
 
 [data-theme='saison3'] .page-header-back-wrapper {
@@ -102,25 +172,26 @@
 
 [data-theme='saison3'] .page-header-title,
 [data-theme='saison3'] .page-header-title span {
-  color: #ffcc00 !important; /* Force Golden Yellow for everything in title */
+  color: var(--highlight) !important;
   text-transform: uppercase;
   font-style: italic;
-  font-weight: 1000;
+  font-weight: var(--header-title-weight);
+  font-family: var(--header-title-family);
   font-size: 3rem;
   letter-spacing: -0.02em;
-  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  text-shadow: var(--header-title-shadow);
   line-height: 1;
 }
 
 /* Specific BackButton style: The "Gold Token" */
 [data-theme='saison3'] .back-button {
-  background: radial-gradient(circle at 30% 30%, #ffdf00 0%, #b8860b 100%);
-  color: #1a110a;
-  width: 60px;
-  height: 60px;
-  border: 4px solid #9e1d1d;
-  border-radius: 50%;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.4);
+  background: var(--back-btn-bg) !important;
+  border: var(--back-btn-border) !important;
+  border-radius: var(--back-btn-radius) !important;
+  width: var(--back-btn-size);
+  height: var(--back-btn-size);
+  color: var(--back-btn-icon-color) !important;
+  box-shadow: var(--back-btn-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,20 +313,56 @@
   color: var(--highlight) !important;
 }
 
+/* BBScheme Token Tooltip Override for Saison 3 */
+[data-theme='saison3'] .token-stats-hover.portal-tooltip {
+  background: #f2efe1 !important; /* Parchment */
+  border: 4px solid var(--secondary) !important; /* Navy border */
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2) !important;
+  color: #1a110a !important; /* Dark brown text */
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .player-name-full {
+  color: #1a110a !important;
+  font-weight: 1000;
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .tooltip-header {
+  border-bottom-color: rgba(0, 65, 117, 0.2);
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .stat-val {
+  color: var(--primary) !important; /* Red stats */
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .stat-labels {
+  color: var(--secondary) !important; /* Navy labels */
+  opacity: 0.6;
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .tooltip-skills {
+  color: #1a110a !important;
+  border-top-color: rgba(0, 65, 117, 0.2);
+}
+
+[data-theme='saison3'] .token-stats-hover.portal-tooltip .player-cost-badge {
+  background: var(--highlight) !important;
+  color: var(--secondary) !important;
+}
+
 [data-theme='saison3'] .page-header-subtitle {
-  color: var(--secondary);
-  font-weight: 700;
+  color: var(--header-subtitle-color);
+  font-weight: var(--header-subtitle-weight);
   text-transform: uppercase;
   opacity: 0.9;
 }
 
 [data-theme='saison3'] .premium-card {
-  border-width: 2px;
-  box-shadow: 6px 6px 0px rgba(0, 65, 117, 0.1); /* Blocky shadow like layout boxes */
+  border-width: var(--card-border-width);
+  box-shadow: var(--card-shadow-custom);
 }
 
 [data-theme='saison3'] .nav-container {
-  border-bottom: 4px solid var(--secondary);
+  border-bottom: var(--nav-border-bottom);
 }
 
 [data-theme='saison3'] h3, 
@@ -263,7 +370,7 @@
   color: var(--secondary);
   text-transform: uppercase;
   font-style: italic;
-  border-left: 4px solid var(--primary);
+  border-left: var(--heading-decoration-border);
   padding-left: 10px;
 }
 

@@ -59,6 +59,51 @@
   --btn-cta-glow: rgba(var(--accent-rgb), 0.3);
   --btn-cta-hover: #ff7070;
   --btn-cta-shiny: rgba(255, 255, 255, 0.3);
+  
+  /* Component-Specific variables for BBScheme/Tools parity */
+  --tool-bg: var(--background);
+  --tool-box-bg: var(--card-bg);
+  --tool-box-border: var(--glass-border);
+  --tool-box-header-bg: var(--category-header-bg);
+  --tool-box-header-text: var(--foreground);
+  --tool-text: var(--foreground);
+  --tool-workspace-bg: transparent;
+  --tool-tooltip-bg: var(--card-bg);
+  --tool-tooltip-border: var(--glass-border);
+  --tool-tooltip-text: var(--foreground);
+  --tool-tooltip-stat-val: var(--primary);
+  --tool-tooltip-stat-label: var(--text-muted);
+
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-color: var(--foreground);
+  --input-border: 1px solid var(--glass-border);
+  --input-radius: 10px;
+  
+  /* PageHeader System */
+  --header-container-bg: transparent;
+  --header-container-border-bottom: none;
+  --header-container-margin-x: 0;
+  --header-container-padding: 0;
+  --header-container-margin-top: 0;
+  --header-title-family: inherit;
+  --header-title-shadow: none;
+  --header-title-weight: 800;
+  --header-subtitle-color: var(--text-secondary);
+  --header-subtitle-weight: 400;
+
+  /* BackButton System */
+  --back-btn-size: 36px;
+  --back-btn-bg: var(--card-bg);
+  --back-btn-icon-color: var(--foreground);
+  --back-btn-border: 1px solid var(--glass-border);
+  --back-btn-radius: 8px;
+  --back-btn-shadow: 0 4px 12px var(--glass-shadow);
+
+  /* Global Component Style */
+  --card-border-width: 1px;
+  --card-shadow-custom: var(--glass-shadow);
+  --heading-decoration-border: none;
+  --nav-border-bottom: none;
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;
