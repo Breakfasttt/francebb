@@ -1,12 +1,15 @@
 /* Thème NAF — sombre, bleu navy + jaune étoile, couleurs officielles NAF */
 [data-theme='naf'] {
-  --background: #011b33; /* Deep NAF Navy */
+  --background: #011b33;
+  /* Deep NAF Navy */
   --bg-gradient: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
   --foreground: #f1f5f9;
-  --primary: #e6b000; /* NAF Golden Yellow — better contrast with white, but we'll use navy text */
+  --primary: #e6b000;
+  /* NAF Golden Yellow — better contrast with white, but we'll use navy text */
   --primary-hover: #c99a00;
   --secondary: #002b5c;
-  --accent: #ffffff; /* Stars White */
+  --accent: #ffffff;
+  /* Stars White */
   --card-bg: rgba(0, 43, 93, 0.35);
   --glass-border: rgba(230, 176, 0, 0.25);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
@@ -26,7 +29,8 @@
   --success: #39ff14;
   --highlight: #e6b000;
   --highlight-hover: #c99a00;
-  --header-foreground: #011b33; /* Deep Navy text on yellow buttons */
+  --header-foreground: #011b33;
+  /* Deep Navy text on yellow buttons */
   --category-hover-bg: rgba(1, 43, 93, 0.6);
   --theme-overlay: rgba(255, 255, 255, 0.2);
   --nav-btn-bg: rgba(255, 255, 255, 0.12);
@@ -59,7 +63,7 @@
   --btn-cta-glow: rgba(var(--primary-rgb), 0.4);
   --btn-cta-hover: var(--primary-hover);
   --btn-cta-shiny: rgba(255, 255, 255, 0.3);
-  
+
   /* Component-Specific variables for BBScheme/Tools parity */
   --tool-bg: var(--background);
   --tool-box-bg: var(--card-bg);
@@ -78,6 +82,20 @@
   --input-color: var(--foreground);
   --input-border: 1px solid var(--glass-border);
   --input-radius: 10px;
+  
+  /* PageHeader System (Stripe Layout Override) */
+  --header-container-bg: var(--secondary);
+  --header-container-border-bottom: 4px solid var(--highlight);
+  --header-container-margin-x: -50vw;
+  --header-container-left: 50%;
+  --header-container-right: 50%;
+  --header-container-padding: 3rem 2rem;
+  --header-container-margin-top: -2rem;
+  --header-title-family: inherit;
+  --header-title-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+  --header-title-weight: 800;
+  --header-subtitle-color: var(--highlight);
+  --header-subtitle-weight: 700;
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;
@@ -86,4 +104,48 @@
   --btn-admin-bg: #7c3aed;
   --btn-admin-text: #ffffff;
   --btn-admin-hover: #6d28d9;
+}
+
+/* PageHeader Stripe Layout Override (Standardized look for all themes) */
+[data-theme='naf'] .page-header-container {
+  background: var(--header-container-bg);
+  padding: var(--header-container-padding);
+  margin-top: var(--header-container-margin-top) !important;
+  margin-bottom: 4rem;
+  width: 100vw;
+  position: relative;
+  left: var(--header-container-left);
+  right: var(--header-container-right);
+  margin-left: var(--header-container-margin-x);
+  margin-right: var(--header-container-margin-x);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  border-bottom: var(--header-container-border-bottom);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+[data-theme='naf'] .page-header-back-wrapper {
+  position: static !important;
+  transform: none !important;
+}
+
+[data-theme='naf'] .page-header-content {
+  max-width: none;
+  width: auto;
+  text-align: left;
+}
+
+[data-theme='naf'] .page-header-title,
+[data-theme='naf'] .page-header-title span {
+  color: var(--foreground) !important;
+  text-shadow: var(--header-title-shadow);
+  font-family: var(--header-title-family);
+  font-weight: var(--header-title-weight);
+}
+
+[data-theme='naf'] .page-header-subtitle {
+  color: var(--header-subtitle-color);
+  font-weight: var(--header-subtitle-weight);
 }

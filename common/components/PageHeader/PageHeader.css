@@ -5,7 +5,8 @@
   align-items: center;
   margin-bottom: 3rem;
   width: 100%;
-  min-height: 48px; /* Assure que le bouton retour a de la place même sans titre énorme */
+  min-height: 48px;
+  /* Assure que le bouton retour a de la place même sans titre énorme */
 }
 
 /* Le wrapper gère le positionnement pour ne pas écraser le transform: translateX du bouton au hover */
@@ -64,4 +65,3 @@
    RESPONSIVE DESIGN (MOBILE)
    Déplacé dans PageHeader-mobile.css
    ========================================================================== */
-

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
+import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWidget";
 import { prisma } from "@/lib/prisma";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Github } from "lucide-react";
@@ -87,6 +88,7 @@ export default async function RootLayout({
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
+          <DebugThemeWidget />
         <BannedRedirect isBanned={isBanned} />
           <Toaster position="bottom-right" toastOptions={{
             style: {

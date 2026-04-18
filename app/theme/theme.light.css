@@ -1,12 +1,15 @@
 /* Thème Light — clair, gris doux */
 [data-theme='light'] {
-  --background: #f0f1f4; /* Soft grey-white */
+  --background: #f0f1f4;
+  /* Soft grey-white */
   --bg-gradient: linear-gradient(135deg, #f0f1f4 0%, #d8dae0 100%);
   --foreground: #1c1c21;
   --primary: #c21d1d;
   --primary-hover: #a11818;
-  --secondary: #d1d5db; /* Slightly darker secondary for contrast */
-  --accent: #b8860b; /* Bronze/Alt Gold */
+  --secondary: #d1d5db;
+  /* Slightly darker secondary for contrast */
+  --accent: #b8860b;
+  /* Bronze/Alt Gold */
   --card-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(0, 0, 0, 0.25);
   --glass-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.12);
@@ -16,7 +19,8 @@
   --text-secondary: #374151;
   --glass-bg: rgba(255, 255, 255, 0.5);
   --btn-shadow: rgba(0, 0, 0, 0.1);
-  --unread-marker: #8b4513; /* Darker Bronze for unread */
+  --unread-marker: #8b4513;
+  /* Darker Bronze for unread */
   --primary-transparent: rgba(194, 29, 29, 0.12);
   --category-header-bg: rgba(194, 29, 29, 0.08);
   --admin-bg: rgba(0, 0, 0, 0.03);
@@ -59,7 +63,7 @@
   --btn-cta-glow: rgba(var(--primary-rgb), 0.3);
   --btn-cta-hover: var(--primary-hover);
   --btn-cta-shiny: rgba(255, 255, 255, 0.3);
-  
+
   /* Component-Specific variables for BBScheme/Tools parity */
   --tool-bg: var(--background);
   --tool-box-bg: var(--card-bg);
@@ -78,18 +82,20 @@
   --input-color: var(--foreground);
   --input-border: 1px solid var(--glass-border);
   --input-radius: 10px;
-  
-  /* PageHeader System */
-  --header-container-bg: transparent;
-  --header-container-border-bottom: none;
-  --header-container-margin-x: 0;
-  --header-container-padding: 0;
-  --header-container-margin-top: 0;
+
+  /* PageHeader System (Stripe Layout Override) */
+  --header-container-bg: rgba(255, 255, 255, 0.4);
+  --header-container-border-bottom: 4px solid var(--primary);
+  --header-container-margin-x: -50vw;
+  --header-container-left: 50%;
+  --header-container-right: 50%;
+  --header-container-padding: 3rem 2rem;
+  --header-container-margin-top: -2rem;
   --header-title-family: inherit;
-  --header-title-shadow: none;
+  --header-title-shadow: 1px 1px 0px rgba(0,0,0,0.1);
   --header-title-weight: 800;
-  --header-subtitle-color: var(--text-secondary);
-  --header-subtitle-weight: 400;
+  --header-subtitle-color: var(--primary);
+  --header-subtitle-weight: 700;
 
   /* BackButton System */
   --back-btn-size: 36px;
@@ -112,4 +118,48 @@
   --btn-admin-bg: #6d28d9;
   --btn-admin-text: #ffffff;
   --btn-admin-hover: #5b21b6;
+}
+
+/* PageHeader Stripe Layout Override (Standardized look for all themes) */
+[data-theme='light'] .page-header-container {
+  background: var(--header-container-bg);
+  padding: var(--header-container-padding);
+  margin-top: var(--header-container-margin-top) !important;
+  margin-bottom: 4rem;
+  width: 100vw;
+  position: relative;
+  left: var(--header-container-left);
+  right: var(--header-container-right);
+  margin-left: var(--header-container-margin-x);
+  margin-right: var(--header-container-margin-x);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  border-bottom: var(--header-container-border-bottom);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+[data-theme='light'] .page-header-back-wrapper {
+  position: static !important;
+  transform: none !important;
+}
+
+[data-theme='light'] .page-header-content {
+  max-width: none;
+  width: auto;
+  text-align: left;
+}
+
+[data-theme='light'] .page-header-title,
+[data-theme='light'] .page-header-title span {
+  color: var(--foreground) !important;
+  text-shadow: var(--header-title-shadow);
+  font-family: var(--header-title-family);
+  font-weight: var(--header-title-weight);
+}
+
+[data-theme='light'] .page-header-subtitle {
+  color: var(--header-subtitle-color);
+  font-weight: var(--header-subtitle-weight);
 }

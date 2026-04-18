@@ -3,7 +3,8 @@
   --background: #020a02;
   --bg-gradient: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
   --foreground: #e6ffe6;
-  --primary: #0a4d0a; /* Dark Warpstone Green */
+  --primary: #0a4d0a;
+  /* Dark Warpstone Green */
   --primary-hover: #0d610d;
   --secondary: #0c250c;
   --accent: #9bff70;
@@ -59,7 +60,7 @@
   --btn-cta-glow: rgba(var(--primary-rgb), 0.4);
   --btn-cta-hover: var(--primary-hover);
   --btn-cta-shiny: rgba(255, 255, 255, 0.2);
-  
+
   /* Component-Specific variables for BBScheme/Tools parity */
   --tool-bg: var(--background);
   --tool-box-bg: var(--card-bg);
@@ -78,6 +79,20 @@
   --input-color: var(--foreground);
   --input-border: 1px solid var(--glass-border);
   --input-radius: 10px;
+  
+  /* PageHeader System (Stripe Layout Override) */
+  --header-container-bg: var(--secondary);
+  --header-container-border-bottom: 4px solid var(--accent);
+  --header-container-margin-x: -50vw;
+  --header-container-left: 50%;
+  --header-container-right: 50%;
+  --header-container-padding: 3rem 2rem;
+  --header-container-margin-top: -2rem;
+  --header-title-family: inherit;
+  --header-title-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  --header-title-weight: 800;
+  --header-subtitle-color: var(--accent);
+  --header-subtitle-weight: 700;
 
   --btn-danger-bg: #dc2626;
   --btn-danger-text: #ffffff;
@@ -86,4 +101,48 @@
   --btn-admin-bg: #7c3aed;
   --btn-admin-text: #ffffff;
   --btn-admin-hover: #6d28d9;
+}
+
+/* PageHeader Stripe Layout Override (Standardized look for all themes) */
+[data-theme='malpierre'] .page-header-container {
+  background: var(--header-container-bg);
+  padding: var(--header-container-padding);
+  margin-top: var(--header-container-margin-top) !important;
+  margin-bottom: 4rem;
+  width: 100vw;
+  position: relative;
+  left: var(--header-container-left);
+  right: var(--header-container-right);
+  margin-left: var(--header-container-margin-x);
+  margin-right: var(--header-container-margin-x);
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  border-bottom: var(--header-container-border-bottom);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+[data-theme='malpierre'] .page-header-back-wrapper {
+  position: static !important;
+  transform: none !important;
+}
+
+[data-theme='malpierre'] .page-header-content {
+  max-width: none;
+  width: auto;
+  text-align: left;
+}
+
+[data-theme='malpierre'] .page-header-title,
+[data-theme='malpierre'] .page-header-title span {
+  color: var(--foreground) !important;
+  text-shadow: var(--header-title-shadow);
+  font-family: var(--header-title-family);
+  font-weight: var(--header-title-weight);
+}
+
+[data-theme='malpierre'] .page-header-subtitle {
+  color: var(--header-subtitle-color);
+  font-weight: var(--header-subtitle-weight);
 }
