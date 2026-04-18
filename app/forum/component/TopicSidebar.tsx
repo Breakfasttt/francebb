@@ -294,7 +294,7 @@ export default function TopicSidebar({
           )}
 
           {/* 2. Topic Actions Block */}
-          <div className="sidebar-widget topic-widget" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <PremiumCard className="sidebar-widget topic-widget">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
               <h3 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Sujet
@@ -326,7 +326,7 @@ export default function TopicSidebar({
             )}
 
             {currentUserId && (!(isLocked || isForumLocked) || isModerator) && (
-              <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={MessageSquare}>
+              <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={<MessageSquare size={18} />}>
                 Répondre
               </CTAButton>
             )}
@@ -335,7 +335,7 @@ export default function TopicSidebar({
               <ClassicButton
                 onClick={handleToggleFollow}
                 isLoading={isPending}
-                icon={Bookmark}
+                icon={<Bookmark size={18} />}
                 style={{
                   borderColor: isFollowing ? 'var(--accent)' : undefined,
                   color: isFollowing ? 'var(--accent)' : undefined,
@@ -348,7 +348,7 @@ export default function TopicSidebar({
             {!isTournament && canEditTitle && (
               <ClassicButton 
                 onClick={handleEditTitleClick}
-                icon={Type}
+                icon={<Type size={18} />}
               >
                 Modifier le titre
               </ClassicButton>
@@ -357,7 +357,7 @@ export default function TopicSidebar({
             {currentUserId && currentUserId !== authorId && (
               <ClassicButton 
                 onClick={() => setShowReportModal(true)}
-                icon={AlertTriangle}
+                icon={<AlertTriangle size={18} />}
               >
                 Signaler
               </ClassicButton>
@@ -366,14 +366,14 @@ export default function TopicSidebar({
             <ClassicButton 
               href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
               onClick={handleGoToLast}
-              icon={ChevronsDown}
+              icon={<ChevronsDown size={18} />}
             >
               Dernier message
             </ClassicButton>
 
             <ClassicButton 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              icon={ArrowUp}
+              icon={<ArrowUp size={18} />}
             >
               Haut de page
             </ClassicButton>
@@ -387,7 +387,7 @@ export default function TopicSidebar({
                 
                 <AdminButton 
                   onClick={handleEditTitleClick}
-                  icon={Type}
+                  icon={<Type size={18} />}
                 >
                   Modifier le tournoi
                 </AdminButton>
@@ -395,7 +395,7 @@ export default function TopicSidebar({
                 {isFinished ? (
                   <AdminButton 
                     href={`/forum/tournament/${tournamentId}/results`}
-                    icon={Trophy}
+                    icon={<Trophy size={18} />}
                   >
                     Publier les résultats
                   </AdminButton>
@@ -404,7 +404,7 @@ export default function TopicSidebar({
                     <AdminButton 
                       onClick={handleFinish}
                       isLoading={isPending}
-                      icon={CheckCircle}
+                      icon={<CheckCircle size={18} />}
                     >
                       Terminer le tournoi
                     </AdminButton>
@@ -412,7 +412,7 @@ export default function TopicSidebar({
                     <AdminButton 
                       onClick={handleToggleRegistrations}
                       isLoading={isPending}
-                      icon={registrationsLocked ? Check : LockIcon}
+                      icon={registrationsLocked ? <Check size={18} /> : <LockIcon size={18} />}
                       style={{ color: registrationsLocked ? 'var(--accent)' : undefined }}
                     >
                       {registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}
@@ -421,7 +421,7 @@ export default function TopicSidebar({
                     <DangerButton 
                       onClick={handleCancel}
                       isLoading={isPending}
-                      icon={XCircle}
+                      icon={<XCircle size={18} />}
                     >
                       Annuler le tournoi
                     </DangerButton>
@@ -439,7 +439,7 @@ export default function TopicSidebar({
                 <AdminButton 
                   onClick={handleTogglePin}
                   isLoading={isPending}
-                  icon={isPinned ? PinOff : Pin}
+                  icon={isPinned ? <PinOff size={18} /> : <Pin size={18} />}
                   style={{ color: isPinned ? 'var(--unread-marker)' : undefined }}
                 >
                   {isPinned ? "Désépingler" : "Épingler"}
@@ -448,7 +448,7 @@ export default function TopicSidebar({
                 <AdminButton 
                   onClick={() => setShowMoveModal(true)}
                   isLoading={isPending}
-                  icon={Move}
+                  icon={<Move size={18} />}
                 >
                   Déplacer
                 </AdminButton>
@@ -457,7 +457,7 @@ export default function TopicSidebar({
                 <AdminButton 
                   onClick={handleToggleArchive}
                   isLoading={isPending}
-                  icon={Eye}
+                  icon={<Eye size={18} />}
                   style={{ color: isArchived ? 'var(--accent)' : undefined }}
                 >
                   {isArchived ? "Désarchiver" : "Archiver"}
@@ -472,13 +472,13 @@ export default function TopicSidebar({
                 <DangerButton 
                   onClick={() => setShowDeleteModal(true)}
                   isLoading={isPending}
-                  icon={Trash2}
+                  icon={<Trash2 size={18} />}
                 >
                   Supprimer sujet
                 </DangerButton>
               </div>
             )}
-          </div>
+          </PremiumCard>
         </div>
       </div>
 
