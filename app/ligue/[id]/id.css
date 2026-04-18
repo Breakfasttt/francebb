@@ -1,5 +1,5 @@
 .ligue-detail-page {
-  margin-top: 1rem;
+  margin-top: 0;
 }
 
 .ligue-grid {
@@ -286,19 +286,25 @@
   border: 1px solid rgba(var(--accent-rgb, 255, 215, 0), 0.1);
 }
 
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .user-name {
   font-weight: 800;
   font-size: 1rem;
   color: var(--foreground);
+  line-height: 1.2;
 }
 
 .user-role-badge {
   font-size: 0.65rem;
   text-transform: uppercase;
   color: var(--primary);
-  font-weight: 900;
+  font-weight: 950;
   letter-spacing: 0.1em;
-  margin-top: 0.2rem;
 }
 
 .user-role-badge.commissaire {

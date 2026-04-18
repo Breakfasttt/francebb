@@ -27,32 +27,40 @@ export default function LigueFilters({ initialQuery = "", initialRegion = "", co
     router.push(`/ligues?${params.toString()}`);
   };
 
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const query = formData.get("query") as string;
-    const params = new URLSearchParams(searchParams.toString());
-    if (query) {
-      params.set("query", query);
-    } else {
-      params.delete("query");
-    }
-    params.set("page", "1");
-    router.push(`/ligues?${params.toString()}`);
-  };
+  // État local pour l'input pour un rendu fluide
+  const [query, setQuery] = React.useState(initialQuery);
+
+  // Debounce de la recherche
+  React.useEffect(() => {
+    // Évite la boucle infinie : on ne push que si la valeur a changée par rapport à l'URL
+    const currentQuery = searchParams.get("query") || "";
+    if (query === currentQuery) return;
+
+    const timer = setTimeout(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (query) {
+          params.set("query", query);
+        } else {
+          params.delete("query");
+        }
+        params.set("page", "1");
+        router.push(`/ligues?${params.toString()}`, { scroll: false });
+    }, 400); // 400ms pour être plus safe sur les mobiles
+
+    return () => clearTimeout(timer);
+  }, [query, router, searchParams]);
 
   return (
     <div className="search-filters">
         <div className="search-wrapper">
             <Search size={18} />
-            <form onSubmit={handleSearchSubmit}>
-                <input 
-                    type="text" 
-                    name="query" 
-                    defaultValue={initialQuery} 
-                    placeholder="Nom ou acronyme..." 
-                />
-            </form>
+            <input 
+                type="text" 
+                name="query" 
+                value={query} 
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Nom ou acronyme..." 
+            />
         </div>
         
         <ClassicSelect 
@@ -60,7 +68,7 @@ export default function LigueFilters({ initialQuery = "", initialRegion = "", co
           onChange={handleRegionChange} 
           defaultValue={initialRegion}
           icon={MapPin}
-          containerStyle={{ minWidth: "220px" }}
+          className="filter-select"
         >
             <option value="">Toutes les zones</option>
             {coachRegions.map(r => (

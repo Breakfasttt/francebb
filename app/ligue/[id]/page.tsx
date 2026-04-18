@@ -56,11 +56,13 @@ export default async function LigueDetailPage({
   const canManage = isCreator || isMod;
 
   return (
-    <main className="container ligue-detail-page">
+    <div className="ligue-detail-page">
       <PageHeader 
         title={`${ligue.name} (${ligue.acronym})`} 
         backHref="/ligues" 
       />
+
+      <main className="container">
 
       <div className="ligue-grid">
         <div className="ligue-main">
@@ -198,6 +200,7 @@ export default async function LigueDetailPage({
         </aside>
       </div>
     </main>
+    </div>
   );
 }
 

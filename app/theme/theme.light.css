@@ -58,11 +58,11 @@
   --btn-classic-border: rgba(0, 0, 0, 0.15);
   --btn-classic-hover: rgba(0, 0, 0, 0.1);
 
-  --btn-cta-bg: var(--primary);
-  --btn-cta-text: var(--header-foreground);
-  --btn-cta-glow: rgba(var(--primary-rgb), 0.3);
-  --btn-cta-hover: var(--primary-hover);
-  --btn-cta-shiny: rgba(255, 255, 255, 0.3);
+  --btn-cta-bg: #1e293b;
+  --btn-cta-text: #ffffff;
+  --btn-cta-glow: rgba(30, 41, 59, 0.2);
+  --btn-cta-hover: #0f172a;
+  --btn-cta-shiny: rgba(255, 255, 255, 0.2);
 
   /* Component-Specific variables for BBScheme/Tools parity */
   --tool-bg: var(--background);
