@@ -7,21 +7,6 @@
   margin: 0 auto;
 }
 
-/* Surcharges PageHeader Compact */
-.map-page-header {
-  margin-bottom: 1rem !important;
-  min-height: auto !important;
-}
-
-.map-page-header .page-header-title {
-  font-size: 1.8rem !important;
-}
-
-.map-page-header .page-header-subtitle {
-  font-size: 0.85rem !important;
-  margin-top: 0.2rem !important;
-}
-
 .carte-content-body {
   flex: 1;
   display: flex;

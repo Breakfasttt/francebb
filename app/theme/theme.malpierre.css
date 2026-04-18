@@ -94,7 +94,7 @@
   --header-container-margin-x: -50vw;
   --header-container-left: 50%;
   --header-container-right: 50%;
-  --header-container-padding: 3rem 2rem;
+  --header-container-padding: 3rem 2rem 1rem 2rem;
   --header-container-margin-top: -2rem;
   --header-title-family: inherit;
   --header-title-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
@@ -116,14 +116,14 @@
   background: var(--header-container-bg);
   padding: var(--header-container-padding);
   margin-top: var(--header-container-margin-top) !important;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   width: 100vw;
   position: relative;
   left: var(--header-container-left);
   right: var(--header-container-right);
   margin-left: var(--header-container-margin-x);
   margin-right: var(--header-container-margin-x);
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
   border-bottom: var(--header-container-border-bottom);
   display: flex;
   justify-content: center;

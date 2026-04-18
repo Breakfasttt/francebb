@@ -55,12 +55,14 @@ export default async function LiguesPage({
   });
 
   return (
-    <main className="container">
+    <div className="ligues-page">
       <PageHeader 
         title="L'Annuaire des Ligues" 
         subtitle="Trouvez votre club et rejoignez la communauté"
         backHref="/" 
       />
+
+      <main className="container">
 
       <div className="ligues-top-bar">
         <LigueFilters 
@@ -109,6 +111,7 @@ export default async function LiguesPage({
           action={<Link href="/ligues/create" className="btn-create-ligue"><Plus size={18} /> Créer une Ligue</Link>}
         />
       )}
-    </main>
+      </main>
+    </div>
   );
 }

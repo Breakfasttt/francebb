@@ -125,11 +125,13 @@ export default function ProfilePage() {
   const isModerator = checkIsModerator((session?.user as any)?.role);
 
   return (
-    <main className="container profile-page-container">
+    <div className="profile-page">
       <PageHeader
         title="Mon Compte"
         subtitle="Gérez vos informations et votre activité"
       />
+
+      <main className="container profile-page-container">
 
       <div className="profile-content-layout">
         <ProfileSidebar 
@@ -237,5 +239,6 @@ export default function ProfilePage() {
         </div>
       </div>
     </main>
+    </div>
   );
 }

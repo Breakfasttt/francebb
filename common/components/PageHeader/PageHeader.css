@@ -3,10 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   width: 100%;
-  min-height: 48px;
-  /* Assure que le bouton retour a de la place même sans titre énorme */
+  padding: 0.8rem 0; /* Un peu plus que 0.5rem pour que le logo ne soit pas trop serré */
 }
 
 /* Le wrapper gère le positionnement pour ne pas écraser le transform: translateX du bouton au hover */
@@ -28,7 +27,7 @@
 
 .page-header-title {
   margin: 0;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 800;
   color: var(--foreground);
   display: flex;
@@ -45,8 +44,8 @@
 
 .page-header-subtitle {
   color: var(--text-secondary);
-  margin: 0.5rem 0 0 0;
-  font-size: 1rem;
+  margin: 0.2rem 0 0 0;
+  font-size: 0.9rem;
 }
 
 /* Container pour des boutons d'actions additionnels sur la droite */

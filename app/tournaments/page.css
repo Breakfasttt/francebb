@@ -1,3 +1,7 @@
+.tournaments-page {
+  padding-top: 0.5rem;
+}
+
 /* Styles spécifiques à la page Tournois (app/tournaments/page.tsx) */
 
 .tournaments-container {

@@ -196,8 +196,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   breadcrumbs.push({ label: topic.title });
 
   return (
-    <main className="container forum-container">
-      <MarkAsRead topicId={id} />
+    <div className="topic-detail-page">
       <PageHeader
         title={
           <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -213,6 +212,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         backHref={`/forum/${topic.forumId}`}
         backTitle="Retour au forum"
       />
+
+      <main className="container forum-container">
+        <MarkAsRead topicId={id} />
 
       <ForumBreadcrumbs items={breadcrumbs} />
 
@@ -322,5 +324,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         />
       </div>
     </main>
+    </div>
   );
 }

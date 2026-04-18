@@ -1,3 +1,7 @@
+.ligues-page {
+  padding-top: 0.5rem;
+}
+
 .ligues-top-bar {
   display: flex;
   justify-content: space-between;

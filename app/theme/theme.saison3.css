@@ -87,7 +87,7 @@
   --header-container-margin-x: -50vw;
   --header-container-left: 50%;
   --header-container-right: 50%;
-  --header-container-padding: 3rem 2rem;
+  --header-container-padding: 3rem 2rem 1rem 2rem;
   --header-container-margin-top: -2rem;
   --header-title-family: 'Inter', system-ui, sans-serif;
   --header-title-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
@@ -96,7 +96,7 @@
   --header-subtitle-weight: 700;
 
   /* BackButton System */
-  --back-btn-size: 60px;
+  --back-btn-size: 54px;
   --back-btn-bg: radial-gradient(circle at 30% 30%, #ffdf00 0%, #b8860b 100%);
   --back-btn-icon-color: #1a110a;
   --back-btn-border: 4px solid #9e1d1d;
@@ -160,14 +160,14 @@
   background: var(--header-container-bg);
   padding: var(--header-container-padding);
   margin-top: var(--header-container-margin-top) !important;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   width: 100vw;
   position: relative;
   left: var(--header-container-left);
   right: var(--header-container-right);
   margin-left: var(--header-container-margin-x);
   margin-right: var(--header-container-margin-x);
-  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
   border-bottom: var(--header-container-border-bottom);
   display: flex;
   justify-content: center;
@@ -194,7 +194,7 @@
   font-style: italic;
   font-weight: var(--header-title-weight);
   font-family: var(--header-title-family);
-  font-size: 3rem;
+  font-size: 2.7rem;
   letter-spacing: -0.02em;
   text-shadow: var(--header-title-shadow);
   line-height: 1;

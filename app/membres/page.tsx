@@ -55,7 +55,7 @@ export default async function MembersPage() {
   ]);
 
   return (
-    <main className="container">
+    <div className="members-page">
       <PageHeader
         title={
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -65,6 +65,8 @@ export default async function MembersPage() {
         }
       />
 
+      <main className="container">
+
       <MembersTable 
         users={allUsers} 
         currentUserRole={me.role as UserRole} 
@@ -72,6 +74,7 @@ export default async function MembersPage() {
         allLigues={allLigues}
         allRegions={allRegions}
       />
-    </main>
+      </main>
+    </div>
   );
 }

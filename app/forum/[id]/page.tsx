@@ -103,7 +103,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   breadcrumbs.push({ label: forum.name });
 
   return (
-    <main className="container forum-container">
+    <div className="forum-detail-page">
       <PageHeader
         title={
           <span style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
@@ -116,6 +116,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         backHref="/forum"
         backTitle="Retour au forum"
       />
+ 
+      <main className="container forum-container">
  
       <ForumBreadcrumbs items={breadcrumbs} />
 
@@ -267,5 +269,6 @@ export default async function ForumDetailPage({ params, searchParams }: { params
       />
     </div>
   </main>
+  </div>
   );
 }

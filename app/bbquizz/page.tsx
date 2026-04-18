@@ -23,12 +23,14 @@ export default async function QuizPage() {
   }
 
   return (
-    <main className="container">
+    <div className="bbquizz-page">
       <PageHeader 
         title="Quizz Blood Bowl" 
         subtitle="Devenez une encyclopédie vivante de la NAF"
         backHref="/"
       />
+
+      <main className="container">
 
       <div className="quiz-page-layout">
         <section className="quiz-main-section">
@@ -43,5 +45,6 @@ export default async function QuizPage() {
         </aside>
       </div>
     </main>
+    </div>
   );
 }

@@ -96,11 +96,13 @@ export default async function TournamentsPage({
   });
 
   return (
-    <main className="container tournaments-container">
+    <div className="tournaments-page">
       <PageHeader 
         title="Tous les Tournois" 
         backHref="/" 
       />
+
+      <main className="container tournaments-container">
 
       <div className="search-layout">
         <aside className="sidebar-wrapper">
@@ -286,5 +288,6 @@ export default async function TournamentsPage({
         </section>
       </div>
     </main>
+    </div>
   );
 }

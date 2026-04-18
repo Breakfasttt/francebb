@@ -1,3 +1,7 @@
+.forum-page, .forum-detail-page, .topic-detail-page {
+  padding-top: 0.5rem;
+}
+
 .forum-container {
   max-width: 1400px;
   margin: 0 auto;

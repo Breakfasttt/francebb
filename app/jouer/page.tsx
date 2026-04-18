@@ -53,13 +53,15 @@ export default async function HowToPlayPage() {
   ];
 
   return (
-    <main className="container how-to-play-page">
+    <div className="how-to-play-wrapper">
       <PageHeader 
         title={<><span>Guide du Coach</span></>}
         subtitle="Tout ce qu'il faut savoir pour débuter l'aventure Blood Bowl en France"
         backHref="/"
         backTitle="Retour à l'accueil"
       />
+
+      <main className="container how-to-play-page">
 
       <div className="sections-container">
         {sections.map((section, index) => {
@@ -111,6 +113,8 @@ export default async function HowToPlayPage() {
           </div>
         </PremiumCard>
       </footer>
+      </footer>
     </main>
+    </div>
   );
 }

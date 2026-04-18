@@ -124,12 +124,14 @@ export default function ClassementPage() {
   const years = [2026, 2025, 2024, 2023];
 
   return (
-    <main className="container classement-page">
+    <div className="rankings-wrapper">
       <PageHeader 
         title="Championnat de France" 
         subtitle="Le Panthéon des meilleurs coachs et de la communauté Blood Bowl France"
         backHref="/" 
       />
+
+      <main className="container classement-page">
 
       <div className="ranking-filters-bar">
         <div className="filter-controls">
@@ -361,5 +363,6 @@ export default function ClassementPage() {
         isDanger
       />
     </main>
+    </div>
   );
 }
