@@ -11,6 +11,9 @@ import {
 import toast from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface ReferenceData {
   id: string;
@@ -137,34 +140,41 @@ export default function ReferenceDataTab() {
   }, {});
 
   return (
-    <div className="reference-data-tab fade-in">
-      <div className="tab-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+    <PremiumCard className="reference-data-tab fade-in" style={{ padding: '2.5rem' }}>
+      <div className="tab-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
         <div>
-          <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Database size={24} /> Données de Référence
+          <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '1.6rem', fontWeight: 800 }}>
+            <div style={{ background: 'var(--primary-transparent)', padding: '0.6rem', borderRadius: '10px', color: 'var(--primary)', display: 'flex' }}>
+              <Database size={24} />
+            </div>
+            Données de Référence
           </h2>
-          <p style={{ color: '#888', margin: '0.5rem 0 0' }}>Gérez les listes de valeurs utilisées dans les formulaires.</p>
+          <p style={{ color: 'var(--text-muted)', margin: '0.6rem 0 0', fontSize: '0.95rem' }}>Gérez les listes de valeurs utilisées dans les formulaires.</p>
         </div>
-        <button className="primary-btn-admin" onClick={() => setIsCreating(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: '8px', cursor: 'pointer' }}>
-          <Plus size={18} /> Ajouter une valeur
-        </button>
+        {!isCreating && (
+          <CTAButton onClick={() => setIsCreating(true)} icon={<Plus size={18} />}>
+            Ajouter une valeur
+          </CTAButton>
+        )}
       </div>
 
-      <div className="info-box-admin" style={{ background: 'rgba(255, 215, 0, 0.05)', border: '1px solid rgba(255, 215, 0, 0.2)', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', display: 'flex', gap: '1rem', color: '#ccc', fontSize: '0.9rem' }}>
-        <Info size={20} style={{ color: 'var(--accent)', flexShrink: 0 }} />
+      <div className="info-box-admin" style={{ background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', padding: '1.2rem', borderRadius: '16px', marginBottom: '2.5rem', display: 'flex', gap: '1rem', color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5 }}>
+        <Info size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: '2px' }} />
         <p style={{ margin: 0 }}>
-          Les données sont regroupées. Le <strong>Groupe</strong> détermine où la donnée est affichée (ex: COACH_REGION, REGION_FRANCE). 
-          La <strong>Clé</strong> est la valeur technique stockée en BDD, le <strong>Libellé</strong> est le texte affiché à l'utilisateur.
+          Les données sont regroupées. Le <strong style={{ color: 'var(--foreground)' }}>Groupe</strong> détermine où la donnée est affichée (ex: COACH_REGION, REGION_FRANCE). 
+          La <strong style={{ color: 'var(--foreground)' }}>Clé</strong> est la valeur technique stockée en BDD, le <strong style={{ color: 'var(--foreground)' }}>Libellé</strong> est le texte affiché à l'utilisateur.
         </p>
       </div>
 
       {isCreating && (
-        <PremiumCard className="creation-form-overlay" style={{ background: 'rgba(0,0,0,0.4)', padding: '2rem', borderRadius: '16px', border: '1px solid var(--accent)', marginBottom: '2rem', borderStyle: 'dashed' }}>
-          <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--accent)' }}>Ajouter une nouvelle donnée</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 80px', gap: '1rem', alignItems: 'end' }}>
+        <PremiumCard className="creation-form-overlay" style={{ background: 'var(--glass-bg)', padding: '2rem', borderRadius: '20px', border: '1px solid var(--primary-transparent)', marginBottom: '3rem', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', background: 'var(--primary)' }}></div>
+          <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--foreground)', fontSize: '1.2rem', fontWeight: 800 }}>Ajouter une nouvelle donnée</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) minmax(150px, 1fr) minmax(200px, 1fr) 100px', gap: '1.2rem', alignItems: 'end' }}>
             <div className="form-group-admin">
               <label>Groupe</label>
               <input 
+                className="premium-input-field"
                 value={newForm.group} 
                 onChange={e => setNewForm({...newForm, group: e.target.value})} 
                 placeholder="Ex: REGION_FRANCE"
@@ -173,6 +183,7 @@ export default function ReferenceDataTab() {
             <div className="form-group-admin">
               <label>Clé (ID technique)</label>
               <input 
+                className="premium-input-field text-accent"
                 value={newForm.key} 
                 onChange={e => setNewForm({...newForm, key: e.target.value})} 
                 placeholder="Ex: IDF"
@@ -181,6 +192,7 @@ export default function ReferenceDataTab() {
             <div className="form-group-admin">
               <label>Libellé (Affiché)</label>
               <input 
+                className="premium-input-field"
                 value={newForm.label} 
                 onChange={e => setNewForm({...newForm, label: e.target.value})} 
                 placeholder="Ex: Île-de-France"
@@ -189,29 +201,32 @@ export default function ReferenceDataTab() {
             <div className="form-group-admin">
               <label>Ordre</label>
               <input 
+                className="premium-input-field"
                 type="number"
                 value={newForm.order} 
                 onChange={e => setNewForm({...newForm, order: parseInt(e.target.value) || 0})} 
               />
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', justifyContent: 'flex-end' }}>
-             <button onClick={() => setIsCreating(false)} style={{ background: 'transparent', color: '#ff4d4d', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Annuler</button>
-             <button onClick={handleCreate} disabled={isPending} className="primary-btn-admin">
-                {isPending ? "Création..." : "Créer la donnée"}
-             </button>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'flex-end' }}>
+             <ClassicButton onClick={() => setIsCreating(false)} icon={<X size={18} />}>
+               Annuler
+             </ClassicButton>
+             <CTAButton onClick={handleCreate} isLoading={isPending} icon={<Check size={18} />}>
+                Créer la donnée
+             </CTAButton>
           </div>
         </PremiumCard>
       )}
 
       {Object.keys(groupedData).sort().map(group => (
-        <section key={group} className="ref-group-section" style={{ marginBottom: '3rem' }}>
-          <h3 style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem', marginBottom: '1.5rem', color: '#aaa', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Groupe : <span style={{ color: 'white' }}>{group}</span>
+        <section key={group} className="ref-group-section" style={{ marginBottom: '3.5rem' }}>
+          <h3 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.8rem', marginBottom: '1.5rem', color: 'var(--text-muted)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 800 }}>
+            Groupe : <span style={{ color: 'var(--primary)', marginLeft: '0.5rem' }}>{group}</span>
           </h3>
           
-          <div className="ref-table" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <div className="ref-row header" style={{ display: 'grid', gridTemplateColumns: '200px 300px 100px 100px 1fr', gap: '1rem', padding: '0.8rem 1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', color: '#666', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase' }}>
+          <div className="ref-table" style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            <div className="ref-row header" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1rem 1.5rem', background: 'var(--glass-bg-accent, rgba(255,255,255,0.03))', borderRadius: '12px', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               <div>Clé</div>
               <div>Libellé</div>
               <div>Ordre</div>
@@ -220,43 +235,36 @@ export default function ReferenceDataTab() {
             </div>
 
             {groupedData[group].map((item: ReferenceData) => (
-              <div key={item.id} className={`ref-row ${editingId === item.id ? 'editing' : ''}`} style={{ display: 'grid', gridTemplateColumns: '200px 300px 100px 100px 1fr', gap: '1rem', padding: '1rem', background: 'rgba(20, 20, 20, 0.4)', borderRadius: '12px', border: '1px solid var(--glass-border)', alignItems: 'center' }}>
+              <div key={item.id} className={`ref-row-item ${editingId === item.id ? 'editing' : ''}`}>
                 {editingId === item.id ? (
-                  <>
-                    <input value={editForm.key} onChange={e => setEditForm({...editForm, key: e.target.value})} style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent)' }}/>
-                    <input value={editForm.label} onChange={e => setEditForm({...editForm, label: e.target.value})} style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent)' }} />
-                    <input type="number" value={editForm.order} onChange={e => setEditForm({...editForm, order: parseInt(e.target.value) || 0})} style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid var(--accent)' }} />
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <input type="checkbox" checked={editForm.isActive} onChange={e => setEditForm({...editForm, isActive: e.target.checked})} style={{ width: '18px', height: '18px' }} />
-                        <span style={{ fontSize: '0.8rem' }}>Actif</span>
+                  <div className="edit-row-container" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '2px solid var(--primary)', alignItems: 'center', boxShadow: '0 0 20px var(--btn-shadow)' }}>
+                    <input className="premium-input-field text-accent compact" value={editForm.key} onChange={e => setEditForm({...editForm, key: e.target.value})} />
+                    <input className="premium-input-field compact" value={editForm.label} onChange={e => setEditForm({...editForm, label: e.target.value})} />
+                    <input className="premium-input-field compact" type="number" value={editForm.order} onChange={e => setEditForm({...editForm, order: parseInt(e.target.value) || 0})} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                        <input type="checkbox" checked={editForm.isActive} onChange={e => setEditForm({...editForm, isActive: e.target.checked})} className="premium-checkbox" />
+                        <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>Actif</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem' }}>
-                      <button onClick={handleSaveEdit} className="icon-btn success" title="Enregistrer"><Check size={18} /></button>
-                      <button onClick={handleCancelEdit} className="icon-btn" title="Annuler"><X size={18} /></button>
+                      <button onClick={handleSaveEdit} className="action-row-btn success" title="Enregistrer"><Check size={18} /></button>
+                      <button onClick={handleCancelEdit} className="action-row-btn" title="Annuler"><X size={18} /></button>
                     </div>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <div style={{ fontFamily: 'monospace', color: 'var(--accent)', fontSize: '0.9rem' }}>{item.key}</div>
-                    <div style={{ fontWeight: 600 }}>{item.label}</div>
-                    <div style={{ color: '#888' }}>{item.order}</div>
+                  <div className="static-row-container" style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) minmax(280px, 1fr) 100px 120px 140px', gap: '1rem', padding: '1.2rem 1.5rem', background: 'var(--glass-bg)', borderRadius: '16px', border: '1px solid var(--glass-border)', alignItems: 'center', transition: 'all 0.2s' }}>
+                    <div className="key-display-badge">{item.key}</div>
+                    <div style={{ fontWeight: 700, fontSize: '1rem' }}>{item.label}</div>
+                    <div style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>{item.order}</div>
                     <div>
-                      <span style={{ 
-                        padding: '0.2rem 0.5rem', 
-                        borderRadius: '4px', 
-                        fontSize: '0.7rem', 
-                        fontWeight: 700,
-                        background: item.isActive ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                        color: item.isActive ? '#22c55e' : '#ef4444'
-                      }}>
+                      <span className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
                         {item.isActive ? "ACTIF" : "INACTIF"}
                       </span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem' }}>
-                      <button onClick={() => handleStartEdit(item)} className="icon-btn" title="Modifier"><Edit2 size={16} /></button>
-                      <button onClick={() => handleDelete(item.id)} className="icon-btn danger" title="Supprimer"><Trash2 size={16} /></button>
+                      <button onClick={() => handleStartEdit(item)} className="action-row-btn" title="Modifier"><Edit2 size={16} /></button>
+                      <button onClick={() => handleDelete(item.id)} className="action-row-btn danger" title="Supprimer"><Trash2 size={16} /></button>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
             ))}
@@ -275,64 +283,104 @@ export default function ReferenceDataTab() {
       />
 
       <style jsx>{`
+        .loading-state {
+          padding: 4rem;
+          text-align: center;
+          color: var(--text-muted);
+          font-weight: 700;
+        }
         .form-group-admin {
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
         }
-        .form-group-admin label { font-size: 0.75rem; font-weight: 700; color: #777; text-transform: uppercase; }
-        .form-group-admin input {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid var(--glass-border);
-          padding: 0.6rem 0.8rem;
-          border-radius: 6px;
-          color: white;
-          outline: none;
+        .form-group-admin label { 
+          font-size: 0.75rem; 
+          font-weight: 800; 
+          color: var(--text-muted); 
+          text-transform: uppercase; 
+          letter-spacing: 0.05em;
+          padding-left: 4px;
         }
-        .form-group-admin input:focus { border-color: var(--accent); }
+        .premium-input-field {
+          background: var(--card-bg);
+          border: 1px solid var(--glass-border);
+          padding: 0.7rem 1rem;
+          border-radius: 10px;
+          color: var(--foreground);
+          font-size: 0.95rem;
+          outline: none;
+          transition: all 0.2s;
+          width: 100%;
+        }
+        .premium-input-field:focus { 
+          border-color: var(--primary); 
+          box-shadow: 0 0 0 3px var(--primary-transparent);
+        }
+        .premium-input-field.compact {
+          padding: 0.5rem 0.8rem;
+          font-size: 0.9rem;
+        }
+        .text-accent { color: var(--accent) !important; font-family: monospace; }
         
-        .ref-row input {
-           padding: 0.4rem 0.6rem;
-           border-radius: 4px;
-           color: white;
-           font-size: 0.9rem;
-           width: 100%;
+        .static-row-container:hover {
+          border-color: var(--primary-transparent) !important;
+          transform: translateX(4px);
         }
 
-        .icon-btn {
-          width: 32px;
-          height: 32px;
+        .key-display-badge {
+          font-family: monospace;
+          color: var(--accent);
+          background: var(--accent-transparent);
+          padding: 4px 10px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 700;
+          display: inline-block;
+        }
+
+        .status-badge {
+          font-size: 0.65rem;
+          font-weight: 900;
+          padding: 3px 10px;
+          border-radius: 20px;
+          letter-spacing: 0.05em;
+        }
+        .status-badge.active {
+          background: var(--success-transparent, rgba(34, 197, 94, 0.1));
+          color: var(--success, #22c55e);
+          border: 1px solid var(--success-transparent, rgba(34, 197, 94, 0.2));
+        }
+        .status-badge.inactive {
+          background: var(--danger-transparent, rgba(239, 68, 68, 0.1));
+          color: var(--danger, #ef4444);
+          border: 1px solid var(--danger-transparent, rgba(239, 68, 68, 0.2));
+        }
+
+        .action-row-btn {
+          width: 36px;
+          height: 36px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(255,255,255,0.03);
+          background: var(--glass-bg-accent, rgba(255,255,255,0.03));
           border: 1px solid var(--glass-border);
-          border-radius: 6px;
-          color: #888;
+          border-radius: 10px;
+          color: var(--text-muted);
           cursor: pointer;
           transition: all 0.2s;
         }
-        .icon-btn:hover { background: rgba(255,255,255,0.08); color: white; }
-        .icon-btn.danger:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
-        .icon-btn.success:hover { background: rgba(34, 197, 94, 0.1); color: #22c55e; border-color: #22c55e; }
+        .action-row-btn:hover { background: var(--primary-transparent); color: var(--foreground); border-color: var(--primary); }
+        .action-row-btn.danger:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
+        .action-row-btn.success:hover { background: rgba(34, 197, 94, 0.1); color: #22c55e; border-color: #22c55e; }
         
-        .primary-btn-admin {
-          background: var(--primary);
-          color: white;
-          border: none;
-          padding: 0.8rem 1.5rem;
-          font-weight: 700;
-          border-radius: 8px;
+        .premium-checkbox {
+          width: 20px;
+          height: 20px;
+          accent-color: var(--primary);
           cursor: pointer;
-          transition: all 0.2s;
         }
-        .primary-btn-admin:hover:not(:disabled) {
-           filter: brightness(1.1);
-           transform: translateY(-2px);
-           box-shadow: 0 4px 12px rgba(194, 29, 29, 0.3);
-        }
-        .primary-btn-admin:disabled { opacity: 0.5; cursor: not-allowed; }
       `}</style>
-    </div>
+    </PremiumCard>
   );
 }

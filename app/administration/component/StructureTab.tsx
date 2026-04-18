@@ -601,7 +601,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
       <style jsx global>{`
         /* ---- Layout ---- */
         .categories-list { display: flex; flex-direction: column; gap: 2rem; }
-        .forums-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: rgba(0,0,0,0.12); }
+        .forums-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: var(--glass-bg-accent, rgba(0,0,0,0.12)); border-radius: 0 0 16px 16px; }
         .sub-forums-list { display: flex; flex-direction: column; gap: 0.4rem; padding-left: 0; }
 
         /* ---- Légende ---- */
@@ -704,9 +704,17 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         .drag-handle:active { cursor: grabbing; color: var(--primary); }
 
         /* ---- Badges ---- */
-        .badge-role { font-size: 0.66rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; }
-        .badge-all { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-        .badge-restricted { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .badge-role { font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.3rem; }
+        .badge-all { 
+          background: var(--success-transparent, rgba(34,197,94,0.15)); 
+          color: var(--success, #4ade80); 
+          border: 1px solid var(--success, rgba(34,197,94,0.3)); 
+        }
+        .badge-restricted { 
+          background: var(--warning-transparent, rgba(245,158,11,0.12)); 
+          color: var(--warning, #fbbf24); 
+          border: 1px solid var(--warning, rgba(245,158,11,0.3)); 
+        }
 
         /* ---- Add Buttons ---- */
         .add-forum-btn {
@@ -728,12 +736,12 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         /* ---- UI Buttons ---- */
         .action-button { display: inline-flex; align-items: center; gap: 0.4rem; justify-content: center; font-weight: 700; cursor: pointer; border-radius: 8px; border: none; transition: all 0.2s; font-size: 0.87rem; }
         .action-button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .primary-btn { padding: 0.65rem 1.2rem; background: var(--primary); color: white; }
+        .primary-btn { padding: 0.65rem 1.2rem; background: var(--primary); color: var(--header-foreground, white); }
         .primary-btn:hover:not(:disabled) { filter: brightness(1.15); transform: translateY(-1px); }
         .secondary-btn { padding: 0.45rem 0.8rem; background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); font-weight: 600; }
         .secondary-btn:hover:not(:disabled) { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); }
-        .danger-btn { padding: 0.65rem 1.2rem; background: #dc2626; color: white; }
-        .danger-btn:hover:not(:disabled) { background: #b91c1c; }
+        .danger-btn { padding: 0.65rem 1.2rem; background: var(--danger, #dc2626); color: white; }
+        .danger-btn:hover:not(:disabled) { opacity: 0.8; }
         .icon-btn { padding: 0.3rem 0.5rem; font-size: 0.8rem; border-radius: 5px; }
 
         /* ---- Side Panel ---- */
