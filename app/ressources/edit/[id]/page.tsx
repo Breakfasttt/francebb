@@ -67,7 +67,7 @@ export default function EditResourcePage({ params }: EditResourcePageProps) {
   const user = session?.user as any;
   const isAuthor = user?.id === resource.authorId;
   const isMod = isModerator(user?.role);
-  const isSys = resource.isSystem || resource.id === 'bbpusher';
+  const isSys = resource.isSystem || resource.id === 'bbscheme';
 
   const canEdit = isSys ? isAdmin(user?.role) : (isMod || isAuthor);
 

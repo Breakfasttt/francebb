@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
-import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText, MonitorPlay, Award, Map } from "lucide-react";
+import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText, MonitorPlay, Award, Map, Layout } from "lucide-react";
 import { auth } from "@/auth";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
@@ -107,10 +107,16 @@ export default async function Home() {
               <BookOpen size={24} className="icon-accent" />
               <div className="card-text">Ressources</div>
             </PremiumCard>
-            <PremiumCard as={Link} href="/media" hoverEffect className="action-card">
-              <MonitorPlay size={24} className="icon-accent" />
-              <div className="card-text">Vidéo & Stream</div>
-            </PremiumCard>
+            <div className="card-stack">
+              <PremiumCard as={Link} href="/bbscheme" hoverEffect className="action-card flex-1">
+                <Layout size={24} className="icon-accent" />
+                <div className="card-text">BBScheme</div>
+              </PremiumCard>
+              <PremiumCard as={Link} href="/bbquizz" hoverEffect className="action-card flex-1">
+                <HelpCircle size={24} className="icon-accent" />
+                <div className="card-text">Quizz</div>
+              </PremiumCard>
+            </div>
             <PremiumCard 
               as="a"
               href={discordInvite?.value || "#"} 

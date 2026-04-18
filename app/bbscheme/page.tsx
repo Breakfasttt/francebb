@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * BB Pusher - Plateau tactique Blood Bowl
+ * BB Scheme - Plateau tactique Blood Bowl
  */
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
@@ -86,7 +86,7 @@ interface HistoryState {
   drawings: DrawingPath[];
 }
 
-export default function BBPusherPage() {
+export default function BBSchemePage() {
   const [tokens, setTokens] = useState<TokenData[]>([
     { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }
   ]);
@@ -571,14 +571,14 @@ export default function BBPusherPage() {
 
   return (
     <main 
-      className={`bbpusher-page ${isFullscreen ? 'fullscreen' : ''}`}
+      className={`bbscheme-page ${isFullscreen ? 'fullscreen' : ''}`}
       onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
     >
       <header className="tool-header">
         <div className="header-left">
           <BackButton href="/ressources" title="Retour" />
           <div className="title-group">
-            <h1 className="title-modern">BB<span>Pusher</span></h1>
+            <h1 className="title-modern">BB<span>Scheme</span></h1>
           </div>
         </div>
         <div className="tool-handler">
@@ -647,7 +647,7 @@ export default function BBPusherPage() {
         </div>
       </header>
 
-      <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Pusher">
+      <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Scheme">
         <div className="help-content">
           <section className="help-section">
             <h3><MousePointer2 size={16} /> Sélection & Déplacement</h3>

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { TokenData, ToolType, DrawingPath } from "../page";
-import Token from "@/app/bbpusher/component/Token";
+import Token from "@/app/bbscheme/component/Token";
 import "./Pitch.css";
 
 interface PitchProps {

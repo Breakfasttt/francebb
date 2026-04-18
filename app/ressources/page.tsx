@@ -121,7 +121,7 @@ export default function RessourcesPage() {
                     {resources.map(res => {
                       const isAuthor = user?.id === res.authorId;
                       const isMod = isModerator(user?.role);
-                      const isSystem = res.isSystem || res.id === 'bbpusher';
+                      const isSystem = res.isSystem || res.id === 'bbscheme';
                       
                       const canEdit = isSystem ? isAdmin(user?.role) : (isMod || isAuthor);
                       const canDelete = !isSystem && (isMod || isAuthor);

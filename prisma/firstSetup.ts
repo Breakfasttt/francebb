@@ -227,22 +227,7 @@ async function firstSetup() {
 
   // 5. Ressources Système
   console.log("--- Configuration des ressources système...");
-  const systemResources = [
-    {
-      id: "bbpusher",
-      title: "BB Pusher",
-      description: "Plateau tactique interactif pour Blood Bowl.",
-      link: "/bbpusher",
-      imageUrl: "/images/bbpusher-preview.jpg"
-    },
-    {
-      id: "bbquizz",
-      title: "Quizz Blood Bowl",
-      description: "Testez vos connaissances sur Blood Bowl !",
-      link: "/bbquizz",
-      imageUrl: "/images/quiz-preview.jpg"
-    }
-  ];
+  const systemResources = [];
 
   for (const res of systemResources) {
     await prisma.resource.upsert({

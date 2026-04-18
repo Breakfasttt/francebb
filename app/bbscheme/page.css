@@ -1,4 +1,4 @@
-.bbpusher-page {
+.bbscheme-page {
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -13,7 +13,7 @@
   padding-bottom: 42px;
 }
 
-.bbpusher-page.fullscreen {
+.bbscheme-page.fullscreen {
   padding-top: 0;
   padding-bottom: 0;
   z-index: 9999;
