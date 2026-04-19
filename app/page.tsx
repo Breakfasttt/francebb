@@ -15,7 +15,9 @@ export default async function Home() {
 
   const nextTournaments = await prisma.tournament.findMany({
     where: {
-      date: { gte: new Date() }
+      date: { gte: new Date() },
+      isFinished: false,
+      isCancelled: false
     },
     orderBy: {
       date: 'asc'

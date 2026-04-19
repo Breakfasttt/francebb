@@ -11,7 +11,11 @@ export const dynamic = "force-dynamic";
 export default async function CartePage() {
   const [nextTournaments, ligues] = await Promise.all([
     prisma.tournament.findMany({
-      where: { date: { gte: new Date() } },
+      where: { 
+        date: { gte: new Date() },
+        isFinished: false,
+        isCancelled: false
+      },
       select: { 
         id: true, 
         name: true, 

@@ -195,9 +195,11 @@ export default async function LigueDetailPage({
             </div>
           </PremiumCard>
 
-          <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-            <ReportLigueButton ligueId={ligue.id} ligueName={ligue.name} />
-          </div>
+          {session && (
+            <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+              <ReportLigueButton ligueId={ligue.id} ligueName={ligue.name} />
+            </div>
+          )}
         </aside>
       </div>
     </main>
