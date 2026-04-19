@@ -655,18 +655,24 @@ export async function createPost(topicId: string, content: string) {
     });
 
     for (const mUser of mentionedUsers) {
-      // Créer le record en base pour l'historique/notifications internes futures
+      // Créer le record en base
       await prisma.mention.create({
         data: {
           postId: post.id,
           mentionedUserId: mUser.id,
           mentionerId: session.user.id
         }
-      }).catch(() => {}); // Ignorer si doublon ou erreur
+      }).catch(() => {});
 
-      // Envoyer le mail si demandé
+      // Envoyer le mail de mention uniquement si l'utilisateur NE SUIT PAS déjà le sujet
       if (mUser.email && mUser.notifMention) {
-        sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
+        const isFollower = await prisma.topicFollow.findUnique({
+          where: { userId_topicId: { userId: mUser.id, topicId } }
+        });
+        
+        if (!isFollower) {
+          sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
+        }
       }
     }
   }
@@ -676,7 +682,7 @@ export async function createPost(topicId: string, content: string) {
     where: { 
       topicId,
       userId: { 
-        notIn: [session.user.id, ...Array.from(mentionedIds)] // Exclure l'auteur et ceux déjà notifiés par mention
+        not: session.user.id // On ne notifie plus les mentionnés ici car on a retiré l'exclusion
       }
     },
     include: {
