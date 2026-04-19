@@ -83,9 +83,9 @@ export default async function RootLayout({
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
 
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" data-theme={userTheme} suppressHydrationWarning>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false} suppressHydrationWarning>
+        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
           <DebugThemeWidget />

@@ -2,9 +2,9 @@
 
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
-import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
+import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
 
-export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay";
+export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay" | "info-mails";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -20,6 +20,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
     { id: "structure", label: "Structure Forum", icon: <LayoutList size={18} /> },
     { id: "reference", label: "Données de Référence", icon: <Database size={18} /> },
     { id: "howtoplay", label: "Guide du Débutant", icon: <BookOpen size={18} /> },
+    { id: "info-mails", label: "Annonces Email", icon: <Mail size={18} /> },
   ];
 
   const advancedTabs: TabItem[] = [
@@ -125,13 +126,13 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
         .group-label {
           font-size: 0.7rem;
           font-weight: 800;
-          color: #555;
+          color: var(--text-muted);
           letter-spacing: 1.5px;
           margin: 1rem 0 0.5rem 0.5rem;
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          opacity: 0.8;
+          opacity: 0.6;
         }
 
         .advanced-group {
@@ -152,27 +153,27 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
         }
 
         :global(.danger-tabs .tab-item.active) {
-            border-color: #ef4444 !important;
-            color: #ef4444 !important;
-            background: rgba(239, 68, 68, 0.1) !important;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: var(--danger) !important;
+            background: rgba(var(--danger-rgb, 239, 68, 68), 0.1) !important;
+            box-shadow: 0 4px 15px rgba(var(--danger-rgb, 239, 68, 68), 0.15) !important;
         }
         
         :global(.danger-tabs .tab-item:not(.active)) {
-            color: #fca5a5;
+            color: var(--text-muted);
             opacity: 0.7;
-            border-color: rgba(239, 68, 68, 0.1);
+            border-color: rgba(var(--danger-rgb, 239, 68, 68), 0.1);
         }
-
+ 
         :global(.danger-tabs .tab-item:hover:not(.active)) {
-            background: rgba(239, 68, 68, 0.05);
-            color: #ef4444;
+            background: rgba(var(--danger-rgb, 239, 68, 68), 0.05);
+            color: var(--danger);
             opacity: 1;
         }
-
+ 
         .danger-label {
-          color: #ef4444;
-          opacity: 0.6;
+          color: var(--danger);
+          opacity: 0.8;
         }
       `}</style>
     </PremiumCard>

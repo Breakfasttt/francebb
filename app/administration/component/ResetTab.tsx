@@ -147,7 +147,7 @@ export default function ResetTab() {
         .modal-overlay {
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0, 0, 0, 0.85);
+          background: rgba(0, 0, 0, 0.7);
           backdrop-filter: blur(12px);
           display: flex;
           align-items: center;
@@ -157,7 +157,7 @@ export default function ResetTab() {
         }
 
         .nuke-modal {
-          background: var(--background, #0a0a0c);
+          background: var(--card-bg, var(--background));
           border: 2px solid var(--danger);
           border-radius: 20px;
           padding: 3rem;
@@ -179,8 +179,8 @@ export default function ResetTab() {
             45deg,
             var(--danger),
             var(--danger) 10px,
-            #000 10px,
-            #000 20px
+            var(--background) 10px,
+            var(--background) 20px
           );
         }
 
@@ -230,7 +230,7 @@ export default function ResetTab() {
 
         .nuke-input {
           width: 100%;
-          background: rgba(0,0,0,0.6);
+          background: var(--glass-bg);
           border: 2px solid var(--danger);
           color: var(--danger);
           font-weight: 900;
@@ -260,7 +260,7 @@ export default function ResetTab() {
           cursor: pointer;
           transition: all 0.2s;
         }
-        .cancel-btn:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+        .cancel-btn:hover { background: var(--primary-transparent); transform: translateY(-2px); }
         
         .confirm-nuke-btn {
           flex: 2;
@@ -276,10 +276,11 @@ export default function ResetTab() {
         }
         
         .confirm-nuke-btn:disabled {
-          background: #333;
-          color: #666;
+          background: var(--glass-border);
+          color: var(--text-muted);
           cursor: not-allowed;
           box-shadow: none;
+          opacity: 0.5;
         }
         
         .confirm-nuke-btn:not(:disabled):hover {

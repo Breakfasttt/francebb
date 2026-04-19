@@ -450,3 +450,42 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
 
   return { success: true };
 }
+
+/**
+ * Envoie un email d'information forcé à TOUS les coachs de la plateforme.
+ */
+export async function sendGlobalInfoMail(subject: string, content: string) {
+  const session = await auth();
+  const userRole = (session?.user as any)?.role;
+  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
+    throw new Error("Accès refusé.");
+  }
+
+  if (!subject || !content) {
+    return { success: false, error: "Sujet et contenu requis." };
+  }
+
+  const users = await prisma.user.findMany({
+    where: { email: { not: null }, isBanned: false },
+    select: { email: true }
+  });
+
+  const { sendMail, getEmailTemplate } = await import("@/lib/mail");
+  const html = getEmailTemplate(content, "Annonce Officielle BBFrance");
+
+  let successCount = 0;
+  for (const user of users) {
+    try {
+      await sendMail({
+        to: user.email!,
+        subject: `[BBFrance Info] ${subject}`,
+        html
+      });
+      successCount++;
+    } catch (e) {
+      console.error(`Erreur mail à ${user.email}:`, e);
+    }
+  }
+
+  return { success: true, count: successCount, total: users.length };
+}
