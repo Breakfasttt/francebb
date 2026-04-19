@@ -1,17 +1,17 @@
 "use client";
 
+import BadgeButton from "@/common/components/Button/BadgeButton";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { parseBBCode } from "@/lib/bbcode";
-import { Mail, MapPin, Shield, Trophy, User, Eye, EyeOff, Info, ShieldAlert, Ban } from "lucide-react";
+import { Ban, Eye, EyeOff, Info, Mail, MapPin, Shield, ShieldAlert, Trophy, User } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from 'react';
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
-import SharePostButton from "./SharePostButton";
 import ReportPostButton from "./ReportPostButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import BadgeButton from "@/common/components/Button/BadgeButton";
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import SharePostButton from "./SharePostButton";
 
 import { isModerator } from "@/lib/roles";
 
@@ -79,7 +79,7 @@ const PostItem: React.FC<PostItemProps> = ({
         gap: '1.2rem',
         textAlign: 'center'
       }}>
-        <UserAvatar 
+        <UserAvatar
           image={post.author.image}
           name={post.author.name}
           postCount={post.author._count?.posts || 0}
@@ -122,12 +122,12 @@ const PostItem: React.FC<PostItemProps> = ({
               )}
               {((post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom) && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'flex-start', gap: '0.4rem', justifyContent: 'center' }}>
-                  <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} /> 
+                  <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} />
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center' }}>
                     {post.author.ligues?.map((ligue: any) => (
                       <Tooltip key={ligue.id} text={ligue.name}>
-                        <Link 
-                          href={`/ligue/${ligue.id}`} 
+                        <Link
+                          href={`/ligue/${ligue.id}`}
                           style={{ color: 'var(--foreground)', textDecoration: 'none', fontWeight: 600, background: 'rgba(34, 197, 94, 0.1)', padding: '0 4px', borderRadius: '4px' }}
                         >
                           {ligue.acronym || ligue.name}
@@ -145,14 +145,14 @@ const PostItem: React.FC<PostItemProps> = ({
 
           {currentUserId && (
             <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
-              <BadgeButton 
+              <BadgeButton
                 href={`/spy/${post.author.id}`}
                 icon={User}
               >
                 PROFIL
               </BadgeButton>
               {post.author.id !== currentUserId && (
-                <BadgeButton 
+                <BadgeButton
                   href={`/profile?tab=pm&recipientId=${post.author.id}`}
                   icon={Mail}
                 >
@@ -194,7 +194,7 @@ const PostItem: React.FC<PostItemProps> = ({
             fontStyle: 'italic',
             textAlign: 'center'
           }}>
-          Ce message a été supprimé par son auteur
+            Ce message a été supprimé par son auteur
           </div>
         ) : (isBlocked || isBannedAuthor) && !isRevealed ? (
           <div style={{
@@ -217,10 +217,10 @@ const PostItem: React.FC<PostItemProps> = ({
               {isBannedAuthor ? <Ban size={180} color="#ef4444" /> : <ShieldAlert size={180} />}
             </div>
 
-            <div style={{ 
-              padding: '1.2rem', 
-              borderRadius: '50%', 
-              background: isBannedAuthor ? 'rgba(239, 68, 68, 0.2)' : 'rgba(var(--primary-rgb), 0.1)', 
+            <div style={{
+              padding: '1.2rem',
+              borderRadius: '50%',
+              background: isBannedAuthor ? 'rgba(239, 68, 68, 0.2)' : 'rgba(var(--primary-rgb), 0.1)',
               color: isBannedAuthor ? '#ef4444' : 'var(--primary)',
               boxShadow: isBannedAuthor ? '0 0 30px rgba(239, 68, 68, 0.2)' : '0 0 30px rgba(var(--primary-rgb), 0.15)',
               border: isBannedAuthor ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid var(--primary-transparent)',
@@ -230,33 +230,33 @@ const PostItem: React.FC<PostItemProps> = ({
             }}>
               {isBannedAuthor ? <Ban size={32} strokeWidth={2.5} /> : <EyeOff size={32} strokeWidth={2.5} />}
             </div>
-            
+
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <h4 style={{ 
-                margin: 0, 
-                fontWeight: 800, 
-                color: isBannedAuthor ? '#ef4444' : 'var(--foreground)', 
-                fontSize: '1.2rem', 
-                textTransform: 'uppercase', 
-                letterSpacing: '0.08em' 
+              <h4 style={{
+                margin: 0,
+                fontWeight: 800,
+                color: isBannedAuthor ? '#ef4444' : 'var(--foreground)',
+                fontSize: '1.2rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em'
               }}>
                 {isBannedAuthor ? `Coach banni : ${post.author.name}` : `Utilisateur bloqué : ${post.author.name}`}
               </h4>
-              <p style={{ 
-                margin: '0.8rem 0 0 0', 
-                fontSize: '0.95rem', 
-                color: 'var(--text-muted)', 
+              <p style={{
+                margin: '0.8rem 0 0 0',
+                fontSize: '0.95rem',
+                color: 'var(--text-muted)',
                 lineHeight: 1.6,
                 maxWidth: '500px'
               }}>
-                {isBannedAuthor 
+                {isBannedAuthor
                   ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
                   : "Ce contenu est masqué car vous avez bloqué cet utilisateur. Vous pouvez le gérer dans votre gestion de compte."
                 }
               </p>
             </div>
 
-            <ClassicButton 
+            <ClassicButton
               onClick={() => setIsRevealed(true)}
               icon={Eye}
               style={{ width: 'auto', padding: '0.8rem 2.2rem' }}
@@ -291,12 +291,12 @@ const PostItem: React.FC<PostItemProps> = ({
                   </div>
                 )}
                 {(isBlocked || isBannedAuthor) && isRevealed && (
-                  <div style={{ 
-                    fontSize: '0.75rem', 
-                    color: isBannedAuthor ? '#ef4444' : 'var(--primary)', 
-                    marginBottom: '1rem', 
-                    padding: '0.4rem 0.8rem', 
-                    background: isBannedAuthor ? 'rgba(239, 68, 68, 0.1)' : 'rgba(var(--primary-rgb), 0.1)', 
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: isBannedAuthor ? '#ef4444' : 'var(--primary)',
+                    marginBottom: '1rem',
+                    padding: '0.4rem 0.8rem',
+                    background: isBannedAuthor ? 'rgba(239, 68, 68, 0.1)' : 'rgba(var(--primary-rgb), 0.1)',
                     borderRadius: '4px',
                     display: 'flex',
                     alignItems: 'center',
@@ -304,8 +304,8 @@ const PostItem: React.FC<PostItemProps> = ({
                     fontWeight: 700
                   }}>
                     <Info size={12} /> {isBannedAuthor ? "AFFICHAGE TEMPORAIRE (COACH BANNI)" : "AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)"}
-                    <button 
-                      onClick={() => setIsRevealed(false)} 
+                    <button
+                      onClick={() => setIsRevealed(false)}
                       style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.65rem' }}
                     >
                       Masquer à nouveau
@@ -363,5 +363,6 @@ const PostItem: React.FC<PostItemProps> = ({
     </PremiumCard>
   );
 };
+
 
 export default PostItem;

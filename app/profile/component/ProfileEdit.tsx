@@ -9,7 +9,7 @@ import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";

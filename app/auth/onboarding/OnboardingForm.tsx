@@ -3,7 +3,7 @@
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { finishOnboarding } from "./actions";
 import { updateTheme, getReferenceDataAction } from "@/app/profile/actions";
 import Modal from "@/common/components/Modal/Modal";

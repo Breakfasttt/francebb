@@ -152,28 +152,44 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
           padding: 0 0.2rem;
         }
 
-        :global(.danger-tabs .tab-item.active) {
-            border-color: var(--danger) !important;
-            color: var(--danger) !important;
-            background: rgba(var(--danger-rgb, 239, 68, 68), 0.1) !important;
-            box-shadow: 0 4px 15px rgba(var(--danger-rgb, 239, 68, 68), 0.15) !important;
+        :global(.danger-tabs .tab-item) {
+            border-color: rgba(185, 28, 28, 0.3) !important;
+            color: rgba(185, 28, 28, 0.8) !important;
+            background: rgba(185, 28, 28, 0.05) !important;
         }
-        
-        :global(.danger-tabs .tab-item:not(.active)) {
-            color: var(--text-muted);
-            opacity: 0.7;
-            border-color: rgba(var(--danger-rgb, 239, 68, 68), 0.1);
+
+        :global(.danger-tabs .tab-item .tab-icon) {
+            color: var(--danger) !important;
+        }
+
+        :global(.danger-tabs .tab-item.active) {
+            background: var(--btn-danger-bg) !important;
+            color: white !important;
+            border-color: var(--btn-danger-bg) !important;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3) !important;
+            opacity: 1 !important;
+        }
+
+        :global(.danger-tabs .tab-item.active .tab-icon) {
+            color: white !important;
         }
  
         :global(.danger-tabs .tab-item:hover:not(.active)) {
-            background: rgba(var(--danger-rgb, 239, 68, 68), 0.05);
-            color: var(--danger);
-            opacity: 1;
+            background: var(--btn-danger-bg) !important;
+            color: white !important;
+            border-color: var(--btn-danger-bg) !important;
+            opacity: 1 !important;
         }
- 
+
+        :global(.danger-tabs .tab-item:hover:not(.active) .tab-icon) {
+            color: white !important;
+        }
+
         .danger-label {
-          color: var(--danger);
-          opacity: 0.8;
+            color: var(--danger);
+            font-weight: 800;
+            opacity: 1;
+            margin-top: 2.5rem;
         }
       `}</style>
     </PremiumCard>

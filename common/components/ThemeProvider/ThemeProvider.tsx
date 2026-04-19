@@ -1,45 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-/**
- * Composant de synchronisation manuelle de l'attribut de thème.
- * Cela évite l'injection de scripts inline que React 19 déteste.
- */
-function AttributeSync() {
-  const { theme } = useTheme();
+type Theme = string;
 
-  useEffect(() => {
-    if (theme) {
-      document.documentElement.setAttribute("data-theme", theme);
-    }
-  }, [theme]);
-
-  return null;
+interface ThemeContextType {
+  theme: Theme | undefined;
+  setTheme: (theme: Theme) => void;
+  themes: string[];
 }
 
-export function ThemeProvider({ children, ...props }: any) {
-  const [mounted, setMounted] = useState(false);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+export function ThemeProvider({ 
+  children, 
+  defaultTheme = 'saison3',
+  storageKey = 'theme'
+}: { 
+  children: React.ReactNode; 
+  defaultTheme?: string;
+  storageKey?: string;
+  attribute?: string; // Gardé pour compatibilité de signature
+  enableSystem?: boolean; // Gardé pour compatibilité de signature
+}) {
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
+
+  // Au montage, lire le localStorage
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const savedTheme = localStorage.getItem(storageKey);
+    if (savedTheme) {
+      setThemeState(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+  }, [storageKey]);
 
-  // Pendant le SSR et le premier rendu, on ne rend que les enfants
-  if (!mounted) {
-    return <>{children}</>;
-  }
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+    localStorage.setItem(storageKey, newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
 
   return (
-    <NextThemesProvider 
-      {...props}
-      attribute={undefined} // Désactive l'injection de script automatique
-      disableTransitionOnChange
-      enableSystem={false}
-    >
-      <AttributeSync />
+    <ThemeContext.Provider value={{ 
+      theme, 
+      setTheme, 
+      themes: ['saison3', 'default', 'light', 'blood', 'malpierre', 'naf', 'nehekhara'] 
+    }}>
       {children}
-    </NextThemesProvider>
+    </ThemeContext.Provider>
   );
 }
+
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};

@@ -100,7 +100,7 @@ export default function PostActions({
 
   return (
     <>
-      <div className="post-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="post-actions" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
         
         {/* Left column: Moderation */}
         <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>

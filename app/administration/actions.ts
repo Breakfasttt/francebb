@@ -473,6 +473,8 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
   const { sendMail, getEmailTemplate } = await import("@/lib/mail");
   const html = getEmailTemplate(content, "Annonce Officielle BBFrance");
 
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   let successCount = 0;
   for (const user of users) {
     try {
@@ -482,6 +484,8 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
         html
       });
       successCount++;
+      // Attendre 500ms entre chaque envoi pour le débit SMTP
+      await sleep(500);
     } catch (e) {
       console.error(`Erreur mail à ${user.email}:`, e);
     }

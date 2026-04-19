@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { Paintbrush, Palette, Check } from "lucide-react";
 
 const THEMES = [
