@@ -99,6 +99,7 @@ model User {
   commissaireLigues       Ligue[]                  @relation("LigueCommissaires")
   ligues                  Ligue[]                  @relation("LigueMembers")
   commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
+  bbSchemeStates          BBSchemeState[]
 }
 
 model Block {
@@ -628,6 +629,15 @@ model LegacyMember {
   updatedAt      DateTime @updatedAt
 
   @@index([email])
+}
+
+model BBSchemeState {
+  id        String   @id @default(cuid())
+  hash      String   @unique
+  data      String
+  creatorId String?
+  createdAt DateTime @default(now())
+  creator   User?    @relation(fields: [creatorId], references: [id])
 }
 
 enum RegistrationStatus {

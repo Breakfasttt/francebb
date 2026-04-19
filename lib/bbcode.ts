@@ -225,6 +225,28 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
 
+  // 8.5. BBScheme Embed
+  while (/\[bbscheme(?:=(vertical|horizontal))?\]((?:(?!\[bbscheme)[\s\S])*?)\[\/bbscheme\]/i.test(html)) {
+    html = html.replace(/\[bbscheme(?:=(vertical|horizontal))?\]((?:(?!\[bbscheme)[\s\S])*?)\[\/bbscheme\]/i, (match, layout, content) => {
+      const urlOrId = content.trim();
+      let boardId = urlOrId;
+      // Nettoyage de l'URL pour extraire l'ID si c'est une URL complète
+      if (urlOrId.includes("id=")) {
+        boardId = urlOrId.split("id=")[1].split("&")[0];
+      } else if (urlOrId.includes("/bbscheme?")) {
+        const parts = urlOrId.split("id=");
+        if (parts[1]) boardId = parts[1].split("&")[0];
+      }
+      
+      const safeLayout = layout || "horizontal";
+      const height = safeLayout === "vertical" ? "800px" : "450px";
+      
+      return `<div class="bb-bbscheme-container" style="margin: 1.5rem 0; width: 100%; max-width: 900px; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); background: #000;">
+        <iframe src="/bbscheme?id=${boardId}&embed=true&layout=${safeLayout}" style="width: 100%; height: ${height}; border: none; display: block;" allowfullscreen></iframe>
+      </div>`;
+    });
+  }
+
   // 9. Lists [list] and [*]
   const parseListItems = (content: string) => {
     let items = content.trim();

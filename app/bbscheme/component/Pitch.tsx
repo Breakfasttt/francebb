@@ -14,6 +14,7 @@ interface PitchProps {
   rotation: number;
   finalScale: number;
   showTooltips?: boolean;
+  readOnly?: boolean;
 }
 
 const Pitch: React.FC<PitchProps> = ({ 
@@ -26,7 +27,8 @@ const Pitch: React.FC<PitchProps> = ({
   onDrawUpdate,
   rotation,
   finalScale,
-  showTooltips
+  showTooltips,
+  readOnly
 }) => {
   const COLS = 26;
   const ROWS = 15;
@@ -45,6 +47,7 @@ const Pitch: React.FC<PitchProps> = ({
           key={`${x}-${y}`} x={x} y={y} onClick={() => onSquareClick(x, y)} 
           tokens={tokensAtPos} allTokens={tokens} activeTool={activeTool} rotation={rotation}
           showTooltips={showTooltips} onTokenClick={onTokenClick} selectedId={selectedId}
+          readOnly={readOnly}
         />
       );
     }
@@ -96,7 +99,7 @@ const Pitch: React.FC<PitchProps> = ({
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (activeTool !== 'draw') return;
+    if (activeTool !== 'draw' || readOnly) return;
     setIsDrawing(true);
     const { x, y } = getCanvasCoords(e);
     setCurrentPath({ points: [{ x, y }], color: '#ef4444' });
@@ -138,15 +141,16 @@ interface SquareProps {
   x: number; y: number; onClick: () => void;
   tokens: TokenData[]; allTokens: TokenData[]; activeTool: ToolType; rotation: number;
   showTooltips?: boolean; onTokenClick: (id: string) => void; selectedId: string | null;
+  readOnly?: boolean;
 }
 
-const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips, onTokenClick, selectedId }) => {
+const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips, onTokenClick, selectedId, readOnly }) => {
   const isEndZone = x === 0 || x === 25;
   const isWideZoneLine = (y === 3 || y === 10) && (x > 0 && x < 25);
   return (
     <div 
-      className={`pitch-square ${isEndZone ? 'ez' : ''} ${isWideZoneLine ? 'wide-line' : ''}`}
-      onClick={() => { if (activeTool !== 'draw') onClick(); }}
+      className={`pitch-square ${isEndZone ? 'ez' : ''} ${isWideZoneLine ? 'wide-line' : ''} ${readOnly ? 'read-only' : ''}`}
+      onClick={() => { if (activeTool !== 'draw' && !readOnly) onClick(); }}
     >
       <div className="square-token-container">
         {tokens.map(token => {

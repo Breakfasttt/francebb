@@ -10,7 +10,7 @@ const config = {
   url: process.env.DATABASE_URL || "file:./dev.db",
 };
 const getPrismaClient = () => {
-  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v17") {
+  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v18") {
     return globalForPrisma.prisma;
   }
 
@@ -19,7 +19,7 @@ const getPrismaClient = () => {
 
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;
-    globalForPrisma.prismaVersion = "v17";
+    globalForPrisma.prismaVersion = "v18";
   }
   return client;
 };

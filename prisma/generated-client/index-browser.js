@@ -212,11 +212,9 @@ exports.Prisma.TournamentScalarFieldEnum = {
   platform: 'platform',
   isNAF: 'isNAF',
   isCDF: 'isCDF',
-  typeCDF: 'typeCDF',
   isCGO: 'isCGO',
   isTGE: 'isTGE',
   isTSC: 'isTSC',
-  tournamentType: 'tournamentType',
   isFinished: 'isFinished',
   isCancelled: 'isCancelled',
   organizerId: 'organizerId',
@@ -224,7 +222,9 @@ exports.Prisma.TournamentScalarFieldEnum = {
   ligueCustom: 'ligueCustom',
   lat: 'lat',
   lng: 'lng',
-  registrationsLocked: 'registrationsLocked'
+  registrationsLocked: 'registrationsLocked',
+  typeCDF: 'typeCDF',
+  tournamentType: 'tournamentType'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -485,7 +485,6 @@ exports.Prisma.TournamentResultScalarFieldEnum = {
   id: 'id',
   tournamentId: 'tournamentId',
   coachName: 'coachName',
-  nafNumber: 'nafNumber',
   userId: 'userId',
   roster: 'roster',
   wins: 'wins',
@@ -496,7 +495,8 @@ exports.Prisma.TournamentResultScalarFieldEnum = {
   rank: 'rank',
   autoCalculate: 'autoCalculate',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  nafNumber: 'nafNumber'
 };
 
 exports.Prisma.TournamentRoundScalarFieldEnum = {
@@ -579,6 +579,14 @@ exports.Prisma.LegacyMemberScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BBSchemeStateScalarFieldEnum = {
+  id: 'id',
+  hash: 'hash',
+  data: 'data',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -642,7 +650,8 @@ exports.Prisma.ModelName = {
   QuizAttempt: 'QuizAttempt',
   QuizDailyWinner: 'QuizDailyWinner',
   QuizQuestionSuggestion: 'QuizQuestionSuggestion',
-  LegacyMember: 'LegacyMember'
+  LegacyMember: 'LegacyMember',
+  BBSchemeState: 'BBSchemeState'
 };
 
 /**

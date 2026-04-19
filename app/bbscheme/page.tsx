@@ -21,12 +21,28 @@ import {
   Undo2,
   MousePointer2,
   Pencil,
-  Star
+  Star,
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  PlusCircle,
+  Copy,
+  Download,
+  Clock,
+  Loader2
 } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import BackButton from "@/common/components/BackButton/BackButton";
 import { toast } from "react-hot-toast";
+import { getBoardState, saveBoardState } from "./actions";
+import html2canvas from "html2canvas";
+// @ts-ignore
+import gifshot from "gifshot";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import Modal from "@/common/components/Modal/Modal";
@@ -98,8 +114,26 @@ export default function BBSchemePage() {
   const [history, setHistory] = useState<HistoryState[]>([]);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState(0);
+  const [generatedGif, setGeneratedGif] = useState<string | null>(null);
+
+  // Séquence & Lecteur
+  const [frames, setFrames] = useState<TokenData[][]>([[{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }]]);
+  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(800); // ms per frame
+  const playTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const searchParams = useSearchParams();
+  const boardId = searchParams.get("id");
+  const isEmbed = searchParams.get("embed") === "true";
+  const layout = searchParams.get("layout") || "horizontal";
   const [blueRoster, setBlueRoster] = useState<RosterData | null>(null);
   const [redRoster, setRedRoster] = useState<RosterData | null>(null);
+  const [blueRosterFile, setBlueRosterFile] = useState<string | null>(null);
+  const [redRosterFile, setRedRosterFile] = useState<string | null>(null);
   const [rosters, setRosters] = useState<{name: string, file: string}[]>([]);
   const [isBlueLoading, setIsBlueLoading] = useState(false);
   const [isRedLoading, setIsRedLoading] = useState(false);
@@ -123,6 +157,157 @@ export default function BBSchemePage() {
     };
     fetchStarPlayers();
   }, []);
+
+  // Chargement de l'état depuis l'ID URL
+  useEffect(() => {
+    if (boardId) {
+      const loadState = async () => {
+        const result = await getBoardState(boardId);
+        if (result.success && result.data) {
+          try {
+            const parsed = JSON.parse(result.data);
+            if (parsed.frames && parsed.frames.length > 0) {
+              const starPlayerInfo: PlayerRosterInfo = {
+                name: "Star Player", qty: "0-2",
+                ma: "?", st: "?", ag: "?", pa: "?", av: "?",
+                skills: ["Compétences variables"], primary: "", secondary: "", cost: 0 
+              };
+
+              // 1. Charger les rosters d'abord
+              let bData: RosterData | null = null;
+              let rData: RosterData | null = null;
+              let blueBase: TokenData[] = [];
+              let redBase: TokenData[] = [];
+
+              if (parsed.blueRosterFile) {
+                try {
+                  const r = await fetch(`/data/roster/${parsed.blueRosterFile}.json`);
+                  bData = await r.json();
+                  if (bData) {
+                    bData.roster = [...bData.roster, starPlayerInfo];
+                    setBlueRoster(bData);
+                    setBlueRosterFile(parsed.blueRosterFile);
+                    // Générer tokens de base dans la box
+                    blueBase = bData.roster.flatMap(p => 
+                      Array.from({ length: parseInt(p.qty.split('-')[1]) || 2 }).map((_, i) => ({
+                        id: `blue-${p.name.replace(/\s+/g, '-')}-${i}`,
+                        type: 'blue', x: -1, y: -1, status: 'up', location: 'box',
+                        number: i + 1, playerInfo: p
+                      }))
+                    ).slice(0, 18) as TokenData[];
+                  }
+                } catch(e) {}
+              }
+
+              if (parsed.redRosterFile) {
+                try {
+                  const r = await fetch(`/data/roster/${parsed.redRosterFile}.json`);
+                  rData = await r.json();
+                  if (rData) {
+                    rData.roster = [...rData.roster, starPlayerInfo];
+                    setRedRoster(rData);
+                    setRedRosterFile(parsed.redRosterFile);
+                    // Générer tokens de base dans la box
+                    redBase = rData.roster.flatMap(p => 
+                      Array.from({ length: parseInt(p.qty.split('-')[1]) || 2 }).map((_, i) => ({
+                        id: `red-${p.name.replace(/\s+/g, '-')}-${i}`,
+                        type: 'red', x: -1, y: -1, status: 'up', location: 'box',
+                        number: i + 1, playerInfo: p
+                      }))
+                    ).slice(0, 18) as TokenData[];
+                  }
+                } catch(e) {}
+              }
+
+              // 2. Réhydrater les tokens
+              const hydratedFrames = (parsed.frames as TokenData[][]).map(savedFrame => {
+                // On part du pack complet (box)
+                const fullPack = [...blueBase, ...redBase, { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }] as TokenData[];
+                
+                // On remplace les positions/états par ceux sauvegardés
+                return fullPack.map(baseToken => {
+                  const saved = savedFrame.find(s => s.id === baseToken.id);
+                  if (saved) return { ...baseToken, ...saved };
+                  return baseToken;
+                });
+              });
+
+              setFrames(hydratedFrames);
+              setTokens(hydratedFrames[0]);
+              setCurrentFrameIndex(0);
+              if (parsed.drawings) setDrawings(parsed.drawings);
+              if (parsed.rotation !== undefined) setRotation(parsed.rotation);
+              if (parsed.speed !== undefined) setPlaybackSpeed(parsed.speed);
+            }
+          } catch (e) {
+            console.error("Failed to parse board state", e);
+            toast.error("Impossible de charger le plateau");
+          }
+        } else {
+          toast.error(result.error || "Plateau introuvable");
+        }
+      };
+      loadState();
+    }
+  }, [boardId]);
+
+  // Synchronisation de rotation si layout forcé
+  useEffect(() => {
+    if (layout === "vertical" && rotation !== 90) setRotation(90);
+    if (layout === "horizontal" && rotation !== 0) setRotation(0);
+  }, [layout]);
+
+  // Logique du lecteur (Playback)
+  useEffect(() => {
+    if (isPlaying) {
+      playTimerRef.current = setInterval(() => {
+        setCurrentFrameIndex(prev => {
+          const next = prev + 1;
+          if (next >= frames.length) {
+            return 0; // Loop
+          }
+          return next;
+        });
+      }, playbackSpeed);
+    } else if (playTimerRef.current) {
+      clearInterval(playTimerRef.current);
+    }
+    return () => {
+      if (playTimerRef.current) clearInterval(playTimerRef.current);
+    };
+  }, [isPlaying, frames.length, playbackSpeed]);
+
+  const lastIndexRef = useRef(currentFrameIndex);
+
+  // Synchronisation unifiée Frames / Tokens
+  useEffect(() => {
+    // CAS 1: Changement d'index (On charge la nouvelle frame dans le buffer)
+    if (lastIndexRef.current !== currentFrameIndex) {
+      if (frames[currentFrameIndex]) {
+        setTokens(frames[currentFrameIndex]);
+      }
+      lastIndexRef.current = currentFrameIndex;
+      return; // On arrête là pour ce cycle pour éviter de reboucler sur la sauvegarde
+    }
+
+    // CAS 2: Lecture (Playback) - On force la valeur si on est en train de jouer
+    if (isPlaying) {
+      if (frames[currentFrameIndex] && tokens !== frames[currentFrameIndex]) {
+        setTokens(frames[currentFrameIndex]);
+      }
+      return;
+    }
+
+    // CAS 3: Modification en cours (Autosave vers Frames)
+    if (frames[currentFrameIndex] !== tokens) {
+      setFrames(prev => {
+        if (prev[currentFrameIndex] === tokens) return prev; // Déjà sync
+        const next = [...prev];
+        next[currentFrameIndex] = tokens;
+        return next;
+      });
+    }
+  }, [currentFrameIndex, tokens, frames, isPlaying]);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -317,10 +502,19 @@ export default function BBSchemePage() {
     }
 
     setTokens(prev => {
-      // CLEAR ALL existing tokens of the same team (pitch, dugout, or wherever)
+      // CLEAR ALL existing tokens of the same team
       const otherTeamTokens = prev.filter(t => t.type !== team && t.type !== 'ball');
       const ball = prev.find(t => t.type === 'ball');
-      return [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
+      const finalTokens = [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
+      
+      // Update frames source of truth as well
+      setFrames(fPrev => {
+        const fNext = [...fPrev];
+        fNext[currentFrameIndex] = finalTokens;
+        return fNext;
+      });
+      
+      return finalTokens;
     });
   };
 
@@ -341,7 +535,13 @@ export default function BBSchemePage() {
 
       const enrichedData = { ...data, roster: [...data.roster, starPlayerInfo] };
 
-      if (team === 'blue') setBlueRoster(enrichedData); else setRedRoster(enrichedData);
+      if (team === 'blue') {
+        setBlueRoster(enrichedData);
+        setBlueRosterFile(fileName);
+      } else {
+        setRedRoster(enrichedData);
+        setRedRosterFile(fileName);
+      }
       spawnRosterTokens(team, data);
       toast.success(`Roster ${data.name} chargé pour l'équipe ${team === 'blue' ? 'bleue' : 'rouge'}`);
     } catch (e) {
@@ -604,16 +804,136 @@ export default function BBSchemePage() {
     else { if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); setIsFullscreen(false); }
   };
 
-  const handleShare = () => { navigator.clipboard.writeText(window.location.href); toast.success("Lien copié !"); };
+  const handleShare = async () => { 
+    setIsSharing(true);
+    
+    // OPTIMISATION ULTRA : On ne capture QUE les tokens qui ne sont pas dans la "box" (réserve initiale)
+    // Les autres seront recréés dynamiquement à partir du roster lors du chargement.
+    const optimizedFrames = frames.map(frame => 
+      frame.filter(t => t.type === 'ball' || t.location !== 'box').map(token => {
+        const { playerInfo, ...stripped } = token;
+        return stripped;
+      })
+    );
+
+    const stateData = JSON.stringify({
+      frames: optimizedFrames,
+      drawings,
+      blueRosterFile,
+      redRosterFile,
+      rotation,
+      speed: playbackSpeed
+    });
+    
+    const result = await saveBoardState(stateData);
+    setIsSharing(false);
+    
+    if (result.success) {
+      const shareUrl = `${window.location.origin}/bbscheme?id=${result.id}`;
+      navigator.clipboard.writeText(shareUrl); 
+      toast.success("Lien de partage copié !"); 
+    } else {
+      toast.error(result.error || "Erreur lors du partage");
+    }
+  };
+
+  const addFrame = () => {
+    const newFrame = [...tokens.map(t => ({...t}))];
+    setFrames(prev => [...prev, newFrame]);
+    setCurrentFrameIndex(frames.length);
+    toast.success("Image ajoutée");
+  };
+
+  const duplicateFrame = () => {
+    const newFrame = [...tokens.map(t => ({...t}))];
+    setFrames(prev => {
+      const next = [...prev];
+      next.splice(currentFrameIndex + 1, 0, newFrame);
+      return next;
+    });
+    setCurrentFrameIndex(currentFrameIndex + 1);
+    toast.success("Image dupliquée");
+  };
+
+  const removeFrame = () => {
+    if (frames.length <= 1) return;
+    const targetIndex = Math.max(0, currentFrameIndex - 1);
+    setFrames(prev => prev.filter((_, i) => i !== currentFrameIndex));
+    setCurrentFrameIndex(targetIndex);
+    toast.success("Image supprimée");
+  };
+
+  const handleGifExport = async () => {
+    if (frames.length === 0) return;
+    
+    setIsExporting(true);
+    setExportProgress(0);
+    setGeneratedGif(null);
+    setIsPlaying(false);
+    
+    const capturedImages: string[] = [];
+    const originalFrame = currentFrameIndex;
+
+    try {
+      // Masquer les outils temporairement pour la capture si nécessaire
+      // Capture frame by frame
+      for (let i = 0; i < frames.length; i++) {
+        setCurrentFrameIndex(i);
+        setExportProgress(Math.round(((i + 1) / frames.length) * 50));
+        
+        // Attendre que le DOM se mette à jour
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        const pitchElement = document.querySelector(".pitch-resizer") as HTMLElement;
+        if (pitchElement) {
+          const canvas = await html2canvas(pitchElement, {
+            backgroundColor: "#0c0c14",
+            scale: 1, // On garde une taille raisonnable pour le GIF
+            logging: false,
+            useCORS: true
+          });
+          capturedImages.push(canvas.toDataURL("image/png"));
+        }
+      }
+
+      setExportProgress(60);
+      
+      // Génération du GIF via gifshot
+      gifshot.createGIF({
+        images: capturedImages,
+        interval: playbackSpeed / 1000,
+        gifWidth: 800,
+        gifHeight: 500,
+        numWorkers: 2,
+      }, (obj: any) => {
+        if (!obj.error) {
+          setGeneratedGif(obj.image);
+          setExportProgress(100);
+          toast.success("GIF généré avec succès !");
+        } else {
+          toast.error("Erreur lors de la génération du GIF");
+          setIsExporting(false);
+        }
+      });
+      
+    } catch (error) {
+      console.error("Export error:", error);
+      toast.error("Erreur lors de l'export");
+      setIsExporting(false);
+    } finally {
+      setCurrentFrameIndex(originalFrame);
+    }
+  };
 
   const ballItem = tokens.find(t => t.type === 'ball');
   const carrier = ballItem?.attachedToId ? tokens.find(t => t.id === ballItem.attachedToId) : null;
 
   return (
     <main 
-      className={`bbscheme-page ${isFullscreen ? 'fullscreen' : ''}`}
+      className={`bbscheme-page ${isFullscreen ? 'fullscreen' : ''} ${isEmbed ? 'is-embed' : ''}`}
       onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
     >
+      {!isEmbed && (
       <header className="tool-header">
         <div className="header-left">
           <BackButton href="/" title="Retour" />
@@ -622,44 +942,73 @@ export default function BBSchemePage() {
           </div>
         </div>
         <div className="tool-handler">
-          <div className="zoom-bar">
-            <Search size={14} />
-            <input type="range" min="1" max="2" step="0.1" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))} />
-          </div>
-          <div className="divider" />
           <div className="tool-group">
             <Tooltip text="Sélect. intelligente" position="bottom"><button className={`tool-btn ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button></Tooltip>
             <Tooltip text="Annotation" position="bottom"><button className={`tool-btn ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} color="#ef4444" /></button></Tooltip>
-            <Tooltip text={ballItem?.attachedToId ? "Détacher le ballon du joueur" : "Ballon libre (au sol)"} position="bottom">
+            <Tooltip text={ballItem?.attachedToId ? "Détacher le ballon" : "Ballon libre"} position="bottom">
               <button 
                 className={`tool-btn`} 
                 onClick={handleDetachBall}
                 disabled={!ballItem?.attachedToId}
                 style={{ opacity: !ballItem?.attachedToId ? 0.4 : 1 }}
               >
-                <BallIcon size={18} />
+                <div style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyItems: 'center' }}>🏈</div>
               </button>
             </Tooltip>
             <Tooltip text="État du joueur" position="bottom"><button className={`tool-btn ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} className="status-tool-icon" /></button></Tooltip>
-            <Tooltip text="Gomme / Effacer annotations" position="bottom"><button className={`tool-btn ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => setActiveTool('eraser')}><Eraser size={18} /></button></Tooltip>
+            <Tooltip text="Gomme" position="bottom"><button className={`tool-btn ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => setActiveTool('eraser')}><Eraser size={18} /></button></Tooltip>
           </div>
+
           <div className="divider" />
-          <div className="action-group">
-            <Tooltip text="Annuler" position="bottom"><button className="tool-btn undo-btn" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button></Tooltip>
-            <Tooltip text="Rotation" position="bottom"><button className={`tool-btn ${rotation === 90 ? 'active' : ''}`} onClick={() => setRotation(r => r === 0 ? 90 : 0)}><RotateCw size={18} /></button></Tooltip>
-            <Tooltip text={showTooltips ? "Masquer stats" : "Afficher stats"} position="bottom">
-              <button 
-                className={`tool-btn ${showTooltips ? 'active' : ''}`} 
-                onClick={() => setShowTooltips(!showTooltips)}
-              >
-                {showTooltips ? <Eye size={18} /> : <EyeOff size={18} />}
-              </button>
+
+          {/* Contrôles de lecture (Sequence) */}
+          <div className="playback-group" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <Tooltip text="Précédent" position="bottom">
+              <span><ClassicButton onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying} size="xs" icon={<SkipBack size={14} />} /></span>
             </Tooltip>
+            <Tooltip text={isPlaying ? "Pause" : "Lecture"} position="bottom">
+              <span>
+                <CTAButton 
+                  onClick={() => setIsPlaying(!isPlaying)} 
+                  icon={isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                  size="sm"
+                  style={{ borderRadius: "6px", width: "36px", height: "36px", padding: 0, justifyContent: "center" }}
+                />
+              </span>
+            </Tooltip>
+            <Tooltip text="Suivant" position="bottom">
+              <span><ClassicButton onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} disabled={currentFrameIndex === frames.length - 1 || isPlaying} size="xs" icon={<SkipForward size={14} />} /></span>
+            </Tooltip>
+            <div className="frame-counter" style={{ fontSize: '0.7rem', fontWeight: 900, padding: '2px 6px', borderRadius: '4px', background: 'rgba(0,0,0,0.3)', color: 'var(--highlight)', minWidth: '40px', textAlign: 'center' }}>
+              {currentFrameIndex + 1}/{frames.length}
+            </div>
+          </div>
+
+          <div className="divider" />
+
+          {/* Actions sur les images */}
+          <div className="frame-actions-group" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <Tooltip text="Ajouter image" position="bottom"><span><ClassicButton onClick={addFrame} size="xs" icon={<PlusCircle size={14} />} disabled={isPlaying} /></span></Tooltip>
+            <Tooltip text="Dupliquer" position="bottom"><span><ClassicButton onClick={duplicateFrame} size="xs" icon={<Copy size={14} />} disabled={isPlaying} /></span></Tooltip>
+            <Tooltip text="Supprimer" position="bottom"><span><ClassicButton onClick={removeFrame} size="xs" icon={<Trash2 size={14} />} disabled={isPlaying || frames.length <= 1} /></span></Tooltip>
+            <Tooltip text="Export GIF" position="bottom">
+              <span>
+                <CTAButton onClick={handleGifExport} disabled={isPlaying || isExporting} size="xs" style={{ padding: '0 8px', height: '28px' }}>
+                  <Download size={12} /> <span style={{ marginLeft: '4px', fontSize: '0.7rem' }}>{isExporting ? `${exportProgress}%` : 'GIF'}</span>
+                </CTAButton>
+              </span>
+            </Tooltip>
+          </div>
+
+          <div className="divider" />
+
+          <div className="action-group">
+            <Tooltip text="Annuler" position="bottom"><button className="tool-btn" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button></Tooltip>
+            <Tooltip text="Rotation" position="bottom"><button className={`tool-btn ${rotation === 90 ? 'active' : ''}`} onClick={() => setRotation(r => r === 0 ? 90 : 0)}><RotateCw size={18} /></button></Tooltip>
             <Tooltip text="Tout vider" position="bottom"><button className="tool-btn" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} /></button></Tooltip>
-            <Tooltip text="Plein écran" position="bottom"><button className={`tool-btn ${isFullscreen ? 'active' : ''}`} onClick={handleFullscreen}>{isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}</button></Tooltip>
-            <Tooltip text="Partager" position="bottom"><button className="tool-btn share-btn" onClick={handleShare}><Share2 size={18} /></button></Tooltip>
-            <div className="divider" />
-            <Tooltip text="Aide & Guide" position="bottom"><button className={`tool-btn help-btn ${isHelpOpen ? 'active' : ''}`} onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button></Tooltip>
+            <Tooltip text="Partager / Save" position="bottom"><button className="tool-btn share-btn" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button></Tooltip>
+            <Tooltip text="Plein écran" position="bottom"><button className="tool-btn" onClick={handleFullscreen}>{isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}</button></Tooltip>
+            <Tooltip text="Aide" position="bottom"><button className="tool-btn" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button></Tooltip>
           </div>
         </div>
         <div className="header-right">
@@ -686,8 +1035,10 @@ export default function BBSchemePage() {
           </div>
         </div>
       </header>
+      )}
 
-      <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Scheme">
+
+      <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Scheme" hideFooter={true}>
         <div className="help-content">
           <section className="help-section">
             <h3><MousePointer2 size={16} /> Sélection & Déplacement</h3>
@@ -708,10 +1059,49 @@ export default function BBSchemePage() {
         </div>
         <style jsx>{`
           .help-content { display: flex; flex-direction: column; gap: 1.2rem; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
-          .help-section { background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
-          .help-section h3 { display: flex; align-items: center; gap: 0.5rem; color: var(--accent); margin-bottom: 0.5rem; font-size: 1rem; }
-          .help-section p { font-size: 0.85rem; line-height: 1.4; opacity: 0.8; margin: 0; }
+          .help-section { background: rgba(0, 65, 117, 0.05); padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 65, 117, 0.1); }
+          .help-section h3 { display: flex; align-items: center; gap: 0.5rem; color: var(--primary); margin-bottom: 0.5rem; font-size: 1rem; }
+          .help-section p { font-size: 0.85rem; line-height: 1.4; opacity: 1; margin: 0; color: #2d2016; font-weight: 600; }
         `}</style>
+      </Modal>
+
+      <Modal 
+        isOpen={isExporting} 
+        onClose={() => { if (exportProgress === 100) setIsExporting(false); }} 
+        title="Exportation GIF"
+        hideFooter={true}
+      >
+        <div className="export-modal-content" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", alignItems: "center", padding: "1rem" }}>
+          {exportProgress < 100 ? (
+            <div style={{ textAlign: "center", width: "100%" }}>
+              <div className="loader-container" style={{ marginBottom: "1rem" }}>
+                <Loader2 size={48} className="animate-spin" style={{ color: "var(--accent)", margin: "auto" }} />
+              </div>
+              <p style={{ fontWeight: 600 }}>Génération de votre séquence...</p>
+              <div className="progress-bar-bg" style={{ width: "100%", height: "8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", marginTop: "1rem", overflow: "hidden" }}>
+                <div className="progress-bar-fill" style={{ width: `${exportProgress}%`, height: "100%", background: "var(--accent)", transition: "width 0.3s" }} />
+              </div>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
+                {exportProgress < 50 ? "Capture des images..." : "Compilation du GIF..."}
+              </p>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", width: "100%" }}>
+              <div style={{ background: "#000", borderRadius: "8px", overflow: "hidden", marginBottom: "1.5rem", border: "1px solid var(--glass-border)" }}>
+                {generatedGif && <img src={generatedGif} alt="Export Result" style={{ maxWidth: "100%", display: "block" }} />}
+              </div>
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                <CTAButton onClick={() => {
+                  const link = document.createElement("a");
+                  link.href = generatedGif!;
+                  link.download = `bbscheme-${new Date().getTime()}.gif`;
+                  link.click();
+                }} icon={Download}>Télécharger</CTAButton>
+                <ClassicButton onClick={() => setIsExporting(false)}>Fermer</ClassicButton>
+              </div>
+            </div>
+          )}
+        </div>
       </Modal>
 
       <ConfirmModal
@@ -731,8 +1121,9 @@ export default function BBSchemePage() {
         isDanger={true}
       />
 
-      <div className="tool-layout">
+      <div className={`tool-layout ${isEmbed ? 'is-embed' : ''}`}>
         <div className="work-area">
+          {!isEmbed && (
           <div className="global-team-area blue">
             <FigurineBox 
               team="blue" 
@@ -759,10 +1150,11 @@ export default function BBSchemePage() {
               />
             </div>
           </div>
+          )}
 
           <div 
             ref={viewportRef}
-            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''}`}
+            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''} ${isEmbed ? 'read-only' : ''}`}
             onMouseDown={handlePanningStart}
             onMouseMove={handlePanningMove}
             onMouseUp={handlePanningEnd}
@@ -781,11 +1173,13 @@ export default function BBSchemePage() {
                   rotation={rotation} 
                   finalScale={finalScale} 
                   showTooltips={showTooltips} 
+                  readOnly={isEmbed}
                 />
               </div>
             </div>
           </div>
 
+          {!isEmbed && (
           <div className="global-team-area red">
             <div className="dugout-container">
               <Dugout 
@@ -812,6 +1206,7 @@ export default function BBSchemePage() {
               allTokens={tokens}
             />
           </div>
+          )}
         </div>
       </div>
     </main>

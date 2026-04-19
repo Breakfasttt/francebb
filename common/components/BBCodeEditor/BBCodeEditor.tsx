@@ -3,7 +3,7 @@
 import Toast from "@/common/components/Toast/Toast";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
-import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript, LayoutGrid } from "lucide-react";
+import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript, LayoutGrid, DraftingCompass, ScreenShare } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
@@ -28,7 +28,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | null>(null);
+  const [activeTool, setActiveTool] = useState<'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | 'bbscheme' | null>(null);
   const [toolInputThumb, setToolInputThumb] = useState(true);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
@@ -347,7 +347,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
     }
   };
 
-  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo') => {
+  const toggleTool = (tool: 'link' | 'youtube' | 'image' | 'gallery' | 'smileys' | 'color' | 'size' | 'topic' | 'mention' | 'spoiler' | 'accordion' | 'list' | 'align' | 'code' | 'typo' | 'bbscheme') => {
     if (activeTool === tool) {
       setActiveTool(null);
     } else {
@@ -401,6 +401,14 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
   const submitGallery = () => {
     if (!toolInputUrl.trim()) return;
     insertTag(`[gallery]${toolInputUrl.trim()}[/gallery]`, "");
+    setToolInputUrl("");
+    setActiveTool(null);
+  };
+
+  const submitBBScheme = () => {
+    if (!toolInputUrl.trim()) return;
+    const tag = toolInputAlign === 'left' ? '[bbscheme=vertical]' : '[bbscheme]';
+    insertTag(`${tag}${toolInputUrl.trim()}[/bbscheme]`, "");
     setToolInputUrl("");
     setActiveTool(null);
   };
@@ -481,6 +489,10 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           </Tooltip>
           <Tooltip text="Typographie (Exposant/Indice)">
             <button type="button" onClick={() => toggleTool('typo')} className={`toolbar-btn ${activeTool === 'typo' ? 'active-tool' : ''}`}><Superscript size={14} /></button>
+          </Tooltip>
+
+          <Tooltip text="Insérer un schéma tactique BBScheme">
+            <button type="button" onClick={() => toggleTool('bbscheme')} className={`toolbar-btn ${activeTool === 'bbscheme' ? 'active-tool' : ''}`} style={{ color: "var(--accent)" }}><DraftingCompass size={16} /></button>
           </Tooltip>
           
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
@@ -611,6 +623,45 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 />
               </div>
               <CTAButton type="button" onClick={submitGallery} size="sm" style={{ height: "38px" }}>Créer la galerie</CTAButton>
+            </div>
+          )}
+          {activeTool === 'bbscheme' && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+              <div style={{ display: "flex", gap: "1rem", alignItems: "flex-end" }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>URL de partage ou ID du schéma BBScheme</span>
+                  <input 
+                    type="text" 
+                    placeholder="https://.../bbscheme?id=xxxxx" 
+                    value={toolInputUrl} 
+                    onChange={(e) => setToolInputUrl(e.target.value)} 
+                    style={{ width: "100%", height: "36px", padding: "0 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)" }} 
+                    autoFocus 
+                  />
+                </div>
+                
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
+                  <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Format</span>
+                  <div style={{ display: "flex", background: "var(--glass-bg)", borderRadius: "6px", border: "1px solid var(--glass-border)", padding: "0.2rem" }}>
+                    <Tooltip text="Horizontal (Classique)">
+                      <button type="button" onClick={() => setToolInputAlign('center')} className={`toolbar-btn ${toolInputAlign !== 'left' ? 'active-tool' : ''}`} style={{ padding: "0.3rem" }}>
+                        <AlignCenter size={16} />
+                      </button>
+                    </Tooltip>
+                    <Tooltip text="Vertical (Long)">
+                      <button type="button" onClick={() => setToolInputAlign('left')} className={`toolbar-btn ${toolInputAlign === 'left' ? 'active-tool' : ''}`} style={{ padding: "0.3rem" }}>
+                        <AlignLeft size={16} />
+                      </button>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+                <CTAButton type="button" onClick={submitBBScheme} size="sm" style={{ flex: 1, height: "38px" }}>Insérer le schéma</CTAButton>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontStyle: "italic", flex: 1 }}>
+                  L'ID sera automatiquement extrait de l'URL.
+                </div>
+              </div>
             </div>
           )}
           {activeTool === 'mention' && (
