@@ -23,7 +23,8 @@ export default function EditPostForm({ postId, initialContent }: { postId: strin
     try {
       const result = await updatePost(postId, content);
       if (result?.topicId) {
-        router.push(`/forum/topic/${result.topicId}`);
+        // Redirection vers la page précise et l'ancre du message
+        router.push(`/forum/topic/${result.topicId}?page=${result.page || 1}#post-${postId}`);
       }
     } catch (error) {
       console.error("Edit error:", error);

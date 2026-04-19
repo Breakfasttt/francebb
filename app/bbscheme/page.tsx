@@ -51,6 +51,7 @@ import Pitch from "./component/Pitch";
 import Token from "./component/Token";
 import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
+import BBSchemePlayer from "./component/BBSchemePlayer";
 
 import "./page.css";
 
@@ -129,6 +130,12 @@ export default function BBSchemePage() {
   const searchParams = useSearchParams();
   const boardId = searchParams.get("id");
   const isEmbed = searchParams.get("embed") === "true";
+
+  // SI MODE EMBED : Affichage du player dédié uniquement
+  if (isEmbed && boardId) {
+    return <BBSchemePlayer boardId={boardId} />;
+  }
+
   const layout = searchParams.get("layout") || "horizontal";
   const [blueRoster, setBlueRoster] = useState<RosterData | null>(null);
   const [redRoster, setRedRoster] = useState<RosterData | null>(null);
@@ -139,6 +146,24 @@ export default function BBSchemePage() {
   const [isRedLoading, setIsRedLoading] = useState(false);
   const [baseScale, setBaseScale] = useState(0.8);
   const [zoom, setZoom] = useState(1); 
+
+  // Ajustement automatique de l'échelle en mode Embed (YouTube style)
+  useEffect(() => {
+    if (isEmbed) {
+      const updateScale = () => {
+        // Unités exactes du terrain (26 cases * 50px = 1300, 15 cases * 50px = 750)
+        const pitchW = rotation === 90 ? 750 : 1300;
+        const pitchH = rotation === 90 ? 1300 : 750;
+        const scaleW = window.innerWidth / pitchW;
+        const scaleH = (window.innerHeight - 60) / pitchH; // -60 pour la barre de contrôle
+        setZoom(Math.min(scaleW, scaleH)); // 100% fit
+      };
+      updateScale();
+      window.addEventListener('resize', updateScale);
+      setTimeout(updateScale, 100); // Hack pour s'assurer que les dimensions sont prêtes
+      return () => window.removeEventListener('resize', updateScale);
+    }
+  }, [isEmbed, rotation]);
   const [showTooltips, setShowTooltips] = useState(true);
   const [allStarPlayers, setAllStarPlayers] = useState<PlayerRosterInfo[]>([]);
   const resizerRef = useRef<HTMLDivElement>(null);
@@ -314,6 +339,7 @@ export default function BBSchemePage() {
     if (!viewport) return;
 
     const handleWheel = (e: WheelEvent) => {
+      if (isEmbed) return; // Désactiver zoom en embed
       e.preventDefault();
       const delta = e.deltaY > 0 ? -0.05 : 0.05;
       setZoom(prev => Math.max(0.5, Math.min(2, prev + delta)));
@@ -1154,13 +1180,17 @@ export default function BBSchemePage() {
 
           <div 
             ref={viewportRef}
-            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''} ${isEmbed ? 'read-only' : ''}`}
-            onMouseDown={handlePanningStart}
-            onMouseMove={handlePanningMove}
+            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''} ${isEmbed ? 'read-only embed-player' : ''}`}
+            onMouseDown={(e) => { if (!isEmbed) handlePanningStart(e); }}
+            onMouseMove={(e) => { if (!isEmbed) handlePanningMove(e); }}
             onMouseUp={handlePanningEnd}
             onMouseLeave={handlePanningEnd}
           >
-            <div ref={resizerRef} className="pitch-resizer" style={{ width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`, height: `${(rotation === 90 ? 1308 : 758) * finalScale}px` }}>
+            <div ref={resizerRef} className="pitch-resizer" style={{ 
+              width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`, 
+              height: `${(rotation === 90 ? 1308 : 758) * finalScale}px`,
+              margin: isEmbed ? 'auto' : '0'
+            }}>
               <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                 <Pitch 
                   tokens={tokens.filter(t => t.location === 'pitch')} 
@@ -1178,6 +1208,29 @@ export default function BBSchemePage() {
               </div>
             </div>
           </div>
+
+          {isEmbed && (
+            <div className="embed-footer-bar">
+               <div className="playback-group player-style">
+                  <button className="player-control-btn" onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying}><SkipBack size={18} /></button>
+                  <button className="player-play-btn" onClick={() => setIsPlaying(!isPlaying)}>
+                    {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
+                  </button>
+                  <button className="player-control-btn" onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} disabled={currentFrameIndex === frames.length - 1 || isPlaying}><SkipForward size={18} /></button>
+                  
+                  <div className="player-progress">
+                    <div className="player-progress-track">
+                      <div className="player-progress-fill" style={{ width: `${((currentFrameIndex + 1) / frames.length) * 100}%` }} />
+                    </div>
+                    <span className="player-frame-text">{currentFrameIndex + 1} / {frames.length}</span>
+                  </div>
+
+                  <div className="player-speed-pill">
+                    {playbackSpeed}ms
+                  </div>
+               </div>
+            </div>
+          )}
 
           {!isEmbed && (
           <div className="global-team-area red">

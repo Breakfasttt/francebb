@@ -727,7 +727,7 @@ export async function updatePost(postId: string, content: string) {
 
   const existingPost = await prisma.post.findUnique({
     where: { id: postId },
-    select: { authorId: true, topicId: true }
+    select: { authorId: true, topicId: true, createdAt: true }
   });
 
   if (!existingPost) throw new Error("Message introuvable.");
@@ -740,8 +740,24 @@ export async function updatePost(postId: string, content: string) {
     data: { content, updatedAt: new Date() }
   });
 
+  // Calcul de la page pour le retour
+  const countBefore = await prisma.post.count({
+    where: {
+      topicId: existingPost.topicId,
+      OR: [
+        { createdAt: { lt: existingPost.createdAt } },
+        {
+          createdAt: existingPost.createdAt,
+          id: { lt: existingPost.id }
+        }
+      ]
+    }
+  });
+  const POSTS_PER_PAGE = 20;
+  const page = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
+
   revalidatePath(`/forum/topic/${existingPost.topicId}`);
-  return { topicId: existingPost.topicId };
+  return { topicId: existingPost.topicId, page };
 }
 
 export async function getPostById(postId: string) {

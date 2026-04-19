@@ -12,6 +12,7 @@ import MarkUnreadAction from "./MarkUnreadAction";
 import PostActions from "./PostActions";
 import ReportPostButton from "./ReportPostButton";
 import SharePostButton from "./SharePostButton";
+import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 
 import { isModerator } from "@/lib/roles";
 
@@ -62,7 +63,8 @@ const PostItem: React.FC<PostItemProps> = ({
         padding: 0,
         position: 'relative',
         borderColor: isFirstPostAlwaysVisible ? 'var(--accent)' : undefined,
-        background: isFirstPostAlwaysVisible ? 'var(--admin-bg)' : undefined
+        background: isFirstPostAlwaysVisible ? 'var(--admin-bg)' : undefined,
+        minWidth: 0
       }}
     >
       {/* Sidebar Auteur */}
@@ -163,7 +165,7 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
         </div>
       </div>
-      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <div style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.8rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
             <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
@@ -312,7 +314,10 @@ const PostItem: React.FC<PostItemProps> = ({
                     </button>
                   </div>
                 )}
-                <div
+                <BBCodeContent 
+                  content={post.content}
+                  quoteStatusMap={quoteStatusMap}
+                  currentUserId={currentUserId}
                   style={{
                     color: post.isModerated ? 'var(--text-muted)' : 'var(--text-secondary)',
                     lineHeight: '1.6',
@@ -321,20 +326,23 @@ const PostItem: React.FC<PostItemProps> = ({
                     wordBreak: 'break-word',
                     opacity: post.isModerated ? 0.6 : 1
                   }}
-                  dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap, currentUserId) }}
                 />
 
                 {post.author.signature && (
-                  <div style={{
-                    marginTop: '2.5rem',
-                    paddingTop: '1rem',
-                    borderTop: '1px solid var(--glass-border)',
-                    fontSize: '0.85rem',
-                    color: 'var(--text-muted)',
-                    fontStyle: 'italic',
-                    maxWidth: '100%',
-                    overflow: 'hidden'
-                  }} dangerouslySetInnerHTML={{ __html: parseBBCode(post.author.signature, undefined, currentUserId) }} />
+                  <BBCodeContent 
+                    content={post.author.signature}
+                    currentUserId={currentUserId}
+                    style={{
+                      marginTop: '2.5rem',
+                      paddingTop: '1rem',
+                      borderTop: '1px solid var(--glass-border)',
+                      fontSize: '0.85rem',
+                      color: 'var(--text-muted)',
+                      fontStyle: 'italic',
+                      maxWidth: '100%',
+                      overflow: 'hidden'
+                    }}
+                  />
                 )}
               </div>
             ) : (
