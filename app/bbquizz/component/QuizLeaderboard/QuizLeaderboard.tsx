@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { getQuizLeaderboard } from "../../actions";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import ToggleButton from "@/common/components/Button/ToggleButton";
 import { Trophy, Calendar, Globe, Zap, Loader2 } from "lucide-react";
 import "./QuizLeaderboard.css";
 
@@ -29,24 +30,30 @@ export default function QuizLeaderboard() {
   return (
     <div className="quiz-leaderboard">
       <div className="leaderboard-tabs">
-        <button 
-          className={activeTab === "daily" ? "active" : ""} 
+        <ToggleButton 
+          active={activeTab === "daily"} 
           onClick={() => setActiveTab("daily")}
+          icon={<Calendar size={14} />}
+          size="sm"
         >
-          <Calendar className="size-4" /> Du jour
-        </button>
-        <button 
-          className={activeTab === "weekly" ? "active" : ""} 
+          Du jour
+        </ToggleButton>
+        <ToggleButton 
+          active={activeTab === "weekly"} 
           onClick={() => setActiveTab("weekly")}
+          icon={<Globe size={14} />}
+          size="sm"
         >
-          <Globe className="size-4" /> De la semaine
-        </button>
-        <button 
-          className={activeTab === "alltime" ? "active" : ""} 
+          Semaine
+        </ToggleButton>
+        <ToggleButton 
+          active={activeTab === "alltime"} 
           onClick={() => setActiveTab("alltime")}
+          icon={<Trophy size={14} />}
+          size="sm"
         >
-          <Trophy className="size-4" /> Panthéon
-        </button>
+          Panthéon
+        </ToggleButton>
       </div>
 
       <PremiumCard className="leaderboard-card">
@@ -73,7 +80,7 @@ export default function QuizLeaderboard() {
                     <span className="user-name">{user.name}</span>
                     {streak > 0 && (
                       <span className="streak-badge">
-                        <Zap className="size-3" /> {streak} d d'affilée
+                        <Zap size={12} /> {streak} jours d'affilée
                       </span>
                     )}
                   </div>

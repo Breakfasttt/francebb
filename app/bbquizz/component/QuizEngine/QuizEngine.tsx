@@ -7,14 +7,16 @@
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { isModerator } from "@/lib/roles";
-import { Award, Brain, Check, Edit2, FastForward, Loader2, MinusCircle, Plus, PlusCircle, Scissors, Trophy, Users, Zap } from "lucide-react";
+import { Award, Brain, Check, Edit2, FastForward, Gamepad2, Loader2, MinusCircle, Plus, PlusCircle, RefreshCcw, Scissors, Trophy, Users, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getCommunityStats, getRandomQuizQuestions, submitQuizAttempt } from "../../actions";
 import { translateCategory } from "../../utils";
 import "./QuizEngine.css";
-
+import CTAButton from "@/common/components/Button/CTAButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import ExplainButton from "@/common/components/Button/ExplainButton";
 interface Question {
   category: string;
   question: string;
@@ -214,22 +216,22 @@ export default function QuizEngine({ session }: { session: any }) {
               <li>-25 pts par mauvaise réponse</li>
             </ul>
             <div className="quiz-start-actions">
-              <button className="quiz-btn primary" onClick={startQuiz}>
+              <CTAButton onClick={startQuiz} icon={<Gamepad2 size={18} />}>
                 Commencer le quizz !
-              </button>
+              </CTAButton>
 
               <div className="quiz-admin-actions">
-                <button className="quiz-btn outline" onClick={() => openManagement("suggest")}>
-                  <Plus size={16} /> Proposer
-                </button>
+                <ExplainButton onClick={() => openManagement("suggest")} icon={<Plus size={16} />}>
+                  Proposer
+                </ExplainButton>
                 {isModo && (
                   <>
-                    <button className="quiz-btn outline" onClick={() => openManagement("edit")}>
-                      <Edit2 size={16} /> Éditer
-                    </button>
-                    <button className="quiz-btn outline" onClick={() => openManagement("validate")}>
-                      <Check size={16} /> Validation
-                    </button>
+                    <AdminButton onClick={() => openManagement("edit")} icon={<Edit2 size={16} />}>
+                      Éditer
+                    </AdminButton>
+                    <AdminButton onClick={() => openManagement("validate")} icon={<Check size={16} />}>
+                      Validation
+                    </AdminButton>
                   </>
                 )}
               </div>
@@ -247,7 +249,7 @@ export default function QuizEngine({ session }: { session: any }) {
         <div className="quiz-finished">
           <PremiumCard className="quiz-result-card fixed-height">
             <Award className="size-16 text-yellow-500 mb-4" />
-            <h2>Match Terminé !</h2>
+            <h2>Quizz Terminé !</h2>
             <div className="final-score">
               <Trophy className="text-yellow-400" />
               <span>{score} points</span>
@@ -262,9 +264,14 @@ export default function QuizEngine({ session }: { session: any }) {
                 <span className="value">{sessionDuration}s</span>
               </div>
             </div>
-            <button className="quiz-btn primary mt-8" onClick={() => window.location.reload()}>
-              Recommencer
-            </button>
+            <div className="quiz-finished-actions">
+              <CTAButton 
+                onClick={() => window.location.reload()}
+                icon={<RefreshCcw size={18} />}
+              >
+                Recommencer une partie
+              </CTAButton>
+            </div>
           </PremiumCard>
         </div>
       </div>
@@ -393,9 +400,9 @@ export default function QuizEngine({ session }: { session: any }) {
             </div>
 
             {phase === "result" && (
-              <button className="quiz-btn primary next-btn" onClick={handleNext}>
-                Continuer <FastForward className="size-4 ml-2" />
-              </button>
+              <CTAButton onClick={handleNext} icon={<FastForward size={18} />}>
+                Continuer
+              </CTAButton>
             )}
           </div>
         </PremiumCard>

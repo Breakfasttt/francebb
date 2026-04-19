@@ -34,21 +34,70 @@
   padding-top: 0;
 }
 
-.quiz-welcome-card,
-.quiz-result-card {
+.quiz-welcome-card, .quiz-result-card {
   padding: 3rem !important;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100% !important;
 }
 
-.quiz-welcome-card h1,
-.quiz-result-card h2 {
+.quiz-welcome-card h1, .quiz-result-card h2 {
   font-family: 'Orbitron', sans-serif;
   margin: 0.5rem 0 1.5rem 0;
   color: var(--primary);
+  text-transform: uppercase;
+}
+
+.final-score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--primary);
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: var(--glass-bg);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.stat-item .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.stat-item .value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.quiz-finished-actions {
+  margin-top: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .quiz-rules-list {
@@ -351,7 +400,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--secondary);
+  color: var(--primary);
   transition: all 0.2s ease;
   cursor: pointer;
   position: relative;

@@ -6,44 +6,28 @@
 
 .leaderboard-tabs {
   display: flex;
-  gap: 0.25rem;
-  padding: 0.2rem;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.3rem;
   background: var(--glass-bg);
-  border-radius: 99px;
+  border-radius: 12px;
   border: 1px solid var(--glass-border);
-  width: fit-content;
-  margin: 0 auto;
+  width: 100%;
 }
 
-.leaderboard-tabs button {
-  padding: 0.4rem 1rem;
-  border-radius: 99px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.2s ease;
-}
-
-.leaderboard-tabs button:hover {
-  color: var(--foreground);
-  background: var(--theme-overlay);
-}
-
-.leaderboard-tabs button.active {
-  background: var(--secondary);
-  color: #fff;
-  box-shadow: 0 2px 8px var(--btn-shadow);
+/* On override les styles spécifiques aux boutons dans les tabs car ToggleButton est utilisé */
+.leaderboard-tabs .bb-button {
+  flex: 1;
+  min-width: 85px; /* Évite d'être trop petit pour le texte */
+  padding: 0.4rem 0.4rem !important;
+  font-size: 0.8rem !important;
 }
 
 .leaderboard-card {
-  padding: 0.75rem !important;
-  background: var(--card-bg);
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .loader-container {
@@ -71,7 +55,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 0.8rem;
-  background: var(--glass-bg);
+  background: var(--theme-overlay);
   border-radius: 10px;
   border: 1px solid var(--glass-border);
   transition: all 0.2s ease;
@@ -80,14 +64,17 @@
 .leaderboard-item:hover {
   transform: translateX(4px);
   border-color: var(--primary);
-  background: var(--theme-overlay);
+  background: var(--glass-hover);
 }
 
 .rank {
-  width: 24px;
+  width: 35px;
+  font-family: 'Orbitron', sans-serif;
   font-weight: 900;
   color: var(--secondary);
-  font-size: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
 }
 
 .user-info {
@@ -100,7 +87,7 @@
 .user-name {
   font-weight: 700;
   color: var(--foreground);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -113,30 +100,37 @@
   align-items: center;
   gap: 0.2rem;
   font-weight: 600;
+  line-height: 1;
+  margin-top: 0.1rem;
 }
 
 .user-score {
   font-family: 'Orbitron', sans-serif;
-  font-weight: 800;
+  font-weight: 900;
   color: var(--primary);
   font-size: 1rem;
+  text-align: right;
+  min-width: 70px;
 }
 
-/* Podium styling for top 3 */
+/* Podium styling - Entièrement basé sur les couleurs du thème du site */
 .leaderboard-item:nth-child(1) {
-  border-color: rgba(255, 215, 0, 0.4);
-  background: rgba(255, 215, 0, 0.05);
+  border: 1.5px solid var(--secondary);
+  background: var(--theme-overlay);
+  box-shadow: 0 0 10px var(--btn-shadow);
 }
-.leaderboard-item:nth-child(1) .rank { color: #d4af37; }
+
+.leaderboard-item:nth-child(1) .rank {
+  color: var(--secondary);
+  text-shadow: 0 0 10px var(--btn-shadow);
+}
 
 .leaderboard-item:nth-child(2) {
-  border-color: rgba(192, 192, 192, 0.4);
-  background: rgba(192, 192, 192, 0.05);
+  border-color: var(--primary);
+  opacity: 0.95;
 }
-.leaderboard-item:nth-child(2) .rank { color: #a0a0a0; }
 
 .leaderboard-item:nth-child(3) {
-  border-color: rgba(205, 127, 50, 0.4);
-  background: rgba(205, 127, 50, 0.05);
+  border-color: var(--primary);
+  opacity: 0.85;
 }
-.leaderboard-item:nth-child(3) .rank { color: #b08d57; }
