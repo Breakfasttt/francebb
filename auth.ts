@@ -73,6 +73,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
+    async signIn({ user }) {
+      if (!user?.email || !user?.id) return true;
+      
+      const superAdminEmails = (process.env.SUPERADMIN_EMAILS || "")
+        .split(",")
+        .map(e => e.trim().toLowerCase())
+        .filter(e => e !== "");
+
+      if (superAdminEmails.includes(user.email.toLowerCase())) {
+        // Optionnel : ne faire l'update que si nécessaire pour économiser une requête
+        const dbUser = await prisma.user.findUnique({
+          where: { id: user.id },
+          select: { role: true }
+        });
+
+        if (dbUser && dbUser.role !== "SUPERADMIN") {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { role: "SUPERADMIN" }
+          });
+          user.role = "SUPERADMIN"; // Mettre à jour l'objet user pour le JWT suivant
+        }
+      }
+      return true;
+    },
   },
   events: {
     async createUser({ user }) {
