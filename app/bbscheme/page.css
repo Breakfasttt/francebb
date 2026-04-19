@@ -389,32 +389,14 @@
   color: var(--secondary);
 }
 
-[data-theme='saison3'] .bb-button.variant-cta {
-  background: var(--highlight) !important;
-  color: var(--secondary) !important;
-}
-
-[data-theme='saison3'] .frame-counter {
-  background: var(--secondary);
-  color: var(--highlight);
-  border: 1.5px solid var(--highlight);
-}
-
-/* Ensure all standardized buttons in these toolbars pop in Saison 3 */
-[data-theme='saison3'] .tool-header .bb-button.variant-classic,
-[data-theme='saison3'] .sequence-toolbar .bb-button.variant-classic {
+/* Standardized buttons in BBScheme toolbars */
+[data-theme='saison3'] .bbscheme-page .bb-button.variant-classic {
   background: rgba(0, 0, 0, 0.2) !important;
   color: #fff !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-[data-theme='saison3'] .tool-header .bb-button.variant-classic:hover,
-[data-theme='saison3'] .sequence-toolbar .bb-button.variant-classic:hover {
-  background: var(--highlight) !important;
-  color: var(--secondary) !important;
-}
-
-[data-theme='saison3'] .bb-button.variant-cta {
+[data-theme='saison3'] .bbscheme-page .bb-button.variant-classic:hover {
   background: var(--highlight) !important;
   color: var(--secondary) !important;
 }
