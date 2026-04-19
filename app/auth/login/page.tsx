@@ -1,9 +1,12 @@
 import { signIn, auth } from "@/auth";
 import { redirect } from "next/navigation";
 import "./page.css";
-import { Mail, LogIn } from "lucide-react";
+import { Mail, LogIn, Chrome } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import DevLoginSection from "./DevLoginSection";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 
 export const metadata = {
   title: "Connexion - BBFrance",
@@ -52,7 +55,7 @@ export default async function LoginPage(props: {
 
   return (
     <main className="login-container">
-      <div className="login-card">
+      <PremiumCard className="login-card">
         <h1 className="login-title">Connexion</h1>
         
         {error === "OAuthAccountNotLinked" && (
@@ -76,10 +79,9 @@ export default async function LoginPage(props: {
                 await signIn("discord", { redirectTo: callbackUrl });
               }}
             >
-              <button type="submit" className="login-method-button discord">
-                <span className="method-icon">🎮</span>
+              <ClassicButton type="submit" fullWidth className="discord-btn" icon={<span style={{ fontSize: '1.2rem' }}>🎮</span>}>
                 Se connecter avec Discord
-              </button>
+              </ClassicButton>
             </form>
           )}
 
@@ -91,10 +93,9 @@ export default async function LoginPage(props: {
                 await signIn("google", { redirectTo: callbackUrl });
               }}
             >
-              <button type="submit" className="login-method-button google">
-                <span className="method-icon">📧</span>
+              <ClassicButton type="submit" fullWidth className="google-btn" icon={<Chrome size={20} />}>
                 Se connecter avec Google
-              </button>
+              </ClassicButton>
             </form>
           )}
 
@@ -128,10 +129,9 @@ export default async function LoginPage(props: {
                   />
                 </div>
               </div>
-              <button type="submit" className="login-method-button email">
-                <LogIn size={18} />
+              <CTAButton type="submit" fullWidth icon={<LogIn size={18} />}>
                 Recevoir un lien magique
-              </button>
+              </CTAButton>
             </form>
           )}
 
@@ -147,7 +147,7 @@ export default async function LoginPage(props: {
         <p className="login-footer">
           En vous connectant, vous acceptez nos mentions légales.
         </p>
-      </div>
+      </PremiumCard>
     </main>
   );
 }

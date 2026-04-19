@@ -69,27 +69,27 @@ export default function ProfilePage() {
     return "followed";
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (status === "loading") return;
-      if (!session?.user?.id) return;
+  async function fetchData() {
+    if (status === "loading") return;
+    if (!session?.user?.id) return;
 
-      try {
-        const response = await fetch(`/api/users/${session.user.id}`);
-        const userData = await response.json();
-        setUser(userData);
+    try {
+      const response = await fetch(`/api/users/${session.user.id}`);
+      const userData = await response.json();
+      setUser(userData);
 
-        const userStats = await getUserStats(session.user.id);
-        setStats(userStats);
-        const userActivities = await getUserActivity(session.user.id);
-        setActivities(userActivities);
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setLoading(false);
-      }
+      const userStats = await getUserStats(session.user.id);
+      setStats(userStats);
+      const userActivities = await getUserActivity(session.user.id);
+      setActivities(userActivities);
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchData();
   }, [session, status]);
 
@@ -234,7 +234,7 @@ export default function ProfilePage() {
           )}
 
           {activeTab === "settings" && (
-            <ProfileSettings user={user} />
+            <ProfileSettings user={user} onUpdate={fetchData} />
           )}
         </div>
       </div>

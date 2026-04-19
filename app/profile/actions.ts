@@ -664,3 +664,33 @@ export async function updateNotificationSettings(settings: {
     return { success: false, error: "Erreur lors de la mise à jour des paramètres" };
   }
 }
+
+export async function unlinkAccount(provider: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Non connecté");
+
+  const userId = session.user.id;
+
+  // Vérifier combien de méthodes de connexion il reste
+  const accounts = await prisma.account.findMany({
+    where: { userId }
+  });
+
+  if (accounts.length <= 1) {
+    return { success: false, error: "Vous devez garder au moins une méthode de connexion active." };
+  }
+
+  await prisma.account.deleteMany({
+    where: {
+      userId,
+      provider
+    }
+  });
+
+  revalidatePath("/profile");
+  return { success: true };
+}
+
+export async function isEmailConfigured() {
+  return !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
+}

@@ -1,0 +1,41 @@
+/* Réutilise les styles de login-container et login-card de la page de login */
+@import "../login/page.css";
+
+.verify-icon-wrapper {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.verify-icon {
+  color: var(--primary);
+  filter: drop-shadow(0 0 15px var(--primary-transparent));
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.verify-content {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2.5rem;
+  color: var(--foreground);
+  line-height: 1.6;
+}
+
+.verify-instruction {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.verify-footer-actions {
+  margin-bottom: 1.5rem;
+}

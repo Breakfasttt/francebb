@@ -27,6 +27,60 @@ Beaucoup d'étapes demandent d'écrire des "commandes". Pour cela, vous devez ou
 
 ---
 
+## 🧪 Phase Tech : Tester Localement (OAuth & Emails)
+
+Avant de tout envoyer en ligne, il est crucial de vérifier que la connexion et les emails fonctionnent sur votre machine.
+
+### 🔑 1. Configurer l'Authentification (OAuth)
+Pour que Google et Discord acceptent de vous connecter sur `localhost`, vous devez créer des applications "de test".
+
+#### **Discord**
+1.  Allez sur le [Discord Developer Portal](https://discord.com/developers/applications).
+2.  **New Application** > Nommez-la `BBFrance - Local`.
+3.  Menu **OAuth2** > **Redirects** > **Add Redirect**.
+4.  Ajoutez : `http://localhost:3000/api/auth/callback/discord`
+5.  Copiez le **Client ID** et le **Client Secret** dans votre fichier `.env`.
+
+#### **Google**
+1.  Allez sur [Google Cloud Console](https://console.cloud.google.com/).
+2.  Créez un projet > **APIs & Services** > **Credentials**.
+3.  **Create Credentials** > **OAuth client ID** > **Web application**.
+4.  **Authorized redirect URIs** : Ajoutez `http://localhost:3000/api/auth/callback/google`
+5.  Copiez le **Client ID** et le **Client Secret** dans votre fichier `.env`.
+
+> [!TIP]
+> **NEXTAUTH_URL** : Assurez-vous que dans votre `.env` local, vous avez bien `NEXTAUTH_URL=http://localhost:3000`.
+
+### 📧 2. Tester l'envoi d'Emails
+Deux options s'offrent à vous pour le test local :
+
+#### **Option A : Mailtrap (Capture de mails - Recommandé)**
+Idéal pour voir le rendu de vos mails sans risquer d'en envoyer un vrai.
+1.  Créez un compte sur [Mailtrap.io](https://mailtrap.io).
+2.  Allez dans **Email Testing** > **Inboxes** > **My Inbox**.
+3.  Sélectionnez **"Nodemailer"** dans la liste déroulante pour obtenir vos identifiants.
+4.  Dans votre `.env` :
+    ```env
+    SMTP_HOST="sandbox.smtp.mailtrap.io"
+    SMTP_PORT="2525"
+    SMTP_USER="votre_user"
+    SMTP_PASSWORD="votre_password"
+    EMAIL_FROM="test@bbfrance.fr"
+    ```
+
+#### **Option B : Resend (Envoi réel)**
+1.  Utilisez votre clé API Resend.
+2.  Dans votre `.env` :
+    ```env
+    SMTP_HOST="smtp.resend.com"
+    SMTP_PORT="465"
+    SMTP_USER="resend"
+    SMTP_PASSWORD="re_votre_cle_api"
+    EMAIL_FROM="onboarding@resend.dev" # Uniquement vers votre propre email de compte
+    ```
+
+---
+
 Pour que Vercel puisse afficher votre site, votre code doit être sur **GitHub**.
 
 1.  Créez un compte sur [GitHub.com](https://github.com).

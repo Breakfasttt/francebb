@@ -1,6 +1,8 @@
 import Link from "next/link";
 import "./page.css";
 import { AlertCircle, ChevronLeft } from "lucide-react";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import ClassicButton from "@/common/components/Button/ClassicButton";
 
 export default async function AuthErrorPage(props: {
   searchParams: Promise<{ error?: string }>;
@@ -23,22 +25,23 @@ export default async function AuthErrorPage(props: {
 
   return (
     <main className="login-container">
-      <div className="login-card">
+      <PremiumCard className="login-card">
         <div className="error-icon-wrapper">
-          <AlertCircle size={48} color="#f87171" />
+          <AlertCircle size={48} className="error-icon" />
         </div>
         <h1 className="login-title">Erreur d'authentification</h1>
         
         <div className="auth-error-details">
           <p>{getErrorMessage(error)}</p>
-          {error && <code className="error-code">Code: {error}</code>}
+          {error && <code className="error-code">ID Erreur: {error}</code>}
         </div>
 
-        <Link href="/auth/login" className="login-method-button">
-          <ChevronLeft size={18} />
-          Retour à la page de connexion
-        </Link>
-      </div>
+              <Link href="/auth/login" style={{ display: 'contents' }}>
+                <ClassicButton fullWidth icon={<ChevronLeft size={18} />}>
+                  Retour à la page de connexion
+                </ClassicButton>
+              </Link>
+      </PremiumCard>
     </main>
   );
 }

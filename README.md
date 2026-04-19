@@ -99,6 +99,9 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 
 3. **Accès** : [http://localhost:3000](http://localhost:3000)
 
+> [!TIP]
+> **[🧪 Test Local (OAuth & Emails)] (./DEPLOY.md#🧪-phase-tech--tester-localement-oauth--emails)** : Consultez cette section pour configurer la connexion Discord/Google et l'envoi de mails sur votre ordinateur.
+
 ---
 
 ## 🌐 Déploiement & Setup (Détaillé)

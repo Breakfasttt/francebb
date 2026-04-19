@@ -2,25 +2,33 @@
 @import "../login/page.css";
 
 .error-icon-wrapper {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: center;
 }
 
+.error-icon {
+  color: var(--danger);
+  filter: drop-shadow(0 0 10px rgba(var(--danger-rgb), 0.3));
+}
+
 .auth-error-details {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  color: #aaa;
+  background: rgba(var(--danger-rgb), 0.05);
+  border: 1px solid rgba(var(--danger-rgb), 0.1);
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2.5rem;
+  color: var(--text-muted);
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .error-code {
   display: block;
   margin-top: 1rem;
   font-size: 0.75rem;
-  font-family: monospace;
-  opacity: 0.5;
+  font-family: inherit;
+  opacity: 0.4;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }

@@ -119,64 +119,67 @@ export default async function TournamentsPage({
               {view === "grid" ? (
                 <div className="tournaments-grid">
                   {tournaments.map((t: any) => (
-                    <PremiumCard 
+                    <Link 
                       key={t.id} 
-                      as={Link}
                       href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`}
-                      className={`tournament-card clickable ${t.isCancelled ? 'cancelled' : t.isFinished ? 'finished' : ''}`} 
-                      hoverEffect={true}
+                      style={{ display: 'contents' }}
+                      className="tournament-card-link"
                     >
-                      {/* Status Badges */}
-                      <div className="t-status-row">
-                        {t.isCancelled ? (
-                          <span className="status-badge cancelled">ANNULÉ</span>
-                        ) : t.isFinished ? (
-                          <span className="status-badge finished">TERMINÉ</span>
-                        ) : new Date(t.date) < todayStart ? (
-                          <span className="status-badge past">PASSÉ</span>
-                        ) : null}
-                      </div>
-
-                      <div>
-                        <div className="t-header">
-                          <div className="t-badge-main">{t.gameEdition || "BB20"}</div>
-                          <div className="t-badge-outline"><Sparkles size={12} /> {t.ruleset || "NAF"}</div>
-                          {t.structure && <div className="t-badge-outline"><GitBranch size={12} /> {t.structure}</div>}
+                      <PremiumCard 
+                        className={`tournament-card clickable ${t.isCancelled ? 'cancelled' : t.isFinished ? 'finished' : ''}`} 
+                        hoverEffect={true}
+                      >
+                        {/* Status Badges */}
+                        <div className="t-status-row">
+                          {t.isCancelled ? (
+                            <span className="status-badge cancelled">ANNULÉ</span>
+                          ) : t.isFinished ? (
+                            <span className="status-badge finished">TERMINÉ</span>
+                          ) : new Date(t.date) < todayStart ? (
+                            <span className="status-badge past">PASSÉ</span>
+                          ) : null}
                         </div>
 
-                        <div className="t-title-area">
-                          <div className="t-title-header">
-                            <h3>{t.name}</h3>
-                            <div className="t-logistic-badges">
-                              {t.mealsIncluded && <span className="log-badge meals">Repas Inclus</span>}
-                              {t.lodgingAtVenue && <span className="log-badge lodging">Dodo sur place</span>}
-                              {t.fridayArrival && <span className="log-badge friday">Vendredi</span>}
+                        <div>
+                          <div className="t-header">
+                            <div className="t-badge-main">{t.gameEdition || "BB20"}</div>
+                            <div className="t-badge-outline"><Sparkles size={12} /> {t.ruleset || "NAF"}</div>
+                            {t.structure && <div className="t-badge-outline"><GitBranch size={12} /> {t.structure}</div>}
+                          </div>
+
+                          <div className="t-title-area">
+                            <div className="t-title-header">
+                              <h3>{t.name}</h3>
+                              <div className="t-logistic-badges">
+                                {t.mealsIncluded && <span className="log-badge meals">Repas Inclus</span>}
+                                {t.lodgingAtVenue && <span className="log-badge lodging">Dodo sur place</span>}
+                                {t.fridayArrival && <span className="log-badge friday">Vendredi</span>}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="t-info">
-                          <div className="t-info-item">
-                            <MapPin size={16} /> 
-                            <span>{t.ville || t.location}, {t.region} ({t.departement})</span>
-                          </div>
-                          <div className="t-info-item">
-                            <Calendar size={16} /> 
-                            <span>{new Date(t.date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                          </div>
-                          <div className="t-info-item">
-                            <Clock size={16} />
-                            <span>Durée : {t.days} jour(s)</span>
-                          </div>
-                          {t.ruleset && (
+                          <div className="t-info">
                             <div className="t-info-item">
-                              <Trophy size={16} />
-                              <span>Règles : {t.ruleset}</span>
+                              <MapPin size={16} /> 
+                              <span>{t.ville || t.location}, {t.region} ({t.departement})</span>
                             </div>
-                          )}
+                            <div className="t-info-item">
+                              <Calendar size={16} /> 
+                              <span>{new Date(t.date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                            </div>
+                            <div className="t-info-item">
+                              <Clock size={16} />
+                              <span>Durée : {t.days} jour(s)</span>
+                            </div>
+                            {t.ruleset && (
+                              <div className="t-info-item">
+                                <Trophy size={16} />
+                                <span>Règles : {t.ruleset}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      
+                        
                         <div className="t-footer">
                           <div className="t-stats-box">
                             <div className="t-participants" title="Inscriptions">
@@ -192,7 +195,8 @@ export default async function TournamentsPage({
                             Détails
                           </ClassicButton>
                         </div>
-                    </PremiumCard>
+                      </PremiumCard>
+                    </Link>
                   ))}
                 </div>
               ) : (

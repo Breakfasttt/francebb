@@ -1,19 +1,27 @@
-import { useTransition, useState } from "react";
-import { ShieldAlert, Trash2, Mail, LogOut, KeyRound, Bell, CheckCircle2, XCircle } from "lucide-react";
+import { ShieldAlert, Trash2, Mail, LogOut, KeyRound, Bell, CheckCircle2, XCircle, Link, Unlink } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { deleteAccount, updateNotificationSettings } from "../actions";
+import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
+import { useEffect, useTransition, useState } from "react";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 interface ProfileSettingsProps {
   user: any;
+  onUpdate?: () => void;
 }
 
-export default function ProfileSettings({ user }: ProfileSettingsProps) {
+export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps) {
   const [isDeleting, startDeletion] = useTransition();
   const [isSavingNotif, startSavingNotif] = useTransition();
+  const [isUnlinking, startUnlinking] = useTransition();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showFinalModal, setShowFinalModal] = useState(false);
+  const [emailServiceActive, setEmailServiceActive] = useState(false);
+
+  useEffect(() => {
+    isEmailConfigured().then(setEmailServiceActive);
+  }, []);
 
   // Notifications state
   const [notifSettings, setNotifSettings] = useState({
@@ -55,6 +63,31 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
     });
   };
 
+  const handleUnlink = (provider: string) => {
+    if (user.accounts?.length <= 1) {
+      toast.error("Vous ne pouvez pas délier votre unique méthode de connexion.");
+      return;
+    }
+
+    startUnlinking(async () => {
+      try {
+        const result = await unlinkAccount(provider);
+        if (result.success) {
+          toast.success(`Compte ${provider} délié avec succès.`);
+          if (onUpdate) onUpdate();
+        } else {
+          toast.error(result.error || "Erreur lors du déliement.");
+        }
+      } catch (err) {
+        toast.error("Erreur technique lors du déliement.");
+      }
+    });
+  };
+
+  const handleLink = (provider: string) => {
+    signIn(provider, { callbackUrl: window.location.href });
+  };
+
   const hasDiscord = user.accounts?.some((a: any) => a.provider === "discord");
   const hasGoogle = user.accounts?.some((a: any) => a.provider === "google");
 
@@ -69,36 +102,72 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
       <div className="settings-section">
         <h4 className="settings-subtitle"><KeyRound size={16} /> Authentification</h4>
         <div className="auth-providers-list">
-          <div className="auth-item active">
-            <Mail size={18} />
+          <div className={`auth-item ${emailServiceActive ? 'active' : 'disabled'}`}>
+            <Mail size={18} className={emailServiceActive ? "" : "inactive-icon"} />
             <div className="auth-info">
-              <span className="auth-label">Email de connexion</span>
+              <span className="auth-label">Connexion par Email (Magic Link)</span>
               <span className="auth-value">{user.email || "Non renseigné"}</span>
             </div>
-            <span className="auth-status"><CheckCircle2 size={12} /> Actif</span>
+            {emailServiceActive ? (
+              <span className="auth-status"><CheckCircle2 size={12} /> Service actif</span>
+            ) : (
+              <span className="auth-status inactive"><XCircle size={12} /> Non configuré</span>
+            )}
           </div>
 
+          {/* Discord */}
           <div className={`auth-item ${hasDiscord ? 'active' : 'disabled'}`}>
              <div className="auth-info">
               <span className="auth-label">Discord</span>
               <span className="auth-value">{hasDiscord ? "Compte lié" : "Non lié"}</span>
             </div>
             {hasDiscord ? (
-              <span className="auth-status"><CheckCircle2 size={12} /> Lié</span>
+              <button 
+                className="link-btn unlink" 
+                onClick={() => handleUnlink('discord')}
+                disabled={isUnlinking || user.accounts?.length <= 1}
+                title="Délier ce compte"
+              >
+                <Unlink size={16} />
+                <span>Délier</span>
+              </button>
             ) : (
-              <XCircle size={18} className="inactive-icon" />
+              <button 
+                className="link-btn link" 
+                onClick={() => handleLink('discord')}
+                disabled={isUnlinking}
+              >
+                <Link size={16} />
+                <span>Associer</span>
+              </button>
             )}
           </div>
 
+          {/* Google */}
           <div className={`auth-item ${hasGoogle ? 'active' : 'disabled'}`}>
              <div className="auth-info">
               <span className="auth-label">Google</span>
               <span className="auth-value">{hasGoogle ? "Compte lié" : "Non lié"}</span>
             </div>
             {hasGoogle ? (
-              <span className="auth-status"><CheckCircle2 size={12} /> Lié</span>
+              <button 
+                className="link-btn unlink" 
+                onClick={() => handleUnlink('google')}
+                disabled={isUnlinking || user.accounts?.length <= 1}
+                title="Délier ce compte"
+              >
+                <Unlink size={16} />
+                <span>Délier</span>
+              </button>
             ) : (
-              <XCircle size={18} className="inactive-icon" />
+              <button 
+                className="link-btn link" 
+                onClick={() => handleLink('google')}
+                disabled={isUnlinking}
+              >
+                <Link size={16} />
+                <span>Associer</span>
+              </button>
             )}
           </div>
         </div>
@@ -254,15 +323,45 @@ export default function ProfileSettings({ user }: ProfileSettingsProps) {
           border-radius: 4px;
           font-weight: 800;
         }
+        .auth-status.inactive {
+          background: var(--text-muted);
+          opacity: 0.6;
+        }
         .link-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
           background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          color: var(--text-muted);
-          padding: 6px 12px;
-          border-radius: 6px;
-          font-size: 0.8rem;
-          cursor: not-allowed;
+          color: var(--foreground);
+          padding: 8px 16px;
+          border-radius: 8px;
+          font-size: 0.85rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .link-btn:hover:not(:disabled) {
+          background: var(--glass-border);
+          transform: translateY(-1px);
+        }
+        .link-btn:disabled {
           opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .link-btn.link {
+          color: var(--primary);
+          border-color: var(--primary-transparent);
+        }
+        .link-btn.link:hover {
+          background: var(--primary-transparent);
+        }
+        .link-btn.unlink {
+          color: var(--danger);
+          border-color: rgba(var(--danger-rgb), 0.2);
+        }
+        .link-btn.unlink:hover {
+          background: rgba(var(--danger-rgb), 0.1);
         }
         .notif-settings-list {
           display: flex;
