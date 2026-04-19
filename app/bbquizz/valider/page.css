@@ -1,5 +1,9 @@
+.valider-page-wrapper .container {
+  padding-top: 0 !important;
+}
+
 .valider-page-layout {
-  margin-top: 2rem;
+  margin-top: 0;
   padding-bottom: 4rem;
 }
 
@@ -52,6 +56,7 @@
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  color: var(--foreground);
 }
 
 .options-preview {
@@ -70,6 +75,7 @@
   border: 1px solid var(--glass-border);
   border-radius: 8px;
   font-size: 0.9rem;
+  color: var(--foreground);
 }
 
 .option-item.correct {
@@ -99,37 +105,6 @@
   gap: 1rem;
   border-top: 1px solid var(--glass-border);
   padding-top: 1.5rem;
-}
-
-.btn-approve, .btn-reject {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-approve {
-  background: #22c55e;
-  color: #fff;
-  border: none;
-}
-
-.btn-approve:hover {
-  background: #16a34a;
-}
-
-.btn-reject {
-  background: transparent;
-  color: #ef4444;
-  border: 1px solid #ef4444;
-}
-
-.btn-reject:hover {
-  background: rgba(239, 68, 68, 0.1);
 }
 
 @media (max-width: 768px) {

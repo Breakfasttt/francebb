@@ -10,6 +10,8 @@ import { toast } from "react-hot-toast";
 import { Check, X, User, Calendar, Brain } from "lucide-react";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import { translateCategory } from "../utils";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface QuizSuggestion {
   id: string;
@@ -82,20 +84,20 @@ export default function ValiderContent({ initialSuggestions }: { initialSuggesti
             )}
 
             <div className="suggestion-actions">
-              <button 
-                className="btn-reject" 
+              <DangerButton 
                 onClick={() => handleModeration(s.id, false)}
                 disabled={isProcessing === s.id}
+                icon={<X size={18} />}
               >
-                <X size={18} /> Rejeter
-              </button>
-              <button 
-                className="btn-approve" 
+                Rejeter
+              </DangerButton>
+              <AdminButton 
                 onClick={() => handleModeration(s.id, true)}
                 disabled={isProcessing === s.id}
+                icon={<Check size={18} />}
               >
-                <Check size={18} /> Approuver
-              </button>
+                Approuver
+              </AdminButton>
             </div>
           </PremiumCard>
         );

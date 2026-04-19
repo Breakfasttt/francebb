@@ -26,16 +26,18 @@ export default async function EditerPage(props: { searchParams: Promise<{ edit?:
   const questions = await getAllQuizQuestions();
 
   return (
-    <main className="container">
+    <div className="editer-page-wrapper">
       <PageHeader 
         title={editId ? "Édition de question" : "Gestion des questions"} 
         subtitle={editId ? "Modifiez les détails de la question" : "Mise à jour et suppression des questions du Quizz"}
-        backHref={editId ? "/bbquizz/editer" : "/bbquizz"}
       />
+
+      <main className="container">
 
       <div className="editer-page-layout">
         <EditerContent initialQuestions={questions} />
       </div>
-    </main>
+      </main>
+    </div>
   );
 }

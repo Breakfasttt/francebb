@@ -24,16 +24,18 @@ export default async function ValiderPage() {
   const suggestions = await getQuizSuggestions();
 
   return (
-    <main className="container">
+    <div className="valider-page-wrapper">
       <PageHeader 
         title="Validation des questions" 
         subtitle="Modération des propositions de la communauté"
-        backHref="/bbquizz"
       />
+
+      <main className="container">
 
       <div className="valider-page-layout">
         <ValiderContent initialSuggestions={suggestions} />
       </div>
-    </main>
+      </main>
+    </div>
   );
 }

@@ -1,4 +1,8 @@
+.proposer-page-wrapper .container {
+  padding-top: 0 !important;
+}
+
 .proposer-page-layout {
-  margin-top: 2rem;
+  margin-top: 0;
   padding-bottom: 4rem;
 }

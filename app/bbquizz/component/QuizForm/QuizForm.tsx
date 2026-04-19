@@ -8,6 +8,8 @@ import React, { useState } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { PlusCircle, Save, Undo2 } from "lucide-react";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import "./QuizForm.css";
 import "./QuizForm-mobile.css";
 import { translateCategory } from "../../utils";
@@ -127,27 +129,22 @@ export default function QuizForm({
 
         <div className="form-actions">
           {onCancel && (
-            <button 
-              type="button" 
-              className="btn-secondary" 
+            <ClassicButton 
+              type="button"
               onClick={onCancel}
               disabled={isLoading}
+              icon={<Undo2 size={18} />}
             >
-              <Undo2 size={18} /> Annuler
-            </button>
+              Annuler
+            </ClassicButton>
           )}
-          <button 
+          <CTAButton 
             type="submit" 
-            className="btn-primary" 
             disabled={isLoading}
+            icon={initialData ? <Save size={18} /> : <PlusCircle size={18} />}
           >
-            {isLoading ? "Traitement..." : (
-              <>
-                {initialData ? <Save size={18} /> : <PlusCircle size={18} />}
-                {submitLabel}
-              </>
-            )}
-          </button>
+            {isLoading ? "Traitement..." : submitLabel}
+          </CTAButton>
         </div>
       </form>
     </PremiumCard>

@@ -20,16 +20,18 @@ export default async function ProposerPage() {
   }
 
   return (
-    <main className="container">
+    <div className="proposer-page-wrapper">
       <PageHeader 
         title="Proposer une question" 
         subtitle="Contribuez à l'encyclopédie du Quizz Blood Bowl"
-        backHref="/bbquizz"
       />
+
+      <main className="container">
 
       <div className="proposer-page-layout">
         <ProposerContent />
       </div>
     </main>
+    </div>
   );
 }

@@ -14,6 +14,9 @@ import Link from "next/link";
 import { translateCategory } from "../utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import CTAButton from "@/common/components/Button/CTAButton";
+import AdminButton from "@/common/components/Button/AdminButton";
+import DangerButton from "@/common/components/Button/DangerButton";
 
 interface QuizQuestion {
   id: string;
@@ -118,9 +121,9 @@ export default function EditerContent({ initialQuestions }: { initialQuestions: 
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <Link href="/bbquizz/proposer" className="btn-add">
-          <Plus size={18} /> Proposer
-        </Link>
+        <CTAButton href="/bbquizz/proposer" icon={<Plus size={18} />}>
+          Proposer
+        </CTAButton>
       </div>
 
       {filteredQuestions.length === 0 ? (
@@ -140,20 +143,16 @@ export default function EditerContent({ initialQuestions }: { initialQuestions: 
                 <p className="question-text">{q.question}</p>
               </div>
               <div className="question-actions">
-                <button 
-                  className="btn-icon edit" 
+                <AdminButton 
                   onClick={() => handleEdit(q)}
                   title="Éditer"
-                >
-                  <Edit2 size={18} />
-                </button>
-                <button 
-                  className="btn-icon delete" 
+                  icon={<Edit2 size={18} />}
+                />
+                <DangerButton 
                   onClick={() => handleDelete(q.id)}
                   title="Supprimer"
-                >
-                  <Trash2 size={18} />
-                </button>
+                  icon={<Trash2 size={18} />}
+                />
               </div>
             </PremiumCard>
           ))}
