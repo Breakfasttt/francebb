@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
+import { sendPmNotification } from "@/lib/mail";
 import { logModerationAction } from "@/app/moderation/actions";
 import { encrypt, decrypt } from "@/lib/crypto";
 
@@ -427,6 +428,20 @@ export async function sendPrivateMessage(conversationId: string, content: string
     }
   });
 
+  const recipient = await prisma.user.findUnique({
+    where: { id: recipientId },
+    select: { email: true, notifPm: true }
+  });
+
+  if (recipient?.email && recipient.notifPm) {
+    const sender = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true }
+    });
+    // Envoyer la notification sans attendre (fire and forget pour ne pas bloquer l'action)
+    sendPmNotification(recipient.email, sender?.name || "Un coach", content.substring(0, 100) + (content.length > 100 ? "..." : ""));
+  }
+
   revalidatePath("/profile");
   return { success: true, messageId: message.id };
 }
@@ -689,6 +704,34 @@ export async function unlinkAccount(provider: string) {
 
   revalidatePath("/profile");
   return { success: true };
+}
+
+export async function sendTestNewsletter() {
+  const session = await auth();
+  if (!session?.user?.email) throw new Error("Email non trouvé");
+
+  const title = "🇫🇷 Annonce Spéciale BBFrance";
+  const content = `
+    <p>Ceci est un email de test pour valider le style de nos futures newsletters.</p>
+    <p>Le Blood Bowl en France ne cesse de grandir, et nous sommes ravis de vous compter parmi nos membres.</p>
+    <div style="background: var(--glass-bg); padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
+      <h3 style="color: #e63946; margin-top: 0;">Quoi de neuf ?</h3>
+      <ul>
+        <li>Nouveaux outils tactiques (BBScheme)</li>
+        <li>Calendrier national des tournois à jour</li>
+        <li>Section Quizz Blood Bowl</li>
+      </ul>
+    </div>
+    <p>À très bientôt sur les terrains !</p>
+    <a href="${process.env.NEXTAUTH_URL}" class="btn">Accéder à la plateforme</a>
+  `;
+
+  const { getEmailTemplate, sendMail } = await import("@/lib/mail");
+  return sendMail({
+    to: session.user.email,
+    subject: "[BBFrance] Test de Newsletter",
+    html: getEmailTemplate(content, title),
+  });
 }
 
 export async function isEmailConfigured() {

@@ -1,12 +1,13 @@
 import { signIn, auth } from "@/auth";
 import { redirect } from "next/navigation";
 import "./page.css";
-import { Mail, LogIn, Chrome } from "lucide-react";
+import { Mail, LogIn } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import DevLoginSection from "./DevLoginSection";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
+import { DiscordIcon, GoogleIcon } from "@/common/components/Icons/SocialIcons";
 
 export const metadata = {
   title: "Connexion - BBFrance",
@@ -79,7 +80,7 @@ export default async function LoginPage(props: {
                 await signIn("discord", { redirectTo: callbackUrl });
               }}
             >
-              <ClassicButton type="submit" fullWidth className="discord-btn" icon={<span style={{ fontSize: '1.2rem' }}>🎮</span>}>
+              <ClassicButton type="submit" fullWidth className="discord-btn" icon={<DiscordIcon size={20} />}>
                 Se connecter avec Discord
               </ClassicButton>
             </form>
@@ -93,7 +94,7 @@ export default async function LoginPage(props: {
                 await signIn("google", { redirectTo: callbackUrl });
               }}
             >
-              <ClassicButton type="submit" fullWidth className="google-btn" icon={<Chrome size={20} />}>
+              <ClassicButton type="submit" fullWidth className="google-btn" icon={<GoogleIcon size={20} />}>
                 Se connecter avec Google
               </ClassicButton>
             </form>

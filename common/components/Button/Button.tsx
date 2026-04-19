@@ -73,13 +73,22 @@ export default function Button({
     
     // Si c'est déjà un élément React (ex: <Search />)
     if (React.isValidElement(iconProp)) {
-      return <span className="bb-btn-icon">{iconProp}</span>;
+      return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp}</span>;
+    }
+
+    // Gestion robuste pour React 19 : certains éléments sérialisés peuvent ressembler à des objets
+    if (typeof iconProp === 'object' && iconProp !== null && 'type' in iconProp) {
+        return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp as any}</span>;
     }
 
     // Si c'est un composant (ex: Search)
-    const IconComponent = iconProp;
-    const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
-    return <IconComponent className="bb-btn-icon" size={iconSize} />;
+    if (typeof iconProp === 'function') {
+      const IconComponent = iconProp;
+      const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
+      return <IconComponent className="bb-btn-icon" size={iconSize} />;
+    }
+
+    return null;
   };
 
   const content = (

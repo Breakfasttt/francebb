@@ -9,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function getUnreadMessagesCount() {
@@ -636,6 +637,60 @@ export async function createPost(topicId: string, content: string) {
       authorId: session.user.id,
     }
   });
+
+  // 1. Gérer les mentions
+  const mentionRegex = /\[mention=([a-zA-Z0-9_-]+)\]/gi;
+  const mentionedIds = new Set<string>();
+  let match;
+  while ((match = mentionRegex.exec(content)) !== null) {
+    if (match[1] !== session.user.id) {
+      mentionedIds.add(match[1]);
+    }
+  }
+
+  if (mentionedIds.size > 0) {
+    const mentionedUsers = await prisma.user.findMany({
+      where: { id: { in: Array.from(mentionedIds) } },
+      select: { id: true, email: true, notifMention: true }
+    });
+
+    for (const mUser of mentionedUsers) {
+      // Créer le record en base pour l'historique/notifications internes futures
+      await prisma.mention.create({
+        data: {
+          postId: post.id,
+          mentionedUserId: mUser.id,
+          mentionerId: session.user.id
+        }
+      }).catch(() => {}); // Ignorer si doublon ou erreur
+
+      // Envoyer le mail si demandé
+      if (mUser.email && mUser.notifMention) {
+        sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
+      }
+    }
+  }
+
+  // 2. Gérer les suivis de sujet
+  const followers = await prisma.topicFollow.findMany({
+    where: { 
+      topicId,
+      userId: { 
+        notIn: [session.user.id, ...Array.from(mentionedIds)] // Exclure l'auteur et ceux déjà notifiés par mention
+      }
+    },
+    include: {
+      user: {
+        select: { email: true, notifFollowedTopic: true }
+      }
+    }
+  });
+
+  for (const follow of followers) {
+    if (follow.user.email && follow.user.notifFollowedTopic) {
+      sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
+    }
+  }
 
   // Update topic timestamp to show it and bubble it up
   await prisma.topic.update({
