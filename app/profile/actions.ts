@@ -434,12 +434,23 @@ export async function sendPrivateMessage(conversationId: string, content: string
   });
 
   if (recipient?.email && recipient.notifPm) {
-    const sender = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { name: true }
+    // Éviter le spam : on ne prévient par mail que s'il n'y a pas d'autres messages non lus dans cette conversation
+    const unreadCount = await prisma.privateMessage.count({
+      where: {
+        conversationId,
+        authorId: userId,
+        readAt: null
+      }
     });
-    // Envoyer la notification sans attendre (fire and forget pour ne pas bloquer l'action)
-    sendPmNotification(recipient.email, sender?.name || "Un coach", content.substring(0, 100) + (content.length > 100 ? "..." : ""));
+
+    if (unreadCount === 1) {
+      const sender = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { name: true }
+      });
+      // Envoyer la notification sans attendre
+      sendPmNotification(recipient.email, sender?.name || "Un coach", content.substring(0, 100) + (content.length > 100 ? "..." : ""));
+    }
   }
 
   revalidatePath("/profile");
@@ -710,27 +721,28 @@ export async function sendTestNewsletter() {
   const session = await auth();
   if (!session?.user?.email) throw new Error("Email non trouvé");
 
-  const title = "🇫🇷 Annonce Spéciale BBFrance";
-  const content = `
-    <p>Ceci est un email de test pour valider le style de nos futures newsletters.</p>
-    <p>Le Blood Bowl en France ne cesse de grandir, et nous sommes ravis de vous compter parmi nos membres.</p>
-    <div style="background: var(--glass-bg); padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin: 20px 0;">
-      <h3 style="color: #e63946; margin-top: 0;">Quoi de neuf ?</h3>
-      <ul>
-        <li>Nouveaux outils tactiques (BBScheme)</li>
-        <li>Calendrier national des tournois à jour</li>
-        <li>Section Quizz Blood Bowl</li>
-      </ul>
-    </div>
-    <p>À très bientôt sur les terrains !</p>
-    <a href="${process.env.NEXTAUTH_URL}" class="btn">Accéder à la plateforme</a>
-  `;
+  // 1. Récupérer les 3 topics les plus populaires (plus de vues)
+  const popularTopics = await prisma.topic.findMany({
+    where: { isArchived: false },
+    take: 3,
+    orderBy: { views: "desc" },
+    include: { forum: { select: { name: true } } }
+  });
 
-  const { getEmailTemplate, sendMail } = await import("@/lib/mail");
+  // 2. Récupérer les 3 prochains tournois
+  const upcomingTournaments = await prisma.tournament.findMany({
+    where: { date: { gte: new Date() } },
+    take: 3,
+    orderBy: { date: "asc" },
+    include: { topic: { select: { id: true } } }
+  });
+
+  const { getNewsletterTemplate, sendMail } = await import("@/lib/mail");
+  
   return sendMail({
     to: session.user.email,
-    subject: "[BBFrance] Test de Newsletter",
-    html: getEmailTemplate(content, title),
+    subject: "[BBFrance] Gazette Hebdomadaire",
+    html: getNewsletterTemplate(popularTopics, upcomingTournaments),
   });
 }
 

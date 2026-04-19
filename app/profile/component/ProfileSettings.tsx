@@ -4,6 +4,7 @@ import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfig
 import Modal from "@/common/components/Modal/Modal";
 import { useEffect, useTransition, useState } from "react";
 import toast from "react-hot-toast";
+import ExplainButton from "@/common/components/Button/ExplainButton";
 import { signIn } from "next-auth/react";
 
 interface ProfileSettingsProps {
@@ -199,6 +200,27 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
               </label>
             </div>
           ))}
+          {process.env.NODE_ENV === "development" && (
+            <div style={{ marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px dashed var(--glass-border)' }}>
+              <p style={{ fontSize: '0.8rem', opacity: 0.6, marginBottom: '1rem' }}>
+                🔧 <strong>Zone de Test :</strong> Envoie une newsletter fictive pour tester le rendu.
+              </p>
+              <ExplainButton 
+                onClick={async () => {
+                  const { sendTestNewsletter } = await import("../actions");
+                  const res = await sendTestNewsletter();
+                  if (res.success) {
+                    toast.success("Mail de test envoyé ! Vérifie Mailtrap.");
+                  } else {
+                    toast.error("Échec de l'envoi.");
+                  }
+                }}
+                icon={<Mail size={16} />}
+              >
+                Envoyer une newsletter de test
+              </ExplainButton>
+            </div>
+          )}
         </div>
       </div>
 

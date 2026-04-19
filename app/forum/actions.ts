@@ -687,8 +687,19 @@ export async function createPost(topicId: string, content: string) {
   });
 
   for (const follow of followers) {
+    if (follow.userId === session.user.id) continue; // Sécurité supplémentaire : ne pas s'envoyer de mail à soi-même
+
     if (follow.user.email && follow.user.notifFollowedTopic) {
-      sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
+      // Éviter le spam : on n'envoie un mail que si l'utilisateur était à jour sur le sujet
+      const topicView = await prisma.topicView.findUnique({
+        where: { userId_topicId: { userId: follow.userId, topicId } }
+      });
+
+      // Si pas de vue ou si sa dernière vue est antérieure à la mise à jour du topic (avant ce message)
+      // Note: topic.updatedAt a été mis à jour juste avant ou va l'être, on compare avec l'état précédent.
+      if (!topicView || topicView.lastViewedAt >= topic.updatedAt) {
+        sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
+      }
     }
   }
 

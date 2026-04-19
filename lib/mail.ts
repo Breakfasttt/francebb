@@ -88,7 +88,7 @@ export async function sendPmNotification(toEmail: string, senderName: string, me
     <div style="background: #f9f9f9; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; font-style: italic;">
       "${messagePreview}"
     </div>
-    <a href="${process.env.NEXTAUTH_URL}/profile?tab=pm" class="btn">Répondre sur le site</a>
+    <a href="${process.env.AUTH_URL}/profile?tab=pm" class="btn">Répondre sur le site</a>
   `;
   return sendMail({
     to: toEmail,
@@ -106,7 +106,7 @@ export async function sendMentionNotification(toEmail: string, authorName: strin
     <p>Bonjour,</p>
     <p><strong class="accent">${authorName}</strong> vous a mentionné dans une discussion sur le forum :</p>
     <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">Sujet : ${topicTitle}</p>
-    <a href="${process.env.NEXTAUTH_URL}/forum/topic/${topicId}" class="btn">Voir la discussion</a>
+    <a href="${process.env.AUTH_URL}/forum/topic/${topicId}" class="btn">Voir la discussion</a>
   `;
   return sendMail({
     to: toEmail,
@@ -124,11 +124,47 @@ export async function sendFollowNotification(toEmail: string, authorName: string
     <p>Bonjour,</p>
     <p>Un nouveau message a été posté par <strong class="accent">${authorName}</strong> dans un sujet que vous suivez :</p>
     <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">${topicTitle}</p>
-    <a href="${process.env.NEXTAUTH_URL}/forum/topic/${topicId}" class="btn">Consulter la réponse</a>
+    <a href="${process.env.AUTH_URL}/forum/topic/${topicId}" class="btn">Consulter la réponse</a>
   `;
   return sendMail({
     to: toEmail,
     subject: `[BBFrance] Nouveau message dans "${topicTitle}"`,
     html: getEmailTemplate(content, title),
   });
+}
+
+/**
+ * Template pour la newsletter hebdomadaire / dynamique
+ */
+export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
+  const topicsHtml = topics.map(t => `
+    <div style="padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
+      <a href="${process.env.AUTH_URL}/forum/topic/${t.id}" style="color: #1d3557; font-weight: bold; text-decoration: none; font-size: 16px;">${t.title}</a><br/>
+      <small style="color: #777;">${t.views} vues • Dans ${t.forum.name}</small>
+    </div>
+  `).join("");
+
+  const tournamentsHtml = tournaments.map(t => `
+    <div style="padding: 10px; background: #f1f3f5; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #e63946;">
+      <strong style="color: #1d3557;">${t.name}</strong><br/>
+      <small style="color: #555;">📍 ${t.ville || t.location} • 📅 ${new Date(t.date).toLocaleDateString('fr-FR')}</small><br/>
+      <a href="${process.env.AUTH_URL}/forum/topic/${t.topic?.id || ''}" style="color: #e63946; font-size: 12px; font-weight: bold; text-decoration: none;">Voir le détail →</a>
+    </div>
+  `).join("");
+
+  const content = `
+    <p>Bonjour Coach ! Voici les actualités qu'il ne fallait pas manquer sur BBFrance :</p>
+    
+    <h3 style="color: #1d3557; border-bottom: 2px solid #1d3557; padding-bottom: 5px; margin-top: 30px;">🔥 Les sujets populaires</h3>
+    ${topicsHtml.length > 0 ? topicsHtml : "<p>Aucun sujet cette semaine.</p>"}
+
+    <h3 style="color: #1d3557; border-bottom: 2px solid #1d3557; padding-bottom: 5px; margin-top: 30px;">🏆 Prochaines compétitions</h3>
+    ${tournamentsHtml.length > 0 ? tournamentsHtml : "<p>Aucun tournoi prévu prochainement.</p>"}
+
+    <div style="margin-top: 30px; text-align: center;">
+      <a href="${process.env.AUTH_URL}" class="btn" style="background:#1d3557;">Retourner sur BBFrance</a>
+    </div>
+  `;
+
+  return getEmailTemplate(content, "Gazette de BBFrance");
 }
