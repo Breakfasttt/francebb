@@ -81,10 +81,12 @@ export default function Button({
         return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp as any}</span>;
     }
 
-    // Si c'est un composant (ex: Search)
-    if (typeof iconProp === 'function') {
+    // Si c'est un composant (Fonction ou Objet/ForwardRef)
+    if (typeof iconProp === 'function' || typeof iconProp === 'object') {
       const IconComponent = iconProp;
       const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
+      // On s'assure que c'est bien utilisable comme composant (pas null)
+      if (!IconComponent) return null;
       return <IconComponent className="bb-btn-icon" size={iconSize} />;
     }
 
