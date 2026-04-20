@@ -16,7 +16,8 @@
       ],
       "primary": "G",
       "secondary": "APF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "PI"
     },
     {
       "name": "Sanglier de Secours",
@@ -35,7 +36,8 @@
       ],
       "primary": "-",
       "secondary": "A",
-      "cost": 20000
+      "cost": 20000,
+      "acronym": "SS"
     },
     {
       "name": "Berserker Nordique",
@@ -52,7 +54,8 @@
       ],
       "primary": "GF",
       "secondary": "AP",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "BE"
     },
     {
       "name": "Valkyrie",
@@ -70,7 +73,8 @@
       ],
       "primary": "AGP",
       "secondary": "F",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "VA"
     },
     {
       "name": "Ulfwerener",
@@ -85,7 +89,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 105000
+      "cost": 105000,
+      "acronym": "UL"
     },
     {
       "name": "Yeti (Gros Bras)",
@@ -104,7 +109,8 @@
       ],
       "primary": "F",
       "secondary": "GA",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "YE"
     }
   ],
   "specialRules": [

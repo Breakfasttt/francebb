@@ -16,7 +16,8 @@
       ],
       "primary": "GS",
       "secondary": "F",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "TQ"
     },
     {
       "name": "Coureur Nain",
@@ -33,7 +34,8 @@
       ],
       "primary": "GP",
       "secondary": "F",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "CO"
     },
     {
       "name": "Blitzer Nain",
@@ -51,7 +53,8 @@
       ],
       "primary": "GF",
       "secondary": "P",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "BL"
     },
     {
       "name": "Tueur de Troll",
@@ -70,7 +73,8 @@
       ],
       "primary": "GF",
       "secondary": "S",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "TT"
     },
     {
       "name": "Roule-Mort (Gros Bras)",
@@ -92,7 +96,8 @@
       ],
       "primary": "SF",
       "secondary": "G",
-      "cost": 170000
+      "cost": 170000,
+      "acronym": "RM"
     }
   ],
   "specialRules": [

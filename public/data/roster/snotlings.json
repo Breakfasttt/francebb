@@ -19,7 +19,8 @@
       ],
       "primary": "AS",
       "secondary": "G",
-      "cost": 15000
+      "cost": 15000,
+      "acronym": "TQ"
     },
     {
       "name": "R’bondisseur",
@@ -38,7 +39,8 @@
       ],
       "primary": "AS",
       "secondary": "G",
-      "cost": 20000
+      "cost": 20000,
+      "acronym": "RB"
     },
     {
       "name": "Échassier",
@@ -57,7 +59,8 @@
       ],
       "primary": "AS",
       "secondary": "G",
-      "cost": 20000
+      "cost": 20000,
+      "acronym": "EC"
     },
     {
       "name": "Lance-Champi",
@@ -78,7 +81,8 @@
       ],
       "primary": "APS",
       "secondary": "G",
-      "cost": 30000
+      "cost": 30000,
+      "acronym": "LC"
     },
     {
       "name": "Chariot à Pompe (Gros Bras)",
@@ -97,7 +101,8 @@
       ],
       "primary": "SF",
       "secondary": "AG",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "CAP"
     },
     {
       "name": "Troll (Gros Bras)",
@@ -117,7 +122,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     }
   ],
   "specialRules": [

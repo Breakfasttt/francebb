@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "GA",
       "secondary": "FP",
-      "cost": 65000
+      "cost": 65000,
+      "acronym": "TQ"
     },
     {
       "name": "Lanceur Elfe",
@@ -29,7 +30,8 @@
       ],
       "primary": "GAP",
       "secondary": "F",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "LA"
     },
     {
       "name": "Receveur Elfe",
@@ -44,7 +46,8 @@
       ],
       "primary": "GA",
       "secondary": "F",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "RE"
     },
     {
       "name": "Blitzer Elfe",
@@ -59,7 +62,8 @@
       ],
       "primary": "GA",
       "secondary": "FP",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "BL"
     }
   ],
   "specialRules": [

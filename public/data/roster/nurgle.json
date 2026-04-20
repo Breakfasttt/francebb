@@ -15,7 +15,8 @@
       ],
       "primary": "SGM",
       "secondary": "AF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQP"
     },
     {
       "name": "Pestigor",
@@ -34,7 +35,8 @@
       ],
       "primary": "GMF",
       "secondary": "APS",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "PE"
     },
     {
       "name": "Boursouflé",
@@ -54,7 +56,8 @@
       ],
       "primary": "GMF",
       "secondary": "AS",
-      "cost": 110000
+      "cost": 110000,
+      "acronym": "BO"
     },
     {
       "name": "Rejeton Putride (Gros Bras)",
@@ -76,7 +79,8 @@
       ],
       "primary": "F",
       "secondary": "GSM",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "RP"
     }
   ],
   "specialRules": [

@@ -16,7 +16,8 @@
       ],
       "primary": "GA",
       "secondary": "SF",
-      "cost": 60000
+      "cost": 60000,
+      "acronym": "TQ"
     },
     {
       "name": "Receveur Slann",
@@ -33,7 +34,8 @@
       ],
       "primary": "GA",
       "secondary": "SF",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "RE"
     },
     {
       "name": "Blitzer Slann",
@@ -50,7 +52,8 @@
       ],
       "primary": "GA",
       "secondary": "S",
-      "cost": 110000
+      "cost": 110000,
+      "acronym": "BL"
     },
     {
       "name": "Kroxigor (Gros Bras)",
@@ -69,7 +72,8 @@
       ],
       "primary": "F",
       "secondary": "ASG",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "KR"
     }
   ],
   "specialRules": [

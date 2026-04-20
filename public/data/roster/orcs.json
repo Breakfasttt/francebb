@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "TQ"
     },
     {
       "name": "Trois-quart Gobelin",
@@ -29,7 +30,8 @@
       ],
       "primary": "AS",
       "secondary": "GFP",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQG"
     },
     {
       "name": "Lanceur Orque",
@@ -45,7 +47,8 @@
       ],
       "primary": "GP",
       "secondary": "ASF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "LA"
     },
     {
       "name": "Blitzer Orque",
@@ -61,7 +64,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "BL"
     },
     {
       "name": "Bloqueur Kosto",
@@ -79,7 +83,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "BK"
     },
     {
       "name": "Troll (Gros Bras)",
@@ -100,7 +105,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     }
   ],
   "specialRules": [

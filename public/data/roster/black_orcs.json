@@ -17,7 +17,8 @@
       ],
       "primary": "AS",
       "secondary": "GPF",
-      "cost": 45000
+      "cost": 45000,
+      "acronym": "MG"
     },
     {
       "name": "Orque Noir",
@@ -33,7 +34,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "OR"
     },
     {
       "name": "Troll Entraîné (Gros Bras)",
@@ -53,7 +55,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TE"
     }
   ],
   "specialRules": [

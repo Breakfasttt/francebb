@@ -14,7 +14,8 @@
       ],
       "primary": "G",
       "secondary": "FA",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "TQH"
     },
     {
       "name": "Aspirant Halfling",
@@ -31,7 +32,8 @@
       ],
       "primary": "A",
       "secondary": "GF",
-      "cost": 30000
+      "cost": 30000,
+      "acronym": "AH"
     },
     {
       "name": "Receveur Humain",
@@ -47,7 +49,8 @@
       ],
       "primary": "GA",
       "secondary": "PF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "RH"
     },
     {
       "name": "Trois-quart Nain (Vieux Monde)",
@@ -65,7 +68,8 @@
       ],
       "primary": "SG",
       "secondary": "F",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "TQN"
     },
     {
       "name": "Lanceur Humain",
@@ -81,7 +85,8 @@
       ],
       "primary": "GP",
       "secondary": "FA",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "LH"
     },
     {
       "name": "Coureur Nain",
@@ -98,7 +103,8 @@
       ],
       "primary": "GP",
       "secondary": "FA",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "CN"
     },
     {
       "name": "Blitzer Humain",
@@ -114,7 +120,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "BH"
     },
     {
       "name": "Blitzer Nain",
@@ -132,7 +139,8 @@
       ],
       "primary": "GF",
       "secondary": "P",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "BN"
     },
     {
       "name": "Tueur de Troll Nain",
@@ -151,7 +159,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "TTN"
     },
     {
       "name": "Ogre (Gros Bras)",
@@ -170,7 +179,8 @@
       ],
       "primary": "F",
       "secondary": "GA",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "OG"
     },
     {
       "name": "Homme-arbre (Gros Bras)",
@@ -191,7 +201,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 120000
+      "cost": 120000,
+      "acronym": "HA"
     }
   ],
   "specialRules": [

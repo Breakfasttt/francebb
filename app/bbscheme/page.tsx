@@ -75,6 +75,8 @@ export interface PlayerRosterInfo {
   primary: string;
   secondary: string;
   cost: number;
+  acronym?: string;
+  parentRoster?: any;
 }
 
 export interface RosterData {

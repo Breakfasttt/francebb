@@ -14,7 +14,8 @@
       ],
       "primary": "SGM",
       "secondary": "AF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "HU"
     },
     {
       "name": "Gobelin Renégat",
@@ -32,7 +33,8 @@
       ],
       "primary": "ASM",
       "secondary": "GP",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "GO"
     },
     {
       "name": "Orque Renégat",
@@ -47,7 +49,8 @@
       ],
       "primary": "SGM",
       "secondary": "AF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "OR"
     },
     {
       "name": "Skaven Renégat",
@@ -62,7 +65,8 @@
       ],
       "primary": "GSM",
       "secondary": "AF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "SK"
     },
     {
       "name": "Elfe Noir Renégat",
@@ -77,7 +81,8 @@
       ],
       "primary": "SGAM",
       "secondary": "F",
-      "cost": 65000
+      "cost": 65000,
+      "acronym": "EN"
     },
     {
       "name": "Lanceur Humain Renégat",
@@ -94,7 +99,8 @@
       ],
       "primary": "SGMP",
       "secondary": "AF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "LH"
     },
     {
       "name": "Troll Renégat (Gros Bras)",
@@ -115,7 +121,8 @@
       ],
       "primary": "F",
       "secondary": "GAMP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     },
     {
       "name": "Ogre Renégat (Gros Bras)",
@@ -134,7 +141,8 @@
       ],
       "primary": "F",
       "secondary": "GAM",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "OG"
     },
     {
       "name": "Minotaure Renégat (Gros Bras)",
@@ -154,7 +162,8 @@
       ],
       "primary": "F",
       "secondary": "GAM",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "MI"
     },
     {
       "name": "Rat Ogre Renégat (Gros Bras)",
@@ -173,7 +182,8 @@
       ],
       "primary": "F",
       "secondary": "GAM",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "RO"
     }
   ],
   "specialRules": [

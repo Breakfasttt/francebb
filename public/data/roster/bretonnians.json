@@ -14,7 +14,8 @@
       ],
       "primary": "G",
       "secondary": "AF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "EC"
     },
     {
       "name": "Receveur Chevalier",
@@ -31,7 +32,8 @@
       ],
       "primary": "AG",
       "secondary": "F",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "RC"
     },
     {
       "name": "Lanceur Chevalier",
@@ -48,7 +50,8 @@
       ],
       "primary": "GP",
       "secondary": "AF",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "LC"
     },
     {
       "name": "Chevalier du Graal",
@@ -65,7 +68,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "CG"
     }
   ],
   "specialRules": [

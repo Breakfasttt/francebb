@@ -17,7 +17,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQ"
     },
     {
       "name": "Renard Sylvestre",
@@ -35,7 +36,8 @@
       ],
       "primary": "-",
       "secondary": "A",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "RS"
     },
     {
       "name": "Illusionniste Gnome",
@@ -53,7 +55,8 @@
       ],
       "primary": "AP",
       "secondary": "SG",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "IL"
     },
     {
       "name": "Belluaire Gnome",
@@ -71,7 +74,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 55000
+      "cost": 55000,
+      "acronym": "BE"
     },
     {
       "name": "Homme-arbre (Gros Bras)",
@@ -92,7 +96,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 120000
+      "cost": 120000,
+      "acronym": "HA"
     }
   ],
   "specialRules": [

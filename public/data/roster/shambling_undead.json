@@ -15,7 +15,8 @@
       ],
       "primary": "G",
       "secondary": "ASF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQS"
     },
     {
       "name": "Trois-quart Zombie",
@@ -30,7 +31,8 @@
       ],
       "primary": "SG",
       "secondary": "AF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQZ"
     },
     {
       "name": "Coureur Goule",
@@ -46,7 +48,8 @@
       ],
       "primary": "AG",
       "secondary": "SPF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "CG"
     },
     {
       "name": "Revenant (Blitzer)",
@@ -62,7 +65,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "RE"
     },
     {
       "name": "Momie (Gros Bras)",
@@ -78,7 +82,8 @@
       ],
       "primary": "F",
       "secondary": "AG",
-      "cost": 125000
+      "cost": 125000,
+      "acronym": "MO"
     }
   ],
   "specialRules": [

@@ -15,7 +15,8 @@
       ],
       "primary": "G",
       "secondary": "ASF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQS"
     },
     {
       "name": "Squelette Lanceur",
@@ -33,7 +34,8 @@
       ],
       "primary": "GP",
       "secondary": "ASF",
-      "cost": 65000
+      "cost": 65000,
+      "acronym": "SL"
     },
     {
       "name": "Squelette Blitzer",
@@ -50,7 +52,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "SB"
     },
     {
       "name": "Gardien des Tombes (Gros Bras)",
@@ -67,7 +70,8 @@
       ],
       "primary": "F",
       "secondary": "GA",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "GA"
     }
   ],
   "specialRules": [

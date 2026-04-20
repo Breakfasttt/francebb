@@ -18,7 +18,8 @@
       ],
       "primary": "AS",
       "secondary": "G",
-      "cost": 15000
+      "cost": 15000,
+      "acronym": "TQG"
     },
     {
       "name": "Bloqueur Ogre (Gros Bras)",
@@ -36,7 +37,8 @@
       ],
       "primary": "F",
       "secondary": "ASGP",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "BL"
     },
     {
       "name": "Botteur Ogre (Gros Bras)",
@@ -54,7 +56,8 @@
       ],
       "primary": "PF",
       "secondary": "ASG",
-      "cost": 145000
+      "cost": 145000,
+      "acronym": "BO"
     }
   ],
   "specialRules": [

@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "GA",
       "secondary": "F",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "TQ"
     },
     {
       "name": "Lanceur Elfe Sylvain",
@@ -27,7 +28,8 @@
       ],
       "primary": "GAP",
       "secondary": "F",
-      "cost": 95000
+      "cost": 95000,
+      "acronym": "LA"
     },
     {
       "name": "Receveur Elfe Sylvain",
@@ -44,7 +46,8 @@
       ],
       "primary": "GA",
       "secondary": "FP",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "RE"
     },
     {
       "name": "Danseur de Guerre",
@@ -61,7 +64,8 @@
       ],
       "primary": "GA",
       "secondary": "FP",
-      "cost": 125000
+      "cost": 125000,
+      "acronym": "DG"
     },
     {
       "name": "Homme-arbre (Gros Bras)",
@@ -82,7 +86,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 120000
+      "cost": 120000,
+      "acronym": "HA"
     }
   ],
   "specialRules": [

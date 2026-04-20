@@ -16,7 +16,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 30000
+      "cost": 30000,
+      "acronym": "AS"
     },
     {
       "name": "Balaise Halfling",
@@ -33,7 +34,8 @@
       ],
       "primary": "AP",
       "secondary": "SGF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "BA"
     },
     {
       "name": "Receveur Halfling",
@@ -52,7 +54,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 55000
+      "cost": 55000,
+      "acronym": "RE"
     },
     {
       "name": "Homme-arbre (Gros Bras)",
@@ -73,7 +76,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 120000
+      "cost": 120000,
+      "acronym": "HA"
     }
   ],
   "specialRules": [

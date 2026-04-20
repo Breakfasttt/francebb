@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "G",
       "secondary": "ASF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "TQ"
     },
     {
       "name": "Aspirant Halfling",
@@ -29,7 +30,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 30000
+      "cost": 30000,
+      "acronym": "AH"
     },
     {
       "name": "Receveur",
@@ -45,7 +47,8 @@
       ],
       "primary": "GA",
       "secondary": "SFP",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "RE"
     },
     {
       "name": "Lanceur",
@@ -61,7 +64,8 @@
       ],
       "primary": "GP",
       "secondary": "ASF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "LA"
     },
     {
       "name": "Blitzer",
@@ -77,7 +81,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "BL"
     },
     {
       "name": "Ogre (Gros Bras)",
@@ -96,7 +101,8 @@
       ],
       "primary": "F",
       "secondary": "AG",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "OG"
     }
   ],
   "specialRules": [

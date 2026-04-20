@@ -15,7 +15,8 @@
       ],
       "primary": "A",
       "secondary": "GSPF",
-      "cost": 60000
+      "cost": 60000,
+      "acronym": "TQS"
     },
     {
       "name": "Skink Caméléon",
@@ -33,7 +34,8 @@
       ],
       "primary": "AP",
       "secondary": "GSF",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "SC"
     },
     {
       "name": "Bloqueur Saurus",
@@ -49,7 +51,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "BS"
     },
     {
       "name": "Kroxigor (Gros Bras)",
@@ -68,7 +71,8 @@
       ],
       "primary": "F",
       "secondary": "AG",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "KR"
     }
   ],
   "specialRules": [

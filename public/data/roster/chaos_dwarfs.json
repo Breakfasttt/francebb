@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "S",
       "secondary": "GFA",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQH"
     },
     {
       "name": "Surineur Sournois",
@@ -28,7 +29,8 @@
       ],
       "primary": "SG",
       "secondary": "FA",
-      "cost": 60000
+      "cost": 60000,
+      "acronym": "SS"
     },
     {
       "name": "Bloqueur Nain du Chaos",
@@ -45,7 +47,8 @@
       ],
       "primary": "GF",
       "secondary": "ASM",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "BL"
     },
     {
       "name": "Forgeflamme",
@@ -63,7 +66,8 @@
       ],
       "primary": "GF",
       "secondary": "AM",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "FO"
     },
     {
       "name": "Centaure Taureau",
@@ -81,7 +85,8 @@
       ],
       "primary": "GF",
       "secondary": "ASM",
-      "cost": 130000
+      "cost": 130000,
+      "acronym": "CT"
     },
     {
       "name": "Minotaure (Gros Bras)",
@@ -101,7 +106,8 @@
       ],
       "primary": "MF",
       "secondary": "GA",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "MI"
     }
   ],
   "specialRules": [

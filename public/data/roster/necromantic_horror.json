@@ -14,7 +14,8 @@
       ],
       "primary": "SG",
       "secondary": "AF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQZ"
     },
     {
       "name": "Coureur Goule",
@@ -30,7 +31,8 @@
       ],
       "primary": "AG",
       "secondary": "SPF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "CG"
     },
     {
       "name": "Spectre",
@@ -49,7 +51,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "SP"
     },
     {
       "name": "Golem de Chair",
@@ -66,7 +69,8 @@
       ],
       "primary": "GF",
       "secondary": "AS",
-      "cost": 110000
+      "cost": 110000,
+      "acronym": "GC"
     },
     {
       "name": "Loup-garou",
@@ -83,7 +87,8 @@
       ],
       "primary": "AG",
       "secondary": "SPF",
-      "cost": 120000
+      "cost": 120000,
+      "acronym": "LG"
     }
   ],
   "specialRules": [

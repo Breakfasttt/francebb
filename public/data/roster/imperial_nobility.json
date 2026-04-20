@@ -14,7 +14,8 @@
       ],
       "primary": "G",
       "secondary": "AF",
-      "cost": 45000
+      "cost": 45000,
+      "acronym": "VA"
     },
     {
       "name": "Lanceur Impérial",
@@ -31,7 +32,8 @@
       ],
       "primary": "GP",
       "secondary": "AF",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "LA"
     },
     {
       "name": "Garde du Corps",
@@ -47,7 +49,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "GC"
     },
     {
       "name": "Noble Blitzer",
@@ -64,7 +67,8 @@
       ],
       "primary": "GA",
       "secondary": "PF",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "BL"
     },
     {
       "name": "Ogre (Gros Bras)",
@@ -83,7 +87,8 @@
       ],
       "primary": "F",
       "secondary": "AG",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "OG"
     }
   ],
   "specialRules": [

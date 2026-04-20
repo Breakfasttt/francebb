@@ -16,7 +16,8 @@
       ],
       "primary": "AS",
       "secondary": "GFP",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQ"
     },
     {
       "name": "Cinglé",
@@ -34,7 +35,8 @@
       ],
       "primary": "S",
       "secondary": "AGF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "CI"
     },
     {
       "name": "Bomba",
@@ -52,7 +54,8 @@
       ],
       "primary": "SP",
       "secondary": "AGF",
-      "cost": 45000
+      "cost": 45000,
+      "acronym": "BO"
     },
     {
       "name": "Ouligan’",
@@ -72,7 +75,8 @@
       ],
       "primary": "AS",
       "secondary": "GF",
-      "cost": 60000
+      "cost": 60000,
+      "acronym": "OU"
     },
     {
       "name": "Planeur de la Mort",
@@ -90,7 +94,8 @@
       ],
       "primary": "A",
       "secondary": "SGF",
-      "cost": 65000
+      "cost": 65000,
+      "acronym": "PM"
     },
     {
       "name": "Fanatique",
@@ -108,7 +113,8 @@
       ],
       "primary": "SF",
       "secondary": "AG",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "FA"
     },
     {
       "name": "Échassier",
@@ -125,7 +131,8 @@
       ],
       "primary": "A",
       "secondary": "GFS",
-      "cost": 75000
+      "cost": 75000,
+      "acronym": "EC"
     },
     {
       "name": "Troll (Gros Bras)",
@@ -145,7 +152,8 @@
       ],
       "primary": "F",
       "secondary": "AGP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     }
   ],
   "specialRules": [

@@ -12,7 +12,8 @@
       "skills": [],
       "primary": "G",
       "secondary": "ASMF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "RC"
     },
     {
       "name": "Lanceur Skaven",
@@ -28,7 +29,8 @@
       ],
       "primary": "GP",
       "secondary": "ASMF",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "LA"
     },
     {
       "name": "Coureur d'Égouts",
@@ -44,7 +46,8 @@
       ],
       "primary": "GA",
       "secondary": "FMS",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "CE"
     },
     {
       "name": "Blitzer Skaven",
@@ -60,7 +63,8 @@
       ],
       "primary": "GF",
       "secondary": "AMS",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "BL"
     },
     {
       "name": "Rat Ogre (Gros Bras)",
@@ -79,7 +83,8 @@
       ],
       "primary": "F",
       "secondary": "AGM",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "RO"
     }
   ],
   "specialRules": [

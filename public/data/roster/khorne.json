@@ -14,7 +14,8 @@
       ],
       "primary": "GM",
       "secondary": "ASF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "MS"
     },
     {
       "name": "Khorngor",
@@ -32,7 +33,8 @@
       ],
       "primary": "GFM",
       "secondary": "ASP",
-      "cost": 70000
+      "cost": 70000,
+      "acronym": "KH"
     },
     {
       "name": "Rabatteur Sanglant",
@@ -47,7 +49,8 @@
       ],
       "primary": "GFM",
       "secondary": "AS",
-      "cost": 105000
+      "cost": 105000,
+      "acronym": "RS"
     },
     {
       "name": "Rejeton Sanglant (Gros Bras)",
@@ -66,7 +69,8 @@
       ],
       "primary": "FM",
       "secondary": "AG",
-      "cost": 160000
+      "cost": 160000,
+      "acronym": "RS"
     }
   ],
   "specialRules": [

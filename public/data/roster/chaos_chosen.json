@@ -15,7 +15,8 @@
       ],
       "primary": "GM",
       "secondary": "ASFP",
-      "cost": 55000
+      "cost": 55000,
+      "acronym": "TQHB"
     },
     {
       "name": "Élu du Chaos",
@@ -30,7 +31,8 @@
       ],
       "primary": "GFM",
       "secondary": "AS",
-      "cost": 100000
+      "cost": 100000,
+      "acronym": "EL"
     },
     {
       "name": "Troll (Gros Bras)",
@@ -51,7 +53,8 @@
       ],
       "primary": "FM",
       "secondary": "GAP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     },
     {
       "name": "Ogre (Gros Bras)",
@@ -70,7 +73,8 @@
       ],
       "primary": "FM",
       "secondary": "GA",
-      "cost": 140000
+      "cost": 140000,
+      "acronym": "OG"
     },
     {
       "name": "Minotaure (Gros Bras)",
@@ -90,7 +94,8 @@
       ],
       "primary": "FM",
       "secondary": "GA",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "MI"
     }
   ],
   "specialRules": [

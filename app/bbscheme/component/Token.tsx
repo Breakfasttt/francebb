@@ -32,27 +32,49 @@ const Token: React.FC<TokenProps> = ({
   const isCarried = !!token.attachedToId;
   
   // Custom Initials Logic
-  const getInitials = (name: string) => {
+  const getInitials = (name: string, rosterName?: string) => {
     if (!name) return "";
-    // Ignorer le contenu entre parenthèses
     let cleanName = name.replace(/\([^)]*\)/g, '').trim();
     
-    // CAS SPÉCIAL BBFRANCE : Si commence par "Guerrière", on prend le mot suivant
     if (cleanName.startsWith("Guerrière ")) {
       cleanName = cleanName.replace("Guerrière ", "").trim();
     }
 
-    const words = cleanName.split(/\s+/);
-    if (words.length === 1) {
-      // Si un seul mot (ex: Python), on prend les 2 premières lettres
-      return cleanName.substring(0, 2).toUpperCase();
+    const stopWords = ["DES", "LES", "DU", "DE", "LE", "LA", "ET", "D’", "D'", "L’", "L'", "D", "L"];
+    // Mots du roster à ignorer (normalisés et sans S final pour le pluriel)
+    const rosterWords = rosterName 
+      ? rosterName.toUpperCase()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .split(/[\s\-’']+/)
+          .filter(w => w.length > 2)
+          .map(w => w.replace(/S$/, ""))
+      : [];
+
+    const words = cleanName.split(/[\s\-’']+/);
+    
+    const filteredWords = words.filter(word => {
+      const upWord = word.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      if (!upWord || stopWords.includes(upWord)) return false;
+      
+      const stem = upWord.replace(/S$/, "");
+      // Ne pas garder si le mot (ou sa racine) est dans le nom du roster
+      if (rosterWords.some(rw => rw.startsWith(stem) || stem.startsWith(rw))) return false;
+      
+      return true;
+    });
+
+    if (filteredWords.length === 0) return cleanName.substring(0, 2).toUpperCase();
+    if (filteredWords.length === 1) {
+      if (filteredWords[0].length >= 2) return filteredWords[0].substring(0, 2).toUpperCase();
+      return filteredWords[0].toUpperCase();
     }
-    // Sinon on prend les initiales (ex: Troisième Quart -> TQ)
-    return words.map(word => word[0]).join("").toUpperCase();
+    
+    const result = filteredWords.map(word => word[0]).join("").toUpperCase();
+    return result.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
   const isGenericStar = token.playerInfo?.name === "Star Player";
-  const initial = isGenericStar ? "" : (token.playerInfo ? getInitials(token.playerInfo.name) : (token.number?.toString() || ""));
+  const initial = isGenericStar ? "" : (token.playerInfo?.acronym || (token.playerInfo ? getInitials(token.playerInfo.name, token.playerInfo.parentRoster?.name) : (token.number?.toString() || "")));
   
   // Tooltip position state
   const [tooltipPos, setTooltipPos] = React.useState<{ x: number, y: number } | null>(null);

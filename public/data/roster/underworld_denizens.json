@@ -19,7 +19,8 @@
       ],
       "primary": "ASM",
       "secondary": "G",
-      "cost": 15000
+      "cost": 15000,
+      "acronym": "TQS"
     },
     {
       "name": "Trois-quart Gobelin des Bas-Fonds",
@@ -36,7 +37,8 @@
       ],
       "primary": "ASM",
       "secondary": "GPF",
-      "cost": 40000
+      "cost": 40000,
+      "acronym": "TQG"
     },
     {
       "name": "Rat des Clans des Bas-Fonds",
@@ -51,7 +53,8 @@
       ],
       "primary": "SGM",
       "secondary": "AF",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "RC"
     },
     {
       "name": "Lanceur Skaven des Bas-Fonds",
@@ -68,7 +71,8 @@
       ],
       "primary": "GMP",
       "secondary": "ASF",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "LS"
     },
     {
       "name": "Coureur d’Égout des Bas-Fonds",
@@ -85,7 +89,8 @@
       ],
       "primary": "ASGM",
       "secondary": "F",
-      "cost": 85000
+      "cost": 85000,
+      "acronym": "CE"
     },
     {
       "name": "Blitzer Skaven des Bas-Fonds",
@@ -102,7 +107,8 @@
       ],
       "primary": "GMF",
       "secondary": "AS",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "BS"
     },
     {
       "name": "Troll des Bas-Fonds (Gros Bras)",
@@ -123,7 +129,8 @@
       ],
       "primary": "MF",
       "secondary": "GAP",
-      "cost": 115000
+      "cost": 115000,
+      "acronym": "TR"
     },
     {
       "name": "Rat Ogre des Bas-Fonds (Gros Bras)",
@@ -142,7 +149,8 @@
       ],
       "primary": "MF",
       "secondary": "GA",
-      "cost": 150000
+      "cost": 150000,
+      "acronym": "RO"
     }
   ],
   "specialRules": [

@@ -14,7 +14,8 @@
       ],
       "primary": "G",
       "secondary": "FA",
-      "cost": 50000
+      "cost": 50000,
+      "acronym": "AI"
     },
     {
       "name": "Guerrière Python (Lanceuse)",
@@ -32,7 +33,8 @@
       ],
       "primary": "GP",
       "secondary": "FA",
-      "cost": 80000
+      "cost": 80000,
+      "acronym": "PY"
     },
     {
       "name": "Guerrière Piranha (Blitzer)",
@@ -49,7 +51,8 @@
       ],
       "primary": "GA",
       "secondary": "F",
-      "cost": 90000
+      "cost": 90000,
+      "acronym": "PI"
     },
     {
       "name": "Guerrière Jaguar (Bloqueuse)",
@@ -65,7 +68,8 @@
       ],
       "primary": "GF",
       "secondary": "A",
-      "cost": 110000
+      "cost": 110000,
+      "acronym": "JA"
     }
   ],
   "specialRules": [
