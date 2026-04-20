@@ -6,7 +6,7 @@
   }
   
   .ligue-sidebar {
-    order: -1;
+    /* Naturellement après .ligue-main dans le DOM */
   }
 }
 
