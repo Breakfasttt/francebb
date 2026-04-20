@@ -1342,7 +1342,7 @@ export default function BBSchemePage() {
             <h3>⏱️ Séquences & Lecteur</h3>
             <div className="help-grid">
               <div className="item"><strong><Clock size={14} /> Vitesse</strong> : Délai entre deux images (en ms).</div>
-              <div className="item"><strong><PlusCircle size={14} /> (+)</strong> : Ajouter une nouvelle image à la séquence.</div>
+              <div className="item"><strong><PlusCircle size={14} /> Suivant/Ajouter</strong> : Avance à l'image suivante, ou crée une nouvelle image si vous êtes à la fin (limite de 50).</div>
               <div className="item"><strong><Copy size={14} /> Dupliquer</strong> : Copier l'image actuelle (pratique pour les petits mouvements).</div>
               <div className="item"><strong><Download size={14} /> GIF</strong> : Exporter votre tactique en image animée.</div>
             </div>
@@ -1359,11 +1359,26 @@ export default function BBSchemePage() {
         </div>
         <style jsx>{`
           .help-content { display: flex; flex-direction: column; gap: 1.2rem; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
-          .help-section { background: rgba(0, 65, 117, 0.05); padding: 1rem; border-radius: 12px; border: 1px solid rgba(0, 65, 117, 0.1); }
-          .help-section h3 { display: flex; align-items: center; gap: 0.5rem; color: var(--primary); margin-bottom: 0.8rem; font-size: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.3rem; }
+          .help-section { 
+            background: var(--glass-bg); 
+            padding: 1rem; 
+            border-radius: 12px; 
+            border: 1px solid var(--glass-border); 
+            backdrop-filter: blur(4px);
+          }
+          .help-section h3 { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            color: var(--accent); 
+            margin-bottom: 0.8rem; 
+            font-size: 1rem; 
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 0.3rem; 
+          }
           .help-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
-          .item { font-size: 0.85rem; line-height: 1.4; color: #2d2016; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
-          .item strong { color: var(--primary); display: flex; align-items: center; gap: 0.3rem; min-width: 90px; }
+          .item { font-size: 0.85rem; line-height: 1.4; color: var(--foreground); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
+          .item strong { color: var(--accent); display: flex; align-items: center; gap: 0.3rem; min-width: 90px; }
           .speed-control {
             display: flex;
             align-items: center;
