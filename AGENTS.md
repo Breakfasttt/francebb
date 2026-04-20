@@ -26,6 +26,7 @@ ATTENTION : breaking changes. Voir `node_modules/next/dist/docs/`.
 ## UI & SÉCU
 - Toujours vérifier auth/rôle (admin/modo) côté serveur.
 - Lire `.agents/skills/ui-components/SKILL.md` avant UI.
+- Toujours respecter les règles de thème du site et la cohérence visuelle a travers tout les thèmes.
 - Boutons SEULEMENT : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton`.
 - Formulaires : `ClassicSelect` SEULEMENT. Pas de `<select>`.
 - Utiliser `PremiumCard`, `Toast`.
