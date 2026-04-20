@@ -9,7 +9,8 @@ import {
   Play,
   RotateCw,
   SkipBack,
-  SkipForward
+  SkipForward,
+  ExternalLink
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { getBoardState } from "../actions";
@@ -58,10 +59,17 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
             skills: ["Compétences variables"], primary: "", secondary: "", cost: 0
           };
 
-          let bData: RosterData | null = null;
-          let rData: RosterData | null = null;
-          let blueBase: TokenData[] = [];
-          let redBase: TokenData[] = [];
+          // Collect ALL unique rosters from all frames
+          const allBlueFiles = new Set<string>();
+          if (parsed.blueRosterFile) allBlueFiles.add(parsed.blueRosterFile);
+          const allRedFiles = new Set<string>();
+          if (parsed.redRosterFile) allRedFiles.add(parsed.redRosterFile);
+
+          const parsedFrames = Array.isArray(parsed.frames) ? parsed.frames : [];
+          parsedFrames.forEach((f: any) => {
+            if (f && f.blueRosterFile) allBlueFiles.add(f.blueRosterFile);
+            if (f && f.redRosterFile) allRedFiles.add(f.redRosterFile);
+          });
 
           // Fetch Star Pool for hydration
           let starPool: PlayerRosterInfo[] = [];
@@ -71,58 +79,51 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
             starPool = sd.roster;
           } catch (e) { }
 
-          // Fetch Rosters
-          if (parsed.blueRosterFile) {
-            try {
-              const r = await fetch(`/data/roster/${parsed.blueRosterFile}.json`);
-              bData = await r.json();
-              if (bData) {
-                bData.roster = [...bData.roster, starPlayerInfo];
-                blueBase = bData.roster.flatMap(p => {
-                  const isStar = p.name === "Star Player";
-                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
-                  const q = p.qty || "2";
-                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
-                  
-                  return Array.from({ length: limit }).map((_, i) => ({
-                    id: `blue-${slug}-${i}`,
-                    type: 'blue', x: -1, y: -1, status: 'up', location: 'box',
-                    number: isStar ? 99 + (i + 1) : i + 1, playerInfo: p
-                  }));
-                }) as TokenData[];
-              }
-            } catch (e) { }
-          }
+          // Load all rosters and create pools
+          const bluePools: Record<string, TokenData[]> = {};
+          const redPools: Record<string, TokenData[]> = {};
 
-          if (parsed.redRosterFile) {
-            try {
-              const r = await fetch(`/data/roster/${parsed.redRosterFile}.json`);
-              rData = await r.json();
-              if (rData) {
-                rData.roster = [...rData.roster, starPlayerInfo];
-                redBase = rData.roster.flatMap(p => {
-                  const isStar = p.name === "Star Player";
-                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
-                  const q = p.qty || "2";
-                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
+          const loadPool = async (file: string, team: 'blue' | 'red') => {
+            const res = await fetch(`/data/roster/${file}.json`).then(r => r.json()).catch(() => null);
+            if (!res) return;
+            const enriched = { ...res, roster: [...res.roster, starPlayerInfo] };
+            
+            const pool = enriched.roster.flatMap((p: any) => {
+              const isStar = p.name === "Star Player";
+              const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
+              const q = p.qty || "2";
+              const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
+              return Array.from({ length: limit }).map((_, i) => ({
+                id: `${team}-${slug}-${i}`,
+                type: team as any, x: -1, y: -1, status: 'up' as any, location: 'box' as any,
+                number: isStar ? 99 + (i + 1) : i + 1,
+                playerInfo: { ...p, parentRoster: enriched }
+              }));
+            });
+            if (team === 'blue') bluePools[file] = pool; else redPools[file] = pool;
+          };
 
-                  return Array.from({ length: limit }).map((_, i) => ({
-                    id: `red-${slug}-${i}`,
-                    type: 'red', x: -1, y: -1, status: 'up', location: 'box',
-                    number: isStar ? 99 + (i + 1) : i + 1, playerInfo: p
-                  }));
-                }) as TokenData[];
-              }
-            } catch (e) { }
-          }
+          await Promise.all([
+            ...Array.from(allBlueFiles).map(f => loadPool(f, 'blue')),
+            ...Array.from(allRedFiles).map(f => loadPool(f, 'red'))
+          ]);
 
           const ballBase: TokenData = { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' };
 
-          // Hydrate Frames
-          const hydratedFrames = (parsed.frames as any[][]).map(savedFrame => {
-            const currentFrameTokens = [...blueBase, ...redBase, ballBase].map(t => ({ ...t }));
+          // FUSION 
+          const firstFrameRosters = parsedFrames.length > 0 && !(parsedFrames[0] as any).tokens;
+
+          const hydratedFrames = parsedFrames.map((f: any) => {
+            const savedTokens = firstFrameRosters || !f.tokens ? f || [] : f.tokens;
+            const bFile = firstFrameRosters || !f.tokens ? parsed.blueRosterFile : f.blueRosterFile;
+            const rFile = firstFrameRosters || !f.tokens ? parsed.redRosterFile : f.redRosterFile;
+
+            const bPool = bFile ? bluePools[bFile] || [] : [];
+            const rPool = rFile ? redPools[rFile] || [] : [];
             
-            savedFrame.forEach(s => {
+            const currentFrameTokens = [...bPool.map(t => ({ ...t })), ...rPool.map(t => ({ ...t })), { ...ballBase }];
+
+            savedTokens.forEach((s: any) => {
               const idx = currentFrameTokens.findIndex(t => t.id === s.id);
               if (idx !== -1) {
                 const base = currentFrameTokens[idx];
@@ -138,13 +139,17 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
                 if (bIdx !== -1) currentFrameTokens[bIdx] = { ...currentFrameTokens[bIdx], ...s };
               }
             });
-
-            return currentFrameTokens;
+            
+            return {
+              tokens: currentFrameTokens,
+              blueRosterFile: bFile,
+              redRosterFile: rFile
+            };
           });
 
           if (hydratedFrames.length > 0) {
             setFrames(hydratedFrames);
-            setTokens(hydratedFrames[0]);
+            setTokens(hydratedFrames[0].tokens);
           }
           
           if (parsed.drawings) setDrawings(parsed.drawings);
@@ -223,7 +228,8 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
 
   useEffect(() => {
     if (frames[currentFrameIndex]) {
-      setTokens(frames[currentFrameIndex]);
+      const frame = frames[currentFrameIndex] as any;
+      setTokens(frame.tokens || frame);
     }
   }, [currentFrameIndex, frames]);
 
@@ -342,6 +348,12 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
               size="xs" 
               icon={<RotateCw size={14} />}
               title="Pivoter le terrain"
+            />
+            <ClassicButton 
+              onClick={() => window.open(`/bbscheme?id=${boardId}`, '_blank')} 
+              size="xs" 
+              icon={<ExternalLink size={14} />}
+              title="Ouvrir dans l'éditeur BBScheme"
             />
           </div>
         </div>

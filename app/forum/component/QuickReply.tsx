@@ -6,25 +6,14 @@ import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";
+import { useRouter } from "next/navigation";
 
 export default function QuickReply({ topicId, onReplySuccess }: { topicId: string; onReplySuccess?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [content, setContent] = useState("");
+  const [resetKey, setResetKey] = useState(0);
+  const router = useRouter();
 
-  const handleSubmit = async () => {
-    if (!content.trim()) return;
-    setIsSubmitting(true);
-    try {
-      await createPost(topicId, content);
-      setContent("");
-      if (onReplySuccess) onReplySuccess();
-      window.location.reload(); // Revalidation handled by server action, but reload to scroll to bottom/see post
-    } catch (error) {
-      console.error("Quick reply error:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+
 
   return (
     <div id="quick-reply-area" className="quick-reply" style={{ marginTop: '3rem' }}>
@@ -35,8 +24,9 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
         </h3>
         
         <BBCodeEditor 
+          key={resetKey}
           name="content" 
-          defaultValue={content} 
+          defaultValue="" 
           placeholder="Écrivez votre réponse ici..."
           rows={6}
         />
@@ -54,7 +44,25 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
               const editorTextarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
               if (editorTextarea && editorTextarea.value.trim()) {
                 setIsSubmitting(true);
-                createPost(topicId, editorTextarea.value).then(() => window.location.reload());
+                createPost(topicId, editorTextarea.value).then((newPost) => {
+                  setResetKey(prev => prev + 1);
+                  setIsSubmitting(false);
+                  router.refresh();
+                  
+                  let attempts = 0;
+                  const intervalId = setInterval(() => {
+                    attempts++;
+                    const postEl = document.getElementById(`post-${newPost.id}`);
+                    if (postEl) {
+                      clearInterval(intervalId);
+                      postEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      postEl.classList.add('new-post-fade-in');
+                    } else if (attempts > 50) {
+                      clearInterval(intervalId);
+                      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }
+                  }, 100);
+                });
               }
             }}
             isLoading={isSubmitting}

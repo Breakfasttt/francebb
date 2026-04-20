@@ -49,18 +49,18 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
           width: '60px', 
           height: '60px', 
           borderRadius: '50%', 
-          background: isDanger ? 'rgba(255, 102, 102, 0.1)' : 'rgba(var(--primary-rgb), 0.1)', 
+          background: isDanger ? 'rgba(var(--danger-rgb, 239, 68, 68), 0.1)' : 'rgba(var(--primary-rgb), 0.1)', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
           margin: '0 auto 1.5rem',
-          color: isDanger ? '#ff6666' : 'var(--primary)'
+          color: isDanger ? 'var(--danger)' : 'var(--primary)'
         }}>
           <AlertTriangle size={30} />
         </div>
 
-        <h3 style={{ marginBottom: '1rem', color: '#eee' }}>{title}</h3>
-        <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '1.5rem' }}>{message}</p>
+        <h3 style={{ marginBottom: '1rem', color: 'var(--foreground)' }}>{title}</h3>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', lineHeight: '1.5', marginBottom: '1.5rem' }}>{message}</p>
 
         {children && (
           <div style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
