@@ -69,7 +69,7 @@ interface TopicSidebarProps {
 }
 
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import { finishTournament, cancelTournament } from "@/app/tournaments/actions";
+import { finishTournament, cancelTournament } from "@/app/tournois/actions";
 import toast from "react-hot-toast";
 
 export default function TopicSidebar({ 

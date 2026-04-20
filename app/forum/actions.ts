@@ -606,7 +606,7 @@ export async function createTopic(formData: FormData) {
 
   revalidatePath(`/forum/${forumId}`);
   revalidatePath("/forum/unread");
-  revalidatePath("/tournaments");
+  revalidatePath("/tournois");
 
   redirect(`/forum/topic/${topic.id}`);
 }

@@ -1,4 +1,4 @@
-.tournaments-page {
+.tournois-page {
   padding-top: 0.5rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -9,7 +9,7 @@
 
 /* Styles spécifiques à la page Tournois (app/tournaments/page.tsx) */
 
-.tournaments-container {
+.tournois-container {
   padding-top: 1rem;
   width: 100%;
 }
@@ -35,7 +35,7 @@
 }
 
 /* Grille de résultats */
-.tournaments-grid {
+.tournois-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 1.5rem;
@@ -81,18 +81,19 @@
 .status-badge.cancelled {
   background: var(--danger);
   color: white;
-  box-shadow: 0 0 15px var(--danger-shadow);
+  box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
 }
 
 .status-badge.finished {
-  background: var(--nav-btn-bg);
-  color: var(--text-muted);
+  background: var(--card-bg);
+  color: var(--foreground);
   border: 1px solid var(--glass-border);
+  opacity: 0.8;
 }
 
 .status-badge.past {
   background: var(--glass-bg);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 1px solid var(--glass-border);
 }
 
@@ -112,11 +113,11 @@
   border-radius: 6px;
   font-weight: 800;
   font-size: 0.75rem;
-  box-shadow: 0 4px 10px rgba(194, 29, 29, 0.3);
+  box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.3);
 }
 
 .filter-tag {
-  background: rgba(194, 29, 29, 0.15);
+  background: rgba(var(--primary-rgb), 0.15);
   border: 1px solid var(--primary);
   color: var(--foreground);
   padding: 0.25rem 0.8rem;
@@ -126,7 +127,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 2px 8px rgba(194, 29, 29, 0.2);
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.2);
 }
 
 .t-badge-outline {
@@ -176,21 +177,21 @@
 }
 
 .log-badge.meals {
-  background: rgba(255, 215, 0, 0.15); /* Or transparent */
+  background: rgba(var(--accent-rgb), 0.15);
   color: var(--accent);
   border: 1px solid var(--accent);
 }
 
 .log-badge.lodging {
-  background: rgba(76, 175, 80, 0.15); /* Vert transparent */
-  color: #4caf50;
-  border: 1px solid #4caf50;
+  background: rgba(var(--success-rgb), 0.15);
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 
 .log-badge.friday {
-  background: rgba(33, 150, 243, 0.15); /* Bleu transparent */
-  color: #2196f3;
-  border: 1px solid #2196f3;
+  background: rgba(var(--accent-rgb), 0.08); 
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
 }
 
 .t-info {
@@ -249,13 +250,13 @@
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 15px rgba(194, 29, 29, 0.3);
+  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
 }
 
 .t-action-btn:hover {
   transform: translateY(-3px) scale(1.05);
   background: var(--primary-hover);
-  box-shadow: 0 8px 20px rgba(194, 29, 29, 0.5);
+  box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.5);
 }
 
 /* Pagination / Active Filters */
@@ -278,7 +279,7 @@
 
 
 /* Vue Liste Section */
-.tournaments-list-view {
+.tournois-list-view {
   background: var(--card-bg);
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
@@ -418,8 +419,8 @@
 }
 
 .status-pill.cancelled { background: var(--danger); color: white; }
-.status-pill.finished { background: var(--nav-btn-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
-.status-pill.past { background: var(--glass-bg); color: var(--text-muted); border: 1px solid var(--glass-border); }
+.status-pill.finished { background: var(--card-bg); color: var(--foreground); border: 1px solid var(--glass-border); opacity: 0.8; }
+.status-pill.past { background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); }
 
 .participants-pill {
   display: flex;
@@ -459,7 +460,7 @@
 .tournament-card.clickable:hover {
   transform: translateY(-4px);
   border-color: var(--primary);
-  box-shadow: 0 12px 30px rgba(194, 29, 29, 0.3);
+  box-shadow: 0 12px 30px rgba(var(--primary-rgb), 0.3);
 }
 
 .t-action-btn-fake {
@@ -471,12 +472,12 @@
   font-size: 0.9rem;
   text-align: center;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(194, 29, 29, 0.2);
+  box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.2);
 }
 
 .tournament-card.clickable:hover .t-action-btn-fake {
   background: var(--primary-hover);
-  box-shadow: 0 6px 15px rgba(194, 29, 29, 0.4);
+  box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.4);
 }
 
 .list-btn {
@@ -490,13 +491,13 @@
   text-align: center;
   transition: all 0.2s ease;
   display: inline-block;
-  box-shadow: 0 4px 10px rgba(194, 29, 29, 0.2);
+  box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.2);
 }
 
 .list-btn:hover {
   transform: translateY(-2px);
   background: var(--primary-hover);
-  box-shadow: 0 6px 15px rgba(194, 29, 29, 0.4);
+  box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.4);
 }
 
 

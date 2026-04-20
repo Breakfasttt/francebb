@@ -40,7 +40,7 @@ export async function finishTournament(tournamentId: string) {
     data: { isFinished: true }
   });
 
-  revalidatePath("/tournaments");
+  revalidatePath("/tournois");
   if (tournament.topic?.id) {
     revalidatePath(`/forum/topic/${tournament.topic.id}`);
   }
@@ -82,7 +82,7 @@ export async function cancelTournament(tournamentId: string) {
     }
   });
 
-  revalidatePath("/tournaments");
+  revalidatePath("/tournois");
   if (tournament.topic?.id) {
     revalidatePath(`/forum/topic/${tournament.topic.id}`);
   }

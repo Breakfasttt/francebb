@@ -3,9 +3,9 @@ import "./page-mobile.css";
 
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
-import TournamentFilterSidebar from "@/app/tournaments/component/TournamentFilterSidebar";
+import TournamentFilterSidebar from "@/app/tournois/component/TournamentFilterSidebar";
 import Link from "next/link";
-import ActiveFilters from "@/app/tournaments/component/ActiveFilters";
+import ActiveFilters from "@/app/tournois/component/ActiveFilters";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import { Search, MapPin, Calendar, Users, Trophy, Sparkles, GitBranch, Clock } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -39,6 +39,14 @@ export default async function TournamentsPage({
   const friday = params.friday === "true";
   const maxPrice = params.maxPrice ? parseFloat(params.maxPrice as string) : undefined;
   const structure = params.structure as string | undefined;
+  const isTeam = params.isTeam === "true" ? true : params.isTeam === "false" ? false : undefined;
+  const platform = params.platform as string | undefined;
+  const isNAF = params.isNAF === "true";
+  const isCDF = params.isCDF === "true";
+  const isCGO = params.isCGO === "true";
+  const isTGE = params.isTGE === "true";
+  const isTSC = params.isTSC === "true";
+  
   const sort = (params.sort as string) || "date_asc";
   const view = (params.view as string) || "grid";
   const showHistory = params.history === "true";
@@ -70,6 +78,13 @@ export default async function TournamentsPage({
   if (lodging) where.lodgingAtVenue = true;
   if (meals) where.mealsIncluded = true;
   if (friday) where.fridayArrival = true;
+  if (isTeam !== undefined) where.isTeam = isTeam;
+  if (platform) where.platform = platform;
+  if (isNAF) where.isNAF = true;
+  if (isCDF) where.isCDF = true;
+  if (isCGO) where.isCGO = true;
+  if (isTGE) where.isTGE = true;
+  if (isTSC) where.isTSC = true;
   if (maxPrice !== undefined) where.price = { lte: maxPrice };
 
   // Handle Sort
@@ -96,13 +111,13 @@ export default async function TournamentsPage({
   });
 
   return (
-    <div className="tournaments-page">
+    <div className="tournois-page">
       <PageHeader 
         title="Tous les Tournois" 
         backHref="/"
       />
 
-      <main className="container tournaments-container">
+      <main className="container tournois-container">
 
       <div className="search-layout">
         <aside className="sidebar-wrapper">
@@ -117,11 +132,11 @@ export default async function TournamentsPage({
           {tournaments.length > 0 ? (
             <>
               {view === "grid" ? (
-                <div className="tournaments-grid">
+                <div className="tournois-grid">
                   {tournaments.map((t: any) => (
                     <Link 
                       key={t.id} 
-                      href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`}
+                      href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`}
                       style={{ display: 'contents' }}
                       className="tournament-card-link"
                     >
@@ -200,7 +215,7 @@ export default async function TournamentsPage({
                   ))}
                 </div>
               ) : (
-                <div className="tournaments-list-view">
+                <div className="tournois-list-view">
                   <div className="list-header-row">
                     <span>Date</span>
                     <span>Tournoi</span>
@@ -220,7 +235,7 @@ export default async function TournamentsPage({
                         </div>
                         
                         <div className="list-col-name">
-                          <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`} className="tournament-link">
+                          <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} className="tournament-link">
                             {t.name}
                           </Link>
                           <div className="organizer-small">Par {t.organizer.name}</div>
@@ -261,7 +276,7 @@ export default async function TournamentsPage({
 
                         <div className="list-col-action">
                           <ClassicButton 
-                            href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`} 
+                            href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} 
                             size="sm"
                           >
                             Voir
@@ -278,7 +293,7 @@ export default async function TournamentsPage({
                   currentPage={page} 
                   totalPages={totalPages} 
                   queryParam="page"
-                  baseUrl="/tournaments"
+                  baseUrl="/tournois"
                 />
               </div>
             </>

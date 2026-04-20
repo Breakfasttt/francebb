@@ -100,7 +100,7 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
               <div style={{ marginTop: "0.8rem" }}>
                   <a 
                     href={viewType === "tournaments" 
-                      ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : `/tournaments/${p.id}`) 
+                      ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : `/tournois/${p.id}`) 
                       : `/ligues/${p.id}`} 
                     style={{ background: "#c21d1d", color: "white", padding: "0.4rem 0.8rem", borderRadius: "8px", textDecoration: "none", fontSize: "0.75rem", fontWeight: 800, display: "inline-block" }}
                   >

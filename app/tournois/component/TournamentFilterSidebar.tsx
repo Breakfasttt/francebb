@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock } from "lucide-react";
+import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock, Sparkles } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
@@ -86,36 +86,40 @@ export default function TournamentFilterSidebar() {
       icon: <Trophy size={18} />,
       filters: [
         { 
+          name: "isTeam", 
+          label: "Mode de jeu", 
+          type: "select", 
+          options: ["Tous", "false|Individuel", "true|Par équipe"] 
+        },
+        { 
+          name: "platform", 
+          label: "Plateforme", 
+          type: "select", 
+          options: ["Toutes", "Tabletop|Plateau (IRL)", "Fumbbl|Fumbbl", "VideoGame|Jeu Vidéo (BB3/BB2)"] 
+        },
+        { 
           name: "edition", 
           label: "Version du jeu", 
           type: "select", 
-          options: ["Toutes", "BB20", "BB25", "Fumbll", "BB2", "BB3/WBB", "BB7", "DB", "Autre"] 
-        },
-        { 
-          name: "ruleset", 
-          label: "Règles", 
-          type: "select", 
-          options: ["Toutes", "Eurobowl", "NAF", "Custom", "DB"] 
+          options: ["Toutes", "BB25|Blood Bowl 2025", "BB20|Blood Bowl 2020", "BB3|Blood Bowl 3", "BB7|Blood Bowl 7's", "GutterBowl|Gutter Bowl", "Classic|LRB6 / Classic"] 
         },
         { 
           name: "structure", 
           label: "Structure", 
           type: "select", 
-          options: ["Toutes", "Resurrection", "Evolutif"] 
-        },
-        { 
-          name: "days", 
-          label: "Durée", 
-          type: "select", 
-          options: ["Toutes", "1|1j", "2|2j", "3j+|3j+", "Saison Rythme|Saison Rythmée"] 
+          options: ["Toutes", "Resurrection|Résurrection", "Evolutif|Évolutif"] 
         },
       ]
     },
     {
-      title: "Participants",
-      icon: <Users size={18} />,
+      title: "Circuits & Labels",
+      icon: <Sparkles size={18} />,
       filters: [
-        { name: "minPlaces", label: "Places min.", type: "number" },
+        { name: "isNAF", label: "Homologué NAF", type: "checkbox" },
+        { name: "isCDF", label: "Coupe de France (CDF)", type: "checkbox" },
+        { name: "isCGO", label: "Circuit du Grand Ouest", type: "checkbox" },
+        { name: "isTGE", label: "Tournoi du Grand Est", type: "checkbox" },
+        { name: "isTSC", label: "Tournoi du Sud-Centre", type: "checkbox" },
       ]
     },
     {
@@ -128,24 +132,25 @@ export default function TournamentFilterSidebar() {
       ]
     },
     {
-      title: "Budget",
+      title: "Budget & Places",
       icon: <Euro size={18} />,
       filters: [
         { name: "maxPrice", label: "Prix max (€)", type: "number" },
+        { name: "minPlaces", label: "Places restantes min.", type: "number" },
       ]
     },
     {
       title: "Visibilité",
       icon: <Clock size={18} />,
       filters: [
-        { name: "history", label: "Voir les tournois passés / annulés", type: "checkbox" },
+        { name: "history", label: "Voir tournois passés / annulés", type: "checkbox" },
       ]
     }
   ];
 
   return (
     <PremiumCard className="filter-sidebar">
-      <ClassicButton onClick={() => router.push("/tournaments")} fullWidth style={{ marginBottom: '1rem' }}>
+      <ClassicButton onClick={() => router.push("/tournois")} fullWidth style={{ marginBottom: '1rem' }}>
         Réinitialiser filtres
       </ClassicButton>
 
@@ -169,11 +174,11 @@ export default function TournamentFilterSidebar() {
             {section.filters.map((filter, j) => (
                <div key={j} className="filter-item">
                   {filter.type === "select" ? (
-                   <ClassicSelect
-                     label={filter.label}
-                     value={searchParams.get(filter.name) || "Toutes"}
-                     onChange={(e) => handleFilterChange(filter.name, e.target.value === "Toutes" ? "" : e.target.value)}
-                   >
+                    <ClassicSelect
+                      label={filter.label}
+                      value={searchParams.get(filter.name) || (filter.name === "isTeam" ? "Tous" : "Toutes")}
+                      onChange={(e) => handleFilterChange(filter.name, e.target.value === "Toutes" || e.target.value === "Tous" ? "" : e.target.value)}
+                    >
                      {(filter as any).options?.map((opt: string) => {
                        const [val, label] = opt.includes('|') ? opt.split('|') : [opt, opt];
                        return <option key={val} value={val}>{label}</option>;

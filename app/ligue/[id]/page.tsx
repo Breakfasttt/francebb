@@ -102,13 +102,13 @@ export default async function LigueDetailPage({
             <PremiumCard className="ligue-tournaments">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <h3>Prochains Tournois</h3>
-                <Link href={`/tournaments?ligueId=${ligue.id}`} className="view-all-link">Voir tout</Link>
+                <Link href={`/tournois?ligueId=${ligue.id}`} className="view-all-link">Voir tout</Link>
               </div>
               
               {ligue.tournaments.length > 0 ? (
                 <div className="mini-tournaments-list">
                   {ligue.tournaments.map(t => (
-                    <Link key={t.id} href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournaments/${t.id}`} className="mini-t-item">
+                    <Link key={t.id} href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} className="mini-t-item">
                       <div className="mini-t-date">
                         <Calendar size={18} />
                         <span>{new Date(t.date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}</span>

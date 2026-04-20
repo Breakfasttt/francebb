@@ -20,7 +20,7 @@ import CTAButton from '@/common/components/Button/CTAButton';
 import ClassicButton from '@/common/components/Button/ClassicButton';
 import DangerButton from '@/common/components/Button/DangerButton';
 import ToggleButton from '@/common/components/Button/ToggleButton';
-import { saveTournamentResults, parseNafReport } from '@/app/tournaments/actions';
+import { saveTournamentResults, parseNafReport } from '@/app/tournois/actions';
 import { 
   DndContext, 
   closestCenter,

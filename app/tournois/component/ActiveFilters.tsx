@@ -42,11 +42,38 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
     ruleset: "Règles",
     structure: "Structure",
     days: "Durée",
-    minPlaces: "Places min",
+    minPlaces: "Places rest.",
     lodging: "Logement",
     meals: "Repas",
     friday: "Vendredi",
-    maxPrice: "Prix max"
+    maxPrice: "Prix max",
+    isTeam: "Mode",
+    platform: "Plateforme",
+    isNAF: "Circuit NAF",
+    isCDF: "Circuit CDF",
+    isCGO: "Circuit CGO",
+    isTGE: "Circuit TGE",
+    isTSC: "Circuit TSC"
+  };
+
+  const renderValue = (key: string, value: string) => {
+    if (value === "true") return "Oui";
+    if (value === "false") {
+      if (key === "isTeam") return "Individuel";
+      return "Non";
+    }
+    if (key === "isTeam" && value === "true") return "Par équipe";
+    if (key === "platform") {
+      if (value === "Tabletop") return "Plateau (IRL)";
+      if (value === "VideoGame") return "Jeu Vidéo";
+      return value;
+    }
+    if (key === "edition") {
+      if (value === "BB25") return "BB 2025";
+      if (value === "BB20") return "BB 2020";
+      return value;
+    }
+    return value;
   };
 
   return (
@@ -56,7 +83,7 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
         {activeFilters.length > 0 ? (
           activeFilters.map((f) => (
             <div key={f.key} className="filter-tag">
-              <span>{filterLabels[f.key] || f.key}: {f.value === "true" ? "Oui" : f.value}</span>
+              <span>{filterLabels[f.key] || f.key}: {renderValue(f.key, f.value)}</span>
               <button 
                 onClick={() => removeFilter(f.key)}
                 style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', padding: '0 0 0 5px', display: 'flex', alignItems: 'center' }}

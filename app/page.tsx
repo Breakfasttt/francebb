@@ -86,7 +86,7 @@ export default async function Home() {
             </div>
 
             <div className="card-stack">
-              <Link href="/tournaments" style={{ display: 'contents' }}>
+              <Link href="/tournois" style={{ display: 'contents' }}>
                 <PremiumCard hoverEffect className="action-card flex-1">
                   <Trophy size={24} className="icon-accent" />
                   <div className="card-text">Tournois</div>
