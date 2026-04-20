@@ -181,16 +181,6 @@ export default function BBSchemePage() {
 
   // -- FIN DES HOOKS --
 
-  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
-  if (isMobile && !isEmbed) {
-    return <DesktopOnlyFallback />;
-  }
-
-  // SI MODE EMBED : Affichage du player dédié uniquement
-  if (isEmbed && boardId) {
-    return <BBSchemePlayer boardId={boardId} />;
-  }
-
   useEffect(() => {
     const fetchStarPlayers = async () => {
       try {
@@ -385,7 +375,7 @@ export default function BBSchemePage() {
   useEffect(() => {
     if (layout === "vertical" && rotation !== 90) setRotation(90);
     if (layout === "horizontal" && rotation !== 0) setRotation(0);
-  }, [layout]);
+  }, [layout, rotation]);
 
   // Logique du lecteur (Playback)
   useEffect(() => {
@@ -484,7 +474,7 @@ export default function BBSchemePage() {
     return () => {
       viewport.removeEventListener('wheel', handleWheel);
     };
-  }, []);
+  }, [isEmbed]);
 
   // Panning UI
   const [isPanning, setIsPanning] = useState(false);
@@ -513,6 +503,109 @@ export default function BBSchemePage() {
   const handlePanningEnd = () => {
     setIsPanning(false);
   };
+
+  // -- History management --
+  const saveToHistory = useCallback((currentTokens: TokenData[], currentDrawings: DrawingPath[]) => {
+    setHistory(prev => [{ tokens: [...currentTokens.map(t => ({ ...t }))], drawings: [...currentDrawings.map(d => ({ ...d }))] }, ...prev.slice(0, 19)]);
+  }, []);
+
+  // -- Scaling Logic --
+  const handleResize = useCallback(() => {
+    if (!resizerRef.current) return;
+    const viewport = resizerRef.current.closest('.pitch-viewport');
+    if (!viewport) return;
+    const padding = 20;
+    const availableWidth = viewport.clientWidth - padding;
+    const availableHeight = viewport.clientHeight - padding;
+    const pitchW = rotation === 90 ? 758 : 1308;
+    const pitchH = rotation === 90 ? 1308 : 758;
+    setBaseScale(Math.min(availableWidth / pitchW, availableHeight / pitchH, 1.1));
+  }, [rotation]);
+
+
+  useEffect(() => {
+    const rosterList = [
+      "amazons", "black_orcs", "bretonnians", "chaos_chosen",
+      "chaos_dwarfs", "chaos_renegades", "dark_elves", "dwarves", "elven_union",
+      "gnomes", "goblins", "halflings", "high_elves", "humans", "imperial_nobility",
+      "khorne", "lizardmen", "necromantic_horror", "norse", "nurgle", "ogres",
+      "old_world_alliance", "orcs", "shambling_undead", "skaven", "slann_(naf)",
+      "snotlings", "tomb_kings", "underworld_denizens", "vampires", "wood_elves"
+    ];
+
+    const translationMap: Record<string, string> = {
+      "amazons": "Amazones", "black_orcs": "Orques Noirs", "bretonnians": "Bretonniens",
+      "chaos_chosen": "Élus du Chaos", "chaos_dwarfs": "Nains du Chaos", "chaos_renegades": "Renégats du Chaos",
+      "dark_elves": "Elfes Noirs", "dwarves": "Nains", "elven_union": "Union Elfique",
+      "gnomes": "Gnomes", "goblins": "Gobelins", "halflings": "Halfelins",
+      "high_elves": "Hauts Elfes", "humans": "Humains", "imperial_nobility": "Noblesse Impériale",
+      "khorne": "Élus de Khorne", "lizardmen": "Hommes-Lézards", "necromantic_horror": "Horreur Nécromantique",
+      "norse": "Nordiques", "nurgle": "Élus de Nurgle", "ogres": "Ogres",
+      "old_world_alliance": "Alliance du Vieux Monde", "orcs": "Orques", "shambling_undead": "Morts-Vivants",
+      "skaven": "Skavens", "slann_(naf)": "Slanns (NAF)", "snotlings": "Snotlings",
+      "tomb_kings": "Rois des Tombes", "underworld_denizens": "Habitants des Bas-Fonds",
+      "vampires": "Vampires", "wood_elves": "Elfes Sylvains", "all_star_players": "Star Players"
+    };
+
+    setRosters(rosterList.map(r => ({
+      name: translationMap[r] || r.replace(/_/g, ' ').toUpperCase(),
+      file: r
+    })).sort((a, b) => a.name.localeCompare(b.name)));
+  }, []);
+
+  useEffect(() => {
+    handleResize();
+    const timer = setTimeout(handleResize, 100);
+    window.addEventListener('resize', handleResize);
+    return () => { window.removeEventListener('resize', handleResize); clearTimeout(timer); };
+  }, [handleResize, isFullscreen, rotation]);
+
+  // ResizeObserver for more precise scaling
+  useEffect(() => {
+    const viewport = resizerRef.current?.closest('.pitch-viewport');
+    if (!viewport) return;
+
+    const observer = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [handleResize]);
+
+  useEffect(() => {
+    handleResize();
+    const timer = setTimeout(handleResize, 100);
+    window.addEventListener('resize', handleResize);
+    return () => { window.removeEventListener('resize', handleResize); clearTimeout(timer); };
+  }, [handleResize, isFullscreen, rotation]);
+
+  // ResizeObserver for more precise scaling
+  useEffect(() => {
+    const viewport = resizerRef.current?.closest('.pitch-viewport');
+    if (!viewport) return;
+
+    const observer = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [handleResize]);
+
+  const finalScale = baseScale * zoom;
+
+  // -- FIN DES HOOKS --
+
+  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
+  if (isMobile && !isEmbed) {
+    return <DesktopOnlyFallback />;
+  }
+
+  // SI MODE EMBED : Affichage du player dédié uniquement
+  if (isEmbed && boardId) {
+    return <BBSchemePlayer boardId={boardId} />;
+  }
 
   const handleStarPlayerSelect = (starName: string) => {
     if (!selectedId) return;
@@ -558,69 +651,6 @@ export default function BBSchemePage() {
   const isStarPlayerSelected = selectedId?.includes('-star-');
   const selectedToken = tokens.find(t => t.id === selectedId);
 
-  // -- Scaling Logic --
-  const handleResize = useCallback(() => {
-    if (!resizerRef.current) return;
-    const viewport = resizerRef.current.closest('.pitch-viewport');
-    if (!viewport) return;
-    const padding = 20;
-    const availableWidth = viewport.clientWidth - padding;
-    const availableHeight = viewport.clientHeight - padding;
-    const pitchW = rotation === 90 ? 758 : 1308;
-    const pitchH = rotation === 90 ? 1308 : 758;
-    setBaseScale(Math.min(availableWidth / pitchW, availableHeight / pitchH, 1.1));
-  }, [rotation]);
-
-  useEffect(() => {
-    const rosterList = [
-      "amazons", "black_orcs", "bretonnians", "chaos_chosen",
-      "chaos_dwarfs", "chaos_renegades", "dark_elves", "dwarves", "elven_union",
-      "gnomes", "goblins", "halflings", "high_elves", "humans", "imperial_nobility",
-      "khorne", "lizardmen", "necromantic_horror", "norse", "nurgle", "ogres",
-      "old_world_alliance", "orcs", "shambling_undead", "skaven", "slann_(naf)",
-      "snotlings", "tomb_kings", "underworld_denizens", "vampires", "wood_elves"
-    ];
-
-    const translationMap: Record<string, string> = {
-      "amazons": "Amazones",
-      "black_orcs": "Orques Noirs",
-      "bretonnians": "Bretonniens",
-      "chaos_chosen": "Élus du Chaos",
-      "chaos_dwarfs": "Nains du Chaos",
-      "chaos_renegades": "Renégats du Chaos",
-      "dark_elves": "Elfes Noirs",
-      "dwarves": "Nains",
-      "elven_union": "Union Elfique",
-      "gnomes": "Gnomes",
-      "goblins": "Gobelins",
-      "halflings": "Halfelins",
-      "high_elves": "Hauts Elfes",
-      "humans": "Humains",
-      "imperial_nobility": "Noblesse Impériale",
-      "khorne": "Élus de Khorne",
-      "lizardmen": "Hommes-Lézards",
-      "necromantic_horror": "Horreur Nécromantique",
-      "norse": "Nordiques",
-      "nurgle": "Élus de Nurgle",
-      "ogres": "Ogres",
-      "old_world_alliance": "Alliance du Vieux Monde",
-      "orcs": "Orques",
-      "shambling_undead": "Morts-Vivants",
-      "skaven": "Skavens",
-      "slann_(naf)": "Slanns (NAF)",
-      "snotlings": "Snotlings",
-      "tomb_kings": "Rois des Tombes",
-      "underworld_denizens": "Habitants des Bas-Fonds",
-      "vampires": "Vampires",
-      "wood_elves": "Elfes Sylvains",
-      "all_star_players": "Star Players"
-    };
-
-    setRosters(rosterList.map(r => ({
-      name: translationMap[r] || r.replace(/_/g, ' ').toUpperCase(),
-      file: r
-    })).sort((a, b) => a.name.localeCompare(b.name)));
-  }, []);
 
   const spawnRosterTokens = (team: 'blue' | 'red', roster: RosterData, fileName: string) => {
     // 1. Create the new team pool (all in box)
@@ -747,32 +777,6 @@ export default function BBSchemePage() {
     }
   };
 
-  useEffect(() => {
-    handleResize();
-    const timer = setTimeout(handleResize, 100);
-    window.addEventListener('resize', handleResize);
-    return () => { window.removeEventListener('resize', handleResize); clearTimeout(timer); };
-  }, [handleResize, isFullscreen, rotation]);
-
-  const finalScale = baseScale * zoom;
-
-  // ResizeObserver for more precise scaling
-  useEffect(() => {
-    const viewport = resizerRef.current?.closest('.pitch-viewport');
-    if (!viewport) return;
-
-    const observer = new ResizeObserver(() => {
-      handleResize();
-    });
-
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, [handleResize]);
-
-  // -- History management --
-  const saveToHistory = useCallback((currentTokens: TokenData[], currentDrawings: DrawingPath[]) => {
-    setHistory(prev => [{ tokens: [...currentTokens.map(t => ({ ...t }))], drawings: [...currentDrawings.map(d => ({ ...d }))] }, ...prev.slice(0, 19)]);
-  }, []);
 
   const handleUndo = () => {
     if (history.length === 0) return;
