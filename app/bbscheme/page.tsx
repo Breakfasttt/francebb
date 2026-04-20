@@ -209,12 +209,13 @@ export default function BBSchemePage() {
                 const enriched = { ...resBlue, roster: [...resBlue.roster, genericStarInfo] };
                 setBlueRoster(enriched);
                 setBlueRosterFile(parsed.blueRosterFile);
-                blueBase = enriched.roster.flatMap((p: any, pIdx: number) => {
+                blueBase = enriched.roster.flatMap((p: any) => {
                   const isStar = p.name === "Star Player";
+                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
                   const q = p.qty || "2";
                   const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
                   return Array.from({ length: limit }).map((_, i) => ({
-                    id: `blue-${pIdx}-${i}`, // ID UNIQUE ET FIXE PAR POSITION DANS LE ROSTER
+                    id: `blue-${slug}-${i}`,
                     type: 'blue' as const, x: -1, y: -1, status: 'up' as const, location: 'box' as const,
                     number: isStar ? 99 + (i + 1) : i + 1,
                     playerInfo: p
@@ -226,12 +227,13 @@ export default function BBSchemePage() {
                 const enriched = { ...resRed, roster: [...resRed.roster, genericStarInfo] };
                 setRedRoster(enriched);
                 setRedRosterFile(parsed.redRosterFile);
-                redBase = enriched.roster.flatMap((p: any, pIdx: number) => {
+                redBase = enriched.roster.flatMap((p: any) => {
                   const isStar = p.name === "Star Player";
+                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
                   const q = p.qty || "2";
                   const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
                   return Array.from({ length: limit }).map((_, i) => ({
-                    id: `red-${pIdx}-${i}`, // ID UNIQUE ET FIXE PAR POSITION DANS LE ROSTER
+                    id: `red-${slug}-${i}`,
                     type: 'red' as const, x: -1, y: -1, status: 'up' as const, location: 'box' as const,
                     number: isStar ? 99 + (i + 1) : i + 1,
                     playerInfo: p
