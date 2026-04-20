@@ -144,16 +144,6 @@ export default function BBSchemePage() {
   const isEmbed = searchParams.get("embed") === "true";
   const isMobile = useIsMobile();
 
-  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
-  if (isMobile && !isEmbed) {
-    return <DesktopOnlyFallback />;
-  }
-
-  // SI MODE EMBED : Affichage du player dédié uniquement
-  if (isEmbed && boardId) {
-    return <BBSchemePlayer boardId={boardId} />;
-  }
-
   const layout = searchParams.get("layout") || "horizontal";
   const [blueRoster, setBlueRoster] = useState<RosterData | null>(null);
   const [redRoster, setRedRoster] = useState<RosterData | null>(null);
@@ -183,10 +173,23 @@ export default function BBSchemePage() {
       return () => window.removeEventListener('resize', updateScale);
     }
   }, [isEmbed, rotation]);
+
   const [showTooltips, setShowTooltips] = useState(true);
   const [allStarPlayers, setAllStarPlayers] = useState<PlayerRosterInfo[]>([]);
   const resizerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+
+  // -- FIN DES HOOKS --
+
+  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
+  if (isMobile && !isEmbed) {
+    return <DesktopOnlyFallback />;
+  }
+
+  // SI MODE EMBED : Affichage du player dédié uniquement
+  if (isEmbed && boardId) {
+    return <BBSchemePlayer boardId={boardId} />;
+  }
 
   useEffect(() => {
     const fetchStarPlayers = async () => {

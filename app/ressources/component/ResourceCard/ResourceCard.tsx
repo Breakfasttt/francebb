@@ -46,9 +46,10 @@ export default function ResourceCard({
   if (viewMode === "list") {
     return (
       <PremiumCard 
-        as={Link}
-        href={resource.link}
-        target={isExternal ? '_blank' : '_self'}
+        onClick={() => {
+          if (isExternal) window.open(resource.link, '_blank');
+          else window.location.href = resource.link;
+        }}
         className={`resource-list-item clickable ${resource.isSystem ? 'system-resource' : ''}`}
         hoverEffect={true}
       >
@@ -66,12 +67,17 @@ export default function ResourceCard({
         <div className="list-col-actions">
            <ExternalLink size={14} className="link-icon" />
            {(canEdit || canDelete) && (
-            <div className="mini-actions" onClick={e => e.preventDefault()}>
+            <div className="mini-actions" onClick={e => e.stopPropagation()}>
               {canEdit && (
-                <Link href={`/ressources/edit/${resource.id}`} className="mini-action edit"><Edit size={12} /></Link>
+                <Link href={`/ressources/edit/${resource.id}`} className="mini-action edit" onClick={e => e.stopPropagation()}><Edit size={12} /></Link>
               )}
               {canDelete && !resource.isSystem && (
-                <button onClick={onDelete} className="mini-action delete"><Trash2 size={12} /></button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onDelete?.(); }} 
+                  className="mini-action delete"
+                >
+                  <Trash2 size={12} />
+                </button>
               )}
             </div>
            )}
