@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Tag as TagIcon, User, ArrowDownAz, Grid, List, RotateCcw, Plus } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 import "./ArticleFilterSidebar.css";
 import "./ArticleFilterSidebar-mobile.css";
 
@@ -20,12 +21,8 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // On utilise des états locaux pour gérer le "debounce" ou les changements fluides
   const [query, setQuery] = useState(searchParams.get("query") || "");
   const [author, setAuthor] = useState(searchParams.get("author") || "");
-  
-  // Les tags sélectionnés (peuvent être multiples dans l'URL si on le souhaite, mais ici on gère un seul tag actif pour l'instant pour rester cohérent avec le backend, 
-  // BIEN QUE TagSelector en supporte plusieurs. Pour uniforme avec Ressourcen, on va supporter plusieurs tags séparés par virgules dans l'URL)
   const currentTags = searchParams.get("tag") ? searchParams.get("tag")!.split(",") : [];
 
   const createQueryString = useCallback(
@@ -38,7 +35,7 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
           params.delete(name);
         }
       });
-      params.delete("page"); // Reset page on filter change
+      params.delete("page"); 
       return params.toString();
     },
     [searchParams]
@@ -58,8 +55,8 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
 
   const viewMode = searchParams.get("view") === "list" ? "list" : "grid";
 
-  return (
-    <aside className="article-filter-sidebar">
+  const sidebarContent = (
+    <div className="article-filter-content">
       {isAuthenticated && (
         <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
           <CTAButton href="/articles/create" as="link" fullWidth icon={<Plus size={18} />}>
@@ -152,6 +149,20 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
           <RotateCcw size={14} /> Réinitialiser
         </button>
       </PremiumCard>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      <aside className="article-filter-sidebar desktop-only">
+        {sidebarContent}
+      </aside>
+
+      <GlobalPortal target="#mobile-page-sidebar-slot">
+        <div className="mobile-article-filters" style={{ padding: '1rem' }}>
+          {sidebarContent}
+        </div>
+      </GlobalPortal>
+    </>
   );
 }

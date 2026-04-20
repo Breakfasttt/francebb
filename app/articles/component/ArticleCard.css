@@ -157,18 +157,24 @@
 
 /* Vue Liste */
 .article-list-item {
-  display: grid;
-  grid-template-columns: 1fr 200px 120px 100px;
-  padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid var(--glass-border);
+  display: grid !important;
+  grid-template-columns: 1.5fr 180px 120px 140px;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem !important;
   align-items: center;
-  transition: all 0.2s ease;
+  border-radius: 12px !important;
+  margin-bottom: 0.8rem;
   text-decoration: none;
   color: inherit;
+  min-width: 0; /* Anti-overflow */
+}
+
+.article-list-item > div {
+  min-width: 0; /* Permet aux enfants grid de shrinker */
 }
 
 .article-list-item:hover {
-  background: var(--primary-transparent);
+  border-color: var(--primary) !important;
 }
 
 .list-col-title-snippet {
@@ -210,4 +216,3 @@
 
 
 /* RESPONSIVE DESIGN (MOBILE) Déplacé dans ArticleCard-mobile.css */
-

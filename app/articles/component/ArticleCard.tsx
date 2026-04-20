@@ -2,17 +2,16 @@
  * Composant de carte d'article
  * Utilisé dans les listings (grille ou liste)
  */
-import React from "react";
-import Link from "next/link";
-import { Clock, User, MessageCircle, AlertTriangle, Eye } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import { isModerator } from "@/lib/roles";
 import { stripBBCode } from "@/lib/bbcode";
+import { isModerator } from "@/lib/roles";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import "./ArticleCard.css";
+import { AlertTriangle, Clock, Eye, MessageCircle } from "lucide-react";
+import Link from "next/link";
 import "./ArticleCard-mobile.css";
+import "./ArticleCard.css";
 
 
 interface ArticleCardProps {
@@ -26,10 +25,14 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
 
   if (view === "list") {
     return (
-      <Link href={`/articles/${article.id}`} className="article-list-item">
-        <div className="list-col-title-snippet">
+      <PremiumCard 
+        as={Link} 
+        href={`/articles/${article.id}`} 
+        className={`article-list-item clickable ${article.isModerated ? "moderated" : ""}`}
+        hoverEffect={true}
+      >
+        <div className="list-col-title">
           <div className="list-article-title">{article.title}</div>
-          <div className="list-article-snippet">{snippet}</div>
         </div>
         
         <div className="list-col-author">
@@ -53,18 +56,18 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
 
         <div className="list-col-date">
           <div className="article-view-count" title="Nombre de vues">
-            <Eye size={12} /> {article.views || 0}
+            <Eye size={12} /> <span>{article.views || 0}</span>
           </div>
-          {dateStr}
+          <span className="list-date-text">{dateStr}</span>
         </div>
-      </Link>
+      </PremiumCard>
     );
   }
 
   return (
-    <PremiumCard 
-      as={Link} 
-      href={`/articles/${article.id}`} 
+    <PremiumCard
+      as={Link}
+      href={`/articles/${article.id}`}
       className={`article-card clickable ${article.isModerated ? "moderated" : ""}`}
       hoverEffect={true}
     >
@@ -82,15 +85,15 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
       </div>
 
       <h3 className="article-title">{article.title}</h3>
-      
+
       <p className="article-snippet">{snippet}</p>
 
       <div className="article-footer">
         <div className="article-author-info">
-          <UserAvatar 
-            image={article.author.image} 
-            name={article.author.name} 
-            size={32} 
+          <UserAvatar
+            image={article.author.image}
+            name={article.author.name}
+            size={32}
             postCount={article.author._count?.posts || 0}
             selectedRank={article.author.avatarFrame}
             isModerator={isModerator(article.author.role)}
