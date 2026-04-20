@@ -57,6 +57,12 @@ export type ToolType = 'select' | 'draw' | 'player' | 'ball' | 'status' | 'erase
 export type TokenStatus = 'up' | 'prone' | 'stunned' | 'bonehead' | 'stupid' | 'fourchette';
 export type TokenLocation = 'box' | 'pitch' | 'reserve' | 'ko' | 'injured' | 'expelled';
 
+export interface BoardFrame {
+  tokens: TokenData[];
+  blueRosterFile?: string | null;
+  redRosterFile?: string | null;
+}
+
 export interface PlayerRosterInfo {
   name: string;
   qty: string;
@@ -117,7 +123,12 @@ export default function BBSchemePage() {
   const [generatedGif, setGeneratedGif] = useState<string | null>(null);
 
   // Séquence & Lecteur
-  const [frames, setFrames] = useState<TokenData[][]>([[{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }]]);
+  // Séquence & Lecteur
+  const [frames, setFrames] = useState<BoardFrame[]>([{ 
+    tokens: [{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }],
+    blueRosterFile: null,
+    redRosterFile: null
+  }]);
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(800); // ms per frame
@@ -135,8 +146,8 @@ export default function BBSchemePage() {
   const layout = searchParams.get("layout") || "horizontal";
   const [blueRoster, setBlueRoster] = useState<RosterData | null>(null);
   const [redRoster, setRedRoster] = useState<RosterData | null>(null);
-  const [blueRosterFile, setBlueRosterFile] = useState<string | null>(null);
-  const [redRosterFile, setRedRosterFile] = useState<string | null>(null);
+  const [blueRosterFile, setBlueRosterFile] = useState<string>("");
+  const [redRosterFile, setRedRosterFile] = useState<string>("");
   const [rosters, setRosters] = useState<{ name: string, file: string }[]>([]);
   const [isBlueLoading, setIsBlueLoading] = useState(false);
   const [isRedLoading, setIsRedLoading] = useState(false);
@@ -196,54 +207,47 @@ export default function BBSchemePage() {
                 skills: ["Compétences variables"], primary: "", secondary: "", cost: 0
               };
 
-              // 1. Charger les rosters d'abord de manière synchrone
-              const [resBlue, resRed] = await Promise.all([
-                parsed.blueRosterFile ? fetch(`/data/roster/${parsed.blueRosterFile}.json`).then(r => r.json()).catch(() => null) : null,
-                parsed.redRosterFile ? fetch(`/data/roster/${parsed.redRosterFile}.json`).then(r => r.json()).catch(() => null) : null
+              // Collect ALL unique rosters from all frames
+              const allBlueFiles = new Set<string>();
+              if (parsed.blueRosterFile) allBlueFiles.add(parsed.blueRosterFile);
+              const allRedFiles = new Set<string>();
+              if (parsed.redRosterFile) allRedFiles.add(parsed.redRosterFile);
+
+              parsed.frames.forEach((f: any) => {
+                if (f.blueRosterFile) allBlueFiles.add(f.blueRosterFile);
+                if (f.redRosterFile) allRedFiles.add(f.redRosterFile);
+              });
+
+              // Load all rosters and create pools
+              const bluePools: Record<string, TokenData[]> = {};
+              const redPools: Record<string, TokenData[]> = {};
+
+              const loadPool = async (file: string, team: 'blue' | 'red') => {
+                const res = await fetch(`/data/roster/${file}.json`).then(r => r.json()).catch(() => null);
+                if (!res) return;
+                const enriched = { ...res, roster: [...res.roster, genericStarInfo] };
+                
+                const pool = enriched.roster.flatMap((p: any) => {
+                  const isStar = p.name === "Star Player";
+                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
+                  const q = p.qty || "2";
+                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
+                  return Array.from({ length: limit }).map((_, i) => ({
+                    id: `${team}-${slug}-${i}`,
+                    type: team as any, x: -1, y: -1, status: 'up' as any, location: 'box' as any,
+                    number: isStar ? 99 + (i + 1) : i + 1,
+                    playerInfo: { ...p, parentRoster: enriched } // Attach parent roster for re-hydration
+                  }));
+                });
+                if (team === 'blue') bluePools[file] = pool; else redPools[file] = pool;
+              };
+
+              await Promise.all([
+                ...Array.from(allBlueFiles).map(f => loadPool(f, 'blue')),
+                ...Array.from(allRedFiles).map(f => loadPool(f, 'red'))
               ]);
 
-              let blueBase: TokenData[] = [];
-              let redBase: TokenData[] = [];
-
-              if (resBlue) {
-                const enriched = { ...resBlue, roster: [...resBlue.roster, genericStarInfo] };
-                setBlueRoster(enriched);
-                setBlueRosterFile(parsed.blueRosterFile);
-                blueBase = enriched.roster.flatMap((p: any) => {
-                  const isStar = p.name === "Star Player";
-                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
-                  const q = p.qty || "2";
-                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
-                  return Array.from({ length: limit }).map((_, i) => ({
-                    id: `blue-${slug}-${i}`,
-                    type: 'blue' as const, x: -1, y: -1, status: 'up' as const, location: 'box' as const,
-                    number: isStar ? 99 + (i + 1) : i + 1,
-                    playerInfo: p
-                  }));
-                }) as TokenData[];
-              }
-
-              if (resRed) {
-                const enriched = { ...resRed, roster: [...resRed.roster, genericStarInfo] };
-                setRedRoster(enriched);
-                setRedRosterFile(parsed.redRosterFile);
-                redBase = enriched.roster.flatMap((p: any) => {
-                  const isStar = p.name === "Star Player";
-                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
-                  const q = p.qty || "2";
-                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
-                  return Array.from({ length: limit }).map((_, i) => ({
-                    id: `red-${slug}-${i}`,
-                    type: 'red' as const, x: -1, y: -1, status: 'up' as const, location: 'box' as const,
-                    number: isStar ? 99 + (i + 1) : i + 1,
-                    playerInfo: p
-                  }));
-                }) as TokenData[];
-              }
-
               const ballBase: TokenData = { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' };
-              const fullPack = [...blueBase, ...redBase, ballBase];
-              const baseIds = new Set(fullPack.map(b => b.id));
 
               // Charger starPool pour enrichissement
               let starPool: PlayerRosterInfo[] = [];
@@ -254,40 +258,70 @@ export default function BBSchemePage() {
               } catch (e) { }
 
               // 2. FUSION DÉTERMINISTE (Stable & Robuste)
-              const hydratedFrames = (parsed.frames as any[][]).map((savedFrame: any[]) => {
-                // On repart du pool complet (fullPack) où tout le monde est en réserve ('box')
-                const currentFrameTokens = fullPack.map(t => ({ ...t }));
+              const firstFrameRosters = (parsed.frames[0] as any).tokens ? false : true;
 
-                savedFrame.forEach(s => {
+              const hydratedFrames = (parsed.frames as any[]).map((f: any) => {
+                const savedTokens = firstFrameRosters ? f : f.tokens;
+                const bFile = firstFrameRosters ? parsed.blueRosterFile : f.blueRosterFile;
+                const rFile = firstFrameRosters ? parsed.redRosterFile : f.redRosterFile;
+
+                const bPool = bFile ? bluePools[bFile] || [] : [];
+                const rPool = rFile ? redPools[rFile] || [] : [];
+                
+                // On repart du pool complet spécifique à CETTE frame
+                const currentFrameTokens = [...bPool.map(t => ({ ...t })), ...rPool.map(t => ({ ...t })), { ...ballBase }];
+
+                savedTokens.forEach((s: any) => {
                   const idx = currentFrameTokens.findIndex(t => t.id === s.id);
                   if (idx !== -1) {
-                    // On fusionne les data de sauvegarde sur le pion du pool (qui a déjà le playerInfo générique)
                     const base = currentFrameTokens[idx];
                     currentFrameTokens[idx] = { ...base, ...s };
 
                     // RESTAURATION CRITIQUE DU STAR PLAYER
-                    // Si c'est un emplacement Star Player et qu'on a un nom de star dans la save
                     if (base.playerInfo?.name === "Star Player" && s.starName) {
                       const details = starPool.find(sd => sd.name === s.starName);
                       if (details) currentFrameTokens[idx].playerInfo = details;
                     }
                   } else if (s.type === 'ball') {
-                    // Le ballon est géré par simple correspondance de type
                     const ballIdx = currentFrameTokens.findIndex(t => t.type === 'ball');
                     if (ballIdx !== -1) currentFrameTokens[ballIdx] = { ...currentFrameTokens[ballIdx], ...s };
                   }
                 });
 
-                return currentFrameTokens;
+                return {
+                  tokens: currentFrameTokens,
+                  blueRosterFile: firstFrameRosters ? parsed.blueRosterFile : f.blueRosterFile,
+                  redRosterFile: firstFrameRosters ? parsed.redRosterFile : f.redRosterFile
+                };
               });
 
               if (hydratedFrames.length > 0) {
                 setFrames(hydratedFrames);
-                setTokens([...hydratedFrames[0]]);
+                const firstFrame = hydratedFrames[0];
+                setTokens([...firstFrame.tokens]);
+                
+                // On pré-charge les rosters globaux pour l'UI à partir de la première frame
+                if (firstFrame.blueRosterFile) {
+                  // handleRosterSelect s'occupera d'enrichir l'UI
+                  handleRosterSelect('blue', firstFrame.blueRosterFile, false, true);
+                } else {
+                  setBlueRoster(null);
+                  setBlueRosterFile("");
+                }
+                
+                if (firstFrame.redRosterFile) {
+                  handleRosterSelect('red', firstFrame.redRosterFile, false, true);
+                } else {
+                  setRedRoster(null);
+                  setRedRosterFile("");
+                }
               }
               if (parsed.drawings) setDrawings(parsed.drawings);
               if (parsed.rotation !== undefined) setRotation(parsed.rotation);
               if (parsed.speed !== undefined) setPlaybackSpeed(parsed.speed);
+              
+              // On force la fin du loading avant le déclenchement des effets
+              setLoading(false);
             }
           } else {
             toast.error(result.error || "Plateau introuvable");
@@ -308,24 +342,27 @@ export default function BBSchemePage() {
 
     // Si on a des rosters chargés mais que nos frames actuelles n'ont pas les infos de joueur, on ré-hydrate
     const firstFrame = frames[0];
-    const hasInfo = firstFrame.some(t => t.playerInfo);
+    const hasInfo = firstFrame.tokens.some(t => t.playerInfo);
 
     if (!hasInfo && (blueRoster || redRoster)) {
       // On redéclenche une hydratation silencieuse pour enrichir les frames existantes
       setFrames(prevFrames => prevFrames.map(f => {
-        return f.map(t => {
-          if (t.playerInfo) return t;
-          // Chercher dans les rosters
-          let info;
-          if (t.id.startsWith('blue-')) {
-            const namePart = t.id.split('-').slice(1, -1).join(' ').replace(/-/g, ' ');
-            info = blueRoster?.roster.find(p => p.name === namePart);
-          } else if (t.id.startsWith('red-')) {
-            const namePart = t.id.split('-').slice(1, -1).join(' ').replace(/-/g, ' ');
-            info = redRoster?.roster.find(p => p.name === namePart);
-          }
-          return info ? { ...t, playerInfo: info } : t;
-        });
+        return {
+          ...f,
+          tokens: f.tokens.map(t => {
+            if (t.playerInfo) return t;
+            // Chercher dans les rosters
+            let info;
+            if (t.id.startsWith('blue-')) {
+              const namePart = t.id.split('-').slice(1, -1).join(' ').replace(/-/g, ' ');
+              info = blueRoster?.roster.find(p => p.name === namePart);
+            } else if (t.id.startsWith('red-')) {
+              const namePart = t.id.split('-').slice(1, -1).join(' ').replace(/-/g, ' ');
+              info = redRoster?.roster.find(p => p.name === namePart);
+            }
+            return info ? { ...t, playerInfo: info } : t;
+          })
+        };
       }));
     }
   }, [blueRoster, redRoster, loading]);
@@ -357,36 +394,66 @@ export default function BBSchemePage() {
   }, [isPlaying, frames.length, playbackSpeed]);
 
   const lastIndexRef = useRef(currentFrameIndex);
+  const isInitialSyncRef = useRef(true);
 
-  // Synchronisation unifiée Frames / Tokens
+  // Synchronisation unifiée Frames / Tokens / Rosters
   useEffect(() => {
-    // CAS 1: Changement d'index (On charge la nouvelle frame dans le buffer)
-    if (lastIndexRef.current !== currentFrameIndex) {
-      if (frames[currentFrameIndex]) {
-        setTokens(frames[currentFrameIndex]);
+    // CAS 1: Changement d'image OU chargement initial
+    if (lastIndexRef.current !== currentFrameIndex || isInitialSyncRef.current) {
+      const targetFrame = frames[currentFrameIndex];
+      if (targetFrame) {
+        setTokens(targetFrame.tokens);
+        setSelectedId(null); 
+        
+        // Synchronisation des rosters de la frame vers le global UI (avec normalisation strict)
+        const frameBlue = targetFrame.blueRosterFile || "";
+        const frameRed = targetFrame.redRosterFile || "";
+
+        if (frameBlue !== blueRosterFile) {
+          if (frameBlue) {
+            handleRosterSelect('blue', frameBlue, false, true);
+          } else {
+            setBlueRoster(null);
+            setBlueRosterFile("");
+          }
+        }
+        if (frameRed !== redRosterFile) {
+          if (frameRed) {
+            handleRosterSelect('red', frameRed, false, true);
+          } else {
+            setRedRoster(null);
+            setRedRosterFile("");
+          }
+        }
       }
       lastIndexRef.current = currentFrameIndex;
-      return; // On arrête là pour ce cycle pour éviter de reboucler sur la sauvegarde
+      if (!loading && frames.length > 0) isInitialSyncRef.current = false;
+      return;
     }
 
-    // CAS 2: Lecture (Playback) - On force la valeur si on est en train de jouer
+    // CAS 2: Lecture (Playback)
     if (isPlaying) {
-      if (frames[currentFrameIndex] && tokens !== frames[currentFrameIndex]) {
-        setTokens(frames[currentFrameIndex]);
+      const playbackFrame = frames[currentFrameIndex];
+      if (playbackFrame && tokens !== playbackFrame.tokens) {
+        setTokens(playbackFrame.tokens);
+        // On ne recharge pas les rosters lourds en plein milieu d'une lecture fluide
       }
       return;
     }
 
-    // CAS 3: Modification en cours (Autosave vers Frames)
-    if (frames[currentFrameIndex] !== tokens) {
+    // CAS 3: Autosave du buffer vers la frame (Tokens uniquement)
+    if (frames[currentFrameIndex]?.tokens !== tokens) {
       setFrames(prev => {
-        if (prev[currentFrameIndex] === tokens) return prev; // Déjà sync
+        if (prev[currentFrameIndex]?.tokens === tokens) return prev;
         const next = [...prev];
-        next[currentFrameIndex] = tokens;
+        next[currentFrameIndex] = { 
+          ...next[currentFrameIndex], 
+          tokens
+        };
         return next;
       });
     }
-  }, [currentFrameIndex, tokens, frames, isPlaying]);
+  }, [currentFrameIndex, tokens, frames, isPlaying, blueRosterFile, redRosterFile]);
 
   useEffect(() => {
     const viewport = viewportRef.current;
@@ -541,63 +608,95 @@ export default function BBSchemePage() {
     })).sort((a, b) => a.name.localeCompare(b.name)));
   }, []);
 
-  const spawnRosterTokens = (team: 'blue' | 'red', roster: RosterData) => {
-    const newTokens: TokenData[] = [];
-
-    // Inject Star Players (2 total)
+  const spawnRosterTokens = (team: 'blue' | 'red', roster: RosterData, fileName: string) => {
+    // 1. Create the new team pool (all in box)
+    const newTeamBase: TokenData[] = [];
     const starPlayerInfo: PlayerRosterInfo = {
-      name: "Star Player",
-      qty: "0-2",
+      name: "Star Player", qty: "0-2",
       ma: "?", st: "?", ag: "?", pa: "?", av: "?",
-      skills: ["Compétences variables"],
-      primary: "", secondary: "",
-      cost: 0
+      skills: ["Compétences variables"], primary: "", secondary: "", cost: 0
     };
+    // Éviter les doublons si déjà présent dans le roster
+    const rosterWithStars = roster.roster.some(p => p.name === "Star Player") 
+      ? roster.roster 
+      : [...roster.roster, starPlayerInfo];
 
-    // 1. Regular Roster Players
-    roster.roster.forEach(player => {
+    rosterWithStars.forEach(player => {
       let qty = 16;
-      if (player.qty.includes('-')) qty = parseInt(player.qty.split('-')[1]);
+      if (player.qty.includes('-')) qty = parseInt(player.qty.split('-').pop() || "16");
       else if (!isNaN(parseInt(player.qty))) qty = parseInt(player.qty);
-
-      // Si c'est le Star Player (ajouté manuellement), on s'assure d'utiliser l'ID attendu par le loader
       const isStar = player.name === "Star Player";
       const slug = isStar ? "star" : player.name.replace(/\s+/g, '-');
+      const limit = isStar ? 2 : qty;
 
-      for (let i = 0; i < qty; i++) {
-        newTokens.push({
+      for (let i = 0; i < limit; i++) {
+        newTeamBase.push({
           id: `${team}-${slug}-${i}`,
-          type: team,
-          x: -1, y: -1, status: 'up', location: 'box',
+          type: team, x: -1, y: -1, status: 'up', location: 'box',
           number: isStar ? 99 + (i + 1) : i + 1,
           playerInfo: player
         });
       }
     });
 
-    setTokens(prev => {
-      // CLEAR ALL existing tokens of the same team
-      const otherTeamTokens = prev.filter(t => t.type !== team && t.type !== 'ball');
-      const ball = prev.find(t => t.type === 'ball');
-      const finalTokens = [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
+    // 2. Function to clear team tokens and detach ball
+    const applyRosterClean = (currentTokens: TokenData[]) => {
+      const otherStuff = currentTokens.filter(t => t.type !== team && t.type !== 'ball');
+      let ball = currentTokens.find(t => t.type === 'ball');
+      
+      // Detach ball systematically
+      if (ball) {
+        ball = { ...ball, attachedToId: undefined };
+      }
 
-      // Update ALL frames source of truth as well
-      // A roster change is a global choice for the entire tactical sequence
-      setFrames(fPrev => {
-        return fPrev.map(frame => {
-          // We keep other team tokens and ball as they were in THIS specific frame
-          const otherTeamTokens = frame.filter(t => t.type !== team && t.type !== 'ball');
-          const ball = frame.find(t => t.type === 'ball');
-          // We inject the new roster (initial state in box)
-          return [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
-        });
-      });
+      // New base is already fresh in 'box'
+      const newBase = newTeamBase.map(t => ({ ...t }));
+      return [...otherStuff, ...newBase, ...(ball ? [ball] : [])];
+    };
 
-      return finalTokens;
+    // 3. Update Current Frame and Buffer
+    // We only update the current frame to keep other frames independent as requested
+    const updatedTokens = applyRosterClean(tokens);
+    setTokens(updatedTokens);
+    
+    setFrames(fPrev => {
+      const fNext = [...fPrev];
+      fNext[currentFrameIndex] = {
+        ...fNext[currentFrameIndex],
+        tokens: updatedTokens,
+        blueRosterFile: team === 'blue' ? fileName : fNext[currentFrameIndex].blueRosterFile,
+        redRosterFile: team === 'red' ? fileName : fNext[currentFrameIndex].redRosterFile
+      };
+      return fNext;
     });
   };
 
-  const handleRosterSelect = async (team: 'blue' | 'red', fileName: string) => {
+  const handleRosterSelect = async (team: 'blue' | 'red', fileName: string, updateCurrentFrame = true, isSync = false) => {
+    if (!fileName) {
+      if (team === 'blue') {
+        setBlueRoster(null);
+        setBlueRosterFile("");
+      } else {
+        setRedRoster(null);
+        setRedRosterFile("");
+      }
+
+      if (updateCurrentFrame) {
+        const cleanup = (ts: TokenData[]) => ts.filter(t => t.type !== team);
+        setTokens(prev => cleanup(prev));
+        setFrames(fPrev => {
+          const fNext = [...fPrev];
+          fNext[currentFrameIndex] = {
+            ...fNext[currentFrameIndex],
+            tokens: cleanup(fNext[currentFrameIndex].tokens),
+            blueRosterFile: team === 'blue' ? "" : fNext[currentFrameIndex].blueRosterFile,
+            redRosterFile: team === 'red' ? "" : fNext[currentFrameIndex].redRosterFile
+          };
+          return fNext;
+        });
+      }
+      return;
+    }
     if (team === 'blue') setIsBlueLoading(true); else setIsRedLoading(true);
     try {
       const resp = await fetch(`/data/roster/${fileName}.json`);
@@ -621,8 +720,12 @@ export default function BBSchemePage() {
         setRedRoster(enrichedData);
         setRedRosterFile(fileName);
       }
-      spawnRosterTokens(team, enrichedData);
-      toast.success(`Roster ${data.name} chargé pour l'équipe ${team === 'blue' ? 'bleue' : 'rouge'}`);
+
+      // Si on est en mode Sync (changement d'image), on ne ré-injecte pas les jetons (ce qui viderait le terrain)
+      if (!isSync) {
+        spawnRosterTokens(team, enrichedData, fileName);
+        toast.success(`Roster ${data.name} chargé pour l'équipe ${team === 'blue' ? 'bleue' : 'rouge'}`);
+      }
     } catch (e) {
       toast.error("Échec du chargement du roster");
     } finally {
@@ -912,16 +1015,16 @@ export default function BBSchemePage() {
 
     // OPTIMISATION ULTRA : On ne capture QUE les tokens qui ne sont pas dans la "box" (réserve initiale)
     // Les autres seront recréés dynamiquement à partir du roster lors du chargement.
-    const optimizedFrames = frames.map(frame =>
-      frame.filter(t => t.type === 'ball' || t.location !== 'box').map(token => {
+    const optimizedFrames = frames.map(frame => ({
+      ...frame,
+      tokens: frame.tokens.filter(t => t.type === 'ball' || t.location !== 'box').map(token => {
         const { playerInfo, ...stripped } = token;
-        // Si c'est une star nommée, on sauvegarde son nom pour la réhydratation
         const starName = (token.playerInfo && token.playerInfo.name !== "Star Player" &&
           (token.id.includes('-star-') || token.playerInfo.qty === "0-2"))
           ? token.playerInfo.name : undefined;
         return { ...stripped, starName };
       })
-    );
+    }));
 
     const stateData = JSON.stringify({
       frames: optimizedFrames,
@@ -945,14 +1048,22 @@ export default function BBSchemePage() {
   };
 
   const addFrame = () => {
-    const newFrame = [...tokens.map(t => ({ ...t }))];
+    const newFrame: BoardFrame = {
+      tokens: [...tokens.map(t => ({ ...t }))],
+      blueRosterFile,
+      redRosterFile
+    };
     setFrames(prev => [...prev, newFrame]);
     setCurrentFrameIndex(frames.length);
     toast.success("Image ajoutée");
   };
 
   const duplicateFrame = () => {
-    const newFrame = [...tokens.map(t => ({ ...t }))];
+    const newFrame: BoardFrame = {
+      tokens: [...tokens.map(t => ({ ...t }))],
+      blueRosterFile,
+      redRosterFile
+    };
     setFrames(prev => {
       const next = [...prev];
       next.splice(currentFrameIndex + 1, 0, newFrame);
@@ -1171,7 +1282,7 @@ export default function BBSchemePage() {
                   size="sm"
                   containerStyle={{ width: "160px" }}
                 >
-                  <option value="aucun">Aucun (Générique)</option>
+                  <option value="">Aucun</option>
                   {allStarPlayers.map((star, idx) => (
                     <option key={`star-opt-${idx}`} value={star.name}>
                       {star.name} ({star.cost / 1000}k)

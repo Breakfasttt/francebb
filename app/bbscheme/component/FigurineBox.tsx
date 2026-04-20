@@ -49,7 +49,7 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
           size="sm"
           containerStyle={{ width: "160px" }}
         >
-          <option value="" disabled>Choisir Roster</option>
+          <option value="">Aucun</option>
           {rosterList.map(r => (
             <option key={`${team}-${r.file}`} value={r.file}>
               {r.name}
