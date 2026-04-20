@@ -1,41 +1,22 @@
 ---
 name: blood-bowl-rules
-description: Guide pour consulter les règles de Blood Bowl (LRB/Saison 3) et les ressources communautaires.
+description: Règles BB & résos commu. Mode homme des cavernes.
 ---
 
-# 🏈 Blood Bowl Rules & Reference Skill
+# Skill Règles BB
 
-Ce skill est une aide à la décision et à la recherche pour tout ce qui concerne les règles du jeu Blood Bowl, son historique en France et ses ressources communautaires.
+## RÈGLES LOCALES (LRB S3)
+- **Chemin**: `public/data/docs/lrb_s3.txt`
+- **Action**: Utiliser `grep_search` ou `view_file` ICI D'ABORD pour logique/rosters.
 
-## 📚 Ressources Internes (Règles Locales)
+## RÉFÉRENCES EXTERNES
+1. **NAF** (`thenaf.net`): Classement monde, règles, variantes.
+2. **Team France BB** (`teamfrancebb.1fr1.net` / `teamfrancebb.fr`): Forum/histoire FR.
+3. **Mordorbihan** (`mordorbihan.fr`): Stratégies FR, guides.
+4. **Champ de France** (`teamfrancebb.1fr1.net/t2706-reglement...`): Règles de calcul de points.
 
-Le projet contient une copie texte des règles en cours (LRB Saison 3) :
-- **Chemin** : `public/data/docs/lrb_s3.txt`
-- **Méthode de recherche** : Utiliser `grep_search` ou `view_file` sur ce fichier pour répondre aux questions techniques sur les compétences, les rosters ou les séquences de jeu.
-
-## 🌐 Ressources Externes Officielles & Communautaires
-
-Pour des informations à jour sur les tournois, les classements mondiaux ou les archives :
-
-### 1. NAF (Nuffle Amateurs Federation)
-- **URL** : [https://www.thenaf.net/](https://www.thenaf.net/)
-- **Usage** : Classement mondial, numéros NAF, règles de tournois officiels, variantes de jeu.
-
-### 2. Archives FranceBB (Team France BB)
-- **Forum Historique** : [https://teamfrancebb.1fr1.net/](https://teamfrancebb.1fr1.net/) (Source majeure pour l'historique de la communauté française).
-- **Ancien Site** : [https://www.teamfrancebb.fr/](https://www.teamfrancebb.fr/)
-
-### 3. Mordorbihan
-- **URL** : [https://mordorbihan.fr/](https://mordorbihan.fr/)
-- **Usage** : Un des sites de référence francophones pour les guides stratégiques, les aides de jeu et les résumés de règles.
-
-## 4. Règles de calcul de point du Championnat de france
-- **URL** : [https://teamfrancebb.1fr1.net/t2706-reglement-championnat-de-france](https://teamfrancebb.1fr1.net/t2706-reglement-championnat-de-france)
-- **Usage** : Règles de calcul de point du Championnat de france.
-
-## 🧠 Instructions pour l'Agent
-
-1. **Priorité aux règles locales** : Si l'utilisateur pose une question technique sur une règle, commence par chercher dans `public/data/docs/lrb_s3.txt`.
-2. **Recherche Sémantique** : Si la règle n'est pas claire dans le fichier texte, utilise `search_web` sur Mordorbihan ou la NAF en priorité.
-3. **Rédaction de guides** : Lors de la rédaction de tutoriels (ex: pour la page `/jouer`), utilise ces sources pour garantir l'exactitude des termes techniques (Poussée, Esquive, Turnover, etc.).
-4. **Correction de bugs** : Si une logique métier (ex: simulateur de jets) semble incorrecte, vérifie les probabilités et les règles dans ces ressources.
+## RÈGLES IA
+1. **Local d'abord**: Chercher `lrb_s3.txt` pour questions techniques.
+2. **Secours Web**: Utiliser `search_web` sur NAF ou Mordorbihan.
+3. **Rédaction**: Utiliser termes tech exacts (Turnover, Esquive).
+4. **Bugs Logique**: Vérifier dés/probabilités avec ces sources.

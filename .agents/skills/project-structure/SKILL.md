@@ -1,93 +1,38 @@
 ---
 name: Project Structure
-description: Guide complet de la structure, de l'organisation et des conventions du projet BBFrance.
+description: Guide structure BBFrance. Dossiers, conventions, UI. Ultra compressé.
 ---
 
-# Architecture du Projet BBFrance
+# Archi BBFrance
 
-Ce document sert de référence pour comprendre l'organisation du code, la répartition des responsabilités et les conventions de nommage du projet.
+## RACINE
+- `.agents/`: Skills IA.
+- `app/`: Next.js App Router. Pages, layouts, actions.
+- `common/`: UI partagée.
+- `lib/`: Business logic, Prisma, BBCode, rôles.
+- `prisma/`: Schéma DB, seeds (`firstSetup.ts`).
+- `public/`: Fichiers statiques.
+- `scripts/`: Scripts temporaires.
+- `styles/`: CSS global.
 
-## 📂 Vue d'ensemble des dossiers racines
+## APP (Next.js)
+- **Chemin**: `app/[nom]/page.tsx`
+- **Style**: `page.css` + `page-mobile.css`. Importer dans `.tsx`.
+- **Comps Locaux**: `app/[nom]/component/Nom/Nom.tsx` + `.css`.
+- **Actions DB Serveur**: `actions.ts`.
 
-- **`.agents/`** : Contient les instructions et compétences (skills) pour l'IA.
-- **`app/`** : Cœur de l'application (Next.js App Router). Contient les pages, layouts et la logique spécifique aux routes.
-- **`common/`** : Ressources transversales partagées (Composants UI atomiques, types globaux).
-- **`lib/`** : Logique métier, utilitaires et configurations (Prisma, BBCode, Rôles).
-- **`prisma/`** : Schéma de base de données, migrations, configurations et scripts de seeding (`firstSetup.ts` et `seedScript/`).
-- **`public/`** : Assets statiques (Images, Smileys, Polices).
-- **`scripts/`** : Scripts utilitaires temporaires ou de test (non liés à la BDD).
-- **`styles/`** : Styles CSS de base et globaux.
+## COMMON / COMPONENTS
+- Structure: `Nom.tsx` + `.css` + `-mobile.css`.
+- Clés: `PremiumCard`, `UserAvatar`, `BBCodeEditor`.
+- Boutons: `Classic`, `CTA`, `Danger`, `Admin`, `Badge`.
 
----
+## PRISMA
+- `firstSetup.ts`: Init données de base (Rôles, catégories).
+- `seedScript/`: Importateurs.
+- **Règles**: Toujours `upsert`. NE JAMAIS drop données globales.
 
-## 🟦 Répertoire `app/` (Next.js App Router)
-
-### 🧩 Conventions de Page
-Chaque page doit suivre cette structure stricte :
-- **Chemin** : `app/[nom-page]/page.tsx`
-- **Style** : `app/[nom-page]/page.css` (importé dans le `page.tsx`)
-- **Style mobile** : `app/[nom-page]/page-mobile.css` (importé dans le `page.tsx`)
-- **Composants Locaux** : `app/[nom-page]/component/`
-  - Chaque composant possède son sous-dossier : `component/NomComposant/NomComposant.tsx` + `.css`.
-- **Actions Serveur** : `app/[nom-page]/actions.ts` (pour la logique de mutation et accès DB)
-
-### 🗺️ Carte des fonctionnalités (Features)
-- `forum/` : Gestion complète du forum (Catégories, Topics, Posts).
-- `profile/` : Profil utilisateur et Messagerie Privée (MP).
-- `tournaments/` : Organisation et suivi des tournois.
-- `bbpusher/` : Outil de simulation tactique interactif.
-- `carte/` : Carte interactive des ligues et membres.
-- `ligues/` : Annuaire des ligues françaises.
-- `admin/` & `moderation/` : Outils de gestion du site.
-- `theme/` : Définition des variables CSS par thèmes.
-- `auth/` (ou `(auth)/`) : Flux d'authentification Next-Auth.
-
----
-
-## 🏗️ Répertoire `common/`
-
-### 🎨 `common/components/` (Design System)
-Regroupe les composants UI réutilisables. Chaque composant possède son propre dossier avec :
-- `NomComposant.tsx`
-- `NomComposant.css`
-- `NomComposant-mobile.css`
-
-**Composants Clés :**
-- `PremiumCard` : Base pour l'effet glassmorphism.
-- `Button` : Système de 5 variantes standardisées (Classic, CTA, Danger, Admin, Badge).
-- `UserAvatar` : Affichage standardisé des utilisateurs.
-- `BBCodeEditor` : Éditeur de texte riche pour le forum.
-- `Navbar` / `PageHeader` / `Pagination` : Éléments de structure globale.
-
----
-
-## ⚙️ Répertoire `lib/` (Core Logic)
-
-Ce dossier regroupe la logique "headless" partagée entre les Server Actions et les composants :
-- **`prisma.ts`** : Instance unique du client de base de données.
-- **`bbcode.ts`** : Moteur de rendu des messages (transformation BBCode -> HTML).
-- **`roles.ts`** : Système de permissions RBAC (Rôles & Autorisations).
-- **`siteConfig.ts`** : Paramètres globaux de l'application.
-
----
-
-## 🗄️ Répertoire `prisma/` (Data Architecture)
-- **`schema.prisma`** : Définition du modèle de données (User, Category, Topic, Post, Tournament, League).
-- **`migrations/`** : Historique versionné des modifications SQL.
-- **`seed.ts`** : Wrapper appelant `firstSetup.ts`.
-- **`firstSetup.ts`** : Script de référence pour initialiser les données immuables (Rôles, Catégories Forum, Données de référence).
-- **`seedScript/`** : Scripts de seeding spécifiques ou outils d'import (ex: `legacyMembers.ts`).
-
-### Règles Strictes de Seeding
-- Idempotence obligatoire : utiliser systématiquement `upsert`.
-- Ne jamais supprimer de données globales dans les scripts de seed.
-- Préférer `firstSetup.ts` pour tout ce qui est structurel au projet.
-
----
-
-## 🤖 Règles d'Organisation pour l'IA
-
-1. **Localité** : Si un composant n'est utilisé que par une seule page, il DOIT rester dans `app/[page]/component/`. S'il est utilisé par deux pages ou plus, il DOIT être déplacé dans `common/components/`.
-2. **Séparation des préoccupations** : La logique d'accès aux données réside toujours dans `actions.ts` (ou `lib/`), jamais directement dans le `page.tsx`.
-3. **Styles** : Toujours utiliser les variables CSS définies dans les thèmes (`app/theme/`). Ne jamais écrire de couleurs hexadécimales en dur dans les fichiers `.css`.
-4. **Fichiers** : Ne jamais créer de fichiers orphelins. Un composant = un dossier dédié avec son CSS et sa variante CSS mobile.
+## RÈGLES IA
+1. **Localité**: Utilisé 1 page ? `app/[page]/component/`. Utilisé >1 page ? `common/components/`.
+2. **Logique**: Code DB dans `actions.ts`, jamais dans composant.
+3. **Styles**: Utilise variables CSS (`app/theme/`). PAS DE HEX EN DUR.
+4. **Fichiers**: 1 comp = 1 dossier avec `.css` + `-mobile.css`.
