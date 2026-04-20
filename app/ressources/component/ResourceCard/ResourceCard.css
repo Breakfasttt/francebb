@@ -169,44 +169,109 @@
 }
 
 /* Mode Liste */
-.resource-card.list .resource-card-link-wrapper {
-  flex-direction: row;
-  align-items: center;
-  padding: 1rem 1.5rem;
-}
-
-.resource-card.list .resource-content {
-  padding: 0;
-  flex-direction: row;
-  align-items: center;
+.resource-list-item {
+  display: grid !important;
+  grid-template-columns: 1fr 200px 150px;
   gap: 2rem;
-  width: 100%;
+  padding: 1.2rem 1.5rem !important;
+  align-items: center;
+  border-radius: 12px !important;
+  margin-bottom: 0.8rem;
+  text-decoration: none;
+  color: inherit;
 }
 
-.resource-card.list .resource-header {
-  margin-bottom: 0;
-  min-width: 200px;
+.resource-list-item:hover {
+  border-color: var(--primary) !important;
 }
 
-.resource-card.list .resource-description {
-  margin-bottom: 0;
-  font-size: 0.9rem;
+.list-col-title {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
 }
 
-.resource-card.list .resource-tags {
-  margin-bottom: 0;
-  flex-wrap: nowrap;
+.list-resource-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.resource-card.list .resource-footer {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-  margin-left: auto;
+.system-badge-mini {
+  background: var(--primary);
+  color: white;
+  font-size: 0.6rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 900;
+}
+
+.list-col-tags {
+  display: flex;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.tag-badge-mini {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.list-col-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.link-icon {
+  color: var(--primary);
+  opacity: 0.6;
+}
+
+.mini-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mini-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mini-action:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.mini-action.delete:hover {
+  color: var(--danger);
+  border-color: var(--danger);
 }
 
 .system-resource {
-  border-left: 4px solid var(--primary);
+  border-left: 4px solid var(--primary) !important;
 }
 
 

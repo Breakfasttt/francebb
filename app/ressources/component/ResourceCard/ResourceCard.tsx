@@ -39,77 +39,109 @@ export default function ResourceCard({
   const isExternal = resource.link.startsWith('http');
   const [imgSrc, setImgSrc] = useState<string>(resource.imageUrl || FALLBACK_IMAGE);
 
-  // Sync state if prop changes (e.g. after editing)
   useEffect(() => {
     setImgSrc(resource.imageUrl || FALLBACK_IMAGE);
   }, [resource.imageUrl]);
+
+  if (viewMode === "list") {
+    return (
+      <PremiumCard 
+        as={Link}
+        href={resource.link}
+        target={isExternal ? '_blank' : '_self'}
+        className={`resource-list-item clickable ${resource.isSystem ? 'system-resource' : ''}`}
+        hoverEffect={true}
+      >
+        <div className="list-col-title">
+          {resource.isSystem && <span className="system-badge-mini" title="Officiel">O</span>}
+          <div className="list-resource-title">{resource.title}</div>
+        </div>
+
+        <div className="list-col-tags">
+          {resource.tags.slice(0, 3).map(tag => (
+            <span key={tag.id} className="tag-badge-mini">{tag.name}</span>
+          ))}
+        </div>
+
+        <div className="list-col-actions">
+           <ExternalLink size={14} className="link-icon" />
+           {(canEdit || canDelete) && (
+            <div className="mini-actions" onClick={e => e.preventDefault()}>
+              {canEdit && (
+                <Link href={`/ressources/edit/${resource.id}`} className="mini-action edit"><Edit size={12} /></Link>
+              )}
+              {canDelete && !resource.isSystem && (
+                <button onClick={onDelete} className="mini-action delete"><Trash2 size={12} /></button>
+              )}
+            </div>
+           )}
+        </div>
+      </PremiumCard>
+    );
+  }
   
   return (
-    <PremiumCard className={`resource-card ${viewMode} ${resource.isSystem ? 'system-resource' : ''}`}>
-      <div className="resource-card-inner">
-        <Link 
-          href={resource.link} 
-          className="resource-card-link-wrapper" 
-          target={isExternal ? '_blank' : '_self'}
-        >
-          {viewMode === "grid" && (
-            <div className="resource-image">
-              <img 
-                src={imgSrc} 
-                alt={resource.title} 
-                onError={() => setImgSrc(FALLBACK_IMAGE)}
-              />
-            </div>
-          )}
+    <PremiumCard className={`resource-card ${resource.isSystem ? 'system-resource' : ''}`} hoverEffect={true}>
+      <Link 
+        href={resource.link} 
+        className="resource-card-link-wrapper" 
+        target={isExternal ? '_blank' : '_self'}
+      >
+        <div className="resource-image">
+          <img 
+            src={imgSrc} 
+            alt={resource.title} 
+            onError={() => setImgSrc(FALLBACK_IMAGE)}
+          />
+        </div>
+        
+        <div className="resource-content">
+          <div className="resource-header">
+            {resource.isSystem && <span className="system-badge">Officiel</span>}
+            <h3>{resource.title}</h3>
+          </div>
           
-          <div className="resource-content">
-            <div className="resource-header">
-              {resource.isSystem && <span className="system-badge">Officiel</span>}
-              <h3>{resource.title}</h3>
-            </div>
-            
-            <p className="resource-description">{resource.description}</p>
-            
-            <div className="resource-tags">
-              {resource.tags.map(tag => (
-                <span key={tag.id} className="tag-badge">
-                  <TagIcon size={10} /> {tag.name}
-                </span>
-              ))}
-            </div>
-            
-            <div className="resource-footer">
-              <span className="resource-link-label">
-                Accéder <ExternalLink size={14} />
+          <p className="resource-description">{resource.description}</p>
+          
+          <div className="resource-tags">
+            {resource.tags.map(tag => (
+              <span key={tag.id} className="tag-badge">
+                <TagIcon size={10} /> {tag.name}
               </span>
-            </div>
+            ))}
           </div>
-        </Link>
+          
+          <div className="resource-footer">
+            <span className="resource-link-label">
+              Accéder <ExternalLink size={14} />
+            </span>
+          </div>
+        </div>
+      </Link>
 
-        {(canEdit || canDelete) && (
-          <div className="resource-actions-overlay">
-            {canEdit && (
-              <Link 
-                href={`/ressources/edit/${resource.id}`}
-                className="action-btn edit"
-                title="Éditer"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Edit size={14} />
-              </Link>
-            )}
-            {(canDelete && !resource.isSystem) && (
-              <button 
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }}
-                className="action-btn delete"
-                title="Supprimer"
-              >
-                <Trash2 size={14} />
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+      {(canEdit || canDelete) && (
+        <div className="resource-actions-overlay">
+          {canEdit && (
+            <Link 
+              href={`/ressources/edit/${resource.id}`}
+              className="action-btn edit"
+              title="Éditer"
+              onClick={(e) => { e.stopPropagation(); }}
+            >
+              <Edit size={14} />
+            </Link>
+          )}
+          {(canDelete && !resource.isSystem) && (
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(); }}
+              className="action-btn delete"
+              title="Supprimer"
+            >
+              <Trash2 size={14} />
+            </button>
+          )}
+        </div>
+      )}
     </PremiumCard>
   );
 }

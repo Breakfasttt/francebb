@@ -2,7 +2,11 @@
 
 @media (max-width: 1024px) {
   .ressources-layout {
-    flex-direction: column;
+    grid-template-columns: 1fr !important;
+  }
+
+  .resource-filter-sidebar.desktop-only {
+    display: none;
   }
 }
 
@@ -15,5 +19,12 @@
   
   .resources-grid {
     grid-template-columns: 1fr;
+  }
+
+  .resources-list {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    gap: 0.5rem;
   }
 }
