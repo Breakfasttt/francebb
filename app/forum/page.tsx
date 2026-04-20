@@ -1,7 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import "./page.css";
-import "./page-mobile.css";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";

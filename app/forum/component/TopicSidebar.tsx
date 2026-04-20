@@ -41,6 +41,7 @@ import DangerButton from "@/common/components/Button/DangerButton";
 import LockButton from "@/app/forum/component/LockButton";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
+import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 interface TopicSidebarProps {
   topicId: string;
@@ -261,226 +262,237 @@ export default function TopicSidebar({
     });
   };
 
-  return (
-    <aside className="forum-sidebar">
-      <ConfirmModal
-        isOpen={confirmConfig.isOpen}
-        title={confirmConfig.title}
-        message={confirmConfig.message}
-        onClose={() => setConfirmConfig({ ...confirmConfig, isOpen: false })}
-        onConfirm={async () => {
-          startTransition(async () => {
-            await confirmConfig.action();
-            setConfirmConfig({ ...confirmConfig, isOpen: false });
-          });
-        }}
-        isDanger={confirmConfig.isDanger}
-        confirmLabel={confirmConfig.label}
-      />
-      
-      <div className="sidebar-sticky-inner">
-        <div className="sidebar-widget-container">
-          
-          {/* 1. Pages Block */}
-          {(totalPages && totalPages > 1) && (
-            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
-              <Pagination 
-                currentPage={currentPage || 1}
-                totalPages={totalPages}
-                variant="sidebar"
-                baseUrl={`/forum/topic/${topicId}`}
-              />
-            </PremiumCard>
+  const content = (
+    <div className="sidebar-sticky-inner">
+      <div className="sidebar-widget-container">
+        
+        {/* 1. Pages Block */}
+        {(totalPages && totalPages > 1) && (
+          <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
+            <Pagination 
+              currentPage={currentPage || 1}
+              totalPages={totalPages}
+              variant="sidebar"
+              baseUrl={`/forum/topic/${topicId}`}
+            />
+          </PremiumCard>
+        )}
+
+        {/* 2. Topic Actions Block */}
+        <PremiumCard className="sidebar-widget topic-widget">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
+            <h3 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Sujet
+            </h3>
+            <Tooltip text={`${views.toLocaleString("fr-FR")} vues`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600 }}>
+                 <Eye size={13} />
+                 <span>{views.toLocaleString("fr-FR")}</span>
+              </div>
+            </Tooltip>
+          </div>
+
+          {(isLocked || isForumLocked) && (
+            <div style={{ 
+              padding: '0.8rem', 
+              background: 'rgba(var(--danger-rgb, 158, 29, 29), 0.1)', 
+              border: '1px solid var(--danger)', 
+              borderRadius: '8px',
+              color: 'var(--danger)',
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}>
+              <LockIcon size={14} />
+              <span>{isForumLocked ? "Forum verrouillé" : "Sujet verrouillé"}</span>
+            </div>
           )}
 
-          {/* 2. Topic Actions Block */}
-          <PremiumCard className="sidebar-widget topic-widget">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
-              <h3 style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Sujet
+          {currentUserId && (!(isLocked || isForumLocked) || isModerator) && (
+            <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={<MessageSquare size={18} />}>
+              Répondre
+            </CTAButton>
+          )}
+          
+          {currentUserId && (
+            <ClassicButton
+              onClick={handleToggleFollow}
+              isLoading={isPending}
+              icon={<Bookmark size={18} />}
+              style={{
+                borderColor: isFollowing ? 'var(--accent)' : undefined,
+                color: isFollowing ? 'var(--accent)' : undefined,
+              }}
+            >
+              {isFollowing ? "Arrêter de suivre" : "Suivre le sujet"}
+            </ClassicButton>
+          )}
+
+          {!isTournament && canEditTitle && (
+            <ClassicButton 
+              onClick={handleEditTitleClick}
+              icon={<Type size={18} />}
+            >
+              Modifier le titre
+            </ClassicButton>
+          )}
+
+          {currentUserId && currentUserId !== authorId && (
+            <ClassicButton 
+              onClick={() => setShowReportModal(true)}
+              icon={<AlertTriangle size={18} />}
+            >
+              Signaler
+            </ClassicButton>
+          )}
+
+          <ClassicButton 
+            href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
+            onClick={handleGoToLast}
+            icon={<ChevronsDown size={18} />}
+          >
+            Dernier message
+          </ClassicButton>
+
+          <ClassicButton 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            icon={<ArrowUp size={18} />}
+          >
+            Haut de page
+          </ClassicButton>
+
+          {/* 3. Tournament Administration Section */}
+          {isTournament && canEditTournament && !isCancelled && (
+            <div style={{ marginTop: '0.4rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <h3 style={{ margin: '0 0 0.2rem 0', fontSize: '0.85rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Shield size={14} /> Gestion Tournoi
               </h3>
-              <Tooltip text={`${views.toLocaleString("fr-FR")} vues`}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: 600 }}>
-                   <Eye size={13} />
-                   <span>{views.toLocaleString("fr-FR")}</span>
-                </div>
-              </Tooltip>
-            </div>
-
-            {(isLocked || isForumLocked) && (
-              <div style={{ 
-                padding: '0.8rem', 
-                background: 'rgba(var(--danger-rgb, 158, 29, 29), 0.1)', 
-                border: '1px solid var(--danger)', 
-                borderRadius: '8px',
-                color: 'var(--danger)',
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}>
-                <LockIcon size={14} />
-                <span>{isForumLocked ? "Forum verrouillé" : "Sujet verrouillé"}</span>
-              </div>
-            )}
-
-            {currentUserId && (!(isLocked || isForumLocked) || isModerator) && (
-              <CTAButton onClick={() => document.getElementById('quick-reply-area')?.scrollIntoView({ behavior: 'smooth' })} icon={<MessageSquare size={18} />}>
-                Répondre
-              </CTAButton>
-            )}
-            
-            {currentUserId && (
-              <ClassicButton
-                onClick={handleToggleFollow}
-                isLoading={isPending}
-                icon={<Bookmark size={18} />}
-                style={{
-                  borderColor: isFollowing ? 'var(--accent)' : undefined,
-                  color: isFollowing ? 'var(--accent)' : undefined,
-                }}
-              >
-                {isFollowing ? "Arrêter de suivre" : "Suivre le sujet"}
-              </ClassicButton>
-            )}
-
-            {!isTournament && canEditTitle && (
-              <ClassicButton 
+              
+              <AdminButton 
                 onClick={handleEditTitleClick}
                 icon={<Type size={18} />}
               >
-                Modifier le titre
-              </ClassicButton>
-            )}
+                Modifier le tournoi
+              </AdminButton>
 
-            {currentUserId && currentUserId !== authorId && (
-              <ClassicButton 
-                onClick={() => setShowReportModal(true)}
-                icon={<AlertTriangle size={18} />}
-              >
-                Signaler
-              </ClassicButton>
-            )}
-
-            <ClassicButton 
-              href={`${pathname}?page=${lastPage}#post-${lastPostId}`}
-              onClick={handleGoToLast}
-              icon={<ChevronsDown size={18} />}
-            >
-              Dernier message
-            </ClassicButton>
-
-            <ClassicButton 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              icon={<ArrowUp size={18} />}
-            >
-              Haut de page
-            </ClassicButton>
-
-            {/* 3. Tournament Administration Section */}
-            {isTournament && canEditTournament && !isCancelled && (
-              <div style={{ marginTop: '0.4rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <h3 style={{ margin: '0 0 0.2rem 0', fontSize: '0.85rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Shield size={14} /> Gestion Tournoi
-                </h3>
-                
+              {isFinished ? (
                 <AdminButton 
-                  onClick={handleEditTitleClick}
-                  icon={<Type size={18} />}
+                  href={`/forum/tournament/${tournamentId}/results`}
+                  icon={<Trophy size={18} />}
                 >
-                  Modifier le tournoi
+                  Publier les résultats
                 </AdminButton>
-
-                {isFinished ? (
+              ) : (
+                <>
                   <AdminButton 
-                    href={`/forum/tournament/${tournamentId}/results`}
-                    icon={<Trophy size={18} />}
+                    onClick={handleFinish}
+                    isLoading={isPending}
+                    icon={<CheckCircle size={18} />}
                   >
-                    Publier les résultats
+                    Terminer le tournoi
                   </AdminButton>
-                ) : (
-                  <>
-                    <AdminButton 
-                      onClick={handleFinish}
-                      isLoading={isPending}
-                      icon={<CheckCircle size={18} />}
-                    >
-                      Terminer le tournoi
-                    </AdminButton>
-                    
-                    <AdminButton 
-                      onClick={handleToggleRegistrations}
-                      isLoading={isPending}
-                      icon={registrationsLocked ? <Check size={18} /> : <LockIcon size={18} />}
-                      style={{ color: registrationsLocked ? 'var(--accent)' : undefined }}
-                    >
-                      {registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}
-                    </AdminButton>
+                  
+                  <AdminButton 
+                    onClick={handleToggleRegistrations}
+                    isLoading={isPending}
+                    icon={registrationsLocked ? <Check size={18} /> : <LockIcon size={18} />}
+                    style={{ color: registrationsLocked ? 'var(--accent)' : undefined }}
+                  >
+                    {registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}
+                  </AdminButton>
 
-                    <DangerButton 
-                      onClick={handleCancel}
-                      isLoading={isPending}
-                      icon={<XCircle size={18} />}
-                    >
-                      Annuler le tournoi
-                    </DangerButton>
-                  </>
-                )}
-              </div>
-            )}
+                  <DangerButton 
+                    onClick={handleCancel}
+                    isLoading={isPending}
+                    icon={<XCircle size={18} />}
+                  >
+                    Annuler le tournoi
+                  </DangerButton>
+                </>
+              )}
+            </div>
+          )}
 
-            {/* Moderator Actions */}
-            {isModerator && (
-              <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
-                
-                
-                <AdminButton 
-                  onClick={handleTogglePin}
-                  isLoading={isPending}
-                  icon={isPinned ? <PinOff size={18} /> : <Pin size={18} />}
-                  style={{ color: isPinned ? 'var(--unread-marker)' : undefined }}
-                >
-                  {isPinned ? "Désépingler" : "Épingler"}
-                </AdminButton>
+          {/* Moderator Actions */}
+          {isModerator && (
+            <div style={{ marginTop: '0.4rem', paddingTop: '0.4rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 800 }}>Modération</span>
+              
+              
+              <AdminButton 
+                onClick={handleTogglePin}
+                isLoading={isPending}
+                icon={isPinned ? <PinOff size={18} /> : <Pin size={18} />}
+                style={{ color: isPinned ? 'var(--unread-marker)' : undefined }}
+              >
+                {isPinned ? "Désépingler" : "Épingler"}
+              </AdminButton>
 
-                <AdminButton 
-                  onClick={() => setShowMoveModal(true)}
-                  isLoading={isPending}
-                  icon={<Move size={18} />}
-                >
-                  Déplacer
-                </AdminButton>
+              <AdminButton 
+                onClick={() => setShowMoveModal(true)}
+                isLoading={isPending}
+                icon={<Move size={18} />}
+              >
+                Déplacer
+              </AdminButton>
 
-                {/* Archivage */}
-                <AdminButton 
-                  onClick={handleToggleArchive}
-                  isLoading={isPending}
-                  icon={<Eye size={18} />}
-                  style={{ color: isArchived ? 'var(--accent)' : undefined }}
-                >
-                  {isArchived ? "Désarchiver" : "Archiver"}
-                </AdminButton>
+              {/* Archivage */}
+              <AdminButton 
+                onClick={handleToggleArchive}
+                isLoading={isPending}
+                icon={<Eye size={18} />}
+                style={{ color: isArchived ? 'var(--accent)' : undefined }}
+              >
+                {isArchived ? "Désarchiver" : "Archiver"}
+              </AdminButton>
 
-                <LockButton 
-                  id={topicId} 
-                  type="topic" 
-                  isLocked={isLocked} 
-                />
+              <LockButton 
+                id={topicId} 
+                type="topic" 
+                isLocked={isLocked} 
+              />
 
-                <DangerButton 
-                  onClick={() => setShowDeleteModal(true)}
-                  isLoading={isPending}
-                  icon={<Trash2 size={18} />}
-                >
-                  Supprimer sujet
-                </DangerButton>
-              </div>
-            )}
-          </PremiumCard>
-        </div>
+              <DangerButton 
+                onClick={() => setShowDeleteModal(true)}
+                isLoading={isPending}
+                icon={<Trash2 size={18} />}
+              >
+                Supprimer sujet
+              </DangerButton>
+            </div>
+          )}
+        </PremiumCard>
       </div>
+    </div>
+  );
+
+  return (
+    <>
+      <aside className="forum-sidebar desktop-only">
+        <ConfirmModal
+          isOpen={confirmConfig.isOpen}
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          onClose={() => setConfirmConfig({ ...confirmConfig, isOpen: false })}
+          onConfirm={async () => {
+            startTransition(async () => {
+              await confirmConfig.action();
+              setConfirmConfig({ ...confirmConfig, isOpen: false });
+            });
+          }}
+          isDanger={confirmConfig.isDanger}
+          confirmLabel={confirmConfig.label}
+        />
+        {content}
+      </aside>
+
+      <GlobalPortal target="#mobile-page-sidebar-slot">
+        <div className="mobile-sidebar-section mobile-only">
+          {content}
+        </div>
+      </GlobalPortal>
 
       <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet">
         <div style={{ padding: '1.5rem', textAlign: 'center' }}>
@@ -516,6 +528,6 @@ export default function TopicSidebar({
         targetType="TOPIC" 
         itemTitle={topicTitle} 
       />
-    </aside>
+    </>
   );
 }

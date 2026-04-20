@@ -19,6 +19,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
+import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 const POSTS_PER_PAGE = 20;
 
@@ -53,140 +54,113 @@ export default async function ForumSidebar({
     redirect(url);
   }
 
-  return (
-    <aside className="forum-sidebar">
-      <div className="sidebar-sticky-inner">
-        <div className="sidebar-widget-container">
-          {/* 1. Pages Block (Forum / Search) */}
-          {(totalPages && totalPages > 1) && (
-            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
-              <Pagination 
-                currentPage={currentPage || 1}
-                totalPages={totalPages}
-                variant="sidebar"
-                baseUrl={forumId ? `/forum/${forumId}` : undefined}
-              />
-            </PremiumCard>
-          )}
-
-
-          {/* Nouveau Sujet / Tournoi */}
-          {session && forumId && (!isLocked || canCreateForum) && (
-            <PremiumCard className="sidebar-widget nav-widget">
-              {isTournamentForum && (
-                <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
-                  Nouveau Tournoi
-                </CTAButton>
-              )}
-              <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={<PlusCircle size={18} />}>
-                Nouveau Sujet
-              </CTAButton>
-            </PremiumCard>
-          )}
-
-          {forumId && isLocked && !canCreateForum && (
-            <div className="sidebar-widget-group">
-              <ClassicButton 
-                disabled 
-                icon={<LockIcon size={18} />}
-                style={{ opacity: 0.6 }}
-              >
-                Forum verrouillé
-              </ClassicButton>
-            </div>
-          )}
-
-          {/* Recherche Avancée */}
-          <PremiumCard className="sidebar-widget nav-widget">
-            <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={<Search size={18} />}>
-              Recherche avancée
-            </ClassicButton>
-            
-            <ClassicButton href="/membres" icon={<Users size={18} />}>
-              Les membres
-            </ClassicButton>
+  const content = (
+    <div className="sidebar-sticky-inner">
+      <div className="sidebar-widget-container">
+        {/* 1. Pages Block (Forum / Search) */}
+        {(totalPages && totalPages > 1) && (
+          <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
+            <Pagination 
+              currentPage={currentPage || 1}
+              totalPages={totalPages}
+              variant="sidebar"
+              baseUrl={forumId ? `/forum/${forumId}` : undefined}
+            />
           </PremiumCard>
-
-          {/* Posts Non Lus */}
-          {session && !forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
-            <PremiumCard className="sidebar-widget unread-widget" noOverflow>
-              <div className="sidebar-widget-group">
-                <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
-                  Posts non lus ({unreadTopics})
-                </ClassicButton>
-                <MarkAllAsReadButton />
-              </div>
-            </PremiumCard>
-          )}
-
-          {/* Recent Posts - Only on main forum to save space 
-          {!forumId && (
-            <PremiumCard className="sidebar-widget recent-posts-widget">
-              <h3>
-                <Clock size={16} />
-                Dernières réponses
-              </h3>
-              <div className="recent-posts-list">
-                {recentPosts.map((post) => {
-                  const page = Math.ceil(post.topic._count.posts / POSTS_PER_PAGE);
-                  const postUrl = `/forum/topic/${post.topic.id}?page=${page}#post-${post.id}`;
-                  
-                  return (
-                    <Link 
-                      key={post.id} 
-                      href={postUrl} 
-                      className={`recent-post-item ${!post.isRead ? 'has-new' : ''}`}
-                    >
-                      <span className="recent-post-topic" style={{ color: !post.isRead ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        {post.topic.forum.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
-                        {post.topic.tournamentId ? (
-                           <Trophy size={13} style={{ color: !post.isRead ? 'var(--accent)' : 'var(--foreground)', opacity: !post.isRead ? 1 : 0.6, flexShrink: 0 }} />
-                        ) : (
-                           <FileText size={13} style={{ color: !post.isRead ? 'var(--unread-marker)' : 'var(--text-secondary)', flexShrink: 0 }} />
-                        )}
-                        {post.topic.title}
-                        {!post.isRead && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
-                      </span>
-                      <span className="recent-post-meta">
-                        Par <strong>{post.author.name}</strong> • {new Date(post.createdAt).toLocaleDateString("fr-FR")}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </PremiumCard>
-          )}
-          */}
+        )}
 
 
-          {/* Admin Tools */}
-          {canCreateForum && (
-            <PremiumCard className="sidebar-widget admin-widget premium">
-              <h3 style={{ color: 'var(--primary)', margin: 0 }}>
-                <PlusCircle size={16} />
-                Administration
-              </h3>
-              
-              <div className="admin-actions-list">
-                <NewForumButton 
-                  categoryId={categoryId}
-                  parentForumId={parentForumId}
-                  subForumCount={subForumCount}
+        {/* Nouveau Sujet / Tournoi */}
+        {session && forumId && (!isLocked || canCreateForum) && (
+          <PremiumCard className="sidebar-widget nav-widget">
+            {isTournamentForum && (
+              <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
+                Nouveau Tournoi
+              </CTAButton>
+            )}
+            <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={<PlusCircle size={18} />}>
+              Nouveau Sujet
+            </CTAButton>
+          </PremiumCard>
+        )}
+
+        {forumId && isLocked && !canCreateForum && (
+          <div className="sidebar-widget-group">
+            <ClassicButton 
+              disabled 
+              icon={<LockIcon size={18} />}
+              style={{ opacity: 0.6 }}
+            >
+              Forum verrouillé
+            </ClassicButton>
+          </div>
+        )}
+
+        {/* Recherche Avancée */}
+        <PremiumCard className="sidebar-widget nav-widget">
+          <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={<Search size={18} />}>
+            Recherche avancée
+          </ClassicButton>
+          
+          <ClassicButton href="/membres" icon={<Users size={18} />}>
+            Les membres
+          </ClassicButton>
+        </PremiumCard>
+
+        {/* Posts Non Lus */}
+        {session && !forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
+          <PremiumCard className="sidebar-widget unread-widget" noOverflow>
+            <div className="sidebar-widget-group">
+              <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
+                Posts non lus ({unreadTopics})
+              </ClassicButton>
+              <MarkAllAsReadButton />
+            </div>
+          </PremiumCard>
+        )}
+
+        {/* Admin Tools */}
+        {canCreateForum && (
+          <PremiumCard className="sidebar-widget admin-widget premium">
+            <h3 style={{ color: 'var(--primary)', margin: 0 }}>
+              <PlusCircle size={16} />
+              Administration
+            </h3>
+            
+            <div className="admin-actions-list">
+              <NewForumButton 
+                categoryId={categoryId}
+                parentForumId={parentForumId}
+                subForumCount={subForumCount}
+              />
+
+              {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
+              {forumId && (
+                <LockButton 
+                  id={forumId} 
+                  type="forum" 
+                  isLocked={isLocked || false} 
                 />
-
-                {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
-                {forumId && (
-                  <LockButton 
-                    id={forumId} 
-                    type="forum" 
-                    isLocked={isLocked || false} 
-                  />
-                )}
-              </div>
-            </PremiumCard>
-          )}
-        </div>
+              )}
+            </div>
+          </PremiumCard>
+        )}
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      <aside className="forum-sidebar desktop-only">
+        {content}
+      </aside>
+
+      {/* Téléportation vers la sidebar mobile */}
+      <GlobalPortal target="#mobile-page-sidebar-slot">
+        <div className="mobile-sidebar-section mobile-only">
+          {content}
+        </div>
+      </GlobalPortal>
+    </>
   );
 }

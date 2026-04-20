@@ -24,12 +24,7 @@ export default function ForumCategory({ category, categoryHasNew, currentUserId 
         onMouseLeave={() => setIsHovered(false)}
         style={{ 
           borderColor: categoryHasNew ? 'var(--unread-marker)' : 'var(--glass-border)',
-          cursor: 'pointer',
-          background: isHovered ? 'var(--category-hover-bg)' : 'var(--category-header-bg)',
-          padding: '1.2rem 2rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
+          cursor: 'pointer'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

@@ -107,10 +107,11 @@
 .category-header {
   background: var(--category-header-bg);
   backdrop-filter: blur(8px);
-  padding: 1rem 1.8rem;
+  padding: 1.2rem 1.8rem;
   border-radius: 12px 12px 0 0;
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
   gap: 1.2rem;
   border-left: 6px solid var(--primary);
   color: var(--header-foreground);
@@ -671,8 +672,87 @@
   }
 }
 
-.forum-info h3 {
-  flex-wrap: wrap;
-  /* Allows badges to wrap on small screens */
-  align-items: center;
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .forum-layout {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .forum-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .forum-sidebar {
+    display: none !important;
+  }
+
+  .forum-main-content {
+    padding: 0 !important;
+  }
+
+  /* Forum Items & Categories */
+  .forum-item {
+    grid-template-columns: 1fr !important;
+    padding: 1.2rem 1.2rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .category-header {
+    padding: 1rem 1.2rem !important;
+    border-radius: 0 !important;
+  }
+
+  .category-header h2 {
+    font-size: 1rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Hide stats/meta on small screens */
+  .forum-stats,
+  .forum-last-post {
+    display: none !important;
+  }
+
+  .forums-list {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+  }
+
+  .forum-category {
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Specific gutters for forum containers */
+  .forum-header,
+  .forum-categories,
+  .topics-list,
+  .posts-list,
+  .topic-header,
+  .reply-form-container,
+  .quick-reply-container,
+  .search-form-container {
+    padding-left: 1.2rem !important;
+    padding-right: 1.2rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .forum-page,
+  .forum-detail-page,
+  .topic-detail-page {
+    padding-top: 0 !important;
+  }
 }

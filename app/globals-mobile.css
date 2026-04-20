@@ -37,6 +37,11 @@
     box-sizing: border-box;
   }
 
+  .bbcode-content-wrapper {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+
   .main-layout-wrapper {
     padding-top: 0;
   }
@@ -93,8 +98,17 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .logo {
     font-size: 1.2rem;
+  }
+
+  .bbcode-content-wrapper {
+    padding: 0 1.2rem;
+  }
+
+  /* Reset des marges qui cassent le flux */
+  .premium-card {
+    border-radius: 8px !important;
   }
 }
