@@ -1048,6 +1048,10 @@ export default function BBSchemePage() {
   };
 
   const addFrame = () => {
+    if (frames.length >= 50) {
+      toast.error("Limite de 50 images atteinte");
+      return;
+    }
     const newFrame: BoardFrame = {
       tokens: [...tokens.map(t => ({ ...t }))],
       blueRosterFile,
@@ -1059,6 +1063,10 @@ export default function BBSchemePage() {
   };
 
   const duplicateFrame = () => {
+    if (frames.length >= 50) {
+      toast.error("Limite de 50 images atteinte");
+      return;
+    }
     const newFrame: BoardFrame = {
       tokens: [...tokens.map(t => ({ ...t }))],
       blueRosterFile,
@@ -1237,15 +1245,24 @@ export default function BBSchemePage() {
                 </span>
               </Tooltip>
 
-              {/* 5. Suivant */}
-              <Tooltip text="Image suivante" position="bottom">
-                <span><ClassicButton onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} disabled={currentFrameIndex === frames.length - 1 || isPlaying} size="xs" icon={<SkipForward size={14} />} /></span>
+              {/* 5. Suivant / Ajouter */}
+              <Tooltip text={currentFrameIndex === frames.length - 1 ? "Ajouter une image" : "Image suivante"} position="bottom">
+                <span>
+                  <ClassicButton
+                    onClick={() => {
+                      if (currentFrameIndex === frames.length - 1) addFrame();
+                      else setCurrentFrameIndex(prev => prev + 1);
+                    }}
+                    disabled={isPlaying}
+                    size="xs"
+                    icon={currentFrameIndex === frames.length - 1 ? <PlusCircle size={14} /> : <SkipForward size={14} />}
+                  />
+                </span>
               </Tooltip>
 
               <div className="divider" style={{ opacity: 0.3 }} />
 
               {/* Actions images */}
-              <Tooltip text="Ajouter image" position="bottom"><span><ClassicButton onClick={addFrame} size="xs" icon={<PlusCircle size={14} />} disabled={isPlaying} /></span></Tooltip>
               <Tooltip text="Dupliquer image" position="bottom"><span><ClassicButton onClick={duplicateFrame} size="xs" icon={<Copy size={14} />} disabled={isPlaying} /></span></Tooltip>
               <Tooltip text="Supprimer image" position="bottom"><span><ClassicButton onClick={removeFrame} size="xs" icon={<Trash2 size={14} />} disabled={isPlaying || frames.length <= 1} /></span></Tooltip>
               <Tooltip text="Exporter en GIF" position="bottom">
