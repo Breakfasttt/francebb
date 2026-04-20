@@ -16,6 +16,7 @@ export default async function CartePage() {
         isFinished: false,
         isCancelled: false
       },
+      take: 100, 
       select: { 
         id: true, 
         name: true, 

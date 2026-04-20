@@ -17,11 +17,21 @@ function MapResizer({ isFullscreen }: { isFullscreen: boolean }) {
   const map = useMap();
   
   useEffect(() => {
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+
+    window.addEventListener('resize', handleResize);
+    
     // Petit délai pour laisser le CSS s'appliquer
     const timer = setTimeout(() => {
       map.invalidateSize();
-    }, 100);
-    return () => clearTimeout(timer);
+    }, 300);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, [isFullscreen, map]);
 
   return null;
@@ -31,40 +41,43 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
   const [icons, setIcons] = useState<any>(null);
 
   useEffect(() => {
-    // Initialisation des icônes uniquement côté client
-    const red = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
+    console.log("[LEAFLET] Initialisation des icônes...");
+    try {
+      // Initialisation des icônes uniquement côté client
+      const red = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
 
-    const gold = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
+      const gold = L.icon({
+        iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
+        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
 
-    // Correction icône par défaut
-    const DefaultIcon = L.icon({
-      iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-      shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
-    L.Marker.prototype.options.icon = DefaultIcon;
+      // Correction icône par défaut
+      const DefaultIcon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
+      });
+      L.Marker.prototype.options.icon = DefaultIcon;
 
-    setIcons({ red, gold });
+      setIcons({ red, gold });
+    } catch (err) {
+      console.error("[LEAFLET] Erreur initialisation icônes:", err);
+    }
   }, []);
 
   const center: [number, number] = [46.603354, 1.888334];
-
-  if (!icons) return null;
 
   return (
     <MapContainer 
@@ -84,7 +97,7 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
         <Marker 
           key={`${viewType}-${p.id}`} 
           position={[p.lat, p.lng]} 
-          icon={viewType === "tournaments" ? icons.red : icons.gold}
+          icon={icons ? (viewType === "tournaments" ? icons.red : icons.gold) : undefined}
         >
           <Popup>
             <div className="leaflet-popup-content-inner">

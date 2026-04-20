@@ -2,8 +2,21 @@
 
 @media (max-width: 768px) {
   .carte-page-fixed {
-    padding: 1rem;
+    padding: 0.5rem 1rem 1.5rem 1rem;
     height: auto;
+    min-height: 100vh;
     overflow: visible;
+  }
+
+  .carte-content-body {
+    height: 70vh; /* Hauteur fixe pour la carte sur mobile */
+    margin-top: 1rem;
+  }
+
+  .carte-client-wrapper,
+  .map-view-leaflet,
+  .leaflet-container {
+    height: 70vh !important;
+    min-height: 70vh !important;
   }
 }
