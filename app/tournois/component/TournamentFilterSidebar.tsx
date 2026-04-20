@@ -6,6 +6,7 @@ import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock, Spar
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
@@ -148,8 +149,8 @@ export default function TournamentFilterSidebar() {
     }
   ];
 
-  return (
-    <PremiumCard className="filter-sidebar">
+  const filterContent = (
+    <>
       <ClassicButton onClick={() => router.push("/tournois")} fullWidth style={{ marginBottom: '1rem' }}>
         Réinitialiser filtres
       </ClassicButton>
@@ -209,6 +210,20 @@ export default function TournamentFilterSidebar() {
           </div>
         </div>
       ))}
-    </PremiumCard>
+    </>
+  );
+
+  return (
+    <>
+      <PremiumCard className="filter-sidebar desktop-only">
+        {filterContent}
+      </PremiumCard>
+
+      <GlobalPortal target="#mobile-page-sidebar-slot">
+        <div className="mobile-only" style={{ padding: '1rem' }}>
+          {filterContent}
+        </div>
+      </GlobalPortal>
+    </>
   );
 }
