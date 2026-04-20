@@ -1,18 +1,25 @@
 "use client";
 
 import {
+  Clock,
+  HelpCircle,
+  Info,
   Loader2,
   Pause,
   Play,
+  RotateCw,
   SkipBack,
-  SkipForward,
-  RotateCw
+  SkipForward
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { getBoardState } from "../actions";
 import { DrawingPath, PlayerRosterInfo, RosterData, TokenData } from "../page";
 import "./BBSchemePlayer.css";
 import Pitch from "./Pitch";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
+import ToggleButton from "@/common/components/Button/ToggleButton";
 
 interface BBSchemePlayerProps {
   boardId: string;
@@ -29,6 +36,7 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [showTooltips, setShowTooltips] = useState(true);
 
   const playTimerRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -55,6 +63,14 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
           let blueBase: TokenData[] = [];
           let redBase: TokenData[] = [];
 
+          // Fetch Star Pool for hydration
+          let starPool: PlayerRosterInfo[] = [];
+          try {
+            const resp = await fetch('/data/roster/all_star_players.json');
+            const sd = await resp.json();
+            starPool = sd.roster;
+          } catch (e) { }
+
           // Fetch Rosters
           if (parsed.blueRosterFile) {
             try {
@@ -62,13 +78,18 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
               bData = await r.json();
               if (bData) {
                 bData.roster = [...bData.roster, starPlayerInfo];
-                blueBase = bData.roster.flatMap(p =>
-                  Array.from({ length: parseInt(p.qty.split('-')[1]) || 2 }).map((_, i) => ({
-                    id: `blue-${p.name.replace(/\s+/g, '-')}-${i}`,
+                blueBase = bData.roster.flatMap(p => {
+                  const isStar = p.name === "Star Player";
+                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
+                  const q = p.qty || "2";
+                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
+                  
+                  return Array.from({ length: limit }).map((_, i) => ({
+                    id: `blue-${slug}-${i}`,
                     type: 'blue', x: -1, y: -1, status: 'up', location: 'box',
-                    number: i + 1, playerInfo: p
-                  }))
-                ).slice(0, 18) as TokenData[];
+                    number: isStar ? 99 + (i + 1) : i + 1, playerInfo: p
+                  }));
+                }) as TokenData[];
               }
             } catch (e) { }
           }
@@ -79,32 +100,55 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
               rData = await r.json();
               if (rData) {
                 rData.roster = [...rData.roster, starPlayerInfo];
-                redBase = rData.roster.flatMap(p =>
-                  Array.from({ length: parseInt(p.qty.split('-')[1]) || 2 }).map((_, i) => ({
-                    id: `red-${p.name.replace(/\s+/g, '-')}-${i}`,
+                redBase = rData.roster.flatMap(p => {
+                  const isStar = p.name === "Star Player";
+                  const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
+                  const q = p.qty || "2";
+                  const limit = isStar ? 2 : (parseInt(q.includes('-') ? q.split('-').pop() : q) || 2);
+
+                  return Array.from({ length: limit }).map((_, i) => ({
+                    id: `red-${slug}-${i}`,
                     type: 'red', x: -1, y: -1, status: 'up', location: 'box',
-                    number: i + 1, playerInfo: p
-                  }))
-                ).slice(0, 18) as TokenData[];
+                    number: isStar ? 99 + (i + 1) : i + 1, playerInfo: p
+                  }));
+                }) as TokenData[];
               }
             } catch (e) { }
           }
 
+          const ballBase: TokenData = { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' };
+
           // Hydrate Frames
-          const hydratedFrames = (parsed.frames as TokenData[][]).map(savedFrame => {
-            const fullPack = [...blueBase, ...redBase, { id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }] as TokenData[];
-            return fullPack.map(baseToken => {
-              const saved = savedFrame.find(s => s.id === baseToken.id);
-              if (saved) return { ...baseToken, ...saved };
-              return baseToken;
+          const hydratedFrames = (parsed.frames as any[][]).map(savedFrame => {
+            const currentFrameTokens = [...blueBase, ...redBase, ballBase].map(t => ({ ...t }));
+            
+            savedFrame.forEach(s => {
+              const idx = currentFrameTokens.findIndex(t => t.id === s.id);
+              if (idx !== -1) {
+                const base = currentFrameTokens[idx];
+                currentFrameTokens[idx] = { ...base, ...s };
+                
+                // Restauration de l'info Star Player si besoin
+                if (base.playerInfo?.name === "Star Player" && s.starName) {
+                  const details = starPool.find(sd => sd.name === s.starName);
+                  if (details) currentFrameTokens[idx].playerInfo = details;
+                }
+              } else if (s.type === 'ball') {
+                const bIdx = currentFrameTokens.findIndex(t => t.type === 'ball');
+                if (bIdx !== -1) currentFrameTokens[bIdx] = { ...currentFrameTokens[bIdx], ...s };
+              }
             });
+
+            return currentFrameTokens;
           });
 
-          setFrames(hydratedFrames);
-          setTokens(hydratedFrames[0]);
+          if (hydratedFrames.length > 0) {
+            setFrames(hydratedFrames);
+            setTokens(hydratedFrames[0]);
+          }
+          
           if (parsed.drawings) setDrawings(parsed.drawings);
           if (parsed.rotation !== undefined) {
-            // Si on demande explicitement vertical dans le BBCode, on force la rotation
             if (layout === "vertical") setRotation(90);
             else setRotation(parsed.rotation);
           } else if (layout === "vertical") {
@@ -228,7 +272,7 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
                 onDrawUpdate={() => { }}
                 rotation={rotation}
                 finalScale={zoom}
-                showTooltips={true}
+                showTooltips={showTooltips}
                 readOnly={true}
               />
             </div>
@@ -236,29 +280,70 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
         </div>
       </div>
 
-      <div className="bb-player-controls">
-        <button className="ctrl-btn" onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0}>
-          <SkipBack size={18} />
-        </button>
-        <button className="ctrl-btn main" onClick={() => setIsPlaying(!isPlaying)}>
-          {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
-        </button>
-        <button className="ctrl-btn" onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} disabled={currentFrameIndex === frames.length - 1}>
-          <SkipForward size={18} />
-        </button>
+      <div className="bb-player-controls theme-aware">
+        <div className="ctrl-group main-actions">
+          <ClassicButton 
+            onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} 
+            disabled={currentFrameIndex === 0}
+            size="xs"
+            icon={<SkipBack size={14} />}
+          />
+          <CTAButton 
+            onClick={() => setIsPlaying(!isPlaying)}
+            icon={isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+            size="sm"
+          />
+          <ClassicButton 
+            onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} 
+            disabled={currentFrameIndex === frames.length - 1}
+            size="xs"
+            icon={<SkipForward size={14} />}
+          />
+        </div>
 
         <div className="player-progress">
           <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${((currentFrameIndex + 1) / frames.length) * 100}%` }} />
+            <div className="progress-fill" style={{ width: `${((currentFrameIndex + 1) / (frames.length || 1)) * 100}%` }} />
           </div>
-          <span className="frame-info">{currentFrameIndex + 1} / {frames.length}</span>
+          <span className="frame-info">{currentFrameIndex + 1} / {frames.length || 1}</span>
         </div>
 
         <div className="player-meta">
-          <div className="speed-info">{playbackSpeed}ms</div>
-          <button className="ctrl-btn" onClick={toggleRotation} title="Pivoter le terrain">
-            <RotateCw size={18} />
-          </button>
+          <div className="speed-control-pill theme-aware">
+            <Clock size={12} />
+            <input 
+              type="number" 
+              value={playbackSpeed === 0 ? "" : playbackSpeed} 
+              onChange={(e) => {
+                const val = parseInt(e.target.value);
+                if (!isNaN(val)) setPlaybackSpeed(val);
+                else if (e.target.value === "") setPlaybackSpeed(0);
+              }}
+              onBlur={() => {
+                setPlaybackSpeed(prev => Math.max(100, Math.min(3000, prev)));
+              }}
+              className="speed-input"
+            />
+            <span className="unit">ms</span>
+          </div>
+
+          <div className="divider" />
+
+          <div className="secondary-actions">
+            <ToggleButton 
+              active={showTooltips} 
+              onClick={() => setShowTooltips(!showTooltips)}
+              size="xs"
+              icon={<Info size={16} />}
+              title={showTooltips ? "Masquer les infos" : "Afficher les infos"}
+            />
+            <ClassicButton 
+              onClick={toggleRotation} 
+              size="xs" 
+              icon={<RotateCw size={14} />}
+              title="Pivoter le terrain"
+            />
+          </div>
         </div>
       </div>
     </div>

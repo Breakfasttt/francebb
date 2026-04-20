@@ -51,7 +51,8 @@ const Token: React.FC<TokenProps> = ({
     return words.map(word => word[0]).join("").toUpperCase();
   };
 
-  const initial = token.playerInfo ? getInitials(token.playerInfo.name) : (token.number?.toString() || "");
+  const isGenericStar = token.playerInfo?.name === "Star Player";
+  const initial = isGenericStar ? "" : (token.playerInfo ? getInitials(token.playerInfo.name) : (token.number?.toString() || ""));
   
   // Tooltip position state
   const [tooltipPos, setTooltipPos] = React.useState<{ x: number, y: number } | null>(null);
@@ -89,7 +90,7 @@ const Token: React.FC<TokenProps> = ({
     <div 
       ref={containerRef}
       style={style} 
-      className={`token-container ${token.type} ${token.status} ${token.location} ${isOverlay ? 'overlay' : ''} ${isBall ? 'ball-token' : 'player-token'} ${isSelected ? 'selected' : ''}`}
+      className={`token-container ${token.type} ${token.status} ${token.location} ${isOverlay ? 'overlay' : ''} ${isBall ? 'ball-token' : 'player-token'} ${isSelected ? 'selected' : ''} ${(token.id.includes('-star-') || token.playerInfo?.name === "Star Player") ? 'is-star-player' : ''}`}
       onClick={(e) => { e.stopPropagation(); onClick?.(); }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -102,13 +103,8 @@ const Token: React.FC<TokenProps> = ({
         ) : (
           <div className="token-visual">
             <div className="token-base">
-               {(token.id.includes('-star-') || token.playerInfo?.name === "Star Player") ? (
-                 <div className="star-token-content">
-                    <Star size={20} fill="#ffd700" color="#ffd700" strokeWidth={2} className="star-icon" />
-                    {token.playerInfo && token.playerInfo.name !== "Star Player" && (
-                      <span className="token-number star-initials">{initial}</span>
-                    )}
-                 </div>
+               {isGenericStar || token.id.includes('-star-') ? (
+                 <StarGraphic team={token.type as 'blue' | 'red'} size={50} initial={initial} />
                ) : (
                  initial && <span className="token-number">{initial}</span>
                )}
@@ -198,6 +194,30 @@ function BallGraphic({ size = 24 }: { size?: number }) {
     <svg width={size} height={h} viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 1.5C15.5 1.5 18 5 18 10C18 15 15.5 18.5 12 18.5C8.5 18.5 6 15 6 10C6 5 8.5 1.5 12 1.5Z" fill="#8B4513" stroke="white" strokeWidth="1.5"/><path d="M6 10H18" stroke="white" strokeWidth="1" strokeDasharray="2 2"/><path d="M10 5V15M14 5V15" stroke="white" strokeWidth="1"/>
     </svg>
+  );
+}
+
+function StarGraphic({ team, size, initial }: { team: 'blue' | 'red', size: number, initial: string }) {
+  const color = team === 'blue' ? '#1e40af' : '#991b1b';
+  const borderColor = team === 'blue' ? '#3b82f6' : '#ef4444';
+  
+  return (
+    <div className="star-graphic-container" style={{ position: 'relative', width: size, height: size, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path 
+          d="M12 0.5L15.3 8L23.5 9L17.5 14.5L19 22.5L12 18.5L5 22.5L6.5 14.5L0.5 9L8.7 8L12 0.5Z" 
+          fill={color} 
+          stroke={borderColor} 
+          strokeWidth="1.2" 
+          strokeLinejoin="round" 
+        />
+      </svg>
+      {initial && (
+        <span className="token-number" style={{ position: 'absolute', top: '53%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.85rem', textShadow: '1px 1px 0 rgba(0,0,0,0.8)' }}>
+          {initial}
+        </span>
+      )}
+    </div>
   );
 }
 

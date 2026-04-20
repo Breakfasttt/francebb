@@ -581,11 +581,16 @@ export default function BBSchemePage() {
       const ball = prev.find(t => t.type === 'ball');
       const finalTokens = [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
 
-      // Update frames source of truth as well
+      // Update ALL frames source of truth as well
+      // A roster change is a global choice for the entire tactical sequence
       setFrames(fPrev => {
-        const fNext = [...fPrev];
-        fNext[currentFrameIndex] = finalTokens;
-        return fNext;
+        return fPrev.map(frame => {
+          // We keep other team tokens and ball as they were in THIS specific frame
+          const otherTeamTokens = frame.filter(t => t.type !== team && t.type !== 'ball');
+          const ball = frame.find(t => t.type === 'ball');
+          // We inject the new roster (initial state in box)
+          return [...otherTeamTokens, ...newTokens, ...(ball ? [ball] : [])];
+        });
       });
 
       return finalTokens;
@@ -1039,11 +1044,14 @@ export default function BBSchemePage() {
         <header className="tool-header">
           <div className="header-left">
             <BackButton href="/" title="Retour" />
-            <div className="title-group">
+            <div className="title-group" style={{ display: 'flex', alignItems: 'baseline', gap: '0.8rem' }}>
               <h1 className="title-modern">BB<span>Scheme</span></h1>
+              <div className="credits-link" style={{ fontSize: '0.65rem', opacity: 0.6 }}>
+                Inspiré par <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a>
+              </div>
             </div>
           </div>
-          <div style={{ flex: 1 }} />
+
           <div className="tool-handler">
             <div className="zoom-bar">
               <ZoomOut size={14} color="#fff" />
@@ -1152,16 +1160,16 @@ export default function BBSchemePage() {
               <Tooltip text="Aide" position="bottom"><button className="tool-btn help-trigger-btn" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button></Tooltip>
             </div>
           </div>
-          <div style={{ flex: 1 }} />
+
           <div className="header-right">
             {isStarPlayerSelected && (
-              <div className="star-player-selector" style={{ marginRight: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div className="star-player-selector" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 900, textShadow: '1px 1px 0px rgba(0,0,0,0.5)' }}>STAR:</span>
                 <ClassicSelect
                   onChange={(e) => handleStarPlayerSelect(e.target.value)}
                   value={selectedToken?.playerInfo?.name === "Star Player" ? "aucun" : selectedToken?.playerInfo?.name || "aucun"}
                   size="sm"
-                  containerStyle={{ width: "180px" }}
+                  containerStyle={{ width: "160px" }}
                 >
                   <option value="aucun">Aucun (Générique)</option>
                   {allStarPlayers.map((star, idx) => (
@@ -1172,9 +1180,6 @@ export default function BBSchemePage() {
                 </ClassicSelect>
               </div>
             )}
-            <div className="credits-link">
-              <span>Inspiré par <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a></span>
-            </div>
           </div>
         </header>
       )}

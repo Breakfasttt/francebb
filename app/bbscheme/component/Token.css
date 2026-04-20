@@ -43,6 +43,45 @@
 .player-token.blue { border-color: #3b82f6; background-color: #1e40af; }
 .player-token.red { border-color: #ef4444; background-color: #991b1b; }
 
+/* Star Player specific shape */
+.token-container.is-star-player {
+  width: 50px;
+  height: 50px;
+  border-radius: 0;
+  border: none !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.token-container.is-star-player.blue {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.token-container.is-star-player.red {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.token-container.is-star-player .token-number {
+  color: #fff;
+  font-size: 0.85rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.8);
+}
+
+/* Redefine selection for star shape */
+.token-container.is-star-player.selected {
+  filter: drop-shadow(0 0 10px rgba(255, 235, 59, 1));
+  animation: starSelectedPulse 2s infinite;
+  outline: none;
+}
+
+@keyframes starSelectedPulse {
+  0% { filter: drop-shadow(0 0 10px rgba(255, 235, 59, 0.7)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 235, 59, 1)); }
+  100% { filter: drop-shadow(0 0 10px rgba(255, 235, 59, 0.7)); }
+}
+
 .token-inner { 
   width: 100%; height: 100%; 
   display: flex; align-items: center; justify-content: center; 

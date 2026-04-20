@@ -1,27 +1,25 @@
 .bb-player-root {
   display: flex !important;
   flex-direction: column;
-  background: #0c0c14; /* Pitch Color */
-  color: #fff;
+  background: var(--card-bg);
+  color: var(--foreground);
   overflow: hidden !important;
-  font-family: 'Inter', sans-serif;
   padding: 0 !important;
-  margin: 1.2rem auto; 
-  border-radius: 12px;
+  margin: 1.5rem auto;
+  border-radius: 16px;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   width: 100% !important;
-  max-width: 100% !important; 
+  max-width: 100% !important;
 }
 
 .player-loading {
-  height: 100vh;
-  width: 100vw;
+  height: 200px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
-  color: #ffcc00;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--accent);
 }
 
 .bb-player-viewport {
@@ -31,94 +29,164 @@
   background: #000;
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .bb-player-pitch-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #101510; /* Dark Green Patch */
+  background: #101510;
   transform-origin: top left;
   flex-shrink: 0;
 }
 
 .bb-player-controls {
-  height: 60px;
-  background: #1a110a;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  height: 64px;
+  background: transparent;
+  /* Seamless blend with card-bg */
   display: flex;
   align-items: center;
-  padding: 0 1.5rem;
-  gap: 1.5rem;
+  padding: 0 1.2rem;
+  gap: 1.2rem;
 }
 
-.ctrl-btn {
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 0;
+.ctrl-group {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  opacity: 0.8;
-}
-
-.ctrl-btn:hover:not(:disabled) {
-  opacity: 1;
-  color: #ffcc00;
-  transform: scale(1.1);
-}
-
-.ctrl-btn.main {
-  color: #ffcc00;
-  opacity: 1;
-}
-
-.ctrl-btn:disabled {
-  opacity: 0.2;
-  cursor: not-allowed;
+  gap: 0.5rem;
 }
 
 .player-progress {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .progress-track {
   flex: 1;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
   overflow: hidden;
+  border: 1px solid var(--glass-border);
 }
 
 .progress-fill {
   height: 100%;
-  background: #9e1d1d; /* BB Red */
+  background: var(--primary);
   transition: width 0.3s ease-out;
 }
 
 .frame-info {
-  font-size: 0.8rem;
-  font-weight: 900;
-  color: #ffcc00;
-  min-width: 45px;
-}
-
-.speed-info {
-  font-size: 0.7rem;
-  opacity: 0.5;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 2px 8px;
-  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  min-width: 55px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .player-meta {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.speed-control-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  color: var(--foreground);
+}
+
+.speed-input {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 900;
+  width: 45px;
+  text-align: center;
+  outline: none;
+  font-family: inherit;
+}
+
+/* Hide spin buttons for numbers */
+.speed-input::-webkit-inner-spin-button,
+.speed-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.speed-input {
+  -moz-appearance: textfield;
+}
+
+.unit {
+  font-size: 0.7rem;
+  font-weight: 700;
+  opacity: 0.7;
+  color: var(--text-muted);
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--glass-border);
+  margin: 0 0.2rem;
+  opacity: 1;
+}
+
+.secondary-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Theme Saison 3 specific overrides */
+[data-theme='saison3'] .bb-player-root {
+  border: 3px solid var(--secondary);
+  background: #f4f1e6 !important; /* Parchment cream */
+}
+
+[data-theme='saison3'] .bb-player-controls {
+  background: transparent;
+}
+
+[data-theme='saison3'] .progress-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: var(--secondary);
+}
+
+[data-theme='saison3'] .progress-fill {
+  background: var(--primary);
+}
+
+[data-theme='saison3'] .speed-control-pill {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: var(--secondary);
+}
+
+[data-theme='saison3'] .speed-input {
+  color: var(--primary);
+}
+
+[data-theme='saison3'] .frame-info {
+  color: var(--primary);
+}
+
+[data-theme='saison3'] .unit {
+  color: var(--secondary);
+  opacity: 0.8;
+}
+
+[data-theme='saison3'] .divider {
+  background: var(--secondary);
+  opacity: 0.3;
 }
