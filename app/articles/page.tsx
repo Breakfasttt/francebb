@@ -1,15 +1,13 @@
-import React from "react";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import ArticleFilterSidebar from "@/app/articles/component/ArticleFilterSidebar";
-import Pagination from "@/common/components/Pagination/Pagination";
+import { auth } from "@/auth";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
-import { FileText, Plus } from "lucide-react";
-import Link from "next/link";
-import "./page.css";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
+import Pagination from "@/common/components/Pagination/Pagination";
+import { prisma } from "@/lib/prisma";
+import { FileText } from "lucide-react";
 import "./page-mobile.css";
+import "./page.css";
 
 
 export const dynamic = "force-dynamic";
@@ -41,10 +39,10 @@ export default async function ArticlesPage({
   }
   if (tag) {
     const tagNames = tag.split(",");
-    where.tags = { 
-      some: { 
-        name: { in: tagNames } 
-      } 
+    where.tags = {
+      some: {
+        name: { in: tagNames }
+      }
     };
   }
   if (author) {
@@ -87,55 +85,55 @@ export default async function ArticlesPage({
 
   return (
     <div className="articles-page-wrapper">
-      <PageHeader 
-        title="Articles & Chroniques" 
-        subtitle="Découvrez les dernières news, guides et récits de la communauté."
+      <PageHeader
+        title="Articles"
+        subtitle="Découvrez ou proposez les guides, récits et analyses de la communauté."
         backHref="/"
       />
 
       <main className="container articles-page">
 
-      <div className="articles-layout">
-        <ArticleFilterSidebar 
-          availableTags={availableTags} 
-          isAuthenticated={!!session}
-        />
+        <div className="articles-layout">
+          <ArticleFilterSidebar
+            availableTags={availableTags}
+            isAuthenticated={!!session}
+          />
 
-        <div className="articles-content">
-          <div className="articles-top-actions">
-            <div className="results-count">
-              <FileText size={16} className="results-icon" />
-              <span><strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}</span>
+          <div className="articles-content">
+            <div className="articles-top-actions">
+              <div className="results-count">
+                <FileText size={16} className="results-icon" />
+                <span><strong>{total}</strong> article{total > 1 ? "s" : ""} trouvé{total > 1 ? "s" : ""}</span>
+              </div>
             </div>
+
+            {articles.length > 0 ? (
+              <>
+                <div className={`articles-${view}`}>
+                  {articles.map((article) => (
+                    <ArticleCard key={article.id} article={article} view={view as "grid" | "list"} />
+                  ))}
+                </div>
+
+                <div className="pagination-wrapper">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    baseUrl="/articles"
+                    queryParam="page"
+                  />
+                </div>
+              </>
+            ) : (
+              <EmptyState
+                icon={<FileText size={48} />}
+                title="Aucun article trouvé"
+                description="Essayez de modifier vos filtres ou soyez le premier à en écrire un !"
+              />
+            )}
           </div>
-
-          {articles.length > 0 ? (
-            <>
-              <div className={`articles-${view}`}>
-                {articles.map((article) => (
-                  <ArticleCard key={article.id} article={article} view={view as "grid" | "list"} />
-                ))}
-              </div>
-
-              <div className="pagination-wrapper">
-                <Pagination 
-                  currentPage={page} 
-                  totalPages={totalPages} 
-                  baseUrl="/articles"
-                  queryParam="page"
-                />
-              </div>
-            </>
-          ) : (
-            <EmptyState 
-              icon={<FileText size={48} />}
-              title="Aucun article trouvé"
-              description="Essayez de modifier vos filtres ou soyez le premier à en écrire un !"
-            />
-          )}
         </div>
-      </div>
-    </main>
+      </main>
     </div>
   );
 }
