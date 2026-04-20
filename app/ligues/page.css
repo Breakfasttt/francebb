@@ -24,10 +24,6 @@
   gap: 2rem;
   margin-bottom: 2.5rem;
   padding: 1.5rem 2rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
   width: 100%;
   box-sizing: border-box;
 }
@@ -68,7 +64,7 @@
 .search-wrapper input, .region-filter select {
   width: 100%;
   padding: 0.8rem 1rem 0.8rem 3rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--theme-overlay);
   border: 1px solid var(--glass-border);
   border-radius: 10px;
   color: var(--foreground);
@@ -90,7 +86,7 @@
 
 .view-toggle {
   display: flex;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--theme-overlay);
   padding: 4px;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
@@ -113,25 +109,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-create-ligue {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 0.8rem 1.5rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 10px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
 
-.btn-create-ligue:hover {
-  background: var(--accent);
-  color: var(--header-foreground);
-  transform: translateY(-2px);
-}
 
 .ligues-grid {
   display: grid;

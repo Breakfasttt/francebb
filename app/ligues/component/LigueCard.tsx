@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import CTAButton from "@/common/components/Button/CTAButton";
 import { Shield, MapPin, Users, Trophy, ExternalLink } from "lucide-react";
 import "./LigueCard.css";
 
@@ -25,7 +26,7 @@ interface LigueCardProps {
 export default function LigueCard({ ligue, view = "grid" }: LigueCardProps) {
   if (view === "list") {
     return (
-      <div className="ligue-list-item">
+      <PremiumCard className="ligue-list-item" hoverEffect={true}>
         <div className="ligue-list-icon">
           <Shield size={24} />
         </div>
@@ -42,9 +43,9 @@ export default function LigueCard({ ligue, view = "grid" }: LigueCardProps) {
           <div className="stat-pill"><Trophy size={14} /> {ligue._count?.tournaments || 0}</div>
         </div>
         <div className="ligue-list-action">
-          <Link href={`/ligue/${ligue.id}`} className="btn-detail-small">Détails</Link>
+          <CTAButton href={`/ligue/${ligue.id}`} size="sm">Détails</CTAButton>
         </div>
-      </div>
+      </PremiumCard>
     );
   }
 

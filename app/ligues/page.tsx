@@ -6,6 +6,8 @@ import { Search, MapPin, Grid, List as ListIcon, Plus, Shield } from "lucide-rea
 import Link from "next/link";
 import Pagination from "@/common/components/Pagination/Pagination";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
+import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import CTAButton from "@/common/components/Button/CTAButton";
 import "./page.css";
 import "./page-mobile.css";
 
@@ -64,7 +66,7 @@ export default async function LiguesPage({
 
       <main className="container">
 
-      <div className="ligues-top-bar">
+      <PremiumCard className="ligues-top-bar">
         <LigueFilters 
           initialQuery={query} 
           initialRegion={region} 
@@ -80,11 +82,11 @@ export default async function LiguesPage({
                     <ListIcon size={20} />
                 </Link>
             </div>
-            <Link href="/ligues/create" className="btn-create-ligue">
-                <Plus size={18} /> Créer une Ligue
-            </Link>
+            <CTAButton href="/ligues/create" icon={<Plus size={18} />}>
+                Créer une Ligue
+            </CTAButton>
         </div>
-      </div>
+      </PremiumCard>
 
       {ligues.length > 0 ? (
         <>
@@ -108,7 +110,7 @@ export default async function LiguesPage({
           icon={<Shield size={64} style={{ opacity: 0.2 }} />}
           title="Aucune ligue trouvée"
           description="Soyez le premier à référencer votre ligue dans cette zone !"
-          action={<Link href="/ligues/create" className="btn-create-ligue"><Plus size={18} /> Créer une Ligue</Link>}
+          action={<CTAButton href="/ligues/create" icon={<Plus size={18} />}>Créer une Ligue</CTAButton>}
         />
       )}
       </main>

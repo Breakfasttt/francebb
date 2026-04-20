@@ -85,17 +85,12 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.2rem 2rem;
-  background: var(--glass-bg);
-  border-radius: 16px;
-  border: 1px solid var(--glass-border);
-  transition: all 0.2s;
   margin-bottom: 1rem;
+  transition: all 0.2s;
 }
 
 .ligue-list-item:hover {
   border-color: var(--accent);
-  background: var(--background);
-  transform: translateX(5px);
 }
 
 .ligue-list-icon {
@@ -139,24 +134,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--theme-overlay);
   border-radius: 20px;
   color: var(--text-secondary);
   font-size: 0.9rem;
 }
 
-.btn-detail-small {
-  padding: 0.6rem 1.2rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.2s;
-}
 
-.btn-detail-small:hover {
-  background: var(--accent);
-  color: var(--header-foreground);
-}
