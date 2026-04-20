@@ -80,17 +80,19 @@ export default function TitleInputWithSmiley({
       {/* Title Live Preview */}
       {titleValue && titleValue.trim() !== "" && (
         <div style={{ 
-          marginTop: '0.2rem', 
-          padding: '0.8rem 1rem', 
+          marginTop: '0.8rem', 
+          padding: '1rem 1.2rem', 
           background: 'var(--primary-transparent)', 
-          borderRadius: '8px', 
+          backdropFilter: 'blur(5px)',
+          borderRadius: '12px', 
           color: 'var(--foreground)',
-          fontSize: '1.2rem',
-          fontWeight: 'bold',
-          borderLeft: '4px solid var(--primary)'
+          borderLeft: '4px solid var(--primary)',
+          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
         }}>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.2rem', fontWeight: 'normal' }}>Aperçu du titre :</span>
-          <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(titleValue) }} />
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Aperçu du titre :</span>
+          <div style={{ fontSize: '1.2rem', fontWeight: 900, lineHeight: 1.3, letterSpacing: '0.2px' }}>
+            <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(titleValue) }} />
+          </div>
         </div>
       )}
     </div>

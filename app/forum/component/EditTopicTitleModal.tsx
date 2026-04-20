@@ -35,15 +35,15 @@ export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialT
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Modifier le titre du sujet">
-      <form onSubmit={handleSubmit} style={{ padding: '1.5rem' }}>
-        <p style={{ marginBottom: '1rem', color: '#888', fontSize: '0.9rem' }}>
+    <Modal isOpen={isOpen} onClose={onClose} title="Modifier le titre du sujet" hideFooter={true}>
+      <form onSubmit={handleSubmit} style={{ padding: '0.5rem 0' }}>
+        <p style={{ marginBottom: '1.2rem', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
           Entrez le nouveau titre pour ce sujet :
         </p>
         
         <TitleInputWithSmiley initialValue={initialTitle} name="title" />
 
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '2rem' }}>
           <ClassicButton type="button" onClick={onClose}>
             Annuler
           </ClassicButton>

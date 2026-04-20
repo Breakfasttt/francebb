@@ -20,6 +20,7 @@ import {
   Lock as LockIcon,
   Trophy,
   Eye,
+  EyeOff,
   Bookmark,
   AlertTriangle,
   ChevronsDown,
@@ -398,7 +399,6 @@ export default function TopicSidebar({
                     onClick={handleToggleRegistrations}
                     isLoading={isPending}
                     icon={registrationsLocked ? <Check size={18} /> : <LockIcon size={18} />}
-                    style={{ color: registrationsLocked ? 'var(--accent)' : undefined }}
                   >
                     {registrationsLocked ? "Réouvrir inscriptions" : "Bloquer inscriptions"}
                   </AdminButton>
@@ -425,7 +425,6 @@ export default function TopicSidebar({
                 onClick={handleTogglePin}
                 isLoading={isPending}
                 icon={isPinned ? <PinOff size={18} /> : <Pin size={18} />}
-                style={{ color: isPinned ? 'var(--unread-marker)' : undefined }}
               >
                 {isPinned ? "Désépingler" : "Épingler"}
               </AdminButton>
@@ -442,8 +441,7 @@ export default function TopicSidebar({
               <AdminButton 
                 onClick={handleToggleArchive}
                 isLoading={isPending}
-                icon={<Eye size={18} />}
-                style={{ color: isArchived ? 'var(--accent)' : undefined }}
+                icon={isArchived ? <EyeOff size={18} /> : <Eye size={18} />}
               >
                 {isArchived ? "Désarchiver" : "Archiver"}
               </AdminButton>
@@ -494,27 +492,33 @@ export default function TopicSidebar({
         </div>
       </GlobalPortal>
 
-      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet">
-        <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <p style={{ marginBottom: '1rem', color: 'var(--foreground)', fontSize: '1.1rem' }}>
+      <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet" hideFooter={true}>
+        <div style={{ padding: '0.5rem 0', textAlign: 'center' }}>
+          <p style={{ marginBottom: '1.2rem', color: 'var(--foreground)', fontSize: '1.1rem' }}>
             Supprimer le sujet : <br/>
-            <strong style={{ color: 'var(--primary)' }}>{topicTitle}</strong> ?
+            <strong style={{ color: 'var(--primary)', display: 'block', marginTop: '0.4rem', fontSize: '1.2rem' }}>{topicTitle}</strong> ?
           </p>
           <div style={{ 
-            background: 'var(--primary-transparent)', 
-            border: '1px solid var(--primary)', 
-            padding: '1rem', 
-            borderRadius: '8px', 
-            marginBottom: '1.5rem' 
+            background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)', 
+            border: '1px solid var(--danger)', 
+            padding: '1.2rem', 
+            borderRadius: '12px', 
+            marginBottom: '2rem',
+            backdropFilter: 'blur(5px)'
           }}>
-            <p style={{ margin: 0, color: 'var(--danger)', fontSize: '0.9rem' }}>
-              <strong>Attention :</strong> Tous les messages seront définitivement supprimés.<br/>
+            <p style={{ margin: 0, color: 'var(--danger)', fontSize: '0.95rem', fontWeight: 600, lineHeight: 1.5 }}>
+              <AlertTriangle size={18} style={{ display: 'inline', marginBottom: '-4px', marginRight: '0.5rem' }} />
+              Attention : Tous les messages seront définitivement supprimés.
               L'action est irréversible.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <ClassicButton onClick={() => setShowDeleteModal(false)}>Annuler</ClassicButton>
-            <DangerButton onClick={handleDeleteTopic} isLoading={isPending}>Confirmer la suppression</DangerButton>
+            <ClassicButton onClick={() => setShowDeleteModal(false)}>
+              Annuler
+            </ClassicButton>
+            <DangerButton onClick={handleDeleteTopic} isLoading={isPending}>
+              Confirmer la suppression
+            </DangerButton>
           </div>
         </div>
       </Modal>
