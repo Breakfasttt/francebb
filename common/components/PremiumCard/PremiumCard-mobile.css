@@ -1,0 +1,14 @@
+@media (max-width: 768px) {
+  .premium-card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .premium-card.hover-effect:active {
+    transform: scale(0.98);
+  }
+
+  .premium-card.hover-effect:hover {
+    transform: none; /* Désactive l'effet de translation au survol sur tactile */
+  }
+}

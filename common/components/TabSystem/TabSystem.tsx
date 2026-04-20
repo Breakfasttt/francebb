@@ -6,7 +6,9 @@
  */
 import React from 'react';
 import './TabSystem.css';
+import './TabSystem-mobile.css';
 import Tooltip from '@/common/components/Tooltip/Tooltip';
+import MobilePortal from '@/common/components/MobilePortal/MobilePortal';
 
 export interface TabItem {
   id: string;
@@ -35,7 +37,7 @@ const TabSystem: React.FC<TabSystemProps> = ({
   className = '',
   showLabels = true
 }) => {
-  return (
+  const content = (
     <div className={`tab-system ${variant} ${orientation} ${className}`}>
       {items.map((item) => {
         const button = (
@@ -66,6 +68,14 @@ const TabSystem: React.FC<TabSystemProps> = ({
       })}
     </div>
   );
+
+  // Auto-téléportation vers la menu mobile global si c'est une sidebar locale
+  const isSidebar = variant.includes('sidebar');
+  if (isSidebar) {
+    return <MobilePortal>{content}</MobilePortal>;
+  }
+
+  return content;
 };
 
 export default TabSystem;

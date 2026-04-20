@@ -99,6 +99,20 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 
 3. **Accès** : [http://localhost:3000](http://localhost:3000)
 
+### 📱 Tester sur Mobile (LAN)
+
+Pour tester l'interface mobile sur un vrai smartphone physique connecté au même réseau Wi-Fi :
+
+1. **Identifier votre IP locale** (ex: `192.168.1.XX`).
+2. **Lancer avec l'option host** :
+   ```bash
+   npx next dev -H 0.0.0.0
+   ```
+3. **Accéder depuis le smartphone** via `http://<VOTRE_IP_LOCALE>:3000`.
+
+> [!NOTE]
+> L'utilisation du host `0.0.0.0` expose le serveur de développement à tout votre réseau local. Utile uniquement pour la phase de test UX mobile.
+
 > [!TIP]
 > **[🧪 Test Local (OAuth & Emails)] (./DEPLOY.md#🧪-phase-tech--tester-localement-oauth--emails)** : Consultez cette section pour configurer la connexion Discord/Google et l'envoi de mails sur votre ordinateur.
 

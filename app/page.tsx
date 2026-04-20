@@ -49,7 +49,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="logo-overlay-container">
+      <div className="logo-overlay-container desktop-only">
         <SiteLogo scale={1.8} />
       </div>
 

@@ -115,7 +115,7 @@ export default function Modal({
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 2000;
+          z-index: var(--z-index-modal-bottom, 8000);
           padding: 1rem;
         }
 
@@ -130,6 +130,8 @@ export default function Modal({
           box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
           animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           position: relative;
+          max-height: 90vh;
+          overflow-y: auto;
         }
 
         .modal-close-btn {
@@ -187,6 +189,31 @@ export default function Modal({
         @keyframes modalAppear {
           from { transform: scale(0.95) translateY(10px); opacity: 0; }
           to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+          .modal-content {
+            padding: 1.5rem;
+            border-radius: 20px;
+          }
+
+          .modal-actions {
+            flex-direction: column;
+            gap: 0.8rem;
+          }
+
+          .modal-actions :global(button) {
+            width: 100%;
+          }
+
+          h2 {
+            font-size: 1.2rem;
+          }
+          
+          .modal-close-btn {
+            top: 1rem;
+            right: 1rem;
+          }
         }
       `}</style>
     </div>,

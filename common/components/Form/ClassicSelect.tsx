@@ -3,6 +3,7 @@
 import React from "react";
 import { ChevronDown } from "lucide-react";
 import "./ClassicSelect.css";
+import "./ClassicSelect-mobile.css";
 
 interface ClassicSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;

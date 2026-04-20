@@ -49,6 +49,9 @@ import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
 import Pitch from "./component/Pitch";
 
+import { useIsMobile } from "@/common/hooks/useIsMobile";
+import DesktopOnlyFallback from "@/common/components/DesktopOnlyFallback/DesktopOnlyFallback";
+
 import "./page.css";
 
 // Types
@@ -139,6 +142,12 @@ export default function BBSchemePage() {
   const searchParams = useSearchParams();
   const boardId = searchParams.get("id");
   const isEmbed = searchParams.get("embed") === "true";
+  const isMobile = useIsMobile();
+
+  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
+  if (isMobile && !isEmbed) {
+    return <DesktopOnlyFallback />;
+  }
 
   // SI MODE EMBED : Affichage du player dédié uniquement
   if (isEmbed && boardId) {

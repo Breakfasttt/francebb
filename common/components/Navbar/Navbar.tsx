@@ -3,9 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Settings, ShieldAlert, Mail } from 'lucide-react';
+import { Settings, ShieldAlert, Mail, Menu, X as CloseIcon } from 'lucide-react';
 import SiteLogo from '@/common/components/SiteLogo/SiteLogo';
 import { SignInButton } from "@/common/components/SignInButton/SignInButton";
+import MobileSidebar from '@/common/components/MobileSidebar/MobileSidebar';
+import GlobalPortal from '@/common/components/GlobalPortal/GlobalPortal';
 
 interface NavbarProps {
   session: any;
@@ -18,17 +20,43 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, pendingModCount }) => {
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   return (
     <nav className="nav">
-      {/* On masque le logo uniquement sur la page d'accueil */}
-      {!isHome ? (
-        <SiteLogo scale={0.6} />
-      ) : (
-        <div style={{ width: '150px' }} /> /* Placeholder pour garder l'alignement si besoin, ou vide */
-      )}
+      {/* Hamburger Menu on Mobile - Positioned LEFT */}
+      <div 
+        role="button"
+        tabIndex={0}
+        className="nav-icon-capsule mobile-only" 
+        onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsMobileMenuOpen(!isMobileMenuOpen);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            setIsMobileMenuOpen(!isMobileMenuOpen);
+          }
+        }}
+        aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+        style={{ marginRight: 'auto' }}
+      >
+        {isMobileMenuOpen ? <CloseIcon size={22} /> : <Menu size={22} />}
+      </div>
 
-      <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+      {/* Site Logo - Desktop Only */}
+      <div className="desktop-only" style={{ display: 'flex', alignItems: 'center' }}>
+        {!isHome ? (
+          <SiteLogo scale={0.6} />
+        ) : (
+          <div style={{ width: '150px' }} />
+        )}
+      </div>
+
+      {/* Normal links, hidden on Mobile */}
+      <div className="nav-links desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
         {isAdmin && (
           <Link
             href="/administration"
@@ -47,23 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
           >
             <ShieldAlert size={22} />
             {pendingModCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-5px',
-                right: '-5px',
-                background: 'var(--danger)',
-                color: '#ffffff',
-                borderRadius: '50%',
-                width: '18px',
-                height: '18px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                lineHeight: 1,
-                boxShadow: '0 0 10px rgba(239, 68, 68, 0.3)'
-              }}>
+              <span className="nav-badge danger">
                 {pendingModCount > 9 ? '9+' : pendingModCount}
               </span>
             )}
@@ -78,29 +90,28 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
           >
             <Mail size={22} />
             {unreadCount > 0 && (
-              <span style={{
-                position: 'absolute',
-                top: '-5px',
-                right: '-5px',
-                background: 'var(--primary)',
-                color: 'var(--badge-text)',
-                borderRadius: '50%',
-                width: '18px',
-                height: '18px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                lineHeight: 1
-              }}>
+              <span className="nav-badge primary">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
           </a>
         )}
-        <SignInButton user={session?.user} />
+        <div className="desktop-only">
+          <SignInButton user={session?.user} />
+        </div>
       </div>
+
+      <GlobalPortal>
+        <MobileSidebar 
+          isOpen={isMobileMenuOpen} 
+          onClose={() => setIsMobileMenuOpen(false)} 
+          session={session}
+          isAdmin={isAdmin}
+          isMod={isMod}
+          unreadCount={unreadCount}
+          pendingModCount={pendingModCount}
+        />
+      </GlobalPortal>
     </nav>
   );
 };

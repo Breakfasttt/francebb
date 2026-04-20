@@ -111,25 +111,12 @@ export default async function RootLayout({
             {children}
           </main>
           
-          <footer style={{
-            position: 'fixed',
-            bottom: 0,
-            width: '100%',
-            padding: '0.6rem',
-            textAlign: 'center',
-            fontSize: '0.75rem',
-            color: 'var(--header-foreground)',
-            borderTop: '1px solid var(--accent)',
-            background: 'var(--footer-bg)',
-            backdropFilter: 'blur(10px)',
-            pointerEvents: 'auto',
-            zIndex: 5000
-          }}>
-            <Link href="/mentions-legales" style={{ textDecoration: 'underline', color: 'var(--header-foreground)', opacity: 0.8, transition: 'opacity 0.2s' }} className="footer-link">
+          <footer className="global-footer desktop-only">
+            <Link href="/mentions-legales" className="footer-link">
               Mentions légales
             </Link>
             {' • '}
-            <span style={{ fontStyle: 'italic', opacity: 0.7 }}>
+            <span className="footer-text">
               Ce site a été entièrement conçu avec l'aide de l'intelligence artificielle
             </span>
             {' • '}
@@ -137,8 +124,7 @@ export default async function RootLayout({
               href="https://github.com/Breakfasttt/francebb" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="footer-link"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--header-foreground)', opacity: 0.8, transition: 'opacity 0.2s' }}
+              className="footer-link github-link"
             >
               <Github size={14} /> GitHub
             </a>

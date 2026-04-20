@@ -4,6 +4,34 @@
 
 @import './theme/themes.css';
 
+:root {
+  /* Échelle absolue des superpositions (Z-Index Scale) */
+  --z-index-base: 1;
+  --z-index-page-content: 1100;
+  --z-index-dropdown: 1500;
+  --z-index-nav: 5000;
+  --z-index-fab: 6000;
+  --z-index-sidebar-overlay: 7000;
+  --z-index-sidebar: 7100;
+  --z-index-modal-bottom: 8000;
+  --z-index-toast: 9000;
+}
+
+/* Classes utilitaires pour le responsive (Mobile-First) */
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .mobile-only {
+    display: flex !important;
+  }
+  
+  .desktop-only {
+    display: none !important;
+  }
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -70,7 +98,7 @@ label {
   -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: var(--z-index-nav, 1000);
   border-bottom: 2px solid var(--accent);
   /* Un vrai liseret qui marque la séparation */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -109,6 +137,32 @@ label {
   color: var(--foreground);
 }
 
+.nav-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.nav-badge.danger {
+  background: var(--danger);
+  color: var(--badge-text, #ffffff);
+  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
+}
+
+.nav-badge.primary {
+  background: var(--primary);
+  color: var(--badge-text, #ffffff);
+}
+
 .main-layout-wrapper {
   flex: 1;
   width: 100%;
@@ -120,7 +174,6 @@ label {
 .main-layout-wrapper:has(.home-page-fixed) {
   padding-bottom: 4rem !important;
   /* Laisse de la place au footer */
-  z-index: 1100;
 }
 
 .container {
@@ -163,13 +216,43 @@ label {
   margin-bottom: 2rem;
 }
 
-.page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
+.footer-link:hover {
+  color: var(--primary);
 }
 
-.footer-link:hover {
-  color: var(--primary) !important;
+.global-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 0.6rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--header-foreground);
+  border-top: 1px solid var(--accent);
+  background: var(--footer-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: auto;
+  z-index: var(--z-index-nav, 1000);
+}
+
+.global-footer .footer-link {
+  text-decoration: underline;
+  color: var(--header-foreground);
+  opacity: 0.8;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.global-footer .footer-text {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.global-footer .github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
 }
 
 select option {

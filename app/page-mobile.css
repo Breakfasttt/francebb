@@ -4,24 +4,63 @@
   .home-page-fixed {
     height: auto;
     overflow-y: visible;
+    padding: 1rem !important;
+  }
+
+  .action-grid-row {
+    flex-direction: column !important;
+    display: flex !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem !important;
+  }
+
+  /* Hauteur uniforme pour tous les boutons d'action sur mobile */
+  .action-card {
+    height: 120px !important;
+    min-height: 120px !important;
+    padding: 0.8rem !important;
+    display: flex !important;
+    flex-direction: row !important; /* On passe en horizontal car c'est plus joli en colonne */
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    padding-left: 2rem !important;
+  }
+
+  .action-card svg {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .action-card .card-text {
+    margin-top: 0 !important;
+    font-size: 1.1rem !important;
+    text-align: left !important;
+  }
+
+  .action-card-mini {
+    height: 60px !important;
+    min-height: 60px !important;
+    font-size: 1rem !important;
+  }
+
+  .card-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.8rem !important;
+  }
+
+  .hero {
+    padding-top: 2rem;
   }
 
   .home-content-split {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .events-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .action-grid-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .events-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }

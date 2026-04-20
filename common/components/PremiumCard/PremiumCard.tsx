@@ -1,5 +1,6 @@
 import React from 'react';
 import './PremiumCard.css';
+import './PremiumCard-mobile.css';
 
 interface PremiumCardProps<T extends React.ElementType = 'div'> extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
