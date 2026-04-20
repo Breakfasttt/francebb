@@ -57,30 +57,12 @@ const PostItem: React.FC<PostItemProps> = ({
       id={`post-${post.id}`}
       className={`forum-post-card ${isFirstPostAlwaysVisible ? 'first-post-highlight' : ''}`}
       style={{
-        display: 'grid',
-        gridTemplateColumns: '200px 1fr',
-        minHeight: '200px',
-        padding: 0,
-        position: 'relative',
         borderColor: isFirstPostAlwaysVisible ? 'var(--accent)' : undefined,
         background: isFirstPostAlwaysVisible ? 'var(--admin-bg)' : undefined,
-        minWidth: 0
       }}
     >
       {/* Sidebar Auteur */}
-      <div style={{
-        background: 'var(--glass-bg)',
-        backdropFilter: 'blur(5px)',
-        borderRight: '1px solid var(--glass-border)',
-        borderTopLeftRadius: '16px',
-        borderBottomLeftRadius: '16px',
-        padding: '2rem 1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1.2rem',
-        textAlign: 'center'
-      }}>
+      <div className="post-author-sidebar">
         <UserAvatar
           image={post.author.image}
           name={post.author.name}
@@ -91,53 +73,52 @@ const PostItem: React.FC<PostItemProps> = ({
           isModerator={isModerator(post.author.role)}
         />
 
-        <div style={{ width: '100%' }}>
-          <div style={{ fontWeight: 700, color: 'var(--foreground)', fontSize: '1.1rem', wordBreak: 'break-word' }}>{post.author.name}</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--accent)', textTransform: 'uppercase', marginTop: '0.2rem', fontWeight: 600 }}>
+        <div className="post-author-info">
+          <div className="author-name">{post.author.name}</div>
+          <div className="author-role">
             {post.author.role || 'COACH'}
           </div>
 
           {(post.author.nafNumber || post.author.region || (post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom || post.author.equipe) && (
-            <div style={{ marginTop: '0.8rem', paddingTop: '0.8rem', borderTop: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <div className="author-stats-container">
               {post.author.nafNumber && (
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                <div className="author-stat-item naf">
                   <Trophy size={12} color="var(--unread-marker)" />
                   <a
                     href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${post.author.nafNumber}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: 'var(--foreground)', fontWeight: 600, textDecoration: 'none', transition: 'color 0.2s' }}
                   >
                     {post.author.nafNumber}
                   </a>
                 </div>
               )}
               {post.author.equipe && (
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', fontWeight: 600 }}>
+                <div className="author-stat-item team">
                   <Trophy size={11} color="var(--accent)" /> {post.author.equipe}
                 </div>
               )}
               {post.author.region && (
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center' }}>
+                <div className="author-stat-item region">
                   <MapPin size={12} color="#3b82f6" /> {regionLabels[post.author.region] || post.author.region}
                 </div>
               )}
               {((post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom) && (
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'flex-start', gap: '0.4rem', justifyContent: 'center' }}>
+                <div className="author-stat-item leagues">
                   <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} />
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center' }}>
+                  <div className="leagues-list">
                     {post.author.ligues?.map((ligue: any) => (
                       <Tooltip key={ligue.id} text={ligue.name}>
                         <Link
                           href={`/ligue/${ligue.id}`}
-                          style={{ color: 'var(--foreground)', textDecoration: 'none', fontWeight: 600, background: 'rgba(34, 197, 94, 0.1)', padding: '0 4px', borderRadius: '4px' }}
+                          className="league-link"
                         >
                           {ligue.acronym || ligue.name}
                         </Link>
                       </Tooltip>
                     ))}
                     {post.author.ligueCustom && (
-                      <span style={{ fontStyle: 'italic', opacity: 0.8 }}>{post.author.ligueCustom}</span>
+                      <span className="custom-league">{post.author.ligueCustom}</span>
                     )}
                   </div>
                 </div>
@@ -146,7 +127,7 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
 
           {currentUserId && (
-            <div style={{ display: 'flex', gap: '0.4rem', marginTop: '1.2rem', justifyContent: 'center' }}>
+            <div className="author-actions">
               <BadgeButton
                 href={`/spy/${post.author.id}`}
                 icon={User}
@@ -165,16 +146,17 @@ const PostItem: React.FC<PostItemProps> = ({
           )}
         </div>
       </div>
-      <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        <div style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.8rem', marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+
+      <div className="post-main-content">
+        <div className="post-header-meta">
+          <div className="post-date">
             <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
             {post.updatedAt.getTime() > post.createdAt.getTime() + 1000 && (
-              <span style={{ color: 'var(--text-muted)' }}>• modifié le : {new Date(post.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+              <span className="edit-date">• modifié le : {new Date(post.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
             )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span style={{ fontWeight: 800, color: 'var(--accent)', marginRight: '0.5rem' }}>#{index + 1}</span>
+          <div className="post-index-actions">
+            <span className="post-index">#{index + 1}</span>
             {currentUserId && <MarkUnreadAction topicId={topicId} postId={post.id} />}
             <SharePostButton postId={post.id} topicId={topicId} page={safeCurrentPage} />
             {currentUserId && currentUserId !== post.authorId && (
@@ -185,72 +167,25 @@ const PostItem: React.FC<PostItemProps> = ({
 
         {/* Message Content */}
         {post.isDeleted ? (
-          <div style={{
-            background: 'var(--glass-border)',
-            border: '1px solid var(--glass-border)',
-            borderRadius: '12px',
-            padding: '2rem',
-            marginBottom: '1rem',
-            color: 'var(--text-muted)',
-            fontSize: '1rem',
-            fontStyle: 'italic',
-            textAlign: 'center'
-          }}>
+          <div className="post-deleted-placeholder">
             Ce message a été supprimé par son auteur
           </div>
         ) : (isBlocked || isBannedAuthor) && !isRevealed ? (
-          <div style={{
-            background: isBannedAuthor ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)',
-            border: isBannedAuthor ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid var(--glass-border)',
-            borderRadius: '16px',
-            padding: '3rem 2rem',
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '1.5rem',
-            boxShadow: 'var(--glass-shadow)',
-            position: 'relative',
-            overflow: 'hidden',
-            margin: '1rem 0'
-          }}>
+          <div className={`post-blocked-placeholder ${isBannedAuthor ? 'banned' : ''}`}>
             {/* Background Icon Watermark */}
-            <div style={{ position: 'absolute', top: '-15%', right: '-10%', opacity: 0.03, transform: 'rotate(-15deg)', pointerEvents: 'none' }}>
+            <div className="watermark">
               {isBannedAuthor ? <Ban size={180} color="#ef4444" /> : <ShieldAlert size={180} />}
             </div>
 
-            <div style={{
-              padding: '1.2rem',
-              borderRadius: '50%',
-              background: isBannedAuthor ? 'rgba(239, 68, 68, 0.2)' : 'rgba(var(--primary-rgb), 0.1)',
-              color: isBannedAuthor ? '#ef4444' : 'var(--primary)',
-              boxShadow: isBannedAuthor ? '0 0 30px rgba(239, 68, 68, 0.2)' : '0 0 30px rgba(var(--primary-rgb), 0.15)',
-              border: isBannedAuthor ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid var(--primary-transparent)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+            <div className="placeholder-icon">
               {isBannedAuthor ? <Ban size={32} strokeWidth={2.5} /> : <EyeOff size={32} strokeWidth={2.5} />}
             </div>
 
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <h4 style={{
-                margin: 0,
-                fontWeight: 800,
-                color: isBannedAuthor ? '#ef4444' : 'var(--foreground)',
-                fontSize: '1.2rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em'
-              }}>
+            <div className="placeholder-text">
+              <h4>
                 {isBannedAuthor ? `Coach banni : ${post.author.name}` : `Utilisateur bloqué : ${post.author.name}`}
               </h4>
-              <p style={{
-                margin: '0.8rem 0 0 0',
-                fontSize: '0.95rem',
-                color: 'var(--text-muted)',
-                lineHeight: 1.6,
-                maxWidth: '500px'
-              }}>
+              <p>
                 {isBannedAuthor
                   ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
                   : "Ce contenu est masqué car vous avez bloqué cet utilisateur. Vous pouvez le gérer dans votre gestion de compte."
@@ -267,48 +202,27 @@ const PostItem: React.FC<PostItemProps> = ({
             </ClassicButton>
           </div>
         ) : (
-          <>
+          <div className="post-actual-content-wrapper">
             {post.isModerated && (
-              <div style={{
-                background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)',
-                border: '1px solid var(--danger)',
-                borderRadius: '8px',
-                padding: '1rem',
-                marginBottom: '1.5rem',
-                color: 'var(--danger)',
-                fontSize: '0.95rem',
-                fontWeight: 600,
-                fontStyle: 'italic'
-              }}>
+              <div className="post-moderation-banner">
                 <Shield size={14} style={{ display: 'inline', marginRight: '0.5rem' }} />
                 Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
               </div>
             )}
 
             {(!post.isModerated || isUserModerator || currentUserId === post.authorId) ? (
-              <div style={{ position: 'relative' }}>
+              <div className="post-content-inner">
                 {post.isModerated && (
-                  <div style={{ fontSize: '0.7rem', color: 'var(--primary)', marginBottom: '0.5rem', textTransform: 'uppercase', fontWeight: 700 }}>
+                  <div className="moderator-view-hint">
                     [Contenu original visible par vous seul et les modérateurs]
                   </div>
                 )}
                 {(isBlocked || isBannedAuthor) && isRevealed && (
-                  <div style={{
-                    fontSize: '0.75rem',
-                    color: isBannedAuthor ? '#ef4444' : 'var(--primary)',
-                    marginBottom: '1rem',
-                    padding: '0.4rem 0.8rem',
-                    background: isBannedAuthor ? 'rgba(239, 68, 68, 0.1)' : 'rgba(var(--primary-rgb), 0.1)',
-                    borderRadius: '4px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    fontWeight: 700
-                  }}>
+                  <div className={`revealed-hint ${isBannedAuthor ? 'banned' : ''}`}>
                     <Info size={12} /> {isBannedAuthor ? "AFFICHAGE TEMPORAIRE (COACH BANNI)" : "AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)"}
                     <button
                       onClick={() => setIsRevealed(false)}
-                      style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.65rem' }}
+                      className="rehide-btn"
                     >
                       Masquer à nouveau
                     </button>
@@ -318,35 +232,19 @@ const PostItem: React.FC<PostItemProps> = ({
                   content={post.content}
                   quoteStatusMap={quoteStatusMap}
                   currentUserId={currentUserId}
-                  style={{
-                    color: post.isModerated ? 'var(--text-muted)' : 'var(--text-secondary)',
-                    lineHeight: '1.6',
-                    fontSize: '1.1rem',
-                    flex: 1,
-                    wordBreak: 'break-word',
-                    opacity: post.isModerated ? 0.6 : 1
-                  }}
+                  className={post.isModerated ? 'moderated-content' : ''}
                 />
 
                 {post.author.signature && (
                   <BBCodeContent 
                     content={post.author.signature}
                     currentUserId={currentUserId}
-                    style={{
-                      marginTop: '2.5rem',
-                      paddingTop: '1rem',
-                      borderTop: '1px solid var(--glass-border)',
-                      fontSize: '0.85rem',
-                      color: 'var(--text-muted)',
-                      fontStyle: 'italic',
-                      maxWidth: '100%',
-                      overflow: 'hidden'
-                    }}
+                    className="post-signature"
                   />
                 )}
               </div>
             ) : (
-              <div style={{ color: 'var(--text-muted)', fontStyle: 'italic', padding: '1rem 0' }}>
+              <div className="post-moderated-content-placeholder">
                 Le contenu de ce message a été masqué par la modération.
               </div>
             )}
@@ -365,12 +263,11 @@ const PostItem: React.FC<PostItemProps> = ({
               tournamentId={tournamentId}
               isFirstPost={post.id === firstPostId}
             />
-          </>
+          </div>
         )}
       </div>
     </PremiumCard>
   );
 };
-
 
 export default PostItem;
