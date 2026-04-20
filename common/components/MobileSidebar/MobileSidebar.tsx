@@ -27,11 +27,14 @@ export default function MobileSidebar({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -48,6 +51,7 @@ export default function MobileSidebar({
       <div 
         className={`mobile-sidebar-overlay ${isOpen ? "open" : ""}`} 
         onClick={onClose} 
+        style={{ touchAction: 'none' }}
       />
       
       <div className={`mobile-sidebar-container ${isOpen ? "open" : ""}`}>
@@ -59,78 +63,55 @@ export default function MobileSidebar({
         </div>
 
         <div className="mobile-sidebar-body">
-          {/* Bloc User / Auth */}
-          <div style={{ padding: '0.5rem 1.5rem' }}>
+          {/* 1. Connexion / Profil / Déconnexion */}
+          <div className="mobile-sidebar-user-section">
             <SignInButton user={session?.user} />
+          </div>
+
+          {/* 2. Icônes d'action style Desktop (Messagerie / Mod / Admin) */}
+          <div className="mobile-utility-icons">
+            {session?.user && (
+              <Link href="/profile?tab=pm" className="nav-icon-capsule" style={{ position: 'relative' }}>
+                <Mail size={22} />
+                {unreadCount > 0 && <span className="nav-badge primary">{unreadCount}</span>}
+              </Link>
+            )}
+            {isMod && (
+              <Link href="/moderation" className="nav-icon-capsule" style={{ position: 'relative' }}>
+                <ShieldAlert size={22} />
+                {pendingModCount > 0 && <span className="nav-badge danger">{pendingModCount}</span>}
+              </Link>
+            )}
+            {isAdmin && (
+              <Link href="/administration" className="nav-icon-capsule">
+                <Settings size={22} />
+              </Link>
+            )}
           </div>
 
           <div className="mobile-sidebar-divider" />
 
-          {/* Core Navigation */}
-          <Link href="/" className="mobile-nav-item">
-            <Home size={20} /> Accueil
-          </Link>
-          <Link href="/forum" className="mobile-nav-item">
-            <MessageSquare size={20} /> Forum
-          </Link>
-          <Link href="/annuaire" className="mobile-nav-item">
-            <Map size={20} /> Annuaire
-          </Link>
-          <Link href="/jouer" className="mobile-nav-item">
-            <BookOpen size={20} /> Comment Jouer
-          </Link>
-
-          {/* Social / Private */}
-          {session?.user && (
-            <>
-              <div className="mobile-sidebar-divider" />
-              <Link href="/profile?tab=pm" className="mobile-nav-item">
-                <Mail size={20} /> 
-                Messagerie
-                {unreadCount > 0 && <span className="mobile-sidebar-badge">{unreadCount}</span>}
-              </Link>
-            </>
-          )}
-
-          {/* Admin / Mod */}
-          {(isAdmin || isMod) && (
-            <>
-              <div className="mobile-sidebar-divider" />
-              {isMod && (
-                <Link href="/moderation" className="mobile-nav-item danger">
-                  <ShieldAlert size={20} /> 
-                  Modération
-                  {pendingModCount > 0 && <span className="mobile-sidebar-badge danger">{pendingModCount}</span>}
-                </Link>
-              )}
-              {isAdmin && (
-                <Link href="/administration" className="mobile-nav-item danger">
-                  <Settings size={20} /> Administration
-                </Link>
-              )}
-            </>
-          )}
-
-          <div className="mobile-sidebar-divider" />
-
-          {/* Portail dynamique pour les sous-navigations (Sidebars Locales) */}
+          {/* 3. Contenu dynamique (Sidebars locales / Tabs) */}
           <div id="mobile-page-sidebar-slot" className="mobile-sidebar-slot">
-            {/* React Portal injectera le contenu de la page courante ici */}
+            {/* Les onglets de la page (Admin, Profil, etc.) apparaissent ici via Portail */}
           </div>
         </div>
 
         {/* Pied de menu : équivalent du footer desktop */}
         <div className="mobile-sidebar-footer">
-          <Link href="/mentions-legales">Mentions légales</Link>
-          <span>Conçu avec l'aide de l'IA</span>
-          <a 
-            href="https://github.com/Breakfasttt/francebb" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}
-          >
-            <Github size={14} /> GitHub
-          </a>
+          <div className="mobile-footer-links">
+            <Link href="/mentions-legales">Mentions légales</Link>
+            <a 
+              href="https://github.com/Breakfasttt/francebb" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Github size={16} /> GitHub
+            </a>
+          </div>
+          <div className="mobile-footer-credit">
+            <span>Conçu avec l'aide de l'IA</span>
+          </div>
         </div>
       </div>
     </>

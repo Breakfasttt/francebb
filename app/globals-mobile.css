@@ -17,6 +17,9 @@
 
 @media (max-width: 1024px) {
   .nav {
+    position: sticky !important;
+    top: 0;
+    z-index: var(--z-index-nav); /* Utilisation de la variable globale (5000) */
     background: var(--nav-bg);
     backdrop-filter: blur(20px);
     border-bottom: 2px solid var(--accent);
@@ -29,11 +32,30 @@
   }
 
   .container {
-    padding: 1rem;
+    padding: 1rem 1.2rem !important; /* Gouttières horizontales pour le contenu uniquement */
+    width: 100% !important;
+    box-sizing: border-box;
   }
 
   .main-layout-wrapper {
-    padding-top: 2rem;
+    padding-top: 0;
+  }
+
+  /* Diagnostic pour le bouton retour - NETTOYAGE */
+  #mobile-back-button-slot {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    margin-right: 1.5rem;
+    /* Espacement bord droit */
+    z-index: 100;
+  }
+
+  .page-header-container {
+    margin-top: 0 !important;
+    min-height: 120px !important;
   }
 
   .nav-icon-capsule.mobile-only {

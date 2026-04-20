@@ -1,33 +1,53 @@
 /* Styles spécifiques mobile pour PageHeader */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .page-header-container {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    /* Centrage */
     gap: 1.2rem;
     margin-bottom: 2rem;
+    padding-top: 1.5rem !important;
   }
-  
-  .page-header-back-wrapper {
-    position: static;
-    transform: none;
+
+  /* Sélecteur fort pour écraser les thèmes !important */
+  :root body .page-header-back-wrapper {
+    position: relative !important;
+    transform: none !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
   }
-  
+
+  :root body .page-header-back-wrapper .back-button {
+    width: 40px !important;
+    height: 40px !important;
+    border-width: 2px !important;
+    margin: 0 !important;
+  }
+
   .page-header-content {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    /* Centrage */
+    text-align: center;
+    /* Centrage */
     width: 100%;
   }
-  
+
   .page-header-title {
     font-size: 2rem;
-    justify-content: flex-start;
+    justify-content: center;
+    /* Centrage */
   }
 
   .page-header-actions {
     position: static;
     transform: none;
-    justify-content: flex-start;
+    justify-content: center;
+    /* Centrage */
     width: 100%;
   }
 }

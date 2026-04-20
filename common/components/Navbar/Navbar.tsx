@@ -96,9 +96,12 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
             )}
           </a>
         )}
-        <div className="desktop-only">
-          <SignInButton user={session?.user} />
         </div>
+      {/* Fin du bloc desktop */}
+
+      {/* Slot pour le bouton retour mobile (PageHeader) - EXTÉRIEUR au bloc desktop */}
+      <div id="mobile-back-button-slot" className="mobile-only" style={{ marginLeft: 'auto' }}>
+        {/* Injecté dynamiquement par PageHeader via Portail */}
       </div>
 
       <GlobalPortal>

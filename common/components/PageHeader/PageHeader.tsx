@@ -1,4 +1,7 @@
-import React, { ReactNode } from 'react';
+"use client";
+
+import React, { ReactNode, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import BackButton from '@/common/components/BackButton/BackButton';
 import './PageHeader.css';
 import './PageHeader-mobile.css';
@@ -30,15 +33,34 @@ export default function PageHeader({
   className = '',
   children
 }: PageHeaderProps) {
+  const [mounted, setMounted] = useState(false);
+  const [targetSlot, setTargetSlot] = useState<Element | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const slot = document.getElementById('mobile-back-button-slot');
+    setTargetSlot(slot);
+  }, []);
+
+  const backButtonContent = backHref !== null ? (
+    <div className="page-header-back-wrapper">
+      <BackButton 
+        href={backHref} 
+        title={backTitle} 
+      />
+    </div>
+  ) : null;
+
   return (
     <header className={`page-header-container ${className}`.trim()} style={style}>
-      {backHref !== null && (
-        <div className="page-header-back-wrapper">
-          <BackButton 
-            href={backHref} 
-            title={backTitle} 
-          />
-        </div>
+      {backButtonContent && (
+        <>
+          {mounted && targetSlot && window.innerWidth <= 1024 ? (
+            createPortal(backButtonContent, targetSlot)
+          ) : (
+            backButtonContent
+          )}
+        </>
       )}
       
       <div className="page-header-content">

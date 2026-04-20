@@ -4,11 +4,11 @@
  * Système d'onglets flexible.
  * Supporte les modes vertical (sidebar), horizontal, et "docked" (profil).
  */
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import './TabSystem.css';
 import './TabSystem-mobile.css';
 import Tooltip from '@/common/components/Tooltip/Tooltip';
-import MobilePortal from '@/common/components/MobilePortal/MobilePortal';
 
 export interface TabItem {
   id: string;
@@ -16,6 +16,7 @@ export interface TabItem {
   icon?: React.ReactNode;
   disabled?: boolean;
   badge?: number;
+  danger?: boolean;
 }
 
 interface TabSystemProps {
@@ -25,7 +26,7 @@ interface TabSystemProps {
   variant?: 'standard' | 'sidebar' | 'docked-sidebar' | 'docked-sidebar-left';
   orientation?: 'horizontal' | 'vertical';
   className?: string;
-  showLabels?: boolean; // Utile pour le mode docked-sidebar qui ne montre que les icônes
+  showLabels?: boolean;
 }
 
 const TabSystem: React.FC<TabSystemProps> = ({
@@ -37,13 +38,22 @@ const TabSystem: React.FC<TabSystemProps> = ({
   className = '',
   showLabels = true
 }) => {
+  const [mounted, setMounted] = useState(false);
+  const [targetSlot, setTargetSlot] = useState<Element | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const slot = document.getElementById('mobile-page-sidebar-slot');
+    setTargetSlot(slot);
+  }, []);
+
   const content = (
     <div className={`tab-system ${variant} ${orientation} ${className}`}>
       {items.map((item) => {
         const button = (
           <button
             key={item.id}
-            className={`tab-item ${activeTab === item.id ? 'active' : ''} ${item.disabled ? 'disabled' : ''}`}
+            className={`tab-item ${activeTab === item.id ? 'active' : ''} ${item.disabled ? 'disabled' : ''} ${item.danger ? 'danger' : ''}`}
             onClick={() => !item.disabled && onTabChange(item.id)}
             disabled={item.disabled}
           >
@@ -69,10 +79,10 @@ const TabSystem: React.FC<TabSystemProps> = ({
     </div>
   );
 
-  // Auto-téléportation vers la menu mobile global si c'est une sidebar locale
+  // Auto-téléportation vers le menu mobile global si c'est une sidebar locale sur mobile
   const isSidebar = variant.includes('sidebar');
-  if (isSidebar) {
-    return <MobilePortal>{content}</MobilePortal>;
+  if (mounted && targetSlot && isSidebar && window.innerWidth <= 1024) {
+    return createPortal(content, targetSlot);
   }
 
   return content;

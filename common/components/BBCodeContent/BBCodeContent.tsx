@@ -57,7 +57,7 @@ const BBCodeContent: React.FC<BBCodeContentProps> = ({
   }
 
   return (
-    <div className={className} style={{ ...style, maxWidth: "100%", overflow: "hidden" }}>
+    <div className={`bbcode-content-wrapper ${className || ''}`} style={{ ...style, maxWidth: "100%", overflow: "hidden" }}>
       {blocks.map((block, index) => {
         if (typeof block === 'string') {
           return (
