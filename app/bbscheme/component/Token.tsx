@@ -34,10 +34,20 @@ const Token: React.FC<TokenProps> = ({
   // Custom Initials Logic
   const getInitials = (name: string) => {
     if (!name) return "";
-    // Ignorer le contenu entre parenthèses pour l'acronyme
-    const cleanName = name.replace(/\([^)]*\)/g, '').trim();
+    // Ignorer le contenu entre parenthèses
+    let cleanName = name.replace(/\([^)]*\)/g, '').trim();
+    
+    // CAS SPÉCIAL BBFRANCE : Si commence par "Guerrière", on prend le mot suivant
+    if (cleanName.startsWith("Guerrière ")) {
+      cleanName = cleanName.replace("Guerrière ", "").trim();
+    }
+
     const words = cleanName.split(/\s+/);
-    if (words.length === 1) return cleanName.substring(0, 1).toUpperCase();
+    if (words.length === 1) {
+      // Si un seul mot (ex: Python), on prend les 2 premières lettres
+      return cleanName.substring(0, 2).toUpperCase();
+    }
+    // Sinon on prend les initiales (ex: Troisième Quart -> TQ)
     return words.map(word => word[0]).join("").toUpperCase();
   };
 
@@ -92,7 +102,7 @@ const Token: React.FC<TokenProps> = ({
         ) : (
           <div className="token-visual">
             <div className="token-base">
-               {token.id.includes('-star-') ? (
+               {(token.id.includes('-star-') || token.playerInfo?.name === "Star Player") ? (
                  <div className="star-token-content">
                     <Star size={20} fill="#ffd700" color="#ffd700" strokeWidth={2} className="star-icon" />
                     {token.playerInfo && token.playerInfo.name !== "Star Player" && (

@@ -60,7 +60,7 @@
   z-index: 6;
 }
 
-.line-center { left: 50%; top: 0; bottom: 0; width: 4px; background: var(--accent); transform: translateX(-50%); }
+.line-center { left: 50%; top: 0; bottom: 0; width: 4px; background: rgba(255, 255, 255, 0.95); transform: translateX(-50%); }
 
 /* Match grid lines exactly and ensure consistent 3px thickness */
 .line-ez-left { left: 49px; top: 0; bottom: 0; width: 3px; }
@@ -80,4 +80,4 @@
   pointer-events: none;
 }
 
-.token-wrapper { position: absolute; pointer-events: auto; }
+.token-wrapper { position: absolute; pointer-events: auto; z-index: 100; }

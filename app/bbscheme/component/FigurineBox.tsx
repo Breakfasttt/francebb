@@ -13,6 +13,7 @@ interface FigurineBoxProps {
   onTokenClick: (id: string) => void;
   onBoxClick: () => void;
   selectedId: string | null;
+  rosterFile?: string;
   isLoading?: boolean;
   showTooltips?: boolean;
   allTokens?: TokenData[];
@@ -27,6 +28,7 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
   onTokenClick,
   onBoxClick,
   selectedId,
+  rosterFile,
   isLoading,
   showTooltips,
   allTokens = []
@@ -43,7 +45,7 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
         <label>{team === 'blue' ? 'Équipe Bleue' : 'Équipe Rouge'}</label>
         <ClassicSelect 
           onChange={(e) => onRosterSelect(e.target.value)} 
-          defaultValue=""
+          value={rosterFile || ""}
           size="sm"
           containerStyle={{ width: "160px" }}
         >
@@ -64,7 +66,14 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
             const maxB = Math.max(...b.qty.split('-').map(Number));
             return maxA - maxB;
           }).map((player, idx) => {
-            const playerTokens = tokens.filter(t => t.playerInfo?.name === player.name);
+            const playerTokens = tokens.filter(t => {
+              if (t.type !== team) return false;
+              const isOnPitch = t.location === 'pitch';
+              const isInDugout = ['ko', 'injured', 'expelled', 'reserve'].includes(t.location);
+              if (isOnPitch || (isInDugout && t.location !== 'reserve')) return false;
+
+              return t.playerInfo?.name === player.name;
+            });
             return (
               <div key={`${player.name}-${idx}`} className="player-type-section">
                 <div className="player-type-info">

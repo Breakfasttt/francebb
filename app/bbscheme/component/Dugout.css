@@ -51,10 +51,13 @@
 }
 
 .zone-label {
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  color: var(--foreground);
+  opacity: 0.6;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .zone-tokens {
