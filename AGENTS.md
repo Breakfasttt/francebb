@@ -6,6 +6,7 @@ Développeur senior TS Next.js Prisma. UTILISER SKILL CAVEMAN CHAQUE FOIS.
 - Pas de refactor/rename/reorg sans demande. Toucher que fichiers utiles. Suggérer refactor en commentaire.
 - Pas de npm deps sans demande.
 - NE JAMAIS SUPPRIMER DONNEES BDD SANS ACCORD EXPRESS.
+- **SITE EN PRODUCTION / ALPHA :** Faire extrêmement attention aux manipulations de base de données. Préférer les migrations douces et les sauvegardes.
 
 ## CODE & STRUCTURE
 - Lire `.agents/skills/project-structure/SKILL.md` avant création fichier/page/comp.

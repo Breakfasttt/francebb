@@ -1,4 +1,4 @@
-# 🏈 France Blood Bowl — BBFrance
+# 🏈 France Blood Bowl — BBFrance `v0.1.0-alpha`
 
 La plateforme de référence pour la communauté **Blood Bowl en France**. Centrée sur les tournois, l'échange et la gestion de profil pour tous les coachs français.
 

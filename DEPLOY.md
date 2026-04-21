@@ -204,4 +204,8 @@ Si vous ne voulez pas de l'adresse par défaut `...vercel.app`, vous pouvez util
 *   **Le site est blanc / Erreur 500** : Allez dans l'onglet **"Logs"** sur Vercel pour lire l'erreur en rouge.
 
 ---
-*Guide mis à jour le : 11 Avril 2026. Bon courage Coach ! 🏈*
+---
+> [!IMPORTANT]
+> **PASSAGE EN MODE PRODUCTION / ALPHA :** À partir de maintenant, toute perte de données est critique. Toujours effectuer un `backup` de la base Turso avant les opérations lourdes via `turso db backup create bbfrance-db`.
+
+*Guide mis à jour le : 21 Avril 2026. Bon courage Coach ! 🏈*
