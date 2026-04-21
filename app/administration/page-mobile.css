@@ -11,15 +11,17 @@
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.6rem;
     width: 100%;
+    box-sizing: border-box;
   }
 
   /* Séparateur entre tabs standard et avancé (superadmin) */
   .admin-sidebar-mobile-separator {
     height: 1px;
     background: var(--glass-border);
-    margin: 0.8rem 0;
+    margin: 1.5rem 0;
     opacity: 0.4;
+    width: 100%;
   }
 }

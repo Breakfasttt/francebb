@@ -1,10 +1,10 @@
 "use client";
 
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
-import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
 
 export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay" | "info-mails";
 
@@ -36,30 +36,19 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
   if (isMobile) {
     return (
       <MobilePortal targetId="mobile-page-sidebar-slot">
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0.6rem',
-          padding: '0.5rem 1.2rem',
-          width: '100%',
-          boxSizing: 'border-box',
-        }}>
+        <div className="admin-sidebar-mobile">
           <TabSystem
             items={standardTabs}
             activeTab={activeTab}
             onTabChange={(id) => onTabChange(id as AdminTab)}
             orientation="vertical"
             variant="sidebar"
+            noPortal={true}
           />
 
           {isSuperAdmin && (
             <>
-              <div style={{
-                height: '1px',
-                background: 'var(--glass-border)',
-                margin: '0.8rem 0',
-                opacity: 0.4,
-              }} />
+              <div className="admin-sidebar-mobile-separator" />
               <TabSystem
                 items={advancedTabs}
                 activeTab={activeTab}
@@ -67,6 +56,7 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
                 orientation="vertical"
                 variant="sidebar"
                 className="danger-tabs"
+                noPortal={true}
               />
             </>
           )}

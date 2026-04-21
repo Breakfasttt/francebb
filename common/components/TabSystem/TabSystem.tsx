@@ -27,6 +27,7 @@ interface TabSystemProps {
   orientation?: 'horizontal' | 'vertical';
   className?: string;
   showLabels?: boolean;
+  noPortal?: boolean;
 }
 
 const TabSystem: React.FC<TabSystemProps> = ({
@@ -36,7 +37,8 @@ const TabSystem: React.FC<TabSystemProps> = ({
   variant = 'standard',
   orientation = 'horizontal',
   className = '',
-  showLabels = true
+  showLabels = true,
+  noPortal = false
 }) => {
   const [mounted, setMounted] = useState(false);
   const [targetSlot, setTargetSlot] = useState<Element | null>(null);
@@ -81,7 +83,7 @@ const TabSystem: React.FC<TabSystemProps> = ({
 
   // Auto-téléportation vers le menu mobile global si c'est une sidebar locale sur mobile
   const isSidebar = variant.includes('sidebar');
-  if (mounted && targetSlot && isSidebar && window.innerWidth <= 1024) {
+  if (mounted && targetSlot && isSidebar && window.innerWidth <= 1024 && !noPortal) {
     return createPortal(content, targetSlot);
   }
 
