@@ -31,15 +31,16 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
+  // 1. Initialisation des variables par défaut
   let userRole: UserRole = "COACH";
   let isBanned = false;
   let userTheme = "saison3";
   let pendingModCount = 0;
   let unreadCount = 0;
 
+  // 2. Fetching asynchrone parallélisé des données globales
   if (session?.user?.id) {
     try {
-      // 1. Fetch user specific data and global counts in parallel
       const [user, pmCount] = await Promise.all([
         prisma.user.findUnique({
           where: { id: session.user.id },
@@ -65,7 +66,7 @@ export default async function RootLayout({
         userTheme = user.theme || "saison3";
         unreadCount = pmCount;
 
-        // 2. If moderator, fetch moderation counts in parallel
+        // 3. Si modérateur, fetcher les compteurs de modération en parallèle
         if (isModerator(userRole)) {
           const [reports, resources] = await Promise.all([
             prisma.moderationReport.count({ where: { status: "PENDING" } }),

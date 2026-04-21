@@ -13,39 +13,38 @@ export default async function Home() {
   const session = await auth();
   const isAuth = !!session?.user;
 
-  const nextTournaments = await prisma.tournament.findMany({
-    where: {
-      date: { gte: new Date() },
-      isFinished: false,
-      isCancelled: false
-    },
-    orderBy: {
-      date: 'asc'
-    },
-    take: 3,
-    include: { topic: true }
-  });
+  // 1. Requêtes parallélisées pour l'affichage initial
+  const [nextTournaments, discordInvite, tournamentForum, articlesCount] = await Promise.all([
+    prisma.tournament.findMany({
+      where: {
+        date: { gte: new Date() },
+        isFinished: false,
+        isCancelled: false
+      },
+      orderBy: { date: 'asc' },
+      take: 3,
+      include: { topic: true }
+    }),
+    prisma.siteSetting.findUnique({
+      where: { key: 'discord_invite' }
+    }),
+    prisma.forum.findFirst({
+      where: { isTournamentForum: true },
+      select: { id: true }
+    }),
+    prisma.article.count()
+  ]);
 
-  const discordInvite = await prisma.siteSetting.findUnique({
-    where: { key: 'discord_invite' }
-  });
-
-  // Trouver le premier forum de type "tournoi" pour le bouton "Créer"
-  const tournamentForum = await prisma.forum.findFirst({
-    where: { isTournamentForum: true },
-    select: { id: true }
-  });
-
-  // Récupérer un article aléatoire
-  const articlesCount = await prisma.article.count();
-  const randomArticle = articlesCount > 0 
-    ? await prisma.article.findMany({
-        take: 1,
-        skip: Math.floor(Math.random() * articlesCount),
-        include: { author: true, tags: true }
-      })
-    : [];
-  const selectedArticle = randomArticle[0];
+  // 2. Récupérer un article aléatoire si nécessaire
+  let selectedArticle = null;
+  if (articlesCount > 0) {
+    const randomArticles = await prisma.article.findMany({
+      take: 1,
+      skip: Math.floor(Math.random() * articlesCount),
+      include: { author: true, tags: true }
+    });
+    selectedArticle = randomArticles[0];
+  }
 
   return (
     <>
