@@ -4,9 +4,10 @@ import React from "react";
 import Button, { ButtonProps } from "./Button";
 
 /**
- * Bouton de style "Classique" (Neutre / Glass)
- * Utilisé pour les actions secondaires, la navigation tertiaire et les éléments discrets.
+ * Bouton classique
+ * Utilisé pour les actions secondaires ou standard.
  */
-export default function ClassicButton(props: Omit<ButtonProps, "variant">) {
-  return <Button variant="classic" {...props} />;
+export default function ClassicButton(props: ButtonProps) {
+  // @ts-ignore
+  return <Button {...props} variant="classic" />;
 }
