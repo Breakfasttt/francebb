@@ -7,27 +7,42 @@ import { auth } from "@/auth";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
 import "./page-mobile.css";
+import { unstable_cache } from "next/cache";
 
+// Cache pour les tournois (60s)
+const getCachedTournaments = unstable_cache(
+  async () => {
+    return prisma.tournament.findMany({
+      where: { date: { gte: new Date() }, isFinished: false, isCancelled: false },
+      orderBy: { date: 'asc' },
+      take: 3,
+      include: { topic: true }
+    });
+  },
+  ["next-tournaments"],
+  { revalidate: 60 }
+);
+
+// Cache pour les settings (1h)
+const getCachedDiscordInvite = unstable_cache(
+  async () => prisma.siteSetting.findUnique({ where: { key: 'discord_invite' } }),
+  ["discord-invite-setting"],
+  { revalidate: 3600 }
+);
 
 export default async function Home() {
   const session = await auth();
   const isAuth = !!session?.user;
 
-  // 1. Requêtes parallélisées pour l'affichage initial
-  const [nextTournaments, discordInvite, tournamentForum, articlesCount] = await Promise.all([
-    prisma.tournament.findMany({
-      where: {
-        date: { gte: new Date() },
-        isFinished: false,
-        isCancelled: false
-      },
-      orderBy: { date: 'asc' },
-      take: 3,
-      include: { topic: true }
-    }),
-    prisma.siteSetting.findUnique({
-      where: { key: 'discord_invite' }
-    }),
+  // 1. Requêtes parallélisées (certaines sont cachées)
+  const [
+    nextTournaments, 
+    discordInvite, 
+    tournamentForum, 
+    articlesCount
+  ] = await Promise.all([
+    getCachedTournaments(),
+    getCachedDiscordInvite(),
     prisma.forum.findFirst({
       where: { isTournamentForum: true },
       select: { id: true }
@@ -35,7 +50,7 @@ export default async function Home() {
     prisma.article.count()
   ]);
 
-  // 2. Récupérer un article aléatoire si nécessaire
+  // 2. Sélection d'un article (on reste dynamique ici pour le hasard)
   let selectedArticle = null;
   if (articlesCount > 0) {
     const randomArticles = await prisma.article.findMany({

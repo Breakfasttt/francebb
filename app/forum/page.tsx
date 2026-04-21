@@ -11,46 +11,46 @@ import ForumCategory from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
 import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+import { unstable_cache } from "next/cache";
 
-export default async function ForumPage() {
-  const session = await auth();
-  const userId = session?.user?.id;
-
-  const categories = await prisma.category.findMany({
-    where: !userId ? { allowedRoles: "ALL" } : undefined,
-    orderBy: { order: "asc" },
-    include: {
-      forums: {
-        where: { 
-          parentForumId: null,
-          ...( !userId ? { allowedRoles: "ALL" } : {} )
-        },
-        orderBy: { order: "asc" },
-        include: {
-          _count: {
-            select: { topics: true }
+// Cache pour les catégories du forum
+const getCachedCategories = unstable_cache(
+  async (userId: string | undefined) => {
+    return prisma.category.findMany({
+      where: !userId ? { allowedRoles: "ALL" } : undefined,
+      orderBy: { order: "asc" },
+      include: {
+        forums: {
+          where: { 
+            parentForumId: null,
+            ...( !userId ? { allowedRoles: "ALL" } : {} )
           },
-          topics: {
-            where: { isArchived: false },
-            orderBy: { updatedAt: "desc" },
-            include: {
-              author: true,
-              _count: {
-                select: { posts: true }
-              },
-              topicViews: {
-                where: { userId: userId || "" }
+          orderBy: { order: "asc" },
+          include: {
+            _count: {
+              select: { topics: true }
+            },
+            topics: {
+              where: { isArchived: false },
+              orderBy: { updatedAt: "desc" },
+              include: {
+                author: true,
+                _count: {
+                  select: { posts: true }
+                },
+                topicViews: {
+                  where: { userId: userId || "" }
+                }
               }
-            }
-          },
-          subForums: {
-            where: !userId ? { allowedRoles: "ALL" } : {},
-            include: {
-              topics: {
-                include: {
-                  topicViews: {
-                    where: { userId: userId || "" }
+            },
+            subForums: {
+              where: !userId ? { allowedRoles: "ALL" } : {},
+              include: {
+                topics: {
+                  include: {
+                    topicViews: {
+                      where: { userId: userId || "" }
+                    }
                   }
                 }
               }
@@ -58,8 +58,17 @@ export default async function ForumPage() {
           }
         }
       }
-    }
-  });
+    });
+  },
+  ["forum-categories-list"],
+  { revalidate: 60, tags: ["forum-categories"] }
+);
+
+export default async function ForumPage() {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const categories = await getCachedCategories(userId);
 
   return (
     <div className="forum-page">
