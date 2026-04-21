@@ -12,7 +12,10 @@ import { PrismaClient } from "./generated-client";
  * - NE JAMAIS RESET la base de données via ce script.
  */
 
-const config = { url: "file:./dev.db" };
+import { loadEnvConfig } from "@next/env";
+loadEnvConfig(process.cwd());
+
+const config = { url: process.env.DATABASE_URL || "file:./dev.db" };
 const adapter = new PrismaLibSql(config);
 const prisma = new PrismaClient({ adapter });
 

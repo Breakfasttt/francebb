@@ -1,7 +1,11 @@
 import { PrismaClient } from '../generated-client';
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 
-const adapter = new PrismaLibSql({ url: "file:./dev.db" });
+import { loadEnvConfig } from "@next/env";
+loadEnvConfig(process.cwd());
+
+const config = { url: process.env.DATABASE_URL || "file:./dev.db" };
+const adapter = new PrismaLibSql(config);
 const prisma = new PrismaClient({ adapter } as any);
 
 async function seedBBPusher() {
