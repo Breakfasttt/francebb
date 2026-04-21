@@ -1,10 +1,25 @@
 /* styles spécifiques mobile pour la page d'administration */
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .admin-content-layout {
     flex-direction: column;
+    padding: 0;
   }
-  .admin-sidebar-wrapper {
-    width: 100% !important;
+
+  /* Conteneur mobile des tabs admin dans la sidebar globale */
+  .admin-sidebar-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  /* Séparateur entre tabs standard et avancé (superadmin) */
+  .admin-sidebar-mobile-separator {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 0.8rem 0;
+    opacity: 0.4;
   }
 }

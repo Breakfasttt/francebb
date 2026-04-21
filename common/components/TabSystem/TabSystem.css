@@ -40,7 +40,7 @@
 
 /* Variant Sidebar (Vertical - Admin/Forum) */
 .tab-system.sidebar.vertical .tab-item {
-  width: 100%;
+  align-self: stretch;
   justify-content: flex-start;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--glass-border);

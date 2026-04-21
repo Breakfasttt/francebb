@@ -3,6 +3,8 @@
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay" | "info-mails";
 
@@ -13,6 +15,8 @@ interface AdminSidebarProps {
 }
 
 export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = false }: AdminSidebarProps) {
+  const isMobile = useIsMobile();
+
   const standardTabs: TabItem[] = [
     { id: "general", label: "Configuration", icon: <Globe size={18} /> },
     { id: "roles", label: "Gestion des Rôles", icon: <ShieldCheck size={18} /> },
@@ -28,6 +32,50 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
     { id: "reset", label: "Zone de Danger", icon: <OctagonAlert size={18} /> },
   ];
 
+  // --- MOBILE : rendu léger, inline styles pour éviter conflits CSS ---
+  if (isMobile) {
+    return (
+      <MobilePortal targetId="mobile-page-sidebar-slot">
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.6rem',
+          padding: '0.5rem 1.2rem',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}>
+          <TabSystem
+            items={standardTabs}
+            activeTab={activeTab}
+            onTabChange={(id) => onTabChange(id as AdminTab)}
+            orientation="vertical"
+            variant="sidebar"
+          />
+
+          {isSuperAdmin && (
+            <>
+              <div style={{
+                height: '1px',
+                background: 'var(--glass-border)',
+                margin: '0.8rem 0',
+                opacity: 0.4,
+              }} />
+              <TabSystem
+                items={advancedTabs}
+                activeTab={activeTab}
+                onTabChange={(id) => onTabChange(id as AdminTab)}
+                orientation="vertical"
+                variant="sidebar"
+                className="danger-tabs"
+              />
+            </>
+          )}
+        </div>
+      </MobilePortal>
+    );
+  }
+
+  // --- DESKTOP : rendu complet avec PremiumCard ---
   return (
     <PremiumCard as="aside" className="admin-sidebar-wrapper">
       <div className="sidebar-header">

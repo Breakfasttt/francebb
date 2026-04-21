@@ -20,6 +20,7 @@ import {
 } from "../actionsStructure";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 import {
   closestCenter, DndContext, DragEndEvent, DragOverlay,
@@ -38,7 +39,7 @@ interface StructureTabProps {
 }
 
 // ------ Composants DND ------
-function SortableCategoryItem({ category, onEditClick, children }: any) {
+function SortableCategoryItem({ category, onEditClick, children, isMobile }: any) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `cat-${category.id}`,
     data: { type: 'Category', category }
@@ -56,14 +57,14 @@ function SortableCategoryItem({ category, onEditClick, children }: any) {
             {category.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${category.allowedRoles}`}
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
           <button className="expand-btn" onClick={() => setExpanded(!expanded)}>
             {expanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
             <span>Forums ({category.forums?.length || 0})</span>
           </button>
           <Tooltip text="Gérer la catégorie">
             <button className="action-button secondary-btn" onClick={() => onEditClick(category, 'Category')}>
-              <Settings2 size={16} /> <span>Éditer</span>
+              <Settings2 size={16} /> <span className={isMobile ? "sr-only" : ""}>Éditer</span>
             </button>
           </Tooltip>
         </div>
@@ -75,7 +76,7 @@ function SortableCategoryItem({ category, onEditClick, children }: any) {
 
 function SortableForumItem({
   forum, onEditClick, level, onIndent, onDedent, canIndent, canDedent,
-  onMoveUpCat, onMoveDownCat, canMoveUpCat, canMoveDownCat, children
+  onMoveUpCat, onMoveDownCat, canMoveUpCat, canMoveDownCat, children, isMobile
 }: any) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `forum-${forum.id}`,
@@ -87,7 +88,7 @@ function SortableForumItem({
 
   return (
     <div ref={setNodeRef} style={style} className={`forum-block level-${level}`}>
-      <div className="forum-row">
+      <div className="forum-row" style={{ flexWrap: isMobile ? "wrap" : "nowrap" }}>
         <div {...attributes} {...listeners} className="drag-handle"><GripVertical size={16} /></div>
         <div className="forum-title-container">
           {forum.isTournamentForum ? (
@@ -96,11 +97,13 @@ function SortableForumItem({
             <FolderGit2 size={15} color="var(--primary)" />
           )}
           <strong>{forum.name}</strong>
-          <span className={`badge-role ${forum.allowedRoles === "ALL" ? "badge-all" : "badge-restricted"}`}>
-            {forum.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${forum.allowedRoles}`}
-          </span>
+          {!isMobile && (
+            <span className={`badge-role ${forum.allowedRoles === "ALL" ? "badge-all" : "badge-restricted"}`}>
+              {forum.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${forum.allowedRoles}`}
+            </span>
+          )}
         </div>
-        <div className="forum-actions">
+        <div className="forum-actions" style={{ width: isMobile ? "100%" : "auto", justifyContent: isMobile ? "flex-end" : "flex-start", marginTop: isMobile ? "0.5rem" : "0" }}>
           {/* Déplacement inter-catégorie */}
           {canMoveUpCat && (
             <Tooltip text="Déplacer vers la catégorie précédente" position="top">
@@ -160,6 +163,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const isMobile = useIsMobile();
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
@@ -424,7 +428,13 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
   };
 
   return (
-    <PremiumCard className="fade-in" style={{ padding: '2rem', display: 'flex', gap: '2rem', position: 'relative' }}>
+    <PremiumCard className="fade-in" style={{ 
+      padding: isMobile ? '1rem' : '2rem', 
+      display: 'flex', 
+      flexDirection: isMobile ? 'column' : 'row',
+      gap: '2rem', 
+      position: 'relative' 
+    }}>
 
       <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}
         title={`Supprimer ${editingType === 'Category' ? 'la catégorie' : 'le forum'} "${editingItem?.name}" ?`}
@@ -436,12 +446,19 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
 
       {/* MAIN */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: isMobile ? 'flex-start' : 'center', 
+          justifyContent: 'space-between', 
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: '1rem',
+          marginBottom: '2rem' 
+        }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <FolderGit2 size={28} color="var(--primary)" />
-            <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Structure du forum</h3>
+            <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.4rem' }}>Structure du forum</h3>
           </div>
-          <button className="action-button primary-btn" onClick={openCreateCategory}>
+          <button className="action-button primary-btn" onClick={openCreateCategory} style={{ width: isMobile ? '100%' : 'auto' }}>
             <Plus size={18} /> Ajouter une Catégorie
           </button>
         </div>
@@ -450,8 +467,12 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           <span><GripVertical size={14} /> Réordonner</span>
           <span><IndentIncrease size={14} /> Indenter</span>
           <span><IndentDecrease size={14} /> Dédenter</span>
-          <span><ArrowBigUp size={14} /> Catégorie Préc.</span>
-          <span><ArrowBigDown size={14} /> Catégorie Suiv.</span>
+          {!isMobile && (
+            <>
+              <span><ArrowBigUp size={14} /> Catégorie Préc.</span>
+              <span><ArrowBigDown size={14} /> Catégorie Suiv.</span>
+            </>
+          )}
         </div>
 
         {isLoading ? <p style={{ color: 'var(--text-muted)' }}>Chargement...</p> : (
@@ -461,9 +482,9 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
             <SortableContext items={categories.map(c => `cat-${c.id}`)} strategy={verticalListSortingStrategy}>
               <div className="categories-list">
                 {categories.map((cat, ci) => (
-                  <SortableCategoryItem key={`cat-${cat.id}`} category={cat} onEditClick={openEdit}>
+                  <SortableCategoryItem key={`cat-${cat.id}`} category={cat} onEditClick={openEdit} isMobile={isMobile}>
                     <SortableContext items={(cat.forums || []).map((f: any) => `forum-${f.id}`)} strategy={verticalListSortingStrategy}>
-                      <div className="forums-list">
+                      <div className="forums-list" style={{ padding: isMobile ? '0.5rem' : '1rem' }}>
                         {(cat.forums || []).map((forum: any, fi: number) => (
                           <SortableForumItem
                             key={`forum-${forum.id}`} forum={forum} onEditClick={openEdit}
@@ -476,6 +497,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
                             onDedent={() => {}}
                             onMoveUpCat={() => handleMoveCat(forum, 'up')}
                             onMoveDownCat={() => handleMoveCat(forum, 'down')}
+                            isMobile={isMobile}
                           >
                             {/* SOUS-FORUMS NIVEAU 1 */}
                             <SortableContext items={(forum.subForums || []).map((sf: any) => `forum-${sf.id}`)} strategy={verticalListSortingStrategy}>
@@ -488,6 +510,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
                                     canDedent={true}
                                     onIndent={() => handleIndentSub(sf, forum.id)}
                                     onDedent={() => handleDedent(sf)}
+                                    isMobile={isMobile}
                                   >
                                     {/* SOUS-FORUMS NIVEAU 2 (max) */}
                                     <SortableContext items={(sf.subForums || []).map((ssf: any) => `forum-${ssf.id}`)} strategy={verticalListSortingStrategy}>
@@ -500,6 +523,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
                                             canDedent={true}
                                             onIndent={() => {}}
                                             onDedent={() => handleDedentSub(ssf)}
+                                            isMobile={isMobile}
                                           />
                                         ))}
                                         {(sf.subForums?.length || 0) < 5 && (
@@ -533,7 +557,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
             {createPortal(
               <DragOverlay dropAnimation={null}>
                 {activeId && (
-                  <div className="forum-block drag-ghost" style={{ width: '400px' }}>
+                  <div className="forum-block drag-ghost" style={{ width: isMobile ? '280px' : '400px' }}>
                     <div className="forum-row">
                       <GripVertical size={16} style={{ color: 'var(--text-muted)' }} />
                       <FolderGit2 size={15} color="var(--primary)" />
@@ -550,7 +574,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
 
       {/* SIDE PANEL */}
       {isPanelOpen && (
-        <div className="side-panel fade-in">
+        <div className="side-panel fade-in" style={{ width: isMobile ? '100%' : '320px', position: isMobile ? 'relative' : 'sticky' }}>
           <div className="panel-header">
             <div>
               <h4>{editingItem ? editingItem.name : `Nouveau ${editingType === 'Category' ? 'Catégorie' : 'Forum'}`}</h4>
@@ -639,6 +663,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           border-bottom: 1px solid var(--glass-border);
           gap: 0.8rem;
           border-radius: 16px 16px 0 0;
+          flex-wrap: wrap;
         }
         .cat-title-container { flex: 1; display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
         .cat-title { margin: 0; font-size: 1rem; color: var(--foreground); font-weight: 700; }
@@ -659,14 +684,14 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         .forum-block.level-2 {
           background: var(--glass-bg);
           border-color: var(--glass-border);
-          margin-left: 1.2rem;
+          margin-left: 0.8rem;
           border-left: 2px solid var(--primary);
           border-radius: 6px;
         }
         .forum-block.level-3 {
           background: var(--glass-bg);
           border-color: var(--glass-border);
-          margin-left: 2.4rem;
+          margin-left: 1.6rem;
           border-left: 2px solid var(--accent);
           border-radius: 4px;
         }
@@ -758,6 +783,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           display: flex; flex-direction: column; gap: 1.1rem;
           box-shadow: 0 20px 60px rgba(0,0,0,0.3);
           color: var(--foreground);
+          box-sizing: border-box;
         }
         .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
         .panel-header h4 { margin: 0; color: var(--foreground); font-size: 1.1rem; font-weight: 800; line-height: 1.3; }
@@ -771,6 +797,23 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         .default-input:focus { outline: none; border-color: var(--primary); background: var(--background); }
         .full-width { width: 100%; }
         .panel-footer { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); }
+
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
+        }
+
+        @media (max-width: 768px) {
+          .forum-block.level-2 { margin-left: 0.5rem; }
+          .forum-block.level-3 { margin-left: 1rem; }
+        }
       `}</style>
     </PremiumCard>
   );

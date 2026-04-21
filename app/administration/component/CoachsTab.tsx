@@ -11,6 +11,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 interface CoachsTabProps {
   currentUserRole: UserRole;
@@ -22,6 +23,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   const [users, setUsers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const isMobile = useIsMobile();
 
   const [dbRoles, setDbRoles] = useState<any[]>([]);
 
@@ -81,15 +83,17 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   };
 
   return (
-    <PremiumCard className="fade-in" style={{ padding: '2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-        <Users size={28} color="var(--primary)" />
-        <h3 style={{ margin: 0, fontSize: '1.4rem' }}>Rôles des Membres</h3>
+    <PremiumCard className="fade-in" style={{ padding: isMobile ? '1.2rem' : '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', flexDirection: isMobile ? 'column' : 'row' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', alignSelf: isMobile ? 'flex-start' : 'center' }}>
+          <Users size={28} color="var(--primary)" />
+          <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.4rem' }}>Rôles des Membres</h3>
+        </div>
       </div>
 
-      <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem' }}>
+      <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '2rem' }}>
         Recherchez un utilisateur pour lui attribuer un nouveau rôle.
-        Vous ne pouvez affecter que des rôles <strong style={{ color: 'var(--foreground)' }}>strictement inférieurs au vôtre</strong>.
+        Vous ne pouvez affecter que des rôles <strong style={{ color: 'var(--foreground)' }}>inférieurs au vôtre</strong>.
       </p>
 
       <div className="search-bar-container">
@@ -119,18 +123,18 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           const canManage = isSuperAdmin || (myPower > power && !isSuper);
 
           return (
-            <div key={user.id} className={`user-item ${isSuper ? 'super-item' : ''}`}>
+            <div key={user.id} className={`user-item ${isSuper ? 'super-item' : ''} ${isMobile ? 'user-item-mobile' : ''}`}>
               <div className="user-info">
                 <UserAvatar 
                   image={user.image} 
                   name={user.name} 
-                  size={40} 
+                  size={isMobile ? 32 : 40} 
                   postCount={user._count?.posts || 0} 
                   selectedRank={user.avatarFrame} 
                   isModerator={isModerator(user.role)}
                 />
                 <div className="user-text">
-                  <strong>{user.name}</strong>
+                  <strong style={{ fontSize: isMobile ? '0.95rem' : '1.1rem' }}>{user.name}</strong>
                   <StatusBadge 
                     variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
                   >
@@ -139,14 +143,14 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
                 </div>
               </div>
 
-              <div className="user-actions">
+              <div className="user-actions" style={{ marginTop: isMobile ? '1rem' : '0', width: isMobile ? '100%' : 'auto' }}>
                 {canManage ? (
                   <ClassicSelect
                     value={user.role}
                     onChange={(e) => handleRoleChange(user.id, e.target.value)}
                     disabled={isPending}
                     size="sm"
-                    containerStyle={{ minWidth: "150px" }}
+                    containerStyle={{ width: isMobile ? "100%" : "150px" }}
                   >
                     <option value={user.role} disabled>{user.role} (Actuel)</option>
                     {availableRoles.map(role => (
@@ -154,7 +158,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
                     ))}
                   </ClassicSelect>
                 ) : (
-                  <div className="locked-badge">
+                  <div className="locked-badge" style={{ width: isMobile ? "100%" : "auto", justifyContent: isMobile ? "center" : "flex-start" }}>
                     <ShieldAlert size={16} />
                     <span>Action restreinte</span>
                   </div>
@@ -190,14 +194,15 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           background: var(--glass-bg);
           border: 1px solid var(--glass-border);
           padding: 0.8rem 1rem 0.8rem 3rem;
-          border-radius: 8px;
+          border-radius: 12px;
           color: var(--foreground);
-          font-size: 1rem;
-          transition: border-color 0.2s;
+          font-size: 0.95rem;
+          transition: all 0.2s;
         }
         .search-input:focus {
           outline: none;
           border-color: var(--primary);
+          box-shadow: 0 0 0 3px var(--primary-transparent);
         }
         .loading-indicator {
           position: absolute;
@@ -212,15 +217,20 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 1rem;
-          background: rgba(255,255,255,0.02);
+          padding: 1rem 1.2rem;
+          background: var(--glass-bg);
           border: 1px solid var(--glass-border);
-          border-radius: 12px;
+          border-radius: 16px;
           transition: all 0.2s;
         }
+        .user-item-mobile {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1.2rem;
+        }
         .user-item:hover {
-          background: rgba(255,255,255,0.04);
-          border-color: rgba(255,255,255,0.2);
+          border-color: var(--primary-transparent);
+          transform: translateX(4px);
         }
         .user-item.super-item {
           border-color: rgba(255, 215, 0, 0.4);
@@ -238,20 +248,6 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
         }
         .user-text strong {
           color: var(--foreground);
-          font-size: 1.1rem;
-        }
-        .role-select {
-          background: var(--input-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          padding: 0.6rem 1rem;
-          border-radius: 8px;
-          font-weight: 600;
-          cursor: pointer;
-          outline: none;
-        }
-        .role-select:focus {
-          border-color: var(--primary);
         }
         .locked-badge {
           display: flex;
@@ -262,6 +258,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
           background: rgba(255,255,255,0.05);
           padding: 0.5rem 1rem;
           border-radius: 8px;
+          border: 1px solid var(--glass-border);
         }
         .animate-spin {
           animation: spin 1s linear infinite;

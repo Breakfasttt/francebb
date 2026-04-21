@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import CTAButton from "@/common/components/Button/CTAButton";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 export default function GeneralTab() {
   const [discordInvite, setDiscordInvite] = useState("");
@@ -15,6 +16,7 @@ export default function GeneralTab() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function loadSettings() {
@@ -61,24 +63,24 @@ export default function GeneralTab() {
   }
 
   return (
-    <PremiumCard style={{ padding: "2.5rem" }}>
+    <PremiumCard style={{ padding: isMobile ? "1.5rem" : "2.5rem" }}>
       <header style={{ marginBottom: "2.5rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "1.5rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+        <div style={{ display: "flex", alignItems: isMobile ? "flex-start" : "center", gap: "0.8rem", flexDirection: isMobile ? "column" : "row" }}>
           <div style={{ background: "var(--primary-transparent)", color: "var(--primary)", padding: "0.8rem", borderRadius: "12px" }}>
             <Globe size={24} />
           </div>
           <div>
-            <h3 style={{ fontSize: "1.4rem", color: "var(--foreground)", margin: 0, fontWeight: 800 }}>
+            <h3 style={{ fontSize: isMobile ? "1.2rem" : "1.4rem", color: "var(--foreground)", margin: 0, fontWeight: 800 }}>
               Paramètres Généraux
             </h3>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginTop: "0.2rem" }}>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.2rem" }}>
               Configuration globale de la plateforme BBFrance.
             </p>
           </div>
         </div>
       </header>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "1.5rem" : "2.5rem" }}>
         {/* Discord Section */}
         <section className="settings-section">
           <div className="section-header">
@@ -102,7 +104,11 @@ export default function GeneralTab() {
         </section>
 
         {/* Media Section */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", 
+          gap: isMobile ? "1.5rem" : "1.5rem" 
+        }}>
           <section className="settings-section">
             <div className="section-header">
               <div className="icon-badge">
@@ -148,8 +154,9 @@ export default function GeneralTab() {
             onClick={handleSave}
             isLoading={isPending}
             icon={<Save size={18} />}
+            fullWidth={isMobile}
           >
-            Enregistrer les modifications
+            Enregistrer
           </CTAButton>
         </div>
       </div>
@@ -217,4 +224,3 @@ export default function GeneralTab() {
     </PremiumCard>
   );
 }
-
