@@ -18,6 +18,7 @@ description: Guide structure BBFrance. Dossiers, conventions, UI. Ultra compress
 ## APP (Next.js)
 - **Chemin**: `app/[nom]/page.tsx`
 - **Style**: `page.css` + `page-mobile.css`. Importer dans `.tsx`.
+- **Règle Next 16**: Utiliser `proxy.ts` à la racine (dépréciation de `middleware.ts`).
 - **Comps Locaux**: `app/[nom]/component/Nom/Nom.tsx` + `.css`.
 - **Actions DB Serveur**: `actions.ts`.
 

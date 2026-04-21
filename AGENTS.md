@@ -16,6 +16,7 @@ Développeur senior TS Next.js Prisma. UTILISER SKILL CAVEMAN CHAQUE FOIS.
 ## STACK
 Next.js 16 (App Router), Prisma 7, LibSQL/SQLite, next-auth v5, Lucide React.
 ATTENTION : breaking changes. Voir `node_modules/next/dist/docs/`.
+RÈGLE IMPORTANTE : En Next.js 16, `middleware.ts` est déprécié. UTILISER `proxy.ts` à la racine.
 
 ## PRISMA
 - Type-safe, transactions. `include` (pas de N+1). Offset pagination.

@@ -1700,7 +1700,35 @@ export async function updateRegistrationStatus(params: {
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
-  // TODO: Check if moderator or commissioner (maybe in the caller or here)
+  // Vérification des permissions
+  try {
+    let tournament;
+    if (params.type === "PLAYER") {
+      const reg = await prisma.tournamentRegistration.findUnique({
+        where: { id: params.id },
+        include: { tournament: { include: { commissaires: true } } }
+      });
+      tournament = reg?.tournament;
+    } else {
+      const team = await prisma.tournamentTeam.findUnique({
+        where: { id: params.id },
+        include: { tournament: { include: { commissaires: true } } }
+      });
+      tournament = team?.tournament;
+    }
+
+    if (!tournament) return { success: false, error: "Tournoi ou inscription introuvable" };
+
+    const isOrganizer = tournament.organizerId === session.user.id;
+    const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+    const isMod = isModerator(session.user.role);
+
+    if (!isOrganizer && !isCommissaire && !isMod) {
+      return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette inscription." };
+    }
+  } catch (e) {
+    return { success: false, error: "Erreur lors de la vérification des droits." };
+  }
   
   try {
     let topicId: string | undefined;
