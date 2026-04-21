@@ -1,19 +1,30 @@
 .page-header-container {
+  background: var(--header-container-bg);
+  padding: var(--header-container-padding, 3rem 2rem 1rem 2rem);
+  margin-top: var(--header-container-margin-top, -2rem) !important;
+  margin-bottom: 2rem;
+  width: 100vw;
   position: relative;
+  left: var(--header-container-left, 50%);
+  right: var(--header-container-right, 50%);
+  margin-left: var(--header-container-margin-x, -50vw);
+  margin-right: var(--header-container-margin-x, -50vw);
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  border-bottom: var(--header-container-border-bottom);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2rem;
-  width: 100%;
-  padding: 0.8rem 0; /* Un peu plus que 0.5rem pour que le logo ne soit pas trop serré */
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 140px;
 }
 
 /* Le wrapper gère le positionnement pour ne pas écraser le transform: translateX du bouton au hover */
 .page-header-back-wrapper {
-  position: absolute;
-  left: 0;
+  position: absolute !important;
+  left: 3rem;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) !important;
 }
 
 .page-header-content {
@@ -25,33 +36,42 @@
   flex: 1;
 }
 
-.page-header-title {
+.page-header-title,
+.page-header-title span {
   margin: 0;
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--foreground);
+  font-size: 2.7rem;
+  font-weight: var(--header-title-weight, 1000);
+  font-family: var(--header-title-family, 'Inter', system-ui, sans-serif);
+  color: var(--header-title-color, var(--foreground)) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
   flex-wrap: wrap;
+  text-transform: uppercase;
+  font-style: italic;
+  text-shadow: var(--header-title-shadow);
+  line-height: 1;
 }
 
 /* Pour les mises en couleur de mots (ex: Nouveau <span>sujet</span>) */
 .page-header-title span {
-  color: var(--accent);
+  color: var(--highlight, var(--accent)) !important;
 }
 
 .page-header-subtitle {
-  color: var(--text-secondary);
+  color: var(--header-subtitle-color, var(--text-secondary));
   margin: 0.2rem 0 0 0;
   font-size: 0.9rem;
+  font-weight: var(--header-subtitle-weight, 700);
+  text-transform: uppercase;
+  opacity: 0.9;
 }
 
 /* Container pour des boutons d'actions additionnels sur la droite */
 .page-header-actions {
   position: absolute;
-  right: 0;
+  right: 3rem;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -59,6 +79,27 @@
   align-items: center;
 }
 
+/* Standardized BackButton Style across all themes */
+.back-button {
+  background: var(--back-btn-bg) !important;
+  border: var(--back-btn-border) !important;
+  border-radius: var(--back-btn-radius, 50%) !important;
+  width: var(--back-btn-size, 54px) !important;
+  height: var(--back-btn-size, 54px) !important;
+  color: var(--back-btn-icon-color) !important;
+  box-shadow: var(--back-btn-shadow) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  transform: scale(1.1) rotate(-10deg) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+  border-color: #ffffff !important;
+}
 
 /* ==========================================================================
    RESPONSIVE DESIGN (MOBILE)

@@ -86,14 +86,9 @@
   /* PageHeader System (Stripe Layout Override) */
   --header-container-bg: #d1d5db;
   --header-container-border-bottom: 4px solid var(--primary);
-  --header-container-margin-x: -50vw;
-  --header-container-left: 50%;
-  --header-container-right: 50%;
-  --header-container-padding: 3rem 2rem 1rem 2rem;
-  --header-container-margin-top: -2rem;
-  --header-title-family: inherit;
+  --header-title-family: 'Inter', system-ui, sans-serif;
   --header-title-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
-  --header-title-weight: 800;
+  --header-title-weight: 1000;
   --header-subtitle-color: var(--primary);
   --header-subtitle-weight: 700;
 
@@ -120,71 +115,7 @@
   --btn-admin-hover: #5b21b6;
 }
 
-/* PageHeader Stripe Layout Override (Standardized look for all themes) */
-[data-theme='light'] .page-header-container {
-  background: var(--header-container-bg);
-  padding: var(--header-container-padding);
-  margin-top: var(--header-container-margin-top) !important;
-  margin-bottom: 2rem;
-  width: 100vw;
-  position: relative;
-  left: var(--header-container-left);
-  right: var(--header-container-right);
-  margin-left: var(--header-container-margin-x);
-  margin-right: var(--header-container-margin-x);
-  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
-  border-bottom: var(--header-container-border-bottom);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-height: 140px;
-}
-
-[data-theme='light'] .page-header-back-wrapper {
-  position: absolute !important;
-  left: 3rem;
-  top: 50%;
-  transform: translateY(-50%) !important;
-}
-
-[data-theme='light'] .page-header-content {
-  max-width: none;
-  width: auto;
-  text-align: center;
-}
-
-[data-theme='light'] .page-header-title,
-[data-theme='light'] .page-header-title span {
-  color: var(--foreground) !important;
-  text-shadow: var(--header-title-shadow);
-  font-family: var(--header-title-family);
-  font-weight: var(--header-title-weight);
-}
-
-[data-theme='light'] .page-header-subtitle {
-  color: var(--header-subtitle-color);
-  font-weight: var(--header-subtitle-weight);
-}
-
-/* BackButton Token Style Override (Standardized Saison 3 look) */
-[data-theme='light'] .back-button {
-  background: var(--back-btn-bg) !important;
-  border: var(--back-btn-border) !important;
-  border-radius: var(--back-btn-radius) !important;
-  width: var(--back-btn-size) !important;
-  height: var(--back-btn-size) !important;
-  color: var(--back-btn-icon-color) !important;
-  box-shadow: var(--back-btn-shadow) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
 [data-theme='light'] .back-button:hover {
-  transform: scale(1.1) rotate(-10deg) !important;
   box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.2) !important;
   border-color: var(--primary) !important;
 }

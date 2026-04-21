@@ -1,0 +1,155 @@
+/* BBSCHEME MOBILE - THE VICTORY VERSION (STABLE) */
+@media (max-width: 1024px) {
+  /* Layout global */
+  .tool-layout.mobile-mode {
+    display: block !important;
+    padding-top: 104px !important; /* Navbar 54 + Toolbar 50 = 104 */
+    background: var(--background) !important;
+    min-height: 100dvh !important;
+  }
+
+  /* Cache Desktop */
+  .tool-header, .desktop-only, .dugout-container { display: none !important; }
+
+  /* LE BOUTON RETOUR - ROI DE LA NAVBAR */
+  .back-button-fixed {
+    position: fixed !important;
+    top: 7px !important;
+    right: 12px !important;
+    z-index: 10000000 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  .back-button-fixed button {
+    background: rgba(255,255,255,0.2) !important;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    color: white !important;
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  /* NAVIGATION MOBILE FIXE */
+  .fixed-mobile-nav {
+    position: fixed !important;
+    top: 54px !important; /* Sous la navbar rouge */
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 100000 !important;
+    background: #111 !important; /* Fond sombre pour outils */
+    display: flex !important;
+    flex-direction: column !important;
+    border-bottom: 2px solid var(--glass-border) !important;
+  }
+
+  /* TOOLBAR - SCROLL HORIZONTAL */
+  .mobile-toolbar-row {
+     height: 50px !important;
+     display: flex !important;
+     flex-direction: row !important;
+     flex-wrap: nowrap !important;
+     overflow-x: auto !important;
+     align-items: center !important;
+     padding: 0 10px !important;
+     gap: 15px !important;
+     background: #111 !important;
+     border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+     -webkit-overflow-scrolling: touch !important;
+  }
+  .mobile-toolbar-row::-webkit-scrollbar { display: none; }
+
+  .mobile-scrollable-toolbar {
+     display: flex !important;
+     flex-direction: row !important;
+     flex-wrap: nowrap !important;
+     gap: 15px !important;
+     align-items: center !important;
+  }
+  
+  .mobile-scrollable-toolbar .tool-btn {
+     flex: 0 0 42px !important;
+     width: 42px !important;
+     height: 42px !important;
+     background: rgba(255,255,255,0.05) !important;
+     color: #fff !important;
+     border-radius: 6px !important;
+     border: 1px solid rgba(255,255,255,0.1) !important;
+     display: flex !important;
+     align-items: center !important;
+     justify-content: center !important;
+  }
+  .mobile-scrollable-toolbar .tool-btn.active {
+     background: var(--accent) !important;
+     border-color: var(--accent) !important;
+  }
+
+  /* BOUTONS EQUIPES */
+  .mobile-team-buttons {
+    height: 50px !important;
+    display: flex !important;
+    background: #000 !important;
+  }
+  .team-nav-btn {
+    flex: 1 !important;
+    height: 50px !important;
+    border: none !important;
+    font-weight: 900 !important;
+    color: white !important;
+    text-transform: uppercase !important;
+    font-size: 0.8rem !important;
+  }
+  .team-nav-btn.blue { background: #1e40af !important; }
+  .team-nav-btn.red { background: #991b1b !important; }
+
+  /* OVERLAYS CONTEXTUELS - LAISSENT LE HEADER VISIBLE */
+  .global-team-area {
+    position: fixed !important;
+    top: 154px !important; /* Sous les boutons d'équipe */
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(100dvh - 154px) !important;
+    z-index: 500000 !important;
+    background: var(--background) !important;
+    display: none !important;
+    padding: 1rem !important;
+    overflow-y: auto !important;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.5) !important;
+  }
+  .global-team-area.mobile-open {
+    display: block !important;
+  }
+
+  .mobile-menu-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1rem !important;
+    padding: 10px !important;
+    background: var(--nav-bg) !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--glass-border) !important;
+  }
+  .team-label { font-weight: 900 !important; }
+  .team-label.blue { color: #3b82f6 !important; }
+  .team-label.red { color: #ef4444 !important; }
+  .mobile-close-btn {
+    background: var(--accent) !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    font-weight: 800 !important;
+  }
+
+  /* PITCH */
+  .pitch-viewport {
+    height: calc(100dvh - 170px) !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .pitch-resizer { margin: 10px auto !important; }
+}

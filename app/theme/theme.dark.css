@@ -1,6 +1,5 @@
-/* Thème par défaut — Dark / FF (France Football) */
-/* Appliqué via :root, utilisé quand aucun [data-theme] n'est défini */
-:root {
+/* Thème Dark — sombre, rouge/anthracite, inspiré de l'ancien par défaut */
+[data-theme='dark'] {
   --background: #0a0a0c;
   --bg-gradient: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
   --foreground: #f0f0f5;
@@ -115,6 +114,6 @@
   --btn-admin-hover: #6d28d9;
 }
 
-:root .back-button:hover {
+[data-theme='dark'] .back-button:hover {
   box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4) !important;
 }

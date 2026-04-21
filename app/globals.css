@@ -73,6 +73,14 @@ h6 {
   color: var(--foreground);
 }
 
+h2,
+h3 {
+  text-transform: uppercase;
+  font-style: italic;
+  border-left: var(--heading-decoration-border, none);
+  padding-left: var(--heading-padding-left, 0);
+}
+
 label {
   color: var(--text-secondary);
 }
