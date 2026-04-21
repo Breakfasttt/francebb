@@ -78,11 +78,11 @@ export default async function ForumSidebar({
         {session && forumId && (!isLocked || canCreateForum) && (
           <PremiumCard className="sidebar-widget nav-widget">
             {isTournamentForum && (
-              <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={Trophy}>
+              <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
                 Nouveau Tournoi
               </CTAButton>
             )}
-            <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={PlusCircle}>
+            <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={<PlusCircle size={18} />}>
               Nouveau Sujet
             </CTAButton>
           </PremiumCard>
@@ -102,11 +102,11 @@ export default async function ForumSidebar({
 
         {/* Recherche Avancée */}
         <PremiumCard className="sidebar-widget nav-widget">
-          <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={Search}>
+          <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={<Search size={18} />}>
             Recherche avancée
           </ClassicButton>
           
-          <ClassicButton href="/membres" icon={Users}>
+          <ClassicButton href="/membres" icon={<Users size={18} />}>
             Les membres
           </ClassicButton>
         </PremiumCard>
@@ -115,7 +115,7 @@ export default async function ForumSidebar({
         {session && !forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
           <PremiumCard className="sidebar-widget unread-widget" noOverflow>
             <div className="sidebar-widget-group">
-              <ClassicButton href="/forum/unread" icon={MessageSquare} style={{ flex: 1 }}>
+              <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
                 Posts non lus ({unreadTopics})
               </ClassicButton>
               <MarkAllAsReadButton />

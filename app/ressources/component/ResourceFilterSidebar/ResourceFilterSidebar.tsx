@@ -44,7 +44,7 @@ export default function ResourceFilterSidebar({
   const sidebarContent = (
     <>
       <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
-        <CTAButton href="/ressources/submit" fullWidth icon={Plus}>
+        <CTAButton href="/ressources/submit" fullWidth icon={<Plus size={18} />}>
           Soumettre une ressource
         </CTAButton>
       </div>

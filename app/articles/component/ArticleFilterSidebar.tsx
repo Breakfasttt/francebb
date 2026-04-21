@@ -59,7 +59,7 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
     <div className="article-filter-content">
       {isAuthenticated && (
         <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
-          <CTAButton href="/articles/create" fullWidth icon={Plus}>
+          <CTAButton href="/articles/create" fullWidth icon={<Plus size={18} />}>
             Créer un article
           </CTAButton>
         </div>
