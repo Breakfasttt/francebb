@@ -17,8 +17,8 @@ import {
   HelpCircle,
   Info,
   Loader2,
+  LogOut,
   Maximize,
-  Menu,
   Minimize,
   MousePointer2,
   Pause,
@@ -53,8 +53,8 @@ import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
 import Pitch from "./component/Pitch";
 
-import { useIsMobile } from "@/common/hooks/useIsMobile";
 import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 import "./page-mobile.css";
 import "./page.css";
@@ -496,8 +496,10 @@ export default function BBSchemePage() {
   const [panStart, setPanStart] = useState({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0 });
 
   const handlePanningStart = (e: React.MouseEvent) => {
-    if (selectedId || activeTool !== 'select' || !viewportRef.current) return;
+    if (activeTool !== 'select' || !viewportRef.current) return;
+    // Ne pas démarrer le pan si on clique sur un bouton ou une interface directe
     if ((e.target as HTMLElement).closest('button')) return;
+    
     setIsPanning(true);
     setPanStart({
       x: e.clientX,
@@ -519,6 +521,29 @@ export default function BBSchemePage() {
     setIsPanning(false);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (activeTool !== 'select' || !viewportRef.current) return;
+    if ((e.target as HTMLElement).closest('button')) return;
+    
+    const touch = e.touches[0];
+    setIsPanning(true);
+    setPanStart({
+      x: touch.clientX,
+      y: touch.clientY,
+      scrollLeft: viewportRef.current.scrollLeft,
+      scrollTop: viewportRef.current.scrollTop
+    });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isPanning || !viewportRef.current) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - panStart.x;
+    const dy = touch.clientY - panStart.y;
+    viewportRef.current.scrollLeft = panStart.scrollLeft - dx;
+    viewportRef.current.scrollTop = panStart.scrollTop - dy;
+  };
+
   // -- History management --
   const saveToHistory = useCallback((currentTokens: TokenData[], currentDrawings: DrawingPath[]) => {
     setHistory(prev => [{ tokens: [...currentTokens.map(t => ({ ...t }))], drawings: [...currentDrawings.map(d => ({ ...d }))] }, ...prev.slice(0, 19)]);
@@ -534,7 +559,7 @@ export default function BBSchemePage() {
     const padding = isMobile ? 4 : 30; // Moins de padding sur mobile pour prendre toute la largeur
     const availableWidth = rect.width - padding;
     const availableHeight = rect.height - padding;
-    
+
     const currentRot = rotationRef.current;
     const pitchW = currentRot === 90 ? 758 : 1308;
     const pitchH = currentRot === 90 ? 1308 : 758;
@@ -1095,6 +1120,14 @@ export default function BBSchemePage() {
     toast.success("Image dupliquée");
   };
 
+  const handleReturnToReserve = () => {
+    if (!selectedId) return;
+    saveToHistory(tokens, drawings);
+    setTokens(prev => prev.map(t => t.id === selectedId ? { ...t, location: 'box' } : t));
+    setSelectedId(null);
+    toast.success("Joueur remis en réserve");
+  };
+
   const removeFrame = () => {
     if (frames.length <= 1) return;
     const targetIndex = Math.max(0, currentFrameIndex - 1);
@@ -1167,6 +1200,7 @@ export default function BBSchemePage() {
 
   const ballItem = tokens.find(t => t.type === 'ball');
   const carrier = ballItem?.attachedToId ? tokens.find(t => t.id === ballItem.attachedToId) : null;
+  const isBallSelected = selectedToken?.type === 'ball';
 
   return (
     <main
@@ -1184,44 +1218,107 @@ export default function BBSchemePage() {
           <div className="mobile-bbscheme-ui">
             {/* LIGNE 2 : TOOLBAR SLIDE */}
             <div className="mobile-toolbar-container">
-            <button className="toolbar-slide-btn left" onClick={() => mobileToolbarRef.current?.scrollBy({ left: -100, behavior: 'smooth' })}>
-              <ChevronLeft size={20} />
-            </button>
-            <div className="mobile-scroll-toolbar" ref={mobileToolbarRef}>
-              {/* Outils principaux */}
-              <button className={`mobile-tool-item ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button>
-              <button className={`mobile-tool-item ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} /></button>
-              <button className={`mobile-tool-item ${activeTool === 'ball' ? 'active' : ''}`} onClick={() => setActiveTool('ball')}><BallIcon size={18} /></button>
-              <button className={`mobile-tool-item ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} /></button>
-              <button className={`mobile-tool-item ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => { saveToHistory(tokens, drawings); setDrawings([]); toast.success("Dessins effacés"); }}><Eraser size={18} /></button>
-              <div className="mobile-divider" />
-              <button className="mobile-tool-item" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button>
-              <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} /></button>
-              <div className="mobile-divider" />
-              <button className="mobile-tool-item" onClick={() => setRotation(r => r === 0 ? 90 : 0)}><RotateCw size={18} /></button>
-              <button className="mobile-tool-item" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button>
-            </div>
-            <button className="toolbar-slide-btn right" onClick={() => mobileToolbarRef.current?.scrollBy({ left: 100, behavior: 'smooth' })}>
-              <ChevronRight size={20} />
-            </button>
-          </div>
+              <button className="toolbar-slide-btn left" onClick={() => mobileToolbarRef.current?.scrollBy({ left: -100, behavior: 'smooth' })}>
+                <ChevronLeft size={20} />
+              </button>
+              <div className="mobile-scroll-toolbar" ref={mobileToolbarRef}>
+                {/* ZOOM ET DESELECT AU TOUT DÉBUT (À GAUCHE) */}
+                <div className="mobile-zoom-control">
+                  <ZoomIn size={16} />
+                  <input
+                    type="range"
+                    min="0.5" max="2" step="0.05"
+                    value={zoom}
+                    onChange={(e) => setZoom(parseFloat(e.target.value))}
+                  />
+                </div>
+                <button className="mobile-tool-item" onClick={() => setSelectedId(null)} disabled={!selectedId} title="Désélectionner" style={{ position: 'relative' }}>
+                  <MousePointer2 size={18} style={{ opacity: 0.5 }} />
+                  <X size={10} style={{ position: 'absolute', top: 5, right: 5, color: '#ef4444' }} />
+                </button>
+                <button className="mobile-tool-item" onClick={handleReturnToReserve} disabled={!selectedId || isBallSelected} title="Remettre en réserve">
+                  <LogOut size={18} />
+                </button>
 
-          {/* LIGNE 3 : RÉSERVES */}
-          <div className="mobile-reserves-row">
-            <button
-              className={`reserve-toggle blue ${mobileActivePanel === 'blue' ? 'active' : ''}`}
-              onClick={() => setMobileActivePanel(mobileActivePanel === 'blue' ? null : 'blue')}
-            >
-              RÉSERVE BLEUE
-            </button>
-            <button
-              className={`reserve-toggle red ${mobileActivePanel === 'red' ? 'active' : ''}`}
-              onClick={() => setMobileActivePanel(mobileActivePanel === 'red' ? null : 'red')}
-            >
-              RÉSERVE ROUGE
-            </button>
+                <div className="mobile-divider" />
+
+                {/* 1. Outils de dessin/sélection */}
+                <button className={`mobile-tool-item ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button>
+                <button className={`mobile-tool-item ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} /></button>
+                <button className={`mobile-tool-item ${activeTool === 'ball' ? 'active' : ''}`} onClick={() => setActiveTool('ball')}><BallIcon size={18} /></button>
+                <button className={`mobile-tool-item ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} /></button>
+                <button className={`mobile-tool-item ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => { saveToHistory(tokens, drawings); setDrawings([]); toast.success("Dessins effacés"); }}><Eraser size={18} /></button>
+
+                <div className="mobile-divider" />
+
+                {/* 2. Playback & Vitesse (comme Desktop) */}
+                <div className="mobile-frame-counter">
+                  {currentFrameIndex + 1}/{frames.length}
+                </div>
+                <button className="mobile-tool-item" onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying}><SkipBack size={18} /></button>
+                <button className={`mobile-tool-item ${isPlaying ? 'active' : ''}`} onClick={() => setIsPlaying(!isPlaying)}>
+                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                </button>
+                <button 
+                  className="mobile-tool-item" 
+                  onClick={() => {
+                    if (currentFrameIndex === frames.length - 1) addFrame();
+                    else setCurrentFrameIndex(prev => prev + 1);
+                  }} 
+                  disabled={isPlaying}
+                >
+                  {currentFrameIndex === frames.length - 1 ? <PlusCircle size={18} /> : <SkipForward size={18} />}
+                </button>
+
+                {/* Vitesse de défilement */}
+                <div className="mobile-speed-control">
+                  <Clock size={14} />
+                  <input
+                    type="number"
+                    value={playbackSpeed}
+                    onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
+                    min={100} max={3000} step={100}
+                  />
+                  <span>ms</span>
+                </div>
+
+                <div className="mobile-divider" />
+
+                {/* 3. Gestion des images */}
+                <button className="mobile-tool-item" onClick={duplicateFrame} disabled={isPlaying}><Copy size={18} /></button>
+                <button className="mobile-tool-item" onClick={removeFrame} disabled={isPlaying || frames.length <= 1}><Trash2 size={18} /></button>
+                <button className="mobile-tool-item" onClick={handleGifExport} disabled={isPlaying || isExporting}><Download size={18} /></button>
+
+                <div className="mobile-divider" />
+
+                {/* 4. Utilitaires */}
+                <button className="mobile-tool-item" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button>
+                <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} style={{ color: '#ef4444' }} /></button>
+                <button className={`mobile-tool-item ${showTooltips ? 'active' : ''}`} onClick={() => setShowTooltips(!showTooltips)}><Info size={18} /></button>
+                <button className="mobile-tool-item" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button>
+                <button className="mobile-tool-item" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button>
+              </div>
+              <button className="toolbar-slide-btn right" onClick={() => mobileToolbarRef.current?.scrollBy({ left: 100, behavior: 'smooth' })}>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            {/* LIGNE 3 : RÉSERVES */}
+            <div className="mobile-reserves-row">
+              <button
+                className={`reserve-toggle blue ${mobileActivePanel === 'blue' ? 'active' : ''}`}
+                onClick={() => setMobileActivePanel(mobileActivePanel === 'blue' ? null : 'blue')}
+              >
+                RÉSERVE BLEUE
+              </button>
+              <button
+                className={`reserve-toggle red ${mobileActivePanel === 'red' ? 'active' : ''}`}
+                onClick={() => setMobileActivePanel(mobileActivePanel === 'red' ? null : 'red')}
+              >
+                RÉSERVE ROUGE
+              </button>
+            </div>
           </div>
-        </div>
         </>
       )}
 
@@ -1570,6 +1667,9 @@ export default function BBSchemePage() {
             onMouseMove={(e) => { if (!isEmbed) handlePanningMove(e); }}
             onMouseUp={handlePanningEnd}
             onMouseLeave={handlePanningEnd}
+            onTouchStart={(e) => { if (!isEmbed) handleTouchStart(e); }}
+            onTouchMove={(e) => { if (!isEmbed) handleTouchMove(e); }}
+            onTouchEnd={handlePanningEnd}
           >
             <div ref={resizerRef} className="pitch-resizer" style={{
               width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`,
