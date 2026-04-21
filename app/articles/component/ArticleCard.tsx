@@ -10,8 +10,8 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { AlertTriangle, Clock, Eye, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import "./ArticleCard-mobile.css";
 import "./ArticleCard.css";
+import "./ArticleCard-mobile.css";
 
 
 interface ArticleCardProps {

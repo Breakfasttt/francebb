@@ -1,9 +1,28 @@
 /* styles spécifiques mobile pour la page des articles */
 
 @media (max-width: 1024px) {
+  .articles-page {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+
   .articles-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    padding: 0 1rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .articles-content, .articles-list, .articles-grid {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
 }
 

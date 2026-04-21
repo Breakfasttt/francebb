@@ -1,52 +1,71 @@
 /* styles spécifiques mobile pour la carte d'article */
 
 @media (max-width: 1100px) {
-  .article-list-item {
+  /* Spécificité accrue via articles-layout articles-list */
+  .articles-layout .articles-list .premium-card.article-list-item {
     display: flex !important;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.8rem;
-    padding: 0.6rem 0.8rem !important;
-    border-radius: 8px !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Force une seule ligne */
+    justify-content: flex-start !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    padding: 0.8rem 1rem !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
-  /* Pour forcer titre/auteur/tags à gauche et date à droite */
-  .list-col-title, .list-col-author, .list-col-tags {
-    flex: 1 1 70%;
+  .articles-layout .articles-list .article-list-item .list-col-title {
+    flex: 1 1 auto !important; /* Prend le maximum de place */
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
-  .list-col-date {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 0.1rem;
-    font-size: 0.7rem !important;
-    border: none !important;
-    padding: 0 !important;
-  }
-
-  /* On ré-organise l'ordre pour que le titre soit en haut si flex-wrap */
-  .list-col-title { order: 1; margin-bottom: -0.4rem; }
-  .list-col-author { order: 2; display: flex; align-items: center; gap: 0.4rem; }
-  .list-col-tags { order: 3; display: flex; gap: 0.3rem; }
-  .list-col-date { order: 4; }
-
-  .list-article-title {
+  .articles-layout .articles-list .article-list-item .list-col-title .list-article-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
     font-size: 0.95rem !important;
-    white-space: normal;
-    font-weight: 700;
+    margin: 0 !important;
   }
 
-  .list-col-author .article-author-name {
-    font-size: 0.75rem;
-    opacity: 0.8;
+  .articles-layout .articles-list .article-list-item .list-col-author {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    min-width: fit-content !important;
   }
 
-  .list-date-text {
-    opacity: 0.6;
-    font-size: 0.65rem;
+  .articles-layout .articles-list .article-list-item .list-col-author .article-author-name {
+    display: none !important; /* On cache le nom sur mobile s'il y a l'avatar */
+  }
+
+  .articles-layout .articles-list .article-list-item .list-col-tags {
+    display: none !important; /* On cache les tags sur mobile */
+  }
+
+  .articles-layout .articles-list .article-list-item .list-col-date {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    min-width: fit-content !important;
+    font-size: 0.75rem !important;
+    color: var(--text-muted) !important;
+  }
+
+  .articles-layout .articles-list .article-list-item .list-col-date .article-view-count {
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.2rem !important;
+  }
+
+  .articles-layout .articles-list .article-list-item .list-col-date .list-date-text {
+    display: none !important; /* On cache le texte relatif */
   }
 }
