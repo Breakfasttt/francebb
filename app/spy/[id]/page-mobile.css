@@ -1,21 +1,109 @@
-/* styles spécifiques mobile pour la page Spy */
-
 @media (max-width: 900px) {
   .profile-content-layout {
-    flex-direction: column;
-    gap: 2rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 0.8rem !important;
+    margin-top: 1rem !important;
   }
+
   .profile-sidebar-wrapper {
     width: 100% !important;
+    position: relative !important;
+    top: auto !important;
+    margin-bottom: 1.5rem !important;
+    flex: none !important;
+    z-index: 10 !important;
   }
+
   .profile-summary-box {
     border-top-right-radius: 16px !important;
-    padding-top: 2rem !important;
+    padding: 1.5rem 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    background: var(--card-bg) !important;
+    box-shadow: var(--card-shadow) !important;
+    z-index: 10 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .profile-main-content {
+    margin-top: 1rem !important;
+    width: 100% !important;
+    flex: none !important;
+    z-index: 1 !important;
+    padding-right: 0 !important;
+  }
+
+  .profile-avatar-container {
+    margin-right: 0 !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .profile-summary-header {
+    align-items: center !important;
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .profile-stats-grid {
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 0.8rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .profile-info-list {
+    padding: 0 1rem !important;
+  }
+
+  /* Activity items optimization for mobile */
+  .activity-item {
+    padding: 1rem !important;
+    gap: 1rem !important;
+  }
+
+  .activity-header {
+    gap: 0.8rem !important;
+  }
+
+  .activity-topic {
+    font-size: 0.95rem !important;
+  }
+
+  .activity-content-preview {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .view-more {
+    padding-left: 0 !important;
+  }
+
+  .activity-time {
+    margin-right: 0 !important;
+    font-size: 0.7rem !important;
+  }
+
+  /* Navigation Mobile Portal */
+  .profile-sidebar-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.5rem 1.6rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
 @media (max-width: 768px) {
-  .profile-content-layout {
-    gap: 1.5rem;
+  .profile-summary-box {
+    padding: 1.25rem 0.8rem !important;
   }
 }

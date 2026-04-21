@@ -143,14 +143,14 @@ export default function ProfileSidebar({
 
   return (
     <div className="profile-sidebar-wrapper">
-      {isMobile && isOwnProfile && (
+      {isMobile && (
         <MobilePortal targetId="mobile-page-sidebar-slot">
           <div className="profile-sidebar-mobile-nav">
              <TabSystem 
                items={navItems}
                activeTab={activeTab}
                onTabChange={handleTabClick}
-               variant="sidebar" // On utilise sidebar car c'est plus lisible avec labels sur mobile
+               variant="sidebar"
                noPortal={true}
              />
           </div>
