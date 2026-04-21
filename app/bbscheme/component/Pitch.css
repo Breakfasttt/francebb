@@ -12,6 +12,14 @@
   flex-shrink: 0; /* Important for scale() and scroll containers */
 }
 
+@media (max-width: 1024px) {
+  .pitch-wrapper {
+    border-width: 2px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    border-radius: 4px;
+  }
+}
+
 .pitch-grid {
   width: 1300px;
   height: 750px;

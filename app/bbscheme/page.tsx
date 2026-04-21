@@ -8,6 +8,8 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import html2canvas from "html2canvas";
 import {
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Copy,
   Download,
@@ -16,6 +18,7 @@ import {
   Info,
   Loader2,
   Maximize,
+  Menu,
   Minimize,
   MousePointer2,
   Pause,
@@ -29,6 +32,7 @@ import {
   Trash2,
   Undo2,
   Wand2,
+  X,
   ZoomIn,
   ZoomOut
 } from "lucide-react";
@@ -50,8 +54,9 @@ import FigurineBox from "./component/FigurineBox";
 import Pitch from "./component/Pitch";
 
 import { useIsMobile } from "@/common/hooks/useIsMobile";
-import DesktopOnlyFallback from "@/common/components/DesktopOnlyFallback/DesktopOnlyFallback";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 
+import "./page-mobile.css";
 import "./page.css";
 
 // Types
@@ -117,6 +122,8 @@ export default function BBSchemePage() {
   const [activeTool, setActiveTool] = useState<ToolType>('select');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [rotation, setRotation] = useState(0);
+  const rotationRef = useRef(rotation);
+  useEffect(() => { rotationRef.current = rotation; }, [rotation]);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [drawings, setDrawings] = useState<DrawingPath[]>([]);
   const [history, setHistory] = useState<HistoryState[]>([]);
@@ -129,7 +136,7 @@ export default function BBSchemePage() {
 
   // Séquence & Lecteur
   // Séquence & Lecteur
-  const [frames, setFrames] = useState<BoardFrame[]>([{ 
+  const [frames, setFrames] = useState<BoardFrame[]>([{
     tokens: [{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }],
     blueRosterFile: null,
     redRosterFile: null
@@ -178,6 +185,8 @@ export default function BBSchemePage() {
   const [allStarPlayers, setAllStarPlayers] = useState<PlayerRosterInfo[]>([]);
   const resizerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const mobileToolbarRef = useRef<HTMLDivElement>(null);
+  const [mobileActivePanel, setMobileActivePanel] = useState<'blue' | 'red' | null>(null);
 
   // -- FIN DES HOOKS --
 
@@ -230,7 +239,7 @@ export default function BBSchemePage() {
                 const res = await fetch(`/data/roster/${file}.json`).then(r => r.json()).catch(() => null);
                 if (!res) return;
                 const enriched = { ...res, roster: [...res.roster, genericStarInfo] };
-                
+
                 const pool = enriched.roster.flatMap((p: any) => {
                   const isStar = p.name === "Star Player";
                   const slug = isStar ? "star" : p.name.replace(/\s+/g, '-');
@@ -271,7 +280,7 @@ export default function BBSchemePage() {
 
                 const bPool = bFile ? bluePools[bFile] || [] : [];
                 const rPool = rFile ? redPools[rFile] || [] : [];
-                
+
                 // On repart du pool complet spécifique à CETTE frame
                 const currentFrameTokens = [...bPool.map(t => ({ ...t })), ...rPool.map(t => ({ ...t })), { ...ballBase }];
 
@@ -303,7 +312,7 @@ export default function BBSchemePage() {
                 setFrames(hydratedFrames);
                 const firstFrame = hydratedFrames[0];
                 setTokens([...firstFrame.tokens]);
-                
+
                 // On pré-charge les rosters globaux pour l'UI à partir de la première frame
                 if (firstFrame.blueRosterFile) {
                   // handleRosterSelect s'occupera d'enrichir l'UI
@@ -312,7 +321,7 @@ export default function BBSchemePage() {
                   setBlueRoster(null);
                   setBlueRosterFile("");
                 }
-                
+
                 if (firstFrame.redRosterFile) {
                   handleRosterSelect('red', firstFrame.redRosterFile, false, true);
                 } else {
@@ -323,7 +332,7 @@ export default function BBSchemePage() {
               if (parsed.drawings) setDrawings(parsed.drawings);
               if (parsed.rotation !== undefined) setRotation(parsed.rotation);
               if (parsed.speed !== undefined) setPlaybackSpeed(parsed.speed);
-              
+
               // On force la fin du loading avant le déclenchement des effets
               setLoading(false);
             }
@@ -371,11 +380,17 @@ export default function BBSchemePage() {
     }
   }, [blueRoster, redRoster, loading]);
 
-  // Synchronisation de rotation si layout forcé
+  // Synchronisation initiale de rotation
   useEffect(() => {
-    if (layout === "vertical" && rotation !== 90) setRotation(90);
-    if (layout === "horizontal" && rotation !== 0) setRotation(0);
-  }, [layout, rotation]);
+    // Priorité absolue au mobile (toujours vertical)
+    if (isMobile && !isEmbed) {
+      setRotation(90);
+    } else {
+      // Sinon on suit le paramètre layout seulement s'il est présent
+      if (layout === "vertical") setRotation(90);
+      else if (layout === "horizontal") setRotation(0);
+    }
+  }, [layout, isMobile, isEmbed]); // rotation retiré pour permettre le changement manuel
 
   // Logique du lecteur (Playback)
   useEffect(() => {
@@ -407,8 +422,8 @@ export default function BBSchemePage() {
       const targetFrame = frames[currentFrameIndex];
       if (targetFrame) {
         setTokens(targetFrame.tokens);
-        setSelectedId(null); 
-        
+        setSelectedId(null);
+
         // Synchronisation des rosters de la frame vers le global UI (avec normalisation strict)
         const frameBlue = targetFrame.blueRosterFile || "";
         const frameRed = targetFrame.redRosterFile || "";
@@ -450,8 +465,8 @@ export default function BBSchemePage() {
       setFrames(prev => {
         if (prev[currentFrameIndex]?.tokens === tokens) return prev;
         const next = [...prev];
-        next[currentFrameIndex] = { 
-          ...next[currentFrameIndex], 
+        next[currentFrameIndex] = {
+          ...next[currentFrameIndex],
           tokens
         };
         return next;
@@ -514,13 +529,26 @@ export default function BBSchemePage() {
     if (!resizerRef.current) return;
     const viewport = resizerRef.current.closest('.pitch-viewport');
     if (!viewport) return;
-    const padding = 20;
-    const availableWidth = viewport.clientWidth - padding;
-    const availableHeight = viewport.clientHeight - padding;
-    const pitchW = rotation === 90 ? 758 : 1308;
-    const pitchH = rotation === 90 ? 1308 : 758;
-    setBaseScale(Math.min(availableWidth / pitchW, availableHeight / pitchH, 1.1));
-  }, [rotation]);
+
+    const rect = viewport.getBoundingClientRect();
+    const padding = isMobile ? 4 : 30; // Moins de padding sur mobile pour prendre toute la largeur
+    const availableWidth = rect.width - padding;
+    const availableHeight = rect.height - padding;
+    
+    const currentRot = rotationRef.current;
+    const pitchW = currentRot === 90 ? 758 : 1308;
+    const pitchH = currentRot === 90 ? 1308 : 758;
+
+    // Force contain behavior to avoid overflow in either direction
+    const newScale = Math.min(availableWidth / pitchW, availableHeight / pitchH, 1.1);
+
+    if (Math.abs(baseScale - newScale) > 0.005) {
+      setBaseScale(newScale);
+    }
+  }, [isMobile, baseScale]);
+
+  const handleResizeRef = useRef(handleResize);
+  useEffect(() => { handleResizeRef.current = handleResize; }, [handleResize]);
 
 
   useEffect(() => {
@@ -554,53 +582,21 @@ export default function BBSchemePage() {
   }, []);
 
   useEffect(() => {
-    handleResize();
-    const timer = setTimeout(handleResize, 100);
-    window.addEventListener('resize', handleResize);
-    return () => { window.removeEventListener('resize', handleResize); clearTimeout(timer); };
-  }, [handleResize, isFullscreen, rotation]);
-
-  // ResizeObserver for more precise scaling
-  useEffect(() => {
-    const viewport = resizerRef.current?.closest('.pitch-viewport');
-    if (!viewport) return;
-
-    const observer = new ResizeObserver(() => {
-      handleResize();
-    });
-
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, [handleResize]);
-
-  useEffect(() => {
-    handleResize();
-    const timer = setTimeout(handleResize, 100);
-    window.addEventListener('resize', handleResize);
-    return () => { window.removeEventListener('resize', handleResize); clearTimeout(timer); };
-  }, [handleResize, isFullscreen, rotation]);
-
-  // ResizeObserver for more precise scaling
-  useEffect(() => {
-    const viewport = resizerRef.current?.closest('.pitch-viewport');
-    if (!viewport) return;
-
-    const observer = new ResizeObserver(() => {
-      handleResize();
-    });
-
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, [handleResize]);
+    const triggerResize = () => handleResizeRef.current();
+    triggerResize();
+    const timer = setTimeout(triggerResize, 100);
+    window.addEventListener('resize', triggerResize);
+    return () => { window.removeEventListener('resize', triggerResize); clearTimeout(timer); };
+  }, [isFullscreen, rotation]); // handleResize retiré des dépendances
 
   const finalScale = baseScale * zoom;
 
   // -- FIN DES HOOKS --
 
-  // SI MOBILE : On bloque l'éditeur complet (mais pas le player embed)
-  if (isMobile && !isEmbed) {
-    return <DesktopOnlyFallback />;
-  }
+  // SI MOBILE : On laisse passer, le CSS gérera l'affichage (Theming rules / Mobile UX)
+  // if (isMobile && !isEmbed) {
+  //   return <DesktopOnlyFallback />;
+  // }
 
   // SI MODE EMBED : Affichage du player dédié uniquement
   if (isEmbed && boardId) {
@@ -661,8 +657,8 @@ export default function BBSchemePage() {
       skills: ["Compétences variables"], primary: "", secondary: "", cost: 0
     };
     // Éviter les doublons si déjà présent dans le roster
-    const rosterWithStars = roster.roster.some(p => p.name === "Star Player") 
-      ? roster.roster 
+    const rosterWithStars = roster.roster.some(p => p.name === "Star Player")
+      ? roster.roster
       : [...roster.roster, starPlayerInfo];
 
     rosterWithStars.forEach(player => {
@@ -687,7 +683,7 @@ export default function BBSchemePage() {
     const applyRosterClean = (currentTokens: TokenData[]) => {
       const otherStuff = currentTokens.filter(t => t.type !== team && t.type !== 'ball');
       let ball = currentTokens.find(t => t.type === 'ball');
-      
+
       // Detach ball systematically
       if (ball) {
         ball = { ...ball, attachedToId: undefined };
@@ -702,7 +698,7 @@ export default function BBSchemePage() {
     // We only update the current frame to keep other frames independent as requested
     const updatedTokens = applyRosterClean(tokens);
     setTokens(updatedTokens);
-    
+
     setFrames(fPrev => {
       const fNext = [...fPrev];
       fNext[currentFrameIndex] = {
@@ -1177,7 +1173,59 @@ export default function BBSchemePage() {
       className={`bbscheme-page ${isFullscreen ? 'fullscreen' : ''} ${isEmbed ? 'is-embed' : ''}`}
       onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
     >
-      {!isEmbed && (
+      {/* UI MOBILE - HEADER & TOOLBAR */}
+      {isMobile && !isEmbed && (
+        <>
+          {/* Portail pour injecter le bouton retour dans la Navbar globale du site */}
+          <MobilePortal targetId="mobile-back-button-slot">
+            <BackButton className="forced-relative" />
+          </MobilePortal>
+
+          <div className="mobile-bbscheme-ui">
+            {/* LIGNE 2 : TOOLBAR SLIDE */}
+            <div className="mobile-toolbar-container">
+            <button className="toolbar-slide-btn left" onClick={() => mobileToolbarRef.current?.scrollBy({ left: -100, behavior: 'smooth' })}>
+              <ChevronLeft size={20} />
+            </button>
+            <div className="mobile-scroll-toolbar" ref={mobileToolbarRef}>
+              {/* Outils principaux */}
+              <button className={`mobile-tool-item ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button>
+              <button className={`mobile-tool-item ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} /></button>
+              <button className={`mobile-tool-item ${activeTool === 'ball' ? 'active' : ''}`} onClick={() => setActiveTool('ball')}><BallIcon size={18} /></button>
+              <button className={`mobile-tool-item ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} /></button>
+              <button className={`mobile-tool-item ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => { saveToHistory(tokens, drawings); setDrawings([]); toast.success("Dessins effacés"); }}><Eraser size={18} /></button>
+              <div className="mobile-divider" />
+              <button className="mobile-tool-item" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button>
+              <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} /></button>
+              <div className="mobile-divider" />
+              <button className="mobile-tool-item" onClick={() => setRotation(r => r === 0 ? 90 : 0)}><RotateCw size={18} /></button>
+              <button className="mobile-tool-item" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button>
+            </div>
+            <button className="toolbar-slide-btn right" onClick={() => mobileToolbarRef.current?.scrollBy({ left: 100, behavior: 'smooth' })}>
+              <ChevronRight size={20} />
+            </button>
+          </div>
+
+          {/* LIGNE 3 : RÉSERVES */}
+          <div className="mobile-reserves-row">
+            <button
+              className={`reserve-toggle blue ${mobileActivePanel === 'blue' ? 'active' : ''}`}
+              onClick={() => setMobileActivePanel(mobileActivePanel === 'blue' ? null : 'blue')}
+            >
+              RÉSERVE BLEUE
+            </button>
+            <button
+              className={`reserve-toggle red ${mobileActivePanel === 'red' ? 'active' : ''}`}
+              onClick={() => setMobileActivePanel(mobileActivePanel === 'red' ? null : 'red')}
+            >
+              RÉSERVE ROUGE
+            </button>
+          </div>
+        </div>
+        </>
+      )}
+
+      {!isMobile && !isEmbed && (
         <header className="tool-header">
           <div className="header-left">
             <BackButton href="/" title="Retour" />
@@ -1477,10 +1525,16 @@ export default function BBSchemePage() {
         isDanger={true}
       />
 
-      <div className={`tool-layout ${isEmbed ? 'is-embed' : ''}`}>
+      <div className={`tool-layout ${isEmbed ? 'is-embed' : ''} ${isMobile ? 'mobile-mode' : ''}`}>
         <div className="work-area">
-          {!isEmbed && (
-            <div className="global-team-area blue">
+          {(!isEmbed && (!isMobile || mobileActivePanel === 'blue')) && (
+            <div className={`global-team-area blue ${mobileActivePanel === 'blue' ? 'mobile-open' : ''}`}>
+              {isMobile && (
+                <div className="mobile-panel-header">
+                  <span className="team-label blue">RÉSERVE BLEUE</span>
+                  <button className="mobile-close-btn" onClick={() => setMobileActivePanel(null)}><X size={18} /></button>
+                </div>
+              )}
               <FigurineBox
                 team="blue"
                 roster={blueRoster?.roster || []}
@@ -1563,8 +1617,14 @@ export default function BBSchemePage() {
             </div>
           )}
 
-          {!isEmbed && (
-            <div className="global-team-area red">
+          {(!isEmbed && (!isMobile || mobileActivePanel === 'red')) && (
+            <div className={`global-team-area red ${mobileActivePanel === 'red' ? 'mobile-open' : ''}`}>
+              {isMobile && (
+                <div className="mobile-panel-header">
+                  <span className="team-label red">RÉSERVE ROUGE</span>
+                  <button className="mobile-close-btn" onClick={() => setMobileActivePanel(null)}><X size={18} /></button>
+                </div>
+              )}
               <div className="dugout-container">
                 <Dugout
                   team="red"

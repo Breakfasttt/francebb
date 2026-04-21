@@ -43,6 +43,9 @@ export default function Modal({
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
@@ -50,7 +53,6 @@ export default function Modal({
     return () => {
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
-      setMounted(false);
     };
   }, [isOpen, handleKeyDown]);
 

@@ -643,4 +643,30 @@
   box-shadow: none;
 }
 
+/* ==========================================================================
+   STANDARD BACK BUTTON (STYLE PREMIUM)
+   ========================================================================== */
+.back-button {
+  width: 44px !important;
+  height: 44px !important;
+  background: var(--back-btn-bg, #000) !important;
+  border: var(--back-btn-border, 2px solid #fff) !important;
+  border-radius: 50% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--back-btn-icon-color, #fff) !important;
+  box-shadow: var(--back-btn-shadow, 0 4px 15px rgba(0,0,0,0.5)) !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  transform: scale(1.1) rotate(-8deg) !important;
+  background: var(--primary) !important;
+  border-color: #fff !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
 /* (Les styles Embed ont été déplacés dans BBSchemePlayer.css pour une isolation parfaite) */

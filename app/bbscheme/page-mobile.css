@@ -1,155 +1,261 @@
 /* BBSCHEME MOBILE - THE VICTORY VERSION (STABLE) */
 @media (max-width: 1024px) {
+
   /* Layout global */
+  .bbscheme-page {
+    padding-top: 0 !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
   .tool-layout.mobile-mode {
     display: block !important;
-    padding-top: 104px !important; /* Navbar 54 + Toolbar 50 = 104 */
+    padding-top: 154px !important; /* Navbar(54) + Row1(55) + Row2(45) */
     background: var(--background) !important;
-    min-height: 100dvh !important;
+    height: 100dvh !important;
+    box-sizing: border-box !important;
+  }
+
+  .bbscheme-container {
+    overflow: hidden;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
   }
 
   /* Cache Desktop */
-  .tool-header, .desktop-only, .dugout-container { display: none !important; }
+  .tool-header,
+  .desktop-only {
+    display: none !important;
+  }
 
-  /* LE BOUTON RETOUR - ROI DE LA NAVBAR */
-  .back-button-fixed {
+  /* UI MOBILE FIXE */
+  .mobile-bbscheme-ui {
     position: fixed !important;
-    top: 7px !important;
-    right: 12px !important;
-    z-index: 10000000 !important;
+    top: 54px !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 6100 !important;
+    background: var(--nav-bg) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-shadow: var(--glass-shadow) !important;
+  }
+
+  /* BOUTON RETOUR DANS SLOT GLOBAL (STYLE PREMIUM) */
+  #mobile-back-button-slot .back-button {
+    background: var(--back-btn-bg, #000) !important;
+    border: var(--back-btn-border, 2px solid #fff) !important;
+    border-radius: 50% !important;
+    color: var(--back-btn-icon-color, #fff) !important;
+    width: 38px !important; /* Ajusté pour Navbar */
+    height: 38px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    box-shadow: var(--back-btn-shadow, 0 4px 10px rgba(0,0,0,0.5)) !important;
+    margin-right: 8px !important;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  }
+
+  #mobile-back-button-slot .back-button:hover {
+    transform: scale(1.05) rotate(-5deg) !important;
+  }
+
+  /* LIGNE 2 : TOOLBAR AVEC SLIDE */
+  .mobile-toolbar-container {
+    height: 55px !important;
     display: flex !important;
     align-items: center !important;
+    background: var(--card-bg) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
   }
-  .back-button-fixed button {
-    background: rgba(255,255,255,0.2) !important;
-    border: 1px solid rgba(255,255,255,0.3) !important;
-    color: white !important;
-    width: 34px !important;
-    height: 34px !important;
-    border-radius: 50% !important;
+
+  .toolbar-slide-btn {
+    width: 35px !important;
+    height: 55px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    color: var(--text-muted) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 0 !important;
+    z-index: 2 !important;
   }
 
-  /* NAVIGATION MOBILE FIXE */
-  .fixed-mobile-nav {
-    position: fixed !important;
-    top: 54px !important; /* Sous la navbar rouge */
-    left: 0 !important;
-    width: 100% !important;
-    z-index: 100000 !important;
-    background: #111 !important; /* Fond sombre pour outils */
-    display: flex !important;
-    flex-direction: column !important;
-    border-bottom: 2px solid var(--glass-border) !important;
-  }
-
-  /* TOOLBAR - SCROLL HORIZONTAL */
-  .mobile-toolbar-row {
-     height: 50px !important;
-     display: flex !important;
-     flex-direction: row !important;
-     flex-wrap: nowrap !important;
-     overflow-x: auto !important;
-     align-items: center !important;
-     padding: 0 10px !important;
-     gap: 15px !important;
-     background: #111 !important;
-     border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-     -webkit-overflow-scrolling: touch !important;
-  }
-  .mobile-toolbar-row::-webkit-scrollbar { display: none; }
-
-  .mobile-scrollable-toolbar {
-     display: flex !important;
-     flex-direction: row !important;
-     flex-wrap: nowrap !important;
-     gap: 15px !important;
-     align-items: center !important;
-  }
-  
-  .mobile-scrollable-toolbar .tool-btn {
-     flex: 0 0 42px !important;
-     width: 42px !important;
-     height: 42px !important;
-     background: rgba(255,255,255,0.05) !important;
-     color: #fff !important;
-     border-radius: 6px !important;
-     border: 1px solid rgba(255,255,255,0.1) !important;
-     display: flex !important;
-     align-items: center !important;
-     justify-content: center !important;
-  }
-  .mobile-scrollable-toolbar .tool-btn.active {
-     background: var(--accent) !important;
-     border-color: var(--accent) !important;
-  }
-
-  /* BOUTONS EQUIPES */
-  .mobile-team-buttons {
-    height: 50px !important;
-    display: flex !important;
-    background: #000 !important;
-  }
-  .team-nav-btn {
+  .mobile-scroll-toolbar {
     flex: 1 !important;
-    height: 50px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 0 10px !important;
+    align-items: center !important;
+    scrollbar-width: none !important;
+  }
+
+  .mobile-scroll-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-tool-item {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: var(--nav-btn-bg) !important;
+    border: 1px solid var(--nav-btn-border) !important;
+    border-radius: 8px !important;
+    color: var(--nav-btn-color) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s !important;
+  }
+
+  .mobile-tool-item.active {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 10px var(--accent) !important;
+  }
+
+  .mobile-tool-item:disabled {
+    opacity: 0.3 !important;
+  }
+
+  .mobile-divider {
+    width: 1px !important;
+    height: 25px !important;
+    background: var(--glass-border) !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* LIGNE 3 : BOUTONS RÉSERVE */
+  .mobile-reserves-row {
+    height: 45px !important;
+    display: flex !important;
+    background: var(--background) !important;
+    border-bottom: 1px solid var(--glass-border) !important;
+  }
+
+  .reserve-toggle {
+    flex: 1 !important;
+    height: 100% !important;
     border: none !important;
     font-weight: 900 !important;
     color: white !important;
     text-transform: uppercase !important;
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
+    transition: filter 0.2s !important;
   }
-  .team-nav-btn.blue { background: #1e40af !important; }
-  .team-nav-btn.red { background: #991b1b !important; }
 
-  /* OVERLAYS CONTEXTUELS - LAISSENT LE HEADER VISIBLE */
+  .reserve-toggle.blue {
+    background: #1e40af !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .reserve-toggle.red {
+    background: #7f1d1d !important;
+  }
+
+  .reserve-toggle.active {
+    filter: brightness(1.5) !important;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* OVERLAYS RÉSERVES */
   .global-team-area {
     position: fixed !important;
-    top: 154px !important; /* Sous les boutons d'équipe */
+    top: 154px !important; /* Navbar(54) + Row1(55) + Row2(45) */
     left: 0 !important;
     width: 100% !important;
     height: calc(100dvh - 154px) !important;
-    z-index: 500000 !important;
+    max-height: calc(100dvh - 154px) !important;
+    padding: 0 !important;
+    z-index: 5000 !important;
     background: var(--background) !important;
     display: none !important;
-    padding: 1rem !important;
+    padding: 10px !important;
     overflow-y: auto !important;
-    box-shadow: 0 -10px 20px rgba(0,0,0,0.5) !important;
   }
+
   .global-team-area.mobile-open {
     display: block !important;
   }
 
-  .mobile-menu-header {
+  .mobile-panel-header {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    margin-bottom: 1rem !important;
-    padding: 10px !important;
+    margin-bottom: 10px !important;
+    padding: 8px !important;
     background: var(--nav-bg) !important;
-    border-radius: 8px !important;
+    border-radius: 6px !important;
     border: 1px solid var(--glass-border) !important;
   }
-  .team-label { font-weight: 900 !important; }
-  .team-label.blue { color: #3b82f6 !important; }
-  .team-label.red { color: #ef4444 !important; }
+
+  .team-label {
+    font-weight: 900 !important;
+    font-size: 0.9rem !important;
+  }
+
+  .team-label.blue {
+    color: #3b82f6 !important;
+  }
+
+  .team-label.red {
+    color: #ef4444 !important;
+  }
+
   .mobile-close-btn {
     background: var(--accent) !important;
     color: white !important;
     border: none !important;
-    padding: 6px 12px !important;
+    width: 32px !important;
+    height: 32px !important;
     border-radius: 4px !important;
-    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   /* PITCH */
   .pitch-viewport {
-    height: calc(100dvh - 170px) !important;
+    height: calc(100dvh - 154px) !important;
+    min-height: calc(100dvh - 154px) !important; /* Force stability */
     padding: 0 !important;
     background: transparent !important;
+    margin-top: 0 !important;
+    overflow: auto !important;
+    display: flex !important;
+    align-items: flex-start !important; /* Remonte le terrain vers les boutons */
+    justify-content: center !important;
   }
-  .pitch-resizer { margin: 10px auto !important; }
+
+  .work-area {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 15px !important; /* Ajoute les gouttières de chaque côté */
+    height: calc(100dvh - 154px) !important; /* Force rigid container */
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Masquer les trucs inutiles sur mobile dans les composants */
+  .roster-selector-container {
+    margin-bottom: 15px !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .dugout-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+  }
 }
