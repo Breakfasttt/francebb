@@ -18,6 +18,8 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
 import { isModerator as checkIsModerator } from "@/lib/roles";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import "../page.css";
 
 const BAN_REASONS = [
@@ -51,6 +53,7 @@ export default function ProfileSidebar({
   isBlockedInitial = false,
   onRefresh
 }: ProfileSidebarProps) {
+  const isMobile = useIsMobile();
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
   const [banReason, setBanReason] = useState("");
@@ -104,6 +107,7 @@ export default function ProfileSidebar({
   const handleToggleBlock = () => {
     startTransition(async () => {
       try {
+        const res = await toggleBlockUser(user.id, !isBlocked);
         setIsBlocked(res.isBlocked);
         setShowBlockModal(false);
         router.refresh();
@@ -139,28 +143,44 @@ export default function ProfileSidebar({
 
   return (
     <div className="profile-sidebar-wrapper">
-      <PremiumCard className="profile-summary-box" noOverflow>
+      {isMobile && isOwnProfile && (
+        <MobilePortal targetId="mobile-page-sidebar-slot">
+          <div className="profile-sidebar-mobile-nav">
+             <TabSystem 
+               items={navItems}
+               activeTab={activeTab}
+               onTabChange={handleTabClick}
+               variant="sidebar" // On utilise sidebar car c'est plus lisible avec labels sur mobile
+               noPortal={true}
+             />
+          </div>
+        </MobilePortal>
+      )}
+
+      <PremiumCard className={`profile-summary-box ${isMobile ? 'is-mobile' : ''}`} noOverflow>
         {user.isBanned && (
            <StatusBadge variant="banned" className="banned-badge" icon={<Ban size={12} />}>
              Banni
            </StatusBadge>
         )}
 
-        {/* TabSystem DOCKÉ À DROITE */}
-        <TabSystem 
-          items={navItems}
-          activeTab={activeTab}
-          onTabChange={handleTabClick}
-          variant="docked-sidebar"
-          showLabels={false}
-        />
+        {/* TabSystem DOCKÉ À DROITE - Uniquement sur Desktop */}
+        {!isMobile && (
+          <TabSystem 
+            items={navItems}
+            activeTab={activeTab}
+            onTabChange={handleTabClick}
+            variant="docked-sidebar"
+            showLabels={false}
+          />
+        )}
 
         <div className="profile-avatar-container">
           <UserAvatar 
             image={user.image} 
             name={user.name} 
             postCount={postCount} 
-            size={120} 
+            size={isMobile ? 100 : 120} 
             isBanned={user.isBanned}
             selectedRank={user.avatarFrame}
             isModerator={checkIsModerator(user.role)}

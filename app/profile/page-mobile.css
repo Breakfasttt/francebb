@@ -1,15 +1,81 @@
-/* styles spécifiques mobile pour la page profil */
-
 @media (max-width: 900px) {
   .profile-content-layout {
-    gap: 2rem;
+    flex-direction: column;
+    gap: 1.5rem;
   }
   .profile-sidebar-wrapper {
     width: 100% !important;
   }
   .profile-summary-box {
     border-top-right-radius: 16px !important;
-    padding-top: 2rem !important;
+    padding: 2rem 1.5rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-avatar-container {
+    margin-right: 0 !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-summary-header {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .profile-stats-grid {
+    justify-content: center !important;
+    width: 100%;
+  }
+
+  .profile-info-list {
+    align-items: center;
+  }
+
+  /* Navigation Mobile Portal */
+  .profile-sidebar-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.5rem 1.6rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Activity items mobile */
+  .activity-item {
+    padding: 1.2rem !important;
+  }
+  
+  .activity-header {
+    gap: 1rem !important;
+  }
+
+  .activity-icon-container {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .activity-topic {
+    font-size: 1rem !important;
+  }
+
+  .activity-content-preview,
+  .view-more {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .activity-time {
+    margin-right: 0 !important;
+    font-size: 0.75rem !important;
+  }
+
+  .followed-topics-full-view,
+  .profile-activity-card-global {
+    padding: 1.2rem !important;
   }
 }
 
@@ -29,10 +95,6 @@
     padding-bottom: 1.5rem;
   }
 
-  .form-group.full-width {
-    grid-column: auto !important;
-  }
-
   .avatar-input-group {
     flex-direction: column;
   }
@@ -41,7 +103,11 @@
     width: 100%;
   }
 
-  .avatar-studio-box {
+  .gen-styles-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .form-row-grid {
     grid-template-columns: 1fr !important;
   }
 }

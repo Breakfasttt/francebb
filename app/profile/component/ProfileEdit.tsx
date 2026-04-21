@@ -578,13 +578,6 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
           text-overflow: ellipsis;
           width: 100%;
         }
-
-        @media (max-width: 768px) {
-          .avatar-studio-box { grid-template-columns: 1fr; }
-          .studio-preview-pane { border-right: none; padding-right: 0; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-          .form-row-grid { grid-template-columns: 1fr; }
-          .gen-styles-grid { grid-template-columns: repeat(2, 1fr); }
-        }
       `}</style>
     </PremiumCard>
   );
