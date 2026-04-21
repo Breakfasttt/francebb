@@ -266,18 +266,21 @@ export default function TopicSidebar({
   const content = (
     <div className="sidebar-sticky-inner">
       <div className="sidebar-widget-container">
-        
-        {/* 1. Pages Block */}
+        {/* 1. Pages Block - Desktop Only to stay sticky */}
         {(totalPages && totalPages > 1) && (
-          <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
-            <Pagination 
-              currentPage={currentPage || 1}
-              totalPages={totalPages}
-              variant="sidebar"
-              baseUrl={`/forum/topic/${topicId}`}
-            />
-          </PremiumCard>
+          <div className="desktop-only">
+            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem', marginBottom: '1.5rem' }}>
+              <Pagination 
+                currentPage={currentPage || 1}
+                totalPages={totalPages}
+                variant="sidebar"
+                baseUrl={`/forum/topic/${topicId}`}
+              />
+            </PremiumCard>
+          </div>
         )}
+
+        {/* 1. Pages Block */}
 
         {/* 2. Topic Actions Block */}
         <PremiumCard className="sidebar-widget topic-widget">
@@ -491,6 +494,19 @@ export default function TopicSidebar({
           {content}
         </div>
       </GlobalPortal>
+
+      {/* Pagination mobile tout en bas de la page */}
+      {(totalPages && totalPages > 1) && (
+        <div className="mobile-only pagination-bottom-container" style={{ width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+          <PremiumCard style={{ padding: '1rem', width: '100%' }}>
+            <Pagination 
+              currentPage={currentPage || 1}
+              totalPages={totalPages}
+              baseUrl={`/forum/topic/${topicId}`}
+            />
+          </PremiumCard>
+        </div>
+      )}
 
       <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Suppression du sujet" hideFooter={true}>
         <div style={{ padding: '0.5rem 0', textAlign: 'center' }}>

@@ -57,17 +57,21 @@ export default async function ForumSidebar({
   const content = (
     <div className="sidebar-sticky-inner">
       <div className="sidebar-widget-container">
-        {/* 1. Pages Block (Forum / Search) */}
+        {/* 1. Pages Block (Forum / Search) - Desktop Only here to stay sticky */}
         {(totalPages && totalPages > 1) && (
-          <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem' }}>
-            <Pagination 
-              currentPage={currentPage || 1}
-              totalPages={totalPages}
-              variant="sidebar"
-              baseUrl={forumId ? `/forum/${forumId}` : undefined}
-            />
-          </PremiumCard>
+          <div className="desktop-only">
+            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem', marginBottom: '1.5rem' }}>
+              <Pagination 
+                currentPage={currentPage || 1}
+                totalPages={totalPages}
+                variant="sidebar"
+                baseUrl={forumId ? `/forum/${forumId}` : undefined}
+              />
+            </PremiumCard>
+          </div>
         )}
+        
+        {/* 1. Pages Block (Forum / Search) */}
 
 
         {/* Nouveau Sujet / Tournoi */}
@@ -155,12 +159,25 @@ export default async function ForumSidebar({
         {content}
       </aside>
 
-      {/* Téléportation vers la sidebar mobile */}
+      {/* Téléportation vers la sidebar mobile (Sans la pagination) */}
       <GlobalPortal target="#mobile-page-sidebar-slot">
         <div className="mobile-sidebar-section mobile-only">
           {content}
         </div>
       </GlobalPortal>
+
+      {/* Pagination mobile tout en bas de la page */}
+      {(totalPages && totalPages > 1) && (
+        <div className="mobile-only pagination-bottom-container" style={{ width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
+          <PremiumCard style={{ padding: '1rem', width: '100%' }}>
+            <Pagination 
+              currentPage={currentPage || 1}
+              totalPages={totalPages}
+              baseUrl={forumId ? `/forum/${forumId}` : undefined}
+            />
+          </PremiumCard>
+        </div>
+      )}
     </>
   );
 }
