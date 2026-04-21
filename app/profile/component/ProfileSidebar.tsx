@@ -107,7 +107,7 @@ export default function ProfileSidebar({
   const handleToggleBlock = () => {
     startTransition(async () => {
       try {
-        const res = await toggleBlockUser(user.id, !isBlocked);
+        const res = await toggleBlockUser(user.id);
         setIsBlocked(res.isBlocked);
         setShowBlockModal(false);
         router.refresh();

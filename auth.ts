@@ -20,11 +20,12 @@ declare module "next-auth" {
   interface User {
     role?: string;
     hasFinishedOnboarding?: boolean;
+    nafNumber?: string | null;
   }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma as any),
   session: { strategy: "jwt" },
   providers: [
     Discord({

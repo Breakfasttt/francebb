@@ -42,7 +42,7 @@ export default function ValiderContent({ initialSuggestions }: { initialSuggesti
   };
 
   if (suggestions.length === 0) {
-    return <EmptyState title="Aucune suggestion" subtitle="Tout est à jour ! Revenez plus tard." />;
+    return <EmptyState title="Aucune suggestion" description="Tout est à jour ! Revenez plus tard." />;
   }
 
   return (

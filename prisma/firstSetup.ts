@@ -228,7 +228,7 @@ async function firstSetup() {
 
   // 5. Ressources Système
   console.log("--- Configuration des ressources système...");
-  const systemResources = [];
+  const systemResources: any[] = [];
 
   for (const res of systemResources) {
     await prisma.resource.upsert({

@@ -327,7 +327,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         </div>
 
         <div className="form-actions-edit">
-          <CTAButton type="submit" isLoading={isPending} padding="1rem 2.5rem">
+          <CTAButton type="submit" isLoading={isPending} style={{ padding: "1rem 2.5rem" }}>
             Sauvegarder le profil
           </CTAButton>
         </div>

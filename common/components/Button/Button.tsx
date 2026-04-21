@@ -4,17 +4,16 @@ import React from "react";
 import Link from "next/link";
 import "./Button.css";
 import "./Button-mobile.css";
-import { LucideIcon } from "lucide-react";
 
 /**
  * Composant de base pour tous les boutons du site BBFrance.
- * Gère le rendu conditionnel (bouton ou lien), les états de chargement et les icônes.
+ * Gère le rendu conditionnel (bouton, lien, div, span), les états de chargement et les icônes.
  */
 
 export type ButtonVariant = "classic" | "cta" | "danger" | "admin" | "badge" | "explain" | "toggle";
 
 interface ButtonBaseProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   variant?: ButtonVariant;
   active?: boolean;
   icon?: React.ElementType | React.ReactNode;
@@ -24,6 +23,8 @@ interface ButtonBaseProps {
   className?: string;
   disabled?: boolean;
   size?: "xs" | "sm" | "md" | "lg";
+  style?: React.CSSProperties;
+  title?: string;
 }
 
 // Props pour le type Bouton
@@ -33,15 +34,18 @@ interface ButtonAsButtonProps extends ButtonBaseProps, React.ButtonHTMLAttribute
 }
 
 // Props pour le type Lien
-interface ButtonAsLinkProps extends ButtonBaseProps {
+interface ButtonAsLinkProps extends ButtonBaseProps, React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
   as?: "link";
-  target?: string;
-  rel?: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-export type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
+// Props pour le type Générique (div, span) utile pour l'imbrication dans des liens
+interface ButtonAsGenericProps extends ButtonBaseProps, React.HTMLAttributes<HTMLDivElement> {
+  href?: never;
+  as: "div" | "span";
+}
+
+export type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps | ButtonAsGenericProps;
 
 export default function Button({
   children,
@@ -54,6 +58,8 @@ export default function Button({
   disabled = false,
   size = "md",
   active = false,
+  style,
+  title,
   ...props
 }: ButtonProps) {
   
@@ -77,7 +83,7 @@ export default function Button({
       return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp}</span>;
     }
 
-    // Gestion robuste pour React 19 : certains éléments sérialisés peuvent ressembler à des objets
+    // Gestion robuste pour React 19
     if (typeof iconProp === 'object' && iconProp !== null && 'type' in iconProp) {
         return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp as any}</span>;
     }
@@ -86,15 +92,15 @@ export default function Button({
     if (typeof iconProp === 'function' || typeof iconProp === 'object') {
       const IconComponent = iconProp;
       const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
-      // On s'assure que c'est bien utilisable comme composant (pas null)
       if (!IconComponent) return null;
+      // @ts-ignore - Lucide icons props
       return <IconComponent className="bb-btn-icon" size={iconSize} />;
     }
 
     return null;
   };
 
-  const content = (
+  const renderContent = () => (
     <>
       {isLoading && <span className="btn-spinner" />}
       {!isLoading && renderIcon(Icon, "left")}
@@ -105,7 +111,7 @@ export default function Button({
 
   // Si c'est un lien
   if ("href" in props && props.href) {
-    const { href, target, rel, onClick } = props as ButtonAsLinkProps;
+    const { href, target, rel, onClick, ...rest } = props as ButtonAsLinkProps;
     return (
       <Link 
         href={href} 
@@ -113,23 +119,44 @@ export default function Button({
         target={target} 
         rel={rel} 
         onClick={onClick}
+        style={style}
+        title={title}
+        {...(rest as any)}
       >
-        {content}
+        {renderContent()}
       </Link>
     );
   }
 
-  // Si c'est un bouton standard
-  const { type = "button", onClick } = props as ButtonAsButtonProps;
+  // Rendu en div ou span
+  if (props.as === "div" || props.as === "span") {
+    const Tag = props.as;
+    const { as, ...rest } = props as ButtonAsGenericProps;
+    return (
+      <Tag
+        className={combinedClassName}
+        style={style}
+        title={title}
+        {...(rest as any)}
+      >
+        {renderContent()}
+      </Tag>
+    );
+  }
+
+  // Rendu par défaut en bouton
+  const { type = "button", onClick, ...rest } = props as ButtonAsButtonProps;
   return (
     <button
-      type={type}
+      type={type as any}
       className={combinedClassName}
       disabled={disabled || isLoading}
       onClick={onClick}
-      {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+      style={style}
+      title={title}
+      {...(rest as any)}
     >
-      {content}
+      {renderContent()}
     </button>
   );
 }

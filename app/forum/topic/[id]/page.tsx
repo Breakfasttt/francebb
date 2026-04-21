@@ -231,7 +231,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                     tournamentId={topic.tournament.id}
                     results={topic.tournament.results}
                     rounds={topic.tournament.rounds}
-                    canEdit={canEditTournament}
+                    canEdit={!!canEditTournament}
                   />
                 )}
 

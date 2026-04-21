@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useTransition, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export default function MembersTable({ users, currentUserRole, currentUserId, allLigues, allRegions }: Props) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("");
@@ -381,7 +383,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                           onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
                           isLoading={isPending}
                           size="sm"
-                          variant={user.isBanned ? "primary" : "admin"}
+                          variant={user.isBanned ? "classic" : "admin"}
                         >
                           {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
                         </AdminButton>

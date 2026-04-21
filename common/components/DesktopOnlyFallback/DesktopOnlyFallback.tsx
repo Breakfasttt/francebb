@@ -25,7 +25,7 @@ export default function DesktopOnlyFallback({
         <p>{message}</p>
         <div className="fallback-actions">
           <Link href="/">
-            <CTAButton label="Retour à l'accueil" />
+            <CTAButton>Retour à l'accueil</CTAButton>
           </Link>
         </div>
       </div>

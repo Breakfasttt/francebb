@@ -4,7 +4,7 @@ import { prisma } from "../../lib/prisma";
  * Script de pré-remplissage des membres Forumactif.
  * Remplissez le tableau legacyMembers avec les données exportées de Forumactif.
  */
-const legacyMembers = [
+const legacyMembers: any[] = [
   // Exemple : { email: "coach@example.com", forumactifName: "CoachDu92", nafNumber: "12345" },
 ];
 

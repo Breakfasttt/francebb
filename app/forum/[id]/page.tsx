@@ -7,7 +7,7 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import "../page.css";
 
 export const dynamic = "force-dynamic";

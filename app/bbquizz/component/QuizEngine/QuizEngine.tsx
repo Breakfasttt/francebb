@@ -22,7 +22,7 @@ interface Question {
   question: string;
   options: string[];
   correctIndex: number;
-  explanation?: string;
+  explanation?: string | null;
 }
 
 const READ_TIME = 5;

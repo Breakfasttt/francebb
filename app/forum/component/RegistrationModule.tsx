@@ -267,7 +267,6 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
                       size="sm" 
                       onClick={handleToggleMercenary} 
                       disabled={isPending || isActionBlocked}
-                      variant="outline"
                       style={isMercenary ? { borderColor: 'var(--primary)', color: 'var(--primary)' } : {}}
                     >
                       {isMercenary ? "Retirer mercenaire" : "Être mercenaire"}

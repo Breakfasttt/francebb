@@ -129,7 +129,7 @@ export default function EditerContent({ initialQuestions }: { initialQuestions: 
       {filteredQuestions.length === 0 ? (
         <EmptyState 
           title="Aucune question trouvée" 
-          subtitle="Essayez un autre terme de recherche ou proposez une nouvelle question." 
+          description="Essayez un autre terme de recherche ou proposez une nouvelle question." 
         />
       ) : (
         <div className="questions-grid">

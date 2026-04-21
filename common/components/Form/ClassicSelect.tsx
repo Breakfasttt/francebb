@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react";
 import "./ClassicSelect.css";
 import "./ClassicSelect-mobile.css";
 
-interface ClassicSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface ClassicSelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   label?: string;
   icon?: React.ElementType | React.ReactNode;
   containerStyle?: React.CSSProperties;

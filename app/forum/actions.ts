@@ -727,7 +727,7 @@ export async function updatePost(postId: string, content: string) {
 
   const existingPost = await prisma.post.findUnique({
     where: { id: postId },
-    select: { authorId: true, topicId: true, createdAt: true }
+    select: { id: true, authorId: true, topicId: true, createdAt: true }
   });
 
   if (!existingPost) throw new Error("Message introuvable.");
