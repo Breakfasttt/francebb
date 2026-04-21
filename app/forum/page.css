@@ -15,6 +15,7 @@
   max-width: 1400px !important;
   margin: 0 auto;
   box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 .forum-layout {
@@ -975,12 +976,11 @@
   .forum-layout {
     grid-template-columns: 1fr !important;
     gap: 0 !important;
-    padding: 0 !important;
     min-height: auto !important;
   }
 
   .forum-container {
-    padding: 0 !important;
+    padding: 0 1rem !important;
     margin: 0 !important;
     max-width: 100% !important;
     width: 100% !important;

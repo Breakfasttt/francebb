@@ -152,18 +152,10 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   };
 
   const SectionSeparator = ({ icon, title }: { icon: any, title: string }) => (
-    <div className="section-separator" style={{ 
-      display: 'flex', 
-      alignItems: 'center', 
-      gap: '0.8rem', 
-      padding: '1rem 0', 
-      borderBottom: '1px solid var(--glass-border)',
-      marginTop: '1.5rem',
-      marginBottom: '1rem'
-    }}>
-      <div style={{ color: 'var(--accent)' }}>{icon}</div>
-      <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 800 }}>{title}</h4>
-      <div style={{ flex: 1, height: '1px', background: 'var(--glass-border)', marginLeft: '1rem' }}></div>
+    <div className="section-separator">
+      <div className="section-icon">{icon}</div>
+      <h4>{title}</h4>
+      <div className="section-line"></div>
     </div>
   );
 
@@ -175,7 +167,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       
       <div className="forum-layout">
         <div className="forum-main-content">
-          <PremiumCard style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <PremiumCard className="form-main-card">
             
             <div className="form-group">
               <label htmlFor="title" style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
@@ -199,13 +191,8 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
             </div>
 
-            <div style={{ 
-              padding: '2rem', 
-              background: 'var(--glass-bg)', 
-              borderRadius: '16px', 
-              border: '1px solid var(--glass-border)' 
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+            <div className="form-inner-container">
+              <div className="form-inner-header">
                 <div style={{ background: 'var(--accent)', color: 'var(--header-foreground)', padding: '10px', borderRadius: '10px' }}>
                     <Trophy size={28} />
                 </div>
@@ -216,7 +203,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<Calendar size={18} />} title="Dates" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="grid-2col">
                 <div className="form-group">
                   <label>Date de début *</label>
                   <input 
@@ -242,7 +229,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<MapPin size={18} />} title="Lieu / Localisation" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div className="grid-2col">
                 <ClassicSelect 
                   label="Région de tournoi (NAF)" 
                   name="tRegionNAF" 
@@ -285,9 +272,9 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                   <label>Ville</label>
                   <input type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex: Lyon" className="admin-input" />
                 </div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                <div className="form-group" style={{ gridColumn: 'span 1' }}>
                   <label>Lieu / Adresse exacte</label>
-                  <div style={{ display: 'flex', gap: '0.8rem' }}>
+                  <div className="address-group-flex" style={{ display: 'flex', gap: '0.8rem' }}>
                     <div style={{ position: 'relative', flex: 1 }}>
                       <input 
                         type="text" 
@@ -319,7 +306,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<Users size={18} />} title="Participants" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'end', marginBottom: isTeam ? '1.5rem' : 0 }}>
+              <div className="grid-2col grid-participants">
                 <div className="form-group">
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', background: 'var(--glass-bg)', padding: '0.8rem', borderRadius: '8px', border: isTeam ? '1px solid var(--accent)' : '1px solid var(--glass-border)' }}>
                     <input type="checkbox" name="isTeam" checked={isTeam} onChange={e => setIsTeam(e.target.checked)} style={{ width: '18px', height: '18px' }} />
@@ -345,16 +332,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               {isTeam && (
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '1fr 1fr', 
-                  gap: '1.5rem', 
-                  padding: '1.2rem', 
-                  background: 'rgba(255,255,255,0.02)', 
-                  borderRadius: '12px',
-                  border: '1px dashed var(--glass-border)',
-                  marginBottom: '1rem'
-                }}>
+                <div className="grid-2col team-settings-box">
                   <div className="form-group">
                     <label>Coachs par équipe</label>
                     <input 
@@ -404,7 +382,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               )}
 
               <SectionSeparator icon={<Shield size={18} />} title="Championnats / Points" />
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem' }}>
+              <div className="grid-badges">
                 {['NAF', 'CDF', 'CGO', 'TGE', 'TSC'].map(c => (
                   <label key={c} className="checkbox-box-admin">
                     <input 
@@ -461,7 +439,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<Monitor size={18} />} title="Plateforme & Édition" />
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
+              <div className="grid-refdata">
                 <ClassicSelect 
                   label="Plateforme" 
                   name="tPlatform" 
@@ -508,7 +486,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
 
               <SectionSeparator icon={<Coins size={18} />} title="Logistique & Prix" />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+              <div className="grid-prices">
                 <div className="form-group">
                   <label>Prix Inscription (€)</label>
                   <input type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex: 15" className="admin-input" 
@@ -526,7 +504,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+              <div className="grid-logistic">
                 <label className="checkbox-box-admin">
                   <input type="checkbox" name="tMeals" defaultChecked={initialData?.mealsIncluded} />
                   <div className="box-content">
@@ -601,10 +579,89 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       </Modal>
 
       <style jsx>{`
+        :global(.premium-card.form-main-card) {
+          padding: 2.5rem !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 2rem !important;
+        }
+
+        :global(.form-inner-container) {
+          padding: 2rem !important;
+          background: var(--glass-bg);
+          border-radius: 16px;
+          border: 1px solid var(--glass-border);
+        }
+
+        :global(.form-inner-header) {
+          display: flex !important;
+          align-items: center !important;
+          gap: 1rem !important;
+          margin-bottom: 2rem !important;
+        }
+
+        :global(.grid-2col) {
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 1.5rem !important;
+        }
+
+        :global(.grid-badges) {
+          display: grid !important;
+          grid-template-columns: repeat(5, 1fr) !important;
+          gap: 1rem !important;
+        }
+
+        :global(.grid-refdata) {
+          display: grid !important;
+          grid-template-columns: repeat(4, 1fr) !important;
+          gap: 1.5rem !important;
+        }
+
+        :global(.grid-prices) {
+          display: grid !important;
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 1.5rem !important;
+          margin-bottom: 1.5rem !important;
+        }
+
+        :global(.grid-logistic) {
+          display: grid !important;
+          grid-template-columns: repeat(3, 1fr) !important;
+          gap: 1rem !important;
+        }
+
+        :global(.grid-participants) {
+          align-items: end !important;
+          margin-bottom: 1.5rem !important;
+        }
+
+        .team-settings-box {
+          padding: 1.2rem;
+          background: rgba(255, 255, 255, 0.02);
+          border-radius: 12px;
+          border: 1px dashed var(--glass-border);
+          margin-bottom: 1rem;
+        }
+
+        .section-separator {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+          padding: 1rem 0;
+          border-bottom: 1px solid var(--glass-border);
+          margin-top: 1.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .section-icon { color: var(--accent); }
+        .section-separator h4 { margin: 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; }
+        .section-line { flex: 1; height: 1px; background: var(--glass-border); margin-left: 1rem; }
+
         .admin-input {
           width: 100%;
           padding: 0.9rem 1rem;
-          background: rgba(0, 0, 0, 0.03); /* Background subtil pour ressortir sur le parchemin */
+          background: rgba(0, 0, 0, 0.03);
           border: 1px solid var(--glass-border);
           border-radius: 10px;
           color: var(--foreground);
@@ -612,24 +669,18 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           outline: none;
           transition: all 0.2s;
         }
+
         [data-theme='nehekhara'] .admin-input, 
         [data-theme='naf'] .admin-input { 
           background: rgba(255, 255, 255, 0.05); 
         }
 
         .admin-input:focus { border-color: var(--primary); background: var(--background); }
-        
-        /* Style spécifique pour les options des select pour assurer la lisibilité sur tous les thèmes */
-        .admin-input option {
-          background-color: var(--background);
-          color: var(--foreground);
-        }
+        .admin-input option { background-color: var(--background); color: var(--foreground); }
 
         .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
         
-        .checkbox-box-admin {
-          cursor: pointer;
-        }
+        .checkbox-box-admin { cursor: pointer; }
         .checkbox-box-admin input { display: none; }
         .box-content {
           display: flex;
@@ -642,9 +693,9 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           border: 1px solid var(--glass-border);
           color: var(--text-muted);
           transition: all 0.2s;
+          text-align: center;
         }
         
-        /* État coché : suit l'accent du thème (Or pour NAF/FBB, Navy pour Saison 3) */
         .checkbox-box-admin input:checked + .box-content {
            background: var(--primary-transparent);
            border-color: var(--primary);
@@ -674,9 +725,47 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
           color: var(--primary);
         }
 
+        @media (max-width: 1024px) {
+          :global(.premium-card.form-main-card) { padding: 1.2rem !important; gap: 1.5rem !important; }
+          :global(.form-inner-container) { padding: 1rem !important; border-radius: 12px !important; }
+          
+          :global(.grid-2col), :global(.grid-badges), :global(.grid-refdata), :global(.grid-prices), :global(.grid-logistic) {
+            grid-template-columns: 1fr !important;
+            gap: 1.2rem !important;
+          }
+
+          :global(.address-group-flex) {
+            flex-direction: column !important;
+          }
+
+          :global(.map-open-btn) {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.8rem !important;
+          }
+
+          :global(.grid-badges) {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
+            gap: 0.8rem !important;
+          }
+
+          :global(.box-content) { padding: 0.8rem !important; }
+          :global(.section-line) { display: none !important; }
+          :global(.form-inner-header) { flex-direction: column !important; text-align: center !important; margin-bottom: 1.5rem !important; }
+        }
+
         @media (max-width: 600px) {
-          .map-open-btn span { display: none; }
-          .map-open-btn { padding: 0 1rem; }
+          :global(.map-open-btn) span { display: none !important; }
+          :global(.map-open-btn) { padding: 1rem !important; }
+          :global(.grid-badges) {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+          :global(.section-separator) {
+            gap: 0.5rem !important;
+          }
+          :global(.section-separator h4) {
+            font-size: 0.8rem !important;
+          }
         }
       `}</style>
     </form>
