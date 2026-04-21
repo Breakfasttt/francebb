@@ -213,9 +213,9 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
           width: 100%;
           padding: 0.8rem 1rem 0.8rem 2.8rem;
           background: var(--input-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          color: var(--foreground);
+          border: var(--input-border);
+          border-radius: var(--input-radius);
+          color: var(--input-color, var(--foreground));
           font-size: 1rem;
           outline: none;
           transition: all 0.2s;
@@ -237,6 +237,22 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
           box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
         }
 
+        /* Inversion intelligente pour les thèmes sombres */
+        :global([data-theme='dark']) .map-wrapper,
+        :global([data-theme='malpierre']) .map-wrapper,
+        :global([data-theme='naf']) .map-wrapper,
+        :global([data-theme='nehekhara']) .map-wrapper {
+           filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
+
+        /* On ré-inverse les marqueurs pour qu'ils gardent leur couleur d'origine */
+        :global([data-theme='dark']) :global(.leaflet-marker-icon),
+        :global([data-theme='malpierre']) :global(.leaflet-marker-icon),
+        :global([data-theme='naf']) :global(.leaflet-marker-icon),
+        :global([data-theme='nehekhara']) :global(.leaflet-marker-icon) {
+          filter: invert(100%) hue-rotate(180deg);
+        }
+
         .map-picker-footer {
           display: flex;
           flex-direction: column;
@@ -251,7 +267,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
           gap: 0.8rem;
           font-size: 0.9rem;
           color: var(--text-secondary);
-          background: var(--glass-bg);
+          background: var(--theme-overlay);
           padding: 0.8rem 1rem;
           border-radius: 10px;
           border: 1px solid var(--glass-border);
