@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Search, Tag as TagIcon, Grid, List, Plus } from "lucide-react";
+import CTAButton from "@/common/components/Button/CTAButton";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
-import CTAButton from "@/common/components/Button/CTAButton";
+import { Grid, List, Plus, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import { getResourceTags } from "../../actions";
-import "./ResourceFilterSidebar.css";
 import "./ResourceFilterSidebar-mobile.css";
+import "./ResourceFilterSidebar.css";
 
 
 interface ResourceFilterSidebarProps {
@@ -27,7 +27,7 @@ export default function ResourceFilterSidebar({
   onSearchChange,
   selectedTags,
   onTagsChange,
-  availableTags, 
+  availableTags,
   viewMode,
   onViewModeChange
 }: ResourceFilterSidebarProps) {
@@ -44,7 +44,7 @@ export default function ResourceFilterSidebar({
   const sidebarContent = (
     <>
       <div className="sidebar-action-wrapper" style={{ marginBottom: '1.5rem' }}>
-        <CTAButton href="/ressources/submit" as="link" fullWidth icon={<Plus size={18} />}>
+        <CTAButton href="/ressources/submit" fullWidth icon={Plus}>
           Soumettre une ressource
         </CTAButton>
       </div>
@@ -70,7 +70,7 @@ export default function ResourceFilterSidebar({
               </button>
             </div>
           </div>
-          
+
           <div className="search-input-wrapper">
             <Search className="search-icon" size={18} />
             <input
@@ -85,7 +85,7 @@ export default function ResourceFilterSidebar({
 
         <div className="filter-section">
           <h4 className="filter-title">Rechercher par tag</h4>
-          <TagSelector 
+          <TagSelector
             value={selectedTags}
             onChange={onTagsChange}
             suggestions={allExistingTags}

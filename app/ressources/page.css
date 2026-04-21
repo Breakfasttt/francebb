@@ -4,7 +4,8 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* Garantit que les enfants prennent toute la largeur */
+  align-items: stretch;
+  /* Garantit que les enfants prennent toute la largeur */
 }
 
 .ressources-page {
@@ -26,7 +27,8 @@
 }
 
 .ressources-content {
-  flex: 1 0 0 !important; /* Force l'occupation de l'espace pour caler la sidebar */
+  flex: 1 0 0 !important;
+  /* Force l'occupation de l'espace pour caler la sidebar */
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -129,7 +131,8 @@
 
 .btn-discord {
   padding: 0.9rem 1.8rem;
-  background: #5865F2; /* Discord color */
+  background: #5865F2;
+  /* Discord color */
   color: white;
   border-radius: 10px;
   font-weight: 700;

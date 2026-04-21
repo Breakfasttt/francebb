@@ -3,21 +3,18 @@
 /*
   Page Hub pour les ressources et outils (Version Dynamique).
 */
-import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
+import Pagination from "@/common/components/Pagination/Pagination";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { Plus, Loader2 } from "lucide-react";
+import { isAdmin, isModerator } from "@/lib/roles";
+import { Layout, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { deleteResourceAction, getResources } from "./actions";
 import ResourceCard from "./component/ResourceCard/ResourceCard";
 import ResourceFilterSidebar from "./component/ResourceFilterSidebar/ResourceFilterSidebar";
-import Pagination from "@/common/components/Pagination/Pagination";
-import { Layout } from "lucide-react";
-import CTAButton from "@/common/components/Button/CTAButton";
-import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import { getResources, deleteResourceAction } from "./actions";
-import { isModerator, isAdmin } from "@/lib/roles";
-import { toast } from "react-hot-toast";
 import "./page.css";
 
 export default function RessourcesPage() {
@@ -42,7 +39,7 @@ export default function RessourcesPage() {
       page,
       pageSize: 20
     });
-    
+
     setResources(data.resources);
     setTotalPages(data.totalPages);
     setTotal(data.total);
@@ -86,83 +83,83 @@ export default function RessourcesPage() {
 
       <main className="container ressources-page">
 
-      <div className="ressources-layout">
-        <ResourceFilterSidebar 
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          selectedTags={selectedTags}
-          onTagsChange={handleTagsChange}
-          availableTags={[]}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-        />
+        <div className="ressources-layout">
+          <ResourceFilterSidebar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            selectedTags={selectedTags}
+            onTagsChange={handleTagsChange}
+            availableTags={[]}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+          />
 
-        <div className="ressources-content">
-          <div className="ressources-top-actions">
-            <div className="results-count">
-              <Layout size={16} className="results-icon" />
-              <span><strong>{total}</strong> ressource{total > 1 ? "s" : ""} trouvée{total > 1 ? "s" : ""}</span>
+          <div className="ressources-content">
+            <div className="ressources-top-actions">
+              <div className="results-count">
+                <Layout size={16} className="results-icon" />
+                <span><strong>{total}</strong> ressource{total > 1 ? "s" : ""} trouvée{total > 1 ? "s" : ""}</span>
+              </div>
             </div>
+
+            {loading ? (
+              <div className="loading-state">
+                <Loader2 className="animate-spin" size={40} color="var(--primary)" />
+                <p>Chargement des ressources...</p>
+              </div>
+            ) : (
+              <>
+                {resources.length === 0 ? (
+                  <PremiumCard className="empty-results">
+                    <p>Aucune ressource ne correspond à vos critères.</p>
+                  </PremiumCard>
+                ) : (
+                  <>
+                    <div className={`resources-${viewMode}`}>
+                      {resources.map(res => {
+                        const isAuthor = user?.id === res.authorId;
+                        const isMod = isModerator(user?.role);
+                        const isSystem = res.isSystem || res.id === 'bbscheme';
+
+                        const canEdit = isSystem ? isAdmin(user?.role) : (isMod || isAuthor);
+                        const canDelete = !isSystem && (isMod || isAuthor);
+
+                        return (
+                          <ResourceCard
+                            key={res.id}
+                            resource={res}
+                            viewMode={viewMode}
+                            canEdit={canEdit}
+                            canDelete={canDelete}
+                            onDelete={() => setDeletingId(res.id)}
+                          />
+                        );
+                      })}
+                    </div>
+
+                    <div className="pagination-wrapper" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                      <Pagination
+                        currentPage={page}
+                        totalPages={totalPages}
+                        onPageChange={setPage}
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
-
-          {loading ? (
-            <div className="loading-state">
-              <Loader2 className="animate-spin" size={40} color="var(--primary)" />
-              <p>Chargement des ressources...</p>
-            </div>
-          ) : (
-            <>
-              {resources.length === 0 ? (
-                <PremiumCard className="empty-results">
-                  <p>Aucune ressource ne correspond à vos critères.</p>
-                </PremiumCard>
-              ) : (
-                <>
-                  <div className={`resources-${viewMode}`}>
-                    {resources.map(res => {
-                      const isAuthor = user?.id === res.authorId;
-                      const isMod = isModerator(user?.role);
-                      const isSystem = res.isSystem || res.id === 'bbscheme';
-                      
-                      const canEdit = isSystem ? isAdmin(user?.role) : (isMod || isAuthor);
-                      const canDelete = !isSystem && (isMod || isAuthor);
-                      
-                      return (
-                        <ResourceCard 
-                          key={res.id} 
-                          resource={res} 
-                          viewMode={viewMode}
-                          canEdit={canEdit}
-                          canDelete={canDelete}
-                          onDelete={() => setDeletingId(res.id)}
-                        />
-                      );
-                    })}
-                  </div>
-                  
-                  <div className="pagination-wrapper" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-                    <Pagination 
-                      currentPage={page}
-                      totalPages={totalPages}
-                      onPageChange={setPage}
-                    />
-                  </div>
-                </>
-              )}
-            </>
-          )}
         </div>
-      </div>
 
-      <ConfirmModal 
-        isOpen={!!deletingId}
-        onClose={() => setDeletingId(null)}
-        onConfirm={handleDelete}
-        title="Supprimer la ressource"
-        message="Voulez-vous vraiment supprimer cette ressource ?"
-        isDanger
-      />
-    </main>
+        <ConfirmModal
+          isOpen={!!deletingId}
+          onClose={() => setDeletingId(null)}
+          onConfirm={handleDelete}
+          title="Supprimer la ressource"
+          message="Voulez-vous vraiment supprimer cette ressource ?"
+          isDanger
+        />
+      </main>
     </div>
   );
 }
