@@ -17,14 +17,23 @@
 
 @media (max-width: 1024px) {
   .nav {
-    position: sticky !important;
+    position: fixed !important; /* Passé de sticky à fixed pour garantir la visibilité */
     top: 0;
-    z-index: var(--z-index-nav); /* Utilisation de la variable globale (5000) */
+    left: 0;
+    width: 100%;
+    z-index: var(--z-index-nav); 
     background: var(--nav-bg);
     backdrop-filter: blur(20px);
     border-bottom: 2px solid var(--accent);
     min-height: 64px;
     box-shadow: var(--glass-shadow);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem !important;
+  }
+
+  .main-layout-wrapper {
+    padding-top: 64px !important; /* Offset pour le header fixe */
   }
 
   .nav-links {
@@ -42,9 +51,6 @@
     padding-right: 1.2rem;
   }
 
-  .main-layout-wrapper {
-    padding-top: 0;
-  }
 
   /* Diagnostic pour le bouton retour - NETTOYAGE */
   #mobile-back-button-slot {
