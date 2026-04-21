@@ -1,13 +1,18 @@
-/* styles spécifiques mobile pour la page de modération */
-
 @media (max-width: 1024px) {
     .moderation-content-layout {
         flex-direction: column;
+        gap: 1.5rem;
     }
     
     .moderation-sidebar-wrapper {
-        width: 100%;
-        position: static;
-        margin-bottom: 2rem;
+        display: none !important; /* On utilise le portal mobile via AdminSidebar */
+    }
+
+    .moderation-container {
+        padding: 0.5rem 1rem 2.5rem 1rem !important;
+    }
+
+    .moderation-main-content {
+        min-width: 0; /* Évite les débordements des tables/codes */
     }
 }

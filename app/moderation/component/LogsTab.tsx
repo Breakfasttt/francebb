@@ -16,12 +16,14 @@ import { cleanupModerationLogs } from "../actions";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
 import AdminButton from "@/common/components/Button/AdminButton";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 interface LogsTabProps {
   userRole?: string;
 }
 
 export default function LogsTab({ userRole }: LogsTabProps) {
+  const isMobile = useIsMobile();
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -158,6 +160,57 @@ export default function LogsTab({ userRole }: LogsTabProps) {
 
         {logs.length === 0 ? (
           <p style={{ textAlign: 'center', padding: '2rem', opacity: 0.6 }}>Aucun log enregistré pour le moment.</p>
+        ) : isMobile ? (
+          <div className="moderation-mobile-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {logs.map((log) => (
+              <PremiumCard key={log.id} style={{ padding: '1.2rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.8rem' }}>
+                  <Link href={`/spy/${log.moderator.id}`} className="report-author">
+                    <div className="avatar-mini">
+                      {log.moderator.image ? <img src={log.moderator.image} alt="" /> : <UserIcon size={12} />}
+                    </div>
+                    <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{log.moderator.name}</span>
+                  </Link>
+                  <div style={{ fontSize: '0.75rem', opacity: 0.6, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                    <Clock size={12} />
+                    {format(new Date(log.createdAt), "dd/MM HH:mm", { locale: fr })}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                  <span className={`action-badge ${getActionBadge(log.action)}`} style={{ width: 'fit-content' }}>
+                    {formatAction(log.action)}
+                  </span>
+                  
+                  {log.details && (
+                    <p style={{ fontSize: '0.85rem', opacity: 0.8, margin: 0, fontStyle: 'italic', lineBreak: 'anywhere' }}>
+                      {log.details}
+                    </p>
+                  )}
+
+                  {log.targetId && (
+                    <div style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '0.5rem', 
+                      marginTop: '0.4rem',
+                      padding: '0.4rem 0.8rem',
+                      background: 'rgba(255,255,255,0.03)',
+                      borderRadius: '6px',
+                      fontSize: '0.8rem'
+                    }}>
+                      <span style={{ opacity: 0.6 }}>Cible: {log.targetType}</span>
+                      {getTargetUrl(log) && (
+                        <Link href={getTargetUrl(log)!} style={{ color: 'var(--primary)', marginLeft: 'auto' }}>
+                          <LinkIcon size={14} /> Voir
+                        </Link>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </PremiumCard>
+            ))}
+          </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table className="moderation-table">

@@ -3,6 +3,8 @@
 import { FileText, MessageSquare, AlertTriangle, Users, BookOpen, Trophy, Info, UserX, Layout } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 
 export type ModerationTab = 
   | "logs" 
@@ -22,6 +24,8 @@ interface ModerationSidebarProps {
 }
 
 export default function ModerationSidebar({ activeTab, onTabChange, counts }: ModerationSidebarProps) {
+  const isMobile = useIsMobile();
+  
   const tabs: TabItem[] = [
     { id: "logs", label: "Journal d'audit", icon: <FileText size={18} /> },
     { id: "users", label: "Utilisateurs", icon: <Users size={18} /> },
@@ -33,6 +37,23 @@ export default function ModerationSidebar({ activeTab, onTabChange, counts }: Mo
     { id: "reports_user_banned", label: "Coachs bannis", icon: <UserX size={18} /> },
     { id: "resources_validation", label: "Validation Ressources", icon: <Layout size={18} />, badge: counts?.resources_validation },
   ];
+
+  if (isMobile) {
+    return (
+      <MobilePortal targetId="mobile-page-sidebar-slot">
+        <div className="moderation-sidebar-mobile">
+          <TabSystem 
+            items={tabs}
+            activeTab={activeTab}
+            onTabChange={(id) => onTabChange(id as ModerationTab)}
+            orientation="vertical"
+            variant="sidebar"
+            noPortal={true}
+          />
+        </div>
+      </MobilePortal>
+    );
+  }
 
   return (
     <PremiumCard as="aside" className="moderation-sidebar-wrapper">
@@ -77,6 +98,16 @@ export default function ModerationSidebar({ activeTab, onTabChange, counts }: Mo
         :global(.tab-system.sidebar.vertical) {
           gap: 0.8rem;
           padding: 0 0.5rem;
+        }
+
+        /* Styles Mobile pour la sidebar (dans le portal) */
+        :global(.moderation-sidebar-mobile) {
+          display: flex;
+          flex-direction: column;
+          gap: 0.6rem;
+          padding: 0.5rem 1.6rem;
+          width: 100%;
+          box-sizing: border-box;
         }
       `}</style>
     </PremiumCard>

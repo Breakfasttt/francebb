@@ -16,12 +16,14 @@ import Pagination from "@/common/components/Pagination/Pagination";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 interface ResourceModerationTabProps {
   onActionSuccess?: () => void;
 }
 
 export default function ResourceModerationTab({ onActionSuccess }: ResourceModerationTabProps) {
+  const isMobile = useIsMobile();
   const [resources, setResources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -90,48 +92,77 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {resources.map((res) => (
             <PremiumCard key={res.id} className="moderation-item-card">
-              <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '1.5rem', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
                 {res.imageUrl && (
-                  <div style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--glass-border)' }}>
+                  <div style={{ 
+                    width: isMobile ? '100%' : '80px', 
+                    maxHeight: isMobile ? '200px' : '80px',
+                    height: isMobile ? 'auto' : '80px',
+                    flexShrink: 0, 
+                    borderRadius: '8px', 
+                    overflow: 'hidden', 
+                    border: '1px solid var(--glass-border)' 
+                  }}>
                     <img src={res.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 )}
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{res.title}</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <Clock size={12} /> {formatDistanceToNow(new Date(res.createdAt), { addSuffix: true, locale: fr })}
+                <div style={{ flex: 1, width: isMobile ? '100%' : 'auto' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+                    <h4 style={{ margin: 0, fontSize: isMobile ? '1rem' : '1.1rem' }}>{res.title}</h4>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', whiteSpace: 'nowrap' }}>
+                      <Clock size={12} /> {isMobile ? "Récemment" : formatDistanceToNow(new Date(res.createdAt), { addSuffix: true, locale: fr })}
                     </span>
                   </div>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '0.5rem 0' }}>{res.description}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.8rem' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)' }}>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '0.5rem 0', opacity: 0.8 }}>{res.description}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', fontSize: '0.8rem', flexWrap: 'wrap' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', fontWeight: 600 }}>
                       <User size={12} /> {res.author.name}
                     </span>
-                    <a href={res.link} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', textDecoration: 'none' }}>
+                    <a href={res.link} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
                       <ExternalLink size={12} /> Lien externe
                     </a>
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  gap: '0.6rem', 
+                  width: isMobile ? '100%' : 'auto',
+                  justifyContent: isMobile ? 'space-between' : 'flex-end',
+                  marginTop: isMobile ? '0.8rem' : 0,
+                  borderTop: isMobile ? '1px solid var(--glass-border)' : 'none',
+                  paddingTop: isMobile ? '1rem' : 0
+                }}>
                   <ClassicButton 
                     href={`/ressources/edit/${res.id}`} 
                     size="sm"
                     icon={Edit}
-                  />
+                    style={isMobile ? { flex: 1 } : {}}
+                  >
+                    {isMobile && "Éditer"}
+                  </ClassicButton>
                   <AdminButton 
                     onClick={() => handleApprove(res.id)} 
                     isLoading={isPending}
                     size="sm"
                     icon={Check}
-                    style={{ background: "#22c55e", color: "white", borderColor: "transparent" }}
-                  />
+                    style={{ 
+                      background: "#22c55e", 
+                      color: "white", 
+                      borderColor: "transparent",
+                      flex: isMobile ? 2 : 'none'
+                    }}
+                  >
+                    {isMobile ? "Approuver" : ""}
+                  </AdminButton>
                   <DangerButton 
                     onClick={() => handleReject(res.id)} 
                     isLoading={isPending}
                     size="sm"
                     icon={X}
-                  />
+                    style={isMobile ? { flex: 1 } : {}}
+                  >
+                    {isMobile && "Refuser"}
+                  </DangerButton>
                 </div>
               </div>
             </PremiumCard>
