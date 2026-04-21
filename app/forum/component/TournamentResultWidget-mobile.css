@@ -1,7 +1,81 @@
 /* styles spécifiques mobile pour le widget de résultats de tournoi */
 
-@media (max-width: 600px) {
-  .matches-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 900px) {
+  .widget-header {
+    padding: 1rem !important;
+  }
+  
+  .widget-title {
+    font-size: 0.85rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .participant-count {
+    display: none;
+  }
+
+  .widget-content-expandable {
+    padding: 1rem 0.6rem !important;
+  }
+
+  /* Table ranking mobile */
+  .rank-th, .rank-cell { width: 30px !important; padding: 0.5rem !important; }
+  .naf-th, .naf-cell { display: none !important; }
+  .roster-th, .roster-cell { display: none !important; }
+  .results-table th, .results-table td { padding: 0.6rem 0.4rem !important; font-size: 0.85rem !important; }
+  .points-cell { font-size: 0.95rem !important; }
+
+  /* Match results mobile */
+  .round-navigation {
+    gap: 0.5rem !important;
+    padding: 0.8rem 0.5rem !important;
+  }
+
+  .round-info .current-round-label {
+    font-size: 0.85rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  .match-linear-row {
+    grid-template-columns: 35px 1fr auto 1fr !important;
+    gap: 0.4rem !important;
+    padding: 0.8rem 0.4rem !important;
+  }
+
+  .participant-name {
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70px;
+  }
+
+  .participant-cas {
+    font-size: 0.65rem !important;
+  }
+
+  .match-score-pill {
+    padding: 4px 10px !important;
+    gap: 0.6rem !important;
+  }
+
+  .score-val {
+    font-size: 1.1rem !important;
+    min-width: 15px !important;
+  }
+
+  .match-table-num {
+    padding: 2px 4px !important;
+    font-size: 0.7rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .participant-name {
+    max-width: 55px;
+  }
+  
+  .match-linear-row {
+     gap: 0.2rem !important;
   }
 }

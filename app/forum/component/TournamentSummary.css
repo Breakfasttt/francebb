@@ -14,7 +14,7 @@
 
 .trophy-icon {
   background: var(--accent);
-  color: #000;
+  color: var(--accent-foreground, #fff);
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -76,7 +76,7 @@
 
 .team-badge {
   background: var(--accent);
-  color: #000;
+  color: var(--accent-foreground, #fff);
   font-size: 0.7rem;
   padding: 4px 10px;
   border-radius: 6px;
