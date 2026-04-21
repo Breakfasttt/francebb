@@ -3,6 +3,7 @@
 import { X, Clock, LayoutGrid, LayoutList } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 
 interface ActiveFiltersProps {
   currentSort: string;
@@ -97,48 +98,25 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
         )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
-        {/* Toggle View */}
-        <div style={{ 
-          display: 'flex', 
-          background: 'rgba(255,255,255,0.05)', 
-          padding: '0.2rem', 
-          borderRadius: '8px', 
-          border: '1px solid var(--glass-border)' 
-        }}>
+      <div className="desktop-only active-filters-actions">
+        <div className="view-toggle-group">
           <button 
             onClick={() => handleViewChange("grid")}
-            style={{ 
-              background: currentView === "grid" ? 'var(--primary)' : 'transparent',
-              border: 'none',
-              padding: '0.4rem',
-              borderRadius: '6px',
-              color: currentView === "grid" ? 'white' : 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex'
-            }}
+            className={currentView === "grid" ? "active" : ""}
             title="Vue par cartes"
           >
             <LayoutGrid size={18} />
           </button>
           <button 
             onClick={() => handleViewChange("list")}
-            style={{ 
-              background: currentView === "list" ? 'var(--primary)' : 'transparent',
-              border: 'none',
-              padding: '0.4rem',
-              borderRadius: '6px',
-              color: currentView === "list" ? 'white' : 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex'
-            }}
+            className={currentView === "list" ? "active" : ""}
             title="Vue par liste"
           >
             <LayoutList size={18} />
           </button>
         </div>
 
-        <div className="sort-box-compact" style={{ flex: 1, minWidth: "220px" }}>
+        <div className="sort-box-compact">
           <ClassicSelect
             value={currentSort}
             onChange={(e) => handleSortChange(e.target.value)}
@@ -154,6 +132,44 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
           </ClassicSelect>
         </div>
       </div>
+
+      <MobilePortal>
+        <div className="tournois-mobile-actions-portal mobile-only">
+            <div className="sidebar-divider" />
+            <h3 className="sidebar-section-title">Affichage & Tri</h3>
+            
+            <div className="view-toggle-mobile">
+                <button 
+                    onClick={() => handleViewChange("grid")} 
+                    className={currentView === "grid" ? "active" : ""}
+                >
+                    <LayoutGrid size={18} /> Mode Grille
+                </button>
+                <button 
+                    onClick={() => handleViewChange("list")} 
+                    className={currentView === "list" ? "active" : ""}
+                >
+                    <LayoutList size={18} /> Mode Liste
+                </button>
+            </div>
+
+            <div className="sort-box-mobile">
+                <ClassicSelect
+                    label="Trier par"
+                    value={currentSort}
+                    onChange={(e) => handleSortChange(e.target.value)}
+                    icon={Clock}
+                >
+                    <option value="date_asc">Date (plus proche)</option>
+                    <option value="date_desc">Date (plus lointain)</option>
+                    <option value="price_asc">Prix (croissant)</option>
+                    <option value="price_desc">Prix (décroissant)</option>
+                    <option value="participants_asc">Places (croissant)</option>
+                    <option value="participants_desc">Places (décroissant)</option>
+                </ClassicSelect>
+            </div>
+        </div>
+      </MobilePortal>
     </div>
   );
 }

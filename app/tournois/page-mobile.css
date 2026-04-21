@@ -3,6 +3,7 @@
 @media (max-width: 768px) {
   .tournois-grid {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 
   .sidebar-wrapper {
@@ -16,9 +17,70 @@
   }
 
   .active-filters-wrapper {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  /* Actions transportées dans la sidebar */
+  .tournois-mobile-actions-portal {
+    padding: 1rem 0;
+    display: flex;
     flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .view-toggle-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 0 0.5rem;
+  }
+
+  .view-toggle-mobile button {
+    display: flex;
+    align-items: center;
     gap: 1rem;
-    align-items: flex-start;
+    padding: 0.8rem 1rem;
+    background: var(--theme-overlay);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+
+  .view-toggle-mobile button.active {
+    background: var(--background);
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .sort-box-mobile {
+    padding: 0 0.5rem;
+  }
+
+  .sidebar-section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin: 1.2rem 0 0.8rem 0.5rem;
+    padding: 0;
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+
+  .sidebar-divider {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 1rem 0.5rem;
+    opacity: 0.3;
   }
 }
 
