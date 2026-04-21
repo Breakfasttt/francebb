@@ -189,25 +189,23 @@ export async function getUnreadTopicsCount() {
   const session = await auth();
   if (!session?.user?.id) return 0;
 
-  // This is a bit more complex in Prisma without raw SQL or multiple queries
-  // We want topics where (TopicView doesn't exist OR topic.updatedAt > TopicView.lastViewedAt)
-
+  // Optimisation Prisma : utiliser findMany avec select minimal pour le comptage
+  // Sur Turso/SQLite, c'est parfois plus rapide qu'un count complexe avec relations
   const topics = await prisma.topic.findMany({
     where: { isArchived: false },
-    include: {
+    select: {
+      updatedAt: true,
       topicViews: {
-        where: { userId: session.user.id }
+        where: { userId: session.user.id },
+        select: { lastViewedAt: true }
       }
     }
   });
 
-  const unreadCount = topics.filter(topic => {
+  return topics.filter(topic => {
     const view = topic.topicViews[0];
-    if (!view) return true;
-    return topic.updatedAt > view.lastViewedAt;
+    return !view || topic.updatedAt > view.lastViewedAt;
   }).length;
-
-  return unreadCount;
 }
 export async function getUnreadTopics(page: number = 1, limit: number = 20) {
   const session = await auth();
@@ -638,7 +636,7 @@ export async function createPost(topicId: string, content: string) {
     }
   });
 
-  // 1. Gérer les mentions
+  // 1. Détection des mentions via Regex
   const mentionRegex = /\[mention=([a-zA-Z0-9_-]+)\]/gi;
   const mentionedIds = new Set<string>();
   let match;
@@ -648,72 +646,70 @@ export async function createPost(topicId: string, content: string) {
     }
   }
 
+  // 2. Tâches asynchrones parallélisées (Notifications et Updates)
+  const taskPromises = [];
+
+  // Mentions
   if (mentionedIds.size > 0) {
-    const mentionedUsers = await prisma.user.findMany({
-      where: { id: { in: Array.from(mentionedIds) } },
-      select: { id: true, email: true, notifMention: true }
-    });
-
-    for (const mUser of mentionedUsers) {
-      // Créer le record en base
-      await prisma.mention.create({
-        data: {
-          postId: post.id,
-          mentionedUserId: mUser.id,
-          mentionerId: session.user.id
-        }
-      }).catch(() => {});
-
-      // Envoyer le mail de mention uniquement si l'utilisateur NE SUIT PAS déjà le sujet
-      if (mUser.email && mUser.notifMention) {
-        const isFollower = await prisma.topicFollow.findUnique({
-          where: { userId_topicId: { userId: mUser.id, topicId } }
-        });
-        
-        if (!isFollower) {
-          sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
-        }
-      }
-    }
-  }
-
-  // 2. Gérer les suivis de sujet
-  const followers = await prisma.topicFollow.findMany({
-    where: { 
-      topicId,
-      userId: { 
-        not: session.user.id // On ne notifie plus les mentionnés ici car on a retiré l'exclusion
-      }
-    },
-    include: {
-      user: {
-        select: { email: true, notifFollowedTopic: true }
-      }
-    }
-  });
-
-  for (const follow of followers) {
-    if (follow.userId === session.user.id) continue; // Sécurité supplémentaire : ne pas s'envoyer de mail à soi-même
-
-    if (follow.user.email && follow.user.notifFollowedTopic) {
-      // Éviter le spam : on n'envoie un mail que si l'utilisateur était à jour sur le sujet
-      const topicView = await prisma.topicView.findUnique({
-        where: { userId_topicId: { userId: follow.userId, topicId } }
+    taskPromises.push((async () => {
+      const mentionedUsers = await prisma.user.findMany({
+        where: { id: { in: Array.from(mentionedIds) } },
+        select: { id: true, email: true, notifMention: true }
       });
 
-      // Si pas de vue ou si sa dernière vue est antérieure à la mise à jour du topic (avant ce message)
-      // Note: topic.updatedAt a été mis à jour juste avant ou va l'être, on compare avec l'état précédent.
-      if (!topicView || topicView.lastViewedAt >= topic.updatedAt) {
-        sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
+      for (const mUser of mentionedUsers) {
+        await prisma.mention.create({
+          data: {
+            postId: post.id,
+            mentionedUserId: mUser.id,
+            mentionerId: session.user.id
+          }
+        }).catch(() => {});
+
+        if (mUser.email && mUser.notifMention) {
+          const isFollower = await prisma.topicFollow.findUnique({
+            where: { userId_topicId: { userId: mUser.id, topicId } }
+          });
+          if (!isFollower) {
+            sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
+          }
+        }
       }
-    }
+    })());
   }
 
-  // Update topic timestamp to show it and bubble it up
-  await prisma.topic.update({
+  // Suivis de sujet
+  taskPromises.push((async () => {
+    const followers = await prisma.topicFollow.findMany({
+      where: { 
+        topicId,
+        userId: { not: session.user.id }
+      },
+      include: {
+        user: { select: { email: true, notifFollowedTopic: true } }
+      }
+    });
+
+    for (const follow of followers) {
+      if (follow.user.email && follow.user.notifFollowedTopic) {
+        const topicView = await prisma.topicView.findUnique({
+          where: { userId_topicId: { userId: follow.userId, topicId } }
+        });
+        if (!topicView || topicView.lastViewedAt >= topic.updatedAt) {
+          sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
+        }
+      }
+    }
+  })());
+
+  // Mise à jour du topic (bubble up)
+  taskPromises.push(prisma.topic.update({
     where: { id: topicId },
     data: { updatedAt: new Date() }
-  });
+  }));
+
+  // Attendre toutes les opérations DB/Notifications avant de répondre
+  await Promise.all(taskPromises);
 
   revalidatePath(`/forum/topic/${topicId}`);
   return post;

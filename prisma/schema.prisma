@@ -100,6 +100,8 @@ model User {
   ligues                  Ligue[]                  @relation("LigueMembers")
   commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
   bbSchemeStates          BBSchemeState[]
+
+  @@index([role])
 }
 
 model Block {
@@ -174,6 +176,9 @@ model Tournament {
   rounds              TournamentRound[]
   teams               TournamentTeam[]
   commissaires        User[]                   @relation("TournamentCommissaires")
+
+  @@index([organizerId])
+  @@index([ligueId])
 }
 
 model Category {
@@ -201,6 +206,9 @@ model Forum {
   subForums         Forum[]   @relation("SubForums")
   category          Category? @relation(fields: [categoryId], references: [id])
   topics            Topic[]
+
+  @@index([categoryId])
+  @@index([parentForumId])
 }
 
 model Topic {
@@ -222,6 +230,9 @@ model Topic {
   forum        Forum         @relation(fields: [forumId], references: [id])
   follows      TopicFollow[]
   topicViews   TopicView[]
+
+  @@index([forumId])
+  @@index([authorId])
 }
 
 model Post {
@@ -241,6 +252,9 @@ model Post {
   author           User           @relation(fields: [authorId], references: [id])
   topic            Topic          @relation(fields: [topicId], references: [id])
   reactions        PostReaction[]
+
+  @@index([topicId])
+  @@index([authorId])
 }
 
 model Conversation {
@@ -256,6 +270,8 @@ model Conversation {
   messages       PrivateMessage[]
 
   @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
 }
 
 model PrivateMessage {
@@ -267,6 +283,9 @@ model PrivateMessage {
   readAt         DateTime?
   author         User         @relation("SentPrivateMessages", fields: [authorId], references: [id])
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([authorId])
 }
 
 model TopicView {
@@ -293,6 +312,8 @@ model Mention {
 
   @@unique([postId, mentionedUserId])
   @@index([mentionedUserId])
+  @@index([mentionerId])
+  @@index([postId])
 }
 
 model PostReaction {
@@ -377,6 +398,8 @@ model TournamentTeam {
   members       TournamentTeamMember[]
 
   @@unique([tournamentId, name])
+  @@index([tournamentId])
+  @@index([captainId])
 }
 
 model TournamentTeamMember {
@@ -387,6 +410,8 @@ model TournamentTeamMember {
   team   TournamentTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
 }
 
 model TournamentMercenary {
@@ -423,6 +448,9 @@ model Article {
   author           User              @relation(fields: [authorId], references: [id])
   reactions        ArticleReaction[]
   tags             ArticleTag[]      @relation("ArticleToArticleTag")
+
+  @@index([authorId])
+  @@index([ligueId])
 }
 
 model ArticleTag {
@@ -465,6 +493,8 @@ model Ligue {
   tournaments      Tournament[] @relation("LigueTournaments")
   commissaires     User[]       @relation("LigueCommissaires")
   members          User[]       @relation("LigueMembers")
+
+  @@index([creatorId])
 }
 
 model ModerationReport {
@@ -537,6 +567,8 @@ model TournamentResult {
   tournament    Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 
   @@unique([tournamentId, coachName])
+  @@index([tournamentId])
+  @@index([userId])
 }
 
 model TournamentRound {
@@ -547,6 +579,7 @@ model TournamentRound {
   tournament   Tournament        @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 
   @@unique([tournamentId, roundNumber])
+  @@index([tournamentId])
 }
 
 model TournamentMatch {
@@ -566,6 +599,10 @@ model TournamentMatch {
   coach2User       User?           @relation("MatchCoach2", fields: [coach2UserId], references: [id])
   coach1User       User?           @relation("MatchCoach1", fields: [coach1UserId], references: [id])
   round            TournamentRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+
+  @@index([roundId])
+  @@index([coach1UserId])
+  @@index([coach2UserId])
 }
 
 model QuizQuestion {
@@ -595,6 +632,8 @@ model QuizAttempt {
   jokersUsed Int      @default(0)
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model QuizDailyWinner {
