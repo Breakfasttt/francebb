@@ -419,7 +419,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
   return (
     <div className="results-editor">
-      <div className="editor-top-actions" style={{ justifyContent: 'flex-start', gap: '1rem', background: 'none', border: 'none', padding: 0 }}>
+      <div className="editor-top-actions results-editor-actions">
         <CTAButton onClick={handleSave} disabled={isSaving} icon={<Save size={16} />}>
           {isSaving ? "Publication..." : "Publier les résultats"}
         </CTAButton>
@@ -438,18 +438,18 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         </div>
       </div>
 
-      <div className="editor-tabs" style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: 'none' }}>
+      <div className="editor-tabs results-editor-tabs">
         <ToggleButton 
           onClick={() => setActiveTab('ranking')} 
           active={activeTab === 'ranking'}
-          style={{ width: '200px', borderRadius: '12px' }}
+          className="tab-button-mobile"
         >
           <Trophy size={16} /> Classement Global
         </ToggleButton>
         <ToggleButton 
           onClick={() => setActiveTab('matches')} 
           active={activeTab === 'matches'}
-          style={{ width: '200px', borderRadius: '12px' }}
+          className="tab-button-mobile"
         >
           <Swords size={16} /> Rondes & Matchs
         </ToggleButton>

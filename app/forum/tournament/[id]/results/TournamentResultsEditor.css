@@ -461,3 +461,75 @@ tr.dragging {
   border-color: rgba(255, 255, 255, 0.05) !important;
   color: var(--text-muted) !important;
 }
+
+@media (max-width: 768px) {
+  .results-editor-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    gap: 0.8rem !important;
+  }
+
+  .results-editor-tabs {
+    flex-direction: column;
+    border-bottom: none !important;
+    margin-bottom: 1rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .tab-button-mobile {
+    width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  .editor-content-card {
+    padding: 1rem 0.6rem !important;
+    border-radius: 12px !important;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .section-header div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Table Rank column stick fix */
+  .editor-table th, .editor-table td {
+    padding: 6px 4px !important;
+  }
+
+  /* Round items */
+  .round-item {
+    padding: 0.8rem 0.4rem !important;
+  }
+
+  .round-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .matches-editor-list {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    min-width: 0;
+  }
+
+  .match-row-header, .match-row {
+    min-width: 600px; /* Force minimum width to allow scrolling instead of squeezing */
+  }
+
+  .naf-disclaimer {
+    padding: 0.6rem !important;
+    font-size: 0.75rem !important;
+  }
+}
