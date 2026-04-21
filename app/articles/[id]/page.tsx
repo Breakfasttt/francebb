@@ -80,7 +80,7 @@ export default async function ArticleDetailPage({
               name={article.author.name} 
               size={80} 
               postCount={article.author._count?.posts || 0}
-              selectedRank={article.author.avatarFrame}
+              selectedRank={article.author.avatarFrame as any}
               isModerator={isModerator(article.author.role)}
             />
             <div className="author-details">

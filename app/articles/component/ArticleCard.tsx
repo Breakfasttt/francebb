@@ -41,7 +41,7 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
             name={article.author.name} 
             size={24} 
             postCount={article.author._count?.posts || 0}
-            selectedRank={article.author.avatarFrame}
+            selectedRank={article.author.avatarFrame as any}
             isModerator={isModerator(article.author.role)}
           />
           <span className="article-author-name">{article.author.name}</span>
@@ -95,7 +95,7 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
             name={article.author.name}
             size={32}
             postCount={article.author._count?.posts || 0}
-            selectedRank={article.author.avatarFrame}
+            selectedRank={article.author.avatarFrame as any}
             isModerator={isModerator(article.author.role)}
           />
           <div style={{ display: "flex", flexDirection: "column" }}>

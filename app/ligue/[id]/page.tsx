@@ -139,7 +139,7 @@ export default async function LigueDetailPage({
                   name={ligue.creator.name || ""} 
                   size={32} 
                   postCount={ligue.creator._count?.posts || 0}
-                  selectedRank={ligue.creator.avatarFrame}
+                  selectedRank={ligue.creator.avatarFrame as any}
                   isModerator={isModerator(ligue.creator.role)}
                 />
                 <div className="user-info">
@@ -154,7 +154,7 @@ export default async function LigueDetailPage({
                     name={c.name || ""} 
                     size={32} 
                     postCount={c._count?.posts || 0}
-                    selectedRank={c.avatarFrame}
+                    selectedRank={c.avatarFrame as any}
                     isModerator={isModerator(c.role)}
                   />
                   <div className="user-info">
