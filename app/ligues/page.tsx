@@ -10,6 +10,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";
 import "./page.css";
 import "./page-mobile.css";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 
 
 export const dynamic = "force-dynamic";
@@ -66,7 +67,7 @@ export default async function LiguesPage({
 
       <main className="container">
 
-      <PremiumCard className="ligues-top-bar">
+      <PremiumCard className="ligues-top-bar desktop-only">
         <LigueFilters 
           initialQuery={query} 
           initialRegion={region} 
@@ -87,6 +88,35 @@ export default async function LiguesPage({
             </CTAButton>
         </div>
       </PremiumCard>
+
+      <MobilePortal>
+          <div className="ligues-mobile-sidebar-content mobile-only">
+            <h3 className="sidebar-section-title">Recherche & Filtres</h3>
+            <LigueFilters 
+              initialQuery={query} 
+              initialRegion={region} 
+              coachRegions={coachRegions.map(r => ({ key: r.key, label: r.label }))} 
+            />
+            
+            <div className="sidebar-divider" />
+            
+            <h3 className="sidebar-section-title">Affichage & Actions</h3>
+            <div className="ligue-actions-mobile">
+                <div className="view-toggle-mobile">
+                    <Link href={`/ligues?view=grid${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'grid' ? 'active' : ''}>
+                        <Grid size={20} /> Mode Grille
+                    </Link>
+                    <Link href={`/ligues?view=list${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'list' ? 'active' : ''}>
+                        <ListIcon size={20} /> Mode Liste
+                    </Link>
+                </div>
+                
+                <CTAButton href="/ligues/create" icon={<Plus size={18} />} fullWidth>
+                    Créer une Ligue
+                </CTAButton>
+            </div>
+          </div>
+      </MobilePortal>
 
       {ligues.length > 0 ? (
         <>
