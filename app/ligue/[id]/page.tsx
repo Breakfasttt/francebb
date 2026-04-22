@@ -42,6 +42,17 @@ export default async function LigueDetailPage({
         orderBy: { date: "asc" },
         take: 5,
         include: { topic: { select: { id: true } } }
+      },
+      members: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          avatarFrame: true,
+          role: true,
+          _count: { select: { posts: true } }
+        },
+        orderBy: { name: 'asc' }
       }
     }
   });
@@ -122,6 +133,35 @@ export default async function LigueDetailPage({
                 <p className="no-data">Aucun tournoi prévu pour le moment.</p>
               )}
             </PremiumCard>
+            
+            {session && (
+              <PremiumCard className="ligue-members">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.5rem' }}>
+                  <Users size={20} className="text-primary" />
+                  <h3>Liste des membres ({ligue.members.length})</h3>
+                </div>
+
+                {ligue.members.length > 0 ? (
+                  <div className="members-grid">
+                    {ligue.members.map(member => (
+                      <Link key={member.id} href={member.id === session.user.id ? "/profile" : `/spy/${member.id}`} className="member-card">
+                        <UserAvatar 
+                          image={member.image} 
+                          name={member.name || ""} 
+                          size={32} 
+                          postCount={member._count?.posts || 0}
+                          selectedRank={member.avatarFrame as any}
+                          isModerator={isModerator(member.role)}
+                        />
+                        <span className="member-name">{member.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="no-data">Aucun membre n&apos;est actuellement rattaché à cette ligue.</p>
+                )}
+              </PremiumCard>
+            )}
           </div>
         </div>
 

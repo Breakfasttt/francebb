@@ -86,12 +86,16 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
 
         .carte-client-wrapper.is-fullscreen {
           position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          width: 100vw !important;
           height: 100vh !important;
           z-index: 9999;
           background: var(--background);
+          margin: 0 !important;
+          padding: 0 !important;
         }
         
         .map-view-leaflet {
@@ -106,9 +110,10 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
         }
 
         .is-fullscreen .map-view-leaflet {
-            border-radius: 0;
-            border: none;
+            border-radius: 0 !important;
+            border: none !important;
             height: 100vh !important;
+            width: 100vw !important;
         }
 
         .map-overlay-controls {

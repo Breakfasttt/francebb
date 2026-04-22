@@ -9,13 +9,14 @@
   }
 
   .carte-content-body {
-    height: 70vh; /* Hauteur fixe pour la carte sur mobile */
+    height: 70vh;
     margin-top: 1rem;
   }
 
-  .carte-client-wrapper,
-  .map-view-leaflet,
-  .leaflet-container {
+  /* Seulement si on n'est pas en plein écran */
+  .carte-client-wrapper:not(.is-fullscreen),
+  .carte-client-wrapper:not(.is-fullscreen) .map-view-leaflet,
+  .carte-client-wrapper:not(.is-fullscreen) .leaflet-container {
     height: 70vh !important;
     min-height: 70vh !important;
   }
