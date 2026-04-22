@@ -137,8 +137,8 @@
 /* Item d'inscription */
 .registration-entry {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     padding: 0.8rem 1rem;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -199,7 +199,13 @@
 .entry-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
+    flex-shrink: 0;
+}
+
+.payment-status-select {
+    width: 140px;
+    min-width: 100px;
 }
 
 .move-buttons {

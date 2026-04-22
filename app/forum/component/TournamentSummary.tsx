@@ -42,6 +42,9 @@ interface TournamentSummaryProps {
     ligue?: { id: string; name: string; acronym: string } | null;
     lat?: number | null;
     lng?: number | null;
+    registrations?: any[];
+    teams?: any[];
+    mercenaries?: any[];
   };
 }
 
@@ -162,7 +165,31 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
           <div className="item-content">
             <span className="label">Participants</span>
             <span className="value">
-              {tournament.currentParticipants} / {tournament.maxParticipants || '∞'} {tournament.isTeam ? 'équipes' : 'coachs'}
+              {(() => {
+                const validated = (tournament.isTeam 
+                  ? tournament.teams?.filter(t => t.status === "REGISTERED") 
+                  : tournament.registrations?.filter(r => r.status === "REGISTERED")) || [];
+                
+                const preReg = (tournament.isTeam 
+                  ? tournament.teams?.filter(t => t.status === "PRE_REGISTERED") 
+                  : tournament.registrations?.filter(r => r.status === "PRE_REGISTERED")) || [];
+                
+                const waiting = (tournament.isTeam 
+                  ? tournament.teams?.filter(t => t.status === "WAITING_LIST") 
+                  : tournament.registrations?.filter(r => r.status === "WAITING_LIST")) || [];
+                
+                const mercs = tournament.mercenaries || [];
+
+                return (
+                  <>
+                    {validated.length}
+                    {preReg.length > 0 && <span style={{ fontSize: '0.85em', opacity: 0.8, marginLeft: '4px' }}>(p:{preReg.length})</span>}
+                    {waiting.length > 0 && <span style={{ fontSize: '0.85em', opacity: 0.8, marginLeft: '4px' }}>(a:{waiting.length})</span>}
+                    {mercs.length > 0 && <span style={{ fontSize: '0.85em', opacity: 0.8, marginLeft: '4px' }}>(m:{mercs.length})</span>}
+                    {` / ${tournament.maxParticipants || '∞'} ${tournament.isTeam ? 'équipes' : 'coachs'}`}
+                  </>
+                );
+              })()}
             </span>
           </div>
         </div>

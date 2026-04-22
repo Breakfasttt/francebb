@@ -490,7 +490,7 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
                 onChange={handlePaymentStatus}
                 disabled={isPending}
                 size="sm"
-                containerStyle={{ minWidth: "120px" }}
+                className="payment-status-select"
               >
                 <option value="NOT_PAID">🚫 En attente</option>
                 <option value="PAID">✅ Payé</option>
