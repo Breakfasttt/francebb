@@ -1441,12 +1441,6 @@ export const questions: QuizQuestionData[] = [
   },
   {
     category: "Compétences",
-    question: "Quel est l'effet de 'Décomposition' ?",
-    options: ["Le joueur subit deux jets de blessures graves au lieu d'un", "Le joueur sent mauvais", "Le joueur perd sa peau", "Le joueur meurt deux fois"],
-    correctIndex: 0
-  },
-  {
-    category: "Compétences",
     question: "Que fait 'Regard Hypnotique' ?",
     options: ["Annule la zone de tacle d'un adversaire sur un jet réussi", "Le joueur fait de la magie", "L'adversaire s'endort", "Donne le ballon"],
     correctIndex: 0

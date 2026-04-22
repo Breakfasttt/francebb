@@ -20,17 +20,65 @@ export async function getRandomQuizQuestions() {
 
   // Récupérer les questions en DB
   const dbQuestions = await prisma.quizQuestion.findMany();
-  const allQuestions = [...staticQuestions, ...dbQuestions.map(q => ({
-    ...q,
-    options: JSON.parse(q.options)
-  }))].map(q => ({
-    ...q,
-    category: translateCategory(q.category)
-  }));
+  
+  let allQuestions: any[] = [];
 
-  // Mélanger et prendre 20
-  const shuffled = allQuestions.sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, 20);
+  if (dbQuestions.length > 0) {
+    allQuestions = dbQuestions.map(q => ({
+      id: q.id,
+      category: translateCategory(q.category),
+      question: q.question,
+      options: JSON.parse(q.options),
+      correctIndex: q.correctIndex,
+      explanation: q.explanation
+    }));
+  } else {
+    // Fallback aux questions statiques si la DB est vide
+    allQuestions = staticQuestions.map((q, idx) => ({
+      id: `static-${idx}`,
+      category: translateCategory(q.category),
+      ...q
+    }));
+  }
+
+  // Équilibrage par catégorie
+  const categoriesMap = new Map<string, any[]>();
+  allQuestions.forEach(q => {
+    const cat = q.category;
+    if (!categoriesMap.has(cat)) categoriesMap.set(cat, []);
+    categoriesMap.get(cat)!.push(q);
+  });
+
+  const categoryNames = Array.from(categoriesMap.keys());
+  if (categoryNames.length === 0) return [];
+
+  // Mélanger chaque catégorie
+  categoryNames.forEach(cat => {
+    const list = categoriesMap.get(cat)!;
+    list.sort(() => 0.5 - Math.random());
+  });
+
+  const selectedQuestions: any[] = [];
+  const totalToPick = Math.min(20, allQuestions.length);
+  
+  // Pioche équilibrée (Round-Robin)
+  let catIndex = 0;
+  while (selectedQuestions.length < totalToPick) {
+    const catName = categoryNames[catIndex % categoryNames.length];
+    const catList = categoriesMap.get(catName)!;
+    
+    if (catList.length > 0) {
+      selectedQuestions.push(catList.pop());
+    }
+    
+    catIndex++;
+    
+    // Si on a fait un tour complet et qu'on n'a plus rien à piocher (théoriquement impossible vu le totalToPick)
+    if (catIndex > categoryNames.length * totalToPick) break;
+  }
+
+  // Mélange final pour l'ordre d'affichage
+  return selectedQuestions.sort(() => 0.5 - Math.random());
 }
 
 /**
