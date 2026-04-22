@@ -264,24 +264,6 @@ async function firstSetup() {
           }
         });
       }
-
-      // Topic d'accueil si vide
-      const topicCount = await prisma.topic.count({ where: { forumId: forum.id } });
-      if (topicCount === 0) {
-        await prisma.topic.create({
-          data: {
-            title: `Bienvenue dans ${f.name}`,
-            forumId: forum.id,
-            authorId: systemUserId,
-            posts: {
-              create: {
-                content: `Ceci est le début de la section **${f.name}**. N'hésitez pas à lancer une discussion !`,
-                authorId: systemUserId,
-              }
-            }
-          }
-        });
-      }
     }
   }
 
