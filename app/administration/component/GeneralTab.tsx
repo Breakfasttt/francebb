@@ -2,17 +2,16 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
-import { Save, Globe, Link as LinkIcon, Video, Youtube, Loader2 } from "lucide-react";
+import { Save, Globe, Link as LinkIcon, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import TagSelector from "@/common/components/TagSelector/TagSelector";
+
 import CTAButton from "@/common/components/Button/CTAButton";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 export default function GeneralTab() {
   const [discordInvite, setDiscordInvite] = useState("");
-  const [twitchChannels, setTwitchChannels] = useState<string[]>([]);
-  const [youtubeChannels, setYoutubeChannels] = useState<string[]>([]);
+
   
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
@@ -21,15 +20,11 @@ export default function GeneralTab() {
   useEffect(() => {
     async function loadSettings() {
       try {
-        const [invite, twitch, youtube] = await Promise.all([
+        const [invite] = await Promise.all([
           getSiteSetting("discord_invite"),
-          getSiteSetting("twitch_channels"),
-          getSiteSetting("youtube_channels"),
         ]);
         
         setDiscordInvite(invite || "");
-        setTwitchChannels(twitch?.split(",").map(c => c.trim()).filter(Boolean) || []);
-        setYoutubeChannels(youtube?.split(",").map(c => c.trim()).filter(Boolean) || []);
       } catch (error) {
         console.error("Failed to load settings:", error);
       } finally {
@@ -44,8 +39,6 @@ export default function GeneralTab() {
       try {
         await Promise.all([
           updateSiteSetting("discord_invite", discordInvite),
-          updateSiteSetting("twitch_channels", twitchChannels.join(",")),
-          updateSiteSetting("youtube_channels", youtubeChannels.join(",")),
         ]);
         toast.success("Paramètres mis à jour !");
       } catch (err) {
@@ -102,51 +95,6 @@ export default function GeneralTab() {
             />
           </div>
         </section>
-
-        {/* Media Section */}
-        <div style={{ 
-          display: "grid", 
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", 
-          gap: isMobile ? "1.5rem" : "1.5rem" 
-        }}>
-          <section className="settings-section">
-            <div className="section-header">
-              <div className="icon-badge">
-                <Video size={18} />
-              </div>
-              <div>
-                <h4 className="section-title">Streams Twitch</h4>
-                <p className="section-desc">Chaînes à surveiller.</p>
-              </div>
-            </div>
-            <div className="input-wrapper">
-              <TagSelector
-                value={twitchChannels}
-                onChange={setTwitchChannels}
-                placeholder="Ex: bloody_owl, fumbll_network..."
-              />
-            </div>
-          </section>
-
-          <section className="settings-section">
-            <div className="section-header">
-              <div className="icon-badge">
-                <Youtube size={18} />
-              </div>
-              <div>
-                <h4 className="section-title">Chaînes YouTube</h4>
-                <p className="section-desc">IDs des chaînes (UC...).</p>
-              </div>
-            </div>
-            <div className="input-wrapper">
-              <TagSelector
-                value={youtubeChannels}
-                onChange={setYoutubeChannels}
-                placeholder="Ex: UC_x5XG1OV2P6uWXO-..."
-              />
-            </div>
-          </section>
-        </div>
 
         {/* Action Bar */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: "1rem" }}>

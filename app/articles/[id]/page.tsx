@@ -12,6 +12,7 @@ import ArticleReactions from "@/app/articles/[id]/component/ArticleReactions";
 import DeleteArticleButton from "@/app/articles/[id]/component/DeleteArticleButton";
 import ModerateArticleButton from "@/app/articles/[id]/component/ModerateArticleButton";
 import ReportArticleButton from "@/app/articles/[id]/component/ReportArticleButton";
+import ViewCounter from "@/app/articles/[id]/component/ViewCounter";
 import Link from "next/link";
 import { isModerator } from "@/lib/roles";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -31,13 +32,6 @@ export default async function ArticleDetailPage({
   const { id } = await params;
   const session = await auth();
   const sessionUser = session?.user as any;
-
-  // Incrémenter le compteur de vues
-  // On le fait avant de récupérer l'article pour avoir le chiffre à jour (ou presque)
-  await prisma.article.update({
-    where: { id },
-    data: { views: { increment: 1 } }
-  });
 
   const article = await prisma.article.findUnique({
     where: { id },
@@ -71,6 +65,8 @@ export default async function ArticleDetailPage({
         backHref="/articles" 
         backTitle="Retour aux articles"
       />
+
+      <ViewCounter articleId={id} />
 
       <div className="article-layout">
         <aside className="article-sidebar">

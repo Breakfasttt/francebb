@@ -19,6 +19,7 @@ export const authConfig = {
         if (session.hasFinishedOnboarding !== undefined) token.hasFinishedOnboarding = session.hasFinishedOnboarding;
         if (session.name) token.name = session.name;
         if (session.theme) token.theme = session.theme;
+        if (session.role) token.role = session.role;
       }
       return token;
     },

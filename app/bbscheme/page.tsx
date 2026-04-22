@@ -49,7 +49,7 @@ import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Modal from "@/common/components/Modal/Modal";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import BBSchemePlayer from "./component/BBSchemePlayer";
-import Dugout from "./component/Dugout";
+// import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
 import Pitch from "./component/Pitch";
 
@@ -1646,6 +1646,9 @@ export default function BBSchemePage() {
                 showTooltips={showTooltips}
                 allTokens={tokens}
               />
+              {/* 
+                  FONCTIONNALITÉ FOSSES (DUGOUT) - DÉSACTIVÉE TEMPORAIREMENT
+                  Décommenter pour réactiver les zones Réserve, KO, Blessés, Expulsés.
               <div className="dugout-container">
                 <Dugout
                   team="blue"
@@ -1657,6 +1660,7 @@ export default function BBSchemePage() {
                   allTokens={tokens}
                 />
               </div>
+              */}
             </div>
           )}
 
@@ -1725,6 +1729,9 @@ export default function BBSchemePage() {
                   <button className="mobile-close-btn" onClick={() => setMobileActivePanel(null)}><X size={18} /></button>
                 </div>
               )}
+              {/* 
+                  FONCTIONNALITÉ FOSSES (DUGOUT) - DÉSACTIVÉE TEMPORAIREMENT
+                  Décommenter pour réactiver les zones Réserve, KO, Blessés, Expulsés.
               <div className="dugout-container">
                 <Dugout
                   team="red"
@@ -1736,6 +1743,7 @@ export default function BBSchemePage() {
                   allTokens={tokens}
                 />
               </div>
+              */}
               <FigurineBox
                 team="red"
                 roster={redRoster?.roster || []}

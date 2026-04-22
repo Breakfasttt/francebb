@@ -42,7 +42,7 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
       }}
     >
       <div className="box-header">
-        <label>{team === 'blue' ? 'Équipe Bleue' : 'Équipe Rouge'}</label>
+        <label>{team === 'blue' ? 'Réserve équipe bleue' : 'Réserve équipe rouge'}</label>
         <ClassicSelect 
           onChange={(e) => onRosterSelect(e.target.value)} 
           value={rosterFile || ""}
@@ -69,8 +69,10 @@ const FigurineBox: React.FC<FigurineBoxProps> = ({
             const playerTokens = tokens.filter(t => {
               if (t.type !== team) return false;
               const isOnPitch = t.location === 'pitch';
-              const isInDugout = ['ko', 'injured', 'expelled', 'reserve'].includes(t.location);
-              if (isOnPitch || (isInDugout && t.location !== 'reserve')) return false;
+              // FONCTIONNALITÉ FOSSES DÉSACTIVÉE : On affiche tout ce qui n'est pas sur le terrain
+              // const isInDugout = ['ko', 'injured', 'expelled', 'reserve'].includes(t.location);
+              // if (isOnPitch || (isInDugout && t.location !== 'reserve')) return false;
+              if (isOnPitch) return false;
 
               return t.playerInfo?.name === player.name;
             });

@@ -241,3 +241,18 @@ export async function unmoderateArticle(articleId: string) {
     return { error: "Erreur lors de l'annulation de la modération." };
   }
 }
+
+export async function incrementArticleViews(id: string) {
+  try {
+    await prisma.article.update({
+      where: { id },
+      data: { views: { increment: 1 } }
+    });
+    return { success: true };
+  } catch (error) {
+    // On ne bloque pas si ça échoue, c'est juste un compteur
+    console.error("Increment Views Error:", error);
+    return { error: "Erreur lors de l'incrémentation des vues." };
+  }
+}
+

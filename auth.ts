@@ -99,6 +99,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
+    async jwt({ token, user, trigger, session }) {
+      // 1. Appliquer la logique de base (config edge)
+      // @ts-ignore
+      const updatedToken = await authConfig.callbacks.jwt({ token, user, trigger, session });
+
+      // 2. Node.js only : Rafraîchir depuis la BDD si on a un ID
+      // On évite de le faire lors du sign in (user présent) car les données sont déjà fraîches
+      if (updatedToken?.id && !user) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: updatedToken.id as string },
+            select: { 
+              role: true, 
+              hasFinishedOnboarding: true, 
+              theme: true, 
+              name: true 
+            }
+          });
+          
+          if (dbUser) {
+            updatedToken.role = dbUser.role;
+            updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
+            updatedToken.theme = dbUser.theme || "saison3";
+            updatedToken.name = dbUser.name;
+          }
+        } catch (error) {
+          console.error("Auth: Error refreshing user data from DB in JWT callback", error);
+        }
+      }
+
+      return updatedToken;
+    },
   },
   events: {
     async createUser({ user }) {
