@@ -35,9 +35,9 @@ export async function getRandomQuizQuestions() {
   } else {
     // Fallback aux questions statiques si la DB est vide
     allQuestions = staticQuestions.map((q, idx) => ({
+      ...q,
       id: `static-${idx}`,
-      category: translateCategory(q.category),
-      ...q
+      category: translateCategory(q.category)
     }));
   }
 
