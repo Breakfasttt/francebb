@@ -20,9 +20,7 @@ export default function ConversationList() {
         const fetch = async () => {
             try {
                 const data = await getConversations();
-                // On aplatit la structure retournée par l'action (participants -> conversation)
-                const convs = data.conversations.map((p: any) => p.conversation);
-                setConversations(convs);
+                setConversations(data.conversations);
             } catch (error) {
                 console.error(error);
             } finally {
