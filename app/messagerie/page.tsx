@@ -8,6 +8,7 @@ import { startConversation, getConversationMessages } from "./actions";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { Plus, LogOut } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import NewConversationModal from "./component/NewConversationModal";
 import { useSession } from "next-auth/react";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
@@ -82,13 +83,12 @@ function MessagerieContent() {
             <div className={`messagerie-container ${activeId ? 'has-active-chat' : ''}`}>
                 {!activeId && (
                      <div style={{ padding: '0 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-                        <ClassicButton 
-                            variant="primary" 
+                        <CTAButton 
                             icon={<Plus size={18} />}
                             onClick={() => setShowModal(true)}
                         >
                             Nouvelle conversation
-                        </ClassicButton>
+                        </CTAButton>
                     </div>
                 )}
                 

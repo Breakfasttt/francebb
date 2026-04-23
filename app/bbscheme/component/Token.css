@@ -139,10 +139,13 @@
 }
 
 .ball-token {
-  width: 38px; height: 38px;
+  width: 100%; height: 100%;
   background: transparent;
   z-index: 50;
   cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ball-icon {

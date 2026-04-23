@@ -210,7 +210,7 @@ function FangsIcon({ className, size = 16 }: { className?: string, size?: number
   );
 }
 
-function BallGraphic({ size = "100%" }: { size?: number | string }) {
+function BallGraphic({ size = 32 }: { size?: number | string }) {
   // Un ballon de Blood Bowl se doit d'être agressif (piques) et en cuir
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>

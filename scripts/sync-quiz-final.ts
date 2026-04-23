@@ -1,7 +1,7 @@
 import { createClient } from "@libsql/client";
 import { loadEnvConfig } from "@next/env";
 import { questions } from "../app/bbquizz/data/questions";
-import { v4 as uuidv4 } from "uuid"; // On va utiliser des UUID simples pour les IDs manquants
+// On va utiliser des IDs simples pour les IDs manquants
 
 loadEnvConfig(process.cwd());
 

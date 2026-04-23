@@ -10,7 +10,8 @@ import { useEffect, useState } from "react";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
-import { getUserActivity, getUserStats, startConversation, getBlockedUsersIds } from "@/app/profile/actions";
+import { getUserActivity, getUserStats, getBlockedUsersIds } from "@/app/profile/actions";
+import { startConversation } from "@/app/messagerie/actions";
 import { isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
@@ -126,9 +127,9 @@ export default function SpyProfilePage() {
       return;
     }
     try {
-      const res = await startConversation(user.id);
+      const res = await startConversation([user.id]);
       if (res.success) {
-        router.push(`/profile?tab=pm&conversationId=${res.conversationId}`);
+        router.push(`/messagerie?id=${res.conversationId}`);
       }
     } catch (err: any) {
       alert(err.message);

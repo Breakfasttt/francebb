@@ -352,15 +352,23 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
 
     if (!conv?.isGroup) throw new Error("Ce n'est pas un groupe");
 
-    // Ajouter les nouveaux participants
-    await prisma.conversationParticipant.createMany({
-        data: userIds.map(uid => ({
-            userId: uid,
-            conversationId,
-            isAdmin: false
-        })),
-        skipDuplicates: true
+    // Filtrer pour ne pas ajouter des personnes déjà présentes
+    const existing = await prisma.conversationParticipant.findMany({
+        where: { conversationId, userId: { in: userIds } },
+        select: { userId: true }
     });
+    const existingIds = new Set(existing.map(e => e.userId));
+    const toAdd = [...new Set(userIds.filter(uid => !existingIds.has(uid)))];
+
+    if (toAdd.length > 0) {
+        await prisma.conversationParticipant.createMany({
+            data: toAdd.map(uid => ({
+                userId: uid,
+                conversationId,
+                isAdmin: false
+            }))
+        });
+    }
 
     revalidatePath("/messagerie");
     return { success: true };

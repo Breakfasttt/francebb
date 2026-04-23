@@ -135,7 +135,6 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                         placeholder="Écrivez votre message..."
                         maxLength={500}
                         rows={5}
-                        style={{ height: 'auto' }}
                     />
                     <div style={{ marginTop: '1.2rem' }}>
                         <CTAButton 
@@ -157,8 +156,8 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 onConfirm={handleLeave}
                 title="Quitter la conversation ?"
                 message="Si vous quittez cette conversation, elle sera supprimée de votre liste. Si c'est un groupe et qu'il ne reste plus personne, elle sera définitivement supprimée."
-                confirmText="Quitter"
-                variant="danger"
+                confirmLabel="Quitter"
+                isDanger={true}
             />
         </div>
     );

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { searchUsers, startConversation } from "../actions";
 import { X, Search, Check, Users } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -126,19 +127,17 @@ export default function NewConversationModal({ onClose }: { onClose: () => void 
 
                 <div className="modal-footer" style={{ marginTop: "1.5rem", display: 'flex', justifyContent: "flex-end", gap: '1rem' }}>
                     <ClassicButton 
-                        variant="secondary" 
                         onClick={onClose}
                     >
                         Annuler
                     </ClassicButton>
-                    <ClassicButton 
-                        variant="primary" 
+                    <CTAButton 
                         onClick={handleStart} 
                         disabled={selected.length === 0 || loading}
                         icon={selected.length > 1 ? <Users size={18} /> : undefined}
                     >
                         {loading ? "Création..." : selected.length > 1 ? "Créer le groupe" : "Démarrer le chat"}
-                    </ClassicButton>
+                    </CTAButton>
                 </div>
             </PremiumCard>
         </div>
