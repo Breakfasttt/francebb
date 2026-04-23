@@ -71,7 +71,7 @@ export default function MobileSidebar({
           {/* 2. Icônes d'action style Desktop (Messagerie / Mod / Admin) */}
           <div className="mobile-utility-icons">
             {session?.user && (
-              <Link href="/profile?tab=pm" className="nav-icon-capsule" style={{ position: 'relative' }}>
+              <Link href="/messagerie" className="nav-icon-capsule" style={{ position: 'relative' }}>
                 <Mail size={22} />
                 {unreadCount > 0 && <span className="nav-badge primary">{unreadCount}</span>}
               </Link>

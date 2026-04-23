@@ -49,10 +49,12 @@ export default async function RootLayout({
         prisma.privateMessage.count({
           where: {
             conversation: {
-              OR: [
-                { user1Id: session.user.id },
-                { user2Id: session.user.id }
-              ]
+              participants: {
+                some: {
+                  userId: session.user.id,
+                  deletedAt: null
+                }
+              }
             },
             authorId: { not: session.user.id },
             readAt: null

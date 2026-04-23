@@ -6,7 +6,7 @@ description: Guide UI BBFrance. Composants, thèmes, archi. Mode homme des caver
 # UI BBFrance
 
 ## GLOBAUX (`common/components/`)
-- `PremiumCard`: Conteneur Glassmorphism.
+- `PremiumCard`: Conteneur Glassmorphism. **TOUJOURS inclure un padding interne (ex: 1.25rem - 1.5rem)** pour éviter que le contenu ne touche les bords.
 - `TabSystem`: Navigation onglets.
 - `StatusBadge`: Couleurs (`primary`, `danger`, `banned`).
 - `TagSelector`: Touche Entrée, pas de virgules.
@@ -27,7 +27,7 @@ Utiliser `size` (`xs`, `sm`, `md`), icônes `lucide-react` (ex: `icon={<Icon siz
 ## MODALES & POPUPS
 - `ConfirmModal` / `Modal`: TOUJOURS utiliser pour confirmer. **PAS DE `window.alert` ni `window.confirm`**.
 - `Toast`: Notifications.
-- `Tooltip`: Info au survol.
+- `Tooltip`: Info au survol. **ATTENTION**: Si utilisé dans un conteneur avec `overflow: hidden` (ex: `PremiumCard`), s'assurer que le parent direct ou la carte a `overflow: visible` pour éviter que la bulle ne soit coupée.
 
 ## SYSTÈME DE THÈMES (`app/theme/`)
 - **NE JAMAIS CODER HEX/RGB EN DUR.** TOUJOURS variables CSS.

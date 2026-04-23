@@ -8,6 +8,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   isolation: isolate;
   transform: translateZ(0);
+  padding: 1.5rem;
 }
 
 .premium-card.overflow-visible {

@@ -68,6 +68,7 @@ model User {
   blocks                  Block[]                  @relation("Blocker")
   user2Conversations      Conversation[]           @relation("User2Conversations")
   user1Conversations      Conversation[]           @relation("User1Conversations")
+  conversationParticipants ConversationParticipant[]
   ownedLigues             Ligue[]                  @relation("LigueCreator")
   mentionsReceived        Mention[]                @relation("MentionsReceived")
   mentionsMade            Mention[]                @relation("MentionsMade")
@@ -259,19 +260,36 @@ model Post {
 
 model Conversation {
   id             String           @id @default(cuid())
+  name           String?
+  isGroup        Boolean          @default(false)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  user1Id        String
-  user2Id        String
+  user1Id        String?
+  user2Id        String?
   user1DeletedAt DateTime?
   user2DeletedAt DateTime?
-  user2          User             @relation("User2Conversations", fields: [user2Id], references: [id])
-  user1          User             @relation("User1Conversations", fields: [user1Id], references: [id])
+  user2          User?            @relation("User2Conversations", fields: [user2Id], references: [id])
+  user1          User?            @relation("User1Conversations", fields: [user1Id], references: [id])
   messages       PrivateMessage[]
+  participants   ConversationParticipant[]
 
-  @@unique([user1Id, user2Id])
   @@index([user1Id])
   @@index([user2Id])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  userId         String
+  conversationId String
+  joinedAt       DateTime     @default(now())
+  deletedAt      DateTime?
+  isAdmin        Boolean      @default(false)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
 }
 
 model PrivateMessage {

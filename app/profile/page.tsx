@@ -14,7 +14,6 @@ import { fr } from "date-fns/locale";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
-import ProfilePM from "@/app/profile/component/ProfilePM";
 import ProfileSettings from "@/app/profile/component/ProfileSettings";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import ProfileResources from "@/app/profile/component/ProfileResources";
@@ -27,7 +26,7 @@ import "./page.css";
 import "./page-mobile.css";
 
 
-type ProfileTab = "followed" | "articles" | "ressources" | "activity" | "edit" | "pm" | "settings" | "blocked";
+type ProfileTab = "followed" | "articles" | "ressources" | "activity" | "edit" | "settings" | "blocked";
 
 export default function ProfilePage() {
   const { data: session, status } = useSession({
@@ -62,8 +61,6 @@ export default function ProfilePage() {
     if (tab === "edit") return "edit";
     if (tab === "articles") return "articles";
     if (tab === "ressources") return "ressources";
-    if (tab === "pm") return "pm";
-    if (tab === "activity") return "activity";
     if (tab === "settings") return "settings";
     if (tab === "blocked") return "blocked";
     return "followed";
@@ -223,10 +220,6 @@ export default function ProfilePage() {
               onUpdate={() => window.location.reload()} 
               isModerator={isModerator}
             />
-          )}
-
-          {activeTab === "pm" && (
-            <ProfilePM />
           )}
 
           {activeTab === "blocked" && (

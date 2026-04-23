@@ -17,43 +17,52 @@
   z-index: 1000;
   box-shadow: var(--glass-shadow);
   border: 1.5px solid var(--accent);
-  animation: tooltipFadeIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-top {
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
+  animation: tooltipFadeTop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-right {
   left: 125%;
   top: 50%;
   transform: translateY(-50%);
+  animation: tooltipFadeRight 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-bottom {
   top: 125%;
   left: 50%;
   transform: translateX(-50%);
+  animation: tooltipFadeBottom 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tooltip-left {
   right: 125%;
   top: 50%;
   transform: translateY(-50%);
+  animation: tooltipFadeLeft 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes tooltipFadeIn {
-  from { opacity: 0; transform: translate(-50%, 10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+@keyframes tooltipFadeTop {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-.tooltip-right {
-  animation: tooltipFadeRight 0.2s ease-out;
+@keyframes tooltipFadeBottom {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 @keyframes tooltipFadeRight {
   from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes tooltipFadeLeft {
+  from { opacity: 0; transform: translateY(-50%) translateX(10px); }
   to { opacity: 1; transform: translateY(-50%) translateX(0); }
 }

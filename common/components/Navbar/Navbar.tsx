@@ -82,8 +82,8 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
           </Link>
         )}
         {session?.user && (
-          <a
-            href="/profile?tab=pm"
+          <Link
+            href="/messagerie"
             title={`${unreadCount} message(s) non lu(s)`}
             className="nav-icon-capsule"
             style={{ position: 'relative' }}
@@ -94,7 +94,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
-          </a>
+          </Link>
         )}
         <div className="desktop-only" style={{ marginLeft: '1rem' }}>
           <SignInButton user={session?.user} />

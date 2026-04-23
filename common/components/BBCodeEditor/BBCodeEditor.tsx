@@ -1,15 +1,15 @@
 "use client";
 
-import Toast from "@/common/components/Toast/Toast";
-import { parseBBCode } from "@/lib/bbcode";
-import { siteConfig } from "@/lib/siteConfig";
-import { Bold, ChevronDown, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, Link as LinkIcon, Loader2, Palette, Smile, Underline, User as UserIcon, Youtube, Strikethrough, Type, Minus, AlignLeft, AlignCenter, AlignRight, WrapText, Sparkles, Bot, List, ListOrdered, Table as TableIcon, Code, AlignJustify, Superscript, Subscript, LayoutGrid, DraftingCompass, ScreenShare } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
-import Modal from "@/common/components/Modal/Modal";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
+import Modal from "@/common/components/Modal/Modal";
+import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
+import Toast from "@/common/components/Toast/Toast";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
+import { parseBBCode } from "@/lib/bbcode";
+import { siteConfig } from "@/lib/siteConfig";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Bot, ChevronDown, Code, DraftingCompass, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, LayoutGrid, Link as LinkIcon, List, ListOrdered, Loader2, Minus, Palette, Smile, Sparkles, Strikethrough, Subscript, Superscript, Table as TableIcon, Type, Underline, User as UserIcon, WrapText, Youtube } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 interface BBCodeEditorProps {
   name: string;
@@ -37,11 +37,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [aiPrompt, setAiPrompt] = useState("");
   const [topicQuery, setTopicQuery] = useState("");
-  const [topicResults, setTopicResults] = useState<{id: string; title: string; forumName: string}[]>([]);
+  const [topicResults, setTopicResults] = useState<{ id: string; title: string; forumName: string }[]>([]);
   const [isSearchingTopics, setIsSearchingTopics] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState<{id: string; title: string; forumName: string} | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<{ id: string; title: string; forumName: string } | null>(null);
   const [mentionQuery, setMentionQuery] = useState("");
-  const [mentionResults, setMentionResults] = useState<{id: string; name: string; image: string | null}[]>([]);
+  const [mentionResults, setMentionResults] = useState<{ id: string; name: string; image: string | null }[]>([]);
   const [isSearchingMentions, setIsSearchingMentions] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -109,7 +109,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           setMentionResults([]);
         }
       }
-      
+
       if (e.key === "Escape" && activeTool) {
         setActiveTool(null);
         textareaRef.current?.focus();
@@ -437,21 +437,21 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           <Tooltip text="Couleur du texte">
             <button type="button" onClick={() => toggleTool('color')} className={`toolbar-btn ${activeTool === 'color' ? 'active-tool' : ''}`}><Palette size={16} /></button>
           </Tooltip>
-          
+
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.1rem" }}></div>
-          
+
           <Tooltip text="Séparateur horizontal">
             <button type="button" onClick={() => insertTag("[hr]", "")} className="toolbar-btn"><Minus size={16} /></button>
           </Tooltip>
-          
+
           <Tooltip text="Liste">
             <button type="button" onClick={() => toggleTool('list')} className={`toolbar-btn ${activeTool === 'list' ? 'active-tool' : ''}`}><List size={16} /></button>
           </Tooltip>
-          
+
           <Tooltip text="Tableau">
             <button type="button" onClick={() => insertTableTemplate()} className="toolbar-btn"><TableIcon size={16} /></button>
           </Tooltip>
-          
+
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.1rem" }}></div>
 
           <Tooltip text="Ajouter un lien">
@@ -494,7 +494,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           <Tooltip text="Insérer un schéma tactique BBScheme">
             <button type="button" onClick={() => toggleTool('bbscheme')} className={`toolbar-btn ${activeTool === 'bbscheme' ? 'active-tool' : ''}`} style={{ color: "var(--accent)" }}><DraftingCompass size={16} /></button>
           </Tooltip>
-          
+
           <div style={{ width: "1px", height: "16px", background: "var(--glass-border)", margin: "0 0.2rem" }}></div>
 
           <Tooltip text="Insérer un smiley">
@@ -509,9 +509,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
 
         <div>
           <Tooltip text={isPreview ? "Fermer l'aperçu" : "Aperçu"}>
-            <ClassicButton 
-              type="button" 
-              onClick={() => setIsPreview(!isPreview)} 
+            <ClassicButton
+              type="button"
+              onClick={() => setIsPreview(!isPreview)}
               variant={isPreview ? "classic" : "classic"}
               style={{ padding: "0.4rem 0.8rem", height: "auto" }}
               className={isPreview ? "active" : ""}
@@ -563,12 +563,12 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>ID ou URL YouTube</span>
                   <input type="text" placeholder="Vidéo YouTube..." value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} style={{ width: "100%", height: "36px", padding: "0 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)" }} autoFocus />
                 </div>
-                
+
                 <div style={{ display: "flex", gap: "1rem" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Alignement</span>
                     <div style={{ display: "flex", background: "var(--glass-bg)", borderRadius: "6px", border: "1px solid var(--glass-border)", padding: "0.2rem" }}>
-                      {[ {v:'left', i:AlignLeft, t:'Gauche'}, {v:'center', i:AlignCenter, t:'Centre'}, {v:'right', i:AlignRight, t:'Droite'} ].map(al => (
+                      {[{ v: 'left', i: AlignLeft, t: 'Gauche' }, { v: 'center', i: AlignCenter, t: 'Centre' }, { v: 'right', i: AlignRight, t: 'Droite' }].map(al => (
                         <Tooltip key={al.v} text={al.t}>
                           <button type="button" onClick={() => setToolInputAlign(al.v as any)} className={`toolbar-btn ${toolInputAlign === al.v ? 'active-tool' : ''}`} style={{ padding: "0.3rem" }}>
                             <al.i size={16} />
@@ -581,9 +581,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Miniature</span>
                     <Tooltip text={toolInputThumb ? "Taille réduite (recommandé)" : "Taille réelle"}>
-                      <button 
-                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)} 
-                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`} 
+                      <button
+                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)}
+                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`}
                         style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
                       >
                         <Bot size={16} />
@@ -595,9 +595,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Habillage</span>
                       <Tooltip text={toolInputWrap ? "Texte autour de la vidéo" : "Vidéo seule sur sa ligne"}>
-                        <button 
-                          type="button" onClick={() => setToolInputWrap(!toolInputWrap)} 
-                          className={`toolbar-btn ${toolInputWrap ? 'active-tool' : ''}`} 
+                        <button
+                          type="button" onClick={() => setToolInputWrap(!toolInputWrap)}
+                          className={`toolbar-btn ${toolInputWrap ? 'active-tool' : ''}`}
                           style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
                         >
                           <WrapText size={16} />
@@ -614,12 +614,12 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
             <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Liste des URLs d'images (séparées par des virgules ou retours à la ligne)</span>
-                <textarea 
-                  placeholder="https://image1.jpg, https://image2.jpg..." 
-                  value={toolInputUrl} 
-                  onChange={(e) => setToolInputUrl(e.target.value)} 
-                  style={{ width: "100%", height: "80px", padding: "0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)", resize: "none", fontSize: "0.85rem" }} 
-                  autoFocus 
+                <textarea
+                  placeholder="https://image1.jpg, https://image2.jpg..."
+                  value={toolInputUrl}
+                  onChange={(e) => setToolInputUrl(e.target.value)}
+                  style={{ width: "100%", height: "80px", padding: "0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)", resize: "none", fontSize: "0.85rem" }}
+                  autoFocus
                 />
               </div>
               <CTAButton type="button" onClick={submitGallery} size="sm" style={{ height: "38px" }}>Créer la galerie</CTAButton>
@@ -630,16 +630,16 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
               <div style={{ display: "flex", gap: "1rem", alignItems: "flex-end" }}>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>URL de partage ou ID du schéma BBScheme</span>
-                  <input 
-                    type="text" 
-                    placeholder="https://.../bbscheme?id=xxxxx" 
-                    value={toolInputUrl} 
-                    onChange={(e) => setToolInputUrl(e.target.value)} 
-                    style={{ width: "100%", height: "36px", padding: "0 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)" }} 
-                    autoFocus 
+                  <input
+                    type="text"
+                    placeholder="https://.../bbscheme?id=xxxxx"
+                    value={toolInputUrl}
+                    onChange={(e) => setToolInputUrl(e.target.value)}
+                    style={{ width: "100%", height: "36px", padding: "0 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)" }}
+                    autoFocus
                   />
                 </div>
-                
+
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Format</span>
                   <div style={{ display: "flex", background: "var(--glass-bg)", borderRadius: "6px", border: "1px solid var(--glass-border)", padding: "0.2rem" }}>
@@ -686,12 +686,12 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>URL de l'image</span>
                   <input type="url" placeholder="https://..." value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} style={{ width: "100%", height: "36px", padding: "0 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", color: "var(--foreground)" }} autoFocus />
                 </div>
-                
+
                 <div style={{ display: "flex", gap: "1rem" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Alignement</span>
                     <div style={{ display: "flex", background: "var(--glass-bg)", borderRadius: "6px", border: "1px solid var(--glass-border)", padding: "0.2rem" }}>
-                      {[ {v:'left', i:AlignLeft, t:'Gauche'}, {v:'center', i:AlignCenter, t:'Centre'}, {v:'right', i:AlignRight, t:'Droite'} ].map(al => (
+                      {[{ v: 'left', i: AlignLeft, t: 'Gauche' }, { v: 'center', i: AlignCenter, t: 'Centre' }, { v: 'right', i: AlignRight, t: 'Droite' }].map(al => (
                         <Tooltip key={al.v} text={al.t}>
                           <button type="button" onClick={() => setToolInputAlign(al.v as any)} className={`toolbar-btn ${toolInputAlign === al.v ? 'active-tool' : ''}`} style={{ padding: "0.3rem" }}>
                             <al.i size={16} />
@@ -704,9 +704,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Miniature</span>
                     <Tooltip text={toolInputThumb ? "Taille réduite (recommandé)" : "Taille réelle"}>
-                      <button 
-                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)} 
-                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`} 
+                      <button
+                        type="button" onClick={() => setToolInputThumb(!toolInputThumb)}
+                        className={`toolbar-btn ${toolInputThumb ? 'active-tool' : ''}`}
                         style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
                       >
                         <Bot size={16} />
@@ -718,9 +718,9 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                     <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem", alignItems: "center" }}>
                       <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600 }}>Habillage</span>
                       <Tooltip text={toolInputWrap ? "Texte autour de l'image" : "Image seule sur sa ligne"}>
-                        <button 
-                          type="button" onClick={() => setToolInputWrap(!toolInputWrap)} 
-                          className={`toolbar-btn ${toolInputWrap ? 'active-tool' : ''}`} 
+                        <button
+                          type="button" onClick={() => setToolInputWrap(!toolInputWrap)}
+                          className={`toolbar-btn ${toolInputWrap ? 'active-tool' : ''}`}
                           style={{ padding: "0.3rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "6px", width: "40px", height: "36px" }}
                         >
                           <WrapText size={16} />
@@ -733,10 +733,10 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
 
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <CTAButton type="button" onClick={submitImageUrl} style={{ flex: 1, height: "38px" }}>Insérer via URL</CTAButton>
-                <ClassicButton 
-                  type="button" 
-                  onClick={() => fileInputRef.current?.click()} 
-                  isLoading={isUploading} 
+                <ClassicButton
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  isLoading={isUploading}
                   icon={ImageIcon}
                   style={{ flex: 1, height: "38px" }}
                 >
@@ -817,11 +817,11 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
         </div>
       )}
 
-      <div className="editor-content-area" style={{ position: "relative", flex: 1, display: "flex", flexDirection: "column" }}>
+      <div className="editor-content-area" style={{ position: "relative", display: "flex", flexDirection: "column", height: "auto" }}>
         <textarea
           id={id} name={name} ref={textareaRef} value={content} onChange={(e) => handleContentChange(e.target.value)} placeholder={placeholder} rows={rows}
           required={required}
-          style={{ width: "100%", height: isPreview ? "200px" : "100%", padding: "1rem", background: "var(--glass-bg)", border: "none", color: "var(--foreground)", resize: "vertical", outline: "none", fontSize: "1rem", fontFamily: "inherit" }}
+          style={{ width: "100%", padding: "1rem", background: "var(--glass-bg)", border: "none", color: "var(--foreground)", resize: "vertical", outline: "none", fontSize: "1rem", fontFamily: "inherit", minHeight: "120px", display: "block" }}
         />
         {isPreview && (
           <>
@@ -846,25 +846,25 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
         .pending { filter: grayscale(0.5); }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
-      
+
       {isAIModalOpen && (
-        <Modal 
-          isOpen={isAIModalOpen} 
-          onClose={() => setIsAIModalOpen(false)} 
+        <Modal
+          isOpen={isAIModalOpen}
+          onClose={() => setIsAIModalOpen(false)}
           title="Assistant de Mise en forme I.A."
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
             <p style={{ fontSize: "0.9rem", color: "var(--text-muted)", margin: 0 }}>
               Nous avons préparé un prompt optimisé incluant les règles spécifiques du forum et votre contenu actuel.
             </p>
-            
-            <div style={{ 
-              background: "rgba(0,0,0,0.2)", 
-              padding: "1rem", 
-              borderRadius: "8px", 
-              fontSize: "0.75rem", 
-              maxHeight: "150px", 
-              overflowY: "auto", 
+
+            <div style={{
+              background: "rgba(0,0,0,0.2)",
+              padding: "1rem",
+              borderRadius: "8px",
+              fontSize: "0.75rem",
+              maxHeight: "150px",
+              overflowY: "auto",
               border: "1px solid var(--glass-border)",
               fontFamily: "monospace",
               color: "var(--text-secondary)"
@@ -876,7 +876,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
               <CTAButton type="button" onClick={copyAIPrompt} style={{ width: "100%" }}>
                 Copier le prompt
               </CTAButton>
-              
+
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
                 <ClassicButton type="button" onClick={() => openAI("https://gemini.google.com/app")} size="sm" icon={Sparkles} style={{ flex: 1 }}>
                   Gemini
@@ -889,7 +889,7 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
                 Ouvrir ChatGPT
               </ClassicButton>
             </div>
-            
+
             <p style={{ fontSize: "0.75rem", fontStyle: "italic", textAlign: "center", color: "var(--text-muted)", margin: 0 }}>
               Le prompt sera automatiquement copié dans votre presse-papier à l'ouverture de l'I.A.
             </p>

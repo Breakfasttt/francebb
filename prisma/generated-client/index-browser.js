@@ -280,12 +280,23 @@ exports.Prisma.PostScalarFieldEnum = {
 
 exports.Prisma.ConversationScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  isGroup: 'isGroup',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   user1Id: 'user1Id',
   user2Id: 'user2Id',
   user1DeletedAt: 'user1DeletedAt',
   user2DeletedAt: 'user2DeletedAt'
+};
+
+exports.Prisma.ConversationParticipantScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  conversationId: 'conversationId',
+  joinedAt: 'joinedAt',
+  deletedAt: 'deletedAt',
+  isAdmin: 'isAdmin'
 };
 
 exports.Prisma.PrivateMessageScalarFieldEnum = {
@@ -622,6 +633,7 @@ exports.Prisma.ModelName = {
   Topic: 'Topic',
   Post: 'Post',
   Conversation: 'Conversation',
+  ConversationParticipant: 'ConversationParticipant',
   PrivateMessage: 'PrivateMessage',
   TopicView: 'TopicView',
   Mention: 'Mention',

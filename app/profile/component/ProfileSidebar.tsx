@@ -124,7 +124,6 @@ export default function ProfileSidebar({
     { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
     { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
     { id: "ressources", label: "Mes ressources", icon: <Layout size={18} /> },
-    { id: "pm", label: "Messages privés", icon: <MessageSquare size={18} /> },
     { id: "blocked", label: "Utilisateurs bloqués", icon: <UserX size={18} /> },
     { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
     { id: "settings", label: "Gérer mon compte", icon: <Shield size={18} /> },
@@ -277,9 +276,11 @@ export default function ProfileSidebar({
         {!isOwnProfile && (
           <div className="profile-actions-column">
             {onContact && (
-              <ClassicButton onClick={onContact} icon={MessageSquare} fullWidth>
-                Message privé
-              </ClassicButton>
+              <Link href={`/messagerie?userId=${user.id}`} style={{ width: '100%' }}>
+                <ClassicButton icon={<MessageSquare size={18} />} fullWidth>
+                  Message privé
+                </ClassicButton>
+              </Link>
             )}
             <ClassicButton onClick={() => setShowReportModal(true)} icon={AlertTriangle} fullWidth>
               Signaler

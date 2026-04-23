@@ -34,72 +34,73 @@ model Session {
 }
 
 model User {
-  id                      String                   @id @default(cuid())
-  name                    String?
-  email                   String?                  @unique
-  emailVerified           DateTime?
-  image                   String?
-  role                    String                   @default("COACH")
-  nafNumber               String?
-  region                  String?
-  signature               String?
-  isBanned                Boolean                  @default(false)
-  banReason               String?
-  avatarFrame             String?                  @default("auto")
-  theme                   String                   @default("saison3")
-  equipe                  String?
-  ligueCustom             String?
-  quizTotalScore          Int                      @default(0)
-  quizBestScore           Int                      @default(0)
-  quizStreak              Int                      @default(0)
-  quizAttemptsCount       Int                      @default(0)
-  legacyId                String?                  @unique
-  forumactifName          String?
-  hasFinishedOnboarding   Boolean                  @default(false)
-  notifPm                 Boolean                  @default(true)
-  notifMention            Boolean                  @default(true)
-  notifFollowedTopic      Boolean                  @default(true)
-  notifNewsletter         Boolean                  @default(true)
-  accounts                Account[]
-  moderatedArticles       Article[]                @relation("ModeratedArticles")
-  articles                Article[]
-  articleReactions        ArticleReaction[]
-  blockedBy               Block[]                  @relation("Blocked")
-  blocks                  Block[]                  @relation("Blocker")
-  user2Conversations      Conversation[]           @relation("User2Conversations")
-  user1Conversations      Conversation[]           @relation("User1Conversations")
-  ownedLigues             Ligue[]                  @relation("LigueCreator")
-  mentionsReceived        Mention[]                @relation("MentionsReceived")
-  mentionsMade            Mention[]                @relation("MentionsMade")
-  moderationLogs          ModerationLog[]
-  reportsResolved         ModerationReport[]       @relation("ResolvedBy")
-  reportsMade             ModerationReport[]       @relation("ReportedBy")
-  moderatedPosts          Post[]                   @relation("ModeratedPosts")
-  posts                   Post[]
-  postReactions           PostReaction[]
-  privateMessages         PrivateMessage[]         @relation("SentPrivateMessages")
-  quizAttempts            QuizAttempt[]
-  dailyWins               QuizDailyWinner[]
-  quizSuggestions         QuizQuestionSuggestion[]
-  rankingArchives         RankingArchive[]
-  submittedResources      Resource[]               @relation("SubmittedResources")
-  sessions                Session[]
-  topics                  Topic[]
-  followedTopics          TopicFollow[]
-  topicViews              TopicView[]
-  tournaments             Tournament[]
-  matchesAsCoach2         TournamentMatch[]        @relation("MatchCoach2")
-  matchesAsCoach1         TournamentMatch[]        @relation("MatchCoach1")
-  mercenaryStatus         TournamentMercenary[]
-  tournamentRegistrations TournamentRegistration[]
-  tournamentResults       TournamentResult[]
-  captainTeams            TournamentTeam[]         @relation("TeamCaptain")
-  teamMemberships         TournamentTeamMember[]
-  roleConfig              RoleConfig               @relation(fields: [role], references: [name])
-  commissaireLigues       Ligue[]                  @relation("LigueCommissaires")
-  ligues                  Ligue[]                  @relation("LigueMembers")
-  commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
-  bbSchemeStates          BBSchemeState[]
+  id                       String                    @id @default(cuid())
+  name                     String?
+  email                    String?                   @unique
+  emailVerified            DateTime?
+  image                    String?
+  role                     String                    @default("COACH")
+  nafNumber                String?
+  region                   String?
+  signature                String?
+  isBanned                 Boolean                   @default(false)
+  banReason                String?
+  avatarFrame              String?                   @default("auto")
+  theme                    String                    @default("saison3")
+  equipe                   String?
+  ligueCustom              String?
+  quizTotalScore           Int                       @default(0)
+  quizBestScore            Int                       @default(0)
+  quizStreak               Int                       @default(0)
+  quizAttemptsCount        Int                       @default(0)
+  legacyId                 String?                   @unique
+  forumactifName           String?
+  hasFinishedOnboarding    Boolean                   @default(false)
+  notifPm                  Boolean                   @default(true)
+  notifMention             Boolean                   @default(true)
+  notifFollowedTopic       Boolean                   @default(true)
+  notifNewsletter          Boolean                   @default(true)
+  accounts                 Account[]
+  moderatedArticles        Article[]                 @relation("ModeratedArticles")
+  articles                 Article[]
+  articleReactions         ArticleReaction[]
+  blockedBy                Block[]                   @relation("Blocked")
+  blocks                   Block[]                   @relation("Blocker")
+  user2Conversations       Conversation[]            @relation("User2Conversations")
+  user1Conversations       Conversation[]            @relation("User1Conversations")
+  conversationParticipants ConversationParticipant[]
+  ownedLigues              Ligue[]                   @relation("LigueCreator")
+  mentionsReceived         Mention[]                 @relation("MentionsReceived")
+  mentionsMade             Mention[]                 @relation("MentionsMade")
+  moderationLogs           ModerationLog[]
+  reportsResolved          ModerationReport[]        @relation("ResolvedBy")
+  reportsMade              ModerationReport[]        @relation("ReportedBy")
+  moderatedPosts           Post[]                    @relation("ModeratedPosts")
+  posts                    Post[]
+  postReactions            PostReaction[]
+  privateMessages          PrivateMessage[]          @relation("SentPrivateMessages")
+  quizAttempts             QuizAttempt[]
+  dailyWins                QuizDailyWinner[]
+  quizSuggestions          QuizQuestionSuggestion[]
+  rankingArchives          RankingArchive[]
+  submittedResources       Resource[]                @relation("SubmittedResources")
+  sessions                 Session[]
+  topics                   Topic[]
+  followedTopics           TopicFollow[]
+  topicViews               TopicView[]
+  tournaments              Tournament[]
+  matchesAsCoach2          TournamentMatch[]         @relation("MatchCoach2")
+  matchesAsCoach1          TournamentMatch[]         @relation("MatchCoach1")
+  mercenaryStatus          TournamentMercenary[]
+  tournamentRegistrations  TournamentRegistration[]
+  tournamentResults        TournamentResult[]
+  captainTeams             TournamentTeam[]          @relation("TeamCaptain")
+  teamMemberships          TournamentTeamMember[]
+  roleConfig               RoleConfig                @relation(fields: [role], references: [name])
+  commissaireLigues        Ligue[]                   @relation("LigueCommissaires")
+  ligues                   Ligue[]                   @relation("LigueMembers")
+  commissairesTournaments  Tournament[]              @relation("TournamentCommissaires")
+  bbSchemeStates           BBSchemeState[]
 
   @@index([role])
 }
@@ -258,20 +259,37 @@ model Post {
 }
 
 model Conversation {
-  id             String           @id @default(cuid())
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  user1Id        String
-  user2Id        String
+  id             String                    @id @default(cuid())
+  name           String?
+  isGroup        Boolean                   @default(false)
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  user1Id        String?
+  user2Id        String?
   user1DeletedAt DateTime?
   user2DeletedAt DateTime?
-  user2          User             @relation("User2Conversations", fields: [user2Id], references: [id])
-  user1          User             @relation("User1Conversations", fields: [user1Id], references: [id])
+  user2          User?                     @relation("User2Conversations", fields: [user2Id], references: [id])
+  user1          User?                     @relation("User1Conversations", fields: [user1Id], references: [id])
   messages       PrivateMessage[]
+  participants   ConversationParticipant[]
 
-  @@unique([user1Id, user2Id])
   @@index([user1Id])
   @@index([user2Id])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  userId         String
+  conversationId String
+  joinedAt       DateTime     @default(now())
+  deletedAt      DateTime?
+  isAdmin        Boolean      @default(false)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
 }
 
 model PrivateMessage {

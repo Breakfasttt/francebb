@@ -69,6 +69,11 @@ export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
  */
 export type Conversation = $Result.DefaultSelection<Prisma.$ConversationPayload>
 /**
+ * Model ConversationParticipant
+ * 
+ */
+export type ConversationParticipant = $Result.DefaultSelection<Prisma.$ConversationParticipantPayload>
+/**
  * Model PrivateMessage
  * 
  */
@@ -482,6 +487,16 @@ export class PrismaClient<
     * ```
     */
   get conversation(): Prisma.ConversationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.conversationParticipant`: Exposes CRUD operations for the **ConversationParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConversationParticipants
+    * const conversationParticipants = await prisma.conversationParticipant.findMany()
+    * ```
+    */
+  get conversationParticipant(): Prisma.ConversationParticipantDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.privateMessage`: Exposes CRUD operations for the **PrivateMessage** model.
@@ -1227,6 +1242,7 @@ export namespace Prisma {
     Topic: 'Topic',
     Post: 'Post',
     Conversation: 'Conversation',
+    ConversationParticipant: 'ConversationParticipant',
     PrivateMessage: 'PrivateMessage',
     TopicView: 'TopicView',
     Mention: 'Mention',
@@ -1272,7 +1288,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2087,6 +2103,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ConversationCountArgs<ExtArgs>
             result: $Utils.Optional<ConversationCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConversationParticipant: {
+        payload: Prisma.$ConversationParticipantPayload<ExtArgs>
+        fields: Prisma.ConversationParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConversationParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConversationParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.ConversationParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConversationParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.ConversationParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.ConversationParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.ConversationParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConversationParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.ConversationParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          update: {
+            args: Prisma.ConversationParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConversationParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConversationParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConversationParticipantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConversationParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConversationParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.ConversationParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConversationParticipant>
+          }
+          groupBy: {
+            args: Prisma.ConversationParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConversationParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConversationParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<ConversationParticipantCountAggregateOutputType> | number
           }
         }
       }
@@ -4429,6 +4519,7 @@ export namespace Prisma {
     topic?: TopicOmit
     post?: PostOmit
     conversation?: ConversationOmit
+    conversationParticipant?: ConversationParticipantOmit
     privateMessage?: PrivateMessageOmit
     topicView?: TopicViewOmit
     mention?: MentionOmit
@@ -4547,6 +4638,7 @@ export namespace Prisma {
     blocks: number
     user2Conversations: number
     user1Conversations: number
+    conversationParticipants: number
     ownedLigues: number
     mentionsReceived: number
     mentionsMade: number
@@ -4589,6 +4681,7 @@ export namespace Prisma {
     blocks?: boolean | UserCountOutputTypeCountBlocksArgs
     user2Conversations?: boolean | UserCountOutputTypeCountUser2ConversationsArgs
     user1Conversations?: boolean | UserCountOutputTypeCountUser1ConversationsArgs
+    conversationParticipants?: boolean | UserCountOutputTypeCountConversationParticipantsArgs
     ownedLigues?: boolean | UserCountOutputTypeCountOwnedLiguesArgs
     mentionsReceived?: boolean | UserCountOutputTypeCountMentionsReceivedArgs
     mentionsMade?: boolean | UserCountOutputTypeCountMentionsMadeArgs
@@ -4687,6 +4780,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUser1ConversationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ConversationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountConversationParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConversationParticipantWhereInput
   }
 
   /**
@@ -5149,10 +5249,12 @@ export namespace Prisma {
 
   export type ConversationCountOutputType = {
     messages: number
+    participants: number
   }
 
   export type ConversationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     messages?: boolean | ConversationCountOutputTypeCountMessagesArgs
+    participants?: boolean | ConversationCountOutputTypeCountParticipantsArgs
   }
 
   // Custom InputTypes
@@ -5171,6 +5273,13 @@ export namespace Prisma {
    */
   export type ConversationCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PrivateMessageWhereInput
+  }
+
+  /**
+   * ConversationCountOutputType without action
+   */
+  export type ConversationCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConversationParticipantWhereInput
   }
 
 
@@ -8082,6 +8191,7 @@ export namespace Prisma {
     blocks?: boolean | User$blocksArgs<ExtArgs>
     user2Conversations?: boolean | User$user2ConversationsArgs<ExtArgs>
     user1Conversations?: boolean | User$user1ConversationsArgs<ExtArgs>
+    conversationParticipants?: boolean | User$conversationParticipantsArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
@@ -8216,6 +8326,7 @@ export namespace Prisma {
     blocks?: boolean | User$blocksArgs<ExtArgs>
     user2Conversations?: boolean | User$user2ConversationsArgs<ExtArgs>
     user1Conversations?: boolean | User$user1ConversationsArgs<ExtArgs>
+    conversationParticipants?: boolean | User$conversationParticipantsArgs<ExtArgs>
     ownedLigues?: boolean | User$ownedLiguesArgs<ExtArgs>
     mentionsReceived?: boolean | User$mentionsReceivedArgs<ExtArgs>
     mentionsMade?: boolean | User$mentionsMadeArgs<ExtArgs>
@@ -8268,6 +8379,7 @@ export namespace Prisma {
       blocks: Prisma.$BlockPayload<ExtArgs>[]
       user2Conversations: Prisma.$ConversationPayload<ExtArgs>[]
       user1Conversations: Prisma.$ConversationPayload<ExtArgs>[]
+      conversationParticipants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
       ownedLigues: Prisma.$LiguePayload<ExtArgs>[]
       mentionsReceived: Prisma.$MentionPayload<ExtArgs>[]
       mentionsMade: Prisma.$MentionPayload<ExtArgs>[]
@@ -8730,6 +8842,7 @@ export namespace Prisma {
     blocks<T extends User$blocksArgs<ExtArgs> = {}>(args?: Subset<T, User$blocksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user2Conversations<T extends User$user2ConversationsArgs<ExtArgs> = {}>(args?: Subset<T, User$user2ConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user1Conversations<T extends User$user1ConversationsArgs<ExtArgs> = {}>(args?: Subset<T, User$user1ConversationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    conversationParticipants<T extends User$conversationParticipantsArgs<ExtArgs> = {}>(args?: Subset<T, User$conversationParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ownedLigues<T extends User$ownedLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentionsReceived<T extends User$mentionsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     mentionsMade<T extends User$mentionsMadeArgs<ExtArgs> = {}>(args?: Subset<T, User$mentionsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9405,6 +9518,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ConversationScalarFieldEnum | ConversationScalarFieldEnum[]
+  }
+
+  /**
+   * User.conversationParticipants
+   */
+  export type User$conversationParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    where?: ConversationParticipantWhereInput
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    cursor?: ConversationParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConversationParticipantScalarFieldEnum | ConversationParticipantScalarFieldEnum[]
   }
 
   /**
@@ -18978,6 +19115,8 @@ export namespace Prisma {
 
   export type ConversationMinAggregateOutputType = {
     id: string | null
+    name: string | null
+    isGroup: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     user1Id: string | null
@@ -18988,6 +19127,8 @@ export namespace Prisma {
 
   export type ConversationMaxAggregateOutputType = {
     id: string | null
+    name: string | null
+    isGroup: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     user1Id: string | null
@@ -18998,6 +19139,8 @@ export namespace Prisma {
 
   export type ConversationCountAggregateOutputType = {
     id: number
+    name: number
+    isGroup: number
     createdAt: number
     updatedAt: number
     user1Id: number
@@ -19010,6 +19153,8 @@ export namespace Prisma {
 
   export type ConversationMinAggregateInputType = {
     id?: true
+    name?: true
+    isGroup?: true
     createdAt?: true
     updatedAt?: true
     user1Id?: true
@@ -19020,6 +19165,8 @@ export namespace Prisma {
 
   export type ConversationMaxAggregateInputType = {
     id?: true
+    name?: true
+    isGroup?: true
     createdAt?: true
     updatedAt?: true
     user1Id?: true
@@ -19030,6 +19177,8 @@ export namespace Prisma {
 
   export type ConversationCountAggregateInputType = {
     id?: true
+    name?: true
+    isGroup?: true
     createdAt?: true
     updatedAt?: true
     user1Id?: true
@@ -19113,10 +19262,12 @@ export namespace Prisma {
 
   export type ConversationGroupByOutputType = {
     id: string
+    name: string | null
+    isGroup: boolean
     createdAt: Date
     updatedAt: Date
-    user1Id: string
-    user2Id: string
+    user1Id: string | null
+    user2Id: string | null
     user1DeletedAt: Date | null
     user2DeletedAt: Date | null
     _count: ConversationCountAggregateOutputType | null
@@ -19140,44 +19291,53 @@ export namespace Prisma {
 
   export type ConversationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
+    isGroup?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
     user1DeletedAt?: boolean
     user2DeletedAt?: boolean
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
+    participants?: boolean | Conversation$participantsArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
   export type ConversationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
+    isGroup?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
     user1DeletedAt?: boolean
     user2DeletedAt?: boolean
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
   export type ConversationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    name?: boolean
+    isGroup?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user1Id?: boolean
     user2Id?: boolean
     user1DeletedAt?: boolean
     user2DeletedAt?: boolean
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
   export type ConversationSelectScalar = {
     id?: boolean
+    name?: boolean
+    isGroup?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user1Id?: boolean
@@ -19186,35 +19346,39 @@ export namespace Prisma {
     user2DeletedAt?: boolean
   }
 
-  export type ConversationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "user1Id" | "user2Id" | "user1DeletedAt" | "user2DeletedAt", ExtArgs["result"]["conversation"]>
+  export type ConversationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "isGroup" | "createdAt" | "updatedAt" | "user1Id" | "user2Id" | "user1DeletedAt" | "user2DeletedAt", ExtArgs["result"]["conversation"]>
   export type ConversationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
+    participants?: boolean | Conversation$participantsArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConversationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
   }
   export type ConversationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user2?: boolean | UserDefaultArgs<ExtArgs>
-    user1?: boolean | UserDefaultArgs<ExtArgs>
+    user2?: boolean | Conversation$user2Args<ExtArgs>
+    user1?: boolean | Conversation$user1Args<ExtArgs>
   }
 
   export type $ConversationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Conversation"
     objects: {
-      user2: Prisma.$UserPayload<ExtArgs>
-      user1: Prisma.$UserPayload<ExtArgs>
+      user2: Prisma.$UserPayload<ExtArgs> | null
+      user1: Prisma.$UserPayload<ExtArgs> | null
       messages: Prisma.$PrivateMessagePayload<ExtArgs>[]
+      participants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      name: string | null
+      isGroup: boolean
       createdAt: Date
       updatedAt: Date
-      user1Id: string
-      user2Id: string
+      user1Id: string | null
+      user2Id: string | null
       user1DeletedAt: Date | null
       user2DeletedAt: Date | null
     }, ExtArgs["result"]["conversation"]>
@@ -19611,9 +19775,10 @@ export namespace Prisma {
    */
   export interface Prisma__ConversationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user2<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user1<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user2<T extends Conversation$user2Args<ExtArgs> = {}>(args?: Subset<T, Conversation$user2Args<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user1<T extends Conversation$user1Args<ExtArgs> = {}>(args?: Subset<T, Conversation$user1Args<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     messages<T extends Conversation$messagesArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrivateMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    participants<T extends Conversation$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19644,6 +19809,8 @@ export namespace Prisma {
    */
   interface ConversationFieldRefs {
     readonly id: FieldRef<"Conversation", 'String'>
+    readonly name: FieldRef<"Conversation", 'String'>
+    readonly isGroup: FieldRef<"Conversation", 'Boolean'>
     readonly createdAt: FieldRef<"Conversation", 'DateTime'>
     readonly updatedAt: FieldRef<"Conversation", 'DateTime'>
     readonly user1Id: FieldRef<"Conversation", 'String'>
@@ -20049,6 +20216,44 @@ export namespace Prisma {
   }
 
   /**
+   * Conversation.user2
+   */
+  export type Conversation$user2Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Conversation.user1
+   */
+  export type Conversation$user1Args<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Conversation.messages
    */
   export type Conversation$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20073,6 +20278,30 @@ export namespace Prisma {
   }
 
   /**
+   * Conversation.participants
+   */
+  export type Conversation$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    where?: ConversationParticipantWhereInput
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    cursor?: ConversationParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConversationParticipantScalarFieldEnum | ConversationParticipantScalarFieldEnum[]
+  }
+
+  /**
    * Conversation without action
    */
   export type ConversationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20088,6 +20317,1088 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ConversationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConversationParticipant
+   */
+
+  export type AggregateConversationParticipant = {
+    _count: ConversationParticipantCountAggregateOutputType | null
+    _min: ConversationParticipantMinAggregateOutputType | null
+    _max: ConversationParticipantMaxAggregateOutputType | null
+  }
+
+  export type ConversationParticipantMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    conversationId: string | null
+    joinedAt: Date | null
+    deletedAt: Date | null
+    isAdmin: boolean | null
+  }
+
+  export type ConversationParticipantMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    conversationId: string | null
+    joinedAt: Date | null
+    deletedAt: Date | null
+    isAdmin: boolean | null
+  }
+
+  export type ConversationParticipantCountAggregateOutputType = {
+    id: number
+    userId: number
+    conversationId: number
+    joinedAt: number
+    deletedAt: number
+    isAdmin: number
+    _all: number
+  }
+
+
+  export type ConversationParticipantMinAggregateInputType = {
+    id?: true
+    userId?: true
+    conversationId?: true
+    joinedAt?: true
+    deletedAt?: true
+    isAdmin?: true
+  }
+
+  export type ConversationParticipantMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    conversationId?: true
+    joinedAt?: true
+    deletedAt?: true
+    isAdmin?: true
+  }
+
+  export type ConversationParticipantCountAggregateInputType = {
+    id?: true
+    userId?: true
+    conversationId?: true
+    joinedAt?: true
+    deletedAt?: true
+    isAdmin?: true
+    _all?: true
+  }
+
+  export type ConversationParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConversationParticipant to aggregate.
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConversationParticipants to fetch.
+     */
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConversationParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConversationParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConversationParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConversationParticipants
+    **/
+    _count?: true | ConversationParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConversationParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConversationParticipantMaxAggregateInputType
+  }
+
+  export type GetConversationParticipantAggregateType<T extends ConversationParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateConversationParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConversationParticipant[P]>
+      : GetScalarType<T[P], AggregateConversationParticipant[P]>
+  }
+
+
+
+
+  export type ConversationParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConversationParticipantWhereInput
+    orderBy?: ConversationParticipantOrderByWithAggregationInput | ConversationParticipantOrderByWithAggregationInput[]
+    by: ConversationParticipantScalarFieldEnum[] | ConversationParticipantScalarFieldEnum
+    having?: ConversationParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConversationParticipantCountAggregateInputType | true
+    _min?: ConversationParticipantMinAggregateInputType
+    _max?: ConversationParticipantMaxAggregateInputType
+  }
+
+  export type ConversationParticipantGroupByOutputType = {
+    id: string
+    userId: string
+    conversationId: string
+    joinedAt: Date
+    deletedAt: Date | null
+    isAdmin: boolean
+    _count: ConversationParticipantCountAggregateOutputType | null
+    _min: ConversationParticipantMinAggregateOutputType | null
+    _max: ConversationParticipantMaxAggregateOutputType | null
+  }
+
+  type GetConversationParticipantGroupByPayload<T extends ConversationParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConversationParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConversationParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConversationParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], ConversationParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConversationParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    conversationId?: boolean
+    joinedAt?: boolean
+    deletedAt?: boolean
+    isAdmin?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["conversationParticipant"]>
+
+  export type ConversationParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    conversationId?: boolean
+    joinedAt?: boolean
+    deletedAt?: boolean
+    isAdmin?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["conversationParticipant"]>
+
+  export type ConversationParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    conversationId?: boolean
+    joinedAt?: boolean
+    deletedAt?: boolean
+    isAdmin?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["conversationParticipant"]>
+
+  export type ConversationParticipantSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    conversationId?: boolean
+    joinedAt?: boolean
+    deletedAt?: boolean
+    isAdmin?: boolean
+  }
+
+  export type ConversationParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "conversationId" | "joinedAt" | "deletedAt" | "isAdmin", ExtArgs["result"]["conversationParticipant"]>
+  export type ConversationParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }
+  export type ConversationParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }
+  export type ConversationParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    conversation?: boolean | ConversationDefaultArgs<ExtArgs>
+  }
+
+  export type $ConversationParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConversationParticipant"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      conversation: Prisma.$ConversationPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      conversationId: string
+      joinedAt: Date
+      deletedAt: Date | null
+      isAdmin: boolean
+    }, ExtArgs["result"]["conversationParticipant"]>
+    composites: {}
+  }
+
+  type ConversationParticipantGetPayload<S extends boolean | null | undefined | ConversationParticipantDefaultArgs> = $Result.GetResult<Prisma.$ConversationParticipantPayload, S>
+
+  type ConversationParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConversationParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConversationParticipantCountAggregateInputType | true
+    }
+
+  export interface ConversationParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConversationParticipant'], meta: { name: 'ConversationParticipant' } }
+    /**
+     * Find zero or one ConversationParticipant that matches the filter.
+     * @param {ConversationParticipantFindUniqueArgs} args - Arguments to find a ConversationParticipant
+     * @example
+     * // Get one ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConversationParticipantFindUniqueArgs>(args: SelectSubset<T, ConversationParticipantFindUniqueArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConversationParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConversationParticipantFindUniqueOrThrowArgs} args - Arguments to find a ConversationParticipant
+     * @example
+     * // Get one ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConversationParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, ConversationParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConversationParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantFindFirstArgs} args - Arguments to find a ConversationParticipant
+     * @example
+     * // Get one ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConversationParticipantFindFirstArgs>(args?: SelectSubset<T, ConversationParticipantFindFirstArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConversationParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantFindFirstOrThrowArgs} args - Arguments to find a ConversationParticipant
+     * @example
+     * // Get one ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConversationParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, ConversationParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConversationParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConversationParticipants
+     * const conversationParticipants = await prisma.conversationParticipant.findMany()
+     * 
+     * // Get first 10 ConversationParticipants
+     * const conversationParticipants = await prisma.conversationParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const conversationParticipantWithIdOnly = await prisma.conversationParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConversationParticipantFindManyArgs>(args?: SelectSubset<T, ConversationParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConversationParticipant.
+     * @param {ConversationParticipantCreateArgs} args - Arguments to create a ConversationParticipant.
+     * @example
+     * // Create one ConversationParticipant
+     * const ConversationParticipant = await prisma.conversationParticipant.create({
+     *   data: {
+     *     // ... data to create a ConversationParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConversationParticipantCreateArgs>(args: SelectSubset<T, ConversationParticipantCreateArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConversationParticipants.
+     * @param {ConversationParticipantCreateManyArgs} args - Arguments to create many ConversationParticipants.
+     * @example
+     * // Create many ConversationParticipants
+     * const conversationParticipant = await prisma.conversationParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConversationParticipantCreateManyArgs>(args?: SelectSubset<T, ConversationParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConversationParticipants and returns the data saved in the database.
+     * @param {ConversationParticipantCreateManyAndReturnArgs} args - Arguments to create many ConversationParticipants.
+     * @example
+     * // Create many ConversationParticipants
+     * const conversationParticipant = await prisma.conversationParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConversationParticipants and only return the `id`
+     * const conversationParticipantWithIdOnly = await prisma.conversationParticipant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConversationParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, ConversationParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConversationParticipant.
+     * @param {ConversationParticipantDeleteArgs} args - Arguments to delete one ConversationParticipant.
+     * @example
+     * // Delete one ConversationParticipant
+     * const ConversationParticipant = await prisma.conversationParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one ConversationParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConversationParticipantDeleteArgs>(args: SelectSubset<T, ConversationParticipantDeleteArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConversationParticipant.
+     * @param {ConversationParticipantUpdateArgs} args - Arguments to update one ConversationParticipant.
+     * @example
+     * // Update one ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConversationParticipantUpdateArgs>(args: SelectSubset<T, ConversationParticipantUpdateArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConversationParticipants.
+     * @param {ConversationParticipantDeleteManyArgs} args - Arguments to filter ConversationParticipants to delete.
+     * @example
+     * // Delete a few ConversationParticipants
+     * const { count } = await prisma.conversationParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConversationParticipantDeleteManyArgs>(args?: SelectSubset<T, ConversationParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConversationParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConversationParticipants
+     * const conversationParticipant = await prisma.conversationParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConversationParticipantUpdateManyArgs>(args: SelectSubset<T, ConversationParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConversationParticipants and returns the data updated in the database.
+     * @param {ConversationParticipantUpdateManyAndReturnArgs} args - Arguments to update many ConversationParticipants.
+     * @example
+     * // Update many ConversationParticipants
+     * const conversationParticipant = await prisma.conversationParticipant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConversationParticipants and only return the `id`
+     * const conversationParticipantWithIdOnly = await prisma.conversationParticipant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConversationParticipantUpdateManyAndReturnArgs>(args: SelectSubset<T, ConversationParticipantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConversationParticipant.
+     * @param {ConversationParticipantUpsertArgs} args - Arguments to update or create a ConversationParticipant.
+     * @example
+     * // Update or create a ConversationParticipant
+     * const conversationParticipant = await prisma.conversationParticipant.upsert({
+     *   create: {
+     *     // ... data to create a ConversationParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConversationParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConversationParticipantUpsertArgs>(args: SelectSubset<T, ConversationParticipantUpsertArgs<ExtArgs>>): Prisma__ConversationParticipantClient<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConversationParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantCountArgs} args - Arguments to filter ConversationParticipants to count.
+     * @example
+     * // Count the number of ConversationParticipants
+     * const count = await prisma.conversationParticipant.count({
+     *   where: {
+     *     // ... the filter for the ConversationParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConversationParticipantCountArgs>(
+      args?: Subset<T, ConversationParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConversationParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConversationParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConversationParticipantAggregateArgs>(args: Subset<T, ConversationParticipantAggregateArgs>): Prisma.PrismaPromise<GetConversationParticipantAggregateType<T>>
+
+    /**
+     * Group by ConversationParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConversationParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConversationParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConversationParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: ConversationParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConversationParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConversationParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConversationParticipant model
+   */
+  readonly fields: ConversationParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConversationParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConversationParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    conversation<T extends ConversationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConversationDefaultArgs<ExtArgs>>): Prisma__ConversationClient<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConversationParticipant model
+   */
+  interface ConversationParticipantFieldRefs {
+    readonly id: FieldRef<"ConversationParticipant", 'String'>
+    readonly userId: FieldRef<"ConversationParticipant", 'String'>
+    readonly conversationId: FieldRef<"ConversationParticipant", 'String'>
+    readonly joinedAt: FieldRef<"ConversationParticipant", 'DateTime'>
+    readonly deletedAt: FieldRef<"ConversationParticipant", 'DateTime'>
+    readonly isAdmin: FieldRef<"ConversationParticipant", 'Boolean'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConversationParticipant findUnique
+   */
+  export type ConversationParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which ConversationParticipant to fetch.
+     */
+    where: ConversationParticipantWhereUniqueInput
+  }
+
+  /**
+   * ConversationParticipant findUniqueOrThrow
+   */
+  export type ConversationParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which ConversationParticipant to fetch.
+     */
+    where: ConversationParticipantWhereUniqueInput
+  }
+
+  /**
+   * ConversationParticipant findFirst
+   */
+  export type ConversationParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which ConversationParticipant to fetch.
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConversationParticipants to fetch.
+     */
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConversationParticipants.
+     */
+    cursor?: ConversationParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConversationParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConversationParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConversationParticipants.
+     */
+    distinct?: ConversationParticipantScalarFieldEnum | ConversationParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * ConversationParticipant findFirstOrThrow
+   */
+  export type ConversationParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which ConversationParticipant to fetch.
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConversationParticipants to fetch.
+     */
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConversationParticipants.
+     */
+    cursor?: ConversationParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConversationParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConversationParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConversationParticipants.
+     */
+    distinct?: ConversationParticipantScalarFieldEnum | ConversationParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * ConversationParticipant findMany
+   */
+  export type ConversationParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which ConversationParticipants to fetch.
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConversationParticipants to fetch.
+     */
+    orderBy?: ConversationParticipantOrderByWithRelationInput | ConversationParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConversationParticipants.
+     */
+    cursor?: ConversationParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConversationParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConversationParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConversationParticipants.
+     */
+    distinct?: ConversationParticipantScalarFieldEnum | ConversationParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * ConversationParticipant create
+   */
+  export type ConversationParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConversationParticipant.
+     */
+    data: XOR<ConversationParticipantCreateInput, ConversationParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * ConversationParticipant createMany
+   */
+  export type ConversationParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConversationParticipants.
+     */
+    data: ConversationParticipantCreateManyInput | ConversationParticipantCreateManyInput[]
+  }
+
+  /**
+   * ConversationParticipant createManyAndReturn
+   */
+  export type ConversationParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConversationParticipants.
+     */
+    data: ConversationParticipantCreateManyInput | ConversationParticipantCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConversationParticipant update
+   */
+  export type ConversationParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConversationParticipant.
+     */
+    data: XOR<ConversationParticipantUpdateInput, ConversationParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which ConversationParticipant to update.
+     */
+    where: ConversationParticipantWhereUniqueInput
+  }
+
+  /**
+   * ConversationParticipant updateMany
+   */
+  export type ConversationParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConversationParticipants.
+     */
+    data: XOR<ConversationParticipantUpdateManyMutationInput, ConversationParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which ConversationParticipants to update
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * Limit how many ConversationParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConversationParticipant updateManyAndReturn
+   */
+  export type ConversationParticipantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to update ConversationParticipants.
+     */
+    data: XOR<ConversationParticipantUpdateManyMutationInput, ConversationParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which ConversationParticipants to update
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * Limit how many ConversationParticipants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConversationParticipant upsert
+   */
+  export type ConversationParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConversationParticipant to update in case it exists.
+     */
+    where: ConversationParticipantWhereUniqueInput
+    /**
+     * In case the ConversationParticipant found by the `where` argument doesn't exist, create a new ConversationParticipant with this data.
+     */
+    create: XOR<ConversationParticipantCreateInput, ConversationParticipantUncheckedCreateInput>
+    /**
+     * In case the ConversationParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConversationParticipantUpdateInput, ConversationParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * ConversationParticipant delete
+   */
+  export type ConversationParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which ConversationParticipant to delete.
+     */
+    where: ConversationParticipantWhereUniqueInput
+  }
+
+  /**
+   * ConversationParticipant deleteMany
+   */
+  export type ConversationParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConversationParticipants to delete
+     */
+    where?: ConversationParticipantWhereInput
+    /**
+     * Limit how many ConversationParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConversationParticipant without action
+   */
+  export type ConversationParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConversationParticipant
+     */
+    select?: ConversationParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConversationParticipant
+     */
+    omit?: ConversationParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationParticipantInclude<ExtArgs> | null
   }
 
 
@@ -53695,6 +55006,8 @@ export namespace Prisma {
 
   export const ConversationScalarFieldEnum: {
     id: 'id',
+    name: 'name',
+    isGroup: 'isGroup',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     user1Id: 'user1Id',
@@ -53704,6 +55017,18 @@ export namespace Prisma {
   };
 
   export type ConversationScalarFieldEnum = (typeof ConversationScalarFieldEnum)[keyof typeof ConversationScalarFieldEnum]
+
+
+  export const ConversationParticipantScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    conversationId: 'conversationId',
+    joinedAt: 'joinedAt',
+    deletedAt: 'deletedAt',
+    isAdmin: 'isAdmin'
+  };
+
+  export type ConversationParticipantScalarFieldEnum = (typeof ConversationParticipantScalarFieldEnum)[keyof typeof ConversationParticipantScalarFieldEnum]
 
 
   export const PrivateMessageScalarFieldEnum: {
@@ -54349,6 +55674,7 @@ export namespace Prisma {
     blocks?: BlockListRelationFilter
     user2Conversations?: ConversationListRelationFilter
     user1Conversations?: ConversationListRelationFilter
+    conversationParticipants?: ConversationParticipantListRelationFilter
     ownedLigues?: LigueListRelationFilter
     mentionsReceived?: MentionListRelationFilter
     mentionsMade?: MentionListRelationFilter
@@ -54418,6 +55744,7 @@ export namespace Prisma {
     blocks?: BlockOrderByRelationAggregateInput
     user2Conversations?: ConversationOrderByRelationAggregateInput
     user1Conversations?: ConversationOrderByRelationAggregateInput
+    conversationParticipants?: ConversationParticipantOrderByRelationAggregateInput
     ownedLigues?: LigueOrderByRelationAggregateInput
     mentionsReceived?: MentionOrderByRelationAggregateInput
     mentionsMade?: MentionOrderByRelationAggregateInput
@@ -54490,6 +55817,7 @@ export namespace Prisma {
     blocks?: BlockListRelationFilter
     user2Conversations?: ConversationListRelationFilter
     user1Conversations?: ConversationListRelationFilter
+    conversationParticipants?: ConversationParticipantListRelationFilter
     ownedLigues?: LigueListRelationFilter
     mentionsReceived?: MentionListRelationFilter
     mentionsMade?: MentionListRelationFilter
@@ -55320,53 +56648,63 @@ export namespace Prisma {
     OR?: ConversationWhereInput[]
     NOT?: ConversationWhereInput | ConversationWhereInput[]
     id?: StringFilter<"Conversation"> | string
+    name?: StringNullableFilter<"Conversation"> | string | null
+    isGroup?: BoolFilter<"Conversation"> | boolean
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
-    user1Id?: StringFilter<"Conversation"> | string
-    user2Id?: StringFilter<"Conversation"> | string
+    user1Id?: StringNullableFilter<"Conversation"> | string | null
+    user2Id?: StringNullableFilter<"Conversation"> | string | null
     user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
     user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
-    user2?: XOR<UserScalarRelationFilter, UserWhereInput>
-    user1?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user2?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    user1?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     messages?: PrivateMessageListRelationFilter
+    participants?: ConversationParticipantListRelationFilter
   }
 
   export type ConversationOrderByWithRelationInput = {
     id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isGroup?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user1Id?: SortOrder
-    user2Id?: SortOrder
+    user1Id?: SortOrderInput | SortOrder
+    user2Id?: SortOrderInput | SortOrder
     user1DeletedAt?: SortOrderInput | SortOrder
     user2DeletedAt?: SortOrderInput | SortOrder
     user2?: UserOrderByWithRelationInput
     user1?: UserOrderByWithRelationInput
     messages?: PrivateMessageOrderByRelationAggregateInput
+    participants?: ConversationParticipantOrderByRelationAggregateInput
   }
 
   export type ConversationWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    user1Id_user2Id?: ConversationUser1IdUser2IdCompoundUniqueInput
     AND?: ConversationWhereInput | ConversationWhereInput[]
     OR?: ConversationWhereInput[]
     NOT?: ConversationWhereInput | ConversationWhereInput[]
+    name?: StringNullableFilter<"Conversation"> | string | null
+    isGroup?: BoolFilter<"Conversation"> | boolean
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
-    user1Id?: StringFilter<"Conversation"> | string
-    user2Id?: StringFilter<"Conversation"> | string
+    user1Id?: StringNullableFilter<"Conversation"> | string | null
+    user2Id?: StringNullableFilter<"Conversation"> | string | null
     user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
     user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
-    user2?: XOR<UserScalarRelationFilter, UserWhereInput>
-    user1?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user2?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    user1?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     messages?: PrivateMessageListRelationFilter
-  }, "id" | "user1Id_user2Id">
+    participants?: ConversationParticipantListRelationFilter
+  }, "id">
 
   export type ConversationOrderByWithAggregationInput = {
     id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    isGroup?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user1Id?: SortOrder
-    user2Id?: SortOrder
+    user1Id?: SortOrderInput | SortOrder
+    user2Id?: SortOrderInput | SortOrder
     user1DeletedAt?: SortOrderInput | SortOrder
     user2DeletedAt?: SortOrderInput | SortOrder
     _count?: ConversationCountOrderByAggregateInput
@@ -55379,12 +56717,78 @@ export namespace Prisma {
     OR?: ConversationScalarWhereWithAggregatesInput[]
     NOT?: ConversationScalarWhereWithAggregatesInput | ConversationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Conversation"> | string
+    name?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
+    isGroup?: BoolWithAggregatesFilter<"Conversation"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Conversation"> | Date | string
-    user1Id?: StringWithAggregatesFilter<"Conversation"> | string
-    user2Id?: StringWithAggregatesFilter<"Conversation"> | string
+    user1Id?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
+    user2Id?: StringNullableWithAggregatesFilter<"Conversation"> | string | null
     user1DeletedAt?: DateTimeNullableWithAggregatesFilter<"Conversation"> | Date | string | null
     user2DeletedAt?: DateTimeNullableWithAggregatesFilter<"Conversation"> | Date | string | null
+  }
+
+  export type ConversationParticipantWhereInput = {
+    AND?: ConversationParticipantWhereInput | ConversationParticipantWhereInput[]
+    OR?: ConversationParticipantWhereInput[]
+    NOT?: ConversationParticipantWhereInput | ConversationParticipantWhereInput[]
+    id?: StringFilter<"ConversationParticipant"> | string
+    userId?: StringFilter<"ConversationParticipant"> | string
+    conversationId?: StringFilter<"ConversationParticipant"> | string
+    joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
+    isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
+  }
+
+  export type ConversationParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    conversationId?: SortOrder
+    joinedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    isAdmin?: SortOrder
+    user?: UserOrderByWithRelationInput
+    conversation?: ConversationOrderByWithRelationInput
+  }
+
+  export type ConversationParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_conversationId?: ConversationParticipantUserIdConversationIdCompoundUniqueInput
+    AND?: ConversationParticipantWhereInput | ConversationParticipantWhereInput[]
+    OR?: ConversationParticipantWhereInput[]
+    NOT?: ConversationParticipantWhereInput | ConversationParticipantWhereInput[]
+    userId?: StringFilter<"ConversationParticipant"> | string
+    conversationId?: StringFilter<"ConversationParticipant"> | string
+    joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
+    isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
+  }, "id" | "userId_conversationId">
+
+  export type ConversationParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    conversationId?: SortOrder
+    joinedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    isAdmin?: SortOrder
+    _count?: ConversationParticipantCountOrderByAggregateInput
+    _max?: ConversationParticipantMaxOrderByAggregateInput
+    _min?: ConversationParticipantMinOrderByAggregateInput
+  }
+
+  export type ConversationParticipantScalarWhereWithAggregatesInput = {
+    AND?: ConversationParticipantScalarWhereWithAggregatesInput | ConversationParticipantScalarWhereWithAggregatesInput[]
+    OR?: ConversationParticipantScalarWhereWithAggregatesInput[]
+    NOT?: ConversationParticipantScalarWhereWithAggregatesInput | ConversationParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConversationParticipant"> | string
+    userId?: StringWithAggregatesFilter<"ConversationParticipant"> | string
+    conversationId?: StringWithAggregatesFilter<"ConversationParticipant"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"ConversationParticipant"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"ConversationParticipant"> | Date | string | null
+    isAdmin?: BoolWithAggregatesFilter<"ConversationParticipant"> | boolean
   }
 
   export type PrivateMessageWhereInput = {
@@ -57620,6 +59024,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -57689,6 +59094,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -57756,6 +59162,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -57825,6 +59232,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -58764,60 +60172,76 @@ export namespace Prisma {
 
   export type ConversationCreateInput = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
-    user2: UserCreateNestedOneWithoutUser2ConversationsInput
-    user1: UserCreateNestedOneWithoutUser1ConversationsInput
+    user2?: UserCreateNestedOneWithoutUser2ConversationsInput
+    user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateInput = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user1Id: string
-    user2Id: string
+    user1Id?: string | null
+    user2Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
-    user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
+    user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
+    user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user1Id?: StringFieldUpdateOperationsInput | string
-    user2Id?: StringFieldUpdateOperationsInput | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationCreateManyInput = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user1Id: string
-    user2Id: string
+    user1Id?: string | null
+    user2Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
   }
 
   export type ConversationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -58826,12 +60250,75 @@ export namespace Prisma {
 
   export type ConversationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user1Id?: StringFieldUpdateOperationsInput | string
-    user2Id?: StringFieldUpdateOperationsInput | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConversationParticipantCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+    user: UserCreateNestedOneWithoutConversationParticipantsInput
+    conversation: ConversationCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type ConversationParticipantUncheckedCreateInput = {
+    id?: string
+    userId: string
+    conversationId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+  }
+
+  export type ConversationParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutConversationParticipantsNestedInput
+    conversation?: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type ConversationParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ConversationParticipantCreateManyInput = {
+    id?: string
+    userId: string
+    conversationId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+  }
+
+  export type ConversationParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ConversationParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PrivateMessageCreateInput = {
@@ -61196,6 +62683,12 @@ export namespace Prisma {
     none?: ConversationWhereInput
   }
 
+  export type ConversationParticipantListRelationFilter = {
+    every?: ConversationParticipantWhereInput
+    some?: ConversationParticipantWhereInput
+    none?: ConversationParticipantWhereInput
+  }
+
   export type LigueListRelationFilter = {
     every?: LigueWhereInput
     some?: LigueWhereInput
@@ -61362,6 +62855,10 @@ export namespace Prisma {
   }
 
   export type ConversationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConversationParticipantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -62087,13 +63584,10 @@ export namespace Prisma {
     legacyId?: SortOrder
   }
 
-  export type ConversationUser1IdUser2IdCompoundUniqueInput = {
-    user1Id: string
-    user2Id: string
-  }
-
   export type ConversationCountOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
+    isGroup?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user1Id?: SortOrder
@@ -62104,6 +63598,8 @@ export namespace Prisma {
 
   export type ConversationMaxOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
+    isGroup?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user1Id?: SortOrder
@@ -62114,6 +63610,8 @@ export namespace Prisma {
 
   export type ConversationMinOrderByAggregateInput = {
     id?: SortOrder
+    name?: SortOrder
+    isGroup?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user1Id?: SortOrder
@@ -62125,6 +63623,38 @@ export namespace Prisma {
   export type ConversationScalarRelationFilter = {
     is?: ConversationWhereInput
     isNot?: ConversationWhereInput
+  }
+
+  export type ConversationParticipantUserIdConversationIdCompoundUniqueInput = {
+    userId: string
+    conversationId: string
+  }
+
+  export type ConversationParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    conversationId?: SortOrder
+    joinedAt?: SortOrder
+    deletedAt?: SortOrder
+    isAdmin?: SortOrder
+  }
+
+  export type ConversationParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    conversationId?: SortOrder
+    joinedAt?: SortOrder
+    deletedAt?: SortOrder
+    isAdmin?: SortOrder
+  }
+
+  export type ConversationParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    conversationId?: SortOrder
+    joinedAt?: SortOrder
+    deletedAt?: SortOrder
+    isAdmin?: SortOrder
   }
 
   export type PrivateMessageCountOrderByAggregateInput = {
@@ -63432,6 +64962,13 @@ export namespace Prisma {
     connect?: ConversationWhereUniqueInput | ConversationWhereUniqueInput[]
   }
 
+  export type ConversationParticipantCreateNestedManyWithoutUserInput = {
+    create?: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput> | ConversationParticipantCreateWithoutUserInput[] | ConversationParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutUserInput | ConversationParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: ConversationParticipantCreateManyUserInputEnvelope
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+  }
+
   export type LigueCreateNestedManyWithoutCreatorInput = {
     create?: XOR<LigueCreateWithoutCreatorInput, LigueUncheckedCreateWithoutCreatorInput> | LigueCreateWithoutCreatorInput[] | LigueUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: LigueCreateOrConnectWithoutCreatorInput | LigueCreateOrConnectWithoutCreatorInput[]
@@ -63706,6 +65243,13 @@ export namespace Prisma {
     connectOrCreate?: ConversationCreateOrConnectWithoutUser1Input | ConversationCreateOrConnectWithoutUser1Input[]
     createMany?: ConversationCreateManyUser1InputEnvelope
     connect?: ConversationWhereUniqueInput | ConversationWhereUniqueInput[]
+  }
+
+  export type ConversationParticipantUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput> | ConversationParticipantCreateWithoutUserInput[] | ConversationParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutUserInput | ConversationParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: ConversationParticipantCreateManyUserInputEnvelope
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
   }
 
   export type LigueUncheckedCreateNestedManyWithoutCreatorInput = {
@@ -64048,6 +65592,20 @@ export namespace Prisma {
     update?: ConversationUpdateWithWhereUniqueWithoutUser1Input | ConversationUpdateWithWhereUniqueWithoutUser1Input[]
     updateMany?: ConversationUpdateManyWithWhereWithoutUser1Input | ConversationUpdateManyWithWhereWithoutUser1Input[]
     deleteMany?: ConversationScalarWhereInput | ConversationScalarWhereInput[]
+  }
+
+  export type ConversationParticipantUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput> | ConversationParticipantCreateWithoutUserInput[] | ConversationParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutUserInput | ConversationParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: ConversationParticipantUpsertWithWhereUniqueWithoutUserInput | ConversationParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ConversationParticipantCreateManyUserInputEnvelope
+    set?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    disconnect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    delete?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    update?: ConversationParticipantUpdateWithWhereUniqueWithoutUserInput | ConversationParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ConversationParticipantUpdateManyWithWhereWithoutUserInput | ConversationParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
   }
 
   export type LigueUpdateManyWithoutCreatorNestedInput = {
@@ -64599,6 +66157,20 @@ export namespace Prisma {
     update?: ConversationUpdateWithWhereUniqueWithoutUser1Input | ConversationUpdateWithWhereUniqueWithoutUser1Input[]
     updateMany?: ConversationUpdateManyWithWhereWithoutUser1Input | ConversationUpdateManyWithWhereWithoutUser1Input[]
     deleteMany?: ConversationScalarWhereInput | ConversationScalarWhereInput[]
+  }
+
+  export type ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput> | ConversationParticipantCreateWithoutUserInput[] | ConversationParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutUserInput | ConversationParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: ConversationParticipantUpsertWithWhereUniqueWithoutUserInput | ConversationParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ConversationParticipantCreateManyUserInputEnvelope
+    set?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    disconnect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    delete?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    update?: ConversationParticipantUpdateWithWhereUniqueWithoutUserInput | ConversationParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ConversationParticipantUpdateManyWithWhereWithoutUserInput | ConversationParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
   }
 
   export type LigueUncheckedUpdateManyWithoutCreatorNestedInput = {
@@ -65853,6 +67425,13 @@ export namespace Prisma {
     connect?: PrivateMessageWhereUniqueInput | PrivateMessageWhereUniqueInput[]
   }
 
+  export type ConversationParticipantCreateNestedManyWithoutConversationInput = {
+    create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
+    createMany?: ConversationParticipantCreateManyConversationInputEnvelope
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+  }
+
   export type PrivateMessageUncheckedCreateNestedManyWithoutConversationInput = {
     create?: XOR<PrivateMessageCreateWithoutConversationInput, PrivateMessageUncheckedCreateWithoutConversationInput> | PrivateMessageCreateWithoutConversationInput[] | PrivateMessageUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: PrivateMessageCreateOrConnectWithoutConversationInput | PrivateMessageCreateOrConnectWithoutConversationInput[]
@@ -65860,18 +67439,29 @@ export namespace Prisma {
     connect?: PrivateMessageWhereUniqueInput | PrivateMessageWhereUniqueInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutUser2ConversationsNestedInput = {
+  export type ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput = {
+    create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
+    createMany?: ConversationParticipantCreateManyConversationInputEnvelope
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutUser2ConversationsNestedInput = {
     create?: XOR<UserCreateWithoutUser2ConversationsInput, UserUncheckedCreateWithoutUser2ConversationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUser2ConversationsInput
     upsert?: UserUpsertWithoutUser2ConversationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUser2ConversationsInput, UserUpdateWithoutUser2ConversationsInput>, UserUncheckedUpdateWithoutUser2ConversationsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutUser1ConversationsNestedInput = {
+  export type UserUpdateOneWithoutUser1ConversationsNestedInput = {
     create?: XOR<UserCreateWithoutUser1ConversationsInput, UserUncheckedCreateWithoutUser1ConversationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUser1ConversationsInput
     upsert?: UserUpsertWithoutUser1ConversationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUser1ConversationsInput, UserUpdateWithoutUser1ConversationsInput>, UserUncheckedUpdateWithoutUser1ConversationsInput>
   }
@@ -65890,6 +67480,20 @@ export namespace Prisma {
     deleteMany?: PrivateMessageScalarWhereInput | PrivateMessageScalarWhereInput[]
   }
 
+  export type ConversationParticipantUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
+    upsert?: ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput | ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: ConversationParticipantCreateManyConversationInputEnvelope
+    set?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    disconnect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    delete?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    update?: ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput | ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: ConversationParticipantUpdateManyWithWhereWithoutConversationInput | ConversationParticipantUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
+  }
+
   export type PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput = {
     create?: XOR<PrivateMessageCreateWithoutConversationInput, PrivateMessageUncheckedCreateWithoutConversationInput> | PrivateMessageCreateWithoutConversationInput[] | PrivateMessageUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: PrivateMessageCreateOrConnectWithoutConversationInput | PrivateMessageCreateOrConnectWithoutConversationInput[]
@@ -65902,6 +67506,48 @@ export namespace Prisma {
     update?: PrivateMessageUpdateWithWhereUniqueWithoutConversationInput | PrivateMessageUpdateWithWhereUniqueWithoutConversationInput[]
     updateMany?: PrivateMessageUpdateManyWithWhereWithoutConversationInput | PrivateMessageUpdateManyWithWhereWithoutConversationInput[]
     deleteMany?: PrivateMessageScalarWhereInput | PrivateMessageScalarWhereInput[]
+  }
+
+  export type ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput> | ConversationParticipantCreateWithoutConversationInput[] | ConversationParticipantUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
+    upsert?: ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput | ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: ConversationParticipantCreateManyConversationInputEnvelope
+    set?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    disconnect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    delete?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+    update?: ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput | ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: ConversationParticipantUpdateManyWithWhereWithoutConversationInput | ConversationParticipantUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutConversationParticipantsInput = {
+    create?: XOR<UserCreateWithoutConversationParticipantsInput, UserUncheckedCreateWithoutConversationParticipantsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConversationParticipantsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ConversationCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<ConversationCreateWithoutParticipantsInput, ConversationUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutParticipantsInput
+    connect?: ConversationWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutConversationParticipantsNestedInput = {
+    create?: XOR<UserCreateWithoutConversationParticipantsInput, UserUncheckedCreateWithoutConversationParticipantsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutConversationParticipantsInput
+    upsert?: UserUpsertWithoutConversationParticipantsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutConversationParticipantsInput, UserUpdateWithoutConversationParticipantsInput>, UserUncheckedUpdateWithoutConversationParticipantsInput>
+  }
+
+  export type ConversationUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<ConversationCreateWithoutParticipantsInput, ConversationUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutParticipantsInput
+    upsert?: ConversationUpsertWithoutParticipantsInput
+    connect?: ConversationWhereUniqueInput
+    update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutParticipantsInput, ConversationUpdateWithoutParticipantsInput>, ConversationUncheckedUpdateWithoutParticipantsInput>
   }
 
   export type UserCreateNestedOneWithoutPrivateMessagesInput = {
@@ -67274,6 +68920,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -67342,6 +68989,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -67424,6 +69072,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -67492,6 +69141,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -67559,6 +69209,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -67627,6 +69278,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -67709,6 +69361,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -67777,6 +69430,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -67991,22 +69645,28 @@ export namespace Prisma {
 
   export type ConversationCreateWithoutUser2Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
-    user1: UserCreateNestedOneWithoutUser1ConversationsInput
+    user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutUser2Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user1Id: string
+    user1Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutUser2Input = {
@@ -68020,22 +69680,28 @@ export namespace Prisma {
 
   export type ConversationCreateWithoutUser1Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
-    user2: UserCreateNestedOneWithoutUser2ConversationsInput
+    user2?: UserCreateNestedOneWithoutUser2ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutUser1Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user2Id: string
+    user2Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutUser1Input = {
@@ -68045,6 +69711,31 @@ export namespace Prisma {
 
   export type ConversationCreateManyUser1InputEnvelope = {
     data: ConversationCreateManyUser1Input | ConversationCreateManyUser1Input[]
+  }
+
+  export type ConversationParticipantCreateWithoutUserInput = {
+    id?: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+    conversation: ConversationCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type ConversationParticipantUncheckedCreateWithoutUserInput = {
+    id?: string
+    conversationId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+  }
+
+  export type ConversationParticipantCreateOrConnectWithoutUserInput = {
+    where: ConversationParticipantWhereUniqueInput
+    create: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type ConversationParticipantCreateManyUserInputEnvelope = {
+    data: ConversationParticipantCreateManyUserInput | ConversationParticipantCreateManyUserInput[]
   }
 
   export type LigueCreateWithoutCreatorInput = {
@@ -69378,10 +71069,12 @@ export namespace Prisma {
     OR?: ConversationScalarWhereInput[]
     NOT?: ConversationScalarWhereInput | ConversationScalarWhereInput[]
     id?: StringFilter<"Conversation"> | string
+    name?: StringNullableFilter<"Conversation"> | string | null
+    isGroup?: BoolFilter<"Conversation"> | boolean
     createdAt?: DateTimeFilter<"Conversation"> | Date | string
     updatedAt?: DateTimeFilter<"Conversation"> | Date | string
-    user1Id?: StringFilter<"Conversation"> | string
-    user2Id?: StringFilter<"Conversation"> | string
+    user1Id?: StringNullableFilter<"Conversation"> | string | null
+    user2Id?: StringNullableFilter<"Conversation"> | string | null
     user1DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
     user2DeletedAt?: DateTimeNullableFilter<"Conversation"> | Date | string | null
   }
@@ -69400,6 +71093,34 @@ export namespace Prisma {
   export type ConversationUpdateManyWithWhereWithoutUser1Input = {
     where: ConversationScalarWhereInput
     data: XOR<ConversationUpdateManyMutationInput, ConversationUncheckedUpdateManyWithoutUser1Input>
+  }
+
+  export type ConversationParticipantUpsertWithWhereUniqueWithoutUserInput = {
+    where: ConversationParticipantWhereUniqueInput
+    update: XOR<ConversationParticipantUpdateWithoutUserInput, ConversationParticipantUncheckedUpdateWithoutUserInput>
+    create: XOR<ConversationParticipantCreateWithoutUserInput, ConversationParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type ConversationParticipantUpdateWithWhereUniqueWithoutUserInput = {
+    where: ConversationParticipantWhereUniqueInput
+    data: XOR<ConversationParticipantUpdateWithoutUserInput, ConversationParticipantUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ConversationParticipantUpdateManyWithWhereWithoutUserInput = {
+    where: ConversationParticipantScalarWhereInput
+    data: XOR<ConversationParticipantUpdateManyMutationInput, ConversationParticipantUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ConversationParticipantScalarWhereInput = {
+    AND?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
+    OR?: ConversationParticipantScalarWhereInput[]
+    NOT?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
+    id?: StringFilter<"ConversationParticipant"> | string
+    userId?: StringFilter<"ConversationParticipant"> | string
+    conversationId?: StringFilter<"ConversationParticipant"> | string
+    joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
+    isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
   }
 
   export type LigueUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -70326,6 +72047,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -70394,6 +72116,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -70465,6 +72188,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -70533,6 +72257,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -70615,6 +72340,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -70683,6 +72409,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -70760,6 +72487,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -70828,6 +72556,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -70981,6 +72710,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -71049,6 +72779,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -71263,6 +72994,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -71331,6 +73063,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -71511,6 +73244,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -71579,6 +73313,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -72237,6 +73972,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -72305,6 +74041,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -72591,6 +74328,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -72659,6 +74397,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -72821,6 +74560,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -72889,6 +74629,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -72960,6 +74701,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -73028,6 +74770,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -73188,6 +74931,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -73256,6 +75000,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -73333,6 +75078,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -73401,6 +75147,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -73527,6 +75274,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -73595,6 +75343,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -73666,6 +75415,7 @@ export namespace Prisma {
     blockedBy?: BlockCreateNestedManyWithoutBlockedInput
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -73734,6 +75484,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -73797,6 +75548,31 @@ export namespace Prisma {
     data: PrivateMessageCreateManyConversationInput | PrivateMessageCreateManyConversationInput[]
   }
 
+  export type ConversationParticipantCreateWithoutConversationInput = {
+    id?: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+    user: UserCreateNestedOneWithoutConversationParticipantsInput
+  }
+
+  export type ConversationParticipantUncheckedCreateWithoutConversationInput = {
+    id?: string
+    userId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+  }
+
+  export type ConversationParticipantCreateOrConnectWithoutConversationInput = {
+    where: ConversationParticipantWhereUniqueInput
+    create: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput>
+  }
+
+  export type ConversationParticipantCreateManyConversationInputEnvelope = {
+    data: ConversationParticipantCreateManyConversationInput | ConversationParticipantCreateManyConversationInput[]
+  }
+
   export type UserUpsertWithoutUser2ConversationsInput = {
     update: XOR<UserUpdateWithoutUser2ConversationsInput, UserUncheckedUpdateWithoutUser2ConversationsInput>
     create: XOR<UserCreateWithoutUser2ConversationsInput, UserUncheckedCreateWithoutUser2ConversationsInput>
@@ -73841,6 +75617,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -73909,6 +75686,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -73986,6 +75764,7 @@ export namespace Prisma {
     blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -74054,6 +75833,7 @@ export namespace Prisma {
     blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -74103,6 +75883,378 @@ export namespace Prisma {
     data: XOR<PrivateMessageUpdateManyMutationInput, PrivateMessageUncheckedUpdateManyWithoutConversationInput>
   }
 
+  export type ConversationParticipantUpsertWithWhereUniqueWithoutConversationInput = {
+    where: ConversationParticipantWhereUniqueInput
+    update: XOR<ConversationParticipantUpdateWithoutConversationInput, ConversationParticipantUncheckedUpdateWithoutConversationInput>
+    create: XOR<ConversationParticipantCreateWithoutConversationInput, ConversationParticipantUncheckedCreateWithoutConversationInput>
+  }
+
+  export type ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput = {
+    where: ConversationParticipantWhereUniqueInput
+    data: XOR<ConversationParticipantUpdateWithoutConversationInput, ConversationParticipantUncheckedUpdateWithoutConversationInput>
+  }
+
+  export type ConversationParticipantUpdateManyWithWhereWithoutConversationInput = {
+    where: ConversationParticipantScalarWhereInput
+    data: XOR<ConversationParticipantUpdateManyMutationInput, ConversationParticipantUncheckedUpdateManyWithoutConversationInput>
+  }
+
+  export type UserCreateWithoutConversationParticipantsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutConversationParticipantsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutConversationParticipantsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutConversationParticipantsInput, UserUncheckedCreateWithoutConversationParticipantsInput>
+  }
+
+  export type ConversationCreateWithoutParticipantsInput = {
+    id?: string
+    name?: string | null
+    isGroup?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
+    user2?: UserCreateNestedOneWithoutUser2ConversationsInput
+    user1?: UserCreateNestedOneWithoutUser1ConversationsInput
+    messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    name?: string | null
+    isGroup?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user1Id?: string | null
+    user2Id?: string | null
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
+    messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationCreateOrConnectWithoutParticipantsInput = {
+    where: ConversationWhereUniqueInput
+    create: XOR<ConversationCreateWithoutParticipantsInput, ConversationUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type UserUpsertWithoutConversationParticipantsInput = {
+    update: XOR<UserUpdateWithoutConversationParticipantsInput, UserUncheckedUpdateWithoutConversationParticipantsInput>
+    create: XOR<UserCreateWithoutConversationParticipantsInput, UserUncheckedCreateWithoutConversationParticipantsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutConversationParticipantsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutConversationParticipantsInput, UserUncheckedUpdateWithoutConversationParticipantsInput>
+  }
+
+  export type UserUpdateWithoutConversationParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type ConversationUpsertWithoutParticipantsInput = {
+    update: XOR<ConversationUpdateWithoutParticipantsInput, ConversationUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<ConversationCreateWithoutParticipantsInput, ConversationUncheckedCreateWithoutParticipantsInput>
+    where?: ConversationWhereInput
+  }
+
+  export type ConversationUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: ConversationWhereInput
+    data: XOR<ConversationUpdateWithoutParticipantsInput, ConversationUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type ConversationUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
+    user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
+    messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+  }
+
+  export type ConversationUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+  }
+
   export type UserCreateWithoutPrivateMessagesInput = {
     id?: string
     name?: string | null
@@ -74137,6 +76289,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -74205,6 +76358,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -74244,22 +76398,28 @@ export namespace Prisma {
 
   export type ConversationCreateWithoutMessagesInput = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
-    user2: UserCreateNestedOneWithoutUser2ConversationsInput
-    user1: UserCreateNestedOneWithoutUser1ConversationsInput
+    user2?: UserCreateNestedOneWithoutUser2ConversationsInput
+    user1?: UserCreateNestedOneWithoutUser1ConversationsInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutMessagesInput = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user1Id: string
-    user2Id: string
+    user1Id?: string | null
+    user2Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutMessagesInput = {
@@ -74312,6 +76472,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -74380,6 +76541,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -74425,22 +76587,28 @@ export namespace Prisma {
 
   export type ConversationUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
-    user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
+    user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
+    user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutMessagesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user1Id?: StringFieldUpdateOperationsInput | string
-    user2Id?: StringFieldUpdateOperationsInput | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type TopicCreateWithoutTopicViewsInput = {
@@ -74516,6 +76684,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -74584,6 +76753,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -74711,6 +76881,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -74779,6 +76950,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -74845,6 +77017,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
@@ -74913,6 +77086,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
@@ -74984,6 +77158,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
@@ -75052,6 +77227,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
@@ -75169,6 +77345,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
@@ -75237,6 +77414,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
@@ -75314,6 +77492,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
@@ -75382,6 +77561,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
@@ -75489,6 +77669,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -75557,6 +77738,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -75674,6 +77856,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -75742,6 +77925,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -75849,6 +78033,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -75916,6 +78101,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -76047,6 +78233,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -76115,6 +78302,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -76242,6 +78430,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -76310,6 +78499,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -76376,6 +78566,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -76444,6 +78635,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -76526,6 +78718,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -76594,6 +78787,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -76660,6 +78854,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -76728,6 +78923,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -76921,6 +79117,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -76989,6 +79186,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -77172,6 +79370,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -77240,6 +79439,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -77452,6 +79652,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -77520,6 +79721,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -77719,6 +79921,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -77787,6 +79990,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -77896,6 +80100,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -77964,6 +80169,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -78063,6 +80269,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -78131,6 +80338,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -78324,6 +80532,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -78392,6 +80601,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -78621,6 +80831,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -78689,6 +80900,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -78760,6 +80972,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -78828,6 +81041,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -79001,6 +81215,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -79069,6 +81284,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -79146,6 +81362,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -79214,6 +81431,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -79373,6 +81591,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -79441,6 +81660,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -79560,6 +81780,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -79628,6 +81849,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -79779,6 +82001,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
     moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
@@ -79847,6 +82070,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
     moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
@@ -80033,6 +82257,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -80101,6 +82326,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -80172,6 +82398,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -80240,6 +82467,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -80338,6 +82566,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
     moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
@@ -80406,6 +82635,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
     moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
@@ -80520,6 +82750,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -80588,6 +82819,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -80659,6 +82891,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -80727,6 +82960,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -80809,6 +83043,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -80877,6 +83112,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -80954,6 +83190,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -81022,6 +83259,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -81088,6 +83326,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -81156,6 +83395,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -81238,6 +83478,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -81306,6 +83547,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -81372,6 +83614,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -81440,6 +83683,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -81537,6 +83781,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -81605,6 +83850,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -81742,6 +83988,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -81810,6 +84057,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -82003,6 +84251,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -82071,6 +84320,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -82537,6 +84787,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -82605,6 +84856,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -82676,6 +84928,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -82744,6 +84997,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -82843,6 +85097,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -82911,6 +85166,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -82988,6 +85244,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -83056,6 +85313,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -83145,6 +85403,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -83213,6 +85472,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -83295,6 +85555,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -83363,6 +85624,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -83429,6 +85691,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -83497,6 +85760,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -83579,6 +85843,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -83647,6 +85912,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -83713,6 +85979,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -83781,6 +86048,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -83863,6 +86131,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -83931,6 +86200,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -83997,6 +86267,7 @@ export namespace Prisma {
     blocks?: BlockCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
     ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
@@ -84065,6 +86336,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
     user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
     user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
     ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
     mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
     mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
@@ -84147,6 +86419,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -84215,6 +86488,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -84308,20 +86582,32 @@ export namespace Prisma {
 
   export type ConversationCreateManyUser2Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user1Id: string
+    user1Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
   }
 
   export type ConversationCreateManyUser1Input = {
     id?: string
+    name?: string | null
+    isGroup?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    user2Id: string
+    user2Id?: string | null
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
+  }
+
+  export type ConversationParticipantCreateManyUserInput = {
+    id?: string
+    conversationId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
   }
 
   export type LigueCreateManyCreatorInput = {
@@ -84830,60 +87116,100 @@ export namespace Prisma {
 
   export type ConversationUpdateWithoutUser2Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user1?: UserUpdateOneRequiredWithoutUser1ConversationsNestedInput
+    user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutUser2Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user1Id?: StringFieldUpdateOperationsInput | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutUser2Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user1Id?: StringFieldUpdateOperationsInput | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationUpdateWithoutUser1Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user2?: UserUpdateOneRequiredWithoutUser2ConversationsNestedInput
+    user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutUser1Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user2Id?: StringFieldUpdateOperationsInput | string
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutUser1Input = {
     id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user2Id?: StringFieldUpdateOperationsInput | string
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConversationParticipantUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    conversation?: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type ConversationParticipantUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ConversationParticipantUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conversationId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type LigueUpdateWithoutCreatorInput = {
@@ -86382,6 +88708,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -86450,6 +88777,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -86841,6 +89169,14 @@ export namespace Prisma {
     readAt?: Date | string | null
   }
 
+  export type ConversationParticipantCreateManyConversationInput = {
+    id?: string
+    userId: string
+    joinedAt?: Date | string
+    deletedAt?: Date | string | null
+    isAdmin?: boolean
+  }
+
   export type PrivateMessageUpdateWithoutConversationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -86863,6 +89199,30 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ConversationParticipantUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutConversationParticipantsNestedInput
+  }
+
+  export type ConversationParticipantUncheckedUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type ConversationParticipantUncheckedUpdateManyWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserCreateManyRoleConfigInput = {
@@ -86927,6 +89287,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -86994,6 +89355,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -87457,6 +89819,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -87525,6 +89888,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
@@ -87620,6 +89984,7 @@ export namespace Prisma {
     blocks?: BlockUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
@@ -87688,6 +90053,7 @@ export namespace Prisma {
     blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
     user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
     user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
     ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
     mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
     mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput

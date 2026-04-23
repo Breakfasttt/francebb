@@ -3,6 +3,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import BackButton from '@/common/components/BackButton/BackButton';
+import Tooltip from '@/common/components/Tooltip/Tooltip';
 import './PageHeader.css';
 import './PageHeader-mobile.css';
 
@@ -44,10 +45,12 @@ export default function PageHeader({
 
   const backButtonContent = backHref !== null ? (
     <div className="page-header-back-wrapper">
-      <BackButton 
-        href={backHref} 
-        title={backTitle} 
-      />
+      <Tooltip content={backTitle}>
+        <BackButton 
+          href={backHref} 
+          title={backTitle} 
+        />
+      </Tooltip>
     </div>
   ) : null;
 
