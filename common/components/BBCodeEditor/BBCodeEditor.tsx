@@ -335,9 +335,29 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
   };
 
   const submitSpoiler = () => {
-    const startTag = toolInputText.trim() !== "" ? `[spoiler=${toolInputText}]` : "[spoiler]";
-    insertTag(startTag, "[/spoiler]");
-    setToolInputText(""); setActiveTool(null);
+    if (!textareaRef.current) return;
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = content.substring(0, start);
+    const after = content.substring(end);
+
+    const title = toolInputText.trim();
+    const hidden = toolInputUrl.trim();
+
+    const startTag = title !== "" ? `[spoiler=${title}]` : "[spoiler]";
+    // Priorité au champ texte si rempli, sinon sélection
+    const contentToHide = hidden || content.substring(start, end);
+
+    const tag = `${startTag}${contentToHide}[/spoiler]`;
+    handleContentChange(before + tag + after);
+
+    setToolInputText(""); setToolInputUrl(""); setActiveTool(null);
+    setTimeout(() => {
+      textarea.focus();
+      const newPos = before.length + tag.length;
+      textarea.setSelectionRange(newPos, newPos);
+    }, 0);
   };
 
   const submitAccordion = () => {
@@ -358,7 +378,13 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
       if ((tool === 'link' || tool === 'topic' || tool === 'spoiler' || tool === 'accordion') && textareaRef.current) {
         const textarea = textareaRef.current;
         const selected = content.substring(textarea.selectionStart, textarea.selectionEnd);
-        if (selected) setToolInputText(selected);
+        if (selected) {
+          if (tool === 'spoiler') {
+            setToolInputUrl(selected);
+          } else {
+            setToolInputText(selected);
+          }
+        }
       }
     }
   };
@@ -761,7 +787,8 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
           )}
           {activeTool === 'spoiler' && (
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input type="text" placeholder="Titre spoiler..." value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
+              <input type="text" placeholder="Titre (optionnel)..." value={toolInputText} onChange={(e) => setToolInputText(e.target.value)} style={{ flex: 1, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} autoFocus />
+              <input type="text" placeholder="Texte à cacher..." value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} style={{ flex: 2, padding: "0.4rem 0.8rem", background: "var(--glass-bg)", border: "1px solid var(--glass-border)", borderRadius: "4px", color: "var(--foreground)" }} />
               <CTAButton type="button" onClick={submitSpoiler} size="sm">Insérer</CTAButton>
             </div>
           )}
