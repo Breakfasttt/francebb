@@ -3,12 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { getConversations } from "../actions";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { Search } from "lucide-react";
+import { Search, Users } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 export default function ConversationList() {
+    const { data: session } = useSession();
+    const currentUserId = session?.user?.id;
     const [conversations, setConversations] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -16,7 +20,9 @@ export default function ConversationList() {
         const fetch = async () => {
             try {
                 const data = await getConversations();
-                setConversations(data.conversations);
+                // On aplatit la structure retournée par l'action (participants -> conversation)
+                const convs = data.conversations.map((p: any) => p.conversation);
+                setConversations(convs);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -47,16 +53,13 @@ export default function ConversationList() {
                     const lastMsg = conv.messages[0];
                     const unreadCount = conv._count?.messages || 0;
                     
-                    // Pour les 1v1, on affiche le nom de l'autre participant
-                    // Pour les groupes, le nom du groupe ou la liste des membres
-                    const displayName = conv.isGroup 
-                        ? (conv.name || conv.participants.map((p: any) => p.user.name).join(", "))
-                        : conv.participants.find((p: any) => p.user.id !== conv.participants[0].user.id)?.user.name // Approximation simple
-                        || "Inconnu";
+                    // On filtre l'utilisateur actuel pour les noms/avatars
+                    const otherParticipants = conv.participants.filter((p: any) => p.user.id !== currentUserId);
+                    const targetUser = otherParticipants[0]?.user;
 
-                    // En réalité, pour 1v1, on veut l'autre personne par rapport à NOUS.
-                    // Mais ici on n'a pas forcément notre propre ID facilement sans repasser par session.
-                    // On va simplifier : si c'est un 1v1, on prend le premier qui n'est pas nous (on le fera plus proprement si besoin).
+                    const displayName = conv.isGroup 
+                        ? (conv.name || conv.participants.map((p: any) => p.user.name).slice(0, 3).join(", ") + (conv.participants.length > 3 ? "..." : ""))
+                        : (targetUser?.name || "Inconnu");
 
                     return (
                         <Link 
@@ -67,7 +70,7 @@ export default function ConversationList() {
                             <PremiumCard className={`conversation-card ${unreadCount > 0 ? 'unread' : ''}`}>
                                 <div className="conv-avatar-box">
                                     <img 
-                                        src={conv.participants[0]?.user.image || "/images/default-avatar.png"} 
+                                        src={(conv.isGroup ? "/images/group-avatar.png" : targetUser?.image) || "/images/default-avatar.png"} 
                                         alt="" 
                                         className="conv-avatar-img"
                                     />
@@ -77,15 +80,35 @@ export default function ConversationList() {
                                 </div>
                                 <div className="conv-info">
                                     <div className="conv-name-row">
-                                        <span className="conv-name">{displayName}</span>
+                                        <span className="conv-name">
+                                            {conv.isGroup && <Users size={14} style={{ marginRight: '6px', color: 'var(--primary)' }} />}
+                                            {displayName}
+                                        </span>
                                         <span className="conv-time">
                                             {formatDistanceToNow(new Date(conv.updatedAt), { addSuffix: true, locale: fr })}
                                         </span>
                                     </div>
+                                    
+                                    <div className="conv-participants-row">
+                                        {conv.participants.map((p: any) => (
+                                            <Tooltip key={p.user.id} content={p.user.name}>
+                                                <img 
+                                                    src={p.user.image || "/images/default-avatar.png"} 
+                                                    alt={p.user.name} 
+                                                    className="mini-participant-avatar"
+                                                    style={{ 
+                                                        borderColor: p.user.id === currentUserId ? 'var(--primary)' : 'var(--glass-border)'
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        ))}
+                                    </div>
+
                                     <div className="conv-last-msg">
                                         {lastMsg ? (
                                             <>
-                                                <strong>{lastMsg.author.name}:</strong> {lastMsg.content}
+                                                <span className="last-msg-author">{lastMsg.authorId === currentUserId ? "Vous" : lastMsg.author.name}:</span>
+                                                <span className="last-msg-content">{lastMsg.content}</span>
                                             </>
                                         ) : (
                                             <em>Aucun message</em>

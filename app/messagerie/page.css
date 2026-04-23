@@ -114,10 +114,46 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: 0.6rem;
 }
 
-.conv-last-msg strong {
-  color: var(--text-muted-dark);
+.last-msg-author {
+  font-weight: 800;
+  color: var(--accent);
+  margin-right: 6px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.last-msg-content {
+  opacity: 0.8;
+}
+
+.conv-participants-row {
+  display: flex;
+  margin-top: 0.5rem;
+  padding-left: 2px;
+}
+
+.mini-participant-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--card-bg);
+  margin-left: -6px;
+  transition: all 0.2s;
+  background: var(--card-bg);
+  object-fit: cover;
+}
+
+.mini-participant-avatar:first-child {
+  margin-left: 0;
+}
+
+.mini-participant-avatar:hover {
+  transform: translateY(-3px) scale(1.2);
+  z-index: 10;
+  border-color: var(--primary);
 }
 
 /* --- CHAT VIEW --- */
