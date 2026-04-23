@@ -146,13 +146,13 @@
 }
 
 .ball-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
-  animation: bounceBall 2s infinite ease-in-out;
-}
-
-@keyframes bounceBall {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  /* animation supprimée selon demande utilisateur */
 }
 
 /* -- Player Status Overlay (Always stays upright) -- */
@@ -206,13 +206,7 @@
   top: -12px;
   right: -12px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  animation: floatSmall 1.5s infinite alternate ease-in-out;
   z-index: 300;
-}
-
-@keyframes floatSmall {
-  from { transform: translateY(0); }
-  to { transform: translateY(-4px); }
 }
 
 /* -- Token Stats Hover -- */

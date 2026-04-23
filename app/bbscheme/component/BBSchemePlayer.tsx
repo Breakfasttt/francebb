@@ -177,8 +177,8 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
     const updateScale = () => {
       if (!containerRef.current) return;
 
-      const pitchW = rotation === 90 ? 750 : 1300;
-      const pitchH = rotation === 90 ? 1300 : 750;
+      const pitchW = (rotation === 90 ? 758 : 1308) + 8; // +8 pour marge de sécurité bordures
+      const pitchH = (rotation === 90 ? 1308 : 758) + 8;
       const containerW = containerRef.current?.getBoundingClientRect().width || 0;
 
       if (containerW > 0) {
@@ -242,8 +242,8 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
   }
 
   const isVertical = rotation === 90 || rotation === 270;
-  const nativeW = isVertical ? 750 : 1300;
-  const nativeH = isVertical ? 1300 : 750;
+  const nativeW = (isVertical ? 758 : 1308) + 8;
+  const nativeH = (isVertical ? 1308 : 758) + 8;
 
   return (
     <div className="bb-player-root" ref={containerRef}>
@@ -253,16 +253,17 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
           <div 
             className="bb-player-pitch-container" 
             style={{ 
-              width: `${nativeW}px`, 
-              height: `${nativeH}px`,
+              width: `${nativeW - 8}px`, 
+              height: `${nativeH - 8}px`,
               transform: `scale(${zoom})`,
-              transformOrigin: 'top left'
+              transformOrigin: 'top left',
+              margin: '4px' // Décalage pour voir la bordure
             }}
           >
             <div style={{ 
               transform: `rotate(${rotation}deg)`, 
-              width: '1300px', 
-              height: '750px', 
+              width: '1308px', 
+              height: '758px', 
               flexShrink: 0,
               display: 'flex',
               alignItems: 'center',

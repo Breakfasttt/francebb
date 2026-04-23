@@ -48,31 +48,6 @@
 
 .pitch-square.ez { background: rgba(194, 29, 29, 0.2); }
 
-/* Integrated Wide Zone Lines - Match EZ thickness */
-.pitch-square.wide-line::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.85);
-  z-index: 5;
-  box-shadow: 0 0 5px rgba(0,0,0,0.4);
-}
-
-.pitch-line {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 6;
-}
-
-.line-center { left: 50%; top: 0; bottom: 0; width: 4px; background: rgba(255, 255, 255, 0.95); transform: translateX(-50%); }
-
-/* Match grid lines exactly and ensure consistent 3px thickness */
-.line-ez-left { left: 49px; top: 0; bottom: 0; width: 3px; }
-.line-ez-right { left: 1249px; top: 0; bottom: 0; width: 3px; }
-
 .pitch-square.drag-over {
   background: rgba(255, 215, 0, 0.3) !important;
   box-shadow: inset 0 0 10px var(--accent);

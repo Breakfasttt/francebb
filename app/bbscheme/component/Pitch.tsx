@@ -121,6 +121,7 @@ const Pitch: React.FC<PitchProps> = ({
       <div className="pitch-grid" style={{ 
         display: 'grid', gridTemplateColumns: `repeat(${COLS}, 50px)`, gridTemplateRows: `repeat(${ROWS}, 50px)`,
       }}>
+        {/* Calque de Grille et Lignes SVG (Stable au zoom) */}
         <svg 
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10 }}
           viewBox={`0 0 ${COLS * 50} ${ROWS * 50}`}
@@ -132,12 +133,24 @@ const Pitch: React.FC<PitchProps> = ({
                 fill="none" 
                 stroke="white" 
                 strokeWidth="1" 
-                strokeOpacity="0.2" 
+                strokeOpacity="0.15" 
                 vectorEffect="non-scaling-stroke"
               />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#pitchGridPattern)" />
+          
+          {/* Lignes principales */}
+          <g stroke="white" strokeOpacity="0.8" strokeWidth="3" vectorEffect="non-scaling-stroke">
+            {/* Ligne centrale */}
+            <line x1={13 * 50} y1="0" x2={13 * 50} y2={ROWS * 50} strokeWidth="4" />
+            {/* Lignes d'en-but */}
+            <line x1={1 * 50} y1="0" x2={1 * 50} y2={ROWS * 50} />
+            <line x1={25 * 50} y1="0" x2={25 * 50} y2={ROWS * 50} />
+            {/* Lignes de zones larges */}
+            <line x1={1 * 50} y1={4 * 50} x2={25 * 50} y2={4 * 50} />
+            <line x1={1 * 50} y1={11 * 50} x2={25 * 50} y2={11 * 50} />
+          </g>
         </svg>
 
         {squares}
@@ -146,11 +159,6 @@ const Pitch: React.FC<PitchProps> = ({
           className={`draw-layer ${activeTool === 'draw' ? 'active' : ''}`}
           onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}
         />
-      </div>
-      <div className="pitch-overlays" style={{ pointerEvents: 'none' }}>
-        <div className="pitch-line line-center"></div>
-        <div className="pitch-line line-ez-left"></div>
-        <div className="pitch-line line-ez-right"></div>
       </div>
     </div>
   );
@@ -165,10 +173,9 @@ interface SquareProps {
 
 const Square: React.FC<SquareProps> = ({ x, y, onClick, tokens, allTokens, activeTool, rotation, showTooltips, onTokenClick, selectedId, readOnly }) => {
   const isEndZone = x === 0 || x === 25;
-  const isWideZoneLine = (y === 3 || y === 10) && (x > 0 && x < 25);
   return (
     <div 
-      className={`pitch-square ${isEndZone ? 'ez' : ''} ${isWideZoneLine ? 'wide-line' : ''} ${readOnly ? 'read-only' : ''}`}
+      className={`pitch-square ${isEndZone ? 'ez' : ''} ${readOnly ? 'read-only' : ''}`}
       onClick={() => { if (activeTool !== 'draw' && !readOnly) onClick(); }}
     >
       <div className="square-token-container">

@@ -210,11 +210,28 @@ function FangsIcon({ className, size = 16 }: { className?: string, size?: number
   );
 }
 
-function BallGraphic({ size = 24 }: { size?: number }) {
-  const h = Math.round(size * 0.83);
+function BallGraphic({ size = "100%" }: { size?: number | string }) {
+  // Un ballon de Blood Bowl se doit d'être agressif (piques) et en cuir
   return (
-    <svg width={size} height={h} viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 1.5C15.5 1.5 18 5 18 10C18 15 15.5 18.5 12 18.5C8.5 18.5 6 15 6 10C6 5 8.5 1.5 12 1.5Z" fill="#8B4513" stroke="white" strokeWidth="1.5"/><path d="M6 10H18" stroke="white" strokeWidth="1" strokeDasharray="2 2"/><path d="M10 5V15M14 5V15" stroke="white" strokeWidth="1"/>
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block' }}>
+      {/* Piques du ballon */}
+      <path d="M16 2L18 6L14 6L16 2Z" fill="#94a3b8" /> {/* Haut */}
+      <path d="M16 30L14 26L18 26L16 30Z" fill="#94a3b8" /> {/* Bas */}
+      <path d="M2 16L6 14L6 18L2 16Z" fill="#94a3b8" /> {/* Gauche */}
+      <path d="M30 16L26 18L26 14L30 16Z" fill="#94a3b8" /> {/* Droite */}
+      
+      {/* Corps du ballon (Ovale cuir) */}
+      <ellipse cx="16" cy="16" rx="10" ry="13" fill="#6d3a1a" stroke="#4a2510" strokeWidth="1" />
+      
+      {/* Lacets blancs */}
+      <path d="M16 8V24" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M13 11H19" stroke="white" strokeWidth="1" />
+      <path d="M13 14H19" stroke="white" strokeWidth="1" />
+      <path d="M13 17H19" stroke="white" strokeWidth="1" />
+      <path d="M13 20H19" stroke="white" strokeWidth="1" />
+      
+      {/* Reflet cuir */}
+      <path d="M11 12C10 14 10 18 11 20" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
     </svg>
   );
 }
