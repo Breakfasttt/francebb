@@ -5,7 +5,7 @@ import { questions } from "../app/bbquizz/data/questions";
 
 loadEnvConfig(process.cwd());
 
-const url = process.env.DATABASE_URL || "";
+const url = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "";
 const client = createClient({ url });
 
 async function sync() {

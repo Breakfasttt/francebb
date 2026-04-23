@@ -4,9 +4,9 @@ import { loadEnvConfig } from "@next/env";
 // On force le chargement du .env
 loadEnvConfig(process.cwd());
 
-const url = process.env.DATABASE_URL || "";
+const url = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "";
 if (!url) {
-    console.error("❌ DATABASE_URL manquante dans le .env");
+    console.error("❌ TURSO_DATABASE_URL manquante dans le .env");
     process.exit(1);
 }
 

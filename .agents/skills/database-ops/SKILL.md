@@ -1,40 +1,49 @@
 # Skill : Opérations Base de Données (Turso + Prisma 7)
 
-Ce skill définit la procédure **validée et sécurisée** pour maintenir la base de données de production sur Turso sans risque de corruption ou de doublons.
+Ce skill définit la procédure **validée et sécurisée** pour maintenir la base de données de production sur Turso en utilisant Prisma, tout en contournant les limitations natives du CLI.
 
-## 🛡️ RÈGLES DE SÉCURITÉ ABSOLUES
-1. **PAS DE `migrate dev`** : Turso ne supporte pas la "Shadow DB". Ne jamais utiliser cette commande.
-2. **PAS DE `migrate reset`** : Ne jamais réinitialiser la base de production.
-3. **PROTOCOLE** : Toujours utiliser `libsql://` dans le `.env`. Ne pas essayer de convertir en `https://`.
+## ⚙️ ARCHITECTURE DE CONNEXION (Dual-URL)
 
-## 🚀 PROCÉDURES VALIDÉES
+Depuis le 24 Avril 2026, la configuration suit le guide officiel [Prisma + Turso](https://www.prisma.io/docs/v6/orm/overview/databases/turso).
 
-### 1. Mise à jour de la Structure (Schéma)
-Pour ajouter des tables ou modifier des colonnes :
-```powershell
-npx prisma db push
-```
-*Note : Si le client Prisma n'est pas à jour après le push, lance `npx prisma generate`.*
+Dans le fichier `.env` :
+1. **`DATABASE_URL="file:./dev.db"`** : 
+   - **Usage** : Uniquement pour le **Prisma CLI** (`db push`, `migrate`, `generate`).
+   - **Raison** : Le moteur Rust de Prisma ne supporte pas `libsql://`. Il a besoin d'un accès fichier local.
+2. **`TURSO_DATABASE_URL="libsql://..."`** : 
+   - **Usage** : Pour le **Client Prisma** (via `lib/prisma.ts`) et les **scripts de maintenance**.
+   - **Raison** : Permet la connexion distante via l'adapter `@prisma/adapter-libsql`.
 
-### 2. Synchronisation de Données (Massive/Automatisée)
-Pour injecter ou mettre à jour des données depuis des fichiers `.ts` (ex: Quizz, Références) :
-- **Méthode** : Utiliser un script basé sur `@libsql/client` pour une connexion SQL directe.
-- **Scripts existants** :
-  - `scripts/seed-turso-final.ts` : Données de référence (Régions, Départements).
-  - `scripts/sync-quiz-final.ts` : Synchronisation intelligente du Quizz (évite les doublons).
+## 🛡️ RÈGLES D'OR
+1. **ERREUR PROTOCOLE** : Si tu vois `The database provider 'sqlite' does not support the protocol 'libsql'`, c'est que tu as mis l'URL Turso dans `DATABASE_URL`. Utilise `file:./dev.db` pour les commandes CLI.
+2. **PAS DE `migrate reset` EN PROD** : Ne jamais réinitialiser Turso. Les changements de schéma se font via `db push` local puis application SQL manuelle si nécessaire.
+3. **VÉRIFICATION AVANT ACTION** : Avant de tenter de modifier Turso, vérifie l'état actuel (ex: `PRAGMA table_info(Table)`) car il peut être déjà à jour via un `db push` précédent.
 
-**Modèle de code pour nouveau script (Smart Sync) :**
-Toujours récupérer les IDs existants par une clé unique (ex: le texte ou un slug) avant d'insérer, pour faire un `UPDATE` au lieu d'un `INSERT` si la donnée existe déjà.
+## 🚀 PROCÉDURES DE MISE À JOUR
 
-### 3. Modifications Manuelles Ponctuelle
-Pour corriger une donnée rapidement via une interface :
-```powershell
-npx prisma studio
-```
+### 1. Structure (Schéma)
+Pour modifier les tables ou colonnes :
+1. Modifier `prisma/schema.prisma`.
+2. Lancer `npx prisma db push`. Cela met à jour `dev.db` localement.
+3. Pour Turso, l'idéal est de générer le SQL :
+   ```bash
+   npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
+   ```
+   Puis d'appliquer les changements via le Turso CLI ou un script `@libsql/client`.
 
-## 🛠️ DÉPANNAGE
-- **Erreur "URL invalid"** : Vérifie que `loadEnvConfig(process.cwd())` est bien appelé au début du script `.ts`.
-- **Délai de réponse** : Vérifie que la région Vercel est bien réglée sur **Paris (cdg1)** pour être proche de Turso.
+### 2. Données & Maintenance (Seeding)
+Toujours utiliser les scripts dédiés qui ciblent `TURSO_DATABASE_URL` :
+- **Données de référence** : `npx tsx scripts/seed-turso-final.ts`
+- **Synchronisation Quizz** : `npx tsx scripts/sync-quiz-final.ts`
+- **Setup Initial (Rôles, Forums, Settings)** : `npx tsx prisma/firstSetup.ts`
+
+### 3. Debugging
+- **Prisma Studio Local** : `npx prisma studio` (ouvre `dev.db`).
+- **Inspection Turso** : Utiliser `npx tsx -e` avec `@libsql/client` pour exécuter du SQL direct (ex: `SELECT * FROM ...`).
+
+## 🔗 DOCUMENTATION DE RÉFÉRENCE
+- [Prisma + Turso Guide](https://www.prisma.io/docs/v6/orm/overview/databases/turso)
+- [Prisma v7 Upgrade & Breaking Changes](https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7)
 
 ---
-*Validé le 23 Avril 2026 suite au succès de la synchronisation Quizz (299 questions).*
+*Dernière mise à jour : 24 Avril 2026 suite à la stabilisation de l'architecture LibSQL.*
