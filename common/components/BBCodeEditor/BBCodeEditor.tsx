@@ -6,6 +6,7 @@ import Modal from "@/common/components/Modal/Modal";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import Toast from "@/common/components/Toast/Toast";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
+import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Bot, ChevronDown, Code, DraftingCompass, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, LayoutGrid, Link as LinkIcon, List, ListOrdered, Loader2, Minus, Palette, Smile, Sparkles, Strikethrough, Subscript, Superscript, Table as TableIcon, Type, Underline, User as UserIcon, WrapText, Youtube } from "lucide-react";
@@ -853,7 +854,13 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
         {isPreview && (
           <>
             <div style={{ height: "1px", width: "100%", background: "var(--glass-border)" }} />
-            <div className="editor-preview" style={{ width: "100%", minHeight: "150px", maxHeight: "400px", padding: "1.5rem", background: "transparent", color: "var(--foreground)", overflowY: "auto" }} dangerouslySetInnerHTML={{ __html: parseBBCode(content) || "<em style='color: var(--text-muted);'>Aucun contenu...</em>" }} />
+            <div className="editor-preview" style={{ width: "100%", minHeight: "150px", maxHeight: "400px", padding: "1.5rem", background: "transparent", color: "var(--foreground)", overflowY: "auto" }}>
+              {content ? (
+                <BBCodeContent content={content} />
+              ) : (
+                <em style={{ color: 'var(--text-muted)' }}>Aucun contenu...</em>
+              )}
+            </div>
           </>
         )}
       </div>

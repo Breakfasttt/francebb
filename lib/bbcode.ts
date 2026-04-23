@@ -122,6 +122,20 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   // Horizontal Rule
   html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0; clear: both;' />");
 
+  // 2.5 BBScheme (Placeholder for BBCodeContent to hydrate)
+  html = html.replace(/\[bbscheme(?:=(vertical|horizontal))?\]([\s\S]*?)\[\/bbscheme\]/gi, (match, layout, rawId) => {
+    let boardId = rawId.trim();
+    if (boardId.includes("id=")) {
+      boardId = boardId.split("id=")[1].split("&")[0];
+    } else if (boardId.includes("/bbscheme?")) {
+      const parts = boardId.split("id=");
+      if (parts[1]) boardId = parts[1].split("&")[0];
+    }
+    const safeLayout = layout || 'horizontal';
+    // Utilisation d'un élément personnalisé pour une hydratation robuste
+    return `<bb-scheme data-board-id="${boardId}" data-layout="${safeLayout}" style="display: block; min-height: 150px; margin: 1rem 0;"></bb-scheme>`;
+  });
+
   // 3. Spoilers (Body-First structure for persistent size)
   while (/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i.test(html)) {
     html = html.replace(/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i, (match, title, content) => {
