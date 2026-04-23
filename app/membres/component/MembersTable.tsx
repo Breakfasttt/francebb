@@ -349,7 +349,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   <td style={{ textAlign: 'center' }}>
                     {user.id !== currentUserId && !user.isBanned && (
                       <ClassicButton 
-                        href={`/profile?tab=pm&recipientId=${user.id}`}
+                        href={`/messagerie?userId=${user.id}`}
                         icon={Mail}
                         size="sm"
                       >

@@ -136,7 +136,7 @@ const PostItem: React.FC<PostItemProps> = ({
               </BadgeButton>
               {post.author.id !== currentUserId && (
                 <BadgeButton
-                  href={`/profile?tab=pm&recipientId=${post.author.id}`}
+                  href={`/messagerie?userId=${post.author.id}`}
                   icon={Mail}
                 >
                   MP
