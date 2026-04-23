@@ -121,6 +121,25 @@ const Pitch: React.FC<PitchProps> = ({
       <div className="pitch-grid" style={{ 
         display: 'grid', gridTemplateColumns: `repeat(${COLS}, 50px)`, gridTemplateRows: `repeat(${ROWS}, 50px)`,
       }}>
+        <svg 
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10 }}
+          viewBox={`0 0 ${COLS * 50} ${ROWS * 50}`}
+        >
+          <defs>
+            <pattern id="pitchGridPattern" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path 
+                d="M 50 0 L 0 0 0 50" 
+                fill="none" 
+                stroke="white" 
+                strokeWidth="1" 
+                strokeOpacity="0.2" 
+                vectorEffect="non-scaling-stroke"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#pitchGridPattern)" />
+        </svg>
+
         {squares}
         <canvas 
           ref={canvasRef} width={COLS * 50} height={ROWS * 50}
