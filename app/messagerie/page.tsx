@@ -44,21 +44,28 @@ function MessagerieContent() {
 
     const [convInfo, setConvInfo] = React.useState<any>(null);
 
+    const fetchInfo = async () => {
+        if (!activeId) return;
+        try {
+            const data = await getConversationMessages(activeId);
+            setConvInfo(data.conversation);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     React.useEffect(() => {
         if (activeId) {
-            const fetchInfo = async () => {
-                try {
-                    const data = await getConversationMessages(activeId);
-                    setConvInfo(data.conversation);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
             fetchInfo();
         } else {
             setConvInfo(null);
         }
     }, [activeId]);
+
+    const handleUpdate = () => {
+        fetchInfo();
+        router.refresh();
+    };
 
     const handleBack = () => {
         router.push("/messagerie");
@@ -82,7 +89,7 @@ function MessagerieContent() {
             
             <div className={`messagerie-container ${activeId ? 'has-active-chat' : ''}`}>
                 {!activeId && (
-                     <div style={{ padding: '0 1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+                     <div style={{ padding: '0 1rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
                         <CTAButton 
                             icon={<Plus size={18} />}
                             onClick={() => setShowModal(true)}
@@ -93,7 +100,7 @@ function MessagerieContent() {
                 )}
                 
                 {activeId ? (
-                    <ConversationView conversationId={activeId} onBack={handleBack} />
+                    <ConversationView conversationId={activeId} onBack={handleBack} onUpdate={handleUpdate} />
                 ) : (
                     <ConversationList />
                 )}

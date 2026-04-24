@@ -3,21 +3,24 @@
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
-import { LogOut, Send, Loader2, ChevronLeft } from "lucide-react";
+import { LogOut, Send, Loader2, ChevronLeft, UserPlus, Edit3 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { getConversationMessages, leaveConversation, sendMessage } from "../actions";
+import { getConversationMessages, leaveConversation, sendMessage, renameConversation } from "../actions";
 import ChatBubble from "./ChatBubble";
 import CTAButton from "@/common/components/Button/CTAButton";
+import InviteParticipantModal from "./InviteParticipantModal";
+import RenameConversationModal from "./RenameConversationModal";
 
 interface ConversationViewProps {
     conversationId: string;
     onBack: () => void;
+    onUpdate?: () => void;
 }
 
-export default function ConversationView({ conversationId, onBack }: ConversationViewProps) {
+export default function ConversationView({ conversationId, onBack, onUpdate }: ConversationViewProps) {
     const { data: session } = useSession();
     const [messages, setMessages] = useState<any[]>([]);
     const [conversation, setConversation] = useState<any>(null);
@@ -25,6 +28,8 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
     const [content, setContent] = useState("");
     const [sending, setSending] = useState(false);
     const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+    const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+    const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -84,29 +89,54 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 {/* Bandeau Participants */}
                 {conversation?.participants && (
                     <div className="participants-banner" style={{ justifyContent: 'space-between' }}>
-                        <div className="participants-list">
-                            {conversation.participants.map((p: any) => (
-                                <Tooltip key={p.user.id} content={p.user.name} position="bottom">
-                                    <Link href={`/profile/${p.user.id}`}>
-                                        <img
-                                            src={p.user.image || "/images/default-avatar.png"}
-                                            alt={p.user.name}
-                                            className="participant-avatar"
-                                        />
-                                    </Link>
-                                </Tooltip>
-                            ))}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <Tooltip content="Ajouter un participant" position="bottom">
+                                <button
+                                    className="nav-icon-capsule sm"
+                                    onClick={() => setIsInviteModalOpen(true)}
+                                    style={{ width: '32px', height: '32px', border: '1px solid var(--primary)', color: 'var(--primary)', background: 'rgba(var(--primary-rgb), 0.1)' }}
+                                >
+                                    <UserPlus size={16} />
+                                </button>
+                            </Tooltip>
+                            <div className="participants-list">
+                                {conversation.participants.map((p: any) => (
+                                    <Tooltip key={p.user.id} content={p.user.name} position="bottom">
+                                        <Link href={`/profile/${p.user.id}`}>
+                                            <img
+                                                src={p.user.image || "/images/default-avatar.png"}
+                                                alt={p.user.name}
+                                                className="participant-avatar"
+                                            />
+                                        </Link>
+                                    </Tooltip>
+                                ))}
+                            </div>
                         </div>
 
-                        <Tooltip content="Quitter la conversation" position="bottom">
-                            <button
-                                className="nav-icon-capsule danger sm"
-                                onClick={() => setIsLeaveModalOpen(true)}
-                                style={{ width: '32px', height: '32px' }}
-                            >
-                                <LogOut size={16} />
-                            </button>
-                        </Tooltip>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                            {conversation.isGroup && (
+                                <Tooltip content="Renommer le groupe" position="bottom">
+                                    <button
+                                        className="nav-icon-capsule sm"
+                                        onClick={() => setIsRenameModalOpen(true)}
+                                        style={{ width: '32px', height: '32px', border: '1px solid var(--accent)', color: 'var(--accent)', background: 'rgba(var(--accent-rgb), 0.1)' }}
+                                    >
+                                        <Edit3 size={16} />
+                                    </button>
+                                </Tooltip>
+                            )}
+
+                            <Tooltip content="Quitter la conversation" position="bottom">
+                                <button
+                                    className="nav-icon-capsule danger sm"
+                                    onClick={() => setIsLeaveModalOpen(true)}
+                                    style={{ width: '32px', height: '32px' }}
+                                >
+                                    <LogOut size={16} />
+                                </button>
+                            </Tooltip>
+                        </div>
                     </div>
                 )}
 
@@ -126,8 +156,8 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
             </div>
 
             {/* BLOC 2: EDITION */}
-            <div className="messagerie-chat-card input-block" style={{ height: 'auto', minHeight: 'min-content' }}>
-                <div className="chat-input-area" style={{ padding: '1rem', height: 'auto', display: 'block' }}>
+            <div className="messagerie-chat-card input-block">
+                <div className="chat-input-area">
                     <BBCodeEditor 
                         name="message"
                         defaultValue={content}
@@ -159,6 +189,27 @@ export default function ConversationView({ conversationId, onBack }: Conversatio
                 confirmLabel="Quitter"
                 isDanger={true}
             />
+
+            {isInviteModalOpen && (
+                <InviteParticipantModal 
+                    conversationId={conversationId}
+                    onClose={() => setIsInviteModalOpen(false)}
+                    onSuccess={loadMessages}
+                    existingUserIds={conversation.participants.map((p: any) => p.user.id)}
+                />
+            )}
+
+            {isRenameModalOpen && (
+                <RenameConversationModal
+                    conversationId={conversationId}
+                    currentName={conversation.name}
+                    onClose={() => setIsRenameModalOpen(false)}
+                    onSuccess={() => {
+                        loadMessages();
+                        if (onUpdate) onUpdate();
+                    }}
+                />
+            )}
         </div>
     );
 }

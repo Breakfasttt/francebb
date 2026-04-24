@@ -199,11 +199,16 @@ export async function sendMessage(conversationId: string, content: string) {
 
   for (const p of others) {
     if (p.user.email && p.user.notifPm) {
-      // Uniquement si pas de messages non lus (pour éviter spam)
-      const unreadCount = await prisma.privateMessage.count({
-        where: { conversationId, authorId: userId, readAt: null }
+      // Uniquement si c'est le PREMIER message non lu pour ce participant (évite le spam)
+      const unreadCountForRecipient = await prisma.privateMessage.count({
+        where: { 
+          conversationId, 
+          readAt: null,
+          authorId: { not: p.userId } // On compte les messages qu'il n'a pas lus
+        }
       });
-      if (unreadCount === 1) {
+
+      if (unreadCountForRecipient === 1) {
         sendPmNotification(p.user.email, senderName, content.substring(0, 100));
       }
     }
@@ -373,3 +378,31 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
     revalidatePath("/messagerie");
     return { success: true };
 }
+
+/**
+ * Renomme une conversation de groupe
+ */
+export async function renameConversation(conversationId: string, name: string) {
+    const session = await auth();
+    const myId = session?.user?.id;
+    if (!myId) throw new Error("Non autorisé");
+
+    // Vérifier si la conversation est un groupe et si l'utilisateur participe
+    const conv = await prisma.conversation.findUnique({
+        where: { id: conversationId },
+        include: { participants: { where: { userId: myId } } }
+    });
+
+    if (!conv) throw new Error("Conversation introuvable");
+    if (!conv.isGroup) throw new Error("Seules les conversations de groupe peuvent être renommées");
+    if (conv.participants.length === 0) throw new Error("Vous ne participez pas à cette conversation");
+
+    await prisma.conversation.update({
+        where: { id: conversationId },
+        data: { name: name.trim() || null }
+    });
+
+    revalidatePath("/messagerie");
+    return { success: true };
+}
+
