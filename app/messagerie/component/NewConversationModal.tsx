@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { searchUsers, startConversation } from "../actions";
-import { X, Search, Check, Users } from "lucide-react";
+import { X, Search, Check, Users, ShieldCheck } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -64,6 +64,22 @@ export default function NewConversationModal({ onClose }: { onClose: () => void 
                     <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
                         <X size={24} />
                     </button>
+                </div>
+
+                <div className="messagerie-disclaimer" style={{ 
+                    padding: '0.8rem 1rem', 
+                    background: 'rgba(var(--primary-rgb), 0.05)', 
+                    border: '1px solid var(--primary-transparent)', 
+                    borderRadius: '8px',
+                    marginBottom: '1.5rem',
+                    display: 'flex',
+                    gap: '0.8rem',
+                    alignItems: 'flex-start'
+                }}>
+                    <ShieldCheck size={20} style={{ color: 'var(--primary)', flexShrink: 0, marginTop: '2px' }} />
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                        <strong>Confidentialité & Chiffrement :</strong> Vos messages sont chiffrés (AES-256). Seuls les participants de la conversation peuvent lire les échanges. L'administration n'a pas accès à vos discussions privées.
+                    </div>
                 </div>
 
                 <div className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
