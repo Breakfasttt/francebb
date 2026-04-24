@@ -45,12 +45,10 @@ export default function PageHeader({
 
   const backButtonContent = backHref !== null ? (
     <div className="page-header-back-wrapper">
-      <Tooltip content={backTitle}>
-        <BackButton 
-          href={backHref} 
-          title={backTitle} 
-        />
-      </Tooltip>
+      <BackButton 
+        href={backHref} 
+        title={backTitle} 
+      />
     </div>
   ) : null;
 

@@ -96,7 +96,7 @@
   --back-btn-size: 54px;
   --back-btn-bg: #ffffff;
   --back-btn-icon-color: var(--foreground);
-  --back-btn-border: 4px solid var(--primary);
+  --back-btn-border: 2px solid var(--primary);
   --back-btn-radius: 50%;
   --back-btn-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 1);
 

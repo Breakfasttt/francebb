@@ -1,6 +1,6 @@
 .page-header-container {
   background: var(--header-container-bg);
-  padding: var(--header-container-padding, 3rem 2rem 1rem 2rem);
+  padding: 3rem 2rem 1.5rem 2rem;
   margin-top: var(--header-container-margin-top, -2rem) !important;
   margin-bottom: 2rem;
   width: 100vw;
@@ -12,19 +12,31 @@
   clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
   border-bottom: var(--header-container-border-bottom);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
   min-height: 140px;
 }
 
-/* Le wrapper gère le positionnement pour ne pas écraser le transform: translateX du bouton au hover */
 .page-header-back-wrapper {
   position: absolute !important;
   left: 3rem;
-  top: 50%;
+  top: 52%;
+  /* Ajusté pour être sur la ligne centrale visuelle du titre */
   transform: translateY(-50%) !important;
+  z-index: 10;
+}
+
+.page-header-actions {
+  position: absolute !important;
+  right: 3rem;
+  top: 52%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  z-index: 10;
 }
 
 .page-header-content {
@@ -33,13 +45,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 6rem;
+  /* Sécurité pour ne pas chevaucher le bouton back */
 }
 
 .page-header-title,
 .page-header-title span {
   margin: 0;
-  font-size: 2.7rem;
+  font-size: 2.6rem;
   font-weight: var(--header-title-weight, 1000);
   font-family: var(--header-title-family, 'Inter', system-ui, sans-serif);
   color: var(--header-title-color, var(--foreground)) !important;
@@ -51,7 +66,7 @@
   text-transform: uppercase;
   font-style: italic;
   text-shadow: var(--header-title-shadow);
-  line-height: 1;
+  line-height: 1.1;
 }
 
 /* Pour les mises en couleur de mots (ex: Nouveau <span>sujet</span>) */
@@ -61,44 +76,34 @@
 
 .page-header-subtitle {
   color: var(--header-subtitle-color, var(--text-secondary));
-  margin: 0.2rem 0 0 0;
-  font-size: 0.9rem;
+  margin: 0 0 0 0;
+  font-size: 0.85rem;
   font-weight: var(--header-subtitle-weight, 700);
   text-transform: uppercase;
-  opacity: 0.9;
-}
-
-/* Container pour des boutons d'actions additionnels sur la droite */
-.page-header-actions {
-  position: absolute;
-  right: 3rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+  opacity: 0.8;
+  letter-spacing: 1px;
 }
 
 /* Standardized BackButton Style across all themes */
 .back-button {
   background: var(--back-btn-bg) !important;
   border: var(--back-btn-border) !important;
-  border-radius: var(--back-btn-radius, 50%) !important;
-  width: var(--back-btn-size, 54px) !important;
-  height: var(--back-btn-size, 54px) !important;
+  border-radius: var(--back-btn-radius, 12px) !important;
+  width: 42px !important;
+  height: 42px !important;
   color: var(--back-btn-icon-color) !important;
   box-shadow: var(--back-btn-shadow) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
   cursor: pointer;
 }
 
 .back-button:hover {
-  transform: scale(1.1) rotate(-10deg) !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
-  border-color: #ffffff !important;
+  transform: scale(1.05) translateX(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
+  filter: brightness(1.1);
 }
 
 /* ==========================================================================
