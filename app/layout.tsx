@@ -5,7 +5,7 @@ import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget
 import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWidget";
 import { prisma } from "@/lib/prisma";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
-import { Github } from "lucide-react";
+import { Github, BarChart3 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -118,20 +118,22 @@ export default async function RootLayout({
             <Link href="/mentions-legales" className="footer-link">
               Mentions légales
             </Link>
-            {' • '}
             <span className="footer-text">
-              Ce site a été entièrement conçu avec l'aide de l'intelligence artificielle
+              Conçu avec l'aide de l'IA
             </span>
-            {' • '}
             <a 
               href="https://github.com/Breakfasttt/francebb" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="footer-link github-link"
+              className="footer-link"
             >
               <Github size={14} /> GitHub
             </a>
+            <Link href="/statistiques" className="footer-link">
+              <BarChart3 size={14} /> Statistiques
+            </Link>
           </footer>
+
           <CookieBanner />
         </AuthProvider>
       </ThemeProvider>

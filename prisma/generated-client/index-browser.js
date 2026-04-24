@@ -598,6 +598,15 @@ exports.Prisma.BBSchemeStateScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.MailLogScalarFieldEnum = {
+  id: 'id',
+  sentAt: 'sentAt',
+  to: 'to',
+  subject: 'subject',
+  status: 'status',
+  type: 'type'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -663,7 +672,8 @@ exports.Prisma.ModelName = {
   QuizDailyWinner: 'QuizDailyWinner',
   QuizQuestionSuggestion: 'QuizQuestionSuggestion',
   LegacyMember: 'LegacyMember',
-  BBSchemeState: 'BBSchemeState'
+  BBSchemeState: 'BBSchemeState',
+  MailLog: 'MailLog'
 };
 
 /**

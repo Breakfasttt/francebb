@@ -697,6 +697,15 @@ model BBSchemeState {
   creator   User?    @relation(fields: [creatorId], references: [id])
 }
 
+model MailLog {
+  id        String   @id @default(cuid())
+  sentAt    DateTime @default(now())
+  to        String
+  subject   String
+  status    String   @default("SENT")
+  type      String?
+}
+
 enum RegistrationStatus {
   PRE_REGISTERED
   REGISTERED

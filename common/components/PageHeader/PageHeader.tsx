@@ -3,7 +3,6 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import BackButton from '@/common/components/BackButton/BackButton';
-import Tooltip from '@/common/components/Tooltip/Tooltip';
 import './PageHeader.css';
 import './PageHeader-mobile.css';
 
@@ -36,11 +35,19 @@ export default function PageHeader({
 }: PageHeaderProps) {
   const [mounted, setMounted] = useState(false);
   const [targetSlot, setTargetSlot] = useState<Element | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const slot = document.getElementById('mobile-back-button-slot');
-    setTargetSlot(slot);
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 1024);
+      setTargetSlot(document.getElementById('mobile-back-button-slot'));
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const backButtonContent = backHref !== null ? (
@@ -56,7 +63,7 @@ export default function PageHeader({
     <header className={`page-header-container ${className}`.trim()} style={style}>
       {backButtonContent && (
         <>
-          {mounted && targetSlot && window.innerWidth <= 1024 ? (
+          {mounted && isMobile && targetSlot ? (
             createPortal(backButtonContent, targetSlot)
           ) : (
             backButtonContent

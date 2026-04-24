@@ -1,13 +1,14 @@
+.mentions-page-wrapper {
+  padding-bottom: 4rem;
+}
+
 .mentions-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  color: var(--foreground);
-  min-height: 80vh;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .mentions-grid {
-  margin-top: 3rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 2rem;

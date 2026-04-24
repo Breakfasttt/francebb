@@ -223,6 +223,11 @@ export type LegacyMember = $Result.DefaultSelection<Prisma.$LegacyMemberPayload>
  * 
  */
 export type BBSchemeState = $Result.DefaultSelection<Prisma.$BBSchemeStatePayload>
+/**
+ * Model MailLog
+ * 
+ */
+export type MailLog = $Result.DefaultSelection<Prisma.$MailLogPayload>
 
 /**
  * Enums
@@ -797,6 +802,16 @@ export class PrismaClient<
     * ```
     */
   get bBSchemeState(): Prisma.BBSchemeStateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mailLog`: Exposes CRUD operations for the **MailLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MailLogs
+    * const mailLogs = await prisma.mailLog.findMany()
+    * ```
+    */
+  get mailLog(): Prisma.MailLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1272,7 +1287,8 @@ export namespace Prisma {
     QuizDailyWinner: 'QuizDailyWinner',
     QuizQuestionSuggestion: 'QuizQuestionSuggestion',
     LegacyMember: 'LegacyMember',
-    BBSchemeState: 'BBSchemeState'
+    BBSchemeState: 'BBSchemeState',
+    MailLog: 'MailLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1288,7 +1304,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4400,6 +4416,80 @@ export namespace Prisma {
           }
         }
       }
+      MailLog: {
+        payload: Prisma.$MailLogPayload<ExtArgs>
+        fields: Prisma.MailLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MailLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MailLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          findFirst: {
+            args: Prisma.MailLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MailLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          findMany: {
+            args: Prisma.MailLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>[]
+          }
+          create: {
+            args: Prisma.MailLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          createMany: {
+            args: Prisma.MailLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MailLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>[]
+          }
+          delete: {
+            args: Prisma.MailLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          update: {
+            args: Prisma.MailLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.MailLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MailLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MailLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.MailLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MailLogPayload>
+          }
+          aggregate: {
+            args: Prisma.MailLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMailLog>
+          }
+          groupBy: {
+            args: Prisma.MailLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MailLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MailLogCountArgs<ExtArgs>
+            result: $Utils.Optional<MailLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4550,6 +4640,7 @@ export namespace Prisma {
     quizQuestionSuggestion?: QuizQuestionSuggestionOmit
     legacyMember?: LegacyMemberOmit
     bBSchemeState?: BBSchemeStateOmit
+    mailLog?: MailLogOmit
   }
 
   /* Types for Logging */
@@ -54803,6 +54894,1017 @@ export namespace Prisma {
 
 
   /**
+   * Model MailLog
+   */
+
+  export type AggregateMailLog = {
+    _count: MailLogCountAggregateOutputType | null
+    _min: MailLogMinAggregateOutputType | null
+    _max: MailLogMaxAggregateOutputType | null
+  }
+
+  export type MailLogMinAggregateOutputType = {
+    id: string | null
+    sentAt: Date | null
+    to: string | null
+    subject: string | null
+    status: string | null
+    type: string | null
+  }
+
+  export type MailLogMaxAggregateOutputType = {
+    id: string | null
+    sentAt: Date | null
+    to: string | null
+    subject: string | null
+    status: string | null
+    type: string | null
+  }
+
+  export type MailLogCountAggregateOutputType = {
+    id: number
+    sentAt: number
+    to: number
+    subject: number
+    status: number
+    type: number
+    _all: number
+  }
+
+
+  export type MailLogMinAggregateInputType = {
+    id?: true
+    sentAt?: true
+    to?: true
+    subject?: true
+    status?: true
+    type?: true
+  }
+
+  export type MailLogMaxAggregateInputType = {
+    id?: true
+    sentAt?: true
+    to?: true
+    subject?: true
+    status?: true
+    type?: true
+  }
+
+  export type MailLogCountAggregateInputType = {
+    id?: true
+    sentAt?: true
+    to?: true
+    subject?: true
+    status?: true
+    type?: true
+    _all?: true
+  }
+
+  export type MailLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MailLog to aggregate.
+     */
+    where?: MailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailLogs to fetch.
+     */
+    orderBy?: MailLogOrderByWithRelationInput | MailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MailLogs
+    **/
+    _count?: true | MailLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MailLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MailLogMaxAggregateInputType
+  }
+
+  export type GetMailLogAggregateType<T extends MailLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateMailLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMailLog[P]>
+      : GetScalarType<T[P], AggregateMailLog[P]>
+  }
+
+
+
+
+  export type MailLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MailLogWhereInput
+    orderBy?: MailLogOrderByWithAggregationInput | MailLogOrderByWithAggregationInput[]
+    by: MailLogScalarFieldEnum[] | MailLogScalarFieldEnum
+    having?: MailLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MailLogCountAggregateInputType | true
+    _min?: MailLogMinAggregateInputType
+    _max?: MailLogMaxAggregateInputType
+  }
+
+  export type MailLogGroupByOutputType = {
+    id: string
+    sentAt: Date
+    to: string
+    subject: string
+    status: string
+    type: string | null
+    _count: MailLogCountAggregateOutputType | null
+    _min: MailLogMinAggregateOutputType | null
+    _max: MailLogMaxAggregateOutputType | null
+  }
+
+  type GetMailLogGroupByPayload<T extends MailLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MailLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MailLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MailLogGroupByOutputType[P]>
+            : GetScalarType<T[P], MailLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MailLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sentAt?: boolean
+    to?: boolean
+    subject?: boolean
+    status?: boolean
+    type?: boolean
+  }, ExtArgs["result"]["mailLog"]>
+
+  export type MailLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sentAt?: boolean
+    to?: boolean
+    subject?: boolean
+    status?: boolean
+    type?: boolean
+  }, ExtArgs["result"]["mailLog"]>
+
+  export type MailLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sentAt?: boolean
+    to?: boolean
+    subject?: boolean
+    status?: boolean
+    type?: boolean
+  }, ExtArgs["result"]["mailLog"]>
+
+  export type MailLogSelectScalar = {
+    id?: boolean
+    sentAt?: boolean
+    to?: boolean
+    subject?: boolean
+    status?: boolean
+    type?: boolean
+  }
+
+  export type MailLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sentAt" | "to" | "subject" | "status" | "type", ExtArgs["result"]["mailLog"]>
+
+  export type $MailLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MailLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sentAt: Date
+      to: string
+      subject: string
+      status: string
+      type: string | null
+    }, ExtArgs["result"]["mailLog"]>
+    composites: {}
+  }
+
+  type MailLogGetPayload<S extends boolean | null | undefined | MailLogDefaultArgs> = $Result.GetResult<Prisma.$MailLogPayload, S>
+
+  type MailLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MailLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MailLogCountAggregateInputType | true
+    }
+
+  export interface MailLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MailLog'], meta: { name: 'MailLog' } }
+    /**
+     * Find zero or one MailLog that matches the filter.
+     * @param {MailLogFindUniqueArgs} args - Arguments to find a MailLog
+     * @example
+     * // Get one MailLog
+     * const mailLog = await prisma.mailLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MailLogFindUniqueArgs>(args: SelectSubset<T, MailLogFindUniqueArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MailLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MailLogFindUniqueOrThrowArgs} args - Arguments to find a MailLog
+     * @example
+     * // Get one MailLog
+     * const mailLog = await prisma.mailLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MailLogFindUniqueOrThrowArgs>(args: SelectSubset<T, MailLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MailLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogFindFirstArgs} args - Arguments to find a MailLog
+     * @example
+     * // Get one MailLog
+     * const mailLog = await prisma.mailLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MailLogFindFirstArgs>(args?: SelectSubset<T, MailLogFindFirstArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MailLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogFindFirstOrThrowArgs} args - Arguments to find a MailLog
+     * @example
+     * // Get one MailLog
+     * const mailLog = await prisma.mailLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MailLogFindFirstOrThrowArgs>(args?: SelectSubset<T, MailLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MailLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MailLogs
+     * const mailLogs = await prisma.mailLog.findMany()
+     * 
+     * // Get first 10 MailLogs
+     * const mailLogs = await prisma.mailLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mailLogWithIdOnly = await prisma.mailLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MailLogFindManyArgs>(args?: SelectSubset<T, MailLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MailLog.
+     * @param {MailLogCreateArgs} args - Arguments to create a MailLog.
+     * @example
+     * // Create one MailLog
+     * const MailLog = await prisma.mailLog.create({
+     *   data: {
+     *     // ... data to create a MailLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends MailLogCreateArgs>(args: SelectSubset<T, MailLogCreateArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MailLogs.
+     * @param {MailLogCreateManyArgs} args - Arguments to create many MailLogs.
+     * @example
+     * // Create many MailLogs
+     * const mailLog = await prisma.mailLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MailLogCreateManyArgs>(args?: SelectSubset<T, MailLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MailLogs and returns the data saved in the database.
+     * @param {MailLogCreateManyAndReturnArgs} args - Arguments to create many MailLogs.
+     * @example
+     * // Create many MailLogs
+     * const mailLog = await prisma.mailLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MailLogs and only return the `id`
+     * const mailLogWithIdOnly = await prisma.mailLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MailLogCreateManyAndReturnArgs>(args?: SelectSubset<T, MailLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MailLog.
+     * @param {MailLogDeleteArgs} args - Arguments to delete one MailLog.
+     * @example
+     * // Delete one MailLog
+     * const MailLog = await prisma.mailLog.delete({
+     *   where: {
+     *     // ... filter to delete one MailLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MailLogDeleteArgs>(args: SelectSubset<T, MailLogDeleteArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MailLog.
+     * @param {MailLogUpdateArgs} args - Arguments to update one MailLog.
+     * @example
+     * // Update one MailLog
+     * const mailLog = await prisma.mailLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MailLogUpdateArgs>(args: SelectSubset<T, MailLogUpdateArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MailLogs.
+     * @param {MailLogDeleteManyArgs} args - Arguments to filter MailLogs to delete.
+     * @example
+     * // Delete a few MailLogs
+     * const { count } = await prisma.mailLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MailLogDeleteManyArgs>(args?: SelectSubset<T, MailLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MailLogs
+     * const mailLog = await prisma.mailLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MailLogUpdateManyArgs>(args: SelectSubset<T, MailLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MailLogs and returns the data updated in the database.
+     * @param {MailLogUpdateManyAndReturnArgs} args - Arguments to update many MailLogs.
+     * @example
+     * // Update many MailLogs
+     * const mailLog = await prisma.mailLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MailLogs and only return the `id`
+     * const mailLogWithIdOnly = await prisma.mailLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MailLogUpdateManyAndReturnArgs>(args: SelectSubset<T, MailLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MailLog.
+     * @param {MailLogUpsertArgs} args - Arguments to update or create a MailLog.
+     * @example
+     * // Update or create a MailLog
+     * const mailLog = await prisma.mailLog.upsert({
+     *   create: {
+     *     // ... data to create a MailLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MailLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MailLogUpsertArgs>(args: SelectSubset<T, MailLogUpsertArgs<ExtArgs>>): Prisma__MailLogClient<$Result.GetResult<Prisma.$MailLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MailLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogCountArgs} args - Arguments to filter MailLogs to count.
+     * @example
+     * // Count the number of MailLogs
+     * const count = await prisma.mailLog.count({
+     *   where: {
+     *     // ... the filter for the MailLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends MailLogCountArgs>(
+      args?: Subset<T, MailLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MailLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MailLogAggregateArgs>(args: Subset<T, MailLogAggregateArgs>): Prisma.PrismaPromise<GetMailLogAggregateType<T>>
+
+    /**
+     * Group by MailLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MailLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MailLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MailLogGroupByArgs['orderBy'] }
+        : { orderBy?: MailLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MailLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMailLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MailLog model
+   */
+  readonly fields: MailLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MailLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MailLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MailLog model
+   */
+  interface MailLogFieldRefs {
+    readonly id: FieldRef<"MailLog", 'String'>
+    readonly sentAt: FieldRef<"MailLog", 'DateTime'>
+    readonly to: FieldRef<"MailLog", 'String'>
+    readonly subject: FieldRef<"MailLog", 'String'>
+    readonly status: FieldRef<"MailLog", 'String'>
+    readonly type: FieldRef<"MailLog", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MailLog findUnique
+   */
+  export type MailLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which MailLog to fetch.
+     */
+    where: MailLogWhereUniqueInput
+  }
+
+  /**
+   * MailLog findUniqueOrThrow
+   */
+  export type MailLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which MailLog to fetch.
+     */
+    where: MailLogWhereUniqueInput
+  }
+
+  /**
+   * MailLog findFirst
+   */
+  export type MailLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which MailLog to fetch.
+     */
+    where?: MailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailLogs to fetch.
+     */
+    orderBy?: MailLogOrderByWithRelationInput | MailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MailLogs.
+     */
+    cursor?: MailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MailLogs.
+     */
+    distinct?: MailLogScalarFieldEnum | MailLogScalarFieldEnum[]
+  }
+
+  /**
+   * MailLog findFirstOrThrow
+   */
+  export type MailLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which MailLog to fetch.
+     */
+    where?: MailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailLogs to fetch.
+     */
+    orderBy?: MailLogOrderByWithRelationInput | MailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MailLogs.
+     */
+    cursor?: MailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MailLogs.
+     */
+    distinct?: MailLogScalarFieldEnum | MailLogScalarFieldEnum[]
+  }
+
+  /**
+   * MailLog findMany
+   */
+  export type MailLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter, which MailLogs to fetch.
+     */
+    where?: MailLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MailLogs to fetch.
+     */
+    orderBy?: MailLogOrderByWithRelationInput | MailLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MailLogs.
+     */
+    cursor?: MailLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MailLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MailLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MailLogs.
+     */
+    distinct?: MailLogScalarFieldEnum | MailLogScalarFieldEnum[]
+  }
+
+  /**
+   * MailLog create
+   */
+  export type MailLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a MailLog.
+     */
+    data: XOR<MailLogCreateInput, MailLogUncheckedCreateInput>
+  }
+
+  /**
+   * MailLog createMany
+   */
+  export type MailLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MailLogs.
+     */
+    data: MailLogCreateManyInput | MailLogCreateManyInput[]
+  }
+
+  /**
+   * MailLog createManyAndReturn
+   */
+  export type MailLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many MailLogs.
+     */
+    data: MailLogCreateManyInput | MailLogCreateManyInput[]
+  }
+
+  /**
+   * MailLog update
+   */
+  export type MailLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a MailLog.
+     */
+    data: XOR<MailLogUpdateInput, MailLogUncheckedUpdateInput>
+    /**
+     * Choose, which MailLog to update.
+     */
+    where: MailLogWhereUniqueInput
+  }
+
+  /**
+   * MailLog updateMany
+   */
+  export type MailLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MailLogs.
+     */
+    data: XOR<MailLogUpdateManyMutationInput, MailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which MailLogs to update
+     */
+    where?: MailLogWhereInput
+    /**
+     * Limit how many MailLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MailLog updateManyAndReturn
+   */
+  export type MailLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * The data used to update MailLogs.
+     */
+    data: XOR<MailLogUpdateManyMutationInput, MailLogUncheckedUpdateManyInput>
+    /**
+     * Filter which MailLogs to update
+     */
+    where?: MailLogWhereInput
+    /**
+     * Limit how many MailLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MailLog upsert
+   */
+  export type MailLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the MailLog to update in case it exists.
+     */
+    where: MailLogWhereUniqueInput
+    /**
+     * In case the MailLog found by the `where` argument doesn't exist, create a new MailLog with this data.
+     */
+    create: XOR<MailLogCreateInput, MailLogUncheckedCreateInput>
+    /**
+     * In case the MailLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MailLogUpdateInput, MailLogUncheckedUpdateInput>
+  }
+
+  /**
+   * MailLog delete
+   */
+  export type MailLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+    /**
+     * Filter which MailLog to delete.
+     */
+    where: MailLogWhereUniqueInput
+  }
+
+  /**
+   * MailLog deleteMany
+   */
+  export type MailLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MailLogs to delete
+     */
+    where?: MailLogWhereInput
+    /**
+     * Limit how many MailLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MailLog without action
+   */
+  export type MailLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MailLog
+     */
+    select?: MailLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MailLog
+     */
+    omit?: MailLogOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -55418,6 +56520,18 @@ export namespace Prisma {
   };
 
   export type BBSchemeStateScalarFieldEnum = (typeof BBSchemeStateScalarFieldEnum)[keyof typeof BBSchemeStateScalarFieldEnum]
+
+
+  export const MailLogScalarFieldEnum: {
+    id: 'id',
+    sentAt: 'sentAt',
+    to: 'to',
+    subject: 'subject',
+    status: 'status',
+    type: 'type'
+  };
+
+  export type MailLogScalarFieldEnum = (typeof MailLogScalarFieldEnum)[keyof typeof MailLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -58836,6 +59950,63 @@ export namespace Prisma {
     data?: StringWithAggregatesFilter<"BBSchemeState"> | string
     creatorId?: StringNullableWithAggregatesFilter<"BBSchemeState"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"BBSchemeState"> | Date | string
+  }
+
+  export type MailLogWhereInput = {
+    AND?: MailLogWhereInput | MailLogWhereInput[]
+    OR?: MailLogWhereInput[]
+    NOT?: MailLogWhereInput | MailLogWhereInput[]
+    id?: StringFilter<"MailLog"> | string
+    sentAt?: DateTimeFilter<"MailLog"> | Date | string
+    to?: StringFilter<"MailLog"> | string
+    subject?: StringFilter<"MailLog"> | string
+    status?: StringFilter<"MailLog"> | string
+    type?: StringNullableFilter<"MailLog"> | string | null
+  }
+
+  export type MailLogOrderByWithRelationInput = {
+    id?: SortOrder
+    sentAt?: SortOrder
+    to?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    type?: SortOrderInput | SortOrder
+  }
+
+  export type MailLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MailLogWhereInput | MailLogWhereInput[]
+    OR?: MailLogWhereInput[]
+    NOT?: MailLogWhereInput | MailLogWhereInput[]
+    sentAt?: DateTimeFilter<"MailLog"> | Date | string
+    to?: StringFilter<"MailLog"> | string
+    subject?: StringFilter<"MailLog"> | string
+    status?: StringFilter<"MailLog"> | string
+    type?: StringNullableFilter<"MailLog"> | string | null
+  }, "id">
+
+  export type MailLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    sentAt?: SortOrder
+    to?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    type?: SortOrderInput | SortOrder
+    _count?: MailLogCountOrderByAggregateInput
+    _max?: MailLogMaxOrderByAggregateInput
+    _min?: MailLogMinOrderByAggregateInput
+  }
+
+  export type MailLogScalarWhereWithAggregatesInput = {
+    AND?: MailLogScalarWhereWithAggregatesInput | MailLogScalarWhereWithAggregatesInput[]
+    OR?: MailLogScalarWhereWithAggregatesInput[]
+    NOT?: MailLogScalarWhereWithAggregatesInput | MailLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MailLog"> | string
+    sentAt?: DateTimeWithAggregatesFilter<"MailLog"> | Date | string
+    to?: StringWithAggregatesFilter<"MailLog"> | string
+    subject?: StringWithAggregatesFilter<"MailLog"> | string
+    status?: StringWithAggregatesFilter<"MailLog"> | string
+    type?: StringNullableWithAggregatesFilter<"MailLog"> | string | null
   }
 
   export type AccountCreateInput = {
@@ -62423,6 +63594,69 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MailLogCreateInput = {
+    id?: string
+    sentAt?: Date | string
+    to: string
+    subject: string
+    status?: string
+    type?: string | null
+  }
+
+  export type MailLogUncheckedCreateInput = {
+    id?: string
+    sentAt?: Date | string
+    to: string
+    subject: string
+    status?: string
+    type?: string | null
+  }
+
+  export type MailLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailLogCreateManyInput = {
+    id?: string
+    sentAt?: Date | string
+    to: string
+    subject: string
+    status?: string
+    type?: string | null
+  }
+
+  export type MailLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MailLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sentAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    type?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -64856,6 +66090,33 @@ export namespace Prisma {
     data?: SortOrder
     creatorId?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type MailLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    sentAt?: SortOrder
+    to?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+  }
+
+  export type MailLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sentAt?: SortOrder
+    to?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
+  }
+
+  export type MailLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    sentAt?: SortOrder
+    to?: SortOrder
+    subject?: SortOrder
+    status?: SortOrder
+    type?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { prisma } from "./prisma";
 
 /**
  * Configuration du transporteur Nodemailer
@@ -32,6 +33,16 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
       text: text || "Veuillez ouvrir cet email dans un client supportant le HTML.",
       html,
     });
+
+    // Logging de l'email en BDD pour le quota
+    await prisma.mailLog.create({
+      data: {
+        to,
+        subject,
+        status: "SENT"
+      }
+    }).catch(e => console.error("Erreur log mail:", e));
+
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("Erreur sendMail:", error);

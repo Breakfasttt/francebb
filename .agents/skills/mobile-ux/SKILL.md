@@ -33,6 +33,11 @@ Si une page a une *Sidebar Locale* (ex: TabSystem de Profil ou Admin) :
 - Ajouter bouton flottant (FAB = Floating Action Button), icône entonnoir, en haut à droite.
 - Clic ouvre modale Overlay / Bottom-Sheet avec tous les filtres + bouton "Appliquer".
 
+## PAGE HEADER & BACK BUTTON
+- **Action**: Utiliser `<PageHeader />` pour le titre et le bouton retour.
+- Sur mobile, le bouton retour (`BackButton`) doit être "téléporté" via `React Portal` dans le slot `#mobile-back-button-slot` de la `Navbar`.
+- Cela permet de garder le bouton retour accessible en haut à droite, même si le header de la page est scrollé ou masqué.
+
 ## DESKTOP ONLY (FALLBACK)
 Si composant impossible sur mobile (ex: `BBScheme` trop d'interactions, canvas géant) :
 - Afficher composant `<DesktopOnlyFallback>`.

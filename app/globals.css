@@ -239,8 +239,11 @@ label {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding: 0.6rem;
-  text-align: center;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
   font-size: 0.75rem;
   color: var(--header-foreground);
   border-top: 1px solid var(--accent);
@@ -256,6 +259,13 @@ label {
   color: var(--header-foreground);
   opacity: 0.8;
   transition: opacity 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.global-footer .footer-link svg {
+  display: block;
 }
 
 .global-footer .footer-text {
