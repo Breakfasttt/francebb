@@ -82,6 +82,19 @@
   box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.5);
 }
 
+.conv-avatar-group-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 .conv-info {
   flex: 1;
   min-width: 0;

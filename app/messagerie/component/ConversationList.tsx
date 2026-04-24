@@ -52,10 +52,11 @@ export default function ConversationList() {
                     const unreadCount = conv._count?.messages || 0;
                     
                     // On filtre l'utilisateur actuel pour les noms/avatars
-                    const otherParticipants = conv.participants.filter((p: any) => p.user.id !== currentUserId);
-                    const targetUser = otherParticipants[0]?.user;
+                    const otherParticipants = conv.participants.filter((p: any) => String(p.user.id) !== String(currentUserId));
+                    const targetUser = otherParticipants.length > 0 ? otherParticipants[0].user : null;
+                    const isOneOnOne = conv.participants.length === 2;
 
-                    const displayName = conv.isGroup 
+                    const displayName = !isOneOnOne
                         ? (conv.name || conv.participants.map((p: any) => p.user.name).slice(0, 3).join(", ") + (conv.participants.length > 3 ? "..." : ""))
                         : (targetUser?.name || "Inconnu");
 
@@ -67,11 +68,17 @@ export default function ConversationList() {
                         >
                             <PremiumCard className={`conversation-card ${unreadCount > 0 ? 'unread' : ''}`}>
                                 <div className="conv-avatar-box">
-                                    <img 
-                                        src={(conv.isGroup ? "/images/group-avatar.png" : targetUser?.image) || "/images/default-avatar.png"} 
-                                        alt="" 
-                                        className="conv-avatar-img"
-                                    />
+                                    {!isOneOnOne ? (
+                                        <div className="conv-avatar-group-placeholder">
+                                            <Users size={24} />
+                                        </div>
+                                    ) : (
+                                        <img 
+                                            src={targetUser?.image || "/images/default-avatar.png"} 
+                                            alt="" 
+                                            className="conv-avatar-img"
+                                        />
+                                    )}
                                     {unreadCount > 0 && (
                                         <span className="conv-unread-badge">{unreadCount}</span>
                                     )}
@@ -79,7 +86,6 @@ export default function ConversationList() {
                                 <div className="conv-info">
                                     <div className="conv-name-row">
                                         <span className="conv-name">
-                                            {conv.isGroup && <Users size={14} style={{ marginRight: '6px', color: 'var(--primary)' }} />}
                                             {displayName}
                                         </span>
                                         <span className="conv-time">
@@ -87,20 +93,22 @@ export default function ConversationList() {
                                         </span>
                                     </div>
                                     
-                                    <div className="conv-participants-row">
-                                        {conv.participants.map((p: any) => (
-                                            <Tooltip key={p.user.id} content={p.user.name}>
-                                                <img 
-                                                    src={p.user.image || "/images/default-avatar.png"} 
-                                                    alt={p.user.name} 
-                                                    className="mini-participant-avatar"
-                                                    style={{ 
-                                                        borderColor: p.user.id === currentUserId ? 'var(--primary)' : 'var(--glass-border)'
-                                                    }}
-                                                />
-                                            </Tooltip>
-                                        ))}
-                                    </div>
+                                    {!isOneOnOne && (
+                                        <div className="conv-participants-row">
+                                            {conv.participants.map((p: any) => (
+                                                <Tooltip key={p.user.id} content={p.user.name}>
+                                                    <img 
+                                                        src={p.user.image || "/images/default-avatar.png"} 
+                                                        alt={p.user.name} 
+                                                        className="mini-participant-avatar"
+                                                        style={{ 
+                                                            borderColor: p.user.id === currentUserId ? 'var(--primary)' : 'var(--glass-border)'
+                                                        }}
+                                                    />
+                                                </Tooltip>
+                                            ))}
+                                        </div>
+                                    )}
 
                                     <div className="conv-last-msg">
                                         {lastMsg ? (
