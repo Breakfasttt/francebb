@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-import { sendPmNotification } from "@/lib/mail";
 import { logModerationAction } from "@/app/moderation/actions";
 import { encrypt, decrypt } from "@/lib/crypto";
 

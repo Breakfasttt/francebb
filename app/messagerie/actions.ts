@@ -209,7 +209,7 @@ export async function sendMessage(conversationId: string, content: string) {
       });
 
       if (unreadCountForRecipient === 1) {
-        sendPmNotification(p.user.email, senderName, content.substring(0, 100));
+        sendPmNotification(p.user.email, senderName, content.substring(0, 100), conversationId);
       }
     }
   }

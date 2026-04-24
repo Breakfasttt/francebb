@@ -92,15 +92,19 @@ export function getEmailTemplate(content: string, title: string) {
 /**
  * Envoie un email de notification pour un MP
  */
-export async function sendPmNotification(toEmail: string, senderName: string, messagePreview: string) {
+export async function sendPmNotification(toEmail: string, senderName: string, messagePreview: string, conversationId?: string) {
   const title = "Nouveau Message Privé";
+  const link = conversationId 
+    ? `${process.env.AUTH_URL}/messagerie?id=${conversationId}`
+    : `${process.env.AUTH_URL}/messagerie`;
+
   const content = `
     <p>Bonjour,</p>
     <p><strong class="accent">${senderName}</strong> vous a envoyé un nouveau message privé sur BBFrance :</p>
     <div style="background: #f9f9f9; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; font-style: italic;">
       "${messagePreview}"
     </div>
-    <a href="${process.env.AUTH_URL}/profile?tab=pm" class="btn">Répondre sur le site</a>
+    <a href="${link}" class="btn">Répondre sur le site</a>
   `;
   return sendMail({
     to: toEmail,
