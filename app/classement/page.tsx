@@ -159,7 +159,7 @@ export default function ClassementPage() {
             <button 
               className={`ranking-tab ${filter.startsWith('CDF_') && !isSelectedYearArchived ? 'active' : ''}`}
               onClick={() => {
-                const latest = availableYears.find(y => !y.isArchived) || availableYears[0];
+                const latest = availableYears.find(y => !y.isArchived);
                 if (latest) {
                   setFilter(`CDF_${latest.year}`);
                 } else {
