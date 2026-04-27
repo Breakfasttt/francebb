@@ -189,7 +189,7 @@
 .bb-button.variant-explain {
   background: var(--accent-transparent);
   color: var(--accent);
-  border: 1px solid var(--accent-transparent);
+  border: 1.5px solid var(--accent); /* Bordure plus marquée pour la visibilité */
 }
 
 .bb-button.variant-explain:hover:not(:disabled) {
@@ -197,6 +197,17 @@
   color: var(--accent-foreground);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px var(--accent-transparent);
+}
+
+/* Overrides spécifiques pour les thèmes à faible contraste */
+[data-theme='light'] .bb-button.variant-explain {
+  background: rgba(184, 134, 11, 0.1);
+  border-color: rgba(184, 134, 11, 0.4);
+}
+
+[data-theme='nehekhara'] .bb-button.variant-explain {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* Variant: Toggle */

@@ -195,26 +195,16 @@ export default function ClassementPage() {
               <span>Archives</span>
             </button>
           </div>
-
-          {(filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
-            <div className="archive-selector-wrapper anim-fade-in">
-              <ClassicSelect
-                value={filter.startsWith('CDF_') ? filter : ""}
-                onChange={(e) => setFilter(e.target.value as RankingFilter)}
-                containerStyle={{ minWidth: "300px" }}
-              >
-                <option value="" disabled>Choisir une année...</option>
-                {availableYears.filter(y => y.isArchived).map(y => (
-                  <option key={y.year} value={`CDF_${y.year}`}>
-                    📜 Archive {y.year}
-                  </option>
-                ))}
-              </ClassicSelect>
-            </div>
-          )}
         </div>
 
         <div className="ranking-actions-bar">
+          <ExplainButton
+            icon={<HelpCircle size={16} />}
+            onClick={() => setIsHelpOpen(true)}
+          >
+            Comment sont calculés les points ?
+          </ExplainButton>
+
           <div className="filter-controls">
             {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
               <Tooltip text="Prendre un instantané définitif du classement pour cette année" position="bottom">
@@ -242,7 +232,7 @@ export default function ClassementPage() {
               </div>
             )}
 
-            {isMod && (
+            {isMod && (filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
               <div className="admin-actions-group">
                 <Tooltip text="Importer des données depuis teamfrancebb.fr" position="bottom">
                   <AdminButton
@@ -262,14 +252,24 @@ export default function ClassementPage() {
               </div>
             )}
           </div>
-
-          <ExplainButton
-            icon={<HelpCircle size={16} />}
-            onClick={() => setIsHelpOpen(true)}
-          >
-            Comment sont calculés les points ?
-          </ExplainButton>
         </div>
+
+        {(filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
+          <div className="archive-selector-wrapper anim-fade-in" style={{ marginBottom: '2.5rem' }}>
+            <ClassicSelect
+              value={filter.startsWith('CDF_') ? filter : ""}
+              onChange={(e) => setFilter(e.target.value as RankingFilter)}
+              containerStyle={{ minWidth: "300px" }}
+            >
+              <option value="" disabled>Choisir une année...</option>
+              {availableYears.filter(y => y.isArchived).map(y => (
+                <option key={y.year} value={`CDF_${y.year}`}>
+                  📜 Archive {y.year}
+                </option>
+              ))}
+            </ClassicSelect>
+          </div>
+        )}
 
         {loading ? (
           <div className="loader-container">
