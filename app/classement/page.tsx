@@ -154,23 +154,68 @@ export default function ClassementPage() {
 
       <main className="container classement-page">
 
-        <div className="ranking-filters-bar">
-          <div className="filter-controls">
-            <ClassicSelect
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as RankingFilter)}
-              containerStyle={{ minWidth: "350px" }}
+        <div className="ranking-tabs-container">
+          <div className="ranking-main-tabs">
+            <button 
+              className={`ranking-tab ${filter.startsWith('CDF_') && !isSelectedYearArchived ? 'active' : ''}`}
+              onClick={() => {
+                const latest = availableYears.find(y => !y.isArchived) || availableYears[0];
+                if (latest) setFilter(`CDF_${latest.year}`);
+              }}
             >
-              {availableYears.map(y => (
-                <option key={y.year} value={`CDF_${y.year}`}>
-                  {y.isArchived ? "[Archive] " : "🏆 "} Championnat de France {y.year}
-                </option>
-              ))}
-              <option value="ROLLING">🔄 Classement Glissant (12 mois)</option>
-              <option value="ROSTER">🏹 Meilleur Coach par Roster</option>
-              <option value="HOF">🏛️ Hall of Fame (Palmarès HISTORIQUE)</option>
-            </ClassicSelect>
+              <Trophy size={18} />
+              <span>Classement {availableYears.find(y => !y.isArchived)?.year || ""}</span>
+            </button>
+            <button 
+              className={`ranking-tab ${filter === 'ROLLING' ? 'active' : ''}`}
+              onClick={() => setFilter('ROLLING')}
+            >
+              <History size={18} />
+              <span>Classement Glissant</span>
+            </button>
+            <button 
+              className={`ranking-tab ${filter === 'ROSTER' ? 'active' : ''}`}
+              onClick={() => setFilter('ROSTER')}
+            >
+              <Users size={18} />
+              <span>Par Roster</span>
+            </button>
+            <button 
+              className={`ranking-tab ${filter === 'HOF' ? 'active' : ''}`}
+              onClick={() => setFilter('HOF')}
+            >
+              <Medal size={18} />
+              <span>Hall of Fame</span>
+            </button>
+            <button 
+              className={`ranking-tab ${filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived) ? 'active' : ''}`}
+              onClick={() => setFilter('ARCHIVES')}
+            >
+              <History size={18} />
+              <span>Archives</span>
+            </button>
+          </div>
 
+          {(filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
+            <div className="archive-selector-wrapper anim-fade-in">
+              <ClassicSelect
+                value={filter.startsWith('CDF_') ? filter : ""}
+                onChange={(e) => setFilter(e.target.value as RankingFilter)}
+                containerStyle={{ minWidth: "300px" }}
+              >
+                <option value="" disabled>Choisir une année...</option>
+                {availableYears.filter(y => y.isArchived).map(y => (
+                  <option key={y.year} value={`CDF_${y.year}`}>
+                    📜 Archive {y.year}
+                  </option>
+                ))}
+              </ClassicSelect>
+            </div>
+          )}
+        </div>
+
+        <div className="ranking-actions-bar">
+          <div className="filter-controls">
             {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
               <Tooltip text="Prendre un instantané définitif du classement pour cette année" position="bottom">
                 <AdminButton

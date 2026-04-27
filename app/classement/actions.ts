@@ -10,10 +10,11 @@ import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export type RankingFilter = 
-  | string // CDF_2026, CDF_2025, ROLLING, ROSTER, HOF
+  | string // CDF_2026, CDF_2025, ROLLING, ROSTER, HOF, ARCHIVES
   | "ROLLING" 
   | "ROSTER" 
-  | "HOF";
+  | "HOF"
+  | "ARCHIVES";
 
 /**
  * Récupère les années disponibles pour le classement CDF, en incluant les archives.
@@ -69,7 +70,12 @@ export async function getRanking(filter: RankingFilter) {
     startDate = new Date(2000, 0, 1);
   } else {
     // CDF 202X - Vérifier si une archive existe
-    const year = parseInt(filter.split("_")[1]);
+    const yearStr = filter.split("_")[1];
+    if (!yearStr) return []; // Évite crash si filter est juste "ARCHIVES"
+    
+    const year = parseInt(yearStr);
+    if (isNaN(year)) return [];
+
     const archive = await prisma.rankingArchive.findUnique({
       where: { year }
     });
