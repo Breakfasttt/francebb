@@ -413,15 +413,17 @@ export default function ClassementPage() {
                           <div key={tIdx} className="mini-tournament-card">
                             <div className="mini-t-header">
                               <span className="mini-t-points">{t.points} pts</span>
-                              <span className="mini-t-rank">#{t.rank}/{t.totalParticipants}</span>
+                              {(t.rank > 0) && (
+                                <span className="mini-t-rank">#{t.rank}{t.totalParticipants ? `/${t.totalParticipants}` : ''}</span>
+                              )}
                             </div>
                             <div className="mini-t-name">
                               {t.topicId ? (
                                 <Link href={`/forum/topic/${t.topicId}`} className="t-link">
-                                  {t.tournamentName}
+                                  {t.tournamentName || t.name}
                                 </Link>
                               ) : (
-                                t.tournamentName
+                                t.tournamentName || t.name
                               )}
                             </div>
                           </div>

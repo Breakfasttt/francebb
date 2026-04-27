@@ -447,7 +447,8 @@ function parseDrupalRanking(html: string, year: number) {
     }));
 
     const topResults = foundTourneys.sort((a, b) => b.points - a.points).slice(0, 4);
-    const totalPoints = topResults.length > 0 ? topResults.reduce((sum, t) => sum + t.points, 0) : totalPointsLegacy;
+    // On garde le total importé (plus fiable pour l'historique), fallback sur la somme si 0
+    const totalPoints = totalPointsLegacy > 0 ? totalPointsLegacy : topResults.reduce((sum, t) => sum + t.points, 0);
 
     coachMap.set(coachName, {
       id: `legacy-${coachName}-${year}`,
@@ -470,93 +471,120 @@ function parseCustomRanking(html: string, year: number) {
   if (!tableMatch) return null;
   
   const tableContent = tableMatch[1];
-  // On récupère toutes les lignes <tr>. 
-  // ATTENTION : On ne peut pas utiliser une regex simple car il y a des tables imbriquées dans les cellules.
-  // On va splitter par </tr> et reconstruire les lignes proprement.
-  const rawRows = tableContent.split(/<\/tr>/gi);
+  // Parsing manuel des <tr> de premier niveau uniquement
+  const rows: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < tableContent.length - 4; i++) {
+    if (tableContent.substring(i, i + 3).toLowerCase() === '<tr') {
+      if (depth === 0) start = i;
+      depth++;
+    } else if (tableContent.substring(i, i + 5).toLowerCase() === '</tr>') {
+      depth--;
+      if (depth === 0) rows.push(tableContent.substring(start, i + 5));
+    }
+  }
   
   const coachMap = new Map<string, any>();
-  for (let i = 0; i < rawRows.length; i++) {
-    const rowHtml = rawRows[i];
-    // On vérifie que c'est bien une ligne de coach (doit avoir les colonnes Points et Nom au début)
-    const cells = rowHtml.match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
-    if (!cells || cells.length < 4) continue;
+  const clean = (str: string) => str.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 
-    const clean = (str: string) => {
-      let s = str.replace(/<[^>]*>/g, '').trim();
-      s = s.replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
-      // Nettoyage spécial pour les chiffres collés aux noms (cas du trophée en image)
-      return s.trim();
-    };
+  for (const rowHtml of rows) {
+    // Parsing manuel des <td> de premier niveau dans la ligne
+    const cells: string[] = [];
+    let tdDepth = 0;
+    let tdStart = 0;
+    for (let i = 0; i < rowHtml.length - 4; i++) {
+      if (rowHtml.substring(i, i + 3).toLowerCase() === '<td') {
+        if (tdDepth === 0) tdStart = i;
+        tdDepth++;
+      } else if (rowHtml.substring(i, i + 5).toLowerCase() === '</td>') {
+        tdDepth--;
+        if (tdDepth === 0) cells.push(rowHtml.substring(tdStart, i + 5));
+      }
+    }
+
+    if (cells.length < 4) continue;
 
     const totalPointsLegacy = parseFloat(clean(cells[1]).replace(',', '.'));
     const coachName = clean(cells[2]);
     const nafNumber = clean(cells[3] || "");
-    const comments = clean(cells[4] || "");
 
     if (!coachName || isNaN(totalPointsLegacy)) continue;
 
-    // Format 2016-2024+ : Les détails peuvent être des spans ou un tableau imbriqué
     const detailContent = cells[4] || "";
     let foundTourneys: any[] = [];
 
-    // Tentative 1 : Tableau imbriqué (Format 2024)
+    // Tentative 1 : Nouveau Format (2024+) - Table imbriquée
     if (detailContent.includes('<table')) {
-      // Dans le format 2024, les points sont dans une cellule et le nom dans une autre (souvent sur plusieurs lignes)
-      // On va extraire TOUTES les cellules qui ont cdf_active ou cdf_inactive
-      const cellRegex = /<td[^>]*class=["'](cdf_(?:active|inactive))["'][^>]*>([\s\S]*?)<\/td>/gi;
-      const allCells = [...detailContent.matchAll(cellRegex)];
-      
-      for (let j = 0; j < allCells.length; j++) {
-        const content = allCells[j][2];
-        const val = parseFloat(content.replace(',', '.'));
-        
-        // Si c'est un nombre, c'est probablement les points. Le nom est dans la cellule SUIVANTE.
-        if (!isNaN(val) && val > 0 && allCells[j+1]) {
-          const rawName = allCells[j+1][2];
-          let name = rawName.replace(/<img[^>]*>/gi, '')
-                        .replace(/<span[^>]*>[\s\S]*?<\/span>/gi, '')
-                        .replace(/<sup[^>]*>[\s\S]*?<\/sup>/gi, '')
-                        .replace(/<[^>]*>/g, ' ')
-                        .replace(/\s+/g, ' ')
-                        .trim();
-          
-          if (name.length > 2) {
-            foundTourneys.push({ name, points: val, rank: 0 });
-            j++; // On saute la cellule du nom qu'on vient de traiter
+      const innerTableMatch = detailContent.match(/<table[^>]*>([\s\S]*?)<\/table>/i);
+      if (innerTableMatch) {
+        const innerRows = innerTableMatch[1].match(/<tr[^>]*>([\s\S]*?)<\/tr>/gi);
+        if (innerRows) {
+          let currentPoints: number | null = null;
+          for (let innerRow of innerRows) {
+            const innerCells = innerRow.match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
+            if (!innerCells) continue;
+            
+            // On cherche le score dans n'importe quelle cellule
+            for (let cell of innerCells) {
+              const pMatch = cell.match(/([\d]{1,3}[\.,][\d]{1,4})/);
+              if (pMatch) currentPoints = parseFloat(pMatch[1].replace(',', '.'));
+            }
+
+            // Le nom est généralement dans la 3ème cellule (index 2)
+            // Ligne type: [Points, Rang, Nom]
+            const rawName = clean(innerCells[2] || "");
+            const rawRank = clean(innerCells[1] || "");
+            
+            // Si on a un nom valide dans la cellule 2
+            if (rawName.length > 2 && currentPoints !== null && !rawName.match(/^[\d]+(?:\s*er|\s*ème|\s*eme)$/i)) {
+              foundTourneys.push({ name: rawName, points: currentPoints, rank: 0 });
+              currentPoints = null;
+            } else if (currentPoints !== null) {
+              // Fallback si la structure est différente
+              const rowText = clean(innerRow);
+              const nameCandidate = rowText
+                .replace(/[\d]{1,3}[\.,][\d]{1,4}/g, '') // Enlever points
+                .replace(/[\d]+(?:\s*er|\s*ème|\s*eme)/gi, '') // Enlever rangs
+                .trim();
+              
+              if (nameCandidate.length > 3) {
+                foundTourneys.push({ name: nameCandidate, points: currentPoints, rank: 0 });
+                currentPoints = null;
+              }
+            }
           }
         }
       }
     }
 
-    // Tentative 2 : Spans simples (Format 2018-2022)
+    // Tentative 2 : Format Spans (2018-2023)
     if (foundTourneys.length === 0) {
-      const spanRegex = /<span[^>]*class=["']cdf_(?:active|inactive)["'][^>]*>([\d.,]+)\s+([^<]+)<\/span>/gi;
-      foundTourneys = [...detailContent.matchAll(spanRegex)].map(m => ({
-        name: clean(m[2]),
-        points: parseFloat(m[1].replace(',', '.')),
-        rank: 0
-      }));
+      const entryRegex = /<(?:td|span)[^>]*class=["'](cdf_(?:active|inactive))["'][^>]*>([\s\S]*?)<\/(?:td|span)>/gi;
+      const entries = [...detailContent.matchAll(entryRegex)];
+      for (const entry of entries) {
+        const content = entry[2];
+        const pointsMatch = content.match(/([\d]{1,3}[\.,][\d]{1,4})/);
+        if (pointsMatch) {
+          const points = parseFloat(pointsMatch[1].replace(',', '.'));
+          let name = clean(content.replace(/[\d]{1,3}[\.,][\d]{1,4}/, '').replace(/[\d]+(?:er|ème|eme)/i, ''));
+          if (name.length > 2 && points > 0) foundTourneys.push({ name, points, rank: 0 });
+        }
+      }
     }
 
-    // Tentative 3 : Fallback Texte (Format 2016-2017)
+    // Tentative 3 : Fallback texte (Format 2016)
     if (foundTourneys.length === 0) {
-      const cleanComments = comments.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ');
       const textRegex = /([\d]{1,3}[\.,][\d]{4})\s*([^0-9\n\r<][^0-9\n\r<]*)/g;
-      foundTourneys = [...cleanComments.matchAll(textRegex)].map(m => {
-        let name = m[2].trim();
-        const nextPointsIndex = name.search(/[\d]{1,3}[\.,][\d]{4}/);
-        if (nextPointsIndex !== -1) name = name.substring(0, nextPointsIndex).trim();
-        return {
-          name: name,
-          points: parseFloat(m[1].replace(',', '.')),
-          rank: 0
-        };
-      }).filter(t => t.name.length > 2);
+      foundTourneys = [...clean(detailContent).matchAll(textRegex)].map(m => ({
+        name: m[2].trim().split(/[\d]{1,3}[\.,][\d]{4}/)[0].trim(),
+        points: parseFloat(m[1].replace(',', '.')),
+        rank: 0
+      })).filter(t => t.name.length > 2);
     }
 
     const topResults = foundTourneys.sort((a, b) => b.points - a.points).slice(0, 4);
-    const totalPoints = topResults.length > 0 ? topResults.reduce((sum, t) => sum + t.points, 0) : totalPointsLegacy;
+    const totalPoints = totalPointsLegacy > 0 ? totalPointsLegacy : topResults.reduce((sum, t) => sum + t.points, 0);
 
     coachMap.set(coachName, {
       id: `legacy-${coachName}-${year}`,

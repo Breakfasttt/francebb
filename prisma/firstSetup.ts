@@ -447,13 +447,13 @@ Ces challenges permettent d'avoir des objectifs à taille humaine et de créer d
         update: {
           name: archive.name,
           data: archive.data,
-          archivedById: archive.archivedById || systemUserId
+          archivedById: systemUserId
         },
         create: {
           year: archive.year,
           name: archive.name,
           data: archive.data,
-          archivedById: archive.archivedById || systemUserId
+          archivedById: systemUserId
         }
       });
     }
