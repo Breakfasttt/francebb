@@ -368,9 +368,6 @@ export async function saveArchive(year: number, name: string, rankingData: any[]
 }
 
 
-/**
- * SCRAPING : Récupère les données de classement de l'ancien site.
- */
 export async function fetchLegacyRanking(year: number) {
   const session = await auth();
   if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
@@ -382,86 +379,159 @@ export async function fetchLegacyRanking(year: number) {
 
     const html = await response.text();
 
-    // Drupal Views Table : views-table
-    const tableRegex = /<table[^>]*class="[^"]*views-table[^"]*"[^>]*>([\s\S]*?)<\/table>/i;
-    const tableMatch = html.match(tableRegex);
-
-    if (!tableMatch) return { error: `Aucune donnée trouvée pour l'année ${year} sur l'ancien site (Table introuvable).` };
-
-    const rowsContent = tableMatch[1];
-    // On cherche les tr dans le tbody
-    const tbodyRegex = /<tbody[^>]*>([\s\S]*?)<\/tbody>/i;
-    const tbodyMatch = rowsContent.match(tbodyRegex);
-    const targetContent = tbodyMatch ? tbodyMatch[1] : rowsContent;
-
-    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
-    const rows = [...targetContent.matchAll(rowRegex)];
-
-    if (rows.length === 0) return { error: `Le tableau de l'année ${year} est vide.` };
-
-    const rankingData: any[] = [];
-    const coachMap = new Map<string, any>();
-
-    // Puisqu'on a ciblé le tbody, la première ligne (i=0) est déjà un coach.
-    for (let i = 0; i < rows.length; i++) {
-      const cells = rows[i][1].match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
-      if (!cells || cells.length < 4) continue;
-
-      // Nettoyage HTML basique
-      const clean = (str: string) => str.replace(/<[^>]*>/g, '').trim();
-
-      const rank = parseInt(clean(cells[0]));
-      const totalPointsLegacy = parseFloat(clean(cells[1]).replace(',', '.'));
-      const coachName = clean(cells[2]);
-      const nafNumber = clean(cells[3]);
-      const comments = clean(cells[4] || "");
-
-      if (!coachName) continue;
-
-      // Extraction des tournois via regex : Nom (Points)
-      // Exemple : NABOT VII (98)* Coupe Téflon II (91.7091)*
-      const tourneyRegex = /([^(]+)\s*\(([\d.,]+)\)/g;
-      const foundTourneys = [...comments.matchAll(tourneyRegex)].map(m => ({
-        name: m[1].trim(),
-        points: parseFloat(m[2].replace(',', '.')),
-        rank: 0 // Info non dispo dans ce format
-      }));
-
-      // Garder top 4 si plus de 4 tournois (demande utilisateur)
-      const topResults = foundTourneys
-        .sort((a, b) => b.points - a.points)
-        .slice(0, 4);
-
-      // Calcul du total basé sur le top 4 (plus précis pour le nouveau site)
-      const totalPoints = topResults.reduce((sum, t) => sum + t.points, 0);
-
-      coachMap.set(coachName, {
-        id: `legacy-${coachName}-${year}`,
-        name: coachName,
-        nafNumber: nafNumber !== '-' && nafNumber !== '' ? nafNumber : null,
-        totalPoints: parseFloat((totalPoints || totalPointsLegacy).toFixed(4)),
-        bestResults: topResults,
-        count: foundTourneys.length
-      });
+    // 1. Tenter le parsing Drupal (Pre-2016)
+    let result = parseDrupalRanking(html, year);
+    
+    // 2. Si vide ou erreur, tenter le parsing Custom (Post-2016)
+    if (!result || result.rankingData.length === 0) {
+      result = parseCustomRanking(html, year);
     }
 
-    const finalRanking = Array.from(coachMap.values())
-      .sort((a, b) => b.totalPoints - a.totalPoints);
-
-    if (finalRanking.length === 0) return { error: "Aucun coach extrait." };
+    if (!result || result.rankingData.length === 0) {
+      return { error: `Aucune donnée trouvée pour l'année ${year} (Structure non reconnue).` };
+    }
 
     return { 
       success: true, 
-      data: {
-        year,
-        name: `Championnat de France ${year} (Import Historique)`,
-        rankingData: finalRanking
-      }
+      data: result
     };
   } catch (e) {
     console.error("[fetchLegacyRanking] Error:", e);
     return { error: "Erreur lors de la récupération des données." };
   }
+}
+
+/**
+ * PARSER 1 : Drupal (views-table) - Format 2012
+ */
+function parseDrupalRanking(html: string, year: number) {
+  const tableParts = html.split(/<table[^>]*class="[^"]*views-table[^"]*"[^>]*>/i);
+  if (tableParts.length < 2) return null;
+  
+  const content = tableParts[1].split(/<\/table>/i)[0];
+  const tbodyMatch = content.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/i);
+  const rowsContent = tbodyMatch ? tbodyMatch[1] : content;
+  const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
+  const rows = [...rowsContent.matchAll(rowRegex)];
+
+  const coachMap = new Map<string, any>();
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i][1].match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
+    if (!cells || cells.length < 4) continue;
+
+    const clean = (str: string) => {
+      // Nettoyage agressif des entités HTML
+      let s = str.replace(/<[^>]*>/g, '').trim();
+      s = s.replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      return s;
+    };
+
+    const coachName = clean(cells[2]);
+    const totalPointsLegacy = parseFloat(clean(cells[1]).replace(',', '.'));
+    const nafNumber = clean(cells[3]);
+    const comments = clean(cells[4] || "");
+
+    if (!coachName || isNaN(totalPointsLegacy)) continue;
+
+    const tourneyRegex = /([^(]+)\s*\(([\d.,]+)\)/g;
+    const foundTourneys = [...comments.matchAll(tourneyRegex)].map(m => ({
+      name: m[1].trim(),
+      points: parseFloat(m[2].replace(',', '.')),
+      rank: 0
+    }));
+
+    const topResults = foundTourneys.sort((a, b) => b.points - a.points).slice(0, 4);
+    const totalPoints = topResults.length > 0 ? topResults.reduce((sum, t) => sum + t.points, 0) : totalPointsLegacy;
+
+    coachMap.set(coachName, {
+      id: `legacy-${coachName}-${year}`,
+      name: coachName,
+      nafNumber: (nafNumber && nafNumber !== '-' && nafNumber !== 'null') ? nafNumber : null,
+      totalPoints: parseFloat(totalPoints.toFixed(4)),
+      bestResults: topResults,
+      count: foundTourneys.length || 1
+    });
+  }
+
+  return { year, name: `CdF ${year} (Import Drupal)`, rankingData: Array.from(coachMap.values()) };
+}
+
+/**
+ * PARSER 2 : Custom (coachlist) - Format 2016+
+ */
+function parseCustomRanking(html: string, year: number) {
+  // On cherche la table avec la classe coachlist
+  const tableSplit = html.split(/<table[^>]*class=["'][^"']*coachlist[^"']*["'][^>]*>/i);
+  if (tableSplit.length < 2) return null;
+  
+  const tableContent = tableSplit[1].split(/<\/table>/i)[0];
+  const tbodySplit = tableContent.split(/<tbody[^>]*>/i);
+  const rowsContent = tbodySplit.length > 1 ? tbodySplit[1].split(/<\/tbody>/i)[0] : tableContent;
+  
+  const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
+  const rows = [...rowsContent.matchAll(rowRegex)];
+
+  const coachMap = new Map<string, any>();
+  for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i][1].match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
+    if (!cells || cells.length < 3) continue;
+
+    const clean = (str: string) => {
+      let s = str.replace(/<[^>]*>/g, '').trim();
+      s = s.replace(/&nbsp;/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+      // Nettoyage spécial pour les chiffres collés aux noms (cas du trophée en image)
+      return s.trim();
+    };
+
+    const totalPointsLegacy = parseFloat(clean(cells[1]).replace(',', '.'));
+    const coachName = clean(cells[2]);
+    const nafNumber = clean(cells[3] || "");
+    const comments = clean(cells[4] || "");
+
+    if (!coachName || isNaN(totalPointsLegacy)) continue;
+
+    // Format 2016-2022+ : Utilise souvent des <span class="cdf_active">Points Nom</span>
+    // On extrait directement depuis le HTML des commentaires pour ne pas perdre la structure
+    const detailContent = cells[4] || "";
+    const tourneyRegex = /<span[^>]*class=["']cdf_(?:active|inactive)["'][^>]*>([\d.,]+)\s+([^<]+)<\/span>/gi;
+    
+    const foundTourneys = [...detailContent.matchAll(tourneyRegex)].map(m => ({
+      name: clean(m[2]),
+      points: parseFloat(m[1].replace(',', '.')),
+      rank: 0
+    }));
+
+    // Fallback si pas de span (format 2016-2017 simple texte)
+    if (foundTourneys.length === 0) {
+      const cleanComments = comments.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ');
+      const textRegex = /([\d]{1,3}[\.,][\d]{4})\s*([^0-9\n\r<][^0-9\n\r<]*)/g;
+      const textMatches = [...cleanComments.matchAll(textRegex)].map(m => {
+        let name = m[2].trim();
+        const nextPointsIndex = name.search(/[\d]{1,3}[\.,][\d]{4}/);
+        if (nextPointsIndex !== -1) name = name.substring(0, nextPointsIndex).trim();
+        return {
+          name: name,
+          points: parseFloat(m[1].replace(',', '.')),
+          rank: 0
+        };
+      }).filter(t => t.name.length > 2);
+      foundTourneys.push(...textMatches);
+    }
+
+    const topResults = foundTourneys.sort((a, b) => b.points - a.points).slice(0, 4);
+    const totalPoints = topResults.length > 0 ? topResults.reduce((sum, t) => sum + t.points, 0) : totalPointsLegacy;
+
+    coachMap.set(coachName, {
+      id: `legacy-${coachName}-${year}`,
+      name: coachName,
+      nafNumber: (nafNumber && nafNumber !== '-' && nafNumber !== 'null') ? nafNumber : null,
+      totalPoints: parseFloat(totalPoints.toFixed(4)),
+      bestResults: topResults,
+      count: foundTourneys.length || 1
+    });
+  }
+
+  return { year, name: `CdF ${year} (Import Custom)`, rankingData: Array.from(coachMap.values()) };
 }
 
 // Helper pour vérifier le grade admin (à adapter selon vos rôles)
