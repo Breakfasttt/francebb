@@ -197,6 +197,22 @@ export default function ClassementPage() {
           </div>
         </div>
 
+        {(filter.startsWith('CDF_') && !isSelectedYearArchived) && availableYears.filter(y => !y.isArchived).length > 1 && (
+          <div className="archive-selector-wrapper anim-fade-in" style={{ marginBottom: '2.5rem' }}>
+            <ClassicSelect
+              value={filter}
+              onChange={(e) => setFilter(e.target.value as RankingFilter)}
+              containerStyle={{ minWidth: "300px" }}
+            >
+              {availableYears.filter(y => !y.isArchived).map(y => (
+                <option key={y.year} value={`CDF_${y.year}`}>
+                  🏆 Année {y.year} (Calcul direct)
+                </option>
+              ))}
+            </ClassicSelect>
+          </div>
+        )}
+
         <div className="ranking-actions-bar">
           <ExplainButton
             icon={<HelpCircle size={16} />}
