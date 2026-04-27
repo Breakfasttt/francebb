@@ -460,21 +460,21 @@ function parseDrupalRanking(html: string, year: number) {
  * PARSER 2 : Custom (coachlist) - Format 2016+
  */
 function parseCustomRanking(html: string, year: number) {
-  // On cherche la table avec la classe coachlist
-  const tableSplit = html.split(/<table[^>]*class=["'][^"']*coachlist[^"']*["'][^>]*>/i);
-  if (tableSplit.length < 2) return null;
+  const tableMatch = html.match(/<table[^>]*class=["'][^"']*(?:coachlist|ranking)[^"']*["'][^>]*>([\s\S]*)<\/table>/i);
+  if (!tableMatch) return null;
   
-  const tableContent = tableSplit[1].split(/<\/table>/i)[0];
-  const tbodySplit = tableContent.split(/<tbody[^>]*>/i);
-  const rowsContent = tbodySplit.length > 1 ? tbodySplit[1].split(/<\/tbody>/i)[0] : tableContent;
+  const tableContent = tableMatch[1];
+  // On récupère toutes les lignes <tr>. 
+  // ATTENTION : On ne peut pas utiliser une regex simple car il y a des tables imbriquées dans les cellules.
+  // On va splitter par </tr> et reconstruire les lignes proprement.
+  const rawRows = tableContent.split(/<\/tr>/gi);
   
-  const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
-  const rows = [...rowsContent.matchAll(rowRegex)];
-
   const coachMap = new Map<string, any>();
-  for (let i = 0; i < rows.length; i++) {
-    const cells = rows[i][1].match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
-    if (!cells || cells.length < 3) continue;
+  for (let i = 0; i < rawRows.length; i++) {
+    const rowHtml = rawRows[i];
+    // On vérifie que c'est bien une ligne de coach (doit avoir les colonnes Points et Nom au début)
+    const cells = rowHtml.match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
+    if (!cells || cells.length < 4) continue;
 
     const clean = (str: string) => {
       let s = str.replace(/<[^>]*>/g, '').trim();
@@ -490,22 +490,54 @@ function parseCustomRanking(html: string, year: number) {
 
     if (!coachName || isNaN(totalPointsLegacy)) continue;
 
-    // Format 2016-2022+ : Utilise souvent des <span class="cdf_active">Points Nom</span>
-    // On extrait directement depuis le HTML des commentaires pour ne pas perdre la structure
+    // Format 2016-2024+ : Les détails peuvent être des spans ou un tableau imbriqué
     const detailContent = cells[4] || "";
-    const tourneyRegex = /<span[^>]*class=["']cdf_(?:active|inactive)["'][^>]*>([\d.,]+)\s+([^<]+)<\/span>/gi;
-    
-    const foundTourneys = [...detailContent.matchAll(tourneyRegex)].map(m => ({
-      name: clean(m[2]),
-      points: parseFloat(m[1].replace(',', '.')),
-      rank: 0
-    }));
+    let foundTourneys: any[] = [];
 
-    // Fallback si pas de span (format 2016-2017 simple texte)
+    // Tentative 1 : Tableau imbriqué (Format 2024)
+    if (detailContent.includes('<table')) {
+      // Dans le format 2024, les points sont dans une cellule et le nom dans une autre (souvent sur plusieurs lignes)
+      // On va extraire TOUTES les cellules qui ont cdf_active ou cdf_inactive
+      const cellRegex = /<td[^>]*class=["'](cdf_(?:active|inactive))["'][^>]*>([\s\S]*?)<\/td>/gi;
+      const allCells = [...detailContent.matchAll(cellRegex)];
+      
+      for (let j = 0; j < allCells.length; j++) {
+        const content = allCells[j][2];
+        const val = parseFloat(content.replace(',', '.'));
+        
+        // Si c'est un nombre, c'est probablement les points. Le nom est dans la cellule SUIVANTE.
+        if (!isNaN(val) && val > 0 && allCells[j+1]) {
+          const rawName = allCells[j+1][2];
+          let name = rawName.replace(/<img[^>]*>/gi, '')
+                        .replace(/<span[^>]*>[\s\S]*?<\/span>/gi, '')
+                        .replace(/<sup[^>]*>[\s\S]*?<\/sup>/gi, '')
+                        .replace(/<[^>]*>/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+          
+          if (name.length > 2) {
+            foundTourneys.push({ name, points: val, rank: 0 });
+            j++; // On saute la cellule du nom qu'on vient de traiter
+          }
+        }
+      }
+    }
+
+    // Tentative 2 : Spans simples (Format 2018-2022)
+    if (foundTourneys.length === 0) {
+      const spanRegex = /<span[^>]*class=["']cdf_(?:active|inactive)["'][^>]*>([\d.,]+)\s+([^<]+)<\/span>/gi;
+      foundTourneys = [...detailContent.matchAll(spanRegex)].map(m => ({
+        name: clean(m[2]),
+        points: parseFloat(m[1].replace(',', '.')),
+        rank: 0
+      }));
+    }
+
+    // Tentative 3 : Fallback Texte (Format 2016-2017)
     if (foundTourneys.length === 0) {
       const cleanComments = comments.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ');
       const textRegex = /([\d]{1,3}[\.,][\d]{4})\s*([^0-9\n\r<][^0-9\n\r<]*)/g;
-      const textMatches = [...cleanComments.matchAll(textRegex)].map(m => {
+      foundTourneys = [...cleanComments.matchAll(textRegex)].map(m => {
         let name = m[2].trim();
         const nextPointsIndex = name.search(/[\d]{1,3}[\.,][\d]{4}/);
         if (nextPointsIndex !== -1) name = name.substring(0, nextPointsIndex).trim();
@@ -515,7 +547,6 @@ function parseCustomRanking(html: string, year: number) {
           rank: 0
         };
       }).filter(t => t.name.length > 2);
-      foundTourneys.push(...textMatches);
     }
 
     const topResults = foundTourneys.sort((a, b) => b.points - a.points).slice(0, 4);
