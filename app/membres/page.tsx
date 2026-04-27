@@ -1,15 +1,15 @@
+import MembersTable from "@/app/membres/component/MembersTable";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
 import { isModerator, UserRole } from "@/lib/roles";
-import MembersTable from "@/app/membres/component/MembersTable";
-import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { ArrowLeft, Users } from "lucide-react";
+import { redirect } from "next/navigation";
 import "./page.css";
 
 export const dynamic = "force-dynamic";
+
+
+//ce commentaire est juste un test
 
 export default async function MembersPage() {
   const session = await auth();
@@ -45,13 +45,13 @@ export default async function MembersPage() {
 
   // 5. Récupérer les données de filtrage
   const [allLigues, allRegions] = await Promise.all([
-    prisma.ligue.findMany({ 
-      select: { id: true, name: true, acronym: true }, 
-      orderBy: { acronym: 'asc' } 
+    prisma.ligue.findMany({
+      select: { id: true, name: true, acronym: true },
+      orderBy: { acronym: 'asc' }
     }),
-    prisma.referenceData.findMany({ 
-      where: { group: 'COACH_REGION', isActive: true }, 
-      orderBy: { order: 'asc' } 
+    prisma.referenceData.findMany({
+      where: { group: 'COACH_REGION', isActive: true },
+      orderBy: { order: 'asc' }
     })
   ]);
 
@@ -64,13 +64,13 @@ export default async function MembersPage() {
 
       <main className="container">
 
-      <MembersTable 
-        users={allUsers} 
-        currentUserRole={me.role as UserRole} 
-        currentUserId={session.user.id} 
-        allLigues={allLigues}
-        allRegions={allRegions}
-      />
+        <MembersTable
+          users={allUsers}
+          currentUserRole={me.role as UserRole}
+          currentUserId={session.user.id}
+          allLigues={allLigues}
+          allRegions={allRegions}
+        />
       </main>
     </div>
   );
