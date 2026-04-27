@@ -193,7 +193,14 @@ export default function ClassementPage() {
             </button>
             <button 
               className={`ranking-tab ${filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived) ? 'active' : ''}`}
-              onClick={() => setFilter('ARCHIVES')}
+              onClick={() => {
+                const firstArchive = availableYears.find(y => y.isArchived);
+                if (firstArchive) {
+                  setFilter(`CDF_${firstArchive.year}`);
+                } else {
+                  setFilter('ARCHIVES');
+                }
+              }}
             >
               <History size={18} />
               <span>Archives</span>
