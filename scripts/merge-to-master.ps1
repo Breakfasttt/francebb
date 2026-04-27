@@ -1,29 +1,38 @@
 # Script de merge complet : developement -> master -> push
 # Usage: ./scripts/merge-to-master.ps1
 
+# Configuration des noms de branches
+$devBranch = "development"
+$masterBranch = "master"
+
 $currentBranch = git branch --show-current
 Write-Host "Sauvegarde de la branche actuelle : $currentBranch" -ForegroundColor Cyan
 
-# 1. Commit des changements sur developement si nécessaire
+# 1. Commit et Push sur la branche de développement si nécessaire
 $status = git status --porcelain
 if ($status) {
-    Write-Host "Changements détectés sur $currentBranch. Commit en cours..." -ForegroundColor Yellow
+    Write-Host "Changements détectés sur $currentBranch. Commit & Push en cours..." -ForegroundColor Yellow
     git add .
-    git commit -m "Auto-commit avant merge sur master"
+    git commit -m "Auto-commit avant merge sur $masterBranch"
+    git push origin $currentBranch
+} else {
+    # Même si pas de changement local, on push pour être sûr que le remote est à jour
+    Write-Host "Pas de changements locaux, vérification du push sur $currentBranch..." -ForegroundColor Gray
+    git push origin $currentBranch
 }
 
 # 2. Passage sur master
-Write-Host "Passage sur la branche master..." -ForegroundColor Yellow
-git checkout master
-git pull origin master
+Write-Host "Passage sur la branche $masterBranch..." -ForegroundColor Yellow
+git checkout $masterBranch
+git pull origin $masterBranch
 
 # 3. Merge
-Write-Host "Merge de developement dans master..." -ForegroundColor Yellow
-git merge developement
+Write-Host "Merge de $currentBranch dans $masterBranch..." -ForegroundColor Yellow
+git merge $currentBranch
 
 # 4. Push master
-Write-Host "Push de master vers l'origine..." -ForegroundColor Yellow
-git push origin master
+Write-Host "Push de $masterBranch vers l'origine..." -ForegroundColor Yellow
+git push origin $masterBranch
 
 # 5. Retour
 Write-Host "Retour sur la branche $currentBranch..." -ForegroundColor Yellow
