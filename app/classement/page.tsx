@@ -32,6 +32,7 @@ import {
   getHallOfFame,
   getRanking,
   getRankingYears,
+  fetchLegacyRanking,
   RankingFilter
 } from "./actions";
 import "./page-mobile.css";
@@ -50,6 +51,9 @@ export default function ClassementPage() {
   const [isArchiveConfirmOpen, setIsArchiveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeleteConfirmLevel2Open, setIsDeleteConfirmLevel2Open] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [importYear, setImportYear] = useState(new Date().getFullYear() - 1);
+  const [isImportLoading, setIsImportLoading] = useState(false);
 
   const user = session?.user as any;
   const isMod = isModerator(user?.role);
@@ -89,6 +93,29 @@ export default function ClassementPage() {
     }
     fetchData();
   }, [filter]);
+
+  async function handleImport() {
+    setIsImportLoading(true);
+    try {
+      const res = await fetchLegacyRanking(importYear);
+      if (res.error) {
+        toast.error(res.error);
+      } else {
+        const exists = availableYears.some(y => y.year === importYear);
+        if (exists) {
+          if (!confirm(`L'année ${importYear} est déjà présente. L'importer écrasera les données actuelles dans l'éditeur. Continuer ?`)) {
+            return;
+          }
+        }
+        router.push(`/classement/edit-archive?importYear=${importYear}`);
+      }
+    } catch (e) {
+      toast.error("Erreur lors de l'import");
+    } finally {
+      setIsImportLoading(false);
+      setIsImportModalOpen(false);
+    }
+  }
 
   async function handleArchive() {
     if (!currentYearData) return;
@@ -171,13 +198,23 @@ export default function ClassementPage() {
             )}
 
             {isMod && (
-              <Tooltip text="Créer une nouvelle archive historique manuellement" position="bottom">
-                <AdminButton
-                  onClick={() => router.push('/classement/edit-archive')}
-                >
-                  + Manuel
-                </AdminButton>
-              </Tooltip>
+              <div className="admin-actions-group">
+                <Tooltip text="Importer des données depuis teamfrancebb.fr" position="bottom">
+                  <AdminButton
+                    icon={<History size={16} />}
+                    onClick={() => setIsImportModalOpen(true)}
+                  >
+                    Importer
+                  </AdminButton>
+                </Tooltip>
+                <Tooltip text="Créer une nouvelle archive historique manuellement" position="bottom">
+                  <AdminButton
+                    onClick={() => router.push('/classement/edit-archive')}
+                  >
+                    + Manuel
+                  </AdminButton>
+                </Tooltip>
+              </div>
             )}
           </div>
 
@@ -395,6 +432,35 @@ export default function ClassementPage() {
           confirmLabel="SUPPRIMER DÉFINITIVEMENT"
           isDanger
         />
+
+        <Modal
+          isOpen={isImportModalOpen}
+          onClose={() => setIsImportModalOpen(false)}
+          title="Importer des archives"
+          onConfirm={handleImport}
+          confirmText={isImportLoading ? "Importation..." : "Lancer l'import"}
+          variant="admin"
+        >
+          <div className="import-modal-content" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <p>Indiquez l'année à récupérer depuis l'ancien site (teamfrancebb.fr).</p>
+            <div className="form-group">
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 700 }}>Année cible</label>
+              <input 
+                type="number" 
+                className="admin-input" 
+                value={importYear} 
+                onChange={(e) => setImportYear(parseInt(e.target.value))}
+                min={2000}
+                max={new Date().getFullYear()}
+                style={{ width: '100%', padding: '0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)', borderRadius: '10px', color: 'white' }}
+              />
+            </div>
+            <div className="help-roster-note">
+              <Info size={14} />
+              <span>L'importation récupère les noms, numéros NAF et points totaux.</span>
+            </div>
+          </div>
+        </Modal>
       </main>
     </div>
   );

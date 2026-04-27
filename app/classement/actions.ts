@@ -367,6 +367,103 @@ export async function saveArchive(year: number, name: string, rankingData: any[]
   }
 }
 
+
+/**
+ * SCRAPING : Récupère les données de classement de l'ancien site.
+ */
+export async function fetchLegacyRanking(year: number) {
+  const session = await auth();
+  if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
+
+  try {
+    const url = `https://www.teamfrancebb.fr/classement/?year=${year}`;
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) return { error: "Impossible de contacter l'ancien site." };
+
+    const html = await response.text();
+
+    // Drupal Views Table : views-table
+    const tableRegex = /<table[^>]*class="[^"]*views-table[^"]*"[^>]*>([\s\S]*?)<\/table>/i;
+    const tableMatch = html.match(tableRegex);
+
+    if (!tableMatch) return { error: `Aucune donnée trouvée pour l'année ${year} sur l'ancien site (Table introuvable).` };
+
+    const rowsContent = tableMatch[1];
+    // On cherche les tr dans le tbody
+    const tbodyRegex = /<tbody[^>]*>([\s\S]*?)<\/tbody>/i;
+    const tbodyMatch = rowsContent.match(tbodyRegex);
+    const targetContent = tbodyMatch ? tbodyMatch[1] : rowsContent;
+
+    const rowRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/gi;
+    const rows = [...targetContent.matchAll(rowRegex)];
+
+    if (rows.length === 0) return { error: `Le tableau de l'année ${year} est vide.` };
+
+    const rankingData: any[] = [];
+    const coachMap = new Map<string, any>();
+
+    // Puisqu'on a ciblé le tbody, la première ligne (i=0) est déjà un coach.
+    for (let i = 0; i < rows.length; i++) {
+      const cells = rows[i][1].match(/<td[^>]*>([\s\S]*?)<\/td>/gi);
+      if (!cells || cells.length < 4) continue;
+
+      // Nettoyage HTML basique
+      const clean = (str: string) => str.replace(/<[^>]*>/g, '').trim();
+
+      const rank = parseInt(clean(cells[0]));
+      const totalPointsLegacy = parseFloat(clean(cells[1]).replace(',', '.'));
+      const coachName = clean(cells[2]);
+      const nafNumber = clean(cells[3]);
+      const comments = clean(cells[4] || "");
+
+      if (!coachName) continue;
+
+      // Extraction des tournois via regex : Nom (Points)
+      // Exemple : NABOT VII (98)* Coupe Téflon II (91.7091)*
+      const tourneyRegex = /([^(]+)\s*\(([\d.,]+)\)/g;
+      const foundTourneys = [...comments.matchAll(tourneyRegex)].map(m => ({
+        name: m[1].trim(),
+        points: parseFloat(m[2].replace(',', '.')),
+        rank: 0 // Info non dispo dans ce format
+      }));
+
+      // Garder top 4 si plus de 4 tournois (demande utilisateur)
+      const topResults = foundTourneys
+        .sort((a, b) => b.points - a.points)
+        .slice(0, 4);
+
+      // Calcul du total basé sur le top 4 (plus précis pour le nouveau site)
+      const totalPoints = topResults.reduce((sum, t) => sum + t.points, 0);
+
+      coachMap.set(coachName, {
+        id: `legacy-${coachName}-${year}`,
+        name: coachName,
+        nafNumber: nafNumber !== '-' && nafNumber !== '' ? nafNumber : null,
+        totalPoints: parseFloat((totalPoints || totalPointsLegacy).toFixed(4)),
+        bestResults: topResults,
+        count: foundTourneys.length
+      });
+    }
+
+    const finalRanking = Array.from(coachMap.values())
+      .sort((a, b) => b.totalPoints - a.totalPoints);
+
+    if (finalRanking.length === 0) return { error: "Aucun coach extrait." };
+
+    return { 
+      success: true, 
+      data: {
+        year,
+        name: `Championnat de France ${year} (Import Historique)`,
+        rankingData: finalRanking
+      }
+    };
+  } catch (e) {
+    console.error("[fetchLegacyRanking] Error:", e);
+    return { error: "Erreur lors de la récupération des données." };
+  }
+}
+
 // Helper pour vérifier le grade admin (à adapter selon vos rôles)
 function isAdmin(role: string) {
   return role === "ADMIN" || role === "SUPERADMIN";

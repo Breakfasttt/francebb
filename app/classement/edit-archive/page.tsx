@@ -4,12 +4,13 @@ import { isModerator } from "@/lib/roles";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ArchiveEditor from "./ArchiveEditor";
+import { fetchLegacyRanking } from "../actions";
 import "./page.css";
 import "./page-mobile.css";
 
 
-export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
-  const { year: yearStr } = await searchParams;
+export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string, importYear?: string }> }) {
+  const { year: yearStr, importYear: importYearStr } = await searchParams;
   const session = await auth();
   
   if (!session?.user || !isModerator(session.user.role)) {
@@ -17,8 +18,8 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
   }
 
   let initialData = {
-    year: yearStr ? parseInt(yearStr) : new Date().getFullYear(),
-    name: yearStr ? `Championnat de France ${yearStr}` : `Championnat de France ${new Date().getFullYear()}`,
+    year: yearStr ? parseInt(yearStr) : (importYearStr ? parseInt(importYearStr) : new Date().getFullYear()),
+    name: yearStr ? `Championnat de France ${yearStr}` : (importYearStr ? `Championnat de France ${importYearStr}` : `Championnat de France ${new Date().getFullYear()}`),
     rankingData: [] as any[]
   };
 
@@ -32,6 +33,15 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
         year: archive.year,
         name: archive.name,
         rankingData: JSON.parse(archive.data)
+      };
+    }
+  } else if (importYearStr) {
+    const res = await fetchLegacyRanking(parseInt(importYearStr));
+    if (res.success && res.data) {
+      initialData = {
+        year: res.data.year,
+        name: res.data.name,
+        rankingData: res.data.rankingData
       };
     }
   }
