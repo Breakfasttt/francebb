@@ -22,18 +22,49 @@
 }
 
 @media (max-width: 768px) {
-  .ranking-filters-bar {
+  /* Onglets empilés */
+  .ranking-main-tabs {
     flex-direction: column;
-    align-items: stretch;
+    padding: 0.8rem;
+  }
+  
+  .ranking-tab {
+    width: 100%;
+    justify-content: flex-start;
     padding: 1rem;
   }
+
+  /* Barre d'actions */
+  .ranking-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  /* Correction débordement bouton aide */
+  .bb-button.variant-explain {
+    white-space: normal; /* Autorise le wrap */
+    text-align: left;
+    height: auto;
+    line-height: 1.4;
+  }
+
   .filter-controls {
     flex-direction: column;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 0.8rem;
   }
-  .ranking-select {
-    width: 100% !important;
-    min-width: 100% !important;
+
+  .admin-actions-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .admin-actions-group .bb-button {
+    width: 100%;
   }
 }
 
