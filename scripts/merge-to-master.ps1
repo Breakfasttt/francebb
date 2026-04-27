@@ -1,5 +1,9 @@
+param (
+    [string]$message = "Auto-commit avant merge sur master"
+)
+
 # Script de merge complet : developement -> master -> push
-# Usage: ./scripts/merge-to-master.ps1
+# Usage: ./scripts/merge-to-master.ps1 -message "Mon super message"
 
 # Configuration des noms de branches
 $devBranch = "development"
@@ -13,10 +17,9 @@ $status = git status --porcelain
 if ($status) {
     Write-Host "Changements détectés sur $currentBranch. Commit & Push en cours..." -ForegroundColor Yellow
     git add .
-    git commit -m "Auto-commit avant merge sur $masterBranch"
+    git commit -m $message
     git push origin $currentBranch
 } else {
-    # Même si pas de changement local, on push pour être sûr que le remote est à jour
     Write-Host "Pas de changements locaux, vérification du push sur $currentBranch..." -ForegroundColor Gray
     git push origin $currentBranch
 }
