@@ -160,11 +160,15 @@ export default function ClassementPage() {
               className={`ranking-tab ${filter.startsWith('CDF_') && !isSelectedYearArchived ? 'active' : ''}`}
               onClick={() => {
                 const latest = availableYears.find(y => !y.isArchived) || availableYears[0];
-                if (latest) setFilter(`CDF_${latest.year}`);
+                if (latest) {
+                  setFilter(`CDF_${latest.year}`);
+                } else {
+                  setFilter(`CDF_${new Date().getFullYear()}`);
+                }
               }}
             >
               <Trophy size={18} />
-              <span>Classement {availableYears.find(y => !y.isArchived)?.year || ""}</span>
+              <span>Classement {availableYears.find(y => !y.isArchived)?.year || new Date().getFullYear()}</span>
             </button>
             <button 
               className={`ranking-tab ${filter === 'ROLLING' ? 'active' : ''}`}
