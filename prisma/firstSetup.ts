@@ -1,6 +1,8 @@
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { questions as quizQuestions } from "../app/bbquizz/data/questions";
 import { PrismaClient } from "./generated-client";
+import fs from "fs";
+import path from "path";
 
 /**
  * Script de configuration initiale (First Setup) de la base de données BBFrance.
@@ -432,6 +434,32 @@ Ces challenges permettent d'avoir des objectifs à taille humaine et de créer d
       update: {}, // On ne l'écrase pas s'il existe déjà
       create: setting
     });
+  }
+
+  // 8. Archives du Classement (RankingArchive)
+  console.log("--- Configuration des archives du classement...");
+  const archivesPath = path.join(process.cwd(), "prisma", "archives_data.json");
+  if (fs.existsSync(archivesPath)) {
+    const archivesData = JSON.parse(fs.readFileSync(archivesPath, "utf-8"));
+    for (const archive of archivesData) {
+      await prisma.rankingArchive.upsert({
+        where: { year: archive.year },
+        update: {
+          name: archive.name,
+          data: archive.data,
+          archivedById: archive.archivedById || systemUserId
+        },
+        create: {
+          year: archive.year,
+          name: archive.name,
+          data: archive.data,
+          archivedById: archive.archivedById || systemUserId
+        }
+      });
+    }
+    console.log(`✅ ${archivesData.length} archives synchronisées.`);
+  } else {
+    console.log("ℹ️ Aucun fichier d'archives trouvé (archives_data.json), passage.");
   }
 
   console.log("✅ Setup initial terminé avec succès !");
