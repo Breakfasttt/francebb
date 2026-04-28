@@ -17,29 +17,32 @@ export async function getDashboardStats() {
   const isAdmin = checkIsAdmin(userRole);
 
   // 1. Statistiques Publiques
-  const [
-    userCount,
-    ligueCount,
-    articleCount,
-    topicCount,
-    postCount,
-    totalViewsResult,
-    onlineCount
-  ] = await Promise.all([
-    prisma.user.count(),
-    prisma.ligue.count(),
-    prisma.article.count(),
-    prisma.topic.count(),
-    prisma.post.count(),
-    prisma.topic.aggregate({
-      _sum: { views: true }
-    }),
-    prisma.session.count({
-      where: {
-        expires: { gte: new Date() }
-      }
-    })
-  ]);
+  let userCount = 0, ligueCount = 0, articleCount = 0, topicCount = 0, postCount = 0, totalViews = 0, onlineCount = 0;
+
+  try {
+    const results = await Promise.allSettled([
+      prisma.user.count(),
+      prisma.ligue.count(),
+      prisma.article.count(),
+      prisma.topic.count(),
+      prisma.post.count(),
+      prisma.topic.aggregate({ _sum: { views: true } }),
+      prisma.session.count({ where: { expires: { gte: new Date() } } })
+    ]);
+
+    if (results[0].status === "fulfilled") userCount = results[0].value;
+    if (results[1].status === "fulfilled") ligueCount = results[1].value;
+    if (results[2].status === "fulfilled") articleCount = results[2].value;
+    if (results[3].status === "fulfilled") topicCount = results[3].value;
+    if (results[4].status === "fulfilled") postCount = results[4].value;
+    if (results[5].status === "fulfilled") {
+      const agg = results[5].value as any;
+      totalViews = agg?._sum?.views || 0;
+    }
+    if (results[6].status === "fulfilled") onlineCount = results[6].value;
+  } catch (e) {
+    console.error("Erreur globale stats publiques:", e);
+  }
 
   const stats = {
     public: {
@@ -48,7 +51,7 @@ export async function getDashboardStats() {
       articles: articleCount,
       topics: topicCount,
       posts: postCount,
-      totalViews: totalViewsResult._sum.views || 0,
+      totalViews: totalViews,
       onlineUsers: onlineCount
     },
     admin: null as any
@@ -72,15 +75,27 @@ export async function getDashboardStats() {
     const now = new Date();
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     
-    const [pendingReports, pendingResources, monthlyMails] = await Promise.all([
-      prisma.moderationReport.count({ where: { status: "PENDING" } }),
-      prisma.resource.count({ where: { status: "PENDING" } }),
-      prisma.mailLog.count({
-        where: {
-          sentAt: { gte: firstDayOfMonth }
-        }
-      })
-    ]);
+    let pendingReports = 0;
+    let pendingResources = 0;
+    let monthlyMails = 0;
+
+    try {
+      const adminResults = await Promise.allSettled([
+        prisma.moderationReport.count({ where: { status: "PENDING" } }),
+        prisma.resource.count({ where: { status: "PENDING" } }),
+        prisma.mailLog.count({
+          where: {
+            sentAt: { gte: firstDayOfMonth }
+          }
+        })
+      ]);
+
+      if (adminResults[0].status === "fulfilled") pendingReports = adminResults[0].value;
+      if (adminResults[1].status === "fulfilled") pendingResources = adminResults[1].value;
+      if (adminResults[2].status === "fulfilled") monthlyMails = adminResults[2].value;
+    } catch (e) {
+      console.error("Erreur stats admin (BDD):", e);
+    }
 
     // Note: Le quota dépend du plan Resend (Free = 3000/mois ou 100/jour selon l'époque, ici on assume 3000)
     const RESEND_QUOTA = 3000;
