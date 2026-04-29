@@ -1,4 +1,4 @@
-import { getAvailableRosters } from "../../actions";
+import { getAvailableRosters } from "../actions";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { Plus } from "lucide-react";
 import TeamBuilder from "./component/TeamBuilder/TeamBuilder";
