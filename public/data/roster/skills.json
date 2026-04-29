@@ -1,0 +1,644 @@
+[
+  {
+    "name": "Réception",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Réception Plongeante",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Tacle Plongeant",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Esquive",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Défenseur",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Frappe-et-Court",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Rétablissement",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Saut",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Libération Contrôlée",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Glissade Contrôlée",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Sprint",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Équilibre",
+    "category": "Agilité",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Clé de Bras",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Bagarreur",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Esquive en Force",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Dans le Mille",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Projection",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Garde",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Juggernaut",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Châtaigne",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Blocage Multiple",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Stabilité",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Bras Musclé",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Crâne Épais",
+    "category": "Force",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Blocage",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Intrépide",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Parade",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Frénésie",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Frappe Précise",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Pro",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Appuis Sûrs",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Arracher le Ballon",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Prise Sûre",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Tacle",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Provocation",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Lutte",
+    "category": "Générale",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Main Démesurée",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Griffes",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Présence Perturbante",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Bras Supplémentaire",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Répulsion",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Cornes",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Peau de Fer",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Grande Gueule",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Queue Préhensile",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Tentacules",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Deux Têtes",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Très Longues Jambes",
+    "category": "Mutation",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Précision",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Canonnier",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Perce-Nuages",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Délestage",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Transmission dans la course",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Passe Désespérée",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Chef",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Nerfs d'Acier",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Sur le Ballon",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Passe",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Dégagement",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Passe Assurée",
+    "category": "Passe",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Joueur Déloyal",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Fourchette",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Fumblerooski",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Vol Fatal",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Agresseur Solitaire",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Marteau-pilon",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Coup de Crampons",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Agression Éclair",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Saboteur",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Poursuite",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Sournois",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Innovateur Violent",
+    "category": "Scélérate",
+    "type": "Skill",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Animosité (X)",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Arme Secrète",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Bombardier",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Botter de Coéquipier",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Cerveau Lent",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Chaînes et Boulet",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Contagieux",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Décomposition",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Farceur",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Fureur Débridée",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Gerbe de Vomi",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Gros Débile",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Haine (X)",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Insignifiant",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Instable",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Ivrogne",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Lancer de Coéquipier",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Microbe",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Minus",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Mon Ballon",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Monté sur Ressort",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Petit Remontant",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Piqué",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Poids Plume",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Poignard",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Prendre Racine",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Regard Hypnotique",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Régénération",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Sans Ballon",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Sauvagerie Animale",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Soif de Sang (X+)",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Timmm-ber !",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Toujours Affamé",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Tronçonneuse",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  },
+  {
+    "name": "Solitaire (X+)",
+    "category": "Trait",
+    "type": "Trait",
+    "description": "[Voir Règles Officielles]"
+  }
+]

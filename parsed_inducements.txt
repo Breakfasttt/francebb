@@ -1,0 +1,167 @@
+## COUPS DE POUCE !
+
+L
+
+’argent coule toujours à flots autour des matchs de Blood Bowl, et à l’approche du coup d’envoi,
+une équipe économe peut mettre la main sur tout ce qui pourrait lui rendre service ! Ceux qui
+empochent cet argent ne s’inquiètent pas de savoir d’où il vient. Parfois, il sortira des caisses de
+l’équipe elle-même, mais il peut aussi s’agir du don d’un généreux bienfaiteur qui veut donner un coup
+de main à son équipe, d’un bookmaker qui veut faire pencher la balance en sa faveur, ou même de la
+ligue elle-même, désireuse de faire du match en question une rencontre équilibrée et palpitante entre
+deux équipes tout aussi bien dotées.
+Qu’il s’agisse d’une saine réserve de Bière de Bugman pour désaltérer les joueurs, de staff de banc de touche
+en renfort offrant exceptionnellement ses services, d’un arbitre peu scrupuleux qui fermera volontiers les yeux
+sur les tactiques les moins honnêtes en échange d’un dessous-de-table, voire d’un Star Player légendaire
+volontaire pour se joindre à l’équipe si le Coach en a les moyens, les Coups de Pouce sont aussi divers que
+variés !
+COUPS DE POUCE EN JEU EN LIGUE                                COUPS DE POUCE EN JEU ÉGAL ET JEU HORS-
+Comme décrit en page 56, on achète les Coups de                CONCOURS
+Pouce en Jeu en Ligue en utilisant de la Petite                Comme décrit en pages 65 et 67, on achète les
+Monnaie, la Trésorerie d’une équipe, voire un                  Coups de Pouce en Jeu Égal et Jeu Hors-concours
+mélange des deux. On détermine les Coups de                    avec le Budget de Sélection d’Équipe.
+Pouce qu’une équipe peut prendre pendant la
+Séquence d’Avant Match.
+
+## ACHETER DES COUPS DE POUCE !
+
+
+L
+
+es pages qui suivent listent les Coups de Pouce couramment accessibles à Blood Bowl. D’autres
+publications consacrées à Blood Bowl peuvent inclure des Coups de Pouce supplémentaires qui
+ne seront pas forcément autorisés ; il vous revient de discuter en amont avec votre Commissaire
+de Ligue, Organisateur de Tournoi ou adversaire régulier si vous prévoyez d’utiliser de tels Coups de
+Pouce.
+Chaque Coup de Pouce a un coût en pièces d’or, et indique le nombre de fois qu’on peut le prendre (ex : 0-2).
+Il indique aussi quelles équipes peuvent le prendre. Parfois, il faudra que l’équipe dispose d’une règle spéciale
+particulière si elle souhaite acheter le Coup de Pouce en question. Les règles spéciales des équipes sont
+expliquées en page 89.
+Certains Coups de Pouce sont moins chers pour certaines équipes, ou des équipes avec une règle spéciale
+spécifique.
+COUPS DE POUCE COMMUNS                                        • 0-1 Assistant Funéraire – 100 000 pièces d’or
+(équipes avec la règle spéciale Maîtres de la Non-
+Voici une liste des Coups de Pouce communs et de
+vie seulement)
+leurs coûts associés pour vous y référer aisément.
+Chacun est ensuite expliqué en détail sur les pages            • 0-1 Médecin de la Peste – 100 000 pièces d’or
+suivantes.                                                     (équipes avec la règle spéciale Favoris de Nurgle
+seulement)
+• 0-3 Prières à Nuffle – 10 000 pièces d’or                    • 0-1 Débutants Déchaînés – 150 000 pièces d’or
+• 0-5 Coachs Assistants à Temps Partiel – 20 000               (équipes avec la règle spéciale Trois-quarts à Vil
+pièces d’or                                                    Prix seulement)
+• 0-5 Cheerleaders Intérimaires – 5 000 pièces d’or            • 0-2 Apothicaire Ambulant – 100 000 pièces d’or
+• 0-1 Mascotte d’Équipe – 25 000 pièces d’or                   (inaccessible aux équipes qui ne peuvent pas
+• 0-1 Mage Météo – 25 000 pièces d’or                          embaucher d’Apothicaire)
+• 0-2 Fûts de Blitz Premium – 50 000 pièces d’or               • 0-1 Chef Cuistot Halfling – 300 000 pièces d’or
+(100 000 pièces d’or pour les équipes de Halflings)
+• 0-3 Pots-de-vin (0-6 pour les équipes avec la
+règle spéciale Chantage et Corruption) – 100 000               • 0-1 Arbitre Partial – prix variable
+pièces d’or (50 000 pièces d’or pour les équipes               • 0-1 Staff Célèbre – prix variable
+avec la règle spéciale Chantage et Corruption)                 • 0-3 Joueurs Mercenaires – prix variable
+• 0-8 Entraînement Supplémentaire – 100 000                    • 0-2 Star Players – prix variable
+pièces d’or
+• 0-1 Sorcier – prix variable
+0-3 PRIÈRES À NUFFLE
+10 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                     Pour chaque Prière à Nuffle qu’une équipe achète,
+Il n’est pas rare que les équipes, les coachs et les               jetez un D16 (en relançant tout résultat qu’une
+fans en appellent à une intervention divine lors d’un              équipe a déjà obtenu) et consultez le Tableau des
+match de Blood Bowl, en particulier si leur équipe                 Prières à Nuffle ci-dessous pour voir l’effet que
+affronte un adversaire manifestement supérieur !                   Nuffle a accordé à l’équipe. Les Prières à Nuffle
+Bien que cela ait rarement un impact significatif, il              durent jusqu’à la fin du match. Si une Prière à Nuffle
+semble qu’avec une petite obole supplémentaire,                    demande de choisir des joueurs, alors on ne peut
+Nuffle soit plus enclin à exaucer les prières qui lui              jamais choisir de Star Players quelle qu’en soit la
+sont adressées !                                                   raison.
+1D16                                                         RÉSULTAT
+Trappe Traîtresse : Chaque fois qu’un joueur d’une des deux équipes entre sur une case contenant une Trappe,
+quelle qu’en soit la raison, jetez un D6. Sur 1, la Trappe s’ouvre et le joueur y tombe. Faites un Jet de Blessure
+1
+pour le joueur exactement comme s’il avait été Poussé dans le Public. Si le joueur était en possession du ballon,
+celui-ci Rebondit depuis la case de la Trappe.
+Pote avec l’Arbitre : Chaque fois que vous Contestez la Décision, traitez tout jet de 5 ou 6 comme « Ah oui,
+2
+présenté comme ça… »
+Stylet : Désignez au hasard 1 joueur de votre équipe qui joue à ce match. Le joueur désigné gagne le Trait
+3
+Poignard pour la durée du match.
+Homme de Fer : Choisissez 1 joueur de votre équipe qui joue à ce match. Le joueur choisi améliore de 1 sa
+4
+Caractéristique d’Armure (jusqu’à un maximum de 11+) pour la durée du match.
+Gants Cloutés : Choisissez 1 joueur de votre équipe qui joue à ce match. Le joueur désigné gagne la
+5
+Compétence Châtaigne pour la durée du match.
+Mauvaises Habitudes : Désignez au hasard D3 joueurs adverses qui jouent à ce match. Les joueurs choisis
+6
+gagnent le Trait Solitaire (2+) pour la durée du match.
+Crampons Graisseux : Désignez au hasard 1 joueur adverse qui joue à ce match. Le joueur désigné réduit de 1
+7
+sa Caractéristique de Mouvement (jusqu’à un minimum de 1) pour la durée du match.
+Bénédiction de Nuffle : Désignez au hasard 1 joueur de votre équipe qui joue à ce match. Le joueur désigné
+8
+gagne la Compétence Pro pour la durée du match.
+Des Taupes sous le Terrain : Les joueurs adverses appliquent un modificateur de -1 au jet quand ils tentent de
+9
+Foncer.
+10   Passe Parfaite : Tout joueur de votre équipe qui accomplit une Réussite gagne 2 PSP au lieu de 1PSP.
+Réception Étourdissante : Tout joueur de votre équipe qui Réceptionne avec succès le ballon suite à une
+11
+Action de Passe gagne 1 PSP.
+Interaction avec les Fans : Si un joueur adverse subit une Élimination en conséquence du fait d’avoir été
+12
+Poussé dans le Public, le joueur qui l’a poussé dans le public gagne 2 PSP.
+Frénésie d’Agression : Tout joueur de votre équipe qui inflige une Élimination grâce à une Action d’Agression
+13
+gagne 2 PSP.
+Lancer de Pierre : Une fois par match, au début de n’importe lequel de vos Tours, avant d’activer le moindre
+14   joueur, vous pouvez désigner au hasard 1 joueur adverse sur le terrain et jeter un D6. Sur 4+, un fan en colère lui
+jette une pierre et le joueur désigné est immédiatement Plaqué.
+Sous Surveillance : Tout joueur adverse qui effectue une Action d’Agression est automatiquement Expulsé s’il
+15
+pénètre l’armure, qu’un double naturel ait été obtenu ou non.
+Entraînement Intensif : Désignez au hasard 1joueur de votre équipe qui joue à ce match. Le joueur désigné
+16
+gagne une unique Compétence Principale de votre choix pour la durée du match.
+LE SAVIEZ-VOUS…
+Quand les équipes de Skavens sont apparues, les érudits n’eurent plus d’arguments pour
+nier l’existence des hommes-rats. Pour compenser, ils commencèrent à prétendre que les
+Snotlings n’étaient que des Gobelins juvéniles, et qu’il fallait arrêter de les considérer comme
+deux espèces distinctes. Jusqu’ici, personne n’a osé se lancer dans l’étude de l’origine des
+Gobelins pour réfuter cette hypothèse.
+0-5 COACHS ASSISTANTS À TEMPS PARTIEL                         0-1 MAGE MÉTÉO
+20 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                 25 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE
+Tout le monde est un expert ou, du moins, prétend              La météo est au mieux imprévisible, et certains
+l’être ! Les équipes ont l’habitude de payer une               propriétaires de stade paient rubis sur l’ongle un
+petite fortune ces soi-disant spécialistes afin qu’ils         mage capable de contrôler le climat. Ainsi, ils
+rejoignent les coachs titulaires et leur fassent part          s’assurent que les fans sont au chaud, au sec et
+de leurs conseils.                                             contents, mais aussi que fa météo est favorable à
+leur équipe sur le terrain !
+Pour la durée du match, augmentez de 1 le nombre
+de vos Coachs Assistants pour chaque Coach                     Une fois par match, au début de n’importe lequel de
+Assistant à Temps Partiel acheté.                              vos Tours, vous pouvez immédiatement faire un jet
+sur le Tableau de Météo, en appliquant un
+0-5 CHEERLEADERS INTÉRIMAIRES                                 modificateur de jusqu’à +2 ou -2 au jet. Les
+5 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                  conditions   météo     qui   en    résultent   sont
+immédiatement appliquées et durent jusqu’à la
+Toutes les cheerleaders n’ont pas la chance d’avoir
+prochaine fois qu’on obtient un résultat Météo
+une place à demeure chez une équipe, et nombre
+Capricieuse sur le Tableau d’Événement de Coup
+d’aspirantes iront de stade en stade pour
+d’Envoi.
+encourager les équipes locales dans l’espoir qu’on
+les remarque enfin.                                            0-2 FÛTS DE BLITZ PREMIUM
+Pour la durée du match, augmentez de 1 le nombre               50 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE
+de vos Cheerleaders pour chaque Cheerleader                    Rien n’incite plus un joueur à remettre le pied à
+Intérimaire achetée.                                           l’étrier que fa promesse d’une bonne pinte de Blitz
+0-1 MASCOTTE D’ÉQUIPE                                         Premium bien fraîche tout juste tirée du fût !
+Certains joueurs font même mine d’être blessés
+25 000 PIÈCES D’OR – ACCESSIBLE À TOUTE ÉQUIPE                 seulement pour s’en jeter un petit coup derrière la
+Les mascottes d’équipe sont incroyablement                     cravate avant de retourner sur le terrain.
+populaires, et fa plupart des fans se délectent de
+Pour la durée du match, pour chaque Fût de Blitz
+voir leurs gesticulations hilarantes le long des lignes
+Premium acheté, appliquez un modificateur de +1
+de touche. Invariablement vêtues d’atours
+au jet chaque fois que vous faites un jet pour le
+grotesques, les mascottes d’équipe sont là pour
+rétablissement d’un joueur KO.
+chauffer le stade avec leurs pas de danse facétieux,

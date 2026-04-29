@@ -77,5 +77,8 @@
   "specialRules": [
     "Maître de la Non-Vie",
     "Spot de Sylvanie"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": false,
+  "tier": 1
 }

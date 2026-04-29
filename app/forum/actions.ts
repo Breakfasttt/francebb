@@ -965,20 +965,28 @@ export async function deleteTopicPermanent(topicId: string, topicTitle: string) 
     throw new Error("Action non autorisée.");
   }
 
-  await prisma.$transaction([
-    prisma.topicView.deleteMany({ where: { topicId } }),
-    prisma.post.deleteMany({ where: { topicId } }),
-    prisma.topic.delete({ where: { id: topicId } })
-  ]);
+  // Si le sujet est lié à un tournoi, on doit aussi supprimer le tournoi
+  // ce qui supprimera par cascade les résultats, inscriptions, etc. (Action Critique)
+  await prisma.$transaction(async (tx) => {
+    await tx.topicView.deleteMany({ where: { topicId } });
+    await tx.post.deleteMany({ where: { topicId } });
+    await tx.topic.delete({ where: { id: topicId } });
+
+    if (topic.tournamentId) {
+      await tx.tournament.delete({ where: { id: topic.tournamentId } });
+    }
+  });
 
   await logModerationAction(
     "TOPIC_DELETED",
     topicId,
     "TOPIC",
-    `Suppression définitive du sujet : ${topicTitle}`
+    `Suppression définitive du sujet${topic.tournamentId ? " et de son tournoi" : ""} : ${topicTitle}`
   );
 
   revalidatePath(`/forum/${topic.forumId}`);
+  revalidatePath("/tournois");
+  revalidatePath("/classement");
   redirect(`/forum?deletedTopic=${encodeURIComponent(topicTitle)}`);
 }
 

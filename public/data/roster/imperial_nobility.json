@@ -93,5 +93,8 @@
   ],
   "specialRules": [
     "Classique du Vieux Monde"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

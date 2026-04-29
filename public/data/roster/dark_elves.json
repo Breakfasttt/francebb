@@ -87,5 +87,8 @@
   ],
   "specialRules": [
     "Ligue des Royaumes Elfiques"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

@@ -103,5 +103,8 @@
   "specialRules": [
     "Coupe du Dé à Coudre Halfling",
     "Ligue Sylvestre"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

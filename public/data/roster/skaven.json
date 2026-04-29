@@ -89,5 +89,8 @@
   ],
   "specialRules": [
     "Défi des Bas-Fonds"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

@@ -158,5 +158,8 @@
   ],
   "specialRules": [
     "Chantage & Corruption"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

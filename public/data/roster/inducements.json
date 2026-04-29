@@ -1,0 +1,99 @@
+[
+  {
+    "id": "bribe",
+    "name": "Pot-de-vin",
+    "baseCost": 100000,
+    "specialCosts": [
+      {
+        "specialRuleId": "chantage_corruption",
+        "cost": 50000
+      }
+    ],
+    "description": "Relancer le jet d'expulsion (Argutie)."
+  },
+  {
+    "id": "halfling_chef",
+    "name": "Maître-coq Halfling",
+    "baseCost": 300000,
+    "specialCosts": [],
+    "description": "Volez des relances à l'adversaire (sur 4+)."
+  },
+  {
+    "id": "bloodweiser_keg",
+    "name": "Tonnelets de Bière Bloodweiser",
+    "baseCost": 50000,
+    "specialCosts": [],
+    "description": "+1 aux jets pour revenir des KO."
+  },
+  {
+    "id": "wandering_apothecary",
+    "name": "Apothicaire Indépendant",
+    "baseCost": 100000,
+    "specialCosts": [],
+    "description": "Un Apothicaire supplémentaire pour le match."
+  },
+  {
+    "id": "mortuary_assistant",
+    "name": "Assistant Mortuaire",
+    "baseCost": 100000,
+    "specialCosts": [
+      {
+        "specialRuleId": "maitres_non_vie",
+        "cost": 100000
+      }
+    ],
+    "description": "+1 au jet de Régénération."
+  },
+  {
+    "id": "plague_doctor",
+    "name": "Médecin de la Peste",
+    "baseCost": 100000,
+    "specialCosts": [
+      {
+        "specialRuleId": "favori_de",
+        "cost": 100000
+      }
+    ],
+    "description": "Relance d'un jet de Régénération."
+  },
+  {
+    "id": "biased_referee",
+    "name": "Arbitre Partisan",
+    "baseCost": 120000,
+    "specialCosts": [
+      {
+        "specialRuleId": "chantage_corruption",
+        "cost": 80000
+      }
+    ],
+    "description": "L'adversaire est expulsé sur 5+ lors d'une agression. Vous gagnez +1 pour Contester."
+  },
+  {
+    "id": "betting_expert",
+    "name": "Spécialiste des Paris Clandestins",
+    "baseCost": 100000,
+    "specialCosts": [],
+    "description": "Gain bonus d'argent en fin de match."
+  },
+  {
+    "id": "mercenaries",
+    "name": "Mercenaires",
+    "baseCost": 0,
+    "specialCosts": [],
+    "description": "Ajout de joueurs solitaires pour le match."
+  },
+  {
+    "id": "star_players",
+    "name": "Star Players",
+    "baseCost": 0,
+    "specialCosts": [],
+    "description": "Embaucher une légende pour le match."
+  },
+  {
+    "id": "wizard",
+    "name": "Sorcier",
+    "baseCost": 150000,
+    "specialCosts": [],
+    "description": "Lancer un sort pendant le match."
+  }
+]

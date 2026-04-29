@@ -130,5 +130,8 @@
     "Chantage & Corruption",
     "Déferlement",
     "Trois-quarts à Vil Prix"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

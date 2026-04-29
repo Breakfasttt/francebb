@@ -112,5 +112,8 @@
   "specialRules": [
     "Bagarreurs Brutaux",
     "Capitaine"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

@@ -77,5 +77,8 @@
   ],
   "specialRules": [
     "Super-ligue de Lustrie"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

@@ -1,0 +1,829 @@
+## COMPÉTENCES ET TRAITS !
+
+N
+
+ombre de joueurs ont divers Traits et Compétences qui affectent leur manière de se comporter
+sur le terrain. Certains confèrent des aptitudes que le joueur peut utiliser, tandis que d’autres
+imposent des conditions qu’il doit remplir au cours d’un match.
+Dans cette section, nous couvrirons les Compétences et les Traits accessibles aux joueurs à Blood Bowl, que
+ce soit sur leur profil de départ ou lorsqu’ils en gagnent dans le cadre de leurs améliorations de joueur au fil
+d’une ligue.
+
+## COMPÉTENCES !
+
+
+D
+
+’une manière générale, les Compétences sont des aptitudes qu’un joueur peut apprendre avec
+de la pratique, des efforts et, parfois, un peu de talent. Elles sont le résultat des heures de
+dévouement que le joueur passe sur le terrain ou en écoutant les conseils de son coach. Eu
+égard à la nature du Blood Bowl, tout ceci arrive moins souvent qu’il le devrait !
+Tous les joueurs ont accès à une ou plusieurs catégories de Compétence, comme stipulé dans leur profil.
+Certaines sont classées en Principales, c’est-à-dire les Compétences qui viennent plus naturellement au
+joueur en question, et d’autres en Secondaires, qui nécessitent un investissement de PSP supérieur de la part
+du joueur. Tous les joueurs n’ont pas accès à toutes les catégories de Compétence.
+La façon dont les joueurs gagnent de nouvelles Compétences en jeu en Ligue est expliquée en page 57.
+Par exemple : Un Blitzer des Rois des Tombes aG etF listés sous Principales, et A etS sous Secondaires. Ceci signifie
+qu’il a accès aux Compétences Générales et de Force en Principales, et aux Compétences d’Agilité et Scélérates en
+Secondaires.
+La catégorie d’une Compétence, qu’il s’agisse d’Agilité, de Scélérate, de Générale, de Mutation, de Passe ou
+de Force, est indiquée par un des symboles suivants :
+COMPÉTENCE D’AGILITÉ                   COMPÉTENCE DE FORCE                     COMPÉTENCE GÉNÉRALE
+
+## COMPÉTENCE DE MUTATION                    COMPÉTENCE DE PASSE                   COMPÉTENCE SCÉLÉRATE
+
+De plus, une Compétence d’Élite sera indiquée par ce symbole :
+
+## EMPLOI DES COMPÉTENCES
+
+Il est important de savoir quand un joueur peut utiliser ses Compétences au cours d’un match. Chaque
+Compétence sera soit Active, soit Passive.
+Une Compétence Active peut être utilisée n’importe quand, tant que le joueur est Debout et non Déconcentré.
+Si un joueur peut utiliser une Compétence Active alors qu’il est À Terre, Sonné ou Déconcentré, la description
+de la Compétence le spécifiera. Si une Compétence Active autorise un joueur à annoncer une Action Spéciale,
+alors il peut quand même annoncer l’Action Spéciale en étant À Terre, du moment que l’Action Spéciale lui
+permet d’abord de faire une Action de Mouvement Gratuite pour utiliser l’Action Spéciale.
+Une Compétence Passive fait toujours effet, quel que soit le statut du joueur, ou s’il est Déconcentré.
+Un joueur n’est pas obligé d’utiliser une Compétence s’il ne le souhaite pas. Toutefois, si une Compétence est
+marquée d’un astérisque(*) alors, le joueur doit toujours utiliser la Compétence si elle est applicable.
+Si une Compétence modifie un jet de dé, alors on peut appliquer ce modificateur après avoir jeté les dés. On
+peut combiner tout bonus et modificateur appliqués à partir de Compétences et de Traits.
+Sauf mention contraire de la Compétence, plusieurs joueurs peuvent utiliser la même Compétence lors d’un
+même Tour, et un joueur peut utiliser la même Compétence plusieurs fois pendant le Tour de son équipe.
+
+## TABLEAU DE COMPÉTENCES
+
+Voici ci-dessous la liste complète des différentes Compétences et les catégories auxquelles elles
+appartiennent. Quand vous déterminez au hasard une Compétence pour un joueur, choisissez d’abord une
+des catégories de Compétence éligibles pour ce joueur, puis jetez deux D6, l’un après l’autre. Le premier dé
+désigne une des moitiés du tableau dans lequel vous faites le jet, et le deuxième jet désigne la Compétence
+déterminée.
+1er   2e                                             TIRAGE AU HASARD DE COMPÉTENCES
+D6    D6            Agilité             Force          Générale     Mutations                            Passe                Scélérate
+1    Réception              Clé de Bras        Blocage          Main Démesurée         Précision                   Joueur Déloyal
+2    Réception Plongeante Bagarreur            Intrépide        Griffes                Canonnier                   Fourchette
+3    Tacle Plongeant        Esquive en Force Parade             Présence Perturbante Perce–Nuages                  Fumblerooski
+1–3
+4    Esquive                Dans le Mille      Frénésie         Bras Supplémentaire    Délestage                   Vol Fatal
+5    Défenseur              Projection         Frappe Précise   Répulsion              Transmission dans la course Agresseur Solitaire
+6    Frappe-et-Court        Garde              Pro              Cornes                 Passe Désespérée            Marteau-pilon
+1    Rétablissement         Juggernaut         Appuis Sûrs      Peau de Fer            Chef                        Coup de Crampons
+2    Saut                   Châtaigne          Arracher le Ballon Grande Gueule        Nerfs d’Acier               Agression Éclair
+3    Libération Contrôlée   Blocage Multiple   Prise Sûre       Queue Préhensile       Sur le Ballon               Saboteur
+4–6
+4    Glissade Contrôlée     Stabilité          Tacle            Tentacules             Passe                       Poursuite
+5    Sprint                 Bras Musclé        Provocation      Deux Têtes             Dégagement                  Sournois
+6    Équilibre              Crâne Épais        Lutte            Très Longues Jambes Passe Assurée                  Innovateur Violent
+Par exemple : Dan prend une Compétence Principale aléatoire pour
+un de ses Aspirants Halflings, et choisit la Catégorie Agilité. Son
+premier jet est un 4 et son deuxième un 2. Pour son deuxième
+tirage, il obtient un 5 puis un 3. Sur le Tableau de Compétence,
+nous voyons que l’Aspirant Halfling a ainsi le choix entre la
+Compétence Saut et la Compétence Défenseur en guise de
+Compétence aléatoire.
+
+## TRAITS !
+
+
+D
+
+’une manière générale, les Traits sont des aptitudes qu’on ne peut pas apprendre, mais des
+aspects uniques de la ménagerie fantastique que sont les joueurs de Blood Bowl. Il est
+important de savoir quand un joueur peut utiliser ses Traits au cours d’un match. Comme pour
+les Compétences, chaque Trait sera soit Actif, soit Passif.
+Un joueur peut utiliser un Trait Actif n’importe quand, tant qu’il est Debout et n’est pas Déconcentré. Si un
+joueur peut utiliser un Trait Actif alors qu’il est À Terre, Sonné ou Déconcentré, la description du Trait le
+spécifiera.
+Un Trait Passif fait toujours effet, quel que soit le statut du joueur, ou s’il est Déconcentré.
+Un joueur n’est pas obligé d’utiliser un Trait s’il ne le souhaite pas ; leur emploi est optionnel. Toutefois, si un
+Trait est marqué d’un astérisque(*) alors, le joueur doit toujours utiliser le Trait s’il est applicable.
+Si un Trait modifie un jet de dé, alors on peut appliquer ce modificateur après avoir jeté les dés. On peut
+combiner tout bonus et modificateur appliqués à partir de Compétences et de Traits.
+Sauf mention contraire du Trait, plusieurs joueurs peuvent utiliser le même Trait lors d’un même Tour, et un
+joueur peut utiliser le même Trait plusieurs fois pendant le Tour de son équipe.
+Les Traits sont indiqués par ce symbole :
+
+## LISTE DES COMPÉTENCES ET TRAITS !
+
+Vous trouverez ici la description de chaque Compétence et Trait qu’on trouve actuellement dans le jeu.
+
+## AGILITÉ
+
+DÉFENSEUR                                      Active
+RÉCEPTION PLONGEANTE                             Active
+Pendant les Tours adverses, les joueurs adverses que ce
+Ce joueur peut tenter de Réceptionner le ballon s’il
+joueur Marque ne peuvent pas utiliser les Compétences
+atterrit sur une case dans sa Zone de Tacle suite à une
+Garde ni Coup de Crampons.
+Passe, un Renvoi ou un Coup d’Envoi. Il ne peut pas
+ÉQUILIBRE                                      Active          utiliser cette Compétence pour tenter de Réceptionner le
+Une fois par Tour, ce joueur peut relancer un unique D6        ballon s’il atterrit sur une case dans sa Zone de Tacle
+quand il tente de Foncer .                                     suite à un Rebond.
+De plus, ce joueur peut appliquer un modificateur de +1 à
+ESQUIVE                                    Active – Élite      ses Tests d’Agilité quand il tente de Réceptionner le
+Une fois par Tour, ce joueur peut relancer un unique Test      ballon dans le cadre d’une Action de Passe s’il est sur la
+d’Agilité quand il tente d’Esquiver. De plus, cette            case cible.
+Compétence affecte le résultat Bousculé quand un joueur        RÉTABLISSEMENT                                      Active
+adverse effectue une Action de Blocage contre ce joueur,       Un joueur peut utiliser cette Compétence alors qu’il est À
+comme décrit en page 38 .                                      Terre. Un joueur À Terre ayant cette Compétence peut se
+relever gratuitement, sans dépenser 3 cases de
+mouvement pour cela.
+De plus, un joueur À Terre ayant cette Compétence peut
+annoncer une Action de Blocage alors qu’il est À Terre.
+En ce cas, il doit faire un Test d’Agilité, en appliquant un
+modificateur de +1 au résultat. Si le Test d’Agilité est
+réussi, il peut immédiatement se relever et effectuer
+l’Action de Blocage. Si le Test d’Agilité est raté, alors le
+joueur reste À Terre et son activation prend
+immédiatement fin.
+SAUT                                              Active
+Pendant son Action de Mouvement, un joueur ayant cette
+FRAPPE-ET-COURT                                Active
+Compétence peut tenter de Sauter par-dessus une seule
+Quand un joueur ayant cette Compétence effectue une
+case adjacente, peu importe ce qui se trouve sur la case.
+Action de Blocage ou une Action Spéciale de Poignard,
+Sauter fonctionne exactement comme Bondir, comme
+après avoir entièrement résolu l’Action avec succès, il
+décrit en page 36, à l’exception du fait que le joueur qui
+peut immédiatement se déplacer de 1 case gratuitement
+Saute peut réduire de 1 les modificateurs négatifs reçus
+en ignorant les Zones de Tacle, tant qu’il est toujours
+en Sautant, jusqu’à un minimum de -1.
+Debout. Le joueur doit s’assurer qu’après ce mouvement
+gratuit, il ne Marque ni n’est Marqué par aucun joueur         Un joueur ayant cette Compétence ne peut pas aussi
+adverse.                                                       avoir le Trait Monté sur Ressort.
+Un joueur ayant cette Compétence ne peut pas aussi             SPRINT                                          Active
+avoir la Compétence Frénésie.                                  Quand ce joueur effectue une Action de Mouvement, il
+peut tenter de Foncer une fois de plus que le nombre de
+GLISSADE CONTRÔLÉE                                Active
+fois auxquelles il a normalement droit.
+Chaque fois que ce joueur est Repoussé, quelle qu’en
+soit la raison, alors au lieu que ce soit au Coach adverse     TACLE PLONGEANT                                  Active
+de choisir où ce joueur est Repoussé, le Coach de ce           Quand un joueur adverse tente de quitter la Zone de
+joueur peut choisir n’importe quelle case adjacente            Tacle de ce joueur suite à une Esquive, un Saut ou un
+inoccupée pour y Repousser ce joueur. S’il n’y a pas de        Bond, après avoir fait le Test d’Agilité et appliqué les
+case adjacente inoccupée, alors on ne peut pas utiliser        modificateurs et relances éventuelles, ce joueur peut
+cette Compétence.                                              utiliser cette Compétence. Appliquez immédiatement un
+modificateur de -2 au Test d’Agilité du joueur adverse et
+LIBÉRATION CONTRÔLÉE                             Active
+placez ce joueur À Terre sur la case que le joueur
+Si ce joueur est Plaqué, Chute ou est Mis À Terre alors
+adverse a quittée.
+qu’il est en possession du ballon, alors avant qu’il soit À
+Terre, il peut placer le ballon sur n’importe quelle case      Si un joueur tente de quitter la Zone de Tacle de
+inoccupée adjacente à celle où il se retrouve À Terre au       plusieurs joueurs ayant cette Compétence en même
+lieu que le ballon Rebondisse normalement.                     temps, un seul de ces joueurs peut utiliser cette
+Compétence.
+RÉCEPTION                                        Active
+Ce joueur peut relancer tout Test d’Agilité raté quand il
+tente de Réceptionner le ballon.
+
+## FORCE
+
+BAGARREUR                                   Active              DANS LE MILLE                                   Active
+Quand ce joueur annonce une Action de Blocage, il peut          Quand ce joueur effectue une Action de Lancer de
+relancer un résultat Les Deux Plaqués.                          Coéquipier, si le résultat du lancer est un Lancer
+Superbe, alors le joueur lancé ne Valdingue pas avant
+BLOCAGE MULTIPLE                                Active          d’atterrir et il atterrit sur la case cible.
+Quand ce joueur annonce une Action de Blocage, il peut
+Un joueur sans le Trait Lancer de Coéquipier ne peut pas
+effectuer deux Actions de Blocage, chacune ciblant un
+avoir cette Compétence.
+joueur adverse différent qu’il Marque. En ce cas, ce
+joueur réduit de 2 sa Caractéristique de Force pour la          ESQUIVE EN FORCE                                  Active
+durée des Actions de Blocage. Ces Actions de Blocage            Une fois par Tour, quand ce joueur tente d’Esquiver, il
+se déroulent simultanément, mais mieux vaut séquencer           peut appliquer un modificateur de +1 au Test d’Agilité s’il
+les jets pour plus de clarté. Ceci signifie que les deux        a une Caractéristique de Force de 3 ou moins, un
+Actions de Blocage sont résolues entièrement, même si           modificateur de +2 au Test d’Agilité s’il a une
+l’une provoque un Turnover. Ce joueur ne peut pas               Caractéristique de Force de 4, ou un modificateur de +3
+Poursuivre après ni l’une ni l’autre de ces Actions de          au Test d’Agilité s’il a une Caractéristique de Force de 5
+Blocage. Un joueur ayant cette Compétence ne peut pas           ou plus.
+aussi avoir la Compétence Frénésie.
+BRAS MUSCLÉ                                    Active           GARDE                                   Active – Élite
+Quand ce joueur effectue une Action de Lancer de                Ce joueur peut fournir un Soutien Offensif et Défensif
+Coéquipier, il peut appliquer un modificateur de +1 au          quand un joueur effectue une Action de Blocage, quel
+Test de Capacité de Passe. Un joueur sans le Trait              que soit le nombre de joueurs adverses qui Marquent le
+Lancer de Coéquipier ne peut pas avoir cette                    joueur ayant cette Compétence.
+Compétence.
+JUGGERNAUT                                       Active
+Quand ce joueur annonce une Action de Blitz, il peut
+CHÂTAIGNE                                  Active – Élite       traiter tout résultat Les Deux Plaqués comme Repoussé
+Chaque fois que ce joueur Plaque un joueur adverse lors         lors de toutes les Actions de Blocage qu’il effectue
+d’une Action de Blocage, même si ce joueur est aussi            pendant l’Action de Blitz.
+Plaqué, il peut appliquer un modificateur de +1 soit au Jet
+De plus, quand ce joueur effectue une Action de Blocage
+d’Armure, soit au Jet de Blessure. On peut appliquer ce
+dans le cadre d’une Action de Blitz, les joueurs adverses
+modificateur après avoir fait le jet.
+ne peuvent pas utiliser les Compétences Parade,
+CLÉ DE BRAS                                     Active          Stabilité ni Lutte.
+Si un joueur adverse Chute en tentant d’Esquiver, Sauter
+PROJECTION                                        Active
+ou Bondir depuis une case dans la Zone de Tacle de ce
+Quand ce joueur annonce une Action de Blocage, si le
+joueur, ce joueur peut utiliser cette Compétence. En ce
+joueur adverse est Repoussé, alors le Coach de ce
+cas, il peut appliquer un modificateur de +1 soit au Jet
+joueur peut choisir n’importe quelle case inoccupée
+d’Armure, soit au Jet de Blessure. On peut appliquer ce
+adjacente à la cible pour l’y Repousser. S’il n’y a pas de
+modificateur après avoir fait le jet.
+case adjacente inoccupée, alors on ne peut pas utiliser
+Si le joueur adverse subit une Élimination suite à une          cette Compétence.
+Esquive, un Saut ou un Bond raté depuis une case dans
+De plus, quand ce joueur effectue une Action de Blocage,
+la Zone de Tacle de ce joueur, alors celui-ci compte
+les joueurs adverses ne peuvent pas utiliser la
+comme ayant causé cette Élimination et reçoit les Points
+Compétence Glissade Contrôlée.
+de Star Player correspondant.
+Un joueur ayant cette Compétence ne peut pas aussi
+Si un joueur tente de quitter la Zone de Tacle de
+avoir la Compétence Frénésie.
+plusieurs joueurs ayant cette Compétence en même
+temps, un seul de ces joueurs peut utiliser cette               STABILITÉ                                      Active
+Compétence.                                                     Quand ce joueur est censé être Repoussé lors d’une
+Action de Blocage, y compris lors d’une Poussée à la
+CRÂNE ÉPAIS                                      Passive
+Chaîne, il peut choisir de ne pas être Repoussé et de
+Quand on fait un Jet de Blessure pour ce joueur, il n’est
+rester dans sa case. Utiliser cette Compétence
+KO que sur un jet de 9 ; un jet de 8 est traité comme un
+n’empêche pas un joueur ayant la Compétence Frénésie
+résultat Sonné. Si ce joueur a aussi le Trait Minus, alors il
+d’effectuer une deuxième Action de Blocage, tant que ce
+n’est KO que sur un jet de 8 ; un jet de 7 sera traité
+joueur est toujours Debout.
+comme un résultat Sonné.
+
+## GÉNÉRALE
+
+APPUIS SÛRS                                        Active       LUTTE                                              Active
+Chaque fois que ce joueur est censé être Plaqué ou              Quand ce joueur effectue une Action de Blocage, ou
+Chute, jetez un D6. Sur un 6, ce joueur n’est pas Plaqué        quand il est la cible d’une Action de Blocage, si on choisit
+ou ne Chute pas. Si ceci se produit pendant son                 le résultat Les Deux Plaqués, alors ce joueur peut choisir
+activation, il peut continuer son activation normalement et     d’utiliser cette Compétence. En ce cas, les deux joueurs
+aucun Turnover ne s’ensuit.                                     de l’Action de Blocage sont Mis À Terre, quelles que
+soient les Compétences qu’ils possèdent.
+ARRACHER LE BALLON                                Active
+Quand ce joueur effectue une Action de Blocage contre           PARADE                                            Active
+un joueur adverse en possession du ballon, si le joueur         Quand un joueur ayant cette Compétence est Repoussé
+adverse est Repoussé, alors il fait tomber le ballon sur la     suite à une Action de Blocage effectuée contre lui, alors
+case où il est Repoussé, puis le ballon Rebondit depuis         le joueur adverse ne peut pas Poursuivre.
+cette case. Ce Rebond se produit avant que le joueur            On ne peut pas utiliser cette Compétence contre un
+adverse devienne À Terre (le cas échéant) mais après            joueur ayant le Trait Chaîne et Boulet ni contre un joueur
+que ce joueur a choisi de Poursuivre ou non.                    ayant la Compétence Juggernaut qui effectue une Action
+de Blitz.
+BLOCAGE                                  Active – Élite
+Un joueur ayant cette Compétence peut choisir de ne pas         PRISE SÛRE                                       Active
+être Plaqué quand on applique un résultat Les Deux              Ce joueur peut relancer le D6 quand il tente de ramasser
+Plaqués lors d’une Action de Blocage à laquelle il prend        le ballon, mais pas quand il fait une Action de
+part.                                                           Sécurisation du Ballon. De plus, on ne peut pas utiliser la
+Compétence Arracher le Ballon contre ce joueur.
+FRAPPE PRÉCISE                                  Active
+Si ce joueur est désigné comme le joueur qui engage,            PRO                                                Active
+alors quand le coup d’envoi Dévie, le Coach de ce joueur        Pendant l’activation de ce joueur, il peut tenter de
+peut décider qu’il ne Dévie que de D3 cases plutôt que          relancer un unique dé. Il peut s’agir d’un dé jeté
+de D6 cases.                                                    individuellement, dans le cadre d’un jet de plusieurs dés,
+ou faisant partie d’un groupe de dés. Pour utiliser cette
+FRÉNÉSIE*                                           Active      Compétence, le joueur doit jeter un D6 ; sur 3+, on peut
+Chaque fois que ce joueur effectue une Action de                relancer le dé, sur 1-2, on ne peut pas relancer le dé.
+Blocage, si la cible est Repoussée, alors ce joueur doit        On ne peut pas utiliser la Compétence pour relancer un
+Poursuivre s’il le peut. De plus, si après que la cible a été   dé dans le cadre d’un Jet d’Armure, Jet de Blessure, Jet
+Repoussée, elle est toujours Debout, alors ce joueur doit       d’Élimination, jet fait en dehors de l’activation du joueur,
+effectuer une deuxième Action de Blocage qui cible le           ou jet n’étant pas fait au nom du joueur (comme
+même joueur adverse et doit à nouveau Poursuivre si la          Contester la Décision, ou une Intervention du Public).
+cible est Repoussée.                                            Une fois qu’un joueur a tenté d’utiliser cette Compétence,
+Si ce joueur effectue une Action de Blitz, effectuer une        il ne peut utiliser aucune autre relance quelle qu’en soit la
+deuxième Action de Blocage lui coûtera aussi une case           source pour relancer le dé.
+de mouvement. Si ce joueur n’a plus de mouvement,
+alors il doit Foncer. S’il ne peut pas Foncer, alors il ne      PROVOCATION                                  Active
+peut pas effectuer la deuxième Action de Blocage.               Quand un joueur ayant cette Compétence est Repoussé
+Un joueur ayant cette Compétence ne peut pas avoir les          suite à une Action de Blocage effectuée contre lui, le
+Compétences Projection, Frappe-et-court ni Blocage              Coach de ce joueur peut choisir de forcer le joueur
+Multiple.                                                       adverse à Poursuivre.
+On ne peut pas utiliser cette Compétence contre un
+INTRÉPIDE                                       Active          joueur adverse Enraciné en raison du Trait Prendre
+Quand un joueur ayant cette Compétence effectue une             Racine.
+Action de Blocage contre un joueur adverse qui a une
+Caractéristique de Force supérieure (avant d’appliquer          TACLE                                          Active
+des modificateurs aux deux joueurs), ce joueur peut jeter       Quand un joueur adverse tente d’Esquiver, depuis une
+un D6 et ajouter sa propre Caractéristique de Force. Si le      case dans la Zone de Tacle de ce joueur, il ne peut pas
+résultat est supérieur à la Caractéristique de Force non        utiliser la Compétence Esquive.
+modifiée du joueur adverse, alors ce joueur augmente sa         De plus, quand ce joueur effectue une Action de Blocage
+Caractéristique de Force non modifiée pour qu’elle soit         contre un joueur adverse, le joueur adverse ne compte
+égale à celle du joueur adverse pour la durée de l’Action       pas comme ayant la Compétence Esquive si on choisit
+de Blocage. Puis on applique les modificateurs                  un résultat Bousculé.
+normalement.
+Si ce joueur a aussi une Compétence qui l’autorise à
+effectuer plusieurs Actions de Blocage, comme la
+Compétence Frénésie, alors il doit faire un jet séparé
+pour chaque Action de Blocage.
+
+## MUTATIONS
+
+BRAS SUPPLÉMENTAIRES                     Active                PRÉSENCE PERTURBANTE*                          Passive
+Ce joueur applique un modificateur de +1 au Test               Tout joueur adverse qui effectue une Action de Passe,
+d’Agilité chaque fois qu’il tente de Réceptionner,             une Action de Lancer de Coéquipier ou une Action
+Ramasser ou Intercepter le ballon.                             Spéciale de Lancer de Bombe, ou tente d’intercepter ou
+de Réceptionner le ballon, applique un modificateur de -1
+CORNES                                           Active        au Test de Capacité de Passe ou d’Agilité pour chaque
+Chaque fois que ce joueur annonce une Action de Blitz,         joueur de votre équipe ayant cette Compétence et étant à
+alors il applique un modificateur de +1 à sa                   3 cases ou moins de lui.
+Caractéristique de Force pour toutes les Actions de
+Blocage effectuées durant cette Action de Blitz.
+QUEUE PRÉHENSILE                                Active
+DEUX TÊTES                                    Active
+Quand un joueur adverse tente d’Esquiver, de Bondir ou
+Ce joueur peut appliquer un modificateur de +1 au Test
+de Sauter depuis une case dans la Zone de Tacle de ce
+d’Agilité chaque fois qu’il tente d’Esquiver.
+joueur, il applique un modificateur de -1 supplémentaire
+GRANDE GUEULE                                    Active        au Test d’Agilité.
+Quand on active ce joueur, il peut annoncer une Action         Si un joueur tente de quitter la Zone de Tacle de
+Spéciale de Croquement ; il n’y a pas de limite au             plusieurs joueurs ayant cette Compétence en même
+nombre de joueurs qui peuvent annoncer cette Action            temps, un seul de ces joueurs peut utiliser cette
+Spéciale à chaque Tour. Quand ce joueur annonce une            Compétence.
+Action Spéciale de Croquement, il peut choisir 1 joueur
+adverse Debout qu’il Marque et jeter un D6. Sur un 1-2         RÉPULSION*                                      Passive
+rien ne se passe. Sur 3+, le joueur adverse est considéré      Chaque fois qu’un joueur adverse tente d’effectuer une
+comme étant Croqué. Tant qu’il est Croqué, le joueur           Action de Blocage contre ce joueur, ou une Action
+adverse ne peut pas quitter la case où il se trouve tant       Spéciale qui cible ce joueur directement, il doit jeter un
+que ce joueur le Marque. Cette condition prend fin             D6 avant de jeter le moindre autre dé. Sur 2+, l’Action de
+immédiatement si ce joueur ne Marque plus le joueur            Blocage continue normalement. Sur un 1, l’Action de
+adverse, quelle qu’en soit la raison.                          Blocage est immédiatement annulée et l’activation du
+joueur adverse prend immédiatement fin.
+Ce joueur peut utiliser l’Action Spéciale de Croquement
+pour remplacer l’Action de Blocage faite dans le cadre         TENTACULES                                           Active
+d’une Action de Blitz s’il le souhaite.                        Quand un joueur adverse tente d’Esquiver, de Bondir ou
+De plus, on ne peut pas utiliser la Compétence Arracher        de Sauter depuis une case dans la Zone de Tacle de ce
+le Ballon contre ce joueur.                                    joueur, ce joueur peut utiliser cette Compétence. Quand
+un joueur utilise cette Compétence, il jette un D6 et
+GRIFFES                                          Passive       ajoute sa Caractéristique de Force au jet ; il soustrait
+Chaque fois qu’on fait un Jet d’Armure pour un joueur          ensuite la Caractéristique de Force du joueur adverse au
+adverse qui a été Plaqué par ce joueur lors d’une Action       résultat. Si le résultat est 6 ou plus, ou si le jet est un 6
+de Blocage, même si ce joueur est aussi Plaqué, alors          naturel, alors le joueur adverse ne quitte pas la case qu’il
+tout jet de 8+ naturel sur le Jet d’Armure pénètre l’armure    tentait de quitter et son activation prend fin.
+du joueur adverse quelle que soit sa Caractéristique
+Si le résultat est 5 ou moins, ou si le jet est un 1 naturel,
+d’Armure.
+cette Compétence n’a pas d’effet. Si un joueur tente de
+MAIN DÉMESURÉE                                  Active         quitter la Zone de Tacle de plusieurs joueurs ayant cette
+Ce joueur ignore tous les modificateurs négatifs quand il      Compétence en même temps, un seul de ces joueurs
+tente de ramasser le ballon.                                   peut utiliser cette Compétence.
+PEAU DE FER                                   Passive          TRÈS LONGUES JAMBES                                Active
+Les joueurs adverses ne peuvent appliquer aucun                Ce joueur peut appliquer un modificateur de +1 au Test
+modificateur quand ils font un Jet d’Armure contre ce          d’Agilité chaque fois qu’il tente de Sauter ou Bondir, et il
+joueur. De plus, on ne peut pas utiliser la Compétence         peut appliquer un modificateur de +2 au Test d’Agilité
+Griffes contre ce joueur.                                      chaque fois qu’il tente d’intercepter le ballon. De plus, ce
+joueur ignore la Compétence Perce-nuages.
+
+## PASSE
+
+CANONNIER                                     Active           PASSE                                          Active
+Quand ce joueur effectue une Action de Passe qui est           Ce joueur peut relancer tout Test de Capacité de Passe
+une Passe Longue, ou une Longue Bombe, il peut                 lorsqu’il effectue une Action de Passe.
+appliquer un modificateur de +1 au Test de Capacité de
+Passe.                                                         PASSE ASSURÉE                                     Active
+Si ce joueur obtient un 1 naturel quand il fait un Test de
+CHEF                                                Active     Capacité de Passe, alors cela ne résulte pas en une
+Une équipe qui a un ou plusieurs joueurs ayant cette           Maladresse sur Passe. À la place, le joueur reste en
+Compétence sur le terrain au début d’une mi-temps              possession du ballon et son activation prend
+gagne une unique Relance d’Équipe bonus ; on l’appelle         immédiatement fin. Aucun Turnover ne s’ensuit.
+une Relance de Chef. Une équipe peut utiliser une
+Relance de Chef seulement si elle a un joueur avec la          PASSE DÉSESPÉRÉE                                  Active
+Compétence Chef sur le terrain, et si tous les joueurs         Quand ce joueur effectue une Action de Passe ou une
+ayant cette Compétence sont retirés du jeu, à cause            Action Spéciale de Lancer de Bombe, il peut annoncer
+d’une Élimination ou d’une Expulsion, avant que la             n’importe quelle case sur le terrain comme case cible au
+Relance de Chef ait été utilisée, alors elle est perdue.       lieu d’utiliser la Réglette. Faites un Test de Capacité de
+Passe normalement en traitant le lancer comme une
+Une Relance de Chef suit toutes les règles des Relances
+Longue Bombe, et traitez tout résultat de Passe Précise
+d’Équipe normales, à l’exception du fait qu’on ne peut
+comme une Passe Imprécise. On ne peut pas Intercepter
+pas la perdre à cause d’un Chef Cuistot Halfling.
+une Passe Désespérée.
+DÉGAGEMENT                                         Active
+PERCE–NUAGES                                  Active
+Ce joueur peut annoncer une Action Spéciale de
+Quand ce joueur effectue une Action de Passe, les
+Dégagement ; un seul joueur peut annoncer une Action
+joueurs adverses ne peuvent pas tenter d’intercepter le
+Spéciale de Dégagement par Tour. Quand un joueur
+ballon.
+annonce une Action Spéciale de Dégagement, il a
+d’abord le droit de faire une Action de Mouvement, mais il     PRÉCISION                                      Active
+ne peut pas continuer de se déplacer après que l’Action        Quand ce joueur effectue une Action de Passe qui est
+Spéciale de Dégagement a été résolue.                          une Passe Rapide ou une Passe Courte, il peut appliquer
+Si après son Action de Mouvement, ce joueur est en             un modificateur de +1 au Test de Capacité de Passe.
+possession du ballon, il peut le Dégager sur le terrain.
+Placez le Gabarit de Renvoi sur ce joueur, face à l’une        SUR LE BALLON                                     Active
+des Zones d’En-but ou l’une des Lignes de Touche. Jetez        Quand un joueur adverse effectue une Action de Passe,
+un D6 pour déterminer la direction dans laquelle le ballon     après avoir annoncé la case cible mais avant de faire le
+est botté, puis un deuxième D6 pour déterminer le              Test de Capacité de Passe, ce joueur peut se déplacer
+nombre de cases dans cette direction que le ballon va          de jusqu’à 3 cases, selon toutes les règles normales pour
+parcourir. Si ce joueur a la Compétence Frappe Précise,        une Action de Mouvement, à l’exception du fait qu’il ne
+il peut relancer soit l’un, soit les deux dés, mais il doit    peut pas Foncer. Si ce joueur Chute pendant ce
+décider s’il relance la direction avant le jet pour            mouvement, alors son mouvement prend immédiatement
+déterminer la distance.                                        fin et l’Action de Passe reprend. Si plusieurs joueurs ont
+cette Compétence, alors ils peuvent tous l’utiliser
+Si le ballon atterrit sur une case occupée par un joueur,
+pendant la même Action de Passe, mais ils doivent le
+alors celui-ci doit tenter de Réceptionner le ballon, sinon
+faire un à la fois et si l’un d’eux Chute avant que les
+le ballon Rebondit.
+autres aient eu l’occasion de se déplacer, ils ne peuvent
+Quand on effectue une Action Spéciale de Dégagement,           plus se déplacer.
+aucun Turnover ne s’ensuit si le ballon s’immobilise au
+De plus, pendant la Séquence de Début de Phase, après
+sol ; toutefois, si après avoir résolu l’Action Spéciale de
+que le Coup d’Envoi a Dévié mais avant de faire le jet
+Dégagement, le ballon est en possession d’un joueur
+d’Événement de Coup d’Envoi, un seul joueur Démarqué
+adverse, ou dans le public, un Turnover s’ensuit.
+de l’équipe qui réceptionne et ayant cette Compétence
+DÉLESTAGE                                        Active        peut se déplacer de jusqu’à 3 cases, selon toutes les
+Chaque fois qu’un joueur adverse tente d’effectuer une         règles normales pour une Action de Mouvement, à
+Action de Blocage contre ce joueur, ou une Action              l’exception du fait qu’il ne peut pas Foncer. Un joueur ne
+Spéciale qui cible directement ce joueur, ce joueur peut       peut pas utiliser cette Compétence si un Renvoi s’ensuit,
+utiliser cette Compétence. En ce cas, ce joueur peut           et il ne peut pas se déplacer dans la moitié de terrain
+immédiatement effectuer une Passe Rapide avant qu’on           adverse. Si ce joueur Chute pendant ce mouvement,
+résolve l’Action qui le cible. Cette Passe Rapide ne peut      alors son mouvement prend immédiatement fin et on fait
+pas provoquer de Turnover, mais suit autrement les             le jet de l’Événement du Coup d’Envoi.
+règles normales pour faire une Passe Rapide. Une fois la
+TRANSMISSION DANS LA COURSE                      Active
+Passe Rapide résolue, l’Action qui cible ce joueur
+Si ce joueur effectue une Action de Passe qui est une
+continue.
+Passe Rapide, ou effectue une Action de Transmission,
+NERFS D’ACIER                                   Active         alors, tant qu’il n’y a pas eu de Turnover, son activation
+Ce joueur peut ignorer certains ou tous les modificateurs      ne prend pas fin une fois la Passe ou la Transmission
+pour être Marqué quand il fait un Test d’Agilité pour          résolue. À la place, il peut continuer son Action de
+Réceptionner le ballon, ou quand il fait un Test de            Mouvement en utilisant son mouvement restant.
+Capacité de Passe pour Passer le ballon.
+
+## SCÉLÉRATE
+
+AGRESSEUR SOLITAIRE                            Active
+POURSUITE                                       Active
+Quand ce joueur effectue une Action d’Agression, s’il n’y
+Chaque fois qu’un joueur adverse tente d’Esquiver, hors
+a aucun joueur fournissant un Soutien Offensif ni
+d’une case dans la Zone de Tacle de ce joueur, ce joueur
+Défensif, alors ce joueur peut relancer un Jet d’Armure
+peut utiliser cette Compétence.
+raté
+Quand ce joueur utilise cette Compétence, jetez un D6.
+AGRESSION ÉCLAIR                                 Active        Sur un 1-3, rien ne se passe. Sur 4+, ce joueur est
+L’activation de ce joueur ne prend pas fin après qu’il a       immédiatement placé sur la case que le joueur adverse a
+effectué une Action d’Agression, et il peut continuer son      libérée. Ce joueur peut utiliser cette Compétence autant
+Action de Mouvement avec son mouvement restant.                de fois par Tour que la valeur de son Mouvement.
+Si un joueur essaie de quitter la Zone de Tacle de
+COUP DE CRAMPONS                                Active
+plusieurs joueurs ayant cette Compétence en même
+Ce joueur peut fournir un Soutien Offensif quand un
+temps, un seul de ces joueurs peut utiliser cette
+coéquipier effectue une Action d’Agression, quel que soit
+Compétence.
+le nombre de joueurs adverses qui Marquent ce joueur.
+SABOTEUR                                          Active
+FOURCHETTE                                         Active
+Quand ce joueur est Plaqué suite à l’Action de Blocage
+Quand un joueur adverse est Repoussé par ce joueur, le
+d’un joueur adverse, avant de faire le Jet d’Armure, il
+joueur adverse ne peut plus fournir de Soutien Offensif ni
+peut jeter un D6. Sur un 1-3, rien ne se passe et on fait le
+Défensif jusqu’à la fin de sa prochaine activation.
+Jet d’Armure normalement. Sur 4+, l’arme sabotée de ce
+FUMBLEROOSKI                                        Active     joueur explose et le joueur adverse est aussi Plaqué,
+Quand ce joueur effectue une Action de Mouvement alors         mais ceci ne provoque pas de Turnover, sauf si le joueur
+qu’il est en possession du ballon, il peut choisir de placer   adverse était en possession du ballon. Si l’arme sabotée
+le ballon au sol sur n’importe quelle case qu’il quitte lors   de ce joueur explose, alors il est automatiquement KO et
+de son Action de Mouvement. Ceci ne provoque pas de            on ne fait pas de Jet d’Armure pour lui.
+Turnover.                                                      Un joueur sans le Trait Arme Secrète ne peut pas avoir
+cette Compétence.
+INNOVATEUR VIOLENT                                Active
+Si un joueur adverse subit une Élimination suite à une         SOURNOIS                                        Active
+Action Spéciale que ce joueur a effectuée, ce joueur           Ce joueur n’est pas Expulsé quand il effectue une Action
+gagne les Points de Star Player correspondants pour            d’Agression s’il obtient un double naturel pour le Jet
+avoir infligé une Élimination.                                 d’Armure, tant que l’Armure du joueur cible n’est pas
+Un joueur peut avoir cette Compétence seulement s’il a         pénétrée. Si l’armure du joueur est pénétrée, ce joueur
+un Trait qui lui permet d’effectuer une Action Spéciale.       sera quand même expulsé normalement.
+JOUEUR DÉLOYAL                                   Active        VOL FATAL                                         Active
+Quand ce joueur effectue une Action d’Agression, il peut       Quand ce joueur est lancé dans le cadre d’une Action de
+appliquer un modificateur de +1 soit au Jet d’Armure, soit     Lancer de Coéquipier, s’il atterrit sur une case occupée
+au Jet de Blessure. On peut appliquer ce modificateur          par un joueur adverse, y compris s’il Rebondit sur une
+après avoir fait le jet.                                       case occupée par un joueur adverse, et si le joueur
+adverse est Plaqué, alors il peut appliquer un
+MARTEAU PILON                                      Active      modificateur de +1 soit au Jet d’Armure, soit au Jet de
+Quand un joueur adverse est Plaqué par ce joueur durant        Blessure. On peut appliquer ce modificateur après avoir
+une Action de Blocage, ce joueur peut effectuer une            fait le jet. Si un joueur adverse subit une Élimination
+Action d’Agression gratuite contre le joueur adverse tant      après avoir été Plaqué par le joueur ayant cette
+qu’il est toujours Debout et qu’il Marque toujours le joueur   Compétence, alors ce joueur compte comme ayant
+adverse. Puis ce joueur est Mis À Terre et son activation      causé cette Élimination et reçoit les Points de Star Player
+prend immédiatement fin.                                       correspondants.
+Un joueur sans le Trait Poids Plume ne peut pas avoir
+cette Compétence.
+NdR Ace : la VO indique « Poids Plume » alors que la
+VF mentionne « Minus »
+
+## TRAITS
+
+ANIMOSITÉ (X)*                                    Actif        Si le joueur botté était en possession du ballon, celui-ci
+Chaque fois que ce joueur tente d’effectuer une Action de      Rebondit depuis la case où il se trouve.
+Passe ou une Action de Transmission à un coéquipier            Toute Compétence ou Trait entrant en jeu quand un
+ayant le même Mot-clé que celui entre parenthèses, jetez       joueur effectue une Action de Lancer de Coéquipier
+un D6. Sur un 1, le joueur refuse d’effectuer l’action et      s’appliquera aussi à une Action Spéciale de Botter de
+son activation prend immédiatement fin. Certains joueurs       Coéquipier. Ce joueur gagne aussi des Points de Star
+ont le Trait Animosité (tous), auquel cas ils appliquent       Player de la même manière qu’une Action de Lancer de
+cette règle à tous leurs coéquipiers, quels que soient         Coéquipier.
+leurs Mots-clés.
+CERVEAU LENT*                                   Passif
+ARME SECRÈTE*                                       Actif      Chaque fois qu’on active ce joueur, après avoir annoncé
+À la fin d’une Phase lors de laquelle ce joueur a participé,   son action, il doit jeter un D6. Sur 2+, le joueur peut
+même s’il n’est pas sur le terrain à la fin de la Phase, il    effectuer l’action annoncée normalement. Sur un 1, il
+est Expulsé pour avoir commis une Agression.                   devient Déconcentré.
+BOMBARDIER                                         Actif       CHAÎNES ET BOULET*                                 Actif
+Quand on active ce joueur, il peut annoncer une Action         Quand on active ce joueur, la seule action qu’il peut
+Spéciale de Lancer de Bombe ; un seul joueur par Tour          annoncer est une Action Spéciale de Chaîne et Boulet ; il
+peut annoncer cette Action Spéciale.                           n’y a pas de limite au nombre de joueurs qui peuvent
+Quand un joueur effectue cette Action Spéciale, il lance       annoncer cette Action Spéciale à chaque Tour.
+une bombe de la même manière que s’il effectuait une           Quand un joueur effectue une Action Spéciale de Chaîne
+Action de Passe, selon toutes les règles habituelles pour      et Boulet, placez le Gabarit de Renvoi sur ce joueur, face
+une Action de Passe. Bien qu’il ne s’agisse pas d’une          à l’une des Zones d’En-but ou l’une des Lignes de
+Action de Passe en soi, toute Compétence ou Trait qui          Touche. Puis jetez un D6 et déplacez ce joueur sur la
+entre en jeu quand un joueur effectue une Action de            case indiquée par le Gabarit de Renvoi.
+Passe s’applique aussi à une Action Spéciale de Lancer
+Un joueur qui se déplace ainsi n’a pas à faire de Test
+de Bombe, à l’exception de la Compétence Sur le Ballon.
+d’Agilité pour Esquiver hors de la Zone de Tacle d’un
+Un joueur qui a annoncé cette Action Spéciale ne peut
+autre joueur ; il réussit automatiquement. Les joueurs
+pas effectuer d’Action de Mouvement avant de lancer la
+adverses ne peuvent pas utiliser la Compétence
+bombe.
+Poursuite ni Tentacules contre un joueur qui effectue une
+Dès qu’une bombe s’immobilise au sol, elle explose             Action de Chaîne et Boulet.
+immédiatement sur cette case. Si un joueur qui lance une
+• Si ce mouvement amène ce joueur hors du terrain, il
+bombe commet une Maladresse, ou si elle tombe quand
+risque d’être Blessé par le Public.
+un joueur tente de la Réceptionner, alors elle ne Rebondit
+pas et explose à la place sur la case du joueur en             • Si ce mouvement amène ce joueur sur une case
+question. Quand une bombe explose, tout joueur sur la          occupée par un joueur Debout (quelle que soit l’équipe),
+case où elle explose est touché par l’explosion. De plus,      il effectue automatiquement une Action de Blocage
+jetez un D6 pour chaque joueur adjacent à la case où la        contre le joueur ; cette Action de Blocage ignore la
+bombe a explosé. Sur 4+, il est touché par l’explosion.        Compétence Répulsion. S’il s’agit d’un coéquipier, alors
+le Coach de ce joueur choisit quel résultat appliquer
+Tout joueur Debout touché par l’explosion est
+après avoir jeté les Dés de Blocage.
+immédiatement Plaqué. De plus, faites un Jet d’Armure
+pour tout joueur À Terre ou Sonné touché par l’explosion.      • Si ce mouvement amène ce joueur sur une case
+occupée par un joueur À Terre ou Sonné, celui-ci est
+Si un joueur réussit à Réceptionner ou Intercepter une
+Repoussé et on fait un Jet d’Armure contre lui.
+bombe lancée, il doit immédiatement la relancer, selon
+les règles d’une Action Spéciale de Lancer de Bombe            • Si ce mouvement amène ce joueur sur une case
+décrites ci-avant.                                             contenant le ballon, celui-ci Rebondit immédiatement.
+Ceci ne provoque pas de Turnover.
+BOTTER DE COÉQUIPIER                             Passif        Un joueur qui effectue une Action Spéciale de Chaîne et
+Quand on active ce joueur, il peut annoncer une Action         Boulet peut se déplacer d’un nombre de cases inférieur
+Spéciale de Botter de Coéquipier ; un seul joueur par          ou égal à son Mouvement. Il peut Foncer normalement,
+Tour peut annoncer cette Action Spéciale.                      mais s’il obtient un 1, il se déplace d’abord sur la case
+Une Action Spéciale de Botter de Coéquipier fonctionne         normalement, en faisant l’Action de Blocage, en
+exactement comme une Action de Lancer de Coéquipier,           Repoussant un joueur ou en faisant Rebondir le ballon le
+avec les exceptions suivantes :                                cas échéant, avant de Chuter sur la case où il s’est
+Effectuer une Action Spéciale de Botter de Coéquipier ne       déplacé.
+compte pas comme l’Action Lancer de Coéquipier d’une           Si ce joueur est Plaqué, Chute ou est Mis À Terre quelle
+équipe pour le Tour, donc une équipe peut effectuer à la       qu’en soit la raison, faites immédiatement un Jet de
+fois une Action Spéciale de Botter de Coéquipier et une        Blessure pour lui en traitant tout résultat de Sonné
+Action de Lancer de Coéquipier pendant le même Tour si         comme KO à la place.
+elle le souhaite.                                              Un joueur ayant ce Trait ne peut avoir aucune des
+Toutefois, si une Action Spéciale de Botter de Coéquipier      Compétences suivantes : Tacle Plongeant, Fourchette,
+résulte en une Maladresse sur Lancer, faites                   Frénésie, Projection, Frappe-et-court, Saut, Blocage
+immédiatement un Jet de Blessure pour le coéquipier            Multiple, Sur le Ballon, Poursuite, Appuis Sûrs.
+botté, en traitant tout résultat de Sonné comme KO.
+CONTAGIEUX                                       Passif          Ce joueur peut utiliser l’Action Spéciale de Gerbe de
+Une fois par match, quand un joueur ayant ce Trait inflige       Vomi pour remplacer l’Action de Blocage faite dans le
+une Élimination à un joueur adverse suite à une Action de        cadre d’une Action de Blitz s’il le souhaite, mais son
+Blocage, et que le joueur subit un résultat Mort sur son         activation prend quand même fin sitôt qu’il a effectué
+Jet d’Élimination, s’il n’est pas sauvé par un Apothicaire,      l’Action Spéciale de Gerbe de Vomi.
+vous pouvez immédiatement ajouter 1 nouveau joueur
+Trois-quart de votre Fiche d’Équipe à votre Box des              GROS DÉBILE*                                       Passif
+Réserves. Ceci peut amener votre équipe à compter plus           Chaque fois qu’on active ce joueur, après avoir annoncé
+de 16 joueurs pour le restant du match.                          son action, il doit jeter un D6. Il peut appliquer un
+modificateur de +2 au jet s’il est adjacent à un ou
+Pendant la Séquence d’Après Match, vous pouvez
+plusieurs coéquipiers Debout n’étant pas Déconcentrés,
+embaucher ce joueur de la même manière que les
+et n’ayant pas le Trait Gros Débile. Sur 4+, le joueur peut
+joueurs Journaliers.
+effectuer l’action annoncée normalement. Sur un 1-3, ce
+On ne peut pas utiliser ce Trait contre des joueurs Gros         joueur devient Déconcentré.
+Bras, ni un joueur ayant les Traits Décomposition,
+Régénération ou Minus.                                           HAINE (X)*                                  Passif
+Chaque fois que ce joueur effectue une Action de
+DÉCOMPOSITION*                                  Passif           Blocage contre un joueur ayant le même Mot-clé que
+Appliquez un modificateur de +1 à tout Jet d’Élimination         celui entre parenthèses, ce joueur peut relancer un
+fait contre ce joueur.                                           résultat Attaquant Plaqué.
+FARCEUR                                              Actif       INSIGNIFIANT*                                    Passif
+Chaque fois qu’un joueur adverse tente d’effectuer une           Quand vous créez une Liste d’équipe, vous ne pouvez
+Action de Blocage contre ce joueur, ou une Action                pas inclure plus de joueurs ayant ce Trait que de joueurs
+Spéciale qui cible ce joueur directement (à l’exception          n’ayant pas ce Trait.
+d’une Action de Blocage causée par l’Action Spéciale de
+Chaîne et Boulet), ce joueur peut utiliser ce Trait.             INSTABLE*                                     Passif
+Avant de déterminer combien de dés on jette, ce joueur           Ce joueur ne peut pas déclarer d’Action de Sécurisation
+peut être retiré du terrain et placé sur n’importe quelle        du Ballon.
+autre case inoccupée adjacente au joueur qui effectue
+IVROGNE*                                       Passif
+l’action. L’action se déroule ensuite normalement. Si le
+Ce joueur applique un modificateur de -1 au test chaque
+joueur qui utilise ce Trait est en possession du ballon et
+fois qu’il tente de Foncer.
+se place dans la Zone d’En-but adverse, l’Action est
+quand même résolue intégralement avant de résoudre un            LANCER DE COÉQUIPIER                         Passif
+Touchdown.                                                       Ce joueur peut annoncer l’Action Lancer de Coéquipier
+Si ce joueur utilise ce Trait pour se placer sur le ballon, il   comme décrit en page 47.
+peut tenter de le ramasser avant qu’on fasse le moindre
+autre jet de dé.                                                 MICROBE*                                         Passif
+Un joueur avec ce Trait peut appliquer un modificateur de
+FUREUR DÉBRIDÉE*                                Passif           +1 au Test d’Agilité quand il tente d’Esquiver.
+Chaque fois qu’on active ce joueur, après avoir annoncé          Toutefois, quand un joueur adverse tente d’Esquiver, sur
+son action, il doit jeter un D6. Il peut appliquer un            une case dans la Zone de Tacle de ce joueur, ce joueur
+modificateur de +2 au jet s’il a annoncé une Action de           n’applique pas un modificateur de -1 au Test d’Agilité du
+Blocage ou une Action de Blitz. Sur 4+, le joueur peut           joueur adverse pour Marquer le joueur adverse.
+effectuer l’action annoncée normalement.
+Sur un 1-3, ce joueur plonge dans une rage incohérente,          MINUS*                                            Passif
+mais rien ne se produit vraiment. Son activation prend           Quand ce joueur tente d’Esquiver, il ne subit aucun
+immédiatement fin.                                               modificateur négatif à ses Tests d’Agilité pour être
+Marqué par les joueurs adverses.
+GERBE DE VOMI                                        Actif       De plus, ce joueur applique un modificateur de -1 au Test
+Quand on active ce joueur, il peut annoncer une Action           d’Agilité quand il tente d’intercepter le ballon.
+Spéciale de Gerbe de Vomi ; il n’y a pas de limite au
+Un joueur ayant ce Trait est plus enclin à se blesser et si
+nombre de joueurs qui peuvent annoncer cette Action
+on fait un Jet de Blessure pour lui, faites le jet sur le
+Spéciale à chaque Tour.
+Tableau de Blessure de Minus à la place.
+Quand ce joueur effectue une Action Spéciale de Gerbe
+de Vomi, choisissez un joueur adverse Debout adjacent à          MON BALLON*                                      Passif
+ce joueur et jetez un D6. Sur 2+, ce joueur vomit sur sa         Un joueur ayant ce Trait ne peut pas abandonner
+cible ; faites un Jet d’Armure pour le joueur choisi. On ne      volontairement le ballon quand il en est en possession, et
+peut pas modifier ce Jet d’Armure. Si l’armure du joueur         ne peut donc pas déclarer d’Actions de Passe ni de
+est pénétrée, faites un Jet de Blessure pour lui, sinon,         Transmission, ni utiliser la moindre Compétence ou Trait
+rien ne se passe.                                                qui l’autoriserait à renoncer à la possession du ballon.
+Sur un 1, ce joueur se couvre de bile caustique ; faites un      Les seules façons pour lui de perdre possession du
+Jet d’Armure pour ce joueur. On ne peut pas modifier ce          ballon sont en étant Plaqué, Mis À Terre, en Chutant ou
+Jet d’Armure. Si l’armure de ce joueur est pénétrée,             par l’effet d’une Compétence, d’un Trait, ou d’une règle
+faites un Jet de Blessure pour lui, sinon, rien ne se            spéciale d’une figurine adverse.
+passe.
+MONTÉ SUR RESSORT                               Actif             REGARD HYPNOTIQUE                                   Actif
+Pendant son mouvement, un joueur ayant ce Trait peut              Quand on active ce joueur, il peut annoncer une Action
+tenter de s’Élancer par-dessus une unique case                    Spéciale de Regard Hypnotique ; il n’y a pas de limite au
+adjacente, peu importe ce qu’il se trouve sur la case.            nombre de joueurs qui peuvent annoncer cette Action
+S’Élancer fonctionne de la même façon que Bondir,                 Spéciale à chaque Tour. Quand un joueur annonce une
+comme décrit en page 36, à l’exception du fait qu’un              Action Spéciale de Regard Hypnotique, il a d’abord le
+joueur qui s’Élance peut ignorer tous les modificateurs           droit de faire une Action de Mouvement, mais il ne peut
+négatifs qu’il recevrait en Bondissant.                           pas continuer de se déplacer après avoir tenté l’Action
+Un joueur ayant ce Trait ne peut pas aussi avoir la               Spéciale de Regard Hypnotique.
+Compétence Saut.                                                  Quand un joueur effectue une Action Spéciale de Regard
+Hypnotique, il choisit un joueur adverse Debout adjacent
+PETIT REMONTANT                                       Actif       et jette un D6. Sur un 1-2, rien ne se passe et l’activation
+À la fin de chaque Tour adverse, jetez un D6 pour chaque          de ce joueur prend immédiatement fin. Sur 3+, le joueur
+coéquipier À Terre à 3 cases ou moins d’un ou plusieurs           adverse choisi devient Déconcentré et l’activation de ce
+joueurs Debout ayant ce Trait. Sur 5+, le joueur À Terre          joueur prend immédiatement fin.
+peut immédiatement se relever. Si un joueur ayant ce
+Trait se relève suite à un coéquipier utilisant ce Trait, il ne   RÉGÉNÉRATION                                         Passif
+peut pas aussi utiliser ce Trait pendant le même Tour.            Chaque fois que ce joueur subit une Élimination, avant
+de faire le Jet d’Élimination pour lui, jetez un D6.
+PIQUÉ                                            Actif
+Sur un 1-3, ce joueur subit l’Élimination ; faites le Jet
+Quand ce joueur est lancé par une Action de Lancer de
+d’Élimination normalement. Sur 4+, ce joueur se
+Coéquipier, il peut choisir de ne pas Valdinguer avant
+régénère et ignore l’Élimination (mais les Points de Star
+d’atterrir normalement. En ce cas, placez le Gabarit de
+Player gagnés pour avoir infligé une Élimination sont
+Renvoi sur ce joueur, face à l’une des Zones d’En-but ou
+quand même gagnés), et il est placé dans le Box des
+l’une des Lignes de Touche. Jetez un D6 pour déterminer
+Réserves de son équipe.
+la direction vers laquelle ce joueur se déplace, puis un
+deuxième D6 pour déterminer le nombre de cases dans               SANS BALLON*                                    Passif
+cette direction que ce joueur va parcourir.                       Un joueur ayant ce Trait ne peut jamais être en
+De plus, s’il choisit de ne pas Valdinguer normalement,           possession du ballon. Si ce joueur est censé tenter de
+ce joueur peut relancer le Test d’Agilité quand il tente          Réceptionner ou Ramasser le ballon, il rate
+d’atterrir.                                                       automatiquement comme s’il avait obtenu un 1 naturel.
+Un joueur ayant ce Trait ne peut pas tenter d’intercepter
+POIDS PLUME*                                    Passif
+une Passe.
+Ce joueur peut être lancé par un coéquipier ayant le Trait
+Lancer de Coéquipier, même si ce joueur est À Terre.              SAUVAGERIE ANIMALE*                                Passif
+Chaque fois qu’on active ce joueur, après avoir annoncé
+POIGNARD                                            Actif
+son action, il doit jeter un D6. Il peut appliquer un
+Quand on active ce joueur, il peut annoncer une Action
+modificateur de +2 au jet s’il a annoncé une Action de
+Spéciale de Poignard ; il n’y a pas de limite au nombre de
+Blocage ou une Action de Blitz. Sur 4+, le joueur peut
+joueurs qui peuvent annoncer cette Action Spéciale à
+effectuer l’action annoncée normalement.
+chaque Tour.
+Sur un 1-3, ce joueur se déchaîne sur un de ses
+Quand ce joueur effectue une Action Spéciale de                   coéquipiers. Choisissez 1 coéquipier Debout et adjacent
+Poignard, choisissez un joueur adverse Debout adjacent            à ce joueur ; le joueur choisi est immédiatement Plaqué.
+à ce joueur et faites un Jet d’Armure pour le joueur              Ceci ne provoque pas de Turnover sauf si le joueur
+choisi. On ne peut pas modifier ce Jet d’Armure. Si               Plaqué était en possession du ballon. Si le joueur avec
+l’armure du joueur est pénétrée, faites un Jet de Blessure        ce Trait a la Compétence Griffes ou Châtaigne, il doit les
+pour lui, sinon, rien ne se passe.                                utiliser lors du Jet d’Armure pour le joueur Plaqué.
+Ce joueur peut utiliser l’Action Spéciale de Poignard pour        Si ce joueur obtient un 1-3 et s’il n’y a pas de coéquipier
+remplacer l’Action de Blocage faite dans le cadre d’une           Debout adjacent, alors il est Déconcentré.
+Action de Blitz s’il le souhaite, mais son activation prend
+quand même fin sitôt qu’il a effectué l’Action Spéciale de
+Poignard.
+PRENDRE RACINE*                                   Passif
+Chaque fois qu’on active ce joueur, après avoir annoncé
+son action, s’il est Debout il doit jeter un D6. Sur 2+, le
+joueur peut effectuer l’action annoncée normalement.
+Sur un 1, le joueur devient Enraciné. Tant qu’il est
+Enraciné, un joueur ne peut pas effectuer d’Action de
+Mouvement, ne peut pas Poursuivre après avoir effectué
+une Action de Blocage, ne peut pas être Repoussé et ne
+peut en aucun cas quitter sa case actuelle, sauf s’il est
+mis KO ou subit une Élimination.
+Un joueur Enraciné cesse immédiatement d’être
+Enraciné à la fin d’une Phase, ou s’il est Plaqué ou Mis À
+Terre.
+SOIF DE SANG (X+)*                                  Passif       TIMMM–BER !                                      Passif
+Chaque fois qu’on active ce joueur, après avoir annoncé          Si un joueur a un Mouvement de 2 ou moins et tente de
+son action, il doit jeter un D6, en ajoutant 1 au jet s’il a     se relever, appliquez un modificateur de +1 au jet pour se
+annoncé une Action de Blocage ou une Action de Blitz. Si         relever pour chaque coéquipier Debout Démarqué
+le résultat est égal ou supérieur au nombre entre                adjacent à ce joueur. Un jet de 1 naturel échoue quand
+parenthèses, il peut s’activer normalement.                      même normalement.
+Si ce joueur obtient un résultat inférieur au nombre entre
+TOUJOURS AFFAMÉ*                                    Passif
+parenthèses, ou un 1 naturel, il peut continuer son
+Chaque fois que ce joueur effectue une Action de Lancer
+activation normalement bien qu’il puisse remplacer son
+de Coéquipier, avant de faire le Test de Capacité de
+action annoncée par une Action de Mouvement s’il le
+Passe, il doit jeter un D6. Sur 2+, il peut continuer l’Action
+souhaite. Si le joueur a annoncé une action qu’on ne peut
+Lancer de Coéquipier normalement. Sur un 1, le joueur
+effectuer qu’une fois par Tour (comme une Action de
+tente de manger son coéquipier ; il doit jeter un autre D6.
+Blitz), cela compte quand même pour ladite action du
+Sur 2+, le coéquipier s’échappe et l’Action Lancer de
+Tour. À la fin de son activation, ce joueur peut mordre un
+Coéquipier résulte automatiquement en une Maladresse
+coéquipier Trois-quart Sbire adjacent, quel que soit le
+sur Lancer. Sur un 1, le joueur mange son coéquipier ;
+statut de ce dernier.
+retirez celui-ci immédiatement de votre Liste d’Équipe.
+En ce cas, faites aussitôt un Jet de Blessure pour le            On ne peut pas utiliser d’Apothicaire pour le sauver, ni
+Trois-quart Sbire, en traitant tout résultat Éliminé comme       faire de jet de Régénération. Si le coéquipier était en
+une Commotion ; ceci ne provoque pas de Turnover sauf            possession du ballon, celui-ci Rebondit depuis la case
+si le Trois-quart Sbire était en possession du ballon. Si ce     que ce joueur Toujours Affamé occupe. Un Turnover
+joueur ne mord pas de Trois-quart Sbire, quelle qu’en soit       s’ensuit.
+la raison, alors un Turnover s’ensuit, ce joueur devient
+Déconcentré, et il lâche immédiatement le ballon s’il le         TRONÇONNEUSE*                                          Actif
+possédait. Si ce joueur était dans la Zone d’En-but              Quand on active ce joueur, il peut annoncer une Action
+adverse, il ne marque pas de Touchdown. Si un joueur             Spéciale d’Attaque de Tronçonneuse ; il n’y a pas de
+qui a raté ce jet veut effectuer une Action de Passe,            limite au nombre de joueurs qui peuvent annoncer cette
+Action de Transmission, ou marquer, alors il doit mordre         Action Spéciale à chaque Tour.
+un Trois-quart Sbire avant d’effectuer l’action ou de            Quand un joueur effectue une Action Spéciale d’Attaque
+marquer.                                                         de Tronçonneuse, jetez un D6. Sur 2+, ce joueur peut
+immédiatement faire un Jet d’Armure contre 1 joueur
+SOLITAIRE (X+)*                                       Passif
+adverse Debout, en appliquant un modificateur de +3 au
+Chaque fois que ce joueur souhaite utiliser une Relance
+Jet d’Armure.
+d’Équipe, il doit jeter un D6. Si le jet est égal ou supérieur
+au nombre entre parenthèses, alors il peut utiliser la           Sur un 1, la Tronçonneuse Dérape et ce joueur est
+Relance d’Équipe normalement.                                    Plaqué à la place.
+Si le jet est inférieur au nombre entre parenthèses, alors       Si ce joueur est Plaqué ou Chute, quelle qu’en soit la
+il ne peut pas relancer le dé et la Relance d’Équipe est         raison, alors on applique un modificateur de +3 quand le
+perdue comme si on l’avait utilisée.                             Coach adverse fait un Jet d’Armure pour ce joueur. On
+doit toujours appliquer ce modificateur de +3.
+SOUFFLE ARDENT                                     Passif        S’il le souhaite, ce joueur peut aussi utiliser sa
+Quand on active ce joueur, il peut annoncer une Action           Tronçonneuse lorsqu’il effectue une Action d’Agression,
+Spéciale de Souffle Ardent ; il n’y a pas de limite au           auquel cas il peut appliquer un modificateur de +3 quand
+nombre de joueurs qui peuvent annoncer cette Action              il fait le Jet d’Armure pour le joueur adverse. Il doit quand
+Spéciale à chaque Tour.                                          même faire un jet pour voir si la Tronçonneuse Dérape.
+Quand un joueur fait une Action Spéciale de Souffle              Ce joueur peut utiliser l’Action Spéciale d’Attaque de
+Ardent, il peut choisir 1 joueur adverse Debout qu’il            Tronçonneuse pour remplacer l’Action de Blocage faite
+Marque et jeter un D6, en appliquant un modificateur de          dans le cadre d’une Action de Blitz s’il le souhaite, mais
+-1 si la cible a une Force de 5 ou plus. Sur un 1, ce            son activation prend quand même fin sitôt qu’il a effectué
+joueur est immédiatement Plaqué. Sur 2-3, rien ne se             l’Action Spéciale d’Attaque de Tronçonneuse .
+passe. Sur 4+, le joueur adverse est immédiatement Mis
+À Terre. Si le jet est un 6 naturel, le joueur adverse est
+Plaqué à la place. Après avoir résolu l’Action Spéciale de
+Souffle Ardent, l’activation de ce joueur prend
+immédiatement fin.
+Ce joueur peut utiliser l’Action Spéciale de Souffle Ardent
+pour remplacer l’Action de Blocage faite dans le cadre
+d’une Action de Blitz s’il le souhaite, mais son activation
+prend quand même fin sitôt qu’il a effectué l’Action
+Spéciale de Souffle Ardent.

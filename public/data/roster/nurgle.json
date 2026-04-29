@@ -86,5 +86,8 @@
   "specialRules": [
     "Favoris de Nurgle",
     "Bagarreurs"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": false,
+  "tier": 1
 }

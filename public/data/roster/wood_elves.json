@@ -93,5 +93,8 @@
   "specialRules": [
     "Ligue des Royaumes Elfiques",
     "Ligue Sylvestre"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }

@@ -1,0 +1,114 @@
+## RÈGLES SPÉCIALES !
+
+
+L
+
+es équipes de Blood Bowl sont toutes différentes, et la plupart ont accès à au moins une règle
+spéciale. D’une manière générale, elles traduisent en jeu le style ou les aspects uniques propres
+aux équipes telles qu’on les décrit.
+Ces règles spéciales, en s’ajoutant aux autres règles, auront leur impact à diverses étapes du jeu. Certains
+Coups de Pouce ne sont accessibles qu’aux équipes ayant une certaine règle spéciale. C’est aussi le cas de
+certains Star Players qui ont la règle spéciale Favori de… Ceci signifie qu’une équipe a besoin d’avoir une
+règle spéciale afin d’acheter ces Coups de Pouce ou embaucher ces Star Players.
+Vous trouverez ici une liste des règles spéciales d’équipe, ainsi que le détail de ce qu’elles font.
+
+## BAGARREURS BRUTAUX
+
+Pour ces équipes, Blood Bowl est synonyme de                   Quand vous créez une Liste d’Équipe avec cette
+violence, et ils n’hésitent pas à se jeter dans la             règle spéciale et qu’il vous faut faire un choix, vous
+mêlée sitôt que le sifflet retentit. Bien souvent, les         devez choisir parmi les options proposées et ne
+supporters de ces équipes célébreront un tacle                 pouvez plus en changer.
+fracassant avec plus d’entrain qu’un touchdown, et
+à leurs yeux, le carnage infligé prime absolument              Certains Star Players ne peuvent jouer que pour
+sur le score !                                                 des équipes qui sont Favorites d’un Dieu du Chaos
+spécifique. Par exemple, le profil d’un Star Player
+En Jeu en Ligue, une équipe avec cette règle                   peut dire qu’il ne peut jouer que pour les équipes
+spéciale gagne des PSP un peu différemment. Les                avec la règle spéciale Favoris de Khorne. Un tel
+joueurs de cette équipe gagnent 3 PSP au lieu de 2             Star Player ne peut donc pas jouer pour une équipe
+pour avoir infligé une Élimination. De plus, les               avec la règle spéciale Favoris de Nurgle, Slaanesh,
+joueurs de cette équipe gagnent seulement 2 PSP                etc.
+au lieu de 3 pour avoir marqué un Touchdown.
+Si une équipe a un choix de n’importe quel
+CHANTAGE ET CORRUPTION                                        alignement, elle peut choisir parmi les suivants :
+Ces équipes sont notoirement sans scrupule, et                 Hashut, Khorne, Nurgle, Slaanesh, Tzeentch,
+connues pour l’expertise avec laquelle elles tordent           Chaos Universel.
+les règles à la limite de l’infraction. Elles n’ont pas
+non plus peur de faire pression sur les officiels du           TROIS-QUARTS À VIL PRIX
+match afin de les convaincre de voir les choses à              Certaines équipes ont si peu d’égard pour leurs
+leur manière, que ce soit par le chantage,                     Trois-quarts (parfois à raison !) qu’elles ne se
+l’extorsion, le graissage de patte, ou tout autre              préoccupent pas toujours de les rémunérer. À la
+moyen innovant de pousser l’arbitre à fermer les               place, elles prennent les joueurs les plus inutiles
+yeux !                                                         pour gonfler leurs rangs simplement pour avoir les
+effectifs obligatoires. Cela convient à la plupart de
+Une fois par match, quand une équipe ayant cette               ces joueurs, car ils sont d’ordinaire prêts à jouer
+règle spéciale obtient un 1 pour Contester la                  pour des cacahuètes, et se satisfont simplement
+Décision, elle peut relancer le D6.                            d’être là !
+FAVORI DE…                                                    En Jeu en Ligue, quand une équipe ayant cette
+Les partisans des Dieux du Chaos sont                          règle spéciale calcule sa Valeur d’Équipe Actuelle,
+naturellement attirés par la nature violente du Blood          traitez les Coûts d’Embauche des joueurs Trois-
+Bowl. Certaines équipes rendent hommage à un                   quarts de l’équipe comme étant de 0 pièce d’or.
+unique Dieu du Chaos, tandis que d’autres                      Toute augmentation de valeur de ces joueurs est
+célèbrent le Panthéon du Chaos comme un tout                   incluse normalement.
+indivisible. Quoi qu’il en soit, ces équipes exaucent
+les volontés de leur déité sur le terrain.                     MAÎTRES DE LA NON-VIE
+Collectivement appelés « morts-vivants », les
+Certaines équipes ont un alignement spécifique                 membres de ces équipes seront souvent rejoints
+automatique (ex. Favoris de Khorne), tandis que                par des défunts récents, qui font de parfaits Trois-
+d’autres ont le choix. Si une équipe a le choix de             quarts. Parfois, un Nécromancien un peu trop
+son alignement, il sera listé entre parenthèses après          enthousiaste n’attendra même pas que le cadavre
+la règle spéciale ; par exemple, Favoris de (Khorne,           d’un joueur adverse soit froid pour le relever et lui
+Nurgle, Slaanesh ou Tzeentch).                                 faire changer de maillot avant de l’envoyer sur le
+terrain affronter ses anciens coéquipiers !
+Une fois par match, si un joueur adverse ayant une             CAPITAINE
+Force de 4 ou moins et n’ayant pas le Trait Minus
+Certaines équipes pratiquent le Blood Bowl depuis
+subit un résultat Mort lors du jet sur le Tableau
+si longtemps qu’une hiérarchie naturelle est
+d’Élimination, une équipe avec cette règle spéciale
+apparue dans leurs rangs. Ceux qui ont plus de
+peut Relever le Mort. En ce cas, elle peut
+bouteille ont des conseils à prodiguer, ou ont
+immédiatement ajouter un unique joueur Trois-quart
+suffisamment de victimes au compteur pour avoir
+de sa Fiche d’Équipe à son Box des Réserves. Ceci
+gagné le respect de leurs coéquipiers. Quoi qu’il en
+peut amener une équipe à avoir temporairement
+soit, ces équipes adhèrent aux principes sportifs
+plus de 16 joueurs pour le restant du match.
+« classiques », et les joueurs les plus aguerris les
+À la Séquence d’Après Match, quand vous                        dirigent sur le terrain en portant leur emblématique,
+embauchez de nouveaux joueurs pour votre équipe,               et souvent taché de sang, brassard de capitaine !
+vous pouvez embaucher de façon permanente et
+Quand vous sélectionnez une Liste d’Équipe pour
+gratuitement le nouveau joueur Trois-quart, tant que
+une équipe avec cette règle spéciale, vous pouvez
+votre Liste d’Équipe ne compte pas déjà 16 joueurs,
+désigner n’importe quel joueur sur votre liste de
+sinon, il est perdu. Le joueur ajoute quand même sa
+départ (à l’exception d’un Gros Bras) pour qu’il soit
+valeur totale à votre Valeur d’Équipe.
+le Capitaine de votre équipe. Un Capitaine gagne
+DÉFERLEMENT                                                   immédiatement la Compétence Pro sans augmenter
+son coût. De plus, si votre Capitaine est sur le
+Ces équipes sont pleines de petits joueurs prêts à
+terrain, chaque fois que vous utilisez une Relance
+tous les mauvais coups, et les tenir éloignés du
+d’Équipe vous pouvez jeter un D6 ; sur un jet de 6
+terrain est plus facile à dire qu’à faire. Garder un œil
+naturel, la Relance d’Équipe est gratuite.
+sur ces petites pestes est presque impossible, et la
+plupart des arbitres préfèrent se montrer plus                 Lors du placement au début d’une Phase, vous
+laxistes sur la règle des onze joueurs, d’autant que           devez choisir d’aligner votre Capitaine si possible.
+ces joueurs finiront rapidement réduits en purée sur           Un Capitaine peut être renvoyé de votre liste
+le gazon ou l’astrogranite !                                   seulement s’il a subi une blessure qui a réduit une
+de ses caractéristiques. Toutefois, si un Capitaine
+Pendant la Séquence de Début de Phase, après
+est tué lors d’un match, alors vous pouvez nommer
+que les deux équipes ont placé leurs joueurs, une
+un nouveau Capitaine à la fin du match.
+équipe avec cette règle spéciale peut placer sur le
+terrain D3 joueurs Trois-quart supplémentaires
+depuis son Box des Réserves, selon toutes les
+règles normales de placement des joueurs. Ceci
+permet à une équipe de dépasser le maximum
+habituel de 11 joueurs sur le terrain.

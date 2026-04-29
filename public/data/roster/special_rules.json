@@ -1,0 +1,37 @@
+[
+  {
+    "id": "bagarreurs_brutaux",
+    "name": "Bagarreurs Brutaux",
+    "description": "3 PSP pour une Élimination (au lieu de 2). 2 PSP pour un Touchdown."
+  },
+  {
+    "id": "chantage_corruption",
+    "name": "Chantage et Corruption",
+    "description": "Une fois par match, sur 1 pour Contester la Décision, peut relancer le D6."
+  },
+  {
+    "id": "favori_de",
+    "name": "Favori de...",
+    "description": "Alignement spécifique à un Dieu du Chaos."
+  },
+  {
+    "id": "trois_quarts_vil_prix",
+    "name": "Trois-quarts à vil prix",
+    "description": "Le Coût d'Embauche des Trois-quarts compte pour 0."
+  },
+  {
+    "id": "maitres_non_vie",
+    "name": "Maîtres de la Non-Vie",
+    "description": "Si un joueur adverse meurt, on peut Relever le Mort et gagner un Trois-quart Zombie."
+  },
+  {
+    "id": "deferlement",
+    "name": "Déferlement",
+    "description": "Placer D3 Trois-quarts supplémentaires sur le terrain après placement."
+  },
+  {
+    "id": "capitaine",
+    "name": "Capitaine",
+    "description": "Un joueur gagne Pro. S'il est sur le terrain, chaque Relance d'Équipe est gratuite sur un 6."
+  }
+]

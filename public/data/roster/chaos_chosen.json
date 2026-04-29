@@ -100,5 +100,8 @@
   ],
   "specialRules": [
     "Clash du Chaos"
-  ]
+  ],
+  "rerollCost": 50000,
+  "apothecary": true,
+  "tier": 1
 }
