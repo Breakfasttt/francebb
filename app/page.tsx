@@ -128,22 +128,15 @@ export default async function Home() {
             <Link href="/classement" style={{ display: 'contents' }}>
               <PremiumCard hoverEffect className="action-card">
                 <Award size={24} className="icon-accent" />
-                <div className="card-text">Coupe de France</div>
+                <div className="card-text">Championnat de France</div>
               </PremiumCard>
             </Link>
-            <div className="card-stack">
-              <Link href="/saisons" style={{ display: 'contents' }}>
-                <PremiumCard hoverEffect className="action-card flex-1">
-                  <Trophy size={24} className="icon-accent" />
-                  <div className="card-text">Saison de Ligue</div>
-                </PremiumCard>
-              </Link>
-              <Link href={isAuth ? "/equipes" : "/auth/login?callback=/equipes"} style={{ display: 'contents' }}>
-                <PremiumCard hoverEffect className="action-card-mini">
-                  Mes Équipes
-                </PremiumCard>
-              </Link>
-            </div>
+            <Link href="/saisons" style={{ display: 'contents' }}>
+              <PremiumCard hoverEffect className="action-card">
+                <Trophy size={24} className="icon-accent" />
+                <div className="card-text">Saison de Ligue</div>
+              </PremiumCard>
+            </Link>
 
             <div className="card-stack">
               <Link href="/articles" style={{ display: 'contents' }}>
@@ -153,8 +146,9 @@ export default async function Home() {
                 </PremiumCard>
               </Link>
               <Link href="/ressources" style={{ display: 'contents' }}>
-                <PremiumCard hoverEffect className="action-card-mini">
-                  Ressources
+                <PremiumCard hoverEffect className="action-card flex-1">
+                  <BookOpen size={24} className="icon-accent" />
+                  <div className="card-text">Ressources</div>
                 </PremiumCard>
               </Link>
             </div>

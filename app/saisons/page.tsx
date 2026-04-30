@@ -1,13 +1,16 @@
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { Trophy, Plus } from "lucide-react";
+import { Trophy, Plus, Users } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
 import Link from "next/link";
 
 export default async function SaisonsHubPage() {
   const session = await auth();
   const isAdmin = session?.user?.role === "ADMIN" || session?.user?.role === "COMMISSAIRE";
+  const isAuth = !!session?.user;
 
   const activeSeasons = await prisma.leagueSeason.findMany({
     include: {
@@ -29,15 +32,21 @@ export default async function SaisonsHubPage() {
       />
       <div className="saisons-hub-container page-content">
         
-        {isAdmin && (
-          <div className="mb-6">
+        <div className="flex gap-4 mb-8">
+          <Link href={isAuth ? "/equipes" : "/auth/login?callback=/equipes"}>
+            <CTAButton>
+              <Users size={18} /> Mes Équipes
+            </CTAButton>
+          </Link>
+
+          {isAdmin && (
             <Link href="/saisons/create">
-              <button className="classic-button cta-button">
+              <ClassicButton>
                 <Plus size={18} /> Nouvelle Saison (Admin)
-              </button>
+              </ClassicButton>
             </Link>
-          </div>
-        )}
+          )}
+        </div>
 
         <section className="active-seasons-section">
           <h2 className="mb-4">Saisons et Ligues</h2>
