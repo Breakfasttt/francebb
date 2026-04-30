@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
-import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText, MonitorPlay, Award, Map, Layout } from "lucide-react";
+import { Trophy, MessageSquare, MapPin, Calendar, Users, Shield, Info, BookOpen, HelpCircle, Plus, FileText, MonitorPlay, Award, Map, Layout, Swords } from "lucide-react";
 import { auth } from "@/auth";
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import "./page.css";
@@ -133,8 +133,8 @@ export default async function Home() {
             </Link>
             <Link href="/saisons" style={{ display: 'contents' }}>
               <PremiumCard hoverEffect className="action-card">
-                <Trophy size={24} className="icon-accent" />
-                <div className="card-text">Saison de Ligue</div>
+                <Swords size={24} className="icon-accent" />
+                <div className="card-text">Saisons de Ligue</div>
               </PremiumCard>
             </Link>
 

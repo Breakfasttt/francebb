@@ -1,6 +1,6 @@
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { Trophy, Plus, Users } from "lucide-react";
+import { Trophy, Plus, Users, Swords } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -27,7 +27,7 @@ export default async function SaisonsHubPage() {
       <PageHeader 
         title="Saisons de Ligue" 
         subtitle="Le hub compétitif de Blood Bowl France" 
-        icon={<Trophy size={24} />} 
+        icon={<Swords size={24} />} 
         backLink="/" 
       />
       <div className="saisons-hub-container page-content">
