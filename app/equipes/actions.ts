@@ -7,15 +7,23 @@ import { prisma } from "@/lib/prisma";
 
 const ROSTER_DIR = path.join(process.cwd(), "public", "data", "roster");
 
+// Cache mémoire pour éviter les lectures disque répétées (surtout sur FS lent)
+let cachedRosters: any[] | null = null;
+
 // Lecture des fichiers statiques
 export async function getAvailableRosters() {
-  const files = await fs.readdir(ROSTER_DIR);
-  const rosters = [];
+  if (cachedRosters) return cachedRosters;
 
-  for (const file of files) {
-    if (file.endsWith(".json") && !["skills.json", "special_rules.json", "inducements.json"].includes(file)) {
-      const data = JSON.parse(await fs.readFile(path.join(ROSTER_DIR, file), "utf-8"));
-      rosters.push({
+  const files = await fs.readdir(ROSTER_DIR);
+  
+  // Lecture en parallèle pour booster les perfs sur FS lent
+  const rosterPromises = files
+    .filter(file => file.endsWith(".json") && !["skills.json", "special_rules.json", "inducements.json"].includes(file))
+    .map(async (file) => {
+      const filePath = path.join(ROSTER_DIR, file);
+      const content = await fs.readFile(filePath, "utf-8");
+      const data = JSON.parse(content);
+      return {
         id: file.replace(".json", ""),
         name: data.name,
         tier: data.tier || 1,
@@ -23,12 +31,14 @@ export async function getAvailableRosters() {
         apothecary: data.apothecary !== false,
         specialRules: data.specialRules || [],
         players: data.roster || []
-      });
-    }
-  }
+      };
+    });
+
+  const rosters = await Promise.all(rosterPromises);
   
-  // Tri alphabétique
-  return rosters.sort((a, b) => a.name.localeCompare(b.name));
+  // Tri alphabétique et mise en cache
+  cachedRosters = rosters.sort((a, b) => a.name.localeCompare(b.name));
+  return cachedRosters;
 }
 
 // Action de création

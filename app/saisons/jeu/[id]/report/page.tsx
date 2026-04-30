@@ -13,7 +13,10 @@ export default async function ReportMatchPage({ params }: { params: { id: string
     where: { id: params.id },
     include: {
       teams: {
-        include: { user: true }
+        include: { 
+          user: true,
+          players: true
+        }
       }
     }
   });

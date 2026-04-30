@@ -33,5 +33,35 @@
     "id": "capitaine",
     "name": "Capitaine",
     "description": "Un joueur gagne Pro. S'il est sur le terrain, chaque Relance d'Équipe est gratuite sur un 6."
+  },
+  {
+    "id": "classique_du_vieux_monde",
+    "name": "Classique du Vieux Monde",
+    "description": "Règle régionale (Humains, Halflings, Noblesse, OWA). Définit l'accès aux Coups de Pouce et Star Players."
+  },
+  {
+    "id": "super_ligue_lustrienne",
+    "name": "Super-Ligue Lustrienne",
+    "description": "Règle régionale (Amazones, Hommes-Lézards, Slann). Définit l'accès aux Coups de Pouce et Star Players."
+  },
+  {
+    "id": "royaumes_elfiques",
+    "name": "Royaumes Elfiques",
+    "description": "Règle régionale (Elfes Noirs, Sylvains, Union Elfique, Hauts Elfes). Définit l'accès aux Coups de Pouce et Star Players."
+  },
+  {
+    "id": "defi_des_bas_fonds",
+    "name": "Défi des Bas-Fonds",
+    "description": "Règle régionale (Gobelins, Skavens, Bas-Fonds, Snotlings). Définit l'accès aux Coups de Pouce et Star Players."
+  },
+  {
+    "id": "super_ligue_montagnes_bord_monde",
+    "name": "Super-Ligue des Montagnes du Bord du Monde",
+    "description": "Règle régionale (Nains, Nains du Chaos). Définit l'accès aux Coups de Pouce et Star Players."
+  },
+  {
+    "id": "spot_de_sylvanie",
+    "name": "Spot de Sylvanie",
+    "description": "Règle régionale (Morts-Vivants, Nécromantiques, Rois des Tombes, Vampires). Définit l'accès aux Coups de Pouce et Star Players."
   }
 ]

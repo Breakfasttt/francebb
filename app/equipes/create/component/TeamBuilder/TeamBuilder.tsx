@@ -4,7 +4,11 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createTeamRoster } from "../../../actions";
-import { Save, AlertCircle, Plus, Trash2 } from "lucide-react";
+import { Save, AlertCircle, Plus, Trash2, Shield, Users, Trophy } from "lucide-react";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
+import DangerButton from "@/common/components/Button/DangerButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import "./TeamBuilder.css";
 
 type Roster = {
@@ -159,15 +163,17 @@ export default function TeamBuilder({ availableRosters }: { availableRosters: Ro
               onChange={(e) => setTeamName(e.target.value)}
             />
           </div>
-          <div className="input-group">
-            <label>Race</label>
-            <select className="classic-select-field" value={selectedRosterId} onChange={handleRaceChange}>
-              <option value="" disabled>Sélectionner une race</option>
-              {availableRosters.map(r => (
-                <option key={r.id} value={r.id}>{r.name} (Tier {r.tier})</option>
-              ))}
-            </select>
-          </div>
+          <ClassicSelect 
+            label="Race" 
+            icon={<Shield size={16} />}
+            value={selectedRosterId} 
+            onChange={handleRaceChange}
+          >
+            <option value="" disabled>Sélectionner une race</option>
+            {availableRosters.map(r => (
+              <option key={r.id} value={r.id}>{r.name} (Tier {r.tier})</option>
+            ))}
+          </ClassicSelect>
         </div>
 
         <div className="tb-stats">
@@ -206,13 +212,12 @@ export default function TeamBuilder({ availableRosters }: { availableRosters: Ro
                       </div>
                       <div className="pos-actions">
                         <span className="pos-qty">{current}/{max}</span>
-                        <button 
+                        <ClassicButton 
                           onClick={() => handleAddPlayer(pos)} 
                           disabled={!canBuy || hiredPlayers.length >= 16}
-                          className="classic-button add-btn"
-                        >
-                          <Plus size={16} />
-                        </button>
+                          size="sm"
+                          icon={<Plus />}
+                        />
                       </div>
                     </div>
                   );
@@ -254,13 +259,14 @@ export default function TeamBuilder({ availableRosters }: { availableRosters: Ro
             <PremiumCard>
               <div className="tb-main-header">
                 <h3>Effectif ({hiredPlayers.length}/16)</h3>
-                <button 
-                  className="classic-button cta-button"
+                <CTAButton 
                   disabled={isSubmitting || hiredPlayers.length < 11 || remainingTreasury < 0 || !teamName}
                   onClick={handleSave}
+                  isLoading={isSubmitting}
+                  icon={<Save />}
                 >
-                  {isSubmitting ? "Sauvegarde..." : <><Save size={18} /> Valider l'Équipe</>}
-                </button>
+                  Valider l'Équipe
+                </CTAButton>
               </div>
 
               {hiredPlayers.length === 0 ? (
@@ -301,9 +307,11 @@ export default function TeamBuilder({ availableRosters }: { availableRosters: Ro
                         <td>{player.av}</td>
                         <td>{player.cost}</td>
                         <td>
-                          <button className="classic-button danger-button icon-only" onClick={() => handleRemovePlayer(index)}>
-                            <Trash2 size={16} />
-                          </button>
+                          <DangerButton 
+                            onClick={() => handleRemovePlayer(index)}
+                            size="sm"
+                            icon={<Trash2 />}
+                          />
                         </td>
                       </tr>
                     ))}

@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { changeSeasonStatus, registerTeamToSeason, updateMatchStatus } from "../../../actions";
-import { useRouter } from "next/navigation";
-import { Play, CheckCircle, Users, Swords, FileText, Check, X } from "lucide-react";
+import { Play, CheckCircle, Users, Swords, FileText, Check, X, Trophy } from "lucide-react";
 import Link from "next/link";
+import ClassicButton from "@/common/components/Button/ClassicButton";
+import CTAButton from "@/common/components/Button/CTAButton";
+import DangerButton from "@/common/components/Button/DangerButton";
+import ClassicSelect from "@/common/components/Form/ClassicSelect";
 
 export default function SeasonManager({ season, isAdmin, userAvailableTeams, standings, currentUserId }: { season: any, isAdmin: boolean, userAvailableTeams: any[], standings?: any[], currentUserId?: string }) {
   const router = useRouter();
@@ -52,19 +56,19 @@ export default function SeasonManager({ season, isAdmin, userAvailableTeams, sta
             <h3 className="text-xl font-bold text-primary">Panneau Commissaire</h3>
             <div className="flex gap-2">
               {season.status === "DRAFT" && (
-                <button onClick={() => handleStatusChange("REGISTRATION")} className="classic-button cta-button">
+                <CTAButton onClick={() => handleStatusChange("REGISTRATION")}>
                   Ouvrir les Inscriptions
-                </button>
+                </CTAButton>
               )}
               {season.status === "REGISTRATION" && (
-                <button onClick={() => handleStatusChange("COMPETITION")} className="classic-button cta-button">
-                  <Play size={16}/> Lancer la Compétition
-                </button>
+                <CTAButton onClick={() => handleStatusChange("COMPETITION")} icon={<Play />}>
+                  Lancer la Compétition
+                </CTAButton>
               )}
               {season.status === "COMPETITION" && (
-                <button onClick={() => handleStatusChange("FINISHED")} className="classic-button cta-button">
+                <CTAButton onClick={() => handleStatusChange("FINISHED")}>
                   Clôturer la Saison
-                </button>
+                </CTAButton>
               )}
             </div>
           </div>
@@ -77,9 +81,9 @@ export default function SeasonManager({ season, isAdmin, userAvailableTeams, sta
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold flex items-center gap-2"><Trophy className="text-yellow-400" /> Classement</h2>
             <Link href={`/saisons/jeu/${season.id}/report`}>
-              <button className="classic-button cta-button">
-                <Swords size={18} /> Déclarer un Match
-              </button>
+              <CTAButton icon={<Swords />}>
+                Déclarer un Match
+              </CTAButton>
             </Link>
           </div>
 
@@ -162,12 +166,12 @@ export default function SeasonManager({ season, isAdmin, userAvailableTeams, sta
                       
                       {m.status === "PENDING" && canValidate && (
                         <div className="flex justify-center gap-2 mt-2 pt-2 border-t border-white/10">
-                          <button onClick={() => handleMatchStatus(m.id, "VALIDATED")} className="classic-button cta-button !py-1 !text-xs">
-                            <Check size={14} /> Valider
-                          </button>
-                          <button onClick={() => handleMatchStatus(m.id, "DISPUTED")} className="classic-button danger-button !py-1 !text-xs">
-                            <X size={14} /> Contester
-                          </button>
+                          <CTAButton onClick={() => handleMatchStatus(m.id, "VALIDATED")} size="xs" icon={<Check />}>
+                            Valider
+                          </CTAButton>
+                          <DangerButton onClick={() => handleMatchStatus(m.id, "DISPUTED")} size="xs" icon={<X />}>
+                            Contester
+                          </DangerButton>
                         </div>
                       )}
                     </div>
@@ -189,27 +193,25 @@ export default function SeasonManager({ season, isAdmin, userAvailableTeams, sta
           </h3>
           
           {userAvailableTeams.length > 0 ? (
-            <div className="flex gap-4 items-end">
-              <div className="flex flex-col gap-2 flex-1">
-                <label>Sélectionnez une de vos équipes libres :</label>
-                <select 
-                  className="p-2 rounded bg-black/20 border border-white/10 text-white"
-                  value={selectedTeam} 
-                  onChange={(e) => setSelectedTeam(e.target.value)}
-                >
-                  <option value="" disabled>-- Choisir une équipe --</option>
-                  {userAvailableTeams.map(t => (
-                    <option key={t.id} value={t.id}>{t.name} (TV: {t.currentTV})</option>
-                  ))}
-                </select>
-              </div>
-              <button 
+            <div className="flex gap-4 items-end w-full">
+              <ClassicSelect 
+                label="Sélectionnez une de vos équipes libres :"
+                value={selectedTeam} 
+                onChange={(e) => setSelectedTeam(e.target.value)}
+                className="flex-1"
+              >
+                <option value="" disabled>-- Choisir une équipe --</option>
+                {userAvailableTeams.map(t => (
+                  <option key={t.id} value={t.id}>{t.name} (TV: {t.currentTV})</option>
+                ))}
+              </ClassicSelect>
+              <CTAButton 
                 onClick={handleRegister} 
                 disabled={!selectedTeam || isRegistering}
-                className="classic-button cta-button"
+                isLoading={isRegistering}
               >
                 S'inscrire !
-              </button>
+              </CTAButton>
             </div>
           ) : (
             <p className="text-muted">Vous n'avez aucune équipe disponible pour cette ligue. Allez dans "Mes Équipes" pour en créer une !</p>

@@ -71,6 +71,7 @@ export async function submitMatchReport(data: {
   casB: number;
   notes: string;
   status: string;
+  stats: any;
 }) {
   const session = await auth();
   if (!session?.user) throw new Error("Non autorisé");
@@ -85,7 +86,7 @@ export async function submitMatchReport(data: {
       casualtiesA: data.casA,
       casualtiesB: data.casB,
       status: data.status,
-      stats: JSON.stringify({ notes: data.notes })
+      stats: JSON.stringify(data.stats)
     }
   });
 }
