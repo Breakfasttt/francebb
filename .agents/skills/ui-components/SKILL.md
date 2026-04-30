@@ -34,3 +34,13 @@ Utiliser `size` (`xs`, `sm`, `md`), icônes `lucide-react` (ex: `icon={<Icon siz
 - Vars princ: `--primary`, `--accent`, `--glass-border`, `--card-bg`, `--foreground`, `--text-muted`.
 - Thèmes custom existent. Glassmorphism utilise `--glass-bg`.
 - Préfixes explicites (`--nav-bg` pas `--nv-b`).
+
+## SERVER ACTIONS & FORMULAIRES
+- **INTERDICTION**: Ne jamais passer une fonction anonyme capturant des variables locales à la prop `action` d'un formulaire dans un Server Component (ex: `<form action={async (fd) => action(id, fd)}>`).
+- **RAISON**: Provoque une "Runtime Error" car les fonctions ne sont pas sérialisables si elles ne sont pas marquées `use server` ou liées correctement.
+- **SOLUTION**: Utiliser `.bind()` pour passer des arguments supplémentaires à une Server Action.
+  ```tsx
+  // CORRECT
+  const actionWithId = myServerAction.bind(null, id);
+  return <form action={actionWithId}>...</form>
+  ```

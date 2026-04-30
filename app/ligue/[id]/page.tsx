@@ -43,6 +43,10 @@ export default async function LigueDetailPage({
         take: 5,
         include: { topic: { select: { id: true } } }
       },
+      seasons: {
+        orderBy: { createdAt: "desc" },
+        take: 5
+      },
       members: {
         select: {
           id: true,
@@ -79,8 +83,12 @@ export default async function LigueDetailPage({
         <div className="ligue-main">
           <PremiumCard className="ligue-hero">
             <div className="hero-content">
-              <div className="hero-badge">
-                <Shield size={64} />
+              <div className={`hero-badge ${ligue.image ? 'has-image' : ''}`}>
+                {ligue.image ? (
+                  <img src={ligue.image} alt={`Blason ${ligue.name}`} className="hero-blason" />
+                ) : (
+                  <Shield size={64} />
+                )}
               </div>
               <div className="hero-text">
                 <h1>{ligue.name}</h1>
@@ -131,6 +139,32 @@ export default async function LigueDetailPage({
                 </div>
               ) : (
                 <p className="no-data">Aucun tournoi prévu pour le moment.</p>
+              )}
+            </PremiumCard>
+
+            <PremiumCard className="ligue-seasons">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                  <Trophy size={20} className="text-primary" />
+                  <h3 style={{ margin: 0 }}>Saisons de la ligue</h3>
+                </div>
+                <Link href={`/saisons?ligueId=${id}`} className="view-all-link">Voir tout</Link>
+              </div>
+
+              {ligue.seasons.length > 0 ? (
+                <div className="seasons-list">
+                  {ligue.seasons.map(s => (
+                    <Link key={s.id} href={`/saisons/${s.id}`} className="season-item">
+                      <div className="season-name">
+                        <span className="season-status-dot" data-status={s.status}></span>
+                        {s.name}
+                      </div>
+                      <div className="season-status-badge">{s.status}</div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="no-data">Aucune saison enregistrée pour cette ligue.</p>
               )}
             </PremiumCard>
             

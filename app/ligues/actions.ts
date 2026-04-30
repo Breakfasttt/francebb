@@ -127,6 +127,7 @@ export async function updateLigue(id: string, formData: FormData) {
   const ville = formData.get("ville") as string;
   const address = formData.get("address") as string;
   const gmapsUrl = formData.get("gmapsUrl") as string;
+  const image = formData.get("image") as string;
 
   // Utiliser les coordonnées manuelles si fournies
   let lat = formData.get("lat") ? parseFloat(formData.get("lat") as string) : null;
@@ -150,6 +151,7 @@ export async function updateLigue(id: string, formData: FormData) {
     gmapsUrl,
     lat,
     lng,
+    image: image || null,
   };
 
   // Seul le créateur peut modifier les commissaires

@@ -17,19 +17,30 @@ interface LigueLocationFieldsProps {
   coachRegions: any[];
   franceRegions: any[];
   allDepartments: any[];
+  initialValues?: {
+    lat?: number | null;
+    lng?: number | null;
+    address?: string | null;
+    ville?: string | null;
+    region?: string | null;
+    departement?: string | null;
+    geographicalZone?: string | null;
+  }
 }
 
 export default function LigueLocationFields({ 
   coachRegions, 
   franceRegions, 
-  allDepartments 
+  allDepartments,
+  initialValues
 }: LigueLocationFieldsProps) {
-  const [selectedRegion, setSelectedRegion] = useState<string>("");
-  const [selectedDept, setSelectedDept] = useState<string>("");
+  const [selectedRegion, setSelectedRegion] = useState<string>(initialValues?.region || "");
+  const [selectedDept, setSelectedDept] = useState<string>(initialValues?.departement || "");
   
-  const [lat, setLat] = useState<number | null>(null);
-  const [lng, setLng] = useState<number | null>(null);
-  const [address, setAddress] = useState("");
+  const [lat, setLat] = useState<number | null>(initialValues?.lat || null);
+  const [lng, setLng] = useState<number | null>(initialValues?.lng || null);
+  const [address, setAddress] = useState(initialValues?.address || "");
+  const [ville, setVille] = useState(initialValues?.ville || "");
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   // Filtrer les départements en fonction de la région sélectionnée
@@ -54,6 +65,7 @@ export default function LigueLocationFields({
         label="Zone Géographique (NAF/Téléphone) *" 
         name="geographicalZone" 
         required
+        defaultValue={initialValues?.geographicalZone || ""}
       >
         <option value="">Sélectionner une zone</option>
         {coachRegions.map((r: any) => (
@@ -63,7 +75,14 @@ export default function LigueLocationFields({
 
       <div className="form-group">
         <label>Ville siège</label>
-        <input type="text" name="ville" className="admin-input" placeholder="Ex: Lyon" />
+        <input 
+          type="text" 
+          name="ville" 
+          className="admin-input" 
+          placeholder="Ex: Lyon" 
+          value={ville}
+          onChange={(e) => setVille(e.target.value)}
+        />
       </div>
 
       <ClassicSelect 
@@ -96,7 +115,7 @@ export default function LigueLocationFields({
       <div className="form-group" style={{ gridColumn: 'span 2' }}>
         <label>Lieu habituel / Adresse exacte</label>
         <div style={{ display: 'flex', gap: '0.8rem' }}>
-          <div style={{ position: 'relative', flex: 1 }}>
+          <div style={{ flex: 1 }}>
             <input 
               type="text" 
               name="address" 
@@ -104,9 +123,7 @@ export default function LigueLocationFields({
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Ex: 5 rue de la Paix, Paris" 
               className="admin-input" 
-              style={{ paddingLeft: '2.8rem' }} 
             />
-            <Map size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
           </div>
           <button 
             type="button" 
@@ -165,6 +182,24 @@ export default function LigueLocationFields({
 
         .admin-input:focus { border-color: var(--primary); background: var(--background); }
         
+        .input-with-icon-wrapper {
+          position: relative;
+          flex: 1;
+          display: flex;
+          align-items: center;
+        }
+
+        .admin-input.has-icon {
+          padding-left: 2.8rem;
+        }
+
+        .input-icon {
+          position: absolute;
+          left: 1rem;
+          color: var(--text-muted);
+          pointer-events: none;
+        }
+
         .map-open-btn {
           display: flex;
           align-items: center;

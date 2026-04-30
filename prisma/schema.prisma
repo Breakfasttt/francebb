@@ -502,6 +502,7 @@ model Ligue {
   ville            String?
   address          String?
   description      String?
+  image            String?
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
   creatorId        String
@@ -725,14 +726,20 @@ enum PaymentStatus {
 // --- MODULE ROSTER & LIGUE ---
 
 model LeagueSeason {
-  id          String        @id @default(cuid())
-  ligueId     String
-  name        String        
-  status      String        @default("DRAFT") // DRAFT, REGISTRATION, COMPETITION, PLAYOFFS, FINISHED
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  ligue       Ligue         @relation("LigueSeasons", fields: [ligueId], references: [id], onDelete: Cascade)
-  teams       TeamRoster[]  @relation("SeasonTeams")
+  id              String        @id @default(cuid())
+  ligueId         String
+  name            String        
+  status          String        @default("DRAFT") // DRAFT, REGISTRATION, COMPETITION, PLAYOFFS, FINISHED
+  competitionType String        @default("ROUND_ROBIN") // ROUND_ROBIN, SWISS, GROUPS, ELIMINATION
+  initialBudget   Int           @default(1000000)
+  tieBreakers     String        @default("[\"TD_DIFF\", \"CAS_DIFF\"]") // JSON array
+  startDate       DateTime?
+  endDate         DateTime?
+  description     String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  ligue           Ligue         @relation("LigueSeasons", fields: [ligueId], references: [id], onDelete: Cascade)
+  teams           TeamRoster[]  @relation("SeasonTeams")
   matches     MatchReport[] @relation("SeasonMatches")
 
   @@index([ligueId])

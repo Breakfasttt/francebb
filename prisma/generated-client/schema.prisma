@@ -502,6 +502,7 @@ model Ligue {
   ville            String?
   address          String?
   description      String?
+  image            String?
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   creatorId        String

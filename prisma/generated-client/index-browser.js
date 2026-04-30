@@ -443,6 +443,7 @@ exports.Prisma.LigueScalarFieldEnum = {
   ville: 'ville',
   address: 'address',
   description: 'description',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   creatorId: 'creatorId',

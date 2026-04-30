@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { isAdmin } from "@/lib/roles";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { Plus } from "lucide-react";
 import SeasonBuilder from "./component/SeasonBuilder";
@@ -7,7 +8,8 @@ import { redirect } from "next/navigation";
 
 export default async function CreateSeasonPage() {
   const session = await auth();
-  if (session?.user?.role !== "ADMIN" && session?.user?.role !== "COMMISSAIRE") {
+  const role = session?.user?.role;
+  if (!isAdmin(role) && role !== "COMMISSAIRE") {
     redirect("/saisons");
   }
 

@@ -1,0 +1,94 @@
+.classic-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.classic-input-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.classic-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.classic-input-field {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  background: var(--input-bg);
+  border: var(--input-border);
+  color: var(--foreground);
+  border-radius: var(--input-radius);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.classic-input-field:focus {
+  border-color: var(--primary);
+  background: var(--input-focus-bg, rgba(255, 255, 255, 0.08));
+  box-shadow: 0 0 0 3px var(--primary-transparent);
+}
+
+.classic-input-field::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.classic-input-field.multiline {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.classic-input-icon-left {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.classic-input-field:focus ~ .classic-input-icon-left {
+  color: var(--primary);
+}
+
+.classic-input-wrapper.has-icon .classic-input-field {
+  padding-left: 2.8rem;
+}
+
+/* Sizes */
+.classic-input-container.sm .classic-input-field {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.classic-input-container.sm .classic-input-label {
+  font-size: 0.75rem;
+}
+
+/* Date specific */
+.classic-input-field[type="date"] {
+  color-scheme: dark;
+}
+
+@media (max-width: 768px) {
+  .classic-input-field {
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+  }
+}

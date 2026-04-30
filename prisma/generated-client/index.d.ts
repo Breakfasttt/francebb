@@ -39312,6 +39312,7 @@ export namespace Prisma {
     ville: string | null
     address: string | null
     description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     creatorId: string | null
@@ -39330,6 +39331,7 @@ export namespace Prisma {
     ville: string | null
     address: string | null
     description: string | null
+    image: string | null
     createdAt: Date | null
     updatedAt: Date | null
     creatorId: string | null
@@ -39348,6 +39350,7 @@ export namespace Prisma {
     ville: number
     address: number
     description: number
+    image: number
     createdAt: number
     updatedAt: number
     creatorId: number
@@ -39378,6 +39381,7 @@ export namespace Prisma {
     ville?: true
     address?: true
     description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     creatorId?: true
@@ -39396,6 +39400,7 @@ export namespace Prisma {
     ville?: true
     address?: true
     description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     creatorId?: true
@@ -39414,6 +39419,7 @@ export namespace Prisma {
     ville?: true
     address?: true
     description?: true
+    image?: true
     createdAt?: true
     updatedAt?: true
     creatorId?: true
@@ -39519,6 +39525,7 @@ export namespace Prisma {
     ville: string | null
     address: string | null
     description: string | null
+    image: string | null
     createdAt: Date
     updatedAt: Date
     creatorId: string
@@ -39556,6 +39563,7 @@ export namespace Prisma {
     ville?: boolean
     address?: boolean
     description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     creatorId?: boolean
@@ -39581,6 +39589,7 @@ export namespace Prisma {
     ville?: boolean
     address?: boolean
     description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     creatorId?: boolean
@@ -39600,6 +39609,7 @@ export namespace Prisma {
     ville?: boolean
     address?: boolean
     description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     creatorId?: boolean
@@ -39619,6 +39629,7 @@ export namespace Prisma {
     ville?: boolean
     address?: boolean
     description?: boolean
+    image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     creatorId?: boolean
@@ -39626,7 +39637,7 @@ export namespace Prisma {
     lng?: boolean
   }
 
-  export type LigueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "acronym" | "geographicalZone" | "gmapsUrl" | "region" | "departement" | "ville" | "address" | "description" | "createdAt" | "updatedAt" | "creatorId" | "lat" | "lng", ExtArgs["result"]["ligue"]>
+  export type LigueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "acronym" | "geographicalZone" | "gmapsUrl" | "region" | "departement" | "ville" | "address" | "description" | "image" | "createdAt" | "updatedAt" | "creatorId" | "lat" | "lng", ExtArgs["result"]["ligue"]>
   export type LigueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     articles?: boolean | Ligue$articlesArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -39664,6 +39675,7 @@ export namespace Prisma {
       ville: string | null
       address: string | null
       description: string | null
+      image: string | null
       createdAt: Date
       updatedAt: Date
       creatorId: string
@@ -40108,6 +40120,7 @@ export namespace Prisma {
     readonly ville: FieldRef<"Ligue", 'String'>
     readonly address: FieldRef<"Ligue", 'String'>
     readonly description: FieldRef<"Ligue", 'String'>
+    readonly image: FieldRef<"Ligue", 'String'>
     readonly createdAt: FieldRef<"Ligue", 'DateTime'>
     readonly updatedAt: FieldRef<"Ligue", 'DateTime'>
     readonly creatorId: FieldRef<"Ligue", 'String'>
@@ -61766,6 +61779,7 @@ export namespace Prisma {
     ville: 'ville',
     address: 'address',
     description: 'description',
+    image: 'image',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     creatorId: 'creatorId',
@@ -64403,6 +64417,7 @@ export namespace Prisma {
     ville?: StringNullableFilter<"Ligue"> | string | null
     address?: StringNullableFilter<"Ligue"> | string | null
     description?: StringNullableFilter<"Ligue"> | string | null
+    image?: StringNullableFilter<"Ligue"> | string | null
     createdAt?: DateTimeFilter<"Ligue"> | Date | string
     updatedAt?: DateTimeFilter<"Ligue"> | Date | string
     creatorId?: StringFilter<"Ligue"> | string
@@ -64427,6 +64442,7 @@ export namespace Prisma {
     ville?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creatorId?: SortOrder
@@ -64454,6 +64470,7 @@ export namespace Prisma {
     ville?: StringNullableFilter<"Ligue"> | string | null
     address?: StringNullableFilter<"Ligue"> | string | null
     description?: StringNullableFilter<"Ligue"> | string | null
+    image?: StringNullableFilter<"Ligue"> | string | null
     createdAt?: DateTimeFilter<"Ligue"> | Date | string
     updatedAt?: DateTimeFilter<"Ligue"> | Date | string
     creatorId?: StringFilter<"Ligue"> | string
@@ -64478,6 +64495,7 @@ export namespace Prisma {
     ville?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
+    image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creatorId?: SortOrder
@@ -64504,6 +64522,7 @@ export namespace Prisma {
     ville?: StringNullableWithAggregatesFilter<"Ligue"> | string | null
     address?: StringNullableWithAggregatesFilter<"Ligue"> | string | null
     description?: StringNullableWithAggregatesFilter<"Ligue"> | string | null
+    image?: StringNullableWithAggregatesFilter<"Ligue"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Ligue"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Ligue"> | Date | string
     creatorId?: StringWithAggregatesFilter<"Ligue"> | string
@@ -68349,6 +68368,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -68372,6 +68392,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -68395,6 +68416,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -68418,6 +68440,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -68441,6 +68464,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -68459,6 +68483,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -68476,6 +68501,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -71840,6 +71866,7 @@ export namespace Prisma {
     ville?: SortOrder
     address?: SortOrder
     description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creatorId?: SortOrder
@@ -71863,6 +71890,7 @@ export namespace Prisma {
     ville?: SortOrder
     address?: SortOrder
     description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creatorId?: SortOrder
@@ -71881,6 +71909,7 @@ export namespace Prisma {
     ville?: SortOrder
     address?: SortOrder
     description?: SortOrder
+    image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     creatorId?: SortOrder
@@ -77978,6 +78007,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -78000,6 +78030,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -78910,6 +78941,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -78932,6 +78964,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -78959,6 +78992,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -78981,6 +79015,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -79435,6 +79470,7 @@ export namespace Prisma {
     ville?: StringNullableFilter<"Ligue"> | string | null
     address?: StringNullableFilter<"Ligue"> | string | null
     description?: StringNullableFilter<"Ligue"> | string | null
+    image?: StringNullableFilter<"Ligue"> | string | null
     createdAt?: DateTimeFilter<"Ligue"> | Date | string
     updatedAt?: DateTimeFilter<"Ligue"> | Date | string
     creatorId?: StringFilter<"Ligue"> | string
@@ -80968,6 +81004,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -80990,6 +81027,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -81502,6 +81540,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -81524,6 +81563,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -89170,6 +89210,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -89192,6 +89233,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -89554,6 +89596,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -89576,6 +89619,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -95065,6 +95109,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -95087,6 +95132,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     creatorId: string
@@ -95207,6 +95253,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -95229,6 +95276,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -95974,6 +96022,7 @@ export namespace Prisma {
     ville?: string | null
     address?: string | null
     description?: string | null
+    image?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     lat?: number | null
@@ -96594,6 +96643,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -96616,6 +96666,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -96638,6 +96689,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -97572,6 +97624,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -97594,6 +97647,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -97616,6 +97670,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -97634,6 +97689,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lat?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -97656,6 +97712,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string
@@ -97678,6 +97735,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     creatorId?: StringFieldUpdateOperationsInput | string

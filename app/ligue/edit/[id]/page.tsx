@@ -7,6 +7,9 @@ import { updateLigue } from "@/app/ligues/actions";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "@/app/ligues/create/UserSearchWrapper";
+import LigueBlasonUpload from "../LigueBlasonUpload";
+import LigueLocationFields from "@/app/ligues/create/LigueLocationFields";
+import LigueEditSubmit from "../LigueEditSubmit";
 import { Shield, MapPin, Globe, Users, Info, Save } from "lucide-react";
 import { isModerator } from "@/lib/roles";
 import "@/app/ligues/create/page.css"; // Reuse create styles
@@ -47,13 +50,13 @@ export default async function EditLiguePage({
     orderBy: { order: "asc" }
   });
 
-  // Client-side binding for the action to include the ID
-  const editActionWithId = async (formData: FormData) => {
-    const result = await updateLigue(id, formData);
-    if (result.success) {
-      // Logic for redirect or toast is typically handled by the action's revalidatePath
-    }
-  };
+  const franceRegions = await prisma.referenceData.findMany({
+    where: { group: "REGION_FRANCE", isActive: true },
+    orderBy: { order: "asc" }
+  });
+
+  // Correct way to pass ID to a Server Action used in a form
+  const editActionWithId = updateLigue.bind(null, id);
 
   return (
     <main className="container">
@@ -63,7 +66,7 @@ export default async function EditLiguePage({
         backHref={`/ligue/${id}`} 
       />
 
-      <form action={editActionWithId} className="ligue-form">
+      <form className="ligue-form">
         <div className="form-layout">
           <div className="form-main">
             <PremiumCard style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -94,47 +97,21 @@ export default async function EditLiguePage({
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                <ClassicSelect 
-                  label="Zone Géographique (NAF/Téléphone) *" 
-                  name="geographicalZone" 
-                  required 
-                  defaultValue={ligue.geographicalZone || ""}
-                >
-                  {coachRegions.map(r => (
-                    <option key={r.key} value={r.key}>{r.label}</option>
-                  ))}
-                </ClassicSelect>
+                <LigueLocationFields 
+                  coachRegions={coachRegions}
+                  franceRegions={franceRegions}
+                  allDepartments={departments}
+                  initialValues={{
+                    lat: ligue.lat,
+                    lng: ligue.lng,
+                    address: ligue.address,
+                    ville: ligue.ville,
+                    region: ligue.region,
+                    departement: ligue.departement,
+                    geographicalZone: ligue.geographicalZone
+                  }}
+                />
 
-                <div className="form-group">
-                  <label>Ville siège</label>
-                  <input type="text" name="ville" className="admin-input" defaultValue={ligue.ville || ""} />
-                </div>
-
-                <ClassicSelect 
-                  label="Département" 
-                  name="departement" 
-                  defaultValue={ligue.departement || ""}
-                >
-                  <option value="">Sélectionner</option>
-                  {departments.map(d => (
-                     <option key={d.key} value={d.label}>{d.label}</option>
-                  ))}
-                </ClassicSelect>
-                <div className="form-group">
-                  <label>Région administrative</label>
-                  <input type="text" name="region" className="admin-input" defaultValue={ligue.region || ""} />
-                </div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lieu habituel / Adresse</label>
-                  <input type="text" name="address" className="admin-input" defaultValue={ligue.address || ""} />
-                </div>
-                <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                  <label>Lien Google Maps (Lieu de jeu)</label>
-                  <div style={{ position: 'relative' }}>
-                    <Globe size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                    <input type="url" name="gmapsUrl" className="admin-input" style={{ paddingLeft: '2.8rem' }} defaultValue={ligue.gmapsUrl || ""} />
-                  </div>
-                </div>
               </div>
 
               <div className="section-separator">
@@ -154,7 +131,11 @@ export default async function EditLiguePage({
             </PremiumCard>
           </div>
 
-          <aside className="form-sidebar">
+          <aside className="form-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <LigueBlasonUpload 
+              initialImage={ligue.image} 
+              ligueName={ligue.name} 
+            />
             <PremiumCard style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <Users size={20} style={{ color: 'var(--accent)' }} />
@@ -188,11 +169,7 @@ export default async function EditLiguePage({
                 </div>
               )}
 
-              <div style={{ marginTop: '1rem', borderTop: '1px solid var(--glass-border)', paddingTop: '1.5rem' }}>
-                <button type="submit" className="btn-primary w-full" style={{ padding: '1rem' }}>
-                  <Save size={18} /> Enregistrer
-                </button>
-              </div>
+              <LigueEditSubmit ligueId={id} />
             </PremiumCard>
           </aside>
         </div>

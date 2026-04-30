@@ -2,14 +2,20 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdmin } from "@/lib/roles";
 
 export async function createLeagueSeason(formData: {
   ligueId: string;
   name: string;
+  competitionType?: string;
+  initialBudget?: number;
+  startDate?: string;
+  endDate?: string;
+  description?: string;
 }) {
   const session = await auth();
-  if (!session?.user) throw new Error("Non autorisé");
-  if (session.user.role !== "ADMIN" && session.user.role !== "COMMISSAIRE") {
+  const role = session?.user?.role;
+  if (!isAdmin(role) && role !== "COMMISSAIRE") {
     throw new Error("Seul un commissaire peut créer une saison.");
   }
 
@@ -17,7 +23,12 @@ export async function createLeagueSeason(formData: {
     data: {
       name: formData.name,
       ligueId: formData.ligueId,
-      status: "DRAFT"
+      status: "DRAFT",
+      competitionType: formData.competitionType || "ROUND_ROBIN",
+      initialBudget: formData.initialBudget || 1000000,
+      startDate: formData.startDate ? new Date(formData.startDate) : null,
+      endDate: formData.endDate ? new Date(formData.endDate) : null,
+      description: formData.description || null
     }
   });
 
