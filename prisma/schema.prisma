@@ -101,7 +101,6 @@ model User {
   ligues                  Ligue[]                  @relation("LigueMembers")
   commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
   bbSchemeStates          BBSchemeState[]
-  teamRosters             TeamRoster[]
 
   @@index([role])
 }
@@ -513,7 +512,6 @@ model Ligue {
   tournaments      Tournament[] @relation("LigueTournaments")
   commissaires     User[]         @relation("LigueCommissaires")
   members          User[]         @relation("LigueMembers")
-  seasons          LeagueSeason[] @relation("LigueSeasons")
 
   @@index([creatorId])
 }
@@ -723,90 +721,3 @@ enum PaymentStatus {
   DEPANNAGE
 }
 
-// --- MODULE ROSTER & LIGUE ---
-
-model LeagueSeason {
-  id              String        @id @default(cuid())
-  ligueId         String
-  name            String        
-  status          String        @default("DRAFT") // DRAFT, REGISTRATION, COMPETITION, PLAYOFFS, FINISHED
-  competitionType String        @default("ROUND_ROBIN") // ROUND_ROBIN, SWISS, GROUPS, ELIMINATION
-  initialBudget   Int           @default(1000000)
-  tieBreakers     String        @default("[\"TD_DIFF\", \"CAS_DIFF\"]") // JSON array
-  startDate       DateTime?
-  endDate         DateTime?
-  description     String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  ligue           Ligue         @relation("LigueSeasons", fields: [ligueId], references: [id], onDelete: Cascade)
-  teams           TeamRoster[]  @relation("SeasonTeams")
-  matches     MatchReport[] @relation("SeasonMatches")
-
-  @@index([ligueId])
-}
-
-model TeamRoster {
-  id              String        @id @default(cuid())
-  userId          String
-  seasonId        String?
-  name            String
-  race            String        // Lien vers fichier JSON
-  treasury        Int           @default(1000000)
-  teamValue       Int           @default(0)
-  currentTV       Int           @default(0)
-  rerolls         Int           @default(0)
-  apothecary      Boolean       @default(false)
-  assistants      Int           @default(0)
-  cheerleaders    Int           @default(0)
-  dedicatedFans   Int           @default(1)
-  isTemplate      Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  user            User          @relation(fields: [userId], references: [id])
-  season          LeagueSeason? @relation("SeasonTeams", fields: [seasonId], references: [id])
-  players         TeamPlayer[]
-
-  @@index([userId])
-  @@index([seasonId])
-}
-
-model TeamPlayer {
-  id              String      @id @default(cuid())
-  teamId          String
-  name            String
-  position        String      
-  number          Int
-  cost            Int
-  currentValue    Int
-  ma              Int
-  st              Int
-  ag              Int
-  pa              Int?
-  av              Int
-  spp             Int         @default(0)
-  skills          String      @default("[]") 
-  injuries        String      @default("[]") 
-  isMNG           Boolean     @default(false)
-  isDead          Boolean     @default(false)
-  isJourneyman    Boolean     @default(false)
-  team            TeamRoster  @relation(fields: [teamId], references: [id], onDelete: Cascade)
-
-  @@index([teamId])
-}
-
-model MatchReport {
-  id              String        @id @default(cuid())
-  seasonId        String
-  teamAId         String
-  teamBId         String
-  scoreA          Int           @default(0)
-  scoreB          Int           @default(0)
-  casualtiesA     Int           @default(0)
-  casualtiesB     Int           @default(0)
-  status          String        @default("PENDING") // PENDING, VALIDATED, DISPUTED
-  playedAt        DateTime      @default(now())
-  stats           String        @default("{}") // JSON complet des événements
-  season          LeagueSeason  @relation("SeasonMatches", fields: [seasonId], references: [id], onDelete: Cascade)
-
-  @@index([seasonId])
-}

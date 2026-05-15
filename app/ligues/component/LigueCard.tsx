@@ -15,6 +15,7 @@ interface LigueCardProps {
     region: string | null;
     ville: string | null;
     description: string | null;
+    image: string | null;
     _count?: {
       tournaments: number;
       members: number;
@@ -28,7 +29,11 @@ export default function LigueCard({ ligue, view = "grid" }: LigueCardProps) {
     return (
       <PremiumCard className="ligue-list-item" hoverEffect={true}>
         <div className="ligue-list-icon">
-          <Shield size={24} />
+          {ligue.image ? (
+            <img src={ligue.image} alt={ligue.name} className="ligue-list-image" />
+          ) : (
+            <Shield size={24} />
+          )}
         </div>
         <div className="ligue-list-info">
           <Link href={`/ligue/${ligue.id}`} className="ligue-list-title">
@@ -58,7 +63,11 @@ export default function LigueCard({ ligue, view = "grid" }: LigueCardProps) {
     >
       <div className="ligue-card-header">
         <div className="ligue-badge">{ligue.acronym}</div>
-        <Shield size={32} className="ligue-shield-icon" />
+        {ligue.image ? (
+          <img src={ligue.image} alt={ligue.name} className="ligue-header-image" />
+        ) : (
+          <Shield size={32} className="ligue-shield-icon" />
+        )}
       </div>
 
       <div className="ligue-card-body">

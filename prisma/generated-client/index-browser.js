@@ -608,69 +608,6 @@ exports.Prisma.MailLogScalarFieldEnum = {
   type: 'type'
 };
 
-exports.Prisma.LeagueSeasonScalarFieldEnum = {
-  id: 'id',
-  ligueId: 'ligueId',
-  name: 'name',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.TeamRosterScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  seasonId: 'seasonId',
-  name: 'name',
-  race: 'race',
-  treasury: 'treasury',
-  teamValue: 'teamValue',
-  currentTV: 'currentTV',
-  rerolls: 'rerolls',
-  apothecary: 'apothecary',
-  assistants: 'assistants',
-  cheerleaders: 'cheerleaders',
-  dedicatedFans: 'dedicatedFans',
-  isTemplate: 'isTemplate',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.TeamPlayerScalarFieldEnum = {
-  id: 'id',
-  teamId: 'teamId',
-  name: 'name',
-  position: 'position',
-  number: 'number',
-  cost: 'cost',
-  currentValue: 'currentValue',
-  ma: 'ma',
-  st: 'st',
-  ag: 'ag',
-  pa: 'pa',
-  av: 'av',
-  spp: 'spp',
-  skills: 'skills',
-  injuries: 'injuries',
-  isMNG: 'isMNG',
-  isDead: 'isDead',
-  isJourneyman: 'isJourneyman'
-};
-
-exports.Prisma.MatchReportScalarFieldEnum = {
-  id: 'id',
-  seasonId: 'seasonId',
-  teamAId: 'teamAId',
-  teamBId: 'teamBId',
-  scoreA: 'scoreA',
-  scoreB: 'scoreB',
-  casualtiesA: 'casualtiesA',
-  casualtiesB: 'casualtiesB',
-  status: 'status',
-  playedAt: 'playedAt',
-  stats: 'stats'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -737,11 +674,7 @@ exports.Prisma.ModelName = {
   QuizQuestionSuggestion: 'QuizQuestionSuggestion',
   LegacyMember: 'LegacyMember',
   BBSchemeState: 'BBSchemeState',
-  MailLog: 'MailLog',
-  LeagueSeason: 'LeagueSeason',
-  TeamRoster: 'TeamRoster',
-  TeamPlayer: 'TeamPlayer',
-  MatchReport: 'MatchReport'
+  MailLog: 'MailLog'
 };
 
 /**

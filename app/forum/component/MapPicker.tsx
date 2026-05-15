@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import { Search, MapPin, Check, X, Loader2 } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import { reverseGeocodeAction, searchAddressAction } from "@/app/ligues/actions";
 
 /**
  * Composant interne pour gérer les clics sur la carte
@@ -27,7 +28,7 @@ function MapRecenter({ coords }: { coords: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
     if (coords) {
-      map.setView(coords, 16);
+      map.setView(coords, map.getZoom());
     }
   }, [coords, map]);
   return null;
@@ -75,13 +76,11 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
     setPosition([lat, lng]);
     
     // Reverse geocoding
+    // Reverse geocoding via Server Action (bypass CORS)
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
-        headers: { "User-Agent": "BBFrance-App" }
-      });
-      const data = await response.json();
-      if (data && data.display_name) {
-        setAddress(data.display_name);
+      const displayName = await reverseGeocodeAction(lat, lng);
+      if (displayName) {
+        setAddress(displayName);
       }
     } catch (e) {
       console.error("Reverse geocoding error:", e);
@@ -92,14 +91,12 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
     if (!query.trim()) return;
 
     setIsSearching(true);
+    // Search geocoding via Server Action (bypass CORS)
     try {
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
-        headers: { "User-Agent": "BBFrance-App" }
-      });
-      const data = await response.json();
-      if (data && data.length > 0) {
-        const { lat, lon, display_name } = data[0];
-        const newCoords: [number, number] = [parseFloat(lat), parseFloat(lon)];
+      const data = await searchAddressAction(query);
+      if (data) {
+        const { lat, lng, display_name } = data;
+        const newCoords: [number, number] = [lat, lng];
         setPosition(newCoords);
         setAddress(display_name);
       }

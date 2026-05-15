@@ -7,7 +7,7 @@ import { updateLigue } from "@/app/ligues/actions";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "@/app/ligues/create/UserSearchWrapper";
-import LigueBlasonUpload from "../LigueBlasonUpload";
+import LigueBlasonUpload from "@/app/ligues/component/LigueBlasonUpload";
 import LigueLocationFields from "@/app/ligues/create/LigueLocationFields";
 import LigueEditSubmit from "../LigueEditSubmit";
 import { Shield, MapPin, Globe, Users, Info, Save } from "lucide-react";

@@ -7,6 +7,7 @@ import { createLigue } from "@/app/ligues/actions";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "./UserSearchWrapper";
 import LigueLocationFields from "./LigueLocationFields";
+import LigueBlasonUpload from "@/app/ligues/component/LigueBlasonUpload";
 import CTAButton from "@/common/components/Button/CTAButton";
 import { Shield, MapPin, Globe, Users, Info } from "lucide-react";
 import "./page.css";
@@ -94,10 +95,12 @@ export default async function CreateLiguePage() {
                 />
               </div>
 
+
             </PremiumCard>
           </div>
 
-          <aside className="form-sidebar">
+          <aside className="form-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <LigueBlasonUpload ligueName="" />
             <PremiumCard style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
                 <Users size={20} style={{ color: 'var(--accent)' }} />

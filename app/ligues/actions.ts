@@ -30,6 +30,45 @@ async function geocode(ville: string, address: string) {
 }
 
 /**
+ * Reverse geocoding (conversion coordonées -> adresse) via serveur pour éviter CORS.
+ */
+export async function reverseGeocodeAction(lat: number, lng: number) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+      headers: { "User-Agent": "BBFrance-App" }
+    });
+    const data = await res.json();
+    return data?.display_name || null;
+  } catch (e) {
+    console.error("Reverse geocoding error:", e);
+    return null;
+  }
+}
+
+/**
+ * Recherche d'adresse via serveur (geocode).
+ */
+export async function searchAddressAction(query: string) {
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
+      headers: { "User-Agent": "BBFrance-App" }
+    });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon),
+        display_name: data[0].display_name
+      };
+    }
+    return null;
+  } catch (e) {
+    console.error("Search geocoding error:", e);
+    return null;
+  }
+}
+
+/**
  * Crée une nouvelle ligue.
  */
 export async function createLigue(formData: FormData) {
@@ -47,6 +86,7 @@ export async function createLigue(formData: FormData) {
   const ville = formData.get("ville") as string;
   const address = formData.get("address") as string;
   const gmapsUrl = formData.get("gmapsUrl") as string;
+  const image = formData.get("image") as string;
 
   if (!name || !acronym) {
     throw new Error("Le nom et l'acronyme sont obligatoires.");
@@ -78,6 +118,7 @@ export async function createLigue(formData: FormData) {
       gmapsUrl,
       lat,
       lng,
+      image: image || null,
       creatorId: session.user.id,
       commissaires: {
         connect: commissaireIds.map(id => ({ id }))
