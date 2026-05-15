@@ -1,5 +1,5 @@
 import { PrismaLibSql } from "@prisma/adapter-libsql";
-import { questions as quizQuestions } from "../app/bbquizz/data/questions.ts";
+import { questions as quizQuestions } from "../app/bbquizz/data/questions";
 import { PrismaClient } from "./generated-client";
 import fs from "fs";
 import path from "path";
