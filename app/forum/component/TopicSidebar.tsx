@@ -24,7 +24,8 @@ import {
   Bookmark,
   AlertTriangle,
   ChevronsDown,
-  Mail
+  Mail,
+  RotateCcw
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, useTransition } from "react";
@@ -69,7 +70,7 @@ interface TopicSidebarProps {
 }
 
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import { finishTournament, cancelTournament } from "@/app/tournois/actions";
+import { finishTournament, cancelTournament, unfinishTournament } from "@/app/tournois/actions";
 import toast from "react-hot-toast";
 
 export default function TopicSidebar({ 
@@ -144,6 +145,22 @@ export default function TopicSidebar({
       },
       false,
       "Terminer"
+    );
+  };
+
+  const handleUnfinish = () => {
+    openConfirm(
+      "Réouvrir le tournoi",
+      "Voulez-vous marquer ce tournoi comme ACTIF ? Cela réouvrira les inscriptions.",
+      async () => {
+        const res = await unfinishTournament(tournamentId!);
+        if (res?.success) {
+          toast.success("Tournoi réouvert !");
+          router.refresh();
+        }
+      },
+      false,
+      "Réouvrir"
     );
   };
 
@@ -382,12 +399,21 @@ export default function TopicSidebar({
               </AdminButton>
 
               {isFinished ? (
-                <AdminButton 
-                  href={`/forum/tournament/${tournamentId}/results`}
-                  icon={<Trophy size={18} />}
-                >
-                  Publier les résultats
-                </AdminButton>
+                <>
+                  <AdminButton 
+                    href={`/forum/tournament/${tournamentId}/results`}
+                    icon={<Trophy size={18} />}
+                  >
+                    Publier les résultats
+                  </AdminButton>
+                  <AdminButton 
+                    onClick={handleUnfinish}
+                    isLoading={isPending}
+                    icon={<RotateCcw size={18} />}
+                  >
+                    Réouvrir le tournoi
+                  </AdminButton>
+                </>
               ) : (
                 <>
                   <AdminButton 

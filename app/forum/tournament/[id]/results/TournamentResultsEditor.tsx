@@ -20,7 +20,7 @@ import CTAButton from '@/common/components/Button/CTAButton';
 import ClassicButton from '@/common/components/Button/ClassicButton';
 import DangerButton from '@/common/components/Button/DangerButton';
 import ToggleButton from '@/common/components/Button/ToggleButton';
-import { saveTournamentResults, parseNafReport } from '@/app/tournois/actions';
+import { saveTournamentResults, parseNafReport, clearTournamentResults } from '@/app/tournois/actions';
 import { 
   DndContext, 
   closestCenter,
@@ -352,6 +352,24 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     setIsSaving(false);
   };
 
+  const handleClearResults = async () => {
+    if (!window.confirm("Êtes-vous sûr de vouloir vider tous les résultats et matchs de ce tournoi ? Cette action est définitive et irréversible.")) {
+      return;
+    }
+    
+    setIsSaving(true);
+    const response = await clearTournamentResults(tournament.id);
+    if (response.success) {
+      setResults([]);
+      setRounds([]);
+      toast.success("Résultats et matchs vidés !");
+      router.refresh();
+    } else {
+      toast.error(response.error || "Une erreur est survenue.");
+    }
+    setIsSaving(false);
+  };
+
   const addRound = () => {
     const nextNumber = rounds.length + 1;
     setRounds([...rounds, { roundNumber: nextNumber, matches: [] }]);
@@ -426,6 +444,9 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         <ClassicButton onClick={() => fileInputRef.current?.click()} disabled={isParsing} icon={<Upload size={16} />}>
           {isParsing ? "Import..." : "Rapport NAF XML"}
         </ClassicButton>
+        <DangerButton onClick={handleClearResults} disabled={isSaving || isParsing || (results.length === 0 && rounds.length === 0)} icon={<Trash2 size={16} />}>
+          Vider les résultats
+        </DangerButton>
         <input type="file" ref={fileInputRef} onChange={handleFileUpload} hidden />
       </div>
 

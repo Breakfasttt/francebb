@@ -48,3 +48,6 @@ process_tree.csv
 *.db-journal
 *.db-wal
 *.db-shm
+
+# local logs and backups
+/logs

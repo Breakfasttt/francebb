@@ -275,3 +275,93 @@ export async function parseNafReport(xmlContent: string) {
     return null;
   }
 }
+
+/**
+ * Marque un tournoi comme non terminé (ré-ouvre le tournoi).
+ */
+export async function unfinishTournament(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user) return null;
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: { 
+      commissaires: { select: { id: true } },
+      topic: { select: { id: true } }
+    }
+  });
+
+  if (!tournament) return null;
+
+  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    console.warn(`[unfinishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
+    return null;
+  }
+
+  await (prisma.tournament as any).update({
+    where: { id: tournamentId },
+    data: { isFinished: false }
+  });
+
+  revalidatePath("/tournois");
+  if (tournament.topic?.id) {
+    revalidatePath(`/forum/topic/${tournament.topic.id}`);
+  }
+  return { success: true };
+}
+
+/**
+ * Supprime tous les résultats et matchs d'un tournoi.
+ */
+export async function clearTournamentResults(tournamentId: string) {
+  const session = await auth();
+  if (!session?.user) return { error: "Non authentifié" };
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: { 
+      commissaires: { select: { id: true } },
+      topic: { select: { id: true } }
+    }
+  });
+
+  if (!tournament) return { error: "Tournoi non trouvé" };
+
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    return { error: "Non autorisé" };
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      // 1. Supprimer les résultats, rondes (matchs supprimés en cascade par onDelete: Cascade)
+      await tx.tournamentResult.deleteMany({ where: { tournamentId } });
+      await tx.tournamentRound.deleteMany({ where: { tournamentId } });
+
+      // 2. Remettre le tournoi comme non terminé (optionnel mais logique après vidage)
+      await tx.tournament.update({
+        where: { id: tournamentId },
+        data: { isFinished: false }
+      });
+    });
+
+    revalidatePath(`/forum/tournament/${tournamentId}/results`);
+    revalidatePath("/tournois");
+    if (tournament.topic?.id) {
+      revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("Erreur clearTournamentResults:", error);
+    return { error: error.message || "Erreur interne" };
+  }
+}

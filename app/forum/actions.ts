@@ -104,6 +104,13 @@ export async function markTopicAsRead(topicId: string) {
   const session = await auth();
   if (!session?.user?.id) return;
 
+  // Sécurité : éviter crash sur session périmée après import/suppression de BDD
+  const userExists = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true }
+  });
+  if (!userExists) return;
+
   // Find the latest post to store its ID and timestamp
   const latestPost = await prisma.post.findFirst({
     where: { topicId },
@@ -135,6 +142,13 @@ export async function markTopicAsRead(topicId: string) {
 export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
   const session = await auth();
   if (!session?.user?.id) return;
+
+  // Sécurité : éviter crash sur session périmée après import/suppression de BDD
+  const userExists = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true }
+  });
+  if (!userExists) return;
 
   const currentPost = await prisma.post.findUnique({
     where: { id: postId },
@@ -879,6 +893,13 @@ export async function deletePost(postId: string) {
 export async function markAllTopicsAsRead() {
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Non autorisé" };
+
+  // Sécurité : éviter crash sur session périmée après import/suppression de BDD
+  const userExists = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { id: true }
+  });
+  if (!userExists) return { success: false, error: "Utilisateur introuvable" };
 
   try {
     const topics = await prisma.topic.findMany({
