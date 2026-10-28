@@ -5,14 +5,14 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isAdmin as checkIsAdmin } from "@/lib/roles";
 import fs from "fs";
 import path from "path";
 
 export async function getDashboardStats() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = session?.user?.role;
   const isAdmin = checkIsAdmin(userRole);
 

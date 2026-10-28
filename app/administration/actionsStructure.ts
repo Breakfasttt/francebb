@@ -1,11 +1,11 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
 
 export async function getForumStructure() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) return [];
 
@@ -33,7 +33,7 @@ export async function getForumStructure() {
 // ---------------- CATEGORY ACTIONS ----------------
 
 export async function createCategory(data: { name: string, description: string, allowedRoles: string }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   const lastOrder = await prisma.category.findFirst({ orderBy: { order: 'desc' }, select: { order: true } });
@@ -51,7 +51,7 @@ export async function createCategory(data: { name: string, description: string, 
 }
 
 export async function updateCategory(id: string, data: { name: string, description: string, allowedRoles: string }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   // Rule: au moins une catégorie "ALL"
@@ -72,7 +72,7 @@ export async function updateCategory(id: string, data: { name: string, descripti
 }
 
 export async function deleteCategory(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   const cat = await prisma.category.findUnique({ where: { id }, include: { _count: { select: { forums: true } } } });
@@ -90,7 +90,7 @@ export async function deleteCategory(id: string) {
 }
 
 export async function reorderCategories(orderedIds: string[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   await prisma.$transaction(
@@ -107,7 +107,7 @@ export async function reorderCategories(orderedIds: string[]) {
 const PROTECTED_FORUM_NAME = "Les tournois";
 
 export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   if (!data.categoryId && !data.parentForumId) return { success: false, error: "Un forum doit appartenir à une catégorie ou un forum parent." };
@@ -138,7 +138,7 @@ export async function createForum(data: { name: string, description: string, all
 }
 
 export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   if (data.allowedRoles !== "ALL") {
@@ -167,7 +167,7 @@ export async function updateForum(id: string, data: { name: string, description:
 }
 
 export async function deleteForum(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   const forum = await prisma.forum.findUnique({ where: { id }, include: { _count: { select: { subForums: true, topics: true } } } });
@@ -190,7 +190,7 @@ export async function deleteForum(id: string) {
 }
 
 export async function reorderForums(containerId: string, isCategory: boolean, orderedIds: string[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
 
   await prisma.$transaction(

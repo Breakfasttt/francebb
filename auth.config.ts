@@ -12,6 +12,7 @@ export const authConfig = {
         token.id = user.id;
         token.role = user.role || "COACH";
         token.hasFinishedOnboarding = user.hasFinishedOnboarding || false;
+        token.isBanned = user.isBanned || false;
         // @ts-ignore
         token.theme = user.theme || "saison3";
       }
@@ -31,6 +32,7 @@ export const authConfig = {
         session.user.role = token.role as string;
         // @ts-ignore
         session.user.hasFinishedOnboarding = token.hasFinishedOnboarding as boolean;
+        session.user.isBanned = (token.isBanned as boolean) || false;
         // @ts-ignore
         session.user.theme = token.theme as string;
       }

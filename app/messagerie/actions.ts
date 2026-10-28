@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { sendPmNotification } from "@/lib/mail";
@@ -14,7 +14,7 @@ const MESSAGES_PER_PAGE = 30;
  * Récupère les conversations paginées pour l'utilisateur actuel
  */
 export async function getConversations(page = 1) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) throw new Error("Non autorisé");
 
@@ -91,7 +91,7 @@ export async function getConversations(page = 1) {
  * Récupère les messages d'une conversation
  */
 export async function getConversationMessages(conversationId: string, page = 1) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) throw new Error("Non autorisé");
 
@@ -154,7 +154,7 @@ export async function getConversationMessages(conversationId: string, page = 1) 
  * Envoie un message
  */
 export async function sendMessage(conversationId: string, content: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) throw new Error("Non autorisé");
 
@@ -222,7 +222,7 @@ export async function sendMessage(conversationId: string, content: string) {
  * Crée une conversation (1v1 ou Groupe)
  */
 export async function startConversation(userIds: string[], name?: string) {
-    const session = await auth();
+    const session = await getActiveSession();
     const myId = session?.user?.id;
     if (!myId) throw new Error("Non autorisé");
 
@@ -279,7 +279,7 @@ export async function startConversation(userIds: string[], name?: string) {
  * Quitte une conversation
  */
 export async function leaveConversation(conversationId: string) {
-    const session = await auth();
+    const session = await getActiveSession();
     const userId = session?.user?.id;
     if (!userId) throw new Error("Non autorisé");
 
@@ -306,7 +306,7 @@ export async function leaveConversation(conversationId: string) {
  * Recherche des utilisateurs
  */
 export async function searchUsers(query: string) {
-    const session = await auth();
+    const session = await getActiveSession();
     if (!session?.user) throw new Error("Non autorisé");
 
     if (query.length < 2) return [];
@@ -345,7 +345,7 @@ export async function searchUsers(query: string) {
  * Ajoute des participants à un groupe existant
  */
 export async function inviteToGroup(conversationId: string, userIds: string[]) {
-    const session = await auth();
+    const session = await getActiveSession();
     const myId = session?.user?.id;
     if (!myId) throw new Error("Non autorisé");
 
@@ -383,7 +383,7 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
  * Renomme une conversation de groupe
  */
 export async function renameConversation(conversationId: string, name: string) {
-    const session = await auth();
+    const session = await getActiveSession();
     const myId = session?.user?.id;
     if (!myId) throw new Error("Non autorisé");
 

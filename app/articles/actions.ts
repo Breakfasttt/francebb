@@ -4,7 +4,7 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -12,7 +12,7 @@ import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function createArticle(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
   const title = formData.get("title") as string;
@@ -56,7 +56,7 @@ export async function createArticle(formData: FormData) {
 }
 
 export async function updateArticle(id: string, formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
   const article = await prisma.article.findUnique({
@@ -110,7 +110,7 @@ export async function updateArticle(id: string, formData: FormData) {
 }
 
 export async function deleteArticle(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
   const article = await prisma.article.findUnique({
@@ -146,7 +146,7 @@ export async function deleteArticle(id: string) {
 }
 
 export async function toggleArticleReaction(articleId: string, emoji: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
   const userId = session.user.id;
@@ -183,7 +183,7 @@ export async function toggleArticleReaction(articleId: string, emoji: string) {
 }
 
 export async function moderateArticle(articleId: string, reason: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const sessionUser = session?.user as any;
   if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
 
@@ -213,7 +213,7 @@ export async function moderateArticle(articleId: string, reason: string) {
 }
 
 export async function unmoderateArticle(articleId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const sessionUser = session?.user as any;
   if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
 

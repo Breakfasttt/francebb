@@ -5,14 +5,14 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { revalidatePath } from "next/cache";
 
 /**
  * Marque un tournoi comme terminé.
  */
 export async function finishTournament(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return null;
 
   const tournament = await prisma.tournament.findUnique({
@@ -51,7 +51,7 @@ export async function finishTournament(tournamentId: string) {
  * Marque un tournoi comme annulé.
  */
 export async function cancelTournament(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return null;
 
   const tournament = await prisma.tournament.findUnique({
@@ -93,7 +93,7 @@ export async function cancelTournament(tournamentId: string) {
  * Sauvegarde les résultats d'un tournoi (classement et matchs/rondes).
  */
 export async function saveTournamentResults(tournamentId: string, data: { results: any[], rounds: any[] }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return { error: "Non authentifié" };
 
   const tournament = await prisma.tournament.findUnique({
@@ -280,7 +280,7 @@ export async function parseNafReport(xmlContent: string) {
  * Marque un tournoi comme non terminé (ré-ouvre le tournoi).
  */
 export async function unfinishTournament(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return null;
 
   const tournament = await prisma.tournament.findUnique({
@@ -319,7 +319,7 @@ export async function unfinishTournament(tournamentId: string) {
  * Supprime tous les résultats et matchs d'un tournoi.
  */
 export async function clearTournamentResults(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return { error: "Non authentifié" };
 
   const tournament = await prisma.tournament.findUnique({

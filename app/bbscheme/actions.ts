@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
@@ -10,7 +10,7 @@ import crypto from "crypto";
  */
 export async function saveBoardState(data: string) {
   try {
-    const session = await auth();
+    const session = await getActiveSession();
     const userId = session?.user?.id;
     
     // Calcul du hash (MD5 est suffisant ici pour du dédoublonnement de plateau)

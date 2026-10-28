@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -8,7 +8,7 @@ import { logModerationAction } from "@/app/moderation/actions";
 import { encrypt, decrypt } from "@/lib/crypto";
 
 export async function updateProfile(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   const name = formData.get("name") as string;
@@ -43,7 +43,7 @@ export async function updateProfile(formData: FormData) {
 }
 
 export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) throw new Error("Action non autorisée");
 
   const target = await prisma.user.findUnique({
@@ -73,7 +73,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
 }
 
 export async function toggleBlockUser(blockedId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
   if (session.user.id === blockedId) throw new Error("Vous ne pouvez pas vous bloquer vous-même");
 
@@ -107,7 +107,7 @@ export async function toggleBlockUser(blockedId: string) {
 }
 
 export async function getBlockedUsersIds() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return [];
 
   const blocks = await prisma.block.findMany({
@@ -119,7 +119,7 @@ export async function getBlockedUsersIds() {
 }
 
 export async function getBlockedUsers() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return [];
 
   const blocked = await prisma.block.findMany({
@@ -162,7 +162,7 @@ export async function getUserActivity(userId: string, limit: number = 5) {
 }
 
 export async function reportUser(userId: string, reason: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   // For now, we just log it or simulate a report
@@ -174,7 +174,7 @@ export async function reportUser(userId: string, reason: string) {
 
 // Les actions de messagerie ont été migrées vers /app/messagerie/actions.ts
 export async function deleteAccount() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   const userId = session.user.id;
@@ -305,7 +305,7 @@ export async function getReferenceDataAction(group: string) {
 }
 
 export async function updateTheme(theme: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   await prisma.user.update({
@@ -323,7 +323,7 @@ export async function updateNotificationSettings(settings: {
   notifFollowedTopic: boolean;
   notifNewsletter: boolean;
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   try {
@@ -341,7 +341,7 @@ export async function updateNotificationSettings(settings: {
 }
 
 export async function unlinkAccount(provider: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
   const userId = session.user.id;
@@ -367,7 +367,7 @@ export async function unlinkAccount(provider: string) {
 }
 
 export async function sendTestNewsletter() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.email) throw new Error("Email non trouvé");
 
   // 1. Récupérer les 3 topics les plus populaires (plus de vues)

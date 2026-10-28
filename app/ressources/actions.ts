@@ -4,7 +4,7 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -16,7 +16,7 @@ export type ResourceStatus = "PENDING" | "APPROVED" | "REJECTED";
  * Soumet une nouvelle ressource (par un utilisateur)
  */
 export async function submitResource(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
   const title = formData.get("title") as string;
@@ -188,7 +188,7 @@ export async function getUserResources(userId: string, page = 1, pageSize = 10) 
  * La ressource repasse en statut PENDING
  */
 export async function updateResourceAction(id: string, formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   const user = session?.user as any;
   if (!user?.id) return { error: "Non authentifié" };
 
@@ -274,7 +274,7 @@ export async function updateResourceAction(id: string, formData: FormData) {
  * Supprime une ressource (par l'auteur ou un modérateur)
  */
 export async function deleteResourceAction(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const user = session?.user as any;
   if (!user?.id) return { error: "Non authentifié" };
 
@@ -314,7 +314,7 @@ export async function deleteResourceAction(id: string) {
  * Récupère les ressources en attente de modération avec pagination.
  */
 export async function getPendingResources(page = 1, pageSize = 10) {
-  const session = await auth();
+  const session = await getActiveSession();
   const sessionUser = session?.user as any;
   if (!isModerator(sessionUser?.role)) return { resources: [], total: 0 };
 
@@ -348,7 +348,7 @@ export async function moderateResource(
   action: "APPROVE" | "REJECT" | "DELETE" | "UPDATE",
   data?: { title?: string; description?: string; link?: string; imageUrl?: string; tags?: string }
 ) {
-  const session = await auth();
+  const session = await getActiveSession();
   const sessionUser = session?.user as any;
   if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
 

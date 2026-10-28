@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function finishOnboarding(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non autorisé");
 
   const name = formData.get("name") as string;

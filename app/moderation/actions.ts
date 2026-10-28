@@ -5,7 +5,7 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -34,7 +34,7 @@ export async function logModerationAction(
   targetType?: string, 
   details?: string
 ) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   
   // Note: On loggue même si l'utilisateur n'est pas "officiellement" modo (ex: suppression topic par auteur)
@@ -64,7 +64,7 @@ export async function createReportAction(data: {
   targetId: string;
   targetType: string;
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
   try {
@@ -88,7 +88,7 @@ export async function createReportAction(data: {
  * Récupérer les logs avec pagination.
  */
 export async function getModerationLogs(page = 1, pageSize = 20) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { logs: [], total: 0 };
 
   // Purge silencieuse automatique (uniquement sur la page 1 pour limiter les appels)
@@ -117,7 +117,7 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
  * Récupérer les signalements groupés par cible pour un type spécifique avec pagination.
  */
 export async function getPendingReportsByType(targetType: string, page = 1, pageSize = 10) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { groups: [], total: 0 };
 
   const reports = await prisma.moderationReport.findMany({
@@ -159,7 +159,7 @@ export async function getPendingReportsByType(targetType: string, page = 1, page
  * Résoudre un groupe de signalements (même cible).
  */
 export async function resolveReportsAction(targetId: string, targetType: string, action: "RESOLVE" | "IGNORE", comment?: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { success: false, error: "Non autorisé" };
 
   try {
@@ -199,7 +199,7 @@ export async function resolveReportsAction(targetId: string, targetType: string,
  * Uniquement pour SUPERADMIN et ADMIN.
  */
 export async function cleanupModerationLogs(months = 3) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (session?.user?.role !== "SUPERADMIN" && session?.user?.role !== "ADMIN") {
     return { success: false, error: "Non autorisé" };
   }
@@ -236,7 +236,7 @@ export async function cleanupModerationLogs(months = 3) {
  * Récupère la liste des utilisateurs bannis avec les détails du ban et pagination.
  */
 export async function getBannedUsers(page = 1, pageSize = 10) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { users: [], total: 0 };
 
   const skip = (page - 1) * pageSize;
@@ -289,7 +289,7 @@ export async function getBannedUsers(page = 1, pageSize = 10) {
  * Débannir un utilisateur.
  */
 export async function unbanUserAction(userId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { success: false, error: "Non autorisé" };
 
   try {
@@ -319,7 +319,7 @@ export async function unbanUserAction(userId: string) {
  * Récupère le résumé des compteurs pour le dashboard de modération.
  */
 export async function getModerationSummaryCounts() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return null;
 
   try {

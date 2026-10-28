@@ -5,7 +5,7 @@
 "use server";
  
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/app/moderation/actions";
 
@@ -279,7 +279,7 @@ export async function getHallOfFame() {
  * MODÉRATION : Archivage du classement d'une année.
  */
 export async function archiveYear(year: number) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
 
   try {
@@ -313,7 +313,7 @@ export async function archiveYear(year: number) {
  * MODÉRATION / ADMIN : Suppression d'une archive.
  */
 export async function deleteArchive(year: number) {
-  const session = await auth();
+  const session = await getActiveSession();
   // Suppression réservée aux admins+
   if (!session?.user?.id || !isAdmin(session.user.role)) return { error: "Non autorisé (Admin requis)" };
 
@@ -341,7 +341,7 @@ export async function deleteArchive(year: number) {
  * MODÉRATION : Mise à jour ou création manuelle d'une archive.
  */
 export async function saveArchive(year: number, name: string, rankingData: any[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
 
   try {
@@ -375,7 +375,7 @@ export async function saveArchive(year: number, name: string, rankingData: any[]
 
 
 export async function fetchLegacyRanking(year: number) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) return { error: "Non autorisé" };
 
   try {

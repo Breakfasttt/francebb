@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function resetDatabase(phrase: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.SUPERADMIN) {
     throw new Error("Accès refusé. Seul un SUPERADMIN peut détruire le site.");
@@ -50,7 +50,7 @@ export async function resetDatabase(phrase: string) {
 }
 
 export async function searchCoaches(query: string = "", page: number = 1, pageSize: number = 20) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { users: [], totalPages: 0 };
@@ -79,7 +79,7 @@ export async function searchCoaches(query: string = "", page: number = 1, pageSi
 }
 
 export async function updateCoachRole(targetUserId: string, newRole: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
     return { success: false, error: "Non autorisé." };
@@ -118,7 +118,7 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
 // ---- CUSTOM ROLES MANAGEMENT ----
 
 export async function getAllRoles() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
     return [];
@@ -134,7 +134,7 @@ export async function getAllRoles() {
 }
 
 export async function createCustomRole(data: { name: string, label: string, color: string, power: number }) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   const myPower = getRolePower(userRole);
 
@@ -166,7 +166,7 @@ export async function createCustomRole(data: { name: string, label: string, colo
 }
 
 export async function deleteCustomRole(roleName: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -199,7 +199,7 @@ export async function deleteCustomRole(roleName: string) {
 }
 
 export async function reorderRoles(orderedNames: string[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -280,7 +280,7 @@ export async function reorderRoles(orderedNames: string[]) {
 // ---- FORUM STRUCTURE MANAGEMENT ----
 
 export async function getForumStructure() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) return [];
 
@@ -306,7 +306,7 @@ export async function getForumStructure() {
 }
 
 export async function createReferenceData(data: { group: string, key: string, label: string, order: number }) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -329,7 +329,7 @@ export async function createReferenceData(data: { group: string, key: string, la
 }
 
 export async function updateReferenceData(id: string, data: { group: string, key: string, label: string, order: number, isActive: boolean }) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -353,7 +353,7 @@ export async function updateReferenceData(id: string, data: { group: string, key
 }
 
 export async function deleteReferenceData(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -365,7 +365,7 @@ export async function deleteReferenceData(id: string) {
 }
 
 export async function getAllReferenceDataAdmin() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return [];
@@ -382,7 +382,7 @@ export async function getAllReferenceDataAdmin() {
 // ---- SITE SETTINGS MANAGEMENT ----
 
 export async function getSiteSetting(key: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return null;
@@ -395,7 +395,7 @@ export async function getSiteSetting(key: string) {
 }
 
 export async function updateSiteSetting(key: string, value: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -432,7 +432,7 @@ export async function getHowToPlaySettings() {
 }
 
 export async function updateHowToPlaySettings(settings: Record<string, string>) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
@@ -455,7 +455,7 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
  * Envoie un email d'information forcé à TOUS les coachs de la plateforme.
  */
 export async function sendGlobalInfoMail(subject: string, content: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     throw new Error("Accès refusé.");

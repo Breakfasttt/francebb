@@ -15,7 +15,8 @@ const getPrismaClient = () => {
   }
 
   const adapter = new PrismaLibSql(config);
-  const client = new PrismaClient({ adapter });
+  // PRISMA_QUERY_LOG=1 : trace chaque requête (mesure des requêtes par rendu, scripts/baseline.mjs)
+  const client = new PrismaClient({ adapter, log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [] });
 
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = client;

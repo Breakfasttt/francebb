@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
@@ -72,7 +72,7 @@ export async function searchAddressAction(query: string) {
  * Crée une nouvelle ligue.
  */
 export async function createLigue(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté pour créer une ligue.");
   }
@@ -141,7 +141,7 @@ export async function createLigue(formData: FormData) {
  * Met à jour une ligue existante.
  */
 export async function updateLigue(id: string, formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non autorisé");
 
   const ligue = await prisma.ligue.findUnique({
@@ -217,7 +217,7 @@ export async function updateLigue(id: string, formData: FormData) {
  * Supprime une ligue.
  */
 export async function deleteLigue(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non autorisé");
 
   const ligue = await prisma.ligue.findUnique({
@@ -249,7 +249,7 @@ export async function deleteLigue(id: string) {
  * Transfère la propriété d'une ligue.
  */
 export async function transferLigueOwnership(id: string, newOwnerId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non autorisé");
 
   const ligue = await prisma.ligue.findUnique({

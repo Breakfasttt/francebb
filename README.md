@@ -116,6 +116,17 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 > [!TIP]
 > **[🧪 Test Local (OAuth & Emails)] (./DEPLOY.md#🧪-phase-tech--tester-localement-oauth--emails)** : Consultez cette section pour configurer la connexion Discord/Google et l'envoi de mails sur votre ordinateur.
 
+### ✅ Vérifications (tests & CI)
+
+| Commande | Rôle |
+|---|---|
+| `npm run typecheck` | Vérification TypeScript |
+| `npm run lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). `-- --update` abaisse le plafond quand la dette baisse. |
+| `npm run test:e2e` | Tests smoke Playwright (`tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `npx playwright install chromium`. |
+| `node scripts/baseline.mjs` | Mesures perf par route (après `npm run build`), voir `docs/baseline.md`. |
+
+La CI GitHub Actions (`.github/workflows/ci.yml`) lance typecheck, cliquet ESLint, build et tests smoke sur chaque push (`development`, `master`) et chaque PR.
+
 ---
 
 ## 🌐 Déploiement & Setup (Détaillé)

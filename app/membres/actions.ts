@@ -1,12 +1,12 @@
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { canEditTargetRole, ROLE_POWER, UserRole, isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 
 export async function updateUserRole(userId: string, newRole: UserRole) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) throw new Error("Non authentifié");
 
   const me = await prisma.user.findUnique({
@@ -39,7 +39,7 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
 }
 
 export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) throw new Error("Non authentifié");
 
   const me = await prisma.user.findUnique({
@@ -75,7 +75,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
 }
 
 export async function deleteUser(userId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) throw new Error("Non authentifié");
 
   const me = await prisma.user.findUnique({

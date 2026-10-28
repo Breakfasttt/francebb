@@ -3,7 +3,7 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { questions as staticQuestions } from "./data/questions";
 import { revalidatePath } from "next/cache";
@@ -15,7 +15,7 @@ import { translateCategory } from "./utils";
  * Combine les questions statiques et celles de la base de données.
  */
 export async function getRandomQuizQuestions() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user) return null;
 
   // Récupérer les questions en DB
@@ -91,7 +91,7 @@ export async function submitQuizAttempt(data: {
   duration: number; // en secondes
   jokersUsed: string[];
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.email) return null;
 
   const user = await prisma.user.findUnique({
@@ -224,7 +224,7 @@ export async function suggestQuizQuestion(data: {
   correctIndex: number;
   explanation?: string;
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return null;
 
   return prisma.quizQuestionSuggestion.create({
@@ -243,7 +243,7 @@ export async function suggestQuizQuestion(data: {
  * Récupère les suggestions en attente (Moderator+)
  */
 export async function getQuizSuggestions() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return [];
 
   const suggestions = await prisma.quizQuestionSuggestion.findMany({
@@ -262,7 +262,7 @@ export async function getQuizSuggestions() {
  * Valide ou rejette une suggestion
  */
 export async function handleQuizSuggestion(id: string, approve: boolean) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return null;
 
   if (approve) {
@@ -299,7 +299,7 @@ export async function handleQuizSuggestion(id: string, approve: boolean) {
  * Récupère toutes les questions éditables (Moderator+)
  */
 export async function getAllQuizQuestions() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return [];
 
   const questions = await prisma.quizQuestion.findMany({
@@ -316,7 +316,7 @@ export async function getAllQuizQuestions() {
  * Met à jour une question existante
  */
 export async function updateQuizQuestion(id: string, data: any) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return null;
 
   await prisma.quizQuestion.update({
@@ -335,7 +335,7 @@ export async function updateQuizQuestion(id: string, data: any) {
  * Supprime une question
  */
 export async function deleteQuizQuestion(id: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return null;
 
   await prisma.quizQuestion.delete({ where: { id } });

@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+/test-results
+/playwright-report
 
 # next.js
 /.next/
@@ -51,3 +53,6 @@ process_tree.csv
 
 # local logs and backups
 /logs
+# sauvegardes de prod (données personnelles, jamais dans git)
+/backups
+backup.sql

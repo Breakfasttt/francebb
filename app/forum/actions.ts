@@ -4,7 +4,7 @@
  */
 "use server";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -13,7 +13,7 @@ import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function getUnreadMessagesCount() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return 0;
 
   return await prisma.privateMessage.count({
@@ -33,7 +33,7 @@ export async function getUnreadMessagesCount() {
 }
 
 export async function getRecentPosts(limit: number = 3) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
 
   const topics = await prisma.topic.findMany({
@@ -101,7 +101,7 @@ export async function markTopicAsRead(topicId: string) {
   // Increment views safely using RAW SQL to avoid triggering Prisma's @updatedAt (which makes topics 'unread')
   await prisma.$executeRaw`UPDATE "Topic" SET "views" = Coalesce("views", 0) + 1 WHERE "id" = ${topicId}`;
 
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return;
 
   // Sécurité : éviter crash sur session périmée après import/suppression de BDD
@@ -140,7 +140,7 @@ export async function markTopicAsRead(topicId: string) {
 }
 
 export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return;
 
   // Sécurité : éviter crash sur session périmée après import/suppression de BDD
@@ -200,7 +200,7 @@ export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
 }
 
 export async function getUnreadTopicsCount() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return 0;
 
   // Optimisation Prisma : utiliser findMany avec select minimal pour le comptage
@@ -222,7 +222,7 @@ export async function getUnreadTopicsCount() {
   }).length;
 }
 export async function getUnreadTopics(page: number = 1, limit: number = 20) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { topics: [], total: 0 };
 
   const userId = session.user.id;
@@ -279,7 +279,7 @@ export async function getSubForumCount(parentForumId: string) {
 }
 
 export async function createForum(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = session?.user?.role;
 
   if (!userRole || !isModerator(userRole)) {
@@ -407,7 +407,7 @@ export async function getAllForums() {
 }
 
 export async function deleteForum(forumId: string, forumName: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = session?.user?.role;
 
   if (!userRole || !isModerator(userRole)) {
@@ -476,7 +476,7 @@ export async function deleteForum(forumId: string, forumName: string) {
 }
 
 export async function createTopic(formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté pour créer un sujet.");
   }
@@ -624,7 +624,7 @@ export async function createTopic(formData: FormData) {
 }
 
 export async function createPost(topicId: string, content: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté pour répondre.");
   }
@@ -730,7 +730,7 @@ export async function createPost(topicId: string, content: string) {
 }
 
 export async function updatePost(postId: string, content: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté pour modifier un message.");
   }
@@ -787,7 +787,7 @@ export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
 }
 
 export async function moderatePost(postId: string, reason: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent modérer des messages.");
   }
@@ -821,7 +821,7 @@ export async function moderatePost(postId: string, reason: string) {
 }
 
 export async function unmoderatePost(postId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent annuler une modération.");
   }
@@ -853,7 +853,7 @@ export async function unmoderatePost(postId: string) {
 }
 
 export async function deletePost(postId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté.");
   }
@@ -891,7 +891,7 @@ export async function deletePost(postId: string) {
 }
 
 export async function markAllTopicsAsRead() {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non autorisé" };
 
   // Sécurité : éviter crash sur session périmée après import/suppression de BDD
@@ -942,7 +942,7 @@ export async function markAllTopicsAsRead() {
 }
 
 export async function togglePinTopic(topicId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent épingler des sujets.");
   }
@@ -970,7 +970,7 @@ export async function togglePinTopic(topicId: string) {
 }
 
 export async function deleteTopicPermanent(topicId: string, topicTitle: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté.");
 
   const topic = await prisma.topic.findUnique({
@@ -1012,7 +1012,7 @@ export async function deleteTopicPermanent(topicId: string, topicTitle: string) 
 }
 
 export async function moveTopic(topicId: string, newForumId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent déplacer des sujets.");
   }
@@ -1041,7 +1041,7 @@ export async function moveTopic(topicId: string, newForumId: string) {
 }
 
 export async function updateTopicTitle(topicId: string, title: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     throw new Error("Vous devez être connecté.");
   }
@@ -1067,7 +1067,7 @@ export async function updateTopicTitle(topicId: string, title: string) {
 }
 
 export async function togglePostReaction(postId: string, emoji: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Vous devez être connecté.");
 
   const userId = session.user.id;
@@ -1109,7 +1109,7 @@ export async function togglePostReaction(postId: string, emoji: string) {
 }
 
 export async function toggleArchiveTopic(topicId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
     throw new Error("Seuls les modérateurs peuvent archiver des sujets.");
   }
@@ -1142,7 +1142,7 @@ export async function toggleArchiveTopic(topicId: string) {
  * NOTE: la table "TopicFollow" est créée via une migration dédiée.
  */
 export async function isFollowingTopic(topicId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) return false;
 
@@ -1166,7 +1166,7 @@ export async function isFollowingTopic(topicId: string) {
  * Basculer le suivi d'un sujet.
  */
 export async function toggleFollowTopic(topicId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) return { success: false, error: "Non autorisé", isFollowing: false };
 
@@ -1204,7 +1204,7 @@ export async function toggleFollowTopic(topicId: string) {
  * Récupérer la liste des topics suivis par l'utilisateur connecté.
  */
 export async function getFollowedTopics(page: number = 1, limit: number = 20) {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
   if (!userId) return { topics: [], totalPages: 0 };
 
@@ -1262,7 +1262,7 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
   }
 }
 export async function toggleForumLock(forumId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) {
     throw new Error("Action non autorisée.");
   }
@@ -1292,7 +1292,7 @@ export async function toggleForumLock(forumId: string) {
 }
 
 export async function toggleTopicLock(topicId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) {
     throw new Error("Action non autorisée.");
   }
@@ -1325,7 +1325,7 @@ export async function toggleTopicLock(topicId: string) {
  * Rechercher des utilisateurs par leur nom.
  */
 export async function searchUsersAction(query: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return [];
   if (!query || query.length < 2) return [];
 
@@ -1360,7 +1360,7 @@ export async function searchUsersAction(query: string) {
  * Seul le créateur, les commissaires ou la modération peuvent modifier.
  */
 export async function updateTournament(tournamentId: string, topicId: string, firstPostId: string, formData: FormData) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non autorisé.");
 
   const tournament = await prisma.tournament.findUnique({
@@ -1490,7 +1490,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
  * Inscription individuelle à un tournoi
  */
 export async function joinTournament(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
@@ -1537,7 +1537,7 @@ export async function joinTournament(tournamentId: string) {
  * Désinscription individuelle
  */
 export async function leaveTournament(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
@@ -1564,7 +1564,7 @@ export async function leaveTournament(tournamentId: string) {
  * Inscription / Désinscription mercenaire
  */
 export async function toggleMercenary(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
@@ -1604,7 +1604,7 @@ export async function toggleMercenary(tournamentId: string) {
  * Création d'équipe
  */
 export async function createTeam(tournamentId: string, name: string, memberIds: string[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
@@ -1651,7 +1651,7 @@ export async function createTeam(tournamentId: string, name: string, memberIds: 
  * Mise à jour d'équipe
  */
 export async function updateTeam(teamId: string, name: string, memberIds: string[]) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
   try {
@@ -1692,7 +1692,7 @@ export async function updateTeam(teamId: string, name: string, memberIds: string
  * Suppression d'équipe
  */
 export async function deleteTeam(teamId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
   try {
@@ -1722,7 +1722,7 @@ export async function updateRegistrationStatus(params: {
   status: string,
   paymentStatus?: string
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
   // Vérification des permissions
@@ -1791,7 +1791,7 @@ export async function updateRegistrationStatus(params: {
  * Recherche d'utilisateurs pour l'inscription d'équipe
  */
 export async function findUsersSearch(query: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return [];
 
   if (query.length < 2) return [];
@@ -1813,7 +1813,7 @@ export async function findUsersSearch(query: string) {
  * Verrouiller / Déverrouiller les inscriptions d'un tournoi
  */
 export async function toggleTournamentRegistrations(tournamentId: string) {
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
 
   try {

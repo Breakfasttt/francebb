@@ -14,12 +14,14 @@ declare module "next-auth" {
       id: string;
       role: string;
       hasFinishedOnboarding: boolean;
+      isBanned: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
     role?: string;
     hasFinishedOnboarding?: boolean;
+    isBanned?: boolean;
     nafNumber?: string | null;
   }
 }
@@ -115,7 +117,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               role: true, 
               hasFinishedOnboarding: true, 
               theme: true, 
-              name: true 
+              name: true,
+              isBanned: true
             }
           });
           
@@ -124,6 +127,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
             updatedToken.theme = dbUser.theme || "saison3";
             updatedToken.name = dbUser.name;
+            updatedToken.isBanned = dbUser.isBanned;
           }
         } catch (error) {
           console.error("Auth: Error refreshing user data from DB in JWT callback", error);
