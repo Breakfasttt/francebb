@@ -67,7 +67,7 @@ export default async function TournamentsPage({
     where.date = { gte: todayStart };
   }
 
-  if (query) where.name = { contains: query };
+  if (query) where.name = { contains: query, mode: "insensitive" };
   if (region) where.region = region;
   if (dept) where.departement = dept;
   if (edition) where.gameEdition = edition;

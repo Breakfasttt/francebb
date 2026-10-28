@@ -6,6 +6,9 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, quiz, BBS
 
 | Commande | Rôle |
 |---|---|
+| `pnpm db:start` | Démarre la base Postgres locale (à relancer après un redémarrage de l'ordinateur) |
+| `pnpm db:migrate` | Crée une migration après une modification de `prisma/schema.prisma` |
+| `pnpm db:setup` | Ajoute les données de base (rôles, catégories du forum…) |
 | `pnpm dev` | Lance le site en local (port 3000) |
 | `pnpm build` | Prépare la version de production |
 | `pnpm exec prisma …` | Outils de base de données (migrations, génération du client) |
@@ -14,7 +17,7 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, quiz, BBS
 
 ## Points à connaître
 
-- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Base locale `dev.db`, base des tests `e2e.db` (recréée à chaque test).
+- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Bases Postgres locales sans Docker (`scripts/local-postgres.mjs`) : `pnpm db:start` pour la base de développement ; la base des tests est recréée vide à chaque `pnpm test:e2e`.
 - **Connexion des membres** : `auth.ts`, `auth.config.ts`, `proxy.ts` (code exécuté avant chaque page) et `lib/authGuard.ts` (`getActiveSession` refuse les visiteurs non connectés et les bannis).
 - **Forum** : toute requête sur les catégories, forums, sujets ou messages passe par `lib/forumAccess.ts`, qui cache aux membres ce qui est réservé à certains rôles.
 - **Emails des membres** : le client `prisma` par défaut ne les renvoie jamais ; `prismaWithEmail` est réservé à la connexion et aux mails.

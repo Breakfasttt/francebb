@@ -1,5 +1,5 @@
 import { PrismaClient } from "@/prisma/generated-client"; // client-refresh
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 // `prisma` (défaut) n'expose jamais User.email : un `include: { author: true }` envoyé au client
 // ou dans une réponse d'API ne peut pas fuiter d'adresse. `prismaWithEmail` est réservé à
@@ -8,14 +8,14 @@ const USER_PRIVATE_FIELDS = { user: { email: true } } as const;
 
 const createClient = () =>
   new PrismaClient({
-    adapter: new PrismaLibSql({ url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db" }),
+    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
     // PRISMA_QUERY_LOG=1 : trace chaque requête (mesure des requêtes par rendu, scripts/baseline.mjs)
     log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
   });
 
 const createPublicClient = () =>
   new PrismaClient({
-    adapter: new PrismaLibSql({ url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db" }),
+    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
     log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
     omit: USER_PRIVATE_FIELDS,
   });

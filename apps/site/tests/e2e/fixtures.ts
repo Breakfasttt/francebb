@@ -2,7 +2,18 @@
  * Données et helpers partagés des tests smoke : identifiants fixes du jeu de données e2e
  * et connexion via le provider Credentials "dev-login".
  */
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import type { Page } from "@playwright/test";
+
+/**
+ * Base Postgres locale réservée aux tests (serveur « site-e2e » de scripts/local-postgres.mjs),
+ * recréée vide à chaque lancement par scripts/e2e-db.mjs : ne peut jamais viser la base de développement ni la prod.
+ * Son adresse (port choisi au démarrage) est lue dans .local-postgres.json, à la racine du dépôt.
+ */
+export const E2E_DATABASE_URL: string = JSON.parse(
+  readFileSync(resolve(process.cwd(), "../../.local-postgres.json"), "utf-8")
+)["site-e2e"];
 
 export const E2E = {
   coachId: "e2e_coach",

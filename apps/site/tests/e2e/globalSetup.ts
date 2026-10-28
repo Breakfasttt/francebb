@@ -1,14 +1,14 @@
 /**
- * Setup global des tests smoke : insère le jeu de données minimal dans e2e.db
- * (le schéma est poussé par la commande webServer de playwright.config.ts).
+ * Setup global des tests smoke : insère le jeu de données minimal dans la base de test
+ * (créée vide et structurée par scripts/e2e-db.mjs avant le lancement des tests).
  */
 import { PrismaClient } from "../../prisma/generated-client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
-import { E2E } from "./fixtures";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { E2E, E2E_DATABASE_URL } from "./fixtures";
 
 export default async function globalSetup() {
   // Client direct (le loader Playwright ne résout pas l'alias "@/" utilisé par lib/prisma.ts)
-  const prisma = new PrismaClient({ adapter: new PrismaLibSql({ url: "file:./e2e.db" }) });
+  const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: E2E_DATABASE_URL }) });
 
   // User.role est une FK vers RoleConfig
   await prisma.roleConfig.upsert({

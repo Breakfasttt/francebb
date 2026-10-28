@@ -9,7 +9,6 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { redirect, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AdminSidebar, { AdminTab } from "./component/AdminSidebar";
-import BackupTab from "./component/BackupTab";
 import CoachsTab from "./component/CoachsTab";
 import ResetTab from "./component/ResetTab";
 import RolesTab from "./component/RolesTab";
@@ -47,7 +46,7 @@ export default function AdministrationPage() {
   }, [session, status]);
 
   useEffect(() => {
-    if (tabParam && ["general", "coachs", "roles", "structure", "backup", "reset", "reference", "howtoplay", "info-mails"].includes(tabParam)) {
+    if (tabParam && ["general", "coachs", "roles", "structure", "reset", "reference", "howtoplay", "info-mails"].includes(tabParam)) {
       setActiveTab(tabParam as AdminTab);
     }
   }, [tabParam]);
@@ -113,7 +112,6 @@ export default function AdministrationPage() {
             <InfoMailsTab />
           )}
 
-          {activeTab === "backup" && isSuperAdmin && <BackupTab />}
           {activeTab === "reset" && isSuperAdmin && <ResetTab />}
         </div>
       </div>

@@ -31,8 +31,8 @@ export default async function LiguesPage({
   const where: any = {};
   if (query) {
     where.OR = [
-      { name: { contains: query } },
-      { acronym: { contains: query } }
+      { name: { contains: query, mode: "insensitive" } },
+      { acronym: { contains: query, mode: "insensitive" } }
     ];
   }
   if (region) where.geographicalZone = region;

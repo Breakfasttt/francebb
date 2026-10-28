@@ -49,6 +49,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
+| **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
 | **Push** | Envoi des commits locaux vers GitHub. |
 | **RBAC** (*Role-Based Access Control*) | Droits accordés selon le rôle du membre (coach, modérateur, admin…). Voir `apps/site/lib/roles.ts`. |

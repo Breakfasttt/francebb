@@ -70,17 +70,20 @@ pnpm install             # installe les bibliothèques de toutes les application
 ```
 
 1. Copier `apps/site/.env.example` en `apps/site/.env` et le remplir. Chaque variable y est expliquée. La connexion Discord/Google et l'envoi de mails en local sont détaillés dans [DEPLOY.md](DEPLOY.md).
-2. Créer la base de données locale, depuis `apps/site` :
+2. Préparer la base de données locale, depuis `apps/site` :
    ```bash
    cd apps/site
-   pnpm exec prisma migrate dev     # crée les tables
-   npx tsx prisma/firstSetup.ts     # ajoute les données de base (rôles, catégories du forum…)
+   pnpm db:start                    # démarre une base Postgres locale (sans Docker) et note son adresse dans .env.local
+   pnpm exec prisma migrate deploy  # crée les tables
+   pnpm db:setup                    # ajoute les données de base (rôles, catégories du forum…)
    ```
+   Après un redémarrage de l'ordinateur, relancer seulement `pnpm db:start`.
 3. Lancer le site, depuis la racine : `pnpm dev`, puis ouvrir [http://localhost:3000](http://localhost:3000).
+
+Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`, puis `pnpm db:migrate` (crée une migration, c'est-à-dire le fichier qui décrit le changement). Elle sera appliquée automatiquement en production au prochain déploiement.
 
 **Tester sur un vrai téléphone** (même réseau Wi-Fi) : lancer `pnpm --filter @bbfrance/site exec next dev -H 0.0.0.0`, puis ouvrir `http://<adresse IP de l'ordinateur>:3000` sur le téléphone.
 
-> La base de données va passer de SQLite/Turso à Postgres ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)). Cette section sera mise à jour à ce moment-là.
 
 ---
 
@@ -90,7 +93,7 @@ pnpm install             # installe les bibliothèques de toutes les application
 |---|---|
 | `pnpm typecheck` | Pas d'incohérence de types dans le code TypeScript |
 | `pnpm lint:ratchet` | Qualité du code (ESLint). Le nombre d'erreurs ne doit jamais augmenter |
-| `pnpm test:e2e` | Parcours essentiels du site (lire le forum, répondre, se connecter…), joués dans un vrai navigateur sur une base de test jetable |
+| `pnpm test:e2e` | Parcours essentiels du site (lire le forum, répondre, se connecter…), joués dans un vrai navigateur sur une base de test locale recréée vide à chaque fois |
 | `pnpm --filter @bbfrance/hub test:sso` | Connexion au site via le hub, de bout en bout |
 | `pnpm kanban` | Liste les tâches et vérifie que le kanban est bien rangé |
 
@@ -105,6 +108,7 @@ GitHub relance automatiquement ces vérifications à chaque envoi de code (`.git
 | Rôle | Outil |
 |---|---|
 | Site web | [Next.js 16](https://nextjs.org) et [React 19](https://react.dev), en TypeScript |
+| Base de données | [Postgres](https://www.postgresql.org), hébergé chez [Neon](https://neon.tech) en production ; en local, `prisma dev` (sans Docker) |
 | Accès à la base de données | [Prisma 7](https://www.prisma.io) |
 | Connexion des membres | [Auth.js v5](https://authjs.dev) aujourd'hui ; [Better Auth](https://www.better-auth.com) dans le hub |
 | Apparence | CSS avec 7 thèmes, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |

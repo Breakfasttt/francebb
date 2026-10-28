@@ -280,11 +280,11 @@ export async function searchLiguesAction(query: string) {
   return await prisma.ligue.findMany({
     where: {
       OR: [
-        { name: { contains: query } },
-        { name: { contains: query.toLowerCase() } },
-        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
-        { acronym: { contains: query } },
-        { acronym: { contains: query.toUpperCase() } }
+        { name: { contains: query, mode: "insensitive" } },
+        { name: { contains: query.toLowerCase(), mode: "insensitive" } },
+        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1), mode: "insensitive" } },
+        { acronym: { contains: query, mode: "insensitive" } },
+        { acronym: { contains: query.toUpperCase(), mode: "insensitive" } }
       ]
     },
     take: 10,

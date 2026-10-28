@@ -8,8 +8,6 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isAdmin as checkIsAdmin } from "@/lib/roles";
-import fs from "fs";
-import path from "path";
 
 export async function getDashboardStats() {
   const session = await getActiveSession();
@@ -61,12 +59,9 @@ export async function getDashboardStats() {
   if (isAdmin) {
     let dbSize = "Inconnu";
     try {
-      const dbPath = path.join(process.cwd(), "dev.db");
-      if (fs.existsSync(dbPath)) {
-        const stats = fs.statSync(dbPath);
-        const sizeInMb = stats.size / (1024 * 1024);
-        dbSize = `${sizeInMb.toFixed(2)} Mo`;
-      }
+      // Taille de la base Postgres, en octets (fonction intégrée à Postgres)
+      const [{ size }] = await prisma.$queryRaw<{ size: bigint }[]>`SELECT pg_database_size(current_database()) AS size`;
+      dbSize = `${(Number(size) / (1024 * 1024)).toFixed(2)} Mo`;
     } catch (e) {
       console.error("Erreur lecture taille BDD:", e);
     }

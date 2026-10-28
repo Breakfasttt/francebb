@@ -1,11 +1,13 @@
 /**
- * Test SSO hub ↔ site (P5) : lance le hub (port 4100) et le site en AUTH_MODE=hub (port 3200) sur des bases jetables.
+ * Test SSO hub ↔ site (P5) : lance le hub (port 4100) et le site en AUTH_MODE=hub (port 3200) sur des bases Postgres locales de test.
  * Préparation : scripts/e2e-setup.mjs (pnpm test:sso).
  */
 import { readFileSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 const client = JSON.parse(readFileSync("tests/.sso-client.json", "utf-8")) as { clientId: string; clientSecret: string };
+// Adresses des bases Postgres locales de test, enregistrées par scripts/local-postgres.mjs
+const databases = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8")) as Record<string, string>;
 
 export default defineConfig({
   testDir: "./tests",
@@ -23,7 +25,7 @@ export default defineConfig({
       timeout: 180_000,
       reuseExistingServer: false,
       env: {
-        HUB_DATABASE_URL: "file:./hub-e2e.db",
+        HUB_DATABASE_URL: databases["hub-e2e"],
         BETTER_AUTH_URL: "http://localhost:4100",
         HUB_DEV_PASSWORD_LOGIN: "1",
         NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN: "1",
@@ -36,8 +38,7 @@ export default defineConfig({
       timeout: 180_000,
       reuseExistingServer: false,
       env: {
-        DATABASE_URL: "file:./e2e.db",
-        TURSO_DATABASE_URL: "",
+        DATABASE_URL: databases["site-e2e"],
         AUTH_URL: "http://localhost:3200",
         NEXT_PUBLIC_SITE_URL: "http://localhost:3200",
         AUTH_MODE: "hub",

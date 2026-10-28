@@ -1,12 +1,12 @@
 /**
- * Prépare la base jetable des tests smoke : supprime e2e.db puis y pousse le schéma Prisma.
- * Chemin codé en dur : ne peut jamais viser dev.db ni la prod.
+ * Prépare la base des tests : repart d'un serveur Postgres local vide (« site-e2e »), puis y applique les migrations.
+ * Adresse fixe, réservée aux tests : ne peut jamais viser la base de développement ni la prod.
  */
-import { rmSync } from "node:fs";
 import { execSync } from "node:child_process";
+import { freshLocalDatabase } from "../../../scripts/local-postgres.mjs";
 
-rmSync("e2e.db", { force: true });
-execSync("npx prisma db push", {
+const url = freshLocalDatabase("site-e2e");
+execSync("npx prisma migrate deploy", {
   stdio: ["ignore", "inherit", "inherit"],
-  env: { ...process.env, DATABASE_URL: "file:./e2e.db", TURSO_DATABASE_URL: "" },
+  env: { ...process.env, DATABASE_URL: url },
 });

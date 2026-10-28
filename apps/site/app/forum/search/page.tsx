@@ -98,13 +98,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   if (q) {
     whereClause.OR = [
-      { content: { contains: q } },
-      { topic: { title: { contains: q } } }
+      { content: { contains: q, mode: "insensitive" } },
+      { topic: { title: { contains: q, mode: "insensitive" } } }
     ];
   }
 
   if (authorQuery) {
-    whereClause.author = { name: { contains: authorQuery } };
+    whereClause.author = { name: { contains: authorQuery, mode: "insensitive" } };
   }
 
   if (dateStr !== "all") {

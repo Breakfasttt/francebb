@@ -67,5 +67,6 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 
 ## Données
 
-- La base de production repart de zéro sur Postgres ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)). Une fois la nouvelle base en ligne, aucune donnée de membre ne doit être supprimée sans accord exprès.
-- Changement de structure de la base : uniquement par une migration Prisma, jamais à la main.
+- Base **Postgres** : Neon en production, `prisma dev` en local (`scripts/local-postgres.mjs`, sans Docker). Le site et le hub ont chacun leur base ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)).
+- Changement de structure de la base : uniquement par une migration Prisma (`pnpm db:migrate`), jamais à la main. Les migrations sont appliquées automatiquement à chaque déploiement (`vercel-build`).
+- Aucune donnée de membre ne doit être supprimée sans accord exprès.

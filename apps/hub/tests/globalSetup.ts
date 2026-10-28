@@ -1,5 +1,5 @@
 /**
- * Insère le jeu de données e2e du site (membre "Coach E2E" onboardé, email coach@e2e.test) dans apps/site/e2e.db,
+ * Insère le jeu de données e2e du site (membre "Coach E2E" onboardé, email coach@e2e.test) dans la base de test du site,
  * en réutilisant le setup des tests du site (chemin de base relatif au dossier du site).
  */
 import siteGlobalSetup from "../../site/tests/e2e/globalSetup";

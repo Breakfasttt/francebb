@@ -6,4 +6,4 @@ Le hub est l'application qui gère les comptes : un membre s'y connecte une fois
 - `prisma/schema.prisma` est **généré** à partir des tables de Better Auth (`node scripts/generate-schema.mjs`) : ne pas l'éditer à la main.
 - Le client Prisma généré n'est pas enregistré dans git : lancer `pnpm db:generate` avant `typecheck` ou `dev`.
 - Les versions de better-auth et de ses compagnons (`@better-auth/core`, `better-call`, `@better-auth/utils`, `@better-fetch/fetch`) se montent toutes en même temps. Sinon, deux copies de `@better-auth/core` coexistent et TypeScript ne reconnaît plus les plugins.
-- En local : copier `.env.example` en `.env`, puis `pnpm dev` (port 4000). Le site est enregistré comme application cliente avec `scripts/register-client.mjs`.
+- En local : copier `.env.example` en `.env`, puis `pnpm db:start` (base Postgres locale sans Docker), `pnpm exec prisma migrate deploy` et `pnpm dev` (port 4000). Le site est enregistré comme application cliente avec `scripts/register-client.mjs`.

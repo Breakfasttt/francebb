@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     where: {
       title: {
         contains: query,
+        mode: "insensitive",
       },
       isArchived: false,
       ...topicAccessWhere(roles),

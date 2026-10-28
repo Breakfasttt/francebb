@@ -25,17 +25,18 @@ if (existing) {
 const clientId = randomBytes(16).toString("base64url");
 const clientSecret = randomBytes(32).toString("base64url");
 const now = new Date();
-// Tableaux stockés en JSON texte (SQLite), comme le fait l'adapter Prisma de Better Auth
 await prisma.oauthClient.create({
   data: {
     id: randomUUID(),
     clientId,
     clientSecret: await hashClientSecret(clientSecret),
     name,
-    redirectUris: JSON.stringify([redirectUri]),
+    redirectUris: [redirectUri],
     tokenEndpointAuthMethod: "client_secret_basic",
-    grantTypes: JSON.stringify(["authorization_code", "refresh_token"]),
-    responseTypes: JSON.stringify(["code"]),
+    grantTypes: ["authorization_code", "refresh_token"],
+    responseTypes: ["code"],
+    // Droits demandables par l'application : à lister explicitement (une liste vide n'en autorise aucun)
+    scopes: ["openid", "profile", "email", "offline_access"],
     // App BBFrance : pas d'écran de consentement, déconnexion globale autorisée
     skipConsent: true,
     enableEndSession: true,

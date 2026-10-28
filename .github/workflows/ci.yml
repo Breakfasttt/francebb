@@ -1,4 +1,6 @@
-# CI bbfrance (monorepo pnpm) : kanban, typecheck, cliquet ESLint, build et tests smoke Playwright sur chaque push/PR.
+# CI bbfrance : vérifications lancées par GitHub à chaque envoi de code (push) et chaque Pull Request.
+# Kanban, migrations, types, qualité (ESLint), build, tests du site et test de connexion via le hub.
+# Les bases de test sont des serveurs Postgres locaux lancés par `prisma dev` (scripts/local-postgres.mjs), jamais une base réelle.
 name: CI
 
 on:
@@ -11,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Valeurs factices : la CI ne touche aucune base réelle (SQLite jetable e2e.db)
-  DATABASE_URL: file:./e2e.db
+  # Valeurs factices : aucune base réelle n'est jamais visée (les tests utilisent leurs propres bases locales)
+  DATABASE_URL: postgres://ci:ci@localhost:5432/aucune
   AUTH_SECRET: ci-secret-not-used-in-production
   ENCRYPTION_KEY: 0000000000000000000000000000000000000000000000000000000000000000
   NEXT_TELEMETRY_DISABLED: 1
@@ -33,14 +35,18 @@ jobs:
         run: pnpm kanban
       - run: pnpm --filter @bbfrance/site exec prisma generate
       - run: pnpm --filter @bbfrance/hub exec prisma generate
+      - name: Site : migrations à jour du schéma (aucune migration oubliée)
+        working-directory: apps/site
+        run: |
+          export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
+          pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
       - name: Hub : schéma Prisma = tables Better Auth, migrations à jour
         working-directory: apps/hub
         run: |
           node scripts/generate-schema.mjs
           git diff --exit-code prisma/schema.prisma
+          export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-      - name: Migrations à jour du schéma (aucune migration oubliée)
-        run: pnpm --filter @bbfrance/site exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
       - name: Typecheck
         run: pnpm typecheck
       - name: Lint (cliquet)

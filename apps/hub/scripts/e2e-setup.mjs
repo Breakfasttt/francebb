@@ -1,13 +1,14 @@
 /**
- * Prépare le test SSO hub ↔ site : base hub jetable (hub-e2e.db), client OIDC du site, deux comptes hub
- * (email vérifié = membre existant du site, email non vérifié = doit être refusé), base e2e du site.
- * Ne touche ni hub.db ni dev.db ni aucune base réelle.
+ * Prépare le test SSO hub ↔ site : base hub de test vide (serveur Postgres local « hub-e2e »), client OIDC du site,
+ * deux comptes hub (email vérifié = membre existant du site, email non vérifié = doit être refusé), base de test du site.
+ * Ne touche ni aux bases de développement ni à aucune base réelle.
  */
 import { execSync } from "node:child_process";
 import { rmSync, existsSync } from "node:fs";
+import { freshLocalDatabase } from "../../../scripts/local-postgres.mjs";
 
-const HUB_DB = "file:./hub-e2e.db";
-for (const file of ["hub-e2e.db", "hub-e2e.db-journal", "tests/.sso-client.json"]) if (existsSync(file)) rmSync(file);
+const HUB_DB = freshLocalDatabase("hub-e2e");
+if (existsSync("tests/.sso-client.json")) rmSync("tests/.sso-client.json");
 
 const env = { ...process.env, HUB_DATABASE_URL: HUB_DB, HUB_DEV_PASSWORD_LOGIN: "1", NODE_ENV: "test" };
 execSync("npx prisma migrate deploy", { env, stdio: "inherit" });

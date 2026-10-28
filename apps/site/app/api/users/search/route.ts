@@ -14,6 +14,7 @@ export async function GET(request: Request) {
       where: {
         name: {
           contains: query,
+          mode: "insensitive",
         },
       },
       take: 10,

@@ -4,9 +4,9 @@ import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TabSystem, { TabItem } from "@/common/components/TabSystem/TabSystem";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
-import { BookOpen, Database, DatabaseBackup, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
+import { BookOpen, Database, Globe, LayoutList, Mail, OctagonAlert, Settings, ShieldCheck, Users, Wrench } from "lucide-react";
 
-export type AdminTab = "general" | "coachs" | "roles" | "structure" | "backup" | "reset" | "reference" | "howtoplay" | "info-mails";
+export type AdminTab = "general" | "coachs" | "roles" | "structure" | "reset" | "reference" | "howtoplay" | "info-mails";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -28,7 +28,6 @@ export default function AdminSidebar({ activeTab, onTabChange, isSuperAdmin = fa
   ];
 
   const advancedTabs: TabItem[] = [
-    { id: "backup", label: "Sauvegardes (BDD)", icon: <DatabaseBackup size={18} /> },
     { id: "reset", label: "Zone de Danger", icon: <OctagonAlert size={18} /> },
   ];
 

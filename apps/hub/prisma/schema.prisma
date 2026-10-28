@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -93,8 +93,8 @@ model OauthClient {
   skipConsent Boolean?
   enableEndSession Boolean?
   subjectType String?
-  scopes String?
-  clientCredentialsScopes String?
+  scopes String[]
+  clientCredentialsScopes String[] @default([])
   userId String?
   userIdRef User? @relation("OauthClient_userId", fields: [userId], references: [id], onDelete: NoAction)
   createdAt DateTime?
@@ -102,26 +102,26 @@ model OauthClient {
   name String?
   uri String?
   icon String?
-  contacts String?
+  contacts String[]
   tos String?
   policy String?
   softwareId String?
   softwareVersion String?
   softwareStatement String?
-  redirectUris String
-  postLogoutRedirectUris String?
+  redirectUris String[]
+  postLogoutRedirectUris String[]
   backchannelLogoutUri String?
   backchannelLogoutSessionRequired Boolean?
   tokenEndpointAuthMethod String?
   applicationType String?
   jwks String?
   jwksUri String?
-  grantTypes String?
-  responseTypes String?
+  grantTypes String[]
+  responseTypes String[]
   requirePKCE Boolean?
   dpopBoundAccessTokens Boolean? @default(false)
   referenceId String?
-  metadata String?
+  metadata Json?
   oauthClientResource_clientId OauthClientResource[] @relation("OauthClientResource_clientId")
   oauthRefreshToken_clientId OauthRefreshToken[] @relation("OauthRefreshToken_clientId")
   oauthAccessToken_clientId OauthAccessToken[] @relation("OauthAccessToken_clientId")
@@ -138,14 +138,14 @@ model OauthResource {
   refreshTokenTtl Int?
   signingAlgorithm String?
   signingKeyId String?
-  allowedScopes String?
-  customClaims String?
+  allowedScopes String[]
+  customClaims Json?
   dpopBoundAccessTokensRequired Boolean? @default(false)
   disabled Boolean? @default(false)
   createdAt DateTime?
   updatedAt DateTime?
   policyVersion Int? @default(1)
-  metadata String?
+  metadata Json?
   oauthClientResource_resourceId OauthClientResource[] @relation("OauthClientResource_resourceId")
   @@map("oauthResource")
 }
@@ -156,7 +156,7 @@ model OauthClientResource {
   clientIdRef OauthClient @relation("OauthClientResource_clientId", fields: [clientId], references: [clientId], onDelete: Cascade)
   resourceId String
   resourceIdRef OauthResource @relation("OauthClientResource_resourceId", fields: [resourceId], references: [identifier], onDelete: Cascade)
-  metadata String?
+  metadata Json?
   createdAt DateTime?
   @@index([clientId])
   @@index([resourceId])
@@ -174,8 +174,8 @@ model OauthRefreshToken {
   userIdRef User @relation("OauthRefreshToken_userId", fields: [userId], references: [id], onDelete: NoAction)
   referenceId String?
   authorizationCodeId String?
-  resources String?
-  requestedUserInfoClaims String?
+  resources String[]
+  requestedUserInfoClaims String[]
   expiresAt DateTime
   createdAt DateTime
   revoked DateTime?
@@ -183,8 +183,8 @@ model OauthRefreshToken {
   rotationReplayResponse String?
   rotationReplayExpiresAt DateTime?
   authTime DateTime?
-  confirmation String?
-  scopes String
+  confirmation Json?
+  scopes String[]
   oauthAccessToken_refreshId OauthAccessToken[] @relation("OauthAccessToken_refreshId")
   @@index([clientId])
   @@index([sessionId])
@@ -204,15 +204,15 @@ model OauthAccessToken {
   userIdRef User? @relation("OauthAccessToken_userId", fields: [userId], references: [id], onDelete: NoAction)
   referenceId String?
   authorizationCodeId String?
-  resources String?
-  requestedUserInfoClaims String?
+  resources String[]
+  requestedUserInfoClaims String[]
   refreshId String?
   refreshIdRef OauthRefreshToken? @relation("OauthAccessToken_refreshId", fields: [refreshId], references: [id], onDelete: NoAction)
   expiresAt DateTime
   createdAt DateTime
   revoked DateTime?
-  confirmation String?
-  scopes String
+  confirmation Json?
+  scopes String[]
   @@index([clientId])
   @@index([sessionId])
   @@index([userId])
@@ -228,9 +228,9 @@ model OauthConsent {
   userId String?
   userIdRef User? @relation("OauthConsent_userId", fields: [userId], references: [id], onDelete: NoAction)
   referenceId String?
-  resources String?
-  requestedUserInfoClaims String?
-  scopes String
+  resources String[]
+  requestedUserInfoClaims String[]
+  scopes String[]
   createdAt DateTime
   updatedAt DateTime
   @@index([clientId])

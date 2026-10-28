@@ -10,20 +10,23 @@ import { authPlugins } from "../lib/authPlugins.mjs";
 const tables = getAuthTables({ plugins: authPlugins({ sendMagicLink: async () => {} }) });
 const modelNameOf = (key) => tables[key].modelName.charAt(0).toUpperCase() + tables[key].modelName.slice(1);
 
-// SQLite : pas de tableau natif, Better Auth stocke string[] et json en texte
-const PRISMA_TYPES = { string: "String", boolean: "Boolean", date: "DateTime", number: "Int", json: "String", "string[]": "String" };
+// Postgres : Better Auth utilise de vraies colonnes tableau (String[]) et JSON (Json)
+const PRISMA_TYPES = { string: "String", boolean: "Boolean", date: "DateTime", number: "Int", json: "Json", "string[]": "String[]" };
 
 const backRelations = {};
 const models = Object.entries(tables).map(([key, table]) => {
   const lines = ["  id String @id"];
   for (const [fieldKey, field] of Object.entries(table.fields)) {
     const name = field.fieldName ?? fieldKey;
-    const optional = field.required === false ? "?" : "";
+    // Un tableau Prisma ne peut pas être facultatif (« ? ») : il vaut [] par défaut
+    const isList = field.type === "string[]";
+    const optional = field.required === false && !isList ? "?" : "";
     let attributes = "";
     if (field.unique) attributes += " @unique";
     if (field.defaultValue !== undefined && typeof field.defaultValue !== "function") {
       const value = field.defaultValue;
       if (typeof value === "boolean" || typeof value === "number") attributes += ` @default(${value})`;
+      if (Array.isArray(value)) attributes += " @default([])";
     }
     if (field.type === "date" && typeof field.defaultValue === "function") attributes += " @default(now())";
     lines.push(`  ${name} ${PRISMA_TYPES[field.type]}${optional}${attributes}`);
@@ -56,7 +59,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 `;
 writeFileSync(new URL("../prisma/schema.prisma", import.meta.url), `${header}\n${body}\n`);

@@ -1,12 +1,12 @@
 /**
  * Configuration Playwright des tests smoke (filet de sécurité avant refacto).
- * Base dédiée e2e.db, recréée à chaque run : ne touche jamais dev.db ni la prod.
+ * Base Postgres dédiée (serveur local « site-e2e »), recréée vide à chaque run : ne touche jamais la base de dev ni la prod.
  * Le serveur doit tourner en mode dev (le provider "dev-login" n'existe qu'en développement).
  */
 import { defineConfig, devices } from "@playwright/test";
+import { E2E_DATABASE_URL } from "./tests/e2e/fixtures";
 
 const PORT = 3100;
-const E2E_DB_URL = "file:./e2e.db";
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -29,8 +29,7 @@ export default defineConfig({
     timeout: 180_000,
     reuseExistingServer: false,
     env: {
-      DATABASE_URL: E2E_DB_URL,
-      TURSO_DATABASE_URL: "",
+      DATABASE_URL: E2E_DATABASE_URL,
       AUTH_URL: `http://localhost:${PORT}`,
       NEXT_PUBLIC_SITE_URL: `http://localhost:${PORT}`,
     },

@@ -44,3 +44,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+
+# Adresses des bases Postgres locales, écrites par scripts/local-postgres.mjs
+.local-postgres.json

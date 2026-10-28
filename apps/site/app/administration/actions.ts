@@ -61,14 +61,14 @@ export async function searchCoaches(query: string = "", page: number = 1, pageSi
   const [users, totalCount] = await Promise.all([
     prisma.user.findMany({
       where: {
-        name: { contains: query }
+        name: { contains: query, mode: "insensitive" }
       },
       take: pageSize,
       skip,
       orderBy: { name: "asc" }
     }),
     prisma.user.count({ 
-      where: { name: { contains: query } } 
+      where: { name: { contains: query, mode: "insensitive" } } 
     })
   ]);
 

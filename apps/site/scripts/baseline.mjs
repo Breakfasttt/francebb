@@ -1,28 +1,28 @@
 /**
  * Mesure de baseline perf (refacto P0, à relancer à chaque phase pour comparer).
- * Lance `next start` (build requis) sur une COPIE de dev.db, simule un mobile 4G (CDP),
+ * Lance `next start` (build requis) sur la base de développement (DATABASE_URL du .env), simule un mobile 4G (CDP),
  * et mesure par route, en anonyme et connecté : TTFB, FCP, LCP, JS transféré, requêtes Prisma.
  * Usage : npm run build && node scripts/baseline.mjs > logs/baseline.md
  *         TRACE_ROUTE=/forum node scripts/baseline.mjs   → liste aussi les requêtes SQL de cette route (stderr)
  */
-import { copyFileSync, mkdirSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import { spawn, spawnSync } from "node:child_process";
 import { chromium } from "@playwright/test";
 import { encode } from "@auth/core/jwt";
 import { PrismaClient } from "../prisma/generated-client/index.js";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
+import nextEnv from "@next/env";
 
 const PORT = 3200;
 const BASE_URL = `http://localhost:${PORT}`;
-const DB_COPY = "logs/baseline.db";
 const RUNS = 3;
 const ROUTES = ["/", "/forum", "/forum/[firstForum]", "/forum/topic/[biggestTopic]", "/tournois", "/classement", "/bbscheme"];
 const SECRET = process.env.AUTH_SECRET ?? "baseline-secret";
 
 mkdirSync("logs", { recursive: true });
-copyFileSync("dev.db", DB_COPY);
+nextEnv.loadEnvConfig(process.cwd());
 
-const prisma = new PrismaClient({ adapter: new PrismaLibSql({ url: `file:./${DB_COPY}` }) });
+const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) });
 const [firstForum, biggestTopic, user] = await Promise.all([
   prisma.forum.findFirst({ orderBy: { topics: { _count: "desc" } }, select: { id: true } }),
   prisma.topic.findFirst({ orderBy: { posts: { _count: "desc" } }, select: { id: true } }),
@@ -42,7 +42,7 @@ let queryCount = 0;
 let tracing = null;
 const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
   shell: true,
-  env: { ...process.env, DATABASE_URL: `file:./${DB_COPY}`, TURSO_DATABASE_URL: "", PRISMA_QUERY_LOG: "1", AUTH_SECRET: SECRET, AUTH_URL: BASE_URL },
+  env: { ...process.env, PRISMA_QUERY_LOG: "1", AUTH_SECRET: SECRET, AUTH_URL: BASE_URL },
 });
 const ready = new Promise((resolve, reject) => {
   server.on("exit", (code) => reject(new Error(`next start arrêté (code ${code}) : port ${PORT} occupé ou build manquant`)));

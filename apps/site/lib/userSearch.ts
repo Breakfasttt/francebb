@@ -10,7 +10,7 @@ export const USER_SEARCH_MIN_LENGTH = 2;
 export function userSearchWhere(query: string, viewerId: string): Prisma.UserWhereInput {
   return {
     // SQLite : LIKE insensible à la casse pour l'ASCII
-    name: { contains: query.trim() },
+    name: { contains: query.trim(), mode: "insensitive" },
     isBanned: false,
     id: { not: viewerId },
     blockedBy: { none: { blockerId: viewerId } },

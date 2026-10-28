@@ -33,8 +33,8 @@ export default async function ArticlesPage({
   const where: any = {};
   if (query) {
     where.OR = [
-      { title: { contains: query } },
-      { content: { contains: query } }
+      { title: { contains: query, mode: "insensitive" } },
+      { content: { contains: query, mode: "insensitive" } }
     ];
   }
   if (tag) {
@@ -46,7 +46,7 @@ export default async function ArticlesPage({
     };
   }
   if (author) {
-    where.author = { name: { contains: author } };
+    where.author = { name: { contains: author, mode: "insensitive" } };
   }
 
   // Handle Sort

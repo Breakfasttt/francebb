@@ -1,4 +1,4 @@
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { questions as quizQuestions } from "../app/bbquizz/data/questions";
 import { PrismaClient } from "./generated-client";
 import fs from "fs";
@@ -17,8 +17,7 @@ import path from "path";
 import { loadEnvConfig } from "@next/env";
 loadEnvConfig(process.cwd());
 
-const config = { url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db" };
-const adapter = new PrismaLibSql(config);
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function firstSetup() {

@@ -1,229 +1,150 @@
-# 🚀 Guide de Déploiement : BBFrance pour Débutants
+# Mettre BBFrance en ligne
 
-Ce guide est conçu pour vous accompagner pas-à pas dans le déploiement de **BBFrance**, même si vous n'avez jamais hébergé d'application web auparavant. 
+Ce guide explique pas à pas comment publier le site, même sans expérience de l'hébergement web. Les mots techniques sont expliqués dans le [glossaire](docs/GLOSSAIRE.md).
 
-L'architecture choisie (**Vercel** pour le site + **Turso** pour les données) est la plus simple et la plus fiable pour commencer gratuitement.
+**L'architecture, en deux briques gratuites pour commencer :**
+- **Vercel** héberge le site. Il le remet à jour automatiquement à chaque envoi de code sur GitHub.
+- **Neon** héberge la base de données Postgres (comptes, forum, tournois…).
 
-> **Attention : guide en cours de remplacement.** La base de données passe de Turso à Postgres (hébergeur Neon), voir [ADR-0004](docs/adr/0004-reorganisation-et-postgres.md). Les phases 2 et 4 ci-dessous (Turso, `db push`) décrivent l'ancienne méthode et seront réécrites à la carte 046. En particulier, la Phase 4 ne fonctionne pas : l'outil Prisma refuse une adresse Turso dans `DATABASE_URL`.
-
----
-
-## 🛠️ Phase 0 : Préparer vos Outils
-
-Avant de commencer, vous devez installer trois outils gratuits sur votre ordinateur :
-
-1.  **[Node.js](https://nodejs.org)** (Prendre la version "LTS") : C'est le moteur qui fait tourner l'application.
-2.  **[Git](https://git-scm.com)** : L'outil qui permet d'envoyer votre code sur Internet.
-3.  **[Turso CLI](https://docs.turso.tech/cli/introduction)** : Un petit programme en ligne de commande pour gérer votre base de données.
-    *   *Sur Windows (PowerShell)* : `powershell -Command "irm https://get.turso.tech | iex"`
+À chaque mise en ligne, la structure de la base est mise à jour automatiquement : le script `vercel-build` lance `prisma migrate deploy` avant de construire le site. **Aucune commande à taper sur la base de production.**
 
 ---
 
-## 💻 Phase 0.5 : Ouvrir un Terminal dans votre projet
+## Étape 0 : les outils
 
-Beaucoup d'étapes demandent d'écrire des "commandes". Pour cela, vous devez ouvrir un terminal **à l'intérieur** du dossier `bbfrance` :
+Installer sur son ordinateur :
+1. [Node.js](https://nodejs.org), version 22 ou plus (version « LTS ») : le moteur qui fait tourner le site.
+2. [Git](https://git-scm.com) : l'outil qui envoie le code sur GitHub.
 
-*   **Sur Windows** : Allez dans le dossier du projet via l'explorateur de fichiers. Cliquez sur un espace vide avec le bouton droit, puis sélectionnez **"Ouvrir dans le terminal"** (ou "Ouvrir une fenêtre PowerShell ici"). 
-    *   *Astuce* : Vous pouvez aussi taper `cmd` ou `powershell` directement dans la barre d'adresse en haut de la fenêtre et appuyer sur Entrée.
-*   **Via VS Code** (Recommandé) : Si vous utilisez VS Code, faites le raccourci `Ctrl` + `Maj` + `ù` (ou allez dans le menu **Terminal > Nouveau Terminal**).
-
----
-
-## 🧪 Phase Tech : Tester Localement (OAuth & Emails)
-
-Avant de tout envoyer en ligne, il est crucial de vérifier que la connexion et les emails fonctionnent sur votre machine.
-
-### 🔑 1. Configurer l'Authentification (OAuth)
-Pour que Google et Discord acceptent de vous connecter sur `localhost`, vous devez créer des applications "de test".
-
-#### **Discord**
-1.  Allez sur le [Discord Developer Portal](https://discord.com/developers/applications).
-2.  **New Application** > Nommez-la `BBFrance - Local`.
-3.  Menu **OAuth2** > **Redirects** > **Add Redirect**.
-4.  Ajoutez : `http://localhost:3000/api/auth/callback/discord`
-5.  Copiez le **Client ID** et le **Client Secret** dans votre fichier `.env`.
-
-#### **Google**
-1.  Allez sur [Google Cloud Console](https://console.cloud.google.com/).
-2.  Créez un projet > **APIs & Services** > **Credentials**.
-3.  **Create Credentials** > **OAuth client ID** > **Web application**.
-4.  **Authorized redirect URIs** : Ajoutez `http://localhost:3000/api/auth/callback/google`
-5.  Copiez le **Client ID** et le **Client Secret** dans votre fichier `.env`.
-
-> [!TIP]
-> **NEXTAUTH_URL** : Assurez-vous que dans votre `.env` local, vous avez bien `NEXTAUTH_URL=http://localhost:3000`.
-
-### 📧 2. Tester l'envoi d'Emails
-Deux options s'offrent à vous pour le test local :
-
-#### **Option A : Mailtrap (Capture de mails - Recommandé)**
-Idéal pour voir le rendu de vos mails sans risquer d'en envoyer un vrai.
-1.  Créez un compte sur [Mailtrap.io](https://mailtrap.io).
-2.  Allez dans **Email Testing** > **Inboxes** > **My Inbox**.
-3.  Sélectionnez **"Nodemailer"** dans la liste déroulante pour obtenir vos identifiants.
-4.  Dans votre `.env` :
-    ```env
-    SMTP_HOST="sandbox.smtp.mailtrap.io"
-    SMTP_PORT="2525"
-    SMTP_USER="votre_user"
-    SMTP_PASSWORD="votre_password"
-    EMAIL_FROM="test@bbfrance.fr"
-    ```
-
-#### **Option B : Resend (Envoi réel)**
-1.  Utilisez votre clé API Resend.
-2.  Dans votre `.env` :
-    ```env
-    SMTP_HOST="smtp.resend.com"
-    SMTP_PORT="465"
-    SMTP_USER="resend"
-    SMTP_PASSWORD="re_votre_cle_api"
-    EMAIL_FROM="onboarding@resend.dev" # Uniquement vers votre propre email de compte
-    ```
+Pour travailler en local, suivre la section « Lancer le site sur son ordinateur » du [README](README.md).
 
 ---
 
-Pour que Vercel puisse afficher votre site, votre code doit être sur **GitHub**.
+## Étape 1 : tester la connexion et les emails en local
 
-1.  Créez un compte sur [GitHub.com](https://github.com).
-2.  Cliquez sur le **"+"** en haut à droite > **New repository**.
-3.  Nommez-le `bbfrance`, laissez-le en **Private** (ou Public selon votre choix), et cliquez sur **Create repository**.
-4.  Sur votre ordinateur, ouvrez un terminal dans le dossier du projet et tapez ces commandes :
-    ```bash
-    git init
-    git add .
-    git commit -m "Initial commit"
-    git branch -M main
-    git remote add origin https://github.com/VOTRE_NOM_UTILISATEUR/bbfrance.git
-    git push -u origin main
-    ```
-    *(Remplacez VOTRE_NOM_UTILISATEUR par votre pseudo GitHub)*.
+### Connexion avec Discord et Google
 
----
+Discord et Google n'acceptent une connexion que vers des adresses déclarées à l'avance. On crée donc une application « de test » chez chacun.
 
-## 🗄️ Phase 2 : Créer votre Base de Données sur Turso
+**Discord**
+1. Aller sur le [portail développeur Discord](https://discord.com/developers/applications), puis **New Application** (nom : `BBFrance - Local`).
+2. Menu **OAuth2** > **Redirects** > **Add Redirect** : `http://localhost:3000/api/auth/callback/discord`
+3. Copier le **Client ID** et le **Client Secret** dans `apps/site/.env` (`DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`).
 
-La "Base de Données" est l'endroit où seront stockés les messages du forum et les profils.
+**Google**
+1. Aller sur la [console Google Cloud](https://console.cloud.google.com/), créer un projet, puis **APIs & Services** > **Credentials**.
+2. **Create Credentials** > **OAuth client ID** > **Web application**.
+3. **Authorized redirect URIs** : `http://localhost:3000/api/auth/callback/google`
+4. Copier le **Client ID** et le **Client Secret** dans `apps/site/.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
 
-1.  Ouvrez votre terminal et connectez-vous :
-    ```bash
-    turso auth login
-    ```
-    *Une fenêtre de navigateur s'ouvrira pour valider votre identité.*
+Dans `apps/site/.env`, `AUTH_URL` doit valoir `http://localhost:3000`.
 
-2.  Créez la base :
-    ```bash
-    turso db create bbfrance-db
-    ```
+### Envoi d'emails (lien de connexion par email)
 
-3.  Récupérez l'URL (Adresse) de votre base :
-    ```bash
-    turso db show bbfrance-db --url
-    ```
-    *C'est une adresse qui commence par `libsql://`. Copiez-la précieusement.*
-
-4.  Générez une clé d'accès (Token) :
-    ```bash
-    turso db tokens create bbfrance-db
-    ```
-    *C'est une longue suite de caractères. Copiez-la aussi.*
+N'importe quel service SMTP (service d'envoi de mails) convient :
+- **Mailtrap** ([mailtrap.io](https://mailtrap.io)) capture les mails sans les envoyer : idéal pour tester. Menu **Email Testing** > **Inboxes**, choisir « Nodemailer » pour obtenir les réglages `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`.
+- **Resend** ([resend.com](https://resend.com)) envoie de vrais mails : `SMTP_HOST="smtp.resend.com"`, `SMTP_PORT="465"`, `SMTP_USER="resend"`, `SMTP_PASSWORD=` la clé d'API Resend.
 
 ---
 
-## 🌐 Phase 3 : Déployer sur Vercel
+## Étape 2 : mettre le code sur GitHub
 
-Vercel est l'endroit où votre site sera "hébergé" et accessible via une adresse `.vercel.app`.
-
-1.  Allez sur [Vercel.com](https://vercel.com) et connectez-vous avec votre compte **GitHub**.
-2.  Cliquez sur **"Add New" > "Project"**. 
-3.  Vous verrez votre repo `bbfrance`. Cliquez sur **"Import"**.
-    *   **Monorepo** : dans **"Root Directory"**, choisissez **`apps/site`** (Vercel détecte pnpm via `pnpm-lock.yaml` et installe tout le workspace). Projet déjà existant : **Settings > Build and Deployment > Root Directory** = `apps/site`, à faire **avant** de déployer une version monorepo, sinon le build échoue.
-4.  Dans la section **"Environment Variables"**, vous devez ajouter les informations suivantes UNE PAR UNE :
-
-| Nom de la Variable (Key) | Valeur (Value) | Comment l'obtenir ? |
-| :--- | :--- | :--- |
-| `DATABASE_URL` | `libsql://...` | L'URL obtenue à l'étape 2 (Ajoutez `?authToken=VOTRE_TOKEN` à la fin !) |
-| `AUTH_SECRET` | *(Texte au hasard)* | Tapez une phrase longue et compliquée (Min 32 chars). |
-| `SUPERADMIN_EMAILS` | `email1@..` | Liste d'emails séparés par des virgules pour les droits admin. |
-| `DISCORD_CLIENT_ID` | `...` | Créer une app sur `discord.com/developers`. |
-| `DISCORD_CLIENT_SECRET` | `...` | Obtenu sur le portail développeur Discord. |
-| `GOOGLE_CLIENT_ID` | `...` | Créer un projet sur `console.cloud.google.com`. |
-| `GOOGLE_CLIENT_SECRET` | `...` | Obtenu sur le portail Google Cloud. |
-| `SMTP_HOST` | `smtp.resend.com` | Hôte SMTP de votre fournisseur mail. |
-| `SMTP_PORT` | `465` | Port SMTP (généralement 465 ou 587). |
-| `SMTP_USER` | `resend` ou `apiKey` | Nom d'utilisateur SMTP. |
-| `SMTP_PASSWORD` | `votre_mdp` | Mot de passe SMTP (ou clé API). |
-| `EMAIL_FROM` | `noreply@..` | L'adresse expéditrice autorisée. |
-| `ENCRYPTION_KEY` | *(Texte au hasard)* | Une autre phrase longue. |
-| `NEXT_PUBLIC_SITE_URL` | `https://mon-site.vercel.app` | Mettez l'URL que Vercel vous donnera. |
-| `NEXT_PUBLIC_IMGBB_API_KEY` | *(Votre clé)* | Clé gratuite sur `imgbb.com`. |
-
-5.  Cliquez sur le bouton bleu **"Deploy"**.
+Vercel récupère le code sur GitHub. Le dépôt du projet est `github.com/Breakfasttt/francebb`. Pour un nouveau dépôt :
+1. Créer un compte sur [GitHub](https://github.com), puis **+** > **New repository**.
+2. Dans un terminal ouvert dans le dossier du projet :
+   ```bash
+   git remote add origin https://github.com/VOTRE_PSEUDO/bbfrance.git
+   git push -u origin development
+   ```
 
 ---
 
-## ⚡ Phase 4 : La "Première Migration" (CRITIQUE)
+## Étape 3 : créer la base de données sur Neon
 
-À ce stade, votre site est en ligne mais il risque d'afficher une erreur car la base de données est vide. Il faut lui "apprendre" la structure du projet.
+1. Créer un compte sur [neon.tech](https://neon.tech) (connexion possible avec GitHub).
+2. **Create project** : nom `bbfrance`, région **Europe (Frankfurt)**, la plus proche des coachs.
+3. Sur la page du projet, bouton **Connect** : copier la **chaîne de connexion** (*connection string*) qui commence par `postgresql://`. Choisir la version **sans** « pooled » (connexion directe), qui convient aussi aux migrations.
+4. Garder cette adresse secrète : c'est la clé de la base.
 
-1.  Ouvrez le fichier `.env` sur votre ordinateur.
-2.  Mettez temporairement l'URL Turso complète (avec le token) dans `DATABASE_URL`.
-3.  Dans votre terminal, tapez :
-    ```bash
-    npx prisma db push
-    ```
-    *Si vous voyez "The database is now in sync", c'est gagné !*
-
-4.  *Créer les données de base* (rôles, catégories du forum, listes de référence), depuis le dossier `apps/site` :
-    ```bash
-    npx tsx prisma/firstSetup.ts
-    ```
+**Sauvegardes** : Neon garde un historique de la base et permet de la restaurer à un instant passé (menu **Branches** > **Restore**). La durée conservée dépend de l'offre choisie.
 
 ---
 
-## 🌍 Phase 5 : Lier votre Nom de Domaine (Optionnel)
+## Étape 4 : publier le site sur Vercel
 
-Si vous ne voulez pas de l'adresse par défaut `...vercel.app`, vous pouvez utiliser votre propre nom de domaine (ex: `bbfrance.fr`).
+1. Se connecter sur [vercel.com](https://vercel.com) avec son compte GitHub.
+2. **Add New** > **Project**, puis **Import** sur le dépôt.
+3. **Root Directory** : choisir **`apps/site`**. Le dépôt contient plusieurs applications, et c'est le dossier du site. Vercel détecte pnpm tout seul.
+4. **Environment Variables** : ajouter une par une les variables suivantes. Chaque variable est aussi expliquée dans `apps/site/.env.example`.
 
-1.  **Acheter un domaine** : Si vous n'en avez pas, achetez-le chez un fournisseur (ex: **OVH**, **Gandi**, **Namecheap**).
-2.  **Sur Vercel** : Allez dans votre projet > **Settings** > **Domains**.
-3.  Tapez votre nom de domaine et cliquez sur **Add**.
-4.  Vercel vous donnera des **records DNS** (généralement un `A record` ou un `CNAME`).
-5.  **Sur votre fournisseur (ex: OVH)** : Copiez les valeurs données par Vercel dans la zone DNS de votre domaine. 
-    *   *Attendez quelques minutes (parfois quelques heures) que le "SSL" se valide sur Vercel.*
-6.  **MISE À JOUR CRITIQUE** : Une fois le domaine actif, n'oubliez pas de retourner dans l'onglet **Environment Variables** de Vercel pour changer :
-    *   `NEXTAUTH_URL` : Mettez votre nouveau domaine (`https://votredomaine.fr`).
-    *   `NEXT_PUBLIC_SITE_URL` : Mettez votre nouveau domaine.
-    *   *Redéployez ensuite l'application pour que le changement soit pris en compte.*
+| Variable | Valeur |
+|---|---|
+| `DATABASE_URL` | La chaîne de connexion Neon de l'étape 3 |
+| `AUTH_SECRET` | Un secret aléatoire : `openssl rand -base64 32` |
+| `AUTH_URL` et `NEXT_PUBLIC_SITE_URL` | L'adresse du site, ex. `https://bbfrance.vercel.app` |
+| `SUPERADMIN_EMAILS` | Emails des super-administrateurs, séparés par des virgules |
+| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Application Discord **de production**, avec l'adresse de retour `https://<adresse du site>/api/auth/callback/discord` |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Idem chez Google, avec `…/api/auth/callback/google` |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Service d'envoi de mails |
+| `ENCRYPTION_KEY` | 64 caractères hexadécimaux : `openssl rand -hex 32` |
+| `NEXT_PUBLIC_IMGBB_API_KEY` | Clé gratuite sur [imgbb.com](https://imgbb.com) (envoi d'images) |
 
----
-
-## 🔐 Phase 6 : Hub de connexion unique (pas encore activé)
-
-Le hub (`apps/hub`) donne un seul compte BBFrance pour le site, BBScheme et les futures apps. **Tant que `AUTH_MODE` n'est pas réglé sur `hub`, le site fonctionne comme avant** : cette phase est à faire plus tard (cartes 035 et 036, ADR-0003).
-
-1.  **Domaine commun obligatoire** : le hub et le site doivent partager un domaine parent (ex. `auth.bbfrance.fr` et `www.bbfrance.fr`). Sans ça, Safari bloque la reconnexion automatique.
-2.  **Deuxième base Turso** pour le hub (il ne stocke que les comptes et les connexions).
-3.  **Deuxième projet Vercel**, *Root Directory* = `apps/hub`, avec les variables :
-    *   `BETTER_AUTH_URL` = `https://auth.votredomaine.fr`, `BETTER_AUTH_SECRET` (`openssl rand -base64 32`)
-    *   `HUB_DATABASE_URL` / `HUB_DATABASE_AUTH_TOKEN` (base Turso du hub)
-    *   `DISCORD_CLIENT_ID/SECRET`, `GOOGLE_CLIENT_ID/SECRET` : URL de retour à déclarer chez Discord/Google : `https://auth.votredomaine.fr/api/auth/callback/discord` (et `/google`)
-4.  **Créer les tables du hub** : depuis `apps/hub`, `pnpm exec prisma migrate deploy` (avec les variables de la base du hub).
-5.  **Enregistrer le site comme application cliente** : `node --env-file=.env scripts/register-client.mjs "BBFrance site" https://www.votredomaine.fr/api/auth/callback/hub`. Le secret n'est affiché **qu'une fois**.
-6.  **Sur le projet Vercel du site** : `AUTH_MODE=hub`, `HUB_ISSUER=https://auth.votredomaine.fr/api/auth`, `HUB_CLIENT_ID`, `HUB_CLIENT_SECRET`. Retour arrière immédiat : remettre `AUTH_MODE=legacy` et redéployer.
+5. **Deploy**. Pendant la construction, Vercel lance `vercel-build`, qui crée les tables dans la base Neon.
 
 ---
 
-## 🆘 Aide : Les erreurs courantes
+## Étape 5 : créer les données de base (une seule fois)
 
-*   **"Prisma Client could not be initialized"** : Vérifiez que votre `DATABASE_URL` sur Vercel contient bien le `?authToken=...` à la fin.
-*   **"Invalid AUTH_SECRET"** : Assurez-vous que cette variable est bien présente dans Vercel, avec au moins 32 caractères.
-*   **"Invalid redirection URL"** (NextAuth) : C'est souvent parce que `NEXTAUTH_URL` n'est pas exactement la même que l'adresse dans votre navigateur.
-*   **Le site est blanc / Erreur 500** : Allez dans l'onglet **"Logs"** sur Vercel pour lire l'erreur en rouge.
+La base est vide : il faut y créer les rôles, les catégories du forum et les listes de référence. Depuis le dossier `apps/site`, en donnant l'adresse de la base Neon :
+
+```bash
+DATABASE_URL="postgresql://…(adresse Neon)…" npx tsx prisma/firstSetup.ts
+```
+
+Sous Windows PowerShell : `$env:DATABASE_URL="postgresql://…"; npx tsx prisma/firstSetup.ts`
+
+Le script peut être relancé sans risque : il complète ce qui manque sans dupliquer ni effacer.
 
 ---
----
-> [!IMPORTANT]
-> **PASSAGE EN MODE PRODUCTION / ALPHA :** À partir de maintenant, toute perte de données est critique. Toujours effectuer un `backup` de la base Turso avant les opérations lourdes via `turso db backup create bbfrance-db`.
 
-*Guide mis à jour le : 21 Avril 2026. Bon courage Coach ! 🏈*
+## Étape 6 (facultative) : un nom de domaine
+
+1. Acheter un domaine (OVH, Gandi…), puis sur Vercel : **Settings** > **Domains** > **Add**.
+2. Recopier chez le fournisseur du domaine les enregistrements DNS indiqués par Vercel, puis attendre la validation du certificat (de quelques minutes à quelques heures).
+3. Mettre à jour `AUTH_URL` et `NEXT_PUBLIC_SITE_URL` sur Vercel, ainsi que les adresses de retour chez Discord et Google, puis redéployer.
+
+---
+
+## Étape 7 (plus tard) : le hub de connexion unique
+
+Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures applications. **Tant que `AUTH_MODE` n'est pas réglé sur `hub` sur le projet du site, le site fonctionne sans lui.** Décision : [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md). Carte : 035.
+
+1. **Un domaine commun est obligatoire** : le hub et le site doivent partager un domaine parent, ex. `auth.bbfrance.fr` et `www.bbfrance.fr`. Sans cela, Safari bloque la reconnexion automatique.
+2. **Une deuxième base Neon** pour le hub (il ne stocke que les comptes et les connexions).
+3. **Un deuxième projet Vercel**, *Root Directory* = `apps/hub`, avec les variables :
+   - `BETTER_AUTH_URL` (ex. `https://auth.bbfrance.fr`) ;
+   - `BETTER_AUTH_SECRET` (`openssl rand -base64 32`) ;
+   - `HUB_DATABASE_URL` (base Neon du hub) ;
+   - Discord et Google, avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google`.
+4. **Enregistrer le site comme application cliente**, depuis `apps/hub` :
+   ```bash
+   HUB_DATABASE_URL="postgresql://…(base du hub)…" node scripts/register-client.mjs "BBFrance site" https://www.bbfrance.fr/api/auth/callback/hub
+   ```
+   Le secret n'est affiché **qu'une seule fois** : le copier immédiatement.
+5. **Sur le projet Vercel du site**, ajouter :
+   - `AUTH_MODE=hub` ;
+   - `HUB_ISSUER=https://auth.bbfrance.fr/api/auth` ;
+   - `HUB_CLIENT_ID` et `HUB_CLIENT_SECRET`.
+
+   Pour revenir en arrière immédiatement : vider `AUTH_MODE` et redéployer.
+
+---
+
+## En cas de problème
+
+- **Le site affiche une erreur 500 ou une page blanche** : sur Vercel, onglet **Logs**, lire le message en rouge.
+- **La construction échoue à l'étape `prisma migrate deploy`** : vérifier `DATABASE_URL` (adresse Neon complète, connexion directe et non « pooled »).
+- **« Invalid AUTH_SECRET »** : la variable manque ou fait moins de 32 caractères.
+- **Erreur de redirection à la connexion** : `AUTH_URL` doit être exactement l'adresse affichée dans le navigateur, et l'adresse de retour doit être déclarée chez Discord ou Google.
+
+> **Données des membres** : une fois le site ouvert, aucune donnée de membre ne doit être supprimée sans accord exprès. Avant une opération risquée sur la base, créer une branche de sauvegarde sur Neon (**Branches** > **Create branch**).

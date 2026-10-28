@@ -30,7 +30,7 @@ export const auth = betterAuth({
   appName: "BBFrance",
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
-  database: prismaAdapter(prisma, { provider: "sqlite" }),
+  database: prismaAdapter(prisma, { provider: "postgresql" }),
   // /token du plugin jwt entre en conflit avec le endpoint OAuth : désactivé (doc oauth-provider)
   disabledPaths: ["/token"],
   emailAndPassword: { enabled: !isProduction && process.env.HUB_DEV_PASSWORD_LOGIN === "1" },
