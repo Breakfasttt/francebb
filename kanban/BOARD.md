@@ -34,7 +34,7 @@
 | [024](024-extraction-bbscheme.md) | Extraire bbscheme en app + packages/bbscheme-player | E07 | 022 | — |
 | [026](026-script-db-deploy.md) | Script npm run db:deploy | E02 | 025, 012 | 0002 |
 
-## Terminées (18)
+## Terminées (19)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
