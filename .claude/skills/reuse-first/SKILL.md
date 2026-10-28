@@ -35,7 +35,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Détection mobile | `common/hooks/useIsMobile.ts` |
 | Session serveur (connecté, non banni) | `lib/authGuard.ts` → `getActiveSession()` (jamais `auth()` direct dans une action) |
 | Rôles / pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
-| Client Prisma | `lib/prisma.ts` |
+| Client Prisma | `lib/prisma.ts` → `prisma` (sans `User.email`, omit global) ; `prismaWithEmail` réservé auth/mail |
 | BBCode → HTML | `lib/bbcode.ts` |
 | Chiffrement | `lib/crypto.ts` |
 | Départements / régions | `lib/france.ts` |

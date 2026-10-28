@@ -27,6 +27,7 @@ Connexion des coachs (Discord, Google, lien magique par email), onboarding du pr
 - Rôle admin/modo vérifié **côté serveur**.
 - Provider `dev-login` (Credentials) : uniquement si `NODE_ENV === "development"` ; utilisé par les tests smoke.
 - Session JWT ; `isBanned` et `role` rafraîchis depuis la BDD par le callback `jwt`.
+- `User.email` n'est jamais renvoyé par le client `prisma` (omit global, `lib/prisma.ts`) : un `include: { author: true }` ne peut pas fuiter d'adresse vers le navigateur ou une API. Besoin de l'email : `select: { email: true }` explicite, ou `prismaWithEmail` (adapter Auth.js). Test smoke « aucun email d'auteur ».
 
 ## État
 

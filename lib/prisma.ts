@@ -1,30 +1,40 @@
 import { PrismaClient } from "@/prisma/generated-client"; // client-refresh
 import { PrismaLibSql } from "@prisma/adapter-libsql";
 
-const globalForPrisma = global as unknown as { 
-  prisma: PrismaClient,
-  prismaVersion?: string
+// `prisma` (défaut) n'expose jamais User.email : un `include: { author: true }` envoyé au client
+// ou dans une réponse d'API ne peut pas fuiter d'adresse. `prismaWithEmail` est réservé à
+// l'auth (adapter Auth.js) et à l'envoi de mails ; ailleurs, surcharger localement avec `omit: { email: false }`.
+const USER_PRIVATE_FIELDS = { user: { email: true } } as const;
+
+const createClient = () =>
+  new PrismaClient({
+    adapter: new PrismaLibSql({ url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db" }),
+    // PRISMA_QUERY_LOG=1 : trace chaque requête (mesure des requêtes par rendu, scripts/baseline.mjs)
+    log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
+  });
+
+const createPublicClient = () =>
+  new PrismaClient({
+    adapter: new PrismaLibSql({ url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db" }),
+    log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
+    omit: USER_PRIVATE_FIELDS,
+  });
+
+const CLIENT_VERSION = "v19";
+const globalForPrisma = global as unknown as {
+  prisma?: ReturnType<typeof createPublicClient>;
+  prismaWithEmail?: PrismaClient;
+  prismaVersion?: string;
 };
 
-const config = {
-  url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || "file:./dev.db",
-};
-const getPrismaClient = () => {
-  if (globalForPrisma.prisma && globalForPrisma.prismaVersion === "v18") {
-    return globalForPrisma.prisma;
-  }
+const isCached = globalForPrisma.prismaVersion === CLIENT_VERSION;
+export const prisma = (isCached && globalForPrisma.prisma) || createPublicClient();
+export const prismaWithEmail = (isCached && globalForPrisma.prismaWithEmail) || createClient();
 
-  const adapter = new PrismaLibSql(config);
-  // PRISMA_QUERY_LOG=1 : trace chaque requête (mesure des requêtes par rendu, scripts/baseline.mjs)
-  const client = new PrismaClient({ adapter, log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [] });
-
-  if (process.env.NODE_ENV !== "production") {
-    globalForPrisma.prisma = client;
-    globalForPrisma.prismaVersion = "v18";
-  }
-  return client;
-};
-
-export const prisma = getPrismaClient();
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+  globalForPrisma.prismaWithEmail = prismaWithEmail;
+  globalForPrisma.prismaVersion = CLIENT_VERSION;
+}
 
 // v3: added Category, Forum, Topic, Post models

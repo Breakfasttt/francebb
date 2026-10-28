@@ -46,3 +46,13 @@ test("un banni est redirigé vers /banned", async ({ page }) => {
   await page.goto("/forum");
   await page.waitForURL(/\/banned/);
 });
+
+test("aucun email d'auteur dans les pages et API publiques", async ({ page, request }) => {
+  await loginAs(page, E2E.coachId);
+  for (const path of ["/forum", `/forum/topic/${E2E.topicId}`, "/api/articles"]) {
+    const anonymous = await request.get(path);
+    const connected = await page.request.get(path);
+    expect(await anonymous.text(), `${path} anonyme`).not.toContain(E2E.coachEmail);
+    expect(await connected.text(), `${path} connecté`).not.toContain(E2E.coachEmail);
+  }
+});

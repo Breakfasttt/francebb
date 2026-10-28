@@ -6,6 +6,7 @@ import type { Page } from "@playwright/test";
 
 export const E2E = {
   coachId: "e2e_coach",
+  coachEmail: "coach@e2e.test",
   bannedId: "e2e_banned",
   categoryName: "E2E Catégorie",
   forumName: "E2E Forum",

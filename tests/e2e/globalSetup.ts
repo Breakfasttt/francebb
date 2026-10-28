@@ -20,7 +20,7 @@ export default async function globalSetup() {
   await prisma.user.upsert({
     where: { id: E2E.coachId },
     update: {},
-    create: { id: E2E.coachId, name: "Coach E2E", email: "coach@e2e.test", hasFinishedOnboarding: true },
+    create: { id: E2E.coachId, name: "Coach E2E", email: E2E.coachEmail, hasFinishedOnboarding: true },
   });
   await prisma.user.upsert({
     where: { id: E2E.bannedId },

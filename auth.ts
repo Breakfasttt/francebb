@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
+import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { authConfig } from "./auth.config";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
@@ -27,7 +27,7 @@ declare module "next-auth" {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma as any),
+  adapter: PrismaAdapter(prismaWithEmail as unknown as Parameters<typeof PrismaAdapter>[0]),
   session: { strategy: "jwt" },
   providers: [
     Discord({
