@@ -1,38 +1,41 @@
 ---
 name: project-structure
-description: Guide structure BBFrance. Dossiers, conventions, UI. Ultra compressé.
+description: Où créer un nouveau fichier, composant ou page dans BBFrance, et comment le nommer. À lire avant de créer un fichier ou un dossier.
 ---
 
-# Archi BBFrance
+# Où ranger un nouveau fichier
 
-## RACINE
-- `.claude/`: CLAUDE.md, skills, agents, commandes, hooks IA.
-- `app/`: Next.js App Router. Pages, layouts, actions.
-- `common/`: UI partagée.
-- `lib/`: Business logic, Prisma, BBCode, rôles.
-- `prisma/`: Schéma DB, seeds (`firstSetup.ts`).
-- `public/`: Fichiers statiques.
-- `scripts/`: Scripts temporaires.
+Le plan des dossiers et leurs règles sont dans `ARCHITECTURE.md` (section « Où mettre le code ») : le lire d'abord. Ce skill ne précise que les conventions de nommage et les cas courants.
 
-## APP (Next.js)
-- **Chemin**: `app/[nom]/page.tsx`
-- **Style**: `page.css` + `page-mobile.css`. Importer dans `.tsx`.
-- **Règle Next 16**: Utiliser `proxy.ts` à la racine (dépréciation de `middleware.ts`).
-- **Comps Locaux**: `app/[nom]/component/Nom/Nom.tsx` + `.css`.
-- **Actions DB Serveur**: `actions.ts`.
+## Une nouvelle page
 
-## COMMON / COMPONENTS
-- Structure: `Nom.tsx` + `.css` + `-mobile.css`.
-- Clés: `PremiumCard`, `UserAvatar`, `BBCodeEditor`.
-- Boutons: `Classic`, `CTA`, `Danger`, `Admin`, `Badge`.
+- Dossier `apps/site/app/<adresse>/`. Exemple : `app/classement/` correspond à l'adresse `/classement`.
+- Fichiers :
+  - `page.tsx` (la page) ;
+  - `page.css` (son style) ;
+  - `page-mobile.css` (ses ajustements pour téléphone) ;
+  - `actions.ts` si la page lit ou modifie des données.
+- Les deux fichiers CSS sont importés dans `page.tsx`.
 
-## PRISMA
-- `firstSetup.ts`: Init données de base (Rôles, catégories).
-- `seedScript/`: Importateurs.
-- **Règles**: Toujours `upsert`. NE JAMAIS drop données globales.
+## Un nouveau composant
 
-## RÈGLES IA
-1. **Localité**: Utilisé 1 page ? `app/[page]/component/`. Utilisé >1 page ? `common/components/`.
-2. **Logique**: Code DB dans `actions.ts`, jamais dans composant.
-3. **Styles**: Utilise variables CSS (`app/theme/`). PAS DE HEX EN DUR.
-4. **Fichiers**: 1 comp = 1 dossier avec `.css` + `-mobile.css`.
+- Utilisé par une seule page : `app/<page>/component/<Nom>/<Nom>.tsx`.
+- Utilisé par au moins deux pages : `common/components/<Nom>/<Nom>.tsx`, puis l'ajouter au skill `reuse-first`.
+- Partagé entre plusieurs applications (site, hub…) : `packages/ui/src/` (voir `packages/ui/CLAUDE.md`).
+- Un composant = un dossier, avec `<Nom>.tsx`, `<Nom>.css` et `<Nom>-mobile.css`.
+
+## Autres cas
+
+| Besoin | Emplacement |
+|---|---|
+| Fonction côté serveur (base de données, droits, mail…) | `apps/site/lib/` |
+| Petite fonction ou hook côté navigateur | `apps/site/common/utils/`, `apps/site/common/hooks/` |
+| Changement de structure de la base | `apps/site/prisma/schema.prisma`, puis une migration Prisma |
+| Script ponctuel | `apps/site/scripts/`, à supprimer après usage |
+| Nouvelle fonctionnalité | Créer aussi sa fiche `docs/features/<nom>/README.md` (modèle `docs/features/TEMPLATE.md`) |
+| Nouveau terme technique | L'ajouter à `docs/GLOSSAIRE.md` |
+
+## Noms
+
+- Fichiers de composants en `PascalCase` (`UserAvatar.tsx`), autres fichiers en `camelCase` (`forumAccess.ts`).
+- Code en anglais, commentaire d'en-tête de fichier en français : il dit en une ou deux phrases à quoi sert le fichier.

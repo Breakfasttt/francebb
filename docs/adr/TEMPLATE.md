@@ -4,26 +4,28 @@
 - **Date** : AAAA-MM-JJ
 - **Conseil** : oui (`/council`) | non
 
-## Contexte
+> Rédiger pour quelqu'un qui découvre le projet : phrases simples, chaque terme technique expliqué (ou présent dans `docs/GLOSSAIRE.md`).
 
-Le problème, les contraintes, les faits vérifiés (avec `fichier:ligne` ou mesure).
+## Le problème
 
-## Décision
+Ce qui ne va pas ou ce qu'il faut décider. Les contraintes, et les faits vérifiés (avec `fichier:ligne` ou une mesure).
 
-Ce qu'on fait, en une ou deux phrases nettes.
+## La décision
+
+Ce qu'on fait, en quelques phrases nettes.
 
 ## Pourquoi
 
-Les arguments qui ont tranché, et les options écartées.
+Les arguments qui ont tranché, et les options écartées avec la raison du rejet.
 
 ## Ce qu'on ne fait pas
 
-Hors périmètre explicite.
+Ce qui est volontairement hors du périmètre.
 
 ## Risques
 
-Risques acceptés et mitigations (rollback, flag, backup).
+Les risques acceptés et ce qui les limite (retour arrière, réglage à désactiver, sauvegarde).
 
 ## Cartes
 
-Cartes (`kanban/<état>/NNN-*.md`) créées ou impactées.
+Cartes du kanban créées ou concernées (numéros).

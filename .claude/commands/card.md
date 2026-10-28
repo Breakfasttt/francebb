@@ -1,14 +1,15 @@
 ---
-description: Transforme une demande en carte kanban à valider
+description: Transforme une demande en carte du kanban, à valider par le user
 argument-hint: <demande>
 ---
 
 Demande : **$ARGUMENTS**
 
-1. Lire `kanban/README.md` (format) et le skill `reuse-first` (existe-t-il déjà quelque chose ?).
-2. Repérer les fichiers concernés (`fichier:ligne`) et l'épic de rattachement (`kanban/epics/`).
-3. Proposer au user la carte : titre, epic, app, `depends_on`, problème, action, critère `verify` (commande ou vérification observable).
-   Décision irréversible (auth, schéma, dépendance, découpage) ? Proposer `/council` d'abord.
-4. Sur validation : écrire `kanban/a-faire/NNN-<slug>.md` (numéro = plus grand numéro existant dans tous les dossiers + 1, sans champ `status`), puis `pnpm kanban` pour vérifier.
+1. Lire `kanban/README.md` (format d'une carte) et le skill `reuse-first` : quelque chose d'existant répond-il déjà au besoin ?
+2. Repérer les fichiers concernés (`fichier:ligne`), la fiche de fonctionnalité liée (`docs/features/`) et l'épic de rattachement (`kanban/epics/`).
+3. Proposer la carte au user : titre, épic, application, dépendances (`depends_on`), pourquoi, action, vérification (`verify` : commande ou constat visible qui prouve que c'est fini).
+   - Si la carte touche l'interface, l'action et la vérification incluent le test en taille téléphone.
+   - Si c'est une décision importante (connexion, base de données, bibliothèque, découpage d'application), proposer d'abord `/council`.
+4. Après validation : écrire `kanban/a-faire/NNN-<titre-court>.md`. Le numéro est le plus grand numéro existant, tous dossiers confondus, + 1. Pas de champ `status`. Lancer ensuite `pnpm kanban` pour vérifier.
 
-Ne pas coder pendant `/card`.
+Ne pas coder pendant `/card`. Rédiger la carte en français clair, termes techniques expliqués.

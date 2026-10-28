@@ -1,22 +1,23 @@
 ---
 name: blood-bowl-rules
-description: Règles BB & résos commu. Mode homme des cavernes.
+description: Où trouver les règles du jeu Blood Bowl et les sources de la communauté française. À lire avant d'écrire une logique de jeu (rosters, calculs de points, probabilités) ou un texte sur les règles.
 ---
 
-# Skill Règles BB
+# Règles du jeu Blood Bowl
 
-## RÈGLES LOCALES (LRB S3)
-- **Chemin**: `public/data/docs/lrb_s3.txt`
-- **Action**: Utiliser `grep_search` ou `view_file` ICI D'ABORD pour logique/rosters.
+## Source locale, à consulter en premier
 
-## RÉFÉRENCES EXTERNES
-1. **NAF** (`thenaf.net`): Classement monde, règles, variantes.
-2. **Team France BB** (`teamfrancebb.1fr1.net` / `teamfrancebb.fr`): Forum/histoire FR.
-3. **Mordorbihan** (`mordorbihan.fr`): Stratégies FR, guides.
-4. **Champ de France** (`teamfrancebb.1fr1.net/t2706-reglement...`): Règles de calcul de points.
+Le livre de règles (LRB, saison 3) est dans le dépôt : `apps/site/public/data/docs/lrb_s3.txt`. Le chercher avec Grep ou le lire avec Read pour toute question technique : compétences, rosters (listes d'équipes et de joueurs), déroulement d'un tour.
 
-## RÈGLES IA
-1. **Local d'abord**: Chercher `lrb_s3.txt` pour questions techniques.
-2. **Secours Web**: Utiliser `search_web` sur NAF ou Mordorbihan.
-3. **Rédaction**: Utiliser termes tech exacts (Turnover, Esquive).
-4. **Bugs Logique**: Vérifier dés/probabilités avec ces sources.
+## Sources en ligne
+
+1. **NAF** (`thenaf.net`) : association internationale, classement mondial, règles officielles et variantes de tournoi.
+2. **Team France BB** (`teamfrancebb.fr`, forum `teamfrancebb.1fr1.net`) : histoire et forum de la communauté française.
+3. **Mordorbihan** (`mordorbihan.fr`) : guides et stratégies en français.
+4. **Championnat de France** (règlement sur le forum Team France BB) : calcul des points du classement, implémenté dans `apps/site/common/utils/cdf.ts`.
+
+## Consignes
+
+1. Toujours chercher d'abord dans `lrb_s3.txt`, puis sur le web (NAF ou Mordorbihan) si besoin.
+2. Employer les termes officiels du jeu (Turnover, Esquive, Blocage…).
+3. Vérifier les calculs de dés et de probabilités avec ces sources.

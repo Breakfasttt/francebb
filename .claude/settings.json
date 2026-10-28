@@ -4,13 +4,14 @@
       "Bash(pnpm kanban*)",
       "Bash(pnpm typecheck)",
       "Bash(pnpm lint:ratchet*)",
-      "Bash(npm run typecheck)",
-      "Bash(npm run lint:ratchet*)",
+      "Bash(pnpm test:e2e)",
       "Bash(node apps/site/scripts/debt-count.mjs)"
     ],
     "deny": [
       "Bash(npx prisma migrate reset*)",
+      "Bash(pnpm exec prisma migrate reset*)",
       "Bash(npx prisma db push --force-reset*)",
+      "Bash(pnpm exec prisma db push --force-reset*)",
       "Bash(git push --force*)",
       "Bash(git push -f*)"
     ]

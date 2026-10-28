@@ -1,9 +1,9 @@
-# apps/hub — hub d'identité BBFrance
+# apps/hub — le hub de connexion BBFrance
 
-Better Auth 1.7 + `@better-auth/oauth-provider` (OIDC), Prisma 7 + libsql, base séparée (`HUB_DATABASE_URL`). Décision : `docs/adr/0003-hub-better-auth-oidc.md`. Fiche : `docs/features/hub/README.md`. Règles générales : `.claude/CLAUDE.md`.
+Le hub est l'application qui gère les comptes : un membre s'y connecte une fois (Discord, Google ou lien par email) et il est reconnu par toutes les applications BBFrance. Il utilise Better Auth et le standard OIDC (voir le glossaire), avec sa propre base de données. Décision : `docs/adr/0003-hub-better-auth-oidc.md`. Fiche : `docs/features/hub/README.md`. Règles générales : `.claude/CLAUDE.md` à la racine.
 
-- Auth = **prod critique** : toute modif de `lib/auth.ts` ou `lib/authPlugins.mjs` passe par une carte + test `pnpm test:sso`.
-- `prisma/schema.prisma` est **généré** (`node scripts/generate-schema.mjs`) : ne pas l'éditer à la main.
-- Client Prisma généré non versionné : `pnpm db:generate` avant `typecheck` / `dev`.
-- Versions better-auth et ses peers (`@better-auth/core`, `better-call`, `@better-auth/utils`, `@better-fetch/fetch`) figées ensemble : les monter toutes à la fois, sinon deux `@better-auth/core` coexistent et les types cassent.
-- Dev : `.env` (voir `docs/features/hub/README.md`), `pnpm dev` (port 4000), client du site via `scripts/register-client.mjs`.
+- **C'est la porte d'entrée de tous les comptes** : toute modification de `lib/auth.ts` ou `lib/authPlugins.mjs` passe par une carte et doit garder le test `pnpm test:sso` vert.
+- `prisma/schema.prisma` est **généré** à partir des tables de Better Auth (`node scripts/generate-schema.mjs`) : ne pas l'éditer à la main.
+- Le client Prisma généré n'est pas enregistré dans git : lancer `pnpm db:generate` avant `typecheck` ou `dev`.
+- Les versions de better-auth et de ses compagnons (`@better-auth/core`, `better-call`, `@better-auth/utils`, `@better-fetch/fetch`) se montent toutes en même temps. Sinon, deux copies de `@better-auth/core` coexistent et TypeScript ne reconnaît plus les plugins.
+- En local : copier `.env.example` en `.env`, puis `pnpm dev` (port 4000). Le site est enregistré comme application cliente avec `scripts/register-client.mjs`.

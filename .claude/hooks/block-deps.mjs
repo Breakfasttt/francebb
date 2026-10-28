@@ -9,10 +9,11 @@ const input = JSON.parse(readFileSync(0, "utf-8"));
 const command = String(input.tool_input?.command ?? "");
 
 // npm i|install|add <pkg>, pnpm add <pkg>, yarn add <pkg>, pnpm/npm install <pkg>
-const ADD_PATTERN = /\b(npm|pnpm|yarn)\s+(i|install|add)\b([^;&|\n]*)/g;
+// Arguments lus jusqu'au premier séparateur ou redirection : `2>&1` ou `> fichier` ne sont pas des noms de paquets
+const ADD_PATTERN = /\b(npm|pnpm|yarn)\s+(i|install|add)\b([^;&|\n<>]*)/g;
 const added = [];
 for (const match of command.matchAll(ADD_PATTERN)) {
-  const packages = match[3].trim().split(/\s+/).filter((arg) => arg && !arg.startsWith("-"));
+  const packages = match[3].trim().split(/\s+/).filter((arg) => arg && !arg.startsWith("-") && !/^\d$/.test(arg));
   added.push(...packages);
 }
 

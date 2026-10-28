@@ -1,49 +1,54 @@
 ---
 name: mobile-ux
-description: Guide UX/UI Mobile BBFrance. Portails, Sidebar Globale, FABs. Mode homme des cavernes.
+description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (règle absolue - mobile impeccable) - menu latéral global, déplacement des colonnes latérales, bouton de filtres, bouton retour. À lire avant toute modification d'interface.
 ---
 
-# UI Mobile BBFrance
+# BBFrance sur téléphone
 
-## RÈGLES OR
-- **ZÉRO CASSE DESKTOP.** Logique Desktop intacte.
-- CSS séparé (`page-mobile.css`, max-width 768px).
-- Surtout empilement vertical (`flex-direction: column`).
+**Règle absolue du projet : le site doit être impeccable sur téléphone** (voir `README.md`). La plupart des coachs l'utilisent depuis leur mobile.
 
-## SIDEBAR GLOBALE (MOBILE SEUL)
-- Navbar Desktop devient bouton Hamburger sur mobile.
-- Hamburger ouvre Drawer/Sidebar Globale.
-- **Contenu Sidebar Globale**:
-  1. Logo / Titre.
-  2. Profil Utilisateur (Avatar, bouton déco/co).
-  3. Liens globaux (Messagerie, Forum, Modération, Admin).
-  4. Séparateur `<hr />`.
-  5. **Slot dynamique**: `<div id="mobile-page-sidebar-slot"></div>` (pour les sidebars locales).
-  6. **Footer**: Mentions légales, lien GitHub (tout en bas).
+## Ce que chaque écran doit respecter
 
-## FUSION DES SIDEBARS (REACT PORTAL)
-Si une page a une *Sidebar Locale* (ex: TabSystem de Profil ou Admin) :
-- Desktop : S'affiche normalement.
-- Mobile : Le contenu migre dans le slot de la Sidebar Globale.
-- **Action**: Utiliser hook `useMediaQuery` + composant `<MobilePortal target="mobile-page-sidebar-slot">`.
-- Masquer la sidebar locale de base en CSS mobile.
+- Pas de défilement horizontal.
+- Textes lisibles sans zoomer.
+- Boutons et liens d'au moins 44 pixels de haut, assez espacés pour le pouce.
+- Fenêtres, menus et listes déroulantes qui s'ouvrent et se ferment sans bug.
+- Lisible dans les 7 thèmes.
+- Fluide : pas de saut de mise en page au chargement, réponse immédiate au toucher.
 
-## FILTRES & FORMULAIRES LONGS (FAB)
-- Sur mobile, colonnes de filtres disparaissent.
-- Ajouter bouton flottant (FAB = Floating Action Button), icône entonnoir, en haut à droite.
-- Clic ouvre modale Overlay / Bottom-Sheet avec tous les filtres + bouton "Appliquer".
+Vérification : tests automatiques en taille téléphone, plus un contrôle à l'œil (sur un vrai téléphone : voir « Tester sur un vrai téléphone » dans le `README.md`).
 
-## PAGE HEADER & BACK BUTTON
-- **Action**: Utiliser `<PageHeader />` pour le titre et le bouton retour.
-- Sur mobile, le bouton retour (`BackButton`) doit être "téléporté" via `React Portal` dans le slot `#mobile-back-button-slot` de la `Navbar`.
-- Cela permet de garder le bouton retour accessible en haut à droite, même si le header de la page est scrollé ou masqué.
+## Principes
 
-## DESKTOP ONLY (FALLBACK)
-Si composant impossible sur mobile (ex: `BBScheme` trop d'interactions, canvas géant) :
-- Afficher composant `<DesktopOnlyFallback>`.
-- Message: "Optimisé pour PC/Tablette". Masquer le reste.
+- **Ne rien casser sur ordinateur** : les règles mobiles sont à part, dans `page-mobile.css` ou un bloc `@media (max-width: 768px)`.
+- Sur téléphone, on empile les éléments verticalement (`flex-direction: column`) et on garde de l'air (marges intérieures).
+- Un tableau trop large passe en liste verticale ou défile dans son propre cadre (`overflow-x: auto`), jamais la page entière.
+- Si un composant est trop complexe à adapter, on simplifie son affichage mobile.
 
-## ASTUCES VIE SAUVAGE
-- Tableaux HTML sur mobile ? Flex column ou scroll `overflow-x: auto`.
-- Flex prend toujours largeur 100%. Garder de l'air (padding).
-- Si composant trop dur à fondre, simplifier visuel mobile.
+## Le menu latéral global (téléphone uniquement)
+
+Sur téléphone, la barre de navigation devient un bouton « hamburger » (trois traits) qui ouvre un menu latéral. Ce menu contient, dans l'ordre :
+1. le logo ;
+2. le profil du membre (avatar, connexion ou déconnexion) ;
+3. les liens principaux (messagerie, forum, modération, administration) ;
+4. un séparateur ;
+5. un emplacement libre `<div id="mobile-page-sidebar-slot">` pour la colonne latérale propre à la page ;
+6. en bas : mentions légales et lien GitHub.
+
+## Colonne latérale d'une page
+
+Si une page a sa propre colonne latérale (onglets du profil, de l'administration…) :
+- sur ordinateur, elle s'affiche normalement ;
+- sur téléphone, son contenu est déplacé dans l'emplacement libre du menu global, avec le composant `<MobilePortal target="mobile-page-sidebar-slot">` et le hook `useIsMobile`. La colonne d'origine est masquée en CSS mobile.
+
+## Filtres et longs formulaires
+
+Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en haut à droite) ouvre une fenêtre avec tous les filtres et un bouton « Appliquer » (composant `MobileFilterWrapper`).
+
+## Titre de page et bouton retour
+
+Utiliser `<PageHeader />`. Sur téléphone, le bouton retour (`BackButton`) est déplacé dans la barre de navigation (emplacement `#mobile-back-button-slot`) : il reste accessible même quand on fait défiler la page.
+
+## Pages impossibles sur téléphone
+
+Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone (ex. l'éditeur BBScheme et son grand plateau interactif), afficher `<DesktopOnlyFallback>` avec un message clair : « Optimisé pour ordinateur ou tablette ».

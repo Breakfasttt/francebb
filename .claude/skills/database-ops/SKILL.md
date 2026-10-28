@@ -1,53 +1,31 @@
 ---
 name: database-ops
-description: Procédure sûre pour la BDD de prod Turso + Prisma 7 (dual-URL, migrations, backup). À lire avant toute opération sur la prod.
+description: Procédure sûre pour toute opération sur la base de données de BBFrance (structure, données de base, production). À lire avant de toucher au schéma Prisma ou à une base réelle.
 ---
-# Skill : Opérations Base de Données (Turso + Prisma 7)
 
-Ce skill définit la procédure **validée et sécurisée** pour maintenir la base de données de production sur Turso en utilisant Prisma, tout en contournant les limitations natives du CLI.
+# Opérations sur la base de données
 
-## ⚙️ ARCHITECTURE DE CONNEXION (Dual-URL)
+> **Situation au 28/10/2026** : le site tourne encore sur SQLite (fichier local) et Turso (production). Le passage à **Postgres** est décidé ([ADR-0004](../../../docs/adr/0004-reorganisation-et-postgres.md), cartes 041, 046 et 047). Ce skill sera réécrit à la carte 046.
 
-Depuis le 24 Avril 2026, la configuration suit le guide officiel [Prisma + Turso](https://www.prisma.io/docs/v6/orm/overview/databases/turso).
+## Pourquoi on quitte Turso
 
-Dans le fichier `.env` :
-1. **`DATABASE_URL="file:./dev.db"`** : 
-   - **Usage** : Uniquement pour le **Prisma CLI** (`db push`, `migrate`, `generate`).
-   - **Raison** : Le moteur Rust de Prisma ne supporte pas `libsql://`. Il a besoin d'un accès fichier local.
-2. **`TURSO_DATABASE_URL="libsql://..."`** : 
-   - **Usage** : Pour le **Client Prisma** (via `lib/prisma.ts`) et les **scripts de maintenance**.
-   - **Raison** : Permet la connexion distante via l'adapter `@prisma/adapter-libsql`.
+L'outil qui met à jour la structure de la base (Prisma Migrate) ne sait pas se connecter à une base Turso distante (adresse `libsql://…`). Il renvoie l'erreur `The database provider 'sqlite' does not support the protocol 'libsql'`. Il fallait donc deux adresses de base (`DATABASE_URL` en fichier local pour l'outil, `TURSO_DATABASE_URL` pour le site) et appliquer le SQL à la main en production, sans historique fiable. Avec Postgres, une seule adresse suffit et `prisma migrate deploy` met la production à jour automatiquement.
 
-## 🛡️ RÈGLES D'OR
-1. **ERREUR PROTOCOLE** : Si tu vois `The database provider 'sqlite' does not support the protocol 'libsql'`, c'est que tu as mis l'URL Turso dans `DATABASE_URL`. Utilise `file:./dev.db` pour les commandes CLI.
-2. **PAS DE `migrate reset` EN PROD** : Ne jamais réinitialiser Turso. Les changements de schéma se font via `db push` local puis application SQL manuelle si nécessaire.
-3. **VÉRIFICATION AVANT ACTION** : Avant de tenter de modifier Turso, vérifie l'état actuel (ex: `PRAGMA table_info(Table)`) car il peut être déjà à jour via un `db push` précédent.
+## Règles qui ne changent pas
 
-## 🚀 PROCÉDURES DE MISE À JOUR
+- **Jamais** `prisma migrate reset` ni `db push --force-reset` sur une base réelle (ils effacent tout).
+- Changement de structure : modifier `apps/site/prisma/schema.prisma`, puis créer une migration avec `pnpm exec prisma migrate dev --name <description>` (dans `apps/site`). Jamais de modification à la main.
+- Données de base (rôles, catégories du forum, listes de référence) : `apps/site/prisma/firstSetup.ts`, lancé avec `npx tsx prisma/firstSetup.ts`. Ce fichier ne se modifie pas sans accord, et utilise toujours `upsert` (crée ou met à jour, ne duplique jamais).
+- Aucune suppression de données de membres sans accord exprès.
+- Les adresses et mots de passe des bases sont lus depuis les variables d'environnement. Jamais écrits dans un fichier du dépôt.
 
-### 1. Structure (Schéma)
-Pour modifier les tables ou colonnes :
-1. Modifier `prisma/schema.prisma`.
-2. Lancer `npx prisma db push`. Cela met à jour `dev.db` localement.
-3. Pour Turso, l'idéal est de générer le SQL :
-   ```bash
-   npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
-   ```
-   Puis d'appliquer les changements via le Turso CLI ou un script `@libsql/client`.
+## En local
 
-### 2. Données & Maintenance (Seeding)
-Toujours utiliser des scripts qui lisent `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` depuis l'environnement (jamais d'URL ni de token en dur dans un fichier) :
-- **Setup Initial (Rôles, Forums, Settings)** : `npx tsx prisma/firstSetup.ts`
-- **Backup + restauration testée** : `node scripts/turso-backup.mjs`
-- Anciens scripts ponctuels (sync quiz, archives) : supprimés le 2026-10-28, récupérables dans l'historique git.
+- Base : `apps/site/dev.db` (SQLite), adresse `DATABASE_URL="file:./dev.db"` dans `apps/site/.env`.
+- Explorer les données : `pnpm exec prisma studio` (dans `apps/site`).
+- Les tests utilisent une base jetable (`e2e.db`), recréée à chaque lancement.
+- **Pas de Docker** : il ne fonctionne pas sur le poste du développeur. La future base Postgres locale passera par `npx prisma dev`, une base Neon de développement ou une installation classique (choix fait à la carte 041).
 
-### 3. Debugging
-- **Prisma Studio Local** : `npx prisma studio` (ouvre `dev.db`).
-- **Inspection Turso** : Utiliser `npx tsx -e` avec `@libsql/client` pour exécuter du SQL direct (ex: `SELECT * FROM ...`).
+## Le hub de connexion
 
-## 🔗 DOCUMENTATION DE RÉFÉRENCE
-- [Prisma + Turso Guide](https://www.prisma.io/docs/v6/orm/overview/databases/turso)
-- [Prisma v7 Upgrade & Breaking Changes](https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7)
-
----
-*Dernière mise à jour : 24 Avril 2026 suite à la stabilisation de l'architecture LibSQL.*
+Le hub (`apps/hub`) a sa propre base, séparée de celle du site (`HUB_DATABASE_URL`). Son schéma Prisma est **généré** (`node scripts/generate-schema.mjs` dans `apps/hub`) : ne pas l'éditer à la main.
