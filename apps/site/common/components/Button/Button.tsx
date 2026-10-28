@@ -74,7 +74,7 @@ export default function Button({
     className
   ].filter(Boolean).join(" ");
 
-  const renderIcon = (iconProp: any, position: "left" | "right") => {
+  const renderIcon = (iconProp: ButtonBaseProps["icon"], position: "left" | "right") => {
     if (!iconProp) return null;
     if (iconPosition !== position) return null;
     
@@ -85,15 +85,13 @@ export default function Button({
 
     // Gestion robuste pour React 19
     if (typeof iconProp === 'object' && iconProp !== null && 'type' in iconProp) {
-        return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp as any}</span>;
+        return <span className="bb-btn-icon" style={{ display: 'flex', alignItems: 'center' }}>{iconProp as React.ReactNode}</span>;
     }
 
     // Si c'est un composant (Fonction ou Objet/ForwardRef)
     if (typeof iconProp === 'function' || typeof iconProp === 'object') {
-      const IconComponent = iconProp;
+      const IconComponent = iconProp as React.ElementType<{ className?: string; size?: number }>;
       const iconSize = size === "xs" ? 14 : size === "sm" ? 16 : size === "lg" ? 22 : 18;
-      if (!IconComponent) return null;
-      // @ts-ignore - Lucide icons props
       return <IconComponent className="bb-btn-icon" size={iconSize} />;
     }
 

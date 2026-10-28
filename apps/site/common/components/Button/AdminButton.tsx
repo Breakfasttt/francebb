@@ -8,6 +8,5 @@ import Button, { ButtonProps } from "./Button";
  * Réservé aux actions staff. Distinct visuellement des actions utilisateurs standards.
  */
 export default function AdminButton(props: ButtonProps) {
-  // @ts-ignore
   return <Button {...props} variant="admin" />;
 }

@@ -8,6 +8,5 @@ import Button, { ButtonProps } from "./Button";
  * Utilisé pour les actions secondaires ou standard.
  */
 export default function ClassicButton(props: ButtonProps) {
-  // @ts-ignore
   return <Button {...props} variant="classic" />;
 }

@@ -8,6 +8,5 @@ import Button, { ButtonProps } from "./Button";
  * Utilisé pour les actions irréversibles ou potentiellement dangereuses (Supprimer, Ban, etc.).
  */
 export default function DangerButton(props: ButtonProps) {
-  // @ts-ignore
   return <Button {...props} variant="danger" />;
 }
