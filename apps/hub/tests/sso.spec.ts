@@ -46,3 +46,11 @@ test("un compte hub à l'email non vérifié est refusé par le site", async ({ 
   await page.waitForURL((url) => url.origin === SITE && url.pathname.startsWith("/auth"));
   expect(await siteSessionName(page)).toBeUndefined();
 });
+
+test("le hub envoie un lien magique de connexion", async ({ page }) => {
+  // Sans SMTP configuré (tests), le lien est écrit dans la console du hub : on vérifie le parcours côté membre
+  await page.goto("http://localhost:4100/sign-in");
+  await page.getByLabel("Email").fill("coach@e2e.test");
+  await page.getByRole("button", { name: "Recevoir un lien de connexion" }).click();
+  await expect(page.getByText("Lien de connexion envoyé")).toBeVisible();
+});

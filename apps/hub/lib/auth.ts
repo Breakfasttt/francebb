@@ -9,6 +9,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { prisma } from "./prisma.mjs";
 import { authPlugins } from "./authPlugins.mjs";
+import { sendMagicLinkEmail } from "./mail";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -21,9 +22,9 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 }
 
 async function sendMagicLink({ email, url }: { email: string; url: string }) {
-  // Envoi SMTP : carte 038. En attendant, le lien n'est affiché que dans la console de dev.
-  if (!isProduction) console.log(`[hub] lien magique pour ${email} : ${url}`);
-  else console.error("[hub] envoi du lien magique non configuré (carte 038)");
+  const sent = await sendMagicLinkEmail(email, url);
+  // Better Auth renvoie l'erreur au formulaire : le membre sait que le lien n'est pas parti
+  if (!sent) throw new Error("Envoi du lien de connexion impossible");
 }
 
 export const auth = betterAuth({

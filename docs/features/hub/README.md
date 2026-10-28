@@ -19,7 +19,8 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 
 | Fichier | Rôle |
 |---|---|
-| `apps/hub/lib/auth.ts` | Instance Better Auth : base, fournisseurs Discord/Google (seulement si leurs clés existent), liaison de comptes, mot de passe dev, envoi du lien magique (`sendMagicLink`, simple affichage console pour l'instant). |
+| `apps/hub/lib/auth.ts` | Instance Better Auth : base, fournisseurs Discord/Google (seulement si leurs clés existent), liaison de comptes, mot de passe dev, envoi du lien magique (`sendMagicLink`, qui appelle `lib/mail.ts`). |
+| `apps/hub/lib/mail.ts` | Envoi SMTP du lien magique (mêmes réglages `SMTP_*` que le site). Sans `SMTP_HOST`, le lien s'affiche dans la console, en développement seulement. |
 | `apps/hub/lib/authPlugins.mjs` | `authPlugins()` : plugins `jwt`, `magicLink`, `oauthProvider` (pages, scopes, `customIdTokenClaims`). Partagé avec le générateur de schéma. |
 | `apps/hub/lib/authClient.ts` | Client Better Auth du navigateur, utilisé par les pages `/sign-in` et `/consent`. |
 | `apps/hub/lib/clientSecret.mjs` | `hashClientSecret()` : hachage SHA-256 des secrets des applications clientes. |
@@ -43,7 +44,7 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 - `prisma/schema.prisma` est généré : ne pas l'éditer. Après un ajout de plugin : `node scripts/generate-schema.mjs` puis `pnpm exec prisma migrate dev`.
 - better-auth et ses compagnons (`@better-auth/core`, `better-call`…) se montent ensemble, sinon deux copies coexistent et les types des plugins cassent.
 - Le chemin `/token` du plugin `jwt` est désactivé : il entre en conflit avec celui d'OAuth.
-- En production, le lien magique n'est pas encore envoyé (seulement un message d'erreur dans les journaux) alors que la page affiche « Lien de connexion envoyé » (carte 038).
+- Le lien magique part par SMTP (carte 038). Si l'envoi échoue, le formulaire affiche une erreur au lieu de « Lien de connexion envoyé ». En production sans SMTP configuré, l'envoi est refusé.
 
 ## Les mots expliqués
 
@@ -59,4 +60,4 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 ## État
 
 - Fait : spike (carte 022), test SSO hub ↔ site en CI.
-- À faire : domaine et déploiement (035), ban global et déconnexion propagés (037), envoi des liens magiques (038), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub passe à Postgres avec celle du site (carte 046, en cours) : l'essai de la carte 041 a montré que `generate-schema.mjs` devra produire de vraies colonnes de listes (`String[]`, `Json`) au lieu de texte.
+- À faire : domaine et déploiement (035), ban global et déconnexion propagés (037), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).

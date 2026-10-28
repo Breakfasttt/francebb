@@ -125,7 +125,8 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    - `BETTER_AUTH_URL` (ex. `https://auth.bbfrance.fr`) ;
    - `BETTER_AUTH_SECRET` (`openssl rand -base64 32`) ;
    - `HUB_DATABASE_URL` (base Neon du hub) ;
-   - Discord et Google, avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google`.
+   - Discord et Google, avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google` ;
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` (même service d'envoi de mails que le site), pour les liens de connexion par email.
 4. **Enregistrer le site comme application cliente**, depuis `apps/hub` :
    ```bash
    HUB_DATABASE_URL="postgresql://…(base du hub)…" node scripts/register-client.mjs "BBFrance site" https://www.bbfrance.fr/api/auth/callback/hub
