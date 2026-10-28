@@ -1,12 +1,12 @@
 ---
 id: 012
 title: Baseline des migrations Prisma en prod
-status: refine
+status: ready
 epic: E02
 app: site
-depends_on: [011]
+depends_on: [011, 025]
 adr: 0002
-verify: `npx prisma migrate deploy` sans écart sur la prod
+verify: `prisma migrate status` sur la prod → « Database schema is up to date » et `migrate diff` prod ↔ schéma vide
 ---
 
 # 012 — Baseline des migrations Prisma en prod
@@ -15,6 +15,10 @@ verify: `npx prisma migrate deploy` sans écart sur la prod
 
 Prod initialisée en `db push` (`DEPLOY.md`) : l'historique `prisma/migrations` n'est pas appliqué en prod.
 
-## Action (après `/council` → ADR-0002)
+## Action (ADR-0002)
 
-`migrate diff` prod vs schéma → migration baseline → `migrate resolve --applied` sur une copie Turso d'abord, puis prod. Mettre à jour `DEPLOY.md` et `README.md` (`migrate deploy`).
+Seulement si l'écart consigné par la carte 025 est vide :
+1. Archiver les 26 migrations hors de `prisma/migrations`, créer `0_init` via `migrate diff --from-empty --to-schema prisma/schema.prisma --script`.
+2. `migrate resolve --applied 0_init` sur la copie, puis dump frais, puis prod.
+3. `dev.db` : marquer `0_init` appliquée (sauvegarde avant).
+4. Retirer `db push` de `DEPLOY.md`, `README.md` (FR) et du skill `database-ops`.
