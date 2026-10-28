@@ -1,6 +1,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { sendPmNotification } from "@/lib/mail";
@@ -309,15 +310,10 @@ export async function searchUsers(query: string) {
     const session = await getActiveSession();
     if (!session?.user) throw new Error("Non autorisé");
 
-    if (query.length < 2) return [];
+    if (query.trim().length < USER_SEARCH_MIN_LENGTH) return [];
 
     const users = await prisma.user.findMany({
-        where: {
-            name: { contains: query },
-            id: { not: session.user.id },
-            blockedBy: { none: { blockerId: session.user.id } },
-            blocks: { none: { blockedId: session.user.id } }
-        },
+        where: userSearchWhere(query, session.user.id),
         take: 10,
         select: {
             id: true,

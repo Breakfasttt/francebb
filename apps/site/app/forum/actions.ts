@@ -5,6 +5,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -1269,22 +1270,10 @@ export async function toggleTopicLock(topicId: string) {
 export async function searchUsersAction(query: string) {
   const session = await getActiveSession();
   if (!session?.user?.id) return [];
-  if (!query || query.length < 2) return [];
+  if (!query || query.trim().length < USER_SEARCH_MIN_LENGTH) return [];
 
   const users = await prisma.user.findMany({
-    where: {
-      OR: [
-        { name: { contains: query } },
-        { name: { contains: query.toLowerCase() } },
-        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
-        { email: { contains: query.toLowerCase() } }
-      ],
-      isBanned: false,
-      id: { not: session.user.id },
-      // Exclure ceux qu'on a bloqué ou qui nous ont bloqué
-      blockedBy: { none: { blockerId: session.user.id } },
-      blocks: { none: { blockedId: session.user.id } }
-    },
+    where: userSearchWhere(query, session.user.id),
     select: {
       id: true,
       name: true,
@@ -1728,28 +1717,6 @@ export async function updateRegistrationStatus(params: {
     return { success: false, error: "Mise à jour impossible" };
   }
 }
-
-/**
- * Recherche d'utilisateurs pour l'inscription d'équipe
- */
-export async function findUsersSearch(query: string) {
-  const session = await getActiveSession();
-  if (!session?.user?.id) return [];
-
-  if (query.length < 2) return [];
-
-  return await prisma.user.findMany({
-    where: {
-      OR: [
-        { name: { contains: query } },
-        { email: { contains: query } }
-      ]
-    },
-    take: 5,
-    select: { id: true, name: true, image: true }
-  });
-}
-
 
 /**
  * Verrouiller / Déverrouiller les inscriptions d'un tournoi

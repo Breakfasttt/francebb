@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDebounce } from "@/common/hooks/useDebounce";
 import { searchUsers, startConversation } from "../actions";
 import { X, Search, Check, Users, ShieldCheck } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -11,25 +12,29 @@ import { useRouter } from "next/navigation";
 
 export default function NewConversationModal({ onClose }: { onClose: () => void }) {
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<Awaited<ReturnType<typeof searchUsers>>>([]);
     const [selected, setSelected] = useState<any[]>([]);
     const [groupName, setGroupName] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    const handleSearch = async (val: string) => {
+    const debouncedQuery = useDebounce(query, 300);
+
+    // Recherche après 300 ms sans frappe ; une réponse arrivée après une frappe plus récente est ignorée
+    useEffect(() => {
+        if (debouncedQuery.trim().length < 2) return;
+        let cancelled = false;
+        searchUsers(debouncedQuery)
+            .then((users) => { if (!cancelled) setResults(users); })
+            .catch((error) => console.error(error));
+        return () => { cancelled = true; };
+    }, [debouncedQuery]);
+
+    const handleSearch = (val: string) => {
         setQuery(val);
-        if (val.length < 2) {
-            setResults([]);
-            return;
-        }
-        try {
-            const users = await searchUsers(val);
-            setResults(users);
-        } catch (error) {
-            console.error(error);
-        }
+        if (val.trim().length < 2) setResults([]);
     };
+
 
     const toggleSelect = (user: any) => {
         if (selected.find(u => u.id === user.id)) {

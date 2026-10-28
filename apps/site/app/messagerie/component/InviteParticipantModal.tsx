@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDebounce } from "@/common/hooks/useDebounce";
 import { searchUsers, inviteToGroup } from "../actions";
 import { X, Search, Check, UserPlus } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -17,25 +18,29 @@ interface InviteParticipantModalProps {
 
 export default function InviteParticipantModal({ conversationId, onClose, onSuccess, existingUserIds }: InviteParticipantModalProps) {
     const [query, setQuery] = useState("");
-    const [results, setResults] = useState<any[]>([]);
+    const [results, setResults] = useState<Awaited<ReturnType<typeof searchUsers>>>([]);
     const [selected, setSelected] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const handleSearch = async (val: string) => {
+    const debouncedQuery = useDebounce(query, 300);
+
+    // Recherche après 300 ms sans frappe ; une réponse arrivée après une frappe plus récente est ignorée
+    useEffect(() => {
+        if (debouncedQuery.trim().length < 2) return;
+        let cancelled = false;
+        searchUsers(debouncedQuery)
+            .then((users) => { if (!cancelled) setResults(users); })
+            .catch((error) => console.error(error));
+        return () => { cancelled = true; };
+    }, [debouncedQuery]);
+
+    const handleSearch = (val: string) => {
         setQuery(val);
-        if (val.length < 2) {
-            setResults([]);
-            return;
-        }
-        try {
-            const users = await searchUsers(val);
-            // Filtrer ceux déjà présents
-            const filtered = users.filter((u: any) => !existingUserIds.includes(u.id));
-            setResults(filtered);
-        } catch (error) {
-            console.error(error);
-        }
+        if (val.trim().length < 2) setResults([]);
     };
+
+    // Membres déjà présents dans le groupe : masqués des résultats
+    const visibleResults = results.filter((user) => !existingUserIds.includes(user.id));
 
     const toggleSelect = (user: any) => {
         if (selected.find(u => u.id === user.id)) {
@@ -95,8 +100,8 @@ export default function InviteParticipantModal({ conversationId, onClose, onSucc
                                     </div>
 
                                     <div className="search-results" style={{ maxHeight: "200px", overflowY: "auto", border: '1px solid var(--glass-border)', borderRadius: '8px' }}>
-                                        {results.length === 0 && query.length >= 2 && <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)' }}>Aucun résultat</div>}
-                                        {results.map(user => (
+                                        {visibleResults.length === 0 && query.length >= 2 && <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)' }}>Aucun résultat</div>}
+                                        {visibleResults.map(user => (
                                             <div 
                                                 key={user.id} 
                                                 className={`search-result-item ${selected.find(u => u.id === user.id) ? 'selected' : ''}`}

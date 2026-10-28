@@ -41,6 +41,8 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Besoin | Utiliser |
 |---|---|
 | Détection mobile | `common/hooks/useIsMobile.ts` |
+| Temporiser une saisie | `common/hooks/useDebounce.ts` |
+| Rechercher des membres | `lib/userSearch.ts` (`userSearchWhere`) ; actions `searchUsersAction` (forum), `searchUsers` (messagerie) |
 | Session serveur (connecté, non banni) | `lib/authGuard.ts` → `getActiveSession()` (jamais `auth()` direct dans une action) |
 | Rôles / pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
 | Accès forum par rôle (`allowedRoles`) | `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`) — toute requête catégorie/forum/topic/post |
@@ -56,8 +58,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Drag & drop | `@dnd-kit/*` (déjà installé) |
 | Carte | `leaflet` / `react-leaflet` (déjà installé) |
 
-## Doublons connus (ne pas en ajouter, fusion prévue en P4)
-- 4 recherches d'utilisateurs → cible une server action `searchUsers`.
+## Doublons connus (ne pas en ajouter)
 - Thème « Sombre » (`dark`) proposé dans l'onboarding et le profil mais sans CSS dédié : il affiche le thème par défaut.
 
 Nouveau composant partagé créé ? Ajouter sa ligne ici dans le même commit.

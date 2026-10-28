@@ -77,3 +77,14 @@ test("un modérateur voit et ouvre le contenu réservé", async ({ page }) => {
   await page.goto(`/forum/topic/${E2E.secretTopicId}?page=1`);
   await expect(page.getByText("Message réservé aux modérateurs").first()).toBeVisible();
 });
+
+test("la recherche de membres se fait par pseudo, jamais par email", async ({ page }) => {
+  await loginAs(page, E2E.coachId);
+  await page.goto("/messagerie", { waitUntil: "networkidle" });
+  await page.getByText("Nouvelle conversation").first().click();
+  const search = page.getByPlaceholder("Tapez un nom...");
+  await search.fill("modo@e2e");
+  await expect(page.getByText("Aucun résultat")).toBeVisible();
+  await search.fill("Modo E2");
+  await expect(page.getByRole("dialog").getByText("Modo E2E")).toBeVisible();
+});
