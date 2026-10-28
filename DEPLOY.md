@@ -135,6 +135,7 @@ Vercel est l'endroit où votre site sera "hébergé" et accessible via une adres
 1.  Allez sur [Vercel.com](https://vercel.com) et connectez-vous avec votre compte **GitHub**.
 2.  Cliquez sur **"Add New" > "Project"**. 
 3.  Vous verrez votre repo `bbfrance`. Cliquez sur **"Import"**.
+    *   **Monorepo** : dans **"Root Directory"**, choisissez **`apps/site`** (Vercel détecte pnpm via `pnpm-lock.yaml` et installe tout le workspace). Projet déjà existant : **Settings > Build and Deployment > Root Directory** = `apps/site`, à faire **avant** de déployer une version monorepo, sinon le build échoue.
 4.  Dans la section **"Environment Variables"**, vous devez ajouter les informations suivantes UNE PAR UNE :
 
 | Nom de la Variable (Key) | Valeur (Value) | Comment l'obtenir ? |

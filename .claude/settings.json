@@ -1,10 +1,13 @@
 {
   "permissions": {
     "allow": [
+      "Bash(pnpm board*)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm lint:ratchet*)",
       "Bash(npm run board*)",
       "Bash(npm run typecheck)",
       "Bash(npm run lint:ratchet*)",
-      "Bash(node scripts/debt-count.mjs)"
+      "Bash(node apps/site/scripts/debt-count.mjs)"
     ],
     "deny": [
       "Bash(npx prisma migrate reset*)",
@@ -17,13 +20,24 @@
     "PreToolUse": [
       {
         "matcher": "Bash|PowerShell",
-        "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-deps.mjs\"" }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-deps.mjs\""
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit",
-        "hooks": [{ "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint-edited.mjs\"", "timeout": 60 }]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint-edited.mjs\"",
+            "timeout": 60
+          }
+        ]
       }
     ]
   }

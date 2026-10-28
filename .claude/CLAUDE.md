@@ -2,7 +2,7 @@
 
 Plateforme communautaire Blood Bowl française : forum, tournois, profils coachs, messagerie, bbscheme.
 Stack : Next.js 16 App Router + TS, Prisma 7 + LibSQL/Turso, Auth.js v5 (JWT), Lucide React. Déploiement : Vercel + Turso (`DEPLOY.md`).
-Architecture, frontières, politique deps : `ARCHITECTURE.md`. Plan en cours : `docs/adr/0001-plan-refacto.md`.
+Monorepo pnpm + Turborepo : `apps/site` (le site), `packages/*` (à venir). Architecture, frontières, politique deps : `ARCHITECTURE.md`. Plan : `docs/adr/0001-plan-refacto.md`. Règles propres à une app : `apps/<app>/CLAUDE.md`.
 
 ## Process (obligatoire)
 
@@ -48,11 +48,11 @@ Architecture, frontières, politique deps : `ARCHITECTURE.md`. Plan en cours : `
 
 | Commande | Rôle |
 |---|---|
-| `npm run typecheck` | TypeScript |
-| `npm run lint:ratchet` | ESLint, plafond `lint-baseline.json` (la dette ne monte jamais) |
-| `npm run test:e2e` | Smoke Playwright sur `e2e.db` jetable |
-| `npm run board` | Régénère `kanban/BOARD.md` (`-- --check` en CI) |
-| `node scripts/baseline.mjs` / `debt-count.mjs` | Perf et dette vs `docs/baseline.md` |
+| `pnpm typecheck` | TypeScript (toutes les apps) |
+| `pnpm lint:ratchet` | ESLint, plafond `apps/site/lint-baseline.json` (la dette ne monte jamais) |
+| `pnpm test:e2e` | Smoke Playwright sur `e2e.db` jetable |
+| `pnpm board` | Régénère `kanban/BOARD.md` (`--check` en CI) |
+| `node scripts/baseline.mjs` / `debt-count.mjs` (dans `apps/site`) | Perf et dette vs `docs/baseline.md` |
 
-Dev : `npm run dev` (LAN : `npx next dev -H 0.0.0.0`). Scripts ponctuels dans `scripts/`, logs dans `logs/`, supprimer après usage.
+Dev : `pnpm dev`. pnpm strict : une app n'utilise que les deps de **son** `package.json` ; versions figées (`pnpm-lock.yaml`, `overrides` dans `pnpm-workspace.yaml`). Scripts ponctuels dans `apps/site/scripts/`, logs dans `logs/`, supprimer après usage.
 Changement de déploiement ⇒ `README.md` et `DEPLOY.md` (FR).

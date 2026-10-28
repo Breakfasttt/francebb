@@ -62,12 +62,13 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
    cd francebb
    ```
 
-2. **Installer les dépendances** :
+2. **Installer les dépendances** (monorepo **pnpm** + Turborepo, voir « Structure du repo ») :
    ```bash
-   npm install
+   corepack enable        # une fois : active pnpm (version fixée par "packageManager" du package.json)
+   pnpm install
    ```
 
-3. **Variables d'environnement** (`.env`) :
+3. **Variables d'environnement** (`apps/site/.env`) :
     ```env
     DATABASE_URL="file:./dev.db"
     AUTH_SECRET="votre-secret-tres-long"
@@ -87,14 +88,15 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 
 ### Initialisation & Lancement
 
-1. **Préparer la base de données** :
+1. **Préparer la base de données** (depuis `apps/site`) :
    ```bash
-   npx prisma migrate dev
+   cd apps/site
+   pnpm exec prisma migrate dev
    ```
 
-2. **Lancer le serveur de développement** :
+2. **Lancer le serveur de développement** (depuis la racine) :
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 3. **Accès** : [http://localhost:3000](http://localhost:3000)
@@ -106,7 +108,7 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 1. **Identifier votre IP locale** (ex: `192.168.1.XX`).
 2. **Lancer avec l'option host** :
    ```bash
-   npx next dev -H 0.0.0.0
+   pnpm --filter @bbfrance/site exec next dev -H 0.0.0.0
    ```
 3. **Accéder depuis le smartphone** via `http://<VOTRE_IP_LOCALE>:3000`.
 
@@ -120,11 +122,22 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 
 | Commande | Rôle |
 |---|---|
-| `npm run typecheck` | Vérification TypeScript |
-| `npm run lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). `-- --update` abaisse le plafond quand la dette baisse. |
-| `npm run test:e2e` | Tests smoke Playwright (`tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `npx playwright install chromium`. |
-| `node scripts/baseline.mjs` | Mesures perf par route (après `npm run build`), voir `docs/baseline.md`. |
-| `npm run board` | Régénère `kanban/BOARD.md` depuis les cartes (`-- --check` : vérifie qu'il est à jour). |
+| `pnpm typecheck` | Vérification TypeScript (toutes les apps, via Turborepo) |
+| `pnpm lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `apps/site/lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). Dans `apps/site` : `node scripts/lint-ratchet.mjs --update` abaisse le plafond quand la dette baisse. |
+| `pnpm test:e2e` | Tests smoke Playwright (`apps/site/tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `pnpm --filter @bbfrance/site exec playwright install chromium`. |
+| `node scripts/baseline.mjs` (dans `apps/site`) | Mesures perf par route (après `pnpm build`), voir `docs/baseline.md`. |
+| `pnpm board` | Régénère `kanban/BOARD.md` depuis les cartes (`pnpm board --check` : vérifie qu'il est à jour). |
+
+### 🗂️ Structure du repo (monorepo)
+
+| Dossier | Contenu |
+|---|---|
+| `apps/site/` | Le site Next.js (forum, tournois, profils…) : tout le code de l'app, son `package.json`, Prisma, tests |
+| `apps/hub/`, `apps/bbscheme/` | À venir (hub d'identité SSO, éditeur BBScheme) |
+| `packages/` | Code partagé entre apps (à venir : `ui`, `config`, `auth-client`…) |
+| `kanban/`, `docs/`, `.claude/` | Organisation, décisions, outillage IA (communs à tout le repo) |
+
+pnpm est en mode strict : une app ne peut utiliser que les dépendances déclarées dans **son** `package.json` (garde-fou des frontières). Les versions sont figées (`pnpm-lock.yaml`).
 
 La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban puis lance typecheck, cliquet ESLint, build et tests smoke sur chaque push (`development`, `master`) et chaque PR.
 

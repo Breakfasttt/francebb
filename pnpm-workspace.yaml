@@ -1,0 +1,18 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# pnpm 10 bloque les scripts d'installation par défaut : n'autoriser que ceux qui en ont besoin
+onlyBuiltDependencies:
+  - "@prisma/engines"
+  - prisma
+  - esbuild
+  - sharp
+  - unrs-resolver
+
+# Sous-dépendances figées aux versions de l'ancien package-lock.json (le passage à pnpm ne doit pas changer l'outillage)
+overrides:
+  eslint-plugin-react-hooks: 7.0.1
+  typescript-eslint: 8.57.1
+  "@typescript-eslint/eslint-plugin": 8.57.1
+  "@typescript-eslint/parser": 8.57.1

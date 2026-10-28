@@ -9,7 +9,7 @@
 | [E01 — Sécurité, filet de tests, baseline](epics/E01-filet-securite.md) | P0 | 4/4 | — |
 | [E02 — Gouvernance du dev IA](epics/E02-gouvernance-ia.md) | P1 | 8/12 | [011](011-backup-prod.md) [012](012-baseline-prisma.md) [025](025-spike-migrate-turso.md) [026](026-script-db-deploy.md) |
 | [E03 — Performance, forum mobile d'abord](epics/E03-perf-forum.md) | P2 | 5/8 | [017](017-layout-dynamique.md) [018](018-cache-components.md) [019](019-images-bundles.md) |
-| [E04 — Monorepo pnpm + Turborepo](epics/E04-monorepo.md) | P3 | 0/1 | [023](023-monorepo.md) |
+| [E04 — Monorepo pnpm + Turborepo](epics/E04-monorepo.md) | P3 | 1/1 | — |
 | [E05 — UI shadcn/ui + Tailwind v4](epics/E05-ui-shadcn.md) | P4 | 0/2 | [013](013-eslint-archi.md) [021](021-spike-tailwind-layer.md) |
 | [E06 — Hub d'identité SSO (Better Auth + OIDC)](epics/E06-hub-sso.md) | P5 | 0/1 | [022](022-spike-better-auth.md) |
 | [E07 — BBScheme en app séparée](epics/E07-bbscheme.md) | P6 | 0/1 | [024](024-extraction-bbscheme.md) |
@@ -23,20 +23,19 @@
 | [019](019-images-bundles.md) | next/image + import dynamique html2canvas/gifshot | E03 | — | — |
 | [025](025-spike-migrate-turso.md) | Spike : Prisma Migrate contre une copie Turso | E02 | 011 | 0002 |
 
-## À raffiner (8)
+## À raffiner (7)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
 | [013](013-eslint-archi.md) | Règles ESLint d'architecture | E05 | — | — |
 | [017](017-layout-dynamique.md) | Layout sans force-dynamic + jwt throttlé | E03 | — | — |
 | [018](018-cache-components.md) | Activer cacheComponents | E03 | 017 | — |
-| [021](021-spike-tailwind-layer.md) | Spike A : CSS legacy en @layer sous Tailwind v4 | E05 | 023 | — |
-| [022](022-spike-better-auth.md) | Spike B : Better Auth OIDC + Prisma 7 + Turso | E06 | 023 | — |
-| [023](023-monorepo.md) | Passage monorepo pnpm + Turborepo | E04 | — | — |
+| [021](021-spike-tailwind-layer.md) | Spike A : CSS legacy en @layer sous Tailwind v4 | E05 | — | — |
+| [022](022-spike-better-auth.md) | Spike B : Better Auth OIDC + Prisma 7 + Turso | E06 | — | — |
 | [024](024-extraction-bbscheme.md) | Extraire bbscheme en app + packages/bbscheme-player | E07 | 022 | — |
 | [026](026-script-db-deploy.md) | Script npm run db:deploy | E02 | 025, 012 | 0002 |
 
-## Terminées (17)
+## Terminées (18)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
@@ -54,6 +53,7 @@
 | [015](015-forum-liste.md) | Liste d'un forum : count isArchived + Promise.all | E03 | — | — |
 | [016](016-forum-topic.md) | Page topic : include factorisé, forums de déplacement si modo | E03 | — | — |
 | [020](020-n-plus-un.md) | Supprimer les N+1 forum et tournois | E03 | — | — |
+| [023](023-monorepo.md) | Passage monorepo pnpm + Turborepo | E04 | — | — |
 | [027](027-ci-migrations.md) | CI : migrations à jour du schéma | E02 | — | 0002 |
 | [028](028-acces-roles-forum.md) | Accès forum par rôle (allowedRoles) pour les membres connectés | E03 | — | — |
 | [029](029-nettoyage-repo.md) | Nettoyage du repo (fichiers morts, scripts ponctuels, secrets) | E02 | — | 0001 |

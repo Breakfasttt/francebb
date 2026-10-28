@@ -2,9 +2,9 @@
 
 Référence courte pour humains et IA. Décisions détaillées : `docs/adr/`. Plan en cours : `docs/adr/0001-plan-refacto.md`.
 
-## Aujourd'hui (avant P3)
+## Aujourd'hui (P3 : monorepo)
 
-Une seule app Next.js 16 (App Router) à la racine.
+Monorepo pnpm + Turborepo. Une seule app pour l'instant, `apps/site` (Next.js 16 App Router) ; les chemins ci-dessous sont relatifs à `apps/site`, sauf `kanban/`, `docs/`, `.claude/` (racine).
 
 | Dossier | Contenu | Règle |
 |---|---|---|

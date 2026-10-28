@@ -1,0 +1,11 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "envMode": "loose",
+  "tasks": {
+    "build": { "cache": false },
+    "dev": { "cache": false, "persistent": true },
+    "typecheck": { "cache": false },
+    "lint:ratchet": { "cache": false },
+    "test:e2e": { "cache": false }
+  }
+}
