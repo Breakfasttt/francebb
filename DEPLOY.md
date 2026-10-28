@@ -172,10 +172,9 @@ Vercel est l'endroit où votre site sera "hébergé" et accessible via une adres
     ```
     *Si vous voyez "The database is now in sync", c'est gagné !*
 
-4.  *(Optionnel) Remplir les données de test* :
-    Si vous voulez que le forum ait déjà des catégories par défaut :
+4.  *Créer les données de base* (rôles, catégories du forum, listes de référence), depuis le dossier `apps/site` :
     ```bash
-    npx ts-node prisma/seed.ts
+    npx tsx prisma/firstSetup.ts
     ```
 
 ---
