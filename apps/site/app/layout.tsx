@@ -12,7 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
-import "./globals.css";
+import "./tailwind.css";
 import "./globals-mobile.css";
 import "@/common/styles/widgets.css";
 

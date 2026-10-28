@@ -39,10 +39,14 @@ html, body {
   }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* Reset dans la couche "legacy" (déclarée avant "utilities" dans tailwind.css) : il ne bloque plus les classes Tailwind
+   (p-4, m-2…), et il perd déjà contre toute autre règle non rangée en couche, comme avant. */
+@layer legacy {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 body {

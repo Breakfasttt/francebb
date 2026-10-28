@@ -1,0 +1,16 @@
+/*
+ * Point d'entrée CSS (spike A, carte 021) : Tailwind v4 + CSS historique.
+ * - Le CSS historique (globals.css, thèmes) reste HORS couche : ranger tout globals.css dans une couche changeait des
+ *   priorités existantes (logo, sidebar ~1 % de pixels différents). Seul son reset `* { padding: 0; margin: 0 }`
+ *   est rangé dans la couche "legacy", déclarée avant "utilities" : il ne bloque plus les classes Tailwind.
+ * - Pas de preflight Tailwind (reset) : le rendu actuel des 7 thèmes reste identique.
+ * - source(none) + @source : Tailwind ne génère des classes QUE pour le nouveau code. Sans ça, des noms de classes
+ *   historiques qui sont aussi des utilitaires Tailwind (ex. `container`) changeaient le rendu des pages existantes.
+ */
+@layer theme, base, legacy, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "./globals.css";
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+
+@source "./spike-tailwind";
