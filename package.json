@@ -10,7 +10,7 @@
     "typecheck": "turbo run typecheck",
     "lint:ratchet": "turbo run lint:ratchet",
     "test:e2e": "turbo run test:e2e",
-    "board": "node scripts/board.mjs"
+    "kanban": "node scripts/kanban.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.4"

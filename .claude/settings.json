@@ -1,10 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm board*)",
+      "Bash(pnpm kanban*)",
       "Bash(pnpm typecheck)",
       "Bash(pnpm lint:ratchet*)",
-      "Bash(npm run board*)",
       "Bash(npm run typecheck)",
       "Bash(npm run lint:ratchet*)",
       "Bash(node apps/site/scripts/debt-count.mjs)"

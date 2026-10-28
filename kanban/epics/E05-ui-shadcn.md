@@ -12,4 +12,4 @@ Plan : `docs/adr/0001-plan-refacto.md` (P4).
 
 Pages migrées indiscernables dans les 7 thèmes (captures Playwright), contraste AA, compteurs de dette UI en baisse, doublons (toasts, modales, recherches users) fusionnés.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

@@ -10,6 +10,6 @@ Plan : `docs/adr/0001-plan-refacto.md` (P1).
 
 ## Terminé quand
 
-`/council` produit un ADR, `npm run board -- --check` passe en CI, hooks block-deps et lint-edited actifs, `migrate deploy` OK en prod.
+`/council` produit un ADR, `pnpm kanban` passe en CI, hooks block-deps et lint-edited actifs, `migrate deploy` OK en prod.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

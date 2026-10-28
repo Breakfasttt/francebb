@@ -127,7 +127,7 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 | `pnpm test:e2e` | Tests smoke Playwright (`apps/site/tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `pnpm --filter @bbfrance/site exec playwright install chromium`. |
 | `node scripts/baseline.mjs` (dans `apps/site`) | Mesures perf par route (après `pnpm build`), voir `docs/baseline.md`. |
 | `pnpm --filter @bbfrance/hub test:sso` | Test de bout en bout du hub d'identité : lance le hub (port 4100) et le site en `AUTH_MODE=hub` (port 3200) sur des bases jetables, vérifie connexion, reconnexion silencieuse et refus d'un email non vérifié. |
-| `pnpm board` | Régénère `kanban/BOARD.md` depuis les cartes (`pnpm board --check` : vérifie qu'il est à jour). |
+| `pnpm kanban` | Liste les cartes par état et vérifie que le kanban est bien rangé (lancé aussi par la CI). |
 
 ### 🗂️ Structure du repo (monorepo)
 
@@ -145,7 +145,7 @@ La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban et les sch�
 
 ### 🧭 Organisation du développement
 
-- **Kanban** : une carte = un fichier `kanban/NNN-*.md` (statut dans le frontmatter), vue d'ensemble dans `kanban/BOARD.md`. Voir `kanban/README.md`.
+- **Kanban** : une carte = un fichier, rangé dans le dossier de son état (`kanban/a-faire/`, `en-cours/`, `termine/`, `annule/`, `deprecie/`). Voir `kanban/README.md`.
 - **Décisions** : `docs/adr/` (ADR), architecture et politique de dépendances dans `ARCHITECTURE.md`, fiches des features dans `docs/features/`.
 - **IA (Claude Code)** : règles dans `.claude/CLAUDE.md`, skills projet, conseil de 5 agents (`/council`), commandes `/card` et `/ship`, hooks (confirmation avant ajout de dépendance, ESLint après édition).
 - **Hook git** (une fois par clone) : `git config core.hooksPath .githooks` — refuse les trailers `Co-Authored-By` et exige un n° de carte `[NNN]` dans le sujet.

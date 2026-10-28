@@ -29,8 +29,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Kanban (BOARD.md à jour, cartes valides)
-        run: pnpm board --check
+      - name: Kanban (cartes rangées dans le bon dossier, valides)
+        run: pnpm kanban
       - run: pnpm --filter @bbfrance/site exec prisma generate
       - run: pnpm --filter @bbfrance/hub exec prisma generate
       - name: Hub : schéma Prisma = tables Better Auth, migrations à jour

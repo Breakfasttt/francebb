@@ -1,48 +1,63 @@
 # Kanban BBFrance
 
-Une carte = un fichier `kanban/NNN-slug.md`. Le **frontmatter est la source de vérité** : le statut est un champ, pas un dossier (pas de déplacement de fichier, donc pas de carte en double).
-`kanban/BOARD.md` est **généré** par `npm run board` — ne jamais l'éditer à la main. La CI échoue s'il n'est pas à jour (`npm run board -- --check`).
+Le kanban est la liste des tâches du projet. Chaque tâche est une **carte** : un petit fichier texte qui explique ce qu'il faut faire, pourquoi, et comment vérifier que c'est fini.
+
+## Où sont les cartes
+
+Le dossier dans lequel se trouve une carte **est** son état :
+
+| Dossier | Contenu |
+|---|---|
+| `a-faire/` | Cartes pas encore commencées |
+| `en-cours/` | Cartes en train d'être réalisées (une ou deux à la fois) |
+| `termine/` | Cartes réalisées et validées |
+| `annule/` | Cartes abandonnées sans être réalisées (la raison est écrite dans la carte) |
+| `deprecie/` | Cartes terminées dont le résultat a été remplacé depuis (la carte indique par quoi) |
+| `epics/` | Les **épics** : grands chantiers qui regroupent plusieurs cartes |
+
+Changer l'état d'une carte = la déplacer d'un dossier à l'autre avec `git mv` (ex. `git mv kanban/a-faire/041-essai-postgres.md kanban/en-cours/`).
+
+Pour voir la liste à jour : `pnpm kanban`. La même commande vérifie que tout est bien rangé ; la CI (vérification automatique sur GitHub) la lance à chaque envoi de code.
 
 ## Format d'une carte
 
+Nom du fichier : `NNN-titre-court.md`, où `NNN` est un numéro à 3 chiffres unique (le plus grand numéro existant + 1).
+
 ```markdown
 ---
-id: 025
+id: 050
 title: Titre court
-status: refine
 epic: E03
 app: site
-depends_on: [017, 018]
-adr: 0002
-verify: commande ou vérification observable qui prouve que c'est fini
+depends_on: [041, 046]
+adr: 0004
+verify: ce qui prouve que c'est fini (commande ou vérification visible)
 ---
 
-# 025 — Titre court
+# 050 — Titre court
 
-## Problème
+## Pourquoi
 ## Action
 ```
 
-| Champ | Valeurs |
+| Champ | Signification |
 |---|---|
-| `id` | 3 chiffres, = préfixe du nom de fichier, unique |
-| `status` | `refine` → `ready` → `in_progress` → `done`, ou `cancelled` |
-| `epic` | id d'un fichier `kanban/epics/Exx-*.md`, ou vide |
-| `app` | `site` (puis `hub`, `bbscheme`, `packages/<nom>` après P3) |
-| `depends_on` | ids de cartes, `[]` si aucune |
-| `adr` | numéro d'ADR (`docs/adr/`) qui justifie la carte, ou vide |
-| `verify` | obligatoire |
+| `id` | Le numéro, identique au début du nom du fichier |
+| `epic` | Le grand chantier de rattachement (`kanban/epics/Exx-*.md`), ou vide |
+| `app` | L'application concernée : `site`, `hub`, `packages/ui`… |
+| `depends_on` | Les cartes à terminer avant celle-ci (`[]` si aucune) |
+| `adr` | Le numéro de la décision écrite (`docs/adr/`) qui justifie la carte, ou vide |
+| `verify` | Obligatoire : comment on sait que la carte est finie |
 
-## Cycle
+Une carte terminée reçoit une section **« Résultat »** qui dit ce qui a été fait. Une carte annulée reçoit une section **« Annulée »** qui dit pourquoi.
 
-- `refine` : à préciser (fichiers, action, verify).
-- `ready` : prête, dépendances connues.
-- `in_progress` : en cours (une ou deux cartes max à la fois).
-- `done` : `verify` vert + CI verte + README de feature à jour + **validation du user** (commande `/ship`).
-- `cancelled` : abandonnée, garder la raison dans le corps.
+## Les étapes
 
-Créer une carte : commande `/card`. Décision irréversible : `/council` d'abord.
+1. Nouvelle demande : la commande `/card` rédige la carte dans `a-faire/`.
+2. Démarrage : la carte passe dans `en-cours/`.
+3. Fin : la commande `/ship` lance les vérifications. Après ta validation, la carte passe dans `termine/`.
+4. Décision lourde (connexion, base de données, nouvelle bibliothèque, découpage d'une app) : `/council` d'abord, qui produit un ADR.
 
 ## Épics
 
-`kanban/epics/Exx-slug.md` : frontmatter `id`, `title`, `phase` + section « Terminé quand ». L'avancement est calculé dans `BOARD.md`.
+`kanban/epics/Exx-titre.md` : en-tête `id`, `title`, `phase`, et une section « Terminé quand » qui dit quand le chantier est fini.

@@ -6,7 +6,7 @@ Monorepo pnpm + Turborepo : `apps/site` (le site), `packages/*` (à venir). Arch
 
 ## Process (obligatoire)
 
-- Tout travail = une carte `kanban/NNN-*.md` (format : `kanban/README.md`, état : `kanban/BOARD.md`). Pas de carte ? `/card` d'abord.
+- Tout travail = une carte dans `kanban/<état>/NNN-*.md` (le dossier donne l'état ; format : `kanban/README.md`). Pas de carte ? `/card` d'abord.
 - Démarrer une carte : rappeler l'objectif, présenter le plan (fichiers, étapes), **attendre la validation** avant de coder.
 - Décision irréversible (auth, schéma BDD, dépendance majeure, découpage d'app) : `/council` → ADR dans `docs/adr/`.
 - Finir une carte : `/ship` (verify, README de feature `docs/features/`, statut, validation user).
@@ -51,7 +51,7 @@ Monorepo pnpm + Turborepo : `apps/site` (le site), `packages/*` (à venir). Arch
 | `pnpm typecheck` | TypeScript (toutes les apps) |
 | `pnpm lint:ratchet` | ESLint, plafond `apps/site/lint-baseline.json` (la dette ne monte jamais) |
 | `pnpm test:e2e` | Smoke Playwright sur `e2e.db` jetable |
-| `pnpm board` | Régénère `kanban/BOARD.md` (`--check` en CI) |
+| `pnpm kanban` | Liste les cartes et vérifie le rangement du kanban (aussi en CI) |
 | `node scripts/baseline.mjs` / `debt-count.mjs` (dans `apps/site`) | Perf et dette vs `docs/baseline.md` |
 
 Dev : `pnpm dev`. pnpm strict : une app n'utilise que les deps de **son** `package.json` ; versions figées (`pnpm-lock.yaml`, `overrides` dans `pnpm-workspace.yaml`). Scripts ponctuels dans `apps/site/scripts/`, logs dans `logs/`, supprimer après usage.

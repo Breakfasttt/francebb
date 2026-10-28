@@ -12,4 +12,4 @@ Plan : `docs/adr/0001-plan-refacto.md` (P3).
 
 App déplacée en `apps/site`, CI + smoke identiques, preview Vercel OK, procédure de rollback testée.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

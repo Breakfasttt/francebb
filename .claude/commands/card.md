@@ -1,5 +1,5 @@
 ---
-description: Transforme une demande en carte kanban (frontmatter) à valider
+description: Transforme une demande en carte kanban à valider
 argument-hint: <demande>
 ---
 
@@ -9,6 +9,6 @@ Demande : **$ARGUMENTS**
 2. Repérer les fichiers concernés (`fichier:ligne`) et l'épic de rattachement (`kanban/epics/`).
 3. Proposer au user la carte : titre, epic, app, `depends_on`, problème, action, critère `verify` (commande ou vérification observable).
    Décision irréversible (auth, schéma, dépendance, découpage) ? Proposer `/council` d'abord.
-4. Sur validation : écrire `kanban/NNN-<slug>.md` (numéro = max existant + 1, `status: ready` ou `refine`), puis `npm run board`.
+4. Sur validation : écrire `kanban/a-faire/NNN-<slug>.md` (numéro = plus grand numéro existant dans tous les dossiers + 1, sans champ `status`), puis `pnpm kanban` pour vérifier.
 
 Ne pas coder pendant `/card`.

@@ -12,4 +12,4 @@ Plan : `docs/adr/0001-plan-refacto.md` (P6).
 
 `[bbscheme]` rendu dans les posts via `packages/bbscheme-player`, SSO automatique entre site et scheme.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

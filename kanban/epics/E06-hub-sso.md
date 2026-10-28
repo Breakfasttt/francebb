@@ -12,4 +12,4 @@ Plan : `docs/adr/0001-plan-refacto.md` (P5).
 
 Les 9 comptes se reconnectent via le hub sans re-onboarding, SSO silencieux site↔hub, ban propagé, flag `AUTH_MODE=legacy` disponible 30 jours.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

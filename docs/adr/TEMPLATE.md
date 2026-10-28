@@ -26,4 +26,4 @@ Risques acceptés et mitigations (rollback, flag, backup).
 
 ## Cartes
 
-`kanban/NNN-*.md` créées ou impactées.
+Cartes (`kanban/<état>/NNN-*.md`) créées ou impactées.

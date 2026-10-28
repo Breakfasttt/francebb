@@ -12,4 +12,4 @@ Plan : `docs/adr/0001-plan-refacto.md` (P0).
 
 Failles connues fermées, CI verte (typecheck, cliquet lint, build, smoke), baseline chiffrée commitée.
 
-Cartes et avancement : voir `kanban/BOARD.md`.
+Cartes : `pnpm kanban` ou les dossiers de `kanban/` (champ `epic` de chaque carte).

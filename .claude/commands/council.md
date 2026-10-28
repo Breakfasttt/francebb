@@ -14,4 +14,4 @@ Réservé aux décisions irréversibles ou structurantes : épic, ADR, auth, sch
 5. **Attendre la validation du user.** Ensuite seulement :
    - écrire `docs/adr/NNNN-<slug>.md` (numéro suivant, format `docs/adr/TEMPLATE.md`, statut `accepté`) ;
    - créer les cartes listées (voir `/card`) avec `adr: NNNN` ;
-   - `npm run board`.
+   - `pnpm kanban` pour vérifier.
