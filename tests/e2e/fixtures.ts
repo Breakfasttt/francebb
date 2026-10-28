@@ -13,6 +13,12 @@ export const E2E = {
   topicId: "e2e_topic",
   topicTitle: "E2E Topic de test",
   postContent: "Premier message du topic e2e",
+  modoId: "e2e_modo",
+  secretCategoryName: "E2E Catégorie Modo",
+  secretForumId: "e2e_secret_forum",
+  secretForumName: "E2E Forum Secret",
+  secretTopicId: "e2e_secret_topic",
+  secretTopicTitle: "E2E Topic Secret",
 };
 
 export async function loginAs(page: Page, userId: string) {

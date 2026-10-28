@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
 import { getUnreadState } from "@/app/forum/unreadState";
+import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function getUnreadMessagesCount() {
@@ -33,64 +34,15 @@ export async function getUnreadMessagesCount() {
   });
 }
 
-export async function getRecentPosts(limit: number = 3) {
-  const session = await getActiveSession();
-  const userId = session?.user?.id;
-
-  const topics = await prisma.topic.findMany({
-    take: limit,
-    orderBy: {
-      updatedAt: "desc"
-    },
-    where: {
-      isArchived: false
-    },
-    include: {
-      forum: true,
-      _count: {
-        select: { posts: true }
-      },
-      topicViews: {
-        where: { userId: userId || "" }
-      },
-      posts: {
-        where: { isDeleted: false },
-        orderBy: { createdAt: "desc" },
-        take: 1,
-        include: { author: true }
-      }
-    }
-  });
-
-  return topics
-    .filter(t => t.posts.length > 0)
-    .map(topic => {
-      const lastPost = topic.posts[0];
-      return {
-        id: lastPost.id,
-        createdAt: lastPost.createdAt,
-        author: lastPost.author,
-        topic: {
-          id: topic.id,
-          title: topic.title,
-          updatedAt: topic.updatedAt,
-          topicViews: topic.topicViews,
-          _count: topic._count,
-          forum: topic.forum,
-          tournamentId: topic.tournamentId
-        },
-        isRead: topic.topicViews[0] ? topic.updatedAt <= topic.topicViews[0].lastViewedAt : false
-      };
-    });
-}
-
 export async function getRandomPostUrl() {
-  const count = await prisma.topic.count({ where: { isArchived: false } });
+  const { roles } = await getForumAccess();
+  const where = { isArchived: false, ...topicAccessWhere(roles) };
+  const count = await prisma.topic.count({ where });
   if (count === 0) return "/forum";
 
   const skip = Math.floor(Math.random() * count);
   const randomTopic = await prisma.topic.findFirst({
-    where: { isArchived: false },
+    where,
     skip: skip,
     select: { id: true }
   });
@@ -217,8 +169,9 @@ export async function getUnreadTopics(page: number = 1, limit: number = 20) {
 
   // Récupérer tous les sujets potentiels (non archivés)
   // On récupère uniquement le minimum pour le filtrage
+  const { roles } = await getForumAccess();
   const allTopics = await prisma.topic.findMany({
-    where: { isArchived: false },
+    where: { isArchived: false, ...topicAccessWhere(roles) },
     select: {
       id: true,
       updatedAt: true,
@@ -358,29 +311,34 @@ export async function getQuoteStatusMap(contents: string[]) {
   return map;
 }
 
+// Listes de structure : server actions appelables par tous, donc filtrées par rôle (lib/forumAccess.ts)
 export async function getCategories() {
+  const { roles } = await getForumAccess();
   return await prisma.category.findMany({
+    where: { allowedRoles: { in: roles } },
     orderBy: { order: "asc" }
   });
 }
 
 export async function getForums() {
+  const { roles } = await getForumAccess();
   return await prisma.forum.findMany({
-    where: { parentForumId: null },
+    where: { parentForumId: null, ...forumAccessWhere(roles) },
     orderBy: { order: "asc" }
   });
 }
 
 export async function getSiblings(categoryId?: string | null, parentForumId?: string | null) {
+  const { roles } = await getForumAccess();
   if (parentForumId) {
     return await prisma.forum.findMany({
-      where: { parentForumId },
+      where: { parentForumId, ...forumAccessWhere(roles) },
       orderBy: { order: 'asc' }
     });
   }
   if (categoryId) {
     return await prisma.forum.findMany({
-      where: { categoryId, parentForumId: null },
+      where: { categoryId, parentForumId: null, ...forumAccessWhere(roles) },
       orderBy: { order: 'asc' }
     });
   }
@@ -388,7 +346,9 @@ export async function getSiblings(categoryId?: string | null, parentForumId?: st
 }
 
 export async function getAllForums() {
+  const { roles } = await getForumAccess();
   return await prisma.forum.findMany({
+    where: forumAccessWhere(roles),
     orderBy: { order: 'asc' }
   });
 }
@@ -478,11 +438,13 @@ export async function createTopic(formData: FormData) {
     throw new Error(`Titre, contenu et forum sont obligatoires. (Titre: ${!!title}, Contenu: ${!!content}, Forum: ${!!forumId})`);
   }
 
-  // Vérifier si le forum est locké ou un forum de tournoi
-  const forum = await prisma.forum.findUnique({
-    where: { id: forumId },
+  // Vérifier l'accès (rôle), si le forum est locké ou un forum de tournoi
+  const { roles } = await getForumAccess();
+  const forum = await prisma.forum.findFirst({
+    where: { id: forumId, ...forumAccessWhere(roles) },
     select: { isLocked: true, isTournamentForum: true }
   });
+  if (!forum) throw new Error("Forum introuvable.");
 
   if (forum?.isLocked && !isModerator(session.user.role)) {
     throw new Error("Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet.");
@@ -617,9 +579,10 @@ export async function createPost(topicId: string, content: string) {
   }
   if (!content) throw new Error("Le contenu est obligatoire.");
 
-  // Vérifier si le topic ou le forum est locké
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId },
+  // Vérifier l'accès (rôle) et si le topic ou le forum est locké
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, ...topicAccessWhere(roles) },
     include: { forum: { select: { isLocked: true } } }
   });
 
@@ -758,15 +721,17 @@ export async function updatePost(postId: string, content: string) {
 }
 
 export async function getPostById(postId: string) {
-  return await prisma.post.findUnique({
-    where: { id: postId },
+  const { roles } = await getForumAccess();
+  return await prisma.post.findFirst({
+    where: { id: postId, topic: topicAccessWhere(roles) },
     include: { author: true, topic: true }
   });
 }
 
 export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
+  const { roles } = await getForumAccess();
   return await prisma.post.findMany({
-    where: { topicId },
+    where: { topicId, topic: topicAccessWhere(roles) },
     take: limit,
     orderBy: { createdAt: "desc" },
     include: { author: true }
@@ -1198,15 +1163,19 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
   const skip = (page - 1) * limit;
 
   try {
+    // Sujets suivis encore accessibles au rôle actuel
+    const { roles } = await getForumAccess();
+    const followWhere = { userId, topic: topicAccessWhere(roles) };
+
     // 1. Get total count
     const totalCount = await (prisma as any).topicFollow.count({
-      where: { userId }
+      where: followWhere
     });
     const totalPages = Math.ceil(totalCount / limit);
 
     // 2. Get paginated results with included Topic and TopicView
     const follows = await (prisma as any).topicFollow.findMany({
-      where: { userId },
+      where: followWhere,
       skip,
       take: limit,
       include: {

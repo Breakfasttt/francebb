@@ -7,22 +7,23 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ForumCategory, { type ForumIndexCategory } from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
 import { getUnreadState } from "@/app/forum/unreadState";
+import { getForumAccess } from "@/lib/forumAccess";
 
 import { unstable_cache } from "next/cache";
 
-// Structure du forum partagée par tous les visiteurs d'une même audience (anonyme / membre) :
+// Structure du forum partagée par tous les visiteurs d'un même niveau d'accès (rôles accessibles, lib/forumAccess.ts) :
 // seul le dernier topic de chaque forum est chargé. L'état « non lu », propre à chaque user, est calculé hors cache.
 const getCachedCategories = unstable_cache(
-  async (audience: "anonymous" | "member"): Promise<ForumIndexCategory[]> => {
-    const publicOnly = audience === "anonymous" ? { allowedRoles: "ALL" } : {};
+  async (roles: string[]): Promise<ForumIndexCategory[]> => {
+    const accessible = { allowedRoles: { in: roles } };
     return prisma.category.findMany({
-      where: publicOnly,
+      where: accessible,
       orderBy: { order: "asc" },
       select: {
         id: true,
         name: true,
         forums: {
-          where: { parentForumId: null, ...publicOnly },
+          where: { parentForumId: null, ...accessible },
           orderBy: { order: "asc" },
           select: {
             id: true,
@@ -37,13 +38,13 @@ const getCachedCategories = unstable_cache(
               take: 1,
               select: { title: true, updatedAt: true, tournamentId: true, author: { select: { name: true } } },
             },
-            subForums: { where: publicOnly, select: { id: true } },
+            subForums: { where: accessible, select: { id: true } },
           },
         },
       },
     });
   },
-  ["forum-categories-list-v2"],
+  ["forum-categories-list-v3"],
   { revalidate: 60, tags: ["forum-categories"] }
 );
 
@@ -51,8 +52,9 @@ export default async function ForumPage() {
   const session = await getActiveSession();
   const userId = session?.user?.id;
 
+  const access = await getForumAccess();
   const [categories, unread] = await Promise.all([
-    getCachedCategories(userId ? "member" : "anonymous"),
+    getCachedCategories(access.roles),
     userId ? getUnreadState(userId) : null,
   ]);
 

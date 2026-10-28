@@ -24,11 +24,11 @@ Forum communautaire : catégories → forums → sous-forums → topics → post
 
 - Aucune donnée propre à un user dans un cache partagé : le cache de l'accueil ne contient que la structure, le non-lu est calculé à part.
 - Ne charger que ce qui est affiché (`select`), jamais un `User` complet vers un composant client.
-- Anonyme : seulement `allowedRoles: "ALL"`.
+- Accès par rôle : toute lecture/écriture de catégorie, forum, topic ou post passe par `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`). `allowedRoles` = « ce rôle et supérieurs » ; une restriction de catégorie ou de forum parent s'applique aux forums en dessous. Accès direct refusé : login pour l'anonyme, 404 pour un membre. Les server actions sont des endpoints publics : filtrer aussi les lectures.
 
 ## État
 
 - Carte 014 (faite) : `/forum` connecté 16 → 6 requêtes, anonyme 5 → 0 (cache chaud).
-- À vérifier : un membre connecté voit toutes les catégories quel que soit `allowedRoles` (seul l'anonyme est filtré) — comportement hérité, à confirmer.
-- `getRecentPosts` (`actions.ts`) n'a plus aucun appelant (la sidebar le chargeait sans l'afficher) : à supprimer.
+- Carte 028 (faite) : accès par rôle appliqué (accueil, forum, topic, réponse, édition, nouveau sujet/tournoi, recherche + API, non-lus, sujet au hasard, suivis, activité profil). Coût : +1 requête connecté (lecture `RoleConfig`).
+- `getRecentPosts` supprimée (aucun appelant). `getForums`, `getSiblings` sans appelant, filtrées par rôle.
 - Cartes ouvertes : 015, 016, 020.

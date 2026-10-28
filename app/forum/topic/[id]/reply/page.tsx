@@ -6,6 +6,7 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { notFound, redirect } from "next/navigation";
+import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import ReplyForm from "@/app/forum/component/ReplyForm";
@@ -44,6 +45,8 @@ export default async function ReplyPage({
   });
 
   if (!topic) notFound();
+  const { roles } = await getForumAccess();
+  if (!canAccessForum(topic.forum, roles)) notFound();
 
   // Handle quote if requested
   let quoteData = null;

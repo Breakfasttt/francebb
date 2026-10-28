@@ -16,6 +16,11 @@ export default async function globalSetup() {
     update: {},
     create: { name: "COACH", label: "Coach", power: 10, isBaseRole: true },
   });
+  await prisma.roleConfig.upsert({
+    where: { name: "MODERATOR" },
+    update: {},
+    create: { name: "MODERATOR", label: "Modérateur", power: 70, isBaseRole: true },
+  });
 
   await prisma.user.upsert({
     where: { id: E2E.coachId },
@@ -33,6 +38,12 @@ export default async function globalSetup() {
       isBanned: true,
       banReason: "Test e2e",
     },
+  });
+
+  await prisma.user.upsert({
+    where: { id: E2E.modoId },
+    update: {},
+    create: { id: E2E.modoId, name: "Modo E2E", email: "modo@e2e.test", role: "MODERATOR", hasFinishedOnboarding: true },
   });
 
   const category = await prisma.category.upsert({
@@ -54,6 +65,29 @@ export default async function globalSetup() {
       forumId: forum.id,
       authorId: E2E.coachId,
       posts: { create: { content: E2E.postContent, authorId: E2E.coachId } },
+    },
+  });
+
+  // Catégorie réservée aux modérateurs (allowedRoles = « ce rôle et supérieurs »)
+  const secretCategory = await prisma.category.upsert({
+    where: { name: E2E.secretCategoryName },
+    update: {},
+    create: { name: E2E.secretCategoryName, allowedRoles: "MODERATOR" },
+  });
+  const secretForum = await prisma.forum.upsert({
+    where: { name: E2E.secretForumName },
+    update: {},
+    create: { id: E2E.secretForumId, name: E2E.secretForumName, categoryId: secretCategory.id },
+  });
+  await prisma.topic.upsert({
+    where: { id: E2E.secretTopicId },
+    update: {},
+    create: {
+      id: E2E.secretTopicId,
+      title: E2E.secretTopicTitle,
+      forumId: secretForum.id,
+      authorId: E2E.modoId,
+      posts: { create: { content: "Message réservé aux modérateurs", authorId: E2E.modoId } },
     },
   });
 

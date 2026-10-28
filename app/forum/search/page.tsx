@@ -7,6 +7,7 @@ import Pagination from "@/common/components/Pagination/Pagination";
 import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
 import { auth } from "@/auth";
+import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { isModerator } from "@/lib/roles";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -45,7 +46,7 @@ function highlightKeyword(text: string, query: string, currentUserId?: string) {
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
-  const session = await auth();
+  const [session, { roles }] = await Promise.all([auth(), getForumAccess()]);
   const params = await searchParams;
   
   const q = (params.q as string) || "";
@@ -59,10 +60,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const skip = (page - 1) * POSTS_PER_PAGE;
 
   // 1. Fetch Forums for the select options
+  // Seulement les catégories / forums accessibles au rôle (lib/forumAccess.ts)
   const allCategories = await prisma.category.findMany({
+    where: { allowedRoles: { in: roles } },
     orderBy: { order: "asc" }
   });
   const allForumsDB = await prisma.forum.findMany({
+    where: forumAccessWhere(roles),
     orderBy: { name: "asc" }
   });
 
@@ -84,7 +88,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   // 2. Build Query Filters
   let whereClause: any = { 
     isDeleted: false,
-    topic: { isArchived: false }
+    topic: { isArchived: false, ...topicAccessWhere(roles) }
   };
   
   const isMod = isModerator(session?.user?.role);

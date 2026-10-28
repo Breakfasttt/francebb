@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -9,12 +10,14 @@ export async function GET(request: Request) {
     return NextResponse.json([]);
   }
 
+  const { roles } = await getForumAccess();
   const topics = await prisma.topic.findMany({
     where: {
       title: {
         contains: query,
       },
       isArchived: false,
+      ...topicAccessWhere(roles),
     },
     take: 10,
     select: {

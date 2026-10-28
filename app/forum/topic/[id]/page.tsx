@@ -7,7 +7,8 @@ import RegistrationModule from "@/app/forum/component/RegistrationModule";
 import TopicSidebar from "@/app/forum/component/TopicSidebar";
 import TournamentSummary from "@/app/forum/component/TournamentSummary";
 import TournamentResultWidget from "@/app/forum/component/TournamentResultWidget";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
+import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
@@ -27,7 +28,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const { id } = await params;
   const { page: pageStr } = await searchParams;
 
-  const session = await auth();
+  const [session, { roles }] = await Promise.all([getActiveSession(), getForumAccess()]);
   const currentUserId = session?.user?.id;
 
   // Récupérer les blocages de l'utilisateur courant
@@ -141,9 +142,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   if (!topic) notFound();
 
-  // Sécurité : Accès restreint si non "ALL" pour les invités
-  if (!currentUserId && topic.forum.allowedRoles !== "ALL") {
-    redirect("/auth/login?callback=/forum/topic/" + id);
+  // Sécurité : forum du topic (ou sa catégorie / son forum parent) réservé à un rôle supérieur
+  if (!canAccessForum(topic.forum, roles)) {
+    if (!currentUserId) redirect("/auth/login?callback=/forum/topic/" + id);
+    notFound();
   }
 
   // Si c'est un tournoi et qu'on n'est pas sur la page 1, on récupère le premier message

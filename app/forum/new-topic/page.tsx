@@ -7,6 +7,7 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import "../page.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
+import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { createTopic } from "../actions";
 import { prisma } from "@/lib/prisma";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
@@ -34,6 +35,8 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
   });
 
   if (!forum) notFound();
+  const { roles } = await getForumAccess();
+  if (!canAccessForum(forum, roles)) notFound();
 
   const session = await auth();
   if (!session?.user?.id) {

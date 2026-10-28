@@ -6,6 +6,7 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { notFound, redirect } from "next/navigation";
+import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import EditPostForm from "@/app/forum/component/EditPostForm";
@@ -47,6 +48,8 @@ export default async function EditPostPage({
   });
 
   if (!post) notFound();
+  const { roles } = await getForumAccess();
+  if (!canAccessForum(post.topic.forum, roles)) notFound();
 
   // Check permission
   const canEdit = post.authorId === session.user.id || isModerator(session.user.role);

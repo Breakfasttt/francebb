@@ -56,3 +56,24 @@ test("aucun email d'auteur dans les pages et API publiques", async ({ page, requ
     expect(await connected.text(), `${path} connecté`).not.toContain(E2E.coachEmail);
   }
 });
+
+test("un coach ne voit ni n'ouvre le contenu réservé aux modérateurs", async ({ page }) => {
+  await loginAs(page, E2E.coachId);
+  await page.goto("/forum");
+  await expect(page.getByText(E2E.forumName).first()).toBeVisible();
+  await expect(page.getByText(E2E.secretForumName)).toHaveCount(0);
+  await expect(page.getByText(E2E.secretCategoryName)).toHaveCount(0);
+
+  expect((await page.request.get(`/forum/${E2E.secretForumId}`)).status()).toBe(404);
+  expect((await page.request.get(`/forum/topic/${E2E.secretTopicId}?page=1`)).status()).toBe(404);
+  const search = await page.request.get("/api/forum/topics/search?q=Secret");
+  expect(await search.text()).not.toContain(E2E.secretTopicTitle);
+});
+
+test("un modérateur voit et ouvre le contenu réservé", async ({ page }) => {
+  await loginAs(page, E2E.modoId);
+  await page.goto("/forum");
+  await expect(page.getByText(E2E.secretForumName).first()).toBeVisible();
+  await page.goto(`/forum/topic/${E2E.secretTopicId}?page=1`);
+  await expect(page.getByText("Message réservé aux modérateurs").first()).toBeVisible();
+});

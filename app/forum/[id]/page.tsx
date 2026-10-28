@@ -1,4 +1,5 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
+import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Trophy, Lock as LockIcon } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
@@ -16,7 +17,7 @@ const TOPICS_PER_PAGE = 30;
 const MAX_SUBFORUMS = 10;
 
 export default async function ForumDetailPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ page?: string }> }) {
-  const session = await auth();
+  const [session, { roles }] = await Promise.all([getActiveSession(), getForumAccess()]);
   const userId = session?.user?.id;
   const { id } = await params;
   const { page: pageStr } = await searchParams;
@@ -29,7 +30,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     include: {
       category: true,
       subForums: {
-        where: !userId ? { allowedRoles: "ALL" } : {},
+        where: { allowedRoles: { in: roles } },
         orderBy: { order: "asc" },
         take: MAX_SUBFORUMS,
         include: {
@@ -55,9 +56,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
   if (!forum) notFound();
 
-  // Sécurité : Accès restreint si non "ALL" pour les invités
-  if (!userId && forum.allowedRoles !== "ALL") {
-    redirect("/auth/login?callback=/forum/" + id);
+  // Sécurité : forum (ou catégorie / forum parent) réservé à un rôle supérieur
+  if (!canAccessForum(forum, roles)) {
+    if (!userId) redirect("/auth/login?callback=/forum/" + id);
+    notFound();
   }
 
   // Count total topics for pagination

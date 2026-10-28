@@ -1,6 +1,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -149,8 +150,9 @@ export async function getUserStats(userId: string) {
 
 export async function getUserActivity(userId: string, limit: number = 5) {
   // Return last posts/topics
+  const { roles } = await getForumAccess();
   const posts = await prisma.post.findMany({
-    where: { authorId: userId, isDeleted: false },
+    where: { authorId: userId, isDeleted: false, topic: topicAccessWhere(roles) },
     orderBy: { createdAt: "desc" },
     take: limit,
     include: {
@@ -371,8 +373,9 @@ export async function sendTestNewsletter() {
   if (!session?.user?.email) throw new Error("Email non trouvé");
 
   // 1. Récupérer les 3 topics les plus populaires (plus de vues)
+  const { roles: accessRoles } = await getForumAccess();
   const popularTopics = await prisma.topic.findMany({
-    where: { isArchived: false },
+    where: { isArchived: false, ...topicAccessWhere(accessRoles) },
     take: 3,
     orderBy: { views: "desc" },
     include: { forum: { select: { name: true } } }
