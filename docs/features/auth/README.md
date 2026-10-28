@@ -2,7 +2,7 @@
 
 ## Rôle
 
-Connexion des coachs (Discord, Google, lien magique par email), onboarding du profil, rôles (RBAC) et bannissement. Sera remplacée par le hub SSO en P5 (épic E06).
+Connexion des coachs (Discord, Google, lien magique par email), onboarding du profil, rôles (RBAC) et bannissement. Le hub d'identité (`apps/hub`, ADR-0003) est prêt derrière `AUTH_MODE=hub` ; défaut `legacy` = ce document.
 
 ## Fichiers clés
 
@@ -32,6 +32,6 @@ Connexion des coachs (Discord, Google, lien magique par email), onboarding du pr
 ## État
 
 - Fait (P0) : ban appliqué côté serveur dans les 16 fichiers d'actions.
-- Dette : `allowDangerousEmailAccountLinking: true` sur Discord et Google (`auth.ts`) — à retirer au plus tard en P5.
+- Dette : `allowDangerousEmailAccountLinking: true` sur Discord et Google (`auth.ts`) — disparaît avec le passage au hub (carte 036). Le provider `hub` l'utilise aussi, mais seulement pour un email certifié (`email_verified`, contrôlé dans `signIn`).
 - Coût perf : la relecture BDD dans `jwt` ajoute une requête par `auth()` (carte 017).
 - Pas de test smoke du refus d'une action par un banni (carte 002).

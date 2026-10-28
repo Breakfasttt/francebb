@@ -11,7 +11,7 @@
 | [E03 — Performance, forum mobile d'abord](epics/E03-perf-forum.md) | P2 | 5/8 | [017](017-layout-dynamique.md) [018](018-cache-components.md) [019](019-images-bundles.md) |
 | [E04 — Monorepo pnpm + Turborepo](epics/E04-monorepo.md) | P3 | 1/1 | — |
 | [E05 — UI shadcn/ui + Tailwind v4](epics/E05-ui-shadcn.md) | P4 | 6/7 | [013](013-eslint-archi.md) |
-| [E06 — Hub d'identité SSO (Better Auth + OIDC)](epics/E06-hub-sso.md) | P5 | 0/1 | [022](022-spike-better-auth.md) |
+| [E06 — Hub d'identité SSO (Better Auth + OIDC)](epics/E06-hub-sso.md) | P5 | 1/6 | [035](035-hub-deploiement.md) [036](036-hub-migration-comptes.md) [037](037-hub-ban-deconnexion.md) [038](038-hub-liens-magiques.md) [039](039-widget-bbaccount.md) |
 | [E07 — BBScheme en app séparée](epics/E07-bbscheme.md) | P6 | 0/1 | [024](024-extraction-bbscheme.md) |
 
 ## Prêtes (4)
@@ -23,18 +23,22 @@
 | [019](019-images-bundles.md) | next/image + import dynamique html2canvas/gifshot | E03 | — | — |
 | [025](025-spike-migrate-turso.md) | Spike : Prisma Migrate contre une copie Turso | E02 | 011 | 0002 |
 
-## À raffiner (6)
+## À raffiner (10)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
 | [013](013-eslint-archi.md) | Règles ESLint d'architecture | E05 | — | — |
 | [017](017-layout-dynamique.md) | Layout sans force-dynamic + jwt throttlé | E03 | — | — |
 | [018](018-cache-components.md) | Activer cacheComponents | E03 | 017 | — |
-| [022](022-spike-better-auth.md) | Spike B : Better Auth OIDC + Prisma 7 + Turso | E06 | — | — |
-| [024](024-extraction-bbscheme.md) | Extraire bbscheme en app + packages/bbscheme-player | E07 | 022 | — |
+| [024](024-extraction-bbscheme.md) | Extraire bbscheme en app + packages/bbscheme-player | E07 | — | — |
 | [026](026-script-db-deploy.md) | Script npm run db:deploy | E02 | 025, 012 | 0002 |
+| [035](035-hub-deploiement.md) | Déployer le hub sur un domaine parent commun | E06 | — | 0003 |
+| [036](036-hub-migration-comptes.md) | Migrer les 9 comptes vers le hub | E06 | 035, 011 | 0003 |
+| [037](037-hub-ban-deconnexion.md) | Ban global et déconnexion propagés | E06 | — | 0003 |
+| [038](038-hub-liens-magiques.md) | Envoi des liens magiques du hub | E06 | — | 0003 |
+| [039](039-widget-bbaccount.md) | Widget <BBAccount/> et packages/auth-client | E06 | 035 | 0003 |
 
-## Terminées (24)
+## Terminées (25)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
@@ -53,6 +57,7 @@
 | [016](016-forum-topic.md) | Page topic : include factorisé, forums de déplacement si modo | E03 | — | — |
 | [020](020-n-plus-un.md) | Supprimer les N+1 forum et tournois | E03 | — | — |
 | [021](021-spike-tailwind-layer.md) | Spike A : CSS legacy en @layer sous Tailwind v4 | E05 | — | — |
+| [022](022-spike-better-auth.md) | Spike B : Better Auth OIDC + Prisma 7 + Turso | E06 | — | 0003 |
 | [023](023-monorepo.md) | Passage monorepo pnpm + Turborepo | E04 | — | — |
 | [027](027-ci-migrations.md) | CI : migrations à jour du schéma | E02 | — | 0002 |
 | [028](028-acces-roles-forum.md) | Accès forum par rôle (allowedRoles) pour les membres connectés | E03 | — | — |

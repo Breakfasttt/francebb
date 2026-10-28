@@ -2,9 +2,9 @@
 
 Référence courte pour humains et IA. Décisions détaillées : `docs/adr/`. Plan en cours : `docs/adr/0001-plan-refacto.md`.
 
-## Aujourd'hui (P3 : monorepo)
+## Aujourd'hui (P5 : hub en préparation)
 
-Monorepo pnpm + Turborepo. Une seule app pour l'instant, `apps/site` (Next.js 16 App Router) ; les chemins ci-dessous sont relatifs à `apps/site`, sauf `kanban/`, `docs/`, `.claude/` (racine).
+Monorepo pnpm + Turborepo. Apps : `apps/site` (Next.js 16 App Router, en prod) et `apps/hub` (identité, Better Auth + OIDC, ADR-0003, pas encore en prod). Paquet partagé : `packages/ui`. Pour `apps/site`, les chemins ci-dessous sont relatifs à `apps/site`, sauf `kanban/`, `docs/`, `.claude/` (racine).
 
 | Dossier | Contenu | Règle |
 |---|---|---|

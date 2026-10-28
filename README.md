@@ -126,6 +126,7 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 | `pnpm lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `apps/site/lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). Dans `apps/site` : `node scripts/lint-ratchet.mjs --update` abaisse le plafond quand la dette baisse. |
 | `pnpm test:e2e` | Tests smoke Playwright (`apps/site/tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `pnpm --filter @bbfrance/site exec playwright install chromium`. |
 | `node scripts/baseline.mjs` (dans `apps/site`) | Mesures perf par route (après `pnpm build`), voir `docs/baseline.md`. |
+| `pnpm --filter @bbfrance/hub test:sso` | Test de bout en bout du hub d'identité : lance le hub (port 4100) et le site en `AUTH_MODE=hub` (port 3200) sur des bases jetables, vérifie connexion, reconnexion silencieuse et refus d'un email non vérifié. |
 | `pnpm board` | Régénère `kanban/BOARD.md` depuis les cartes (`pnpm board --check` : vérifie qu'il est à jour). |
 
 ### 🗂️ Structure du repo (monorepo)
@@ -133,13 +134,14 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 | Dossier | Contenu |
 |---|---|
 | `apps/site/` | Le site Next.js (forum, tournois, profils…) : tout le code de l'app, son `package.json`, Prisma, tests |
-| `apps/hub/`, `apps/bbscheme/` | À venir (hub d'identité SSO, éditeur BBScheme) |
-| `packages/` | Code partagé entre apps (à venir : `ui`, `config`, `auth-client`…) |
+| `apps/hub/` | Hub d'identité (Better Auth + OIDC) : connexion unique pour toutes les apps. **Pas encore en prod** : le site l'utilise seulement si `AUTH_MODE=hub` (voir `DEPLOY.md`, Phase 6). |
+| `apps/bbscheme/` | À venir (éditeur BBScheme) |
+| `packages/ui/` | Composants partagés (shadcn/ui : Radix + Tailwind v4), notifications, tokens des 7 thèmes |
 | `kanban/`, `docs/`, `.claude/` | Organisation, décisions, outillage IA (communs à tout le repo) |
 
 pnpm est en mode strict : une app ne peut utiliser que les dépendances déclarées dans **son** `package.json` (garde-fou des frontières). Les versions sont figées (`pnpm-lock.yaml`).
 
-La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban puis lance typecheck, cliquet ESLint, build et tests smoke sur chaque push (`development`, `master`) et chaque PR.
+La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban et les schémas Prisma (site et hub) puis lance typecheck, cliquet ESLint, build, tests smoke et test SSO sur chaque push (`development`, `master`) et chaque PR.
 
 ### 🧭 Organisation du développement
 

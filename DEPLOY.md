@@ -197,6 +197,22 @@ Si vous ne voulez pas de l'adresse par défaut `...vercel.app`, vous pouvez util
 
 ---
 
+## 🔐 Phase 6 : Hub de connexion unique (pas encore activé)
+
+Le hub (`apps/hub`) donne un seul compte BBFrance pour le site, BBScheme et les futures apps. **Tant que `AUTH_MODE` n'est pas réglé sur `hub`, le site fonctionne comme avant** : cette phase est à faire plus tard (cartes 035 et 036, ADR-0003).
+
+1.  **Domaine commun obligatoire** : le hub et le site doivent partager un domaine parent (ex. `auth.bbfrance.fr` et `www.bbfrance.fr`). Sans ça, Safari bloque la reconnexion automatique.
+2.  **Deuxième base Turso** pour le hub (il ne stocke que les comptes et les connexions).
+3.  **Deuxième projet Vercel**, *Root Directory* = `apps/hub`, avec les variables :
+    *   `BETTER_AUTH_URL` = `https://auth.votredomaine.fr`, `BETTER_AUTH_SECRET` (`openssl rand -base64 32`)
+    *   `HUB_DATABASE_URL` / `HUB_DATABASE_AUTH_TOKEN` (base Turso du hub)
+    *   `DISCORD_CLIENT_ID/SECRET`, `GOOGLE_CLIENT_ID/SECRET` : URL de retour à déclarer chez Discord/Google : `https://auth.votredomaine.fr/api/auth/callback/discord` (et `/google`)
+4.  **Créer les tables du hub** : depuis `apps/hub`, `pnpm exec prisma migrate deploy` (avec les variables de la base du hub).
+5.  **Enregistrer le site comme application cliente** : `node --env-file=.env scripts/register-client.mjs "BBFrance site" https://www.votredomaine.fr/api/auth/callback/hub`. Le secret n'est affiché **qu'une fois**.
+6.  **Sur le projet Vercel du site** : `AUTH_MODE=hub`, `HUB_ISSUER=https://auth.votredomaine.fr/api/auth`, `HUB_CLIENT_ID`, `HUB_CLIENT_SECRET`. Retour arrière immédiat : remettre `AUTH_MODE=legacy` et redéployer.
+
+---
+
 ## 🆘 Aide : Les erreurs courantes
 
 *   **"Prisma Client could not be initialized"** : Vérifiez que votre `DATABASE_URL` sur Vercel contient bien le `?authToken=...` à la fin.

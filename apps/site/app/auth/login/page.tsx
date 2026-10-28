@@ -1,4 +1,4 @@
-import { signIn, auth } from "@/auth";
+import { signIn, auth, isHubAuthMode } from "@/auth";
 import { redirect } from "next/navigation";
 import "./page.css";
 import { Mail, LogIn } from "lucide-react";
@@ -30,7 +30,8 @@ export default async function LoginPage(props: {
   const isGoogleEnabled = !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
   const isEmailEnabled = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
 
-  const hasAnyMethod = isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
+  const isHubEnabled = isHubAuthMode;
+  const hasAnyMethod = isHubEnabled || isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
   
   // Récupération des comptes de test en mode dev (aligné avec DebugAuthWidget)
   const devUsers = process.env.NODE_ENV === "development" 
@@ -70,6 +71,20 @@ export default async function LoginPage(props: {
             <div className="auth-error">
               L'authentification n'est pas encore configurée sur ce serveur.
             </div>
+          )}
+
+          {/* Hub d'identité (AUTH_MODE=hub) */}
+          {isHubEnabled && (
+            <form
+              action={async () => {
+                "use server";
+                await signIn("hub", { redirectTo: callbackUrl });
+              }}
+            >
+              <CTAButton type="submit" fullWidth>
+                Se connecter avec le compte BBFrance
+              </CTAButton>
+            </form>
           )}
 
           {/* Discord */}

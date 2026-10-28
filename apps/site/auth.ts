@@ -27,10 +27,32 @@ declare module "next-auth" {
   }
 }
 
+/**
+ * Hub d'identité (P5, ADR-0003) : actif seulement si AUTH_MODE=hub. Sinon (défaut, "legacy") rien ne change.
+ * Le hub ne transmet que des emails vérifiés (contrôle dans signIn) : on peut rattacher au membre existant
+ * par email, sans re-onboarding. La table User du site reste la référence (projection locale du compte hub).
+ */
+export const isHubAuthMode = process.env.AUTH_MODE === "hub" && !!process.env.HUB_ISSUER;
+const hubProviders = isHubAuthMode
+  ? [
+      {
+        id: "hub",
+        name: "Compte BBFrance",
+        type: "oidc" as const,
+        issuer: process.env.HUB_ISSUER,
+        clientId: process.env.HUB_CLIENT_ID,
+        clientSecret: process.env.HUB_CLIENT_SECRET,
+        checks: ["pkce", "state"] as ("pkce" | "state")[],
+        allowDangerousEmailAccountLinking: true,
+      },
+    ]
+  : [];
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prismaWithEmail as unknown as Parameters<typeof PrismaAdapter>[0]),
   session: { strategy: "jwt" },
   providers: [
+    ...hubProviders,
     Discord({
       clientId: process.env.DISCORD_CLIENT_ID,
       clientSecret: process.env.DISCORD_CLIENT_SECRET,
@@ -78,7 +100,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
-    async signIn({ user }) {
+    async signIn({ user, account, profile }) {
+      // Hub : refuser un compte dont l'email n'est pas certifié (sinon rattachement à un membre usurpable)
+      if (account?.provider === "hub" && profile?.email_verified !== true) return false;
       if (!user?.email || !user?.id) return true;
       
       const superAdminEmails = (process.env.SUPERADMIN_EMAILS || "")
