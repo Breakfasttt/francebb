@@ -11,7 +11,7 @@ import {
   IndentDecrease, IndentIncrease, Plus, Settings2, Trophy, Trash2
 } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { getAllRoles } from "../actions";
 import {
   createCategory, createForum, deleteCategory, deleteForum,

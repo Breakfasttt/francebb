@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useSession } from "next-auth/react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { finishOnboarding } from "./actions";
 import { updateTheme, getReferenceDataAction } from "@/app/profile/actions";

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { OctagonAlert, Trash2, TriangleAlert } from "lucide-react";
 import { resetDatabase } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
 

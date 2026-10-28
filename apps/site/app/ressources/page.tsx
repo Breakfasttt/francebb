@@ -11,7 +11,7 @@ import { isAdmin, isModerator } from "@/lib/roles";
 import { Layout, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { deleteResourceAction, getResources } from "./actions";
 import ResourceCard from "./component/ResourceCard/ResourceCard";
 import ResourceFilterSidebar from "./component/ResourceFilterSidebar/ResourceFilterSidebar";

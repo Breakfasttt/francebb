@@ -9,7 +9,7 @@ import { Loader2, AlertTriangle } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { useSession } from "next-auth/react";
 import { isModerator, isAdmin } from "@/lib/roles";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 

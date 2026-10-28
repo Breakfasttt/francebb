@@ -25,7 +25,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from "@bbfrance/ui";
 import {
   archiveYear,
   deleteArchive,

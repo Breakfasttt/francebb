@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Upload, Loader2, Image as ImageIcon, X } from "lucide-react";
 import { siteConfig } from "@/lib/siteConfig";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import Toast from "@/common/components/Toast/Toast";
+import { toast } from "@bbfrance/ui";
 
 interface LigueBlasonUploadProps {
   initialImage?: string | null;
@@ -14,7 +14,6 @@ interface LigueBlasonUploadProps {
 export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlasonUploadProps) {
   const [image, setImage] = useState(initialImage || "");
   const [isUploading, setIsUploading] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -24,7 +23,7 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
 
     // Validation basique
     if (!file.type.startsWith("image/")) {
-      setToast({ message: "Veuillez sélectionner une image valide.", type: "error" });
+      toast.error("Veuillez sélectionner une image valide.");
       return;
     }
 
@@ -42,12 +41,12 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
 
       if (data.success) {
         setImage(data.data.url);
-        setToast({ message: "Blason uploadé avec succès !", type: "success" });
+        toast.success("Blason uploadé avec succès !");
       } else {
-        setToast({ message: `Erreur : ${data.error?.message || "Échec de l'upload"}`, type: "error" });
+        toast.error(`Erreur : ${data.error?.message || "Échec de l'upload"}`);
       }
     } catch (error) {
-      setToast({ message: "Erreur lors de l'upload de l'image.", type: "error" });
+      toast.error("Erreur lors de l'upload de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -56,7 +55,7 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
 
   const removeImage = () => {
     setImage("");
-    setToast({ message: "Blason supprimé (pensez à enregistrer)", type: "success" });
+    toast.success("Blason supprimé (pensez à enregistrer)");
   };
 
   return (
@@ -111,9 +110,6 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
 
       <input type="hidden" name="image" value={image} />
 
-      {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
-      )}
 
       <style jsx>{`
         .blason-upload-card {

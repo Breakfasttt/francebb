@@ -8,14 +8,22 @@ description: Inventaire des composants, hooks et helpers existants de BBFrance +
 Règle : chercher ici puis `grep` avant d'écrire. Créer seulement si rien ne couvre le besoin, et le dire dans la carte.
 Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà présente qui fait le job gagne toujours.
 
+## Paquet partagé (`packages/ui`, `@bbfrance/ui`)
+| Besoin | Utiliser |
+|---|---|
+| Classes conditionnelles | `cn` |
+| Notification | `toast`, `Toaster` (déjà monté dans le layout) |
+| Comportement de modale | `Dialog`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogTitle`, `DialogClose` |
+| Bouton pour nouveau code hors site | `Button` (variantes sur tokens) |
+
 ## Composants (`common/components/`)
 | Besoin | Utiliser |
 |---|---|
 | Bouton | `Button/` : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton` |
 | Champ / select | `Form/ClassicInput`, `Form/ClassicSelect` (jamais `<select>`) |
 | Conteneur carte | `PremiumCard` |
-| Modale / confirmation | `Modal`, `ConfirmModal`, `ReportModal` (jamais `window.confirm`) |
-| Notification | `Toast` |
+| Modale / confirmation | `Modal`, `ConfirmModal`, `ReportModal` (jamais `window.confirm`) ; modale spécifique : `Dialog*` de `@bbfrance/ui` |
+| Notification | `toast` de `@bbfrance/ui` (sonner) |
 | Info-bulle | `Tooltip` |
 | Onglets | `TabSystem` |
 | Pagination | `Pagination` |
@@ -49,8 +57,6 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Carte | `leaflet` / `react-leaflet` (déjà installé) |
 
 ## Doublons connus (ne pas en ajouter, fusion prévue en P4)
-- 2 systèmes de toast : `react-hot-toast` + `common/components/Toast` → cible `sonner`.
-- Overlays de modale réécrits ×4 → cible Dialog shadcn.
 - 4 recherches d'utilisateurs → cible une server action `searchUsers`.
 - Thème « Sombre » (`dark`) proposé dans l'onboarding et le profil mais sans CSS dédié : il affiche le thème par défaut.
 

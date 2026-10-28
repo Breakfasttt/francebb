@@ -5,7 +5,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { UserX, Shield, Trash2, Loader2, Info } from "lucide-react";
 import { getBlockedUsers, toggleBlockUser } from "@/app/profile/actions";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 
 export default function ProfileBlockedUsers() {
   const [blockedUsers, setBlockedUsers] = useState<any[]>([]);

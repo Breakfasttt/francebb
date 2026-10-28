@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { getSiteSetting, updateSiteSetting } from "../actions";
 import { Save, Globe, Link as LinkIcon, Loader2 } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 
 import CTAButton from "@/common/components/Button/CTAButton";

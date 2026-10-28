@@ -48,7 +48,7 @@ BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à sim
 - **Email** : [Resend](https://resend.com) ou SMTP générique via Nodemailer
 - **Style** : Vanilla CSS & Tailwind (variables CSS prioritaires)
 - **Composants** : [React 19](https://react.dev), [Lucide React](https://lucide.dev)
-- **Notifications** : [react-hot-toast](https://react-hot-toast.com)
+- **UI partagée** : `packages/ui` (shadcn/ui : Radix, Tailwind v4) — notifications [sonner](https://sonner.emilkowal.ski)
 
 ---
 

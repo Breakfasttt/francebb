@@ -39,10 +39,10 @@ Monorepo pnpm + Turborepo : `apps/site` (le site), `packages/*` (à venir). Arch
 ## UI
 
 - Avant UI : skills `ui-components`, `theming-rules`, `mobile-ux`. Avant nouveau fichier : `project-structure`.
-- Boutons : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton`. Select : `ClassicSelect`. `PremiumCard`, `Toast`, `Modal`/`ConfirmModal`.
+- Boutons : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton`. Select : `ClassicSelect`. `PremiumCard`, `Modal`/`ConfirmModal`. Notifications : `toast` de `@bbfrance/ui`. Comportement modale : `Dialog` de `@bbfrance/ui` (`packages/ui/CLAUDE.md`).
 - Couleurs : variables CSS uniquement, cohérentes dans les 7 thèmes. Icônes : Lucide (`icon={<Icon size={18} />}` en server component).
 - Page : `page.tsx` + `page.css` (+ `page-mobile.css`).
-- Migration shadcn/Tailwind v4 prévue en P4 (épic E05) : ne pas l'anticiper hors carte.
+- shadcn/Tailwind v4 (épic E05) : nouveaux composants partagés dans `packages/ui`, couleurs via tokens de thème uniquement.
 
 ## Vérifier
 

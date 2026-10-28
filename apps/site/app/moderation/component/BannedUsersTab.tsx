@@ -10,7 +10,7 @@ import { Loader2, UserX, UserCheck, Clock, ShieldAlert } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
 import AdminButton from "@/common/components/Button/AdminButton";

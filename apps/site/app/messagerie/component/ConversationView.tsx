@@ -7,7 +7,7 @@ import { LogOut, Send, Loader2, ChevronLeft, UserPlus, Edit3 } from "lucide-reac
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { getConversationMessages, leaveConversation, sendMessage, renameConversation } from "../actions";
 import ChatBubble from "./ChatBubble";
 import CTAButton from "@/common/components/Button/CTAButton";

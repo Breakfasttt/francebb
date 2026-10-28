@@ -42,7 +42,7 @@ Frontières : une app n'importe jamais une autre app ; le partage passe par `pac
 - Une lib déjà présente qui fait le job gagne (dates : `date-fns`, drag & drop : `@dnd-kit`, carte : `leaflet`, icônes : `lucide-react`).
 - Dépendance majeure (framework, auth, UI, BDD) ⇒ `/council` + ADR.
 - Pré-approuvées par l'ADR-0001 : turbo + pnpm (P3), tailwindcss v4 + deps shadcn + sonner + ladle + ts-morph (P4), better-auth (P5).
-- À retirer : `react-hot-toast` (P4, remplacée par sonner), `next-auth` (P5 + 30 j). `next-themes` retirée (morte).
+- À retirer : `next-auth` (P5 + 30 j). Retirées : `next-themes` (morte), `react-hot-toast` (remplacée par sonner via `@bbfrance/ui`, P4).
 
 ## Données
 

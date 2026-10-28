@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ResourceForm from "../component/ResourceForm/ResourceForm";
 import { submitResource } from "../actions";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { Layout } from "lucide-react";
 
 export default function SubmitResourcePage() {

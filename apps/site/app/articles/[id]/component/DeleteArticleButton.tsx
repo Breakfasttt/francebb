@@ -3,7 +3,7 @@
 import React, { useTransition, useState } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteArticle } from "@/app/articles/actions";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import DangerButton from "@/common/components/Button/DangerButton";
 

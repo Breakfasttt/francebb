@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { handleQuizSuggestion } from "../actions";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { Check, X, User, Calendar, Brain } from "lucide-react";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import { translateCategory } from "../utils";

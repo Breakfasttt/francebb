@@ -6,7 +6,7 @@ import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canM
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
 import { Mail, Ban, Trash2, CheckCircle2, Search, Shield, Globe, Trophy } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";

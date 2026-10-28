@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { updateQuizQuestion, deleteQuizQuestion } from "../actions";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { Edit2, Trash2, Brain, Search, Plus } from "lucide-react";
 import QuizForm from "../component/QuizForm/QuizForm";
 import EmptyState from "@/common/components/EmptyState/EmptyState";

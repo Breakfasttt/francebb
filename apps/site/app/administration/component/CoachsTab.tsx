@@ -5,7 +5,7 @@ import { getRolePower, UserRole, isModerator } from "@/lib/roles";
 import { Search, Users, ShieldAlert, Loader2 } from "lucide-react";
 import Pagination from "@/common/components/Pagination/Pagination";
 import { useEffect, useState, useTransition } from "react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { getAllRoles, searchCoaches, updateCoachRole } from "../actions";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import StatusBadge from "@/common/components/StatusBadge/StatusBadge";

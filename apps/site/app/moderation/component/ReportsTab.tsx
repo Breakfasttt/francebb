@@ -15,7 +15,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Pagination from "@/common/components/Pagination/Pagination";
 import ClassicButton from "@/common/components/Button/ClassicButton";

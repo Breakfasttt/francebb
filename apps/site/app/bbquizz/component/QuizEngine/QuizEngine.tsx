@@ -10,7 +10,7 @@ import { isModerator } from "@/lib/roles";
 import { Award, Brain, Check, Edit2, FastForward, Gamepad2, Loader2, MinusCircle, Plus, PlusCircle, RefreshCcw, Scissors, Trophy, Users, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { getCommunityStats, getRandomQuizQuestions, submitQuizAttempt } from "../../actions";
 import { translateCategory } from "../../utils";
 import "./QuizEngine.css";

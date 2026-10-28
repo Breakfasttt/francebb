@@ -10,7 +10,7 @@ import { Loader2, Check, X, Edit, ExternalLink, Layout, User, Clock } from "luci
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import Link from "next/link";
 import Pagination from "@/common/components/Pagination/Pagination";
 import ClassicButton from "@/common/components/Button/ClassicButton";

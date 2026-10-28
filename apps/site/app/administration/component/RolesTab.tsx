@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { ShieldCheck, Plus, Trash2, ShieldAlert, GripVertical } from "lucide-react";
 import { getAllRoles, createCustomRole, deleteCustomRole, reorderRoles } from "../actions";
 import { getRolePower, UserRole } from "@/lib/roles";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";

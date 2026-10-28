@@ -11,7 +11,7 @@ import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useTransition, useEffect } from "react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import ClassicButton from "@/common/components/Button/ClassicButton";

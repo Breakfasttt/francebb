@@ -10,7 +10,7 @@ import EmptyState from "@/common/components/EmptyState/EmptyState";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 
 interface ProfileResourcesProps {
   userId: string;

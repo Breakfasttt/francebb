@@ -26,7 +26,8 @@ Utiliser `size` (`xs`, `sm`, `md`), icônes `lucide-react` (ex: `icon={<Icon siz
 
 ## MODALES & POPUPS
 - `ConfirmModal` / `Modal`: TOUJOURS utiliser pour confirmer. **PAS DE `window.alert` ni `window.confirm`**.
-- `Toast`: Notifications.
+- Notifications : `import { toast } from "@bbfrance/ui"` (`toast.success`, `toast.error`). Jamais d'autre lib.
+- Modale maison : coquille `Dialog`/`DialogOverlay`/`DialogContent`/`DialogTitle` de `@bbfrance/ui` (`asChild` pour garder son CSS). Pas de `createPortal` + overlay à la main.
 - `Tooltip`: Info au survol. **ATTENTION**: Si utilisé dans un conteneur avec `overflow: hidden` (ex: `PremiumCard`), s'assurer que le parent direct ou la carte a `overflow: visible` pour éviter que la bulle ne soit coupée.
 
 ## SYSTÈME DE THÈMES (`app/theme/`)

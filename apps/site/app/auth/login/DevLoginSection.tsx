@@ -6,7 +6,7 @@ import { createDevUser } from "./actions";
 import { User, Shield, UserPlus, ArrowLeft } from "lucide-react";
 import AdminButton from "@/common/components/Button/AdminButton";
 import CTAButton from "@/common/components/Button/CTAButton";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 
 interface DevUser {
   id: string;

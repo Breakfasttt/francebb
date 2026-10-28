@@ -71,7 +71,7 @@ interface TopicSidebarProps {
 
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { finishTournament, cancelTournament, unfinishTournament } from "@/app/tournois/actions";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 
 export default function TopicSidebar({ 
   topicId, 

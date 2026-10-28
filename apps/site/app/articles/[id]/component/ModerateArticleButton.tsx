@@ -9,7 +9,7 @@ import { ShieldAlert, ShieldCheck } from "lucide-react";
 import { moderateArticle, unmoderateArticle } from "@/app/articles/actions";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import AdminButton from "@/common/components/Button/AdminButton";
 
 interface ModerateArticleButtonProps {

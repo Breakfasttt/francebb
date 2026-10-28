@@ -4,7 +4,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import Modal from "@/common/components/Modal/Modal";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
-import Toast from "@/common/components/Toast/Toast";
+import { toast } from "@bbfrance/ui";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import { parseBBCode } from "@/lib/bbcode";
@@ -44,13 +44,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [mentionQuery, setMentionQuery] = useState("");
   const [mentionResults, setMentionResults] = useState<{ id: string; name: string; image: string | null }[]>([]);
   const [isSearchingMentions, setIsSearchingMentions] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const showToast = (message: string, type: "success" | "error") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 7000);
+    toast[type](message, { duration: 7000 });
   };
 
   useEffect(() => {
@@ -871,7 +869,6 @@ ${content || "(Le champ est vide. Imagine un exemple de post de tournoi Blood Bo
         </div>
       )}
 
-      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
 
       <style jsx>{`
         .toolbar-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 0.3rem; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }

@@ -3,7 +3,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured } from "../actions";
 import Modal from "@/common/components/Modal/Modal";
 import { useEffect, useTransition, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ExplainButton from "@/common/components/Button/ExplainButton";
 import { signIn } from "next-auth/react";
 

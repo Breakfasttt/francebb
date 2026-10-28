@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Paquets du monorepo consommés en sources TypeScript (pas d'étape de build)
+  transpilePackages: ["@bbfrance/ui"],
   allowedDevOrigins: (process.env.ALLOWED_DEV_ORIGINS || 'localhost:3000').split(','),
   
   async headers() {

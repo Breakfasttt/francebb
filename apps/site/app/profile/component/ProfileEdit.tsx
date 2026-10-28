@@ -4,7 +4,7 @@ import { getReferenceDataAction, updateProfile, updateTheme } from "@/app/profil
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import Modal from "@/common/components/Modal/Modal";
 import RankSelect from "@/common/components/RankSelect/RankSelect";
-import Toast from "@/common/components/Toast/Toast";
+import { toast } from "@bbfrance/ui";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
@@ -57,7 +57,6 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState(theme || user.theme || "dark");
   const [isUploading, setIsUploading] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [regions, setRegions] = useState<{ key: string; label: string }[]>([]);
@@ -75,8 +74,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
   }, [theme]);
 
   const showToast = (message: string, type: "success" | "error") => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3500);
+    toast[type](message);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -359,9 +357,6 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         </div>
       </Modal>
 
-      {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
-      )}
 
       <style jsx>{`
         :global(.profile-edit-container) {

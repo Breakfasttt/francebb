@@ -8,7 +8,7 @@ import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Github, BarChart3 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@bbfrance/ui";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
@@ -83,14 +83,7 @@ export default async function RootLayout({
           <DebugAuthWidget />
           <DebugThemeWidget />
         <BannedRedirect isBanned={isBanned} />
-          <Toaster position="bottom-right" toastOptions={{
-            style: {
-              background: 'var(--card-bg)',
-              color: 'var(--foreground)',
-              border: '1px solid var(--glass-border)',
-              backdropFilter: 'blur(10px)',
-            },
-          }} />
+          <Toaster />
           
           <Navbar 
             session={session} 

@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import QuizForm from "../component/QuizForm/QuizForm";
 import { suggestQuizQuestion } from "../actions";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { useRouter } from "next/navigation";
 
 export default function ProposerContent() {

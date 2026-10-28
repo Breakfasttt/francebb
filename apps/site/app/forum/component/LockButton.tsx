@@ -5,7 +5,7 @@ import { Lock, Unlock } from "lucide-react";
 import { toggleForumLock, toggleTopicLock } from "@/app/forum/actions";
 import { useRouter } from "next/navigation";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import AdminButton from "@/common/components/Button/AdminButton";
 
 interface LockButtonProps {

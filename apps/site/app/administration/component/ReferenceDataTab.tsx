@@ -8,7 +8,7 @@ import {
   updateReferenceData, 
   deleteReferenceData 
 } from "../actions";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import CTAButton from "@/common/components/Button/CTAButton";

@@ -14,7 +14,7 @@ import {
   AlertTriangle 
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
+import { toast } from "@bbfrance/ui";
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import CTAButton from '@/common/components/Button/CTAButton';
 import ClassicButton from '@/common/components/Button/ClassicButton';

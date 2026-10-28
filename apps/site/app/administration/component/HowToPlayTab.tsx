@@ -3,7 +3,7 @@
 import { useEffect, useState, useTransition } from "react";
 import { getHowToPlaySettings, updateHowToPlaySettings } from "../actions";
 import { Save, Loader2, BookOpen, Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map } from "lucide-react";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { useIsMobile } from "@/common/hooks/useIsMobile";

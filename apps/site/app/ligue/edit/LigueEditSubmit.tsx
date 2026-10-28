@@ -3,7 +3,7 @@
 import { useTransition, useState } from "react";
 import { Save, Shield } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
-import Toast from "@/common/components/Toast/Toast";
+import { toast } from "@bbfrance/ui";
 import { updateLigue } from "@/app/ligues/actions";
 
 interface LigueEditSubmitProps {
@@ -12,19 +12,18 @@ interface LigueEditSubmitProps {
 
 export default function LigueEditSubmit({ ligueId }: LigueEditSubmitProps) {
   const [isPending, startTransition] = useTransition();
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const handleSubmit = async (formData: FormData) => {
     startTransition(async () => {
       try {
         const result = await updateLigue(ligueId, formData);
         if (result.success) {
-          setToast({ message: "Ligue mise à jour avec succès !", type: "success" });
+          toast.success("Ligue mise à jour avec succès !");
         } else {
-          setToast({ message: "Erreur lors de la mise à jour.", type: "error" });
+          toast.error("Erreur lors de la mise à jour.");
         }
       } catch (error) {
-        setToast({ message: "Une erreur est survenue.", type: "error" });
+        toast.error("Une erreur est survenue.");
       }
     });
   };
@@ -44,13 +43,6 @@ export default function LigueEditSubmit({ ligueId }: LigueEditSubmitProps) {
         </CTAButton>
       </div>
 
-      {toast && (
-        <Toast 
-          message={toast.message} 
-          type={toast.type} 
-          onClose={() => setToast(null)} 
-        />
-      )}
     </>
   );
 }

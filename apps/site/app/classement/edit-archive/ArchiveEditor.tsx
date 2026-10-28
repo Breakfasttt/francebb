@@ -10,7 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, Save, User, Hash, Trophy, Search, Info, ChevronDown, ChevronUp, PlusCircle } from 'lucide-react';
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { saveArchive } from "../actions";
-import toast from 'react-hot-toast';
+import { toast } from "@bbfrance/ui";
 import { useRouter } from 'next/navigation';
 import UserMapper from '@/common/components/UserMapper/UserMapper';
 import ClassicButton from "@/common/components/Button/ClassicButton";

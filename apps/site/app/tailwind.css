@@ -10,7 +10,9 @@
 @layer theme, base, legacy, components, utilities;
 
 @import "tailwindcss/theme.css" layer(theme);
+@import "@bbfrance/ui/tokens.css";
 @import "./globals.css";
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 
 @source "./spike-tailwind";
+@source "../../../packages/ui/src";

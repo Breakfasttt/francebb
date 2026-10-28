@@ -6,7 +6,7 @@ import { Save, X, Info, Shield } from "lucide-react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createArticle, updateArticle } from "@/app/articles/actions";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import ClassicButton from "@/common/components/Button/ClassicButton";

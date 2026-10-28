@@ -15,7 +15,7 @@ import {
 import "./RegistrationModule.css";
 import "./RegistrationModule-mobile.css";
 
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import { 
   joinTournament, 

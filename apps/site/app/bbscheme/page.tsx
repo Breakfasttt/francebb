@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import { getBoardState, saveBoardState } from "./actions";
 // @ts-ignore
 import ClassicButton from "@/common/components/Button/ClassicButton";

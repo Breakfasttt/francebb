@@ -6,7 +6,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import { Mail, Send, AlertTriangle, Loader2, CheckCircle2 } from "lucide-react";
 import { sendGlobalInfoMail } from "../actions";
-import toast from "react-hot-toast";
+import { toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { useIsMobile } from "@/common/hooks/useIsMobile";

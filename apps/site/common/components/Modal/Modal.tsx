@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogClose } from "@bbfrance/ui";
 import ClassicButton from "../Button/ClassicButton";
 import CTAButton from "../Button/CTAButton";
 import DangerButton from "../Button/DangerButton";
 import AdminButton from "../Button/AdminButton";
+
+/**
+ * Modale générique du site. Coquille Radix Dialog (@bbfrance/ui) : Échap, clic extérieur, focus piégé,
+ * scroll bloqué et role="dialog" ; l'apparence reste celle du CSS ci-dessous (7 thèmes).
+ */
 
 interface ModalProps {
   isOpen: boolean;
@@ -35,29 +39,6 @@ export default function Modal({
   maxWidth = "550px",
   hideFooter = false
 }: ModalProps) {
-  const [mounted, setMounted] = useState(false);
-
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") onClose();
-  }, [onClose]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, handleKeyDown]);
-
-  if (!isOpen || !mounted) return null;
-
   const renderConfirmButton = () => {
     if (!onConfirm) return null;
 
@@ -84,141 +65,152 @@ export default function Modal({
     );
   };
 
-  return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" style={{ maxWidth }} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose} title="Fermer">
-          <X size={20} />
-        </button>
-        
-        <h2>{title}</h2>
-        {message && <p>{message}</p>}
-        {children}
-        
-        {!hideFooter && (
-          <div className="modal-actions">
-            <ClassicButton onClick={onClose}>
-              {cancelText || "Annuler"}
-            </ClassicButton>
-            {renderConfirmButton()}
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogPortal>
+        <DialogOverlay asChild>
+          <div className="modal-overlay">
+            <DialogContent asChild aria-describedby={undefined}>
+              <div className="modal-content" style={{ maxWidth }}>
+                <DialogClose asChild>
+                  <button className="modal-close-btn" title="Fermer">
+                    <X size={20} />
+                  </button>
+                </DialogClose>
+
+                <DialogTitle asChild>
+                  <h2>{title}</h2>
+                </DialogTitle>
+                {message && <p>{message}</p>}
+                {children}
+
+                {!hideFooter && (
+                  <div className="modal-actions">
+                    <ClassicButton onClick={onClose}>
+                      {cancelText || "Annuler"}
+                    </ClassicButton>
+                    {renderConfirmButton()}
+                  </div>
+                )}
+              </div>
+            </DialogContent>
+
+            <style jsx>{`
+              .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(8px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: var(--z-index-modal-bottom, 8000);
+                padding: 1rem;
+              }
+
+              .modal-content {
+                background: var(--card-bg);
+                backdrop-filter: blur(16px);
+                border: 1px solid var(--glass-border);
+                border-radius: 24px;
+                padding: 2.5rem;
+                max-width: ${maxWidth};
+                width: 100%;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+                animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                position: relative;
+                max-height: 90vh;
+                overflow-y: auto;
+              }
+
+              .modal-close-btn {
+                position: absolute;
+                top: 1.5rem;
+                right: 1.5rem;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid var(--glass-border);
+                color: var(--foreground);
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                opacity: 0.6;
+                z-index: 10;
+              }
+
+              .modal-close-btn:hover {
+                opacity: 1;
+                background: rgba(255, 255, 255, 0.1);
+                transform: rotate(90deg);
+              }
+
+              h2 {
+                color: var(--primary);
+                margin-bottom: 1.5rem;
+                font-size: 1.5rem;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.02em;
+                border-bottom: 2px solid var(--primary-transparent);
+                padding-bottom: 0.8rem;
+                display: inline-block;
+              }
+
+              p {
+                color: var(--foreground);
+                margin-bottom: 2rem;
+                line-height: 1.6;
+                font-size: 1rem;
+                opacity: 0.9;
+              }
+
+              .modal-actions {
+                display: flex;
+                gap: 1rem;
+                justify-content: flex-end;
+                margin-top: 2rem;
+              }
+
+              @keyframes modalAppear {
+                from { transform: scale(0.95) translateY(10px); opacity: 0; }
+                to { transform: scale(1) translateY(0); opacity: 1; }
+              }
+
+              @media (max-width: 600px) {
+                .modal-content {
+                  padding: 1.5rem;
+                  border-radius: 20px;
+                }
+
+                .modal-actions {
+                  flex-direction: column;
+                  gap: 0.8rem;
+                }
+
+                .modal-actions :global(button) {
+                  width: 100%;
+                }
+
+                h2 {
+                  font-size: 1.2rem;
+                }
+                
+                .modal-close-btn {
+                  top: 1rem;
+                  right: 1rem;
+                }
+              }
+            `}</style>
           </div>
-        )}
-      </div>
-
-      <style jsx>{`
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.5);
-          backdrop-filter: blur(8px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: var(--z-index-modal-bottom, 8000);
-          padding: 1rem;
-        }
-
-        .modal-content {
-          background: var(--card-bg);
-          backdrop-filter: blur(16px);
-          border: 1px solid var(--glass-border);
-          border-radius: 24px;
-          padding: 2.5rem;
-          max-width: ${maxWidth};
-          width: 100%;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-          animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          position: relative;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-
-        .modal-close-btn {
-          position: absolute;
-          top: 1.5rem;
-          right: 1.5rem;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          opacity: 0.6;
-          z-index: 10;
-        }
-
-        .modal-close-btn:hover {
-          opacity: 1;
-          background: rgba(255, 255, 255, 0.1);
-          transform: rotate(90deg);
-        }
-
-        h2 {
-          color: var(--primary);
-          margin-bottom: 1.5rem;
-          font-size: 1.5rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.02em;
-          border-bottom: 2px solid var(--primary-transparent);
-          padding-bottom: 0.8rem;
-          display: inline-block;
-        }
-
-        p {
-          color: var(--foreground);
-          margin-bottom: 2rem;
-          line-height: 1.6;
-          font-size: 1rem;
-          opacity: 0.9;
-        }
-
-        .modal-actions {
-          display: flex;
-          gap: 1rem;
-          justify-content: flex-end;
-          margin-top: 2rem;
-        }
-
-        @keyframes modalAppear {
-          from { transform: scale(0.95) translateY(10px); opacity: 0; }
-          to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        @media (max-width: 600px) {
-          .modal-content {
-            padding: 1.5rem;
-            border-radius: 20px;
-          }
-
-          .modal-actions {
-            flex-direction: column;
-            gap: 0.8rem;
-          }
-
-          .modal-actions :global(button) {
-            width: 100%;
-          }
-
-          h2 {
-            font-size: 1.2rem;
-          }
-          
-          .modal-close-btn {
-            top: 1rem;
-            right: 1rem;
-          }
-        }
-      `}</style>
-    </div>,
-    document.body
+        </DialogOverlay>
+      </DialogPortal>
+    </Dialog>
   );
 }
