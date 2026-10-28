@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export async function getUnreadMessagesCount() {
   const session = await getActiveSession();

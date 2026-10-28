@@ -33,7 +33,7 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 ## Les pièges
 
 - Une ressource système ne doit jamais être supprimée : `deleteResourceAction` et `moderateResource` le refusent ; la page cache aussi le bouton pour l'id `bbscheme`.
-- `getResource` et `getUserResources` ne vérifient rien : elles renvoient aussi les ressources en attente ou rejetées de n'importe quel membre.
+- `getResource` et `getUserResources` ne montrent les ressources en attente ou refusées qu'à leur auteur et aux modérateurs ; `getUserResources` limite la page à 20 (carte 050).
 - La clé ImgBB est publique (`NEXT_PUBLIC_IMGBB_API_KEY` dans `lib/siteConfig.ts`) : n'importe qui peut la lire et l'utiliser.
 - Le lien n'est pas contrôlé côté serveur ; pour un lien interne la carte fait `window.location.href = lien`. Un lien `javascript:` serait-il bloqué ? À vérifier ; la validation par un modérateur est le seul filet.
 - La liste des tags proposés dans les filtres est vide (`availableTags={[]}`), alors que `getResourceTags` existe.
@@ -53,5 +53,5 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 ## État
 
 - Marche : proposition, validation, modification, suppression, recherche, pages vidéo.
-- Manque : import de `ressources/page-mobile.css`, tags proposés dans les filtres, contrôle d'accès de `getResource`/`getUserResources`, clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
+- Manque : import de `ressources/page-mobile.css`, tags proposés dans les filtres, clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

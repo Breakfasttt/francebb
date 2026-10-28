@@ -33,8 +33,8 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 
 ## Les pièges
 
-- **`/api/articles` renvoie l'auteur complet** (`include: { author: true }`) : email, raison de bannissement, réglages de notification… partent vers le navigateur de n'importe quel visiteur. Il faut un `select` limité au nom et à l'avatar.
-- Les articles masqués ne sont filtrés ni dans `/articles` ni dans `/api/articles` : seul leur contenu est caché sur la page de détail.
+- `/api/articles` ne renvoie de l'auteur que ce que la carte affiche (nom, avatar, cadre, rôle), cache les articles masqués sauf à leur auteur et aux modérateurs, et limite la page à 24 articles (carte 050, testé).
+- La page `/articles`, elle, ne filtre pas encore les articles masqués : seul leur contenu est caché sur la page de détail.
 - **Modifier un article efface sa ligue** : `edit/[id]/page.tsx` ne transmet pas `ligueId` au formulaire, et `updateArticle` enregistre alors une ligue vide.
 - `incrementArticleViews` n'a aucun contrôle : n'importe qui peut gonfler le compteur. Le composant `ViewCounter` limite à une vue par onglet (`sessionStorage`).
 - Un membre n'a qu'une réaction par article : choisir un autre émoji remplace le précédent.

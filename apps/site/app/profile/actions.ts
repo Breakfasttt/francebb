@@ -3,9 +3,7 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
-import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-import { logModerationAction } from "@/app/moderation/actions";
 import { encrypt, decrypt } from "@/lib/crypto";
 
 export async function updateProfile(formData: FormData) {
@@ -40,36 +38,6 @@ export async function updateProfile(formData: FormData) {
   });
 
   revalidatePath("/profile");
-  return { success: true };
-}
-
-export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
-  const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) throw new Error("Action non autorisée");
-
-  const target = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { id: true, isBanned: true }
-  });
-
-  if (!target) throw new Error("Utilisateur introuvable");
-
-  await prisma.user.update({
-    where: { id: userId },
-    data: { 
-      isBanned,
-      banReason: isBanned ? (reason || "Bannissement manuel") : null
-    }
-  });
-
-  await logModerationAction(
-    isBanned ? "USER_BANNED" : "USER_UNBANNED",
-    userId,
-    "USER",
-    isBanned ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
-  );
-
-  revalidatePath(`/spy/${userId}`);
   return { success: true };
 }
 

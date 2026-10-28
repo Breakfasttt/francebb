@@ -30,6 +30,10 @@ export const E2E = {
   secretForumName: "E2E Forum Secret",
   secretTopicId: "e2e_secret_topic",
   secretTopicTitle: "E2E Topic Secret",
+  // Carte 050 : membre à bannir depuis /spy, articles (dont un masqué par la modération) du coach
+  targetId: "e2e_target",
+  articleId: "e2e_article",
+  moderatedArticleId: "e2e_article_moderated",
 };
 
 export async function loginAs(page: Page, userId: string) {

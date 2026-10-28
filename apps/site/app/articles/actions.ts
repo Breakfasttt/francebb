@@ -9,7 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export async function createArticle(formData: FormData) {
   const session = await getActiveSession();

@@ -32,7 +32,7 @@ BBScheme est un plateau de Blood Bowl interactif : le coach place des joueurs de
 ## Les pièges
 
 - **Couplage** : `BBCodeContent` (composant commun) importe `app/bbscheme/component/BBSchemePlayer`, et les composants importent leurs types depuis `../page`. C'est ce que la carte 024 doit casser en sortant le lecteur dans un paquet.
-- `saveBoardState` accepte n'importe quel texte, de n'importe quelle taille, même sans connexion : rien n'empêche de remplir la base. Un plateau identique (même empreinte) n'est enregistré qu'une fois.
+- `saveBoardState` reste ouvert aux visiteurs (le partage est public), mais refuse un plateau de plus de 500 Ko ou qui n'est pas un plateau valide (carte 050). Un plateau identique (même empreinte) n'est enregistré qu'une fois.
 - Un plateau enregistré n'est jamais modifié : chaque partage crée un nouvel identifiant si le contenu change.
 - L'identifiant passé dans `[bbscheme]` est inséré dans un attribut HTML ; il est protégé parce que `parseBBCode` échappe d'abord les guillemets. Ne pas déplacer ce traitement avant l'échappement.
 - La fonction « fosses » (réserve, KO, blessés, expulsés) est désactivée en commentaire.
@@ -53,5 +53,5 @@ BBScheme est un plateau de Blood Bowl interactif : le coach place des joueurs de
 ## État
 
 - Marche : édition, animation, partage par lien, lecture dans les messages, interface téléphone dédiée.
-- Manque : limite de taille et de fréquence sur `saveBoardState`, nettoyage des composants inutilisés, mise à jour de la skill `mobile-ux` (qui parle encore de `DesktopOnlyFallback`), contrôle du lecteur sur téléphone.
+- Manque : limite de fréquence sur `saveBoardState`, nettoyage des composants inutilisés, mise à jour de la skill `mobile-ux` (qui parle encore de `DesktopOnlyFallback`), contrôle du lecteur sur téléphone.
 - Cartes ouvertes : 024 (extraire bbscheme en application et le lecteur en paquet `packages/bbscheme-player`), 049 (audit mobile).

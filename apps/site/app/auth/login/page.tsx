@@ -1,5 +1,6 @@
 import { signIn, auth, isHubAuthMode } from "@/auth";
 import { redirect } from "next/navigation";
+import { safeCallbackUrl } from "@/lib/safeRedirect";
 import "./page.css";
 import { Mail, LogIn } from "lucide-react";
 import { prisma } from "@/lib/prisma";
@@ -18,7 +19,7 @@ export default async function LoginPage(props: {
 }) {
   const session = await auth();
   const searchParams = await props.searchParams;
-  const callbackUrl = searchParams.callbackUrl || "/";
+  const callbackUrl = safeCallbackUrl(searchParams.callbackUrl);
 
   if (session) {
     redirect(callbackUrl);

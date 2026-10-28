@@ -7,7 +7,7 @@
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export type RankingFilter = 
   | string // CDF_2026, CDF_2025, ROLLING, ROSTER, HOF, ARCHIVES

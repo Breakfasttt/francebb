@@ -8,6 +8,23 @@ import { sendPmNotification } from "@/lib/mail";
 import { encrypt, decrypt } from "@/lib/crypto";
 
 const CONVERSATION_LIMIT = 50;
+
+/**
+ * Vrai si un blocage existe, dans un sens ou dans l'autre, entre `userId` et l'un des membres de `otherIds`.
+ * Un membre bloqué ne peut ni recevoir de message de celui qui l'a bloqué, ni lui en envoyer (carte 050).
+ */
+async function hasBlockBetween(userId: string, otherIds: string[]) {
+    if (otherIds.length === 0) return false;
+    const count = await prisma.block.count({
+        where: {
+            OR: [
+                { blockerId: userId, blockedId: { in: otherIds } },
+                { blockerId: { in: otherIds }, blockedId: userId }
+            ]
+        }
+    });
+    return count > 0;
+}
 const CONVERSATIONS_PER_PAGE = 20;
 const MESSAGES_PER_PAGE = 30;
 
@@ -165,6 +182,15 @@ export async function sendMessage(conversationId: string, content: string) {
 
   if (!participant) throw new Error("Accès refusé");
 
+  // Conversation privée (à deux) : pas d'envoi si l'un des deux a bloqué l'autre
+  const conversation = await prisma.conversation.findUnique({
+    where: { id: conversationId },
+    select: { isGroup: true, participants: { where: { userId: { not: userId } }, select: { userId: true } } }
+  });
+  if (!conversation?.isGroup && await hasBlockBetween(userId, conversation?.participants.map(p => p.userId) ?? [])) {
+    throw new Error("Impossible d'envoyer un message à ce membre.");
+  }
+
   const encryptedContent = encrypt(content);
 
   const message = await prisma.privateMessage.create({
@@ -229,6 +255,10 @@ export async function startConversation(userIds: string[], name?: string) {
 
     const allParticipants = [...new Set([myId, ...userIds])];
     const isGroup = allParticipants.length > 2 || !!name;
+
+    if (await hasBlockBetween(myId, allParticipants.filter(uid => uid !== myId))) {
+        throw new Error("Impossible de démarrer une conversation avec un membre qui vous a bloqué ou que vous avez bloqué.");
+    }
 
     // Vérifier la limite de 50 conversations
     const myConvCount = await prisma.conversationParticipant.count({
@@ -352,6 +382,17 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
     });
 
     if (!conv?.isGroup) throw new Error("Ce n'est pas un groupe");
+
+    // Seul un membre du groupe peut y inviter quelqu'un (sinon n'importe qui pouvait s'ajouter et lire les messages)
+    const inviter = await prisma.conversationParticipant.findUnique({
+        where: { userId_conversationId: { userId: myId, conversationId } },
+        select: { deletedAt: true }
+    });
+    if (!inviter || inviter.deletedAt) throw new Error("Accès refusé");
+
+    if (await hasBlockBetween(myId, userIds.filter(uid => uid !== myId))) {
+        throw new Error("Impossible d'inviter un membre qui vous a bloqué ou que vous avez bloqué.");
+    }
 
     // Filtrer pour ne pas ajouter des personnes déjà présentes
     const existing = await prisma.conversationParticipant.findMany({

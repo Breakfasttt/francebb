@@ -29,11 +29,11 @@ Chaque coach gère son compte : informations publiques (pseudo, avatar, numéro 
 | `apps/site/app/spy/[id]/page.tsx` | Profil public d'un coach. |
 | `apps/site/app/api/users/[id]/route.ts` | Données d'un membre (l'email seulement pour lui-même ou un modérateur). |
 
-Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `updateNotificationSettings`, `unlinkAccount`, `deleteAccount`, `toggleBlockUser`, `getBlockedUsers`, `getBlockedUsersIds` (utilisée par le forum pour masquer les messages des bloqués), `reportUser`, `getUserStats`, `getUserActivity`, `toggleBanUser`, `getReferenceDataAction` (aussi utilisée par l'onboarding). `app/membres/actions.ts` : `updateUserRole`, `toggleBanUser`, `deleteUser`.
+Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `updateNotificationSettings`, `unlinkAccount`, `deleteAccount`, `toggleBlockUser`, `getBlockedUsers`, `getBlockedUsersIds` (utilisée par le forum pour masquer les messages des bloqués), `reportUser`, `getUserStats`, `getUserActivity`, `getReferenceDataAction` (aussi utilisée par l'onboarding). `app/membres/actions.ts` : `updateUserRole`, `toggleBanUser`, `deleteUser`.
 
 ## Les pièges
 
-- Il existe **deux** `toggleBanUser` : celle de `app/membres/actions.ts` vérifie la hiérarchie des rôles (`canEditTargetRole`) ; celle de `app/profile/actions.ts`, appelée depuis le profil public, ne la vérifie pas. Un modérateur peut donc bannir un admin depuis `/spy/[id]`. À corriger.
+- Le bannissement depuis `/spy/[id]` utilise le `toggleBanUser` de `app/membres/actions.ts` (seule version) : il vérifie la hiérarchie des rôles (`canEditTargetRole`) et trace l'action au journal (carte 050).
 - `deleteAccount` (le coach supprime son compte) anonymise : ses sujets, messages, articles et résultats passent au compte fantôme `ghost_coach`. Mais `deleteUser` (un modérateur supprime un membre) **efface définitivement** ses sujets et ses messages du forum. Règle du projet : jamais de suppression de données sans accord exprès.
 - `/membres` charge tous les membres d'un coup (`include` sans `select`) et les envoie entiers au composant client. Le filtre, le tri et la pagination se font dans le navigateur. Cela contredit la règle « jamais un `User` complet vers un composant client » et ralentira avec le nombre de membres.
 - `/membres` utilise `auth()` puis relit le rôle en base ; `/profile` renvoie vers `/api/auth/signin` au lieu de `/auth/login`.

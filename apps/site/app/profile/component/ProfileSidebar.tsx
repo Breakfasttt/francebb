@@ -1,6 +1,7 @@
 "use client";
 
-import { toggleBanUser, toggleBlockUser } from "@/app/profile/actions";
+import { toggleBlockUser } from "@/app/profile/actions";
+import { toggleBanUser } from "@/app/membres/actions";
 import Modal from "@/common/components/Modal/Modal";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";

@@ -3,7 +3,7 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export async function resetDatabase(phrase: string) {
   const session = await getActiveSession();

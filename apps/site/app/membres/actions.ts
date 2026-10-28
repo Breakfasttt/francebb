@@ -4,6 +4,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { canEditTargetRole, ROLE_POWER, UserRole, isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export async function updateUserRole(userId: string, newRole: UserRole) {
   const session = await getActiveSession();
@@ -38,6 +39,10 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
   return { success: true };
 }
 
+/**
+ * Bannit ou débannit un membre. Seule version de cette action (liste des membres et fiche /spy) :
+ * réservée aux modérateurs, qui ne peuvent agir que sur un rang inférieur au leur (sauf Super Admin), et tracée au journal.
+ */
 export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
   const session = await getActiveSession();
   if (!session?.user) throw new Error("Non authentifié");
@@ -70,7 +75,15 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
     }
   });
 
+  await logModerationAction(
+    isBanned ? "USER_BANNED" : "USER_UNBANNED",
+    userId,
+    "USER",
+    isBanned ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
+  );
+
   revalidatePath("/membres");
+  revalidatePath(`/spy/${userId}`);
   return { success: true };
 }
 

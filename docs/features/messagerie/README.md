@@ -35,7 +35,8 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 
 - Chaque action vérifie que le coach participe à la conversation avant de lire ou d'écrire.
 - Les messages sont chiffrés avec la clé `ENCRYPTION_KEY`. Perdre ou changer cette clé rend tous les anciens messages illisibles.
-- La recherche de coachs passe par `userSearchWhere` : recherche par pseudo seulement (jamais par email), sans les bannis ni les coachs bloqués dans un sens ou dans l'autre. En revanche, `startConversation` et `sendMessage` ne vérifient pas le blocage : un lien `?userId=` ou une conversation existante permet encore d'écrire à quelqu'un qui vous a bloqué (à corriger).
+- La recherche de coachs passe par `userSearchWhere` : recherche par pseudo seulement (jamais par email), sans les bannis ni les coachs bloqués dans un sens ou dans l'autre. Le blocage est aussi vérifié à la création d'une conversation, à l'invitation dans un groupe et à l'envoi dans une conversation à deux (`hasBlockBetween`, carte 050). Dans un groupe, un membre bloqué peut encore voir vos messages.
+- `inviteToGroup` vérifie que l'auteur de l'invitation fait partie du groupe (avant la carte 050, n'importe quel membre pouvait s'ajouter à un groupe et en lire les messages).
 - Quitter une conversation où il ne reste alors qu'un participant **supprime la conversation et tous ses messages**, aussi pour l'autre coach (`leaveConversation`). C'est une suppression de données à garder en tête.
 - Un coach ne peut pas avoir plus de 50 conversations (`CONVERSATION_LIMIT`).
 - L'email de notification n'est envoyé qu'au premier message non lu, et seulement si le destinataire l'a activé (`notifPm`).
@@ -56,5 +57,5 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 ## État
 
 - Marche : conversations à deux et en groupe, chiffrement, compteur de non-lus, email de notification.
-- Manque : affichage des messages plus anciens que les 30 derniers, pagination de la liste au-delà de 20 conversations, redirection vers la connexion pour un visiteur, respect du blocage à l'envoi, temps réel.
+- Manque : affichage des messages plus anciens que les 30 derniers, pagination de la liste au-delà de 20 conversations, redirection vers la connexion pour un visiteur, temps réel.
 - Cartes : 049 (audit mobile).

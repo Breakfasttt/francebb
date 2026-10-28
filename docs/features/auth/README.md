@@ -42,7 +42,7 @@ Utilisation dans une action serveur : `const session = await getActiveSession();
 - `User.email` n'est jamais renvoyé par `prisma` (omit global) : un `include: { author: true }` ne peut pas fuiter d'adresse. Besoin de l'email : `select: { email: true }` explicite ou `prismaWithEmail`. Test smoke « aucun email d'auteur ».
 - `allowDangerousEmailAccountLinking: true` sur Discord et Google : un compte Discord et un compte Google de même email deviennent le même membre. Le fournisseur `hub` l'utilise aussi, mais seulement pour un email certifié (`email_verified`, contrôlé dans `signIn`).
 - Le cookie `onboarding_sync` (60 s) évite une boucle de redirection juste après l'onboarding, le temps que le JWT soit régénéré.
-- `finishOnboarding` lève encore des erreurs (`throw`) au lieu de renvoyer `null`. La page de connexion fait `redirect(callbackUrl)` sans vérifier que l'adresse reste sur le site (redirection vers un autre site possible si déjà connecté, à vérifier).
+- `finishOnboarding` lève encore des erreurs (`throw`) au lieu de renvoyer `null`. L'adresse de retour après connexion (`callbackUrl`) passe par `safeCallbackUrl` (`lib/safeRedirect.ts`) : seule une adresse interne au site est acceptée, ce qui empêche la redirection vers un site extérieur (carte 050, testé).
 
 ## Les mots expliqués
 

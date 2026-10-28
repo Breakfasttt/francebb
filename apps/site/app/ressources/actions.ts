@@ -8,7 +8,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 export type ResourceStatus = "PENDING" | "APPROVED" | "REJECTED";
 
@@ -147,10 +147,17 @@ export async function getResourceTags() {
  */
 export async function getResource(id: string) {
   try {
-    return await prisma.resource.findUnique({
+    const resource = await prisma.resource.findUnique({
       where: { id },
       include: { tags: true }
     });
+    if (!resource) return null;
+    // Une ressource pas encore validée (ou refusée) n'est visible que par son auteur et les modérateurs (carte 050)
+    if (resource.status !== "APPROVED") {
+      const session = await getActiveSession();
+      if (session?.user?.id !== resource.authorId && !isModerator(session?.user?.role)) return null;
+    }
+    return resource;
   } catch (error) {
     return null;
   }
@@ -160,17 +167,23 @@ export async function getResource(id: string) {
  * Récupère les ressources soumises par un utilisateur avec pagination
  */
 export async function getUserResources(userId: string, page = 1, pageSize = 10) {
-  const skip = (page - 1) * pageSize;
+  // Taille de page bornée : cette action est appelable par n'importe quel visiteur
+  pageSize = Math.min(20, Math.max(1, pageSize));
+  const skip = (Math.max(1, page) - 1) * pageSize;
   try {
+    // Les ressources en attente ou refusées ne sont visibles que par leur auteur et les modérateurs (carte 050)
+    const session = await getActiveSession();
+    const canSeeAll = session?.user?.id === userId || isModerator(session?.user?.role);
+    const where = canSeeAll ? { authorId: userId } : { authorId: userId, status: "APPROVED" };
     const [resources, total] = await Promise.all([
       prisma.resource.findMany({
-        where: { authorId: userId },
+        where,
         include: { tags: true },
         orderBy: { createdAt: "desc" },
         take: pageSize,
         skip,
       }),
-      prisma.resource.count({ where: { authorId: userId } })
+      prisma.resource.count({ where })
     ]);
     return { 
       resources, 

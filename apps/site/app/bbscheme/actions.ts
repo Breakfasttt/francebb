@@ -4,11 +4,32 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
+// Taille maximale d'un plateau partagé : un plateau de 50 images en fait bien moins. Sans limite, n'importe quel
+// visiteur pouvait remplir la base avec des textes géants (carte 050).
+const MAX_BOARD_STATE_BYTES = 500 * 1024;
+
+/** Vrai si `data` ressemble à un plateau BBScheme (JSON avec une liste d'images). */
+function isBoardState(data: string) {
+  try {
+    const parsed: unknown = JSON.parse(data);
+    return typeof parsed === "object" && parsed !== null && Array.isArray((parsed as { frames?: unknown }).frames);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Sauvegarde l'état d'un plateau BBScheme.
  * Si un état identique (même hash) existe déjà, renvoie l'ID existant.
  */
 export async function saveBoardState(data: string) {
+  if (typeof data !== "string" || Buffer.byteLength(data, "utf-8") > MAX_BOARD_STATE_BYTES) {
+    return { success: false, error: "Plateau trop volumineux pour être partagé" };
+  }
+  if (!isBoardState(data)) {
+    return { success: false, error: "Plateau invalide" };
+  }
+
   try {
     const session = await getActiveSession();
     const userId = session?.user?.id;

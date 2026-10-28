@@ -25,7 +25,7 @@ La page d'administration permet aux administrateurs de régler le site sans touc
 | `apps/site/app/administration/component/AdminSidebar.tsx` | Colonne d'onglets (version ordinateur, ou portail vers le menu mobile). |
 | `apps/site/app/administration/component/*Tab.tsx` | Un fichier par onglet : `GeneralTab`, `RolesTab`, `CoachsTab`, `StructureTab`, `ReferenceDataTab`, `HowToPlayTab`, `InfoMailsTab`, `ResetTab`. |
 
-Les changements de rôle sont tracés dans le journal de modération par `logModerationAction` (`app/moderation/actions.ts`).
+Les changements de rôle sont tracés dans le journal de modération par `logModerationAction` (`lib/moderationLog.ts`).
 
 ## Les pièges
 

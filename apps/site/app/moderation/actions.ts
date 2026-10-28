@@ -9,51 +9,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-
-/**
- * Types d'actions de modération pour le journal (Audit Log).
- */
-export type ModerationAction = 
-  | "FORUM_CREATED" | "FORUM_LOCKED" | "FORUM_UNLOCKED" | "FORUM_DELETED"
-  | "TOPIC_DELETED" | "TOPIC_PINNED" | "TOPIC_UNPINNED" | "TOPIC_MOVED" | "TOPIC_ARCHIVED" | "TOPIC_UNARCHIVED" | "TOPIC_LOCKED" | "TOPIC_UNLOCKED"
-  | "POST_MODERATED" | "POST_UNMODERATED"
-  | "USER_ROLE_CHANGED" | "USER_BANNED" | "USER_UNBANNED"
-  | "ARTICLE_MODERATED" | "ARTICLE_UNMODERATED" | "ARTICLE_DELETED"
-  | "LIGUE_CREATED" | "LIGUE_DELETED"
-  | "RESOURCE_APPROVED" | "RESOURCE_REJECTED" | "RESOURCE_UPDATED" | "RESOURCE_DELETED"
-  | "REPORT_IGNORED" | "REPORT_RESOLVED"
-  | "ARCHIVE_RANKING" | "DELETE_ARCHIVE" | "CREATE_ARCHIVE_MANUAL" | "UPDATE_ARCHIVE";
-
-/**
- * Enregistre une action de modération dans les logs de manière atomique.
- * Utilisable depuis n'importe quelle Server Action.
- */
-export async function logModerationAction(
-  action: ModerationAction, 
-  targetId?: string, 
-  targetType?: string, 
-  details?: string
-) {
-  const session = await getActiveSession();
-  const userId = session?.user?.id;
-  
-  // Note: On loggue même si l'utilisateur n'est pas "officiellement" modo (ex: suppression topic par auteur)
-  if (!userId) return;
-
-  try {
-    await prisma.moderationLog.create({
-      data: {
-        action,
-        moderatorId: userId,
-        targetId,
-        targetType,
-        details
-      }
-    });
-  } catch (error) {
-    console.error("[LOG_MODERATION] Error:", error);
-  }
-}
+import { logModerationAction } from "@/lib/moderationLog";
 
 /**
  * Créer un nouveau signalement.

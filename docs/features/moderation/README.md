@@ -21,11 +21,11 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 |---|---|
 | `apps/site/app/moderation/page.tsx` | Page (composant navigateur) : contrôle `isModerator`, onglet actif, compteurs. |
 | `apps/site/app/moderation/page.css`, `page-mobile.css` | Styles (tableaux, cartes de signalement) et règles sous 1024 px. |
-| `apps/site/app/moderation/actions.ts` | Actions serveur : `logModerationAction`, `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`. Type `ModerationAction` (liste des actions journalisées). |
+| `apps/site/lib/moderationLog.ts` | `logModerationAction` et le type `ModerationAction` : écriture au journal, **interne au serveur** (volontairement hors d'un fichier « use server »). |
+| `apps/site/app/moderation/actions.ts` | Actions serveur : `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`.  |
 | `apps/site/app/moderation/component/` | `ModerationSidebar`, `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab`. |
 | `apps/site/common/components/ReportModal/ReportModal.tsx` | Fenêtre de signalement. Utilisée par `ReportPostButton`, `TopicSidebar` (forum), `ProfileSidebar`, `ReportArticleButton`, `ReportLigueButton`. |
-| `apps/site/app/profile/actions.ts` | `toggleBanUser` (bannir depuis la fiche d'un coach, avec entrée au journal). |
-| `apps/site/app/membres/actions.ts` | `toggleBanUser` (bannir depuis `/membres`, avec contrôle de rang) et `deleteUser`. |
+| `apps/site/app/membres/actions.ts` | `toggleBanUser` (seule version, utilisée par `/membres` et la fiche `/spy/[id]` : contrôle de rang et entrée au journal) et `deleteUser`. |
 | `apps/site/app/ressources/actions.ts` | `getPendingResources`, `moderateResource` (onglet « Validation Ressources »). |
 
 `logModerationAction(action, targetId, targetType, details)` est appelée par les autres fonctionnalités (forum, articles, ligues, administration) pour remplir le journal.
@@ -33,8 +33,8 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 ## Les pièges
 
 - Chaque action serveur passe par `getActiveSession()` puis `isModerator()` ; ne jamais s'appuyer sur le contrôle de la page.
-- `logModerationAction` est exportée d'un fichier d'actions serveur : n'importe quel membre connecté peut donc l'appeler depuis son navigateur et écrire une fausse entrée dans le journal. Elle devrait être une fonction interne, hors du fichier `"use server"`.
-- Deux `toggleBanUser` coexistent. Celui de `app/profile/actions.ts` ne vérifie pas le rang : un modérateur peut bannir un admin depuis `/spy/[id]`. Celui de `app/membres/actions.ts` vérifie le rang mais n'écrit rien au journal. `unbanUserAction` ne vérifie pas le rang non plus.
+- **Toute fonction exportée d'un fichier « use server » est appelable depuis le navigateur par n'importe qui.** `logModerationAction` l'était, ce qui permettait d'écrire de fausses entrées au journal : elle est désormais dans `lib/moderationLog.ts` (carte 050). Ne jamais remettre une fonction interne dans un fichier d'actions.
+- Un seul `toggleBanUser` (`app/membres/actions.ts`) : contrôle de rang (un modérateur ne peut pas bannir un admin) et entrée au journal (carte 050, testé). `unbanUserAction` ne vérifie pas encore le rang.
 - `cleanupModerationLogs` calcule une date invalide (`setMonth` appelé deux fois) : la purge automatique, lancée à chaque ouverture de la page 1 du journal, échoue sans rien supprimer (vérifié : la date vaut `Invalid Date`).
 - `createReportAction` ne contrôle ni le type visé, ni les doublons, ni la fréquence : un membre peut envoyer de nombreux signalements.
 - `getBannedUsers` lit le dernier journal de ban membre par membre (une requête par banni, défaut N+1) et renvoie l'email des bannis aux modérateurs.

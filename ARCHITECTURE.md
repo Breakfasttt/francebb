@@ -29,7 +29,11 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 
 ## Règles de code
 
-- **Sécurité** : toute action serveur commence par `getActiveSession()` (`lib/authGuard.ts`). Cette fonction refuse les visiteurs non connectés et les bannis. Les droits (modérateur, admin) se vérifient côté serveur avec `lib/roles.ts`.
+- **Sécurité** :
+  - toute action serveur commence par `getActiveSession()` (`lib/authGuard.ts`), qui refuse les visiteurs non connectés et les bannis ;
+  - les droits (modérateur, admin) se vérifient côté serveur avec `lib/roles.ts` ;
+  - **toute fonction exportée d'un fichier `"use server"` est appelable depuis le navigateur par n'importe qui** : n'y exporter que de vraies actions, qui vérifient elles-mêmes l'appelant. Une fonction interne (journal, calcul) va dans `lib/` ;
+  - une adresse de retour fournie par l'utilisateur passe par `safeCallbackUrl` (`lib/safeRedirect.ts`).
 - **Données personnelles** : le client `prisma` par défaut ne renvoie jamais l'email des membres. `prismaWithEmail` est réservé à la connexion et à l'envoi de mails.
 - **Erreurs** : pas de `throw` dans le nouveau code, on renvoie `null` et l'appelant gère le cas.
 - **Actions serveur plutôt que routes d'API** : une page qui doit modifier des données appelle une action serveur (`actions.ts`), pas une adresse `/api/…`. Les routes d'API sont réservées aux appels venant de l'extérieur du site.

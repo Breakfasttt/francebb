@@ -5,7 +5,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
-import { logModerationAction } from "@/app/moderation/actions";
+import { logModerationAction } from "@/lib/moderationLog";
 
 async function geocode(ville: string, address: string) {
   try {
@@ -33,8 +33,13 @@ async function geocode(ville: string, address: string) {
  * Reverse geocoding (conversion coordonées -> adresse) via serveur pour éviter CORS.
  */
 export async function reverseGeocodeAction(lat: number, lng: number) {
+  // Réservé aux membres connectés : sinon n'importe qui utilise le site comme relais vers Nominatim,
+  // dont les règles d'usage peuvent faire bannir le site (carte 050)
+  const session = await getActiveSession();
+  if (!session?.user?.id) return null;
+  if (!Number.isFinite(Number(lat)) || !Number.isFinite(Number(lng))) return null;
   try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
+    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${Number(lat)}&lon=${Number(lng)}&zoom=18&addressdetails=1`, {
       headers: { "User-Agent": "BBFrance-App" }
     });
     const data = await res.json();
@@ -49,6 +54,9 @@ export async function reverseGeocodeAction(lat: number, lng: number) {
  * Recherche d'adresse via serveur (geocode).
  */
 export async function searchAddressAction(query: string) {
+  // Réservé aux membres connectés (même raison que reverseGeocodeAction)
+  const session = await getActiveSession();
+  if (!session?.user?.id) return null;
   try {
     const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
       headers: { "User-Agent": "BBFrance-App" }

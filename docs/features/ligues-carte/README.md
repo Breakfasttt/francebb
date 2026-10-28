@@ -37,7 +37,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 - **Les boutons « Transférer propriété » et « Supprimer la ligue » ne font rien** : ils n'ont pas d'action au clic, et `deleteLigue` / `transferLigueOwnership` ne sont appelées nulle part.
 - Les actions de ce fichier utilisent `throw new Error(...)`, contraire à la règle du projet (retourner `null` ou `{ error }`).
 - `transferLigueOwnership` ne vérifie pas que le nouveau chef existe ni qu'il n'est pas banni.
-- `searchAddressAction` et `reverseGeocodeAction` sont ouvertes à tous sans connexion : n'importe qui peut faire passer des requêtes Nominatim par notre serveur, dont la règle d'usage limite à une requête par seconde.
+- `searchAddressAction` et `reverseGeocodeAction` sont réservées aux membres connectés (carte 050) : sinon n'importe qui pouvait faire passer des requêtes Nominatim par notre serveur, dont la règle d'usage limite à une requête par seconde.
 - La clé ImgBB du blason est publique (`NEXT_PUBLIC_IMGBB_API_KEY`).
 - Les coordonnées : si latitude et longitude manquent, le serveur les calcule depuis la ville et l'adresse (géocodage) ; une ligue sans coordonnées n'apparaît pas sur la carte.
 - Lien de connexion de la page d'édition : `?callback=` au lieu de `?callbackUrl=` ailleurs, le retour après connexion ne marche probablement pas (à vérifier).

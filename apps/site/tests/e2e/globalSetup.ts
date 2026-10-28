@@ -91,5 +91,12 @@ export default async function globalSetup() {
     },
   });
 
+  // Carte 050 : un membre ordinaire que le modérateur bannira
+  await prisma.user.upsert({
+    where: { id: E2E.targetId },
+    update: { isBanned: false, banReason: null },
+    create: { id: E2E.targetId, name: "Cible E2E", email: "target@e2e.test", hasFinishedOnboarding: true },
+  });
+
   await prisma.$disconnect();
 }
