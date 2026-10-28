@@ -36,10 +36,10 @@ Pour modifier les tables ou colonnes :
    Puis d'appliquer les changements via le Turso CLI ou un script `@libsql/client`.
 
 ### 2. Données & Maintenance (Seeding)
-Toujours utiliser les scripts dédiés qui ciblent `TURSO_DATABASE_URL` :
-- **Données de référence** : `npx tsx scripts/seed-turso-final.ts`
-- **Synchronisation Quizz** : `npx tsx scripts/sync-quiz-final.ts`
+Toujours utiliser des scripts qui lisent `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` depuis l'environnement (jamais d'URL ni de token en dur dans un fichier) :
 - **Setup Initial (Rôles, Forums, Settings)** : `npx tsx prisma/firstSetup.ts`
+- **Backup + restauration testée** : `node scripts/turso-backup.mjs`
+- Anciens scripts ponctuels (sync quiz, archives) : supprimés le 2026-10-28, récupérables dans l'historique git.
 
 ### 3. Debugging
 - **Prisma Studio Local** : `npx prisma studio` (ouvre `dev.db`).

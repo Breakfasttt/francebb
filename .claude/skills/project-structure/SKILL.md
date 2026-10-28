@@ -13,7 +13,6 @@ description: Guide structure BBFrance. Dossiers, conventions, UI. Ultra compress
 - `prisma/`: Schéma DB, seeds (`firstSetup.ts`).
 - `public/`: Fichiers statiques.
 - `scripts/`: Scripts temporaires.
-- `styles/`: CSS global.
 
 ## APP (Next.js)
 - **Chemin**: `app/[nom]/page.tsx`

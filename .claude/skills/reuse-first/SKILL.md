@@ -52,6 +52,6 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 - 2 systèmes de toast : `react-hot-toast` + `common/components/Toast` → cible `sonner`.
 - Overlays de modale réécrits ×4 → cible Dialog shadcn.
 - 4 recherches d'utilisateurs → cible une server action `searchUsers`.
-- Morts : `next-themes`, `app/theme/theme.dark.css`, `styles/globals.css`, `styles/Home.module.css`.
+- Thème « Sombre » (`dark`) proposé dans l'onboarding et le profil mais sans CSS dédié : il affiche le thème par défaut.
 
 Nouveau composant partagé créé ? Ajouter sa ligne ici dans le même commit.

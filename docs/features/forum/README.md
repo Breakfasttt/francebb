@@ -30,5 +30,5 @@ Forum communautaire : catégories → forums → sous-forums → topics → post
 
 - Carte 014 (faite) : `/forum` connecté 16 → 6 requêtes, anonyme 5 → 0 (cache chaud).
 - Carte 028 (faite) : accès par rôle appliqué (accueil, forum, topic, réponse, édition, nouveau sujet/tournoi, recherche + API, non-lus, sujet au hasard, suivis, activité profil). Coût : +1 requête connecté (lecture `RoleConfig`).
-- `getRecentPosts` supprimée (aucun appelant). `getForums`, `getSiblings` sans appelant, filtrées par rôle.
+- `getRecentPosts`, `getForums`, `getSiblings` supprimées (aucun appelant, endpoints publics inutiles).
 - Cartes ouvertes : 015, 016, 020.

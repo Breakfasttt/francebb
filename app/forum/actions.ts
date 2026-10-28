@@ -320,31 +320,6 @@ export async function getCategories() {
   });
 }
 
-export async function getForums() {
-  const { roles } = await getForumAccess();
-  return await prisma.forum.findMany({
-    where: { parentForumId: null, ...forumAccessWhere(roles) },
-    orderBy: { order: "asc" }
-  });
-}
-
-export async function getSiblings(categoryId?: string | null, parentForumId?: string | null) {
-  const { roles } = await getForumAccess();
-  if (parentForumId) {
-    return await prisma.forum.findMany({
-      where: { parentForumId, ...forumAccessWhere(roles) },
-      orderBy: { order: 'asc' }
-    });
-  }
-  if (categoryId) {
-    return await prisma.forum.findMany({
-      where: { categoryId, parentForumId: null, ...forumAccessWhere(roles) },
-      orderBy: { order: 'asc' }
-    });
-  }
-  return [];
-}
-
 export async function getAllForums() {
   const { roles } = await getForumAccess();
   return await prisma.forum.findMany({
