@@ -53,9 +53,9 @@
     border: var(--back-btn-border, 2px solid #fff) !important;
     border-radius: 50% !important;
     color: var(--back-btn-icon-color, #fff) !important;
-    width: 38px !important;
-    /* Ajusté pour Navbar */
-    height: 38px !important;
+    /* 44 px minimum : taille d'une cible confortable au pouce (règle mobile du projet) */
+    width: 44px !important;
+    height: 44px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;

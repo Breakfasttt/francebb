@@ -20,7 +20,11 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    // Règle absolue « mobile impeccable » : les parcours essentiels sont rejoués en taille téléphone
+    { name: "telephone", use: { ...devices["Pixel 7"] }, testMatch: /smoke\.spec\.ts/ },
+  ],
   webServer: {
     // La base e2e.db est préparée en amont par scripts/e2e-db.mjs (npm run test:e2e).
     command: `npx next dev -p ${PORT}`,

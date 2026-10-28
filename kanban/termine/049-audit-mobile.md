@@ -29,3 +29,11 @@ Pour chaque page, en taille téléphone récent et téléphone d'entrée de gamm
 - **Forum et messagerie** : pas de `page-mobile.css` (règles mobiles en fin de `page.css`, ou dans celui du profil pour la messagerie).
 - **BBScheme** : interface mobile réelle mais boutons de 40 px ; le skill `mobile-ux` annonçait à tort un écran « ordinateur seulement » (corrigé dans la fiche).
 - **`/banned`** : couleurs en dur, presque illisible dans le thème clair.
+
+## Résultat
+
+- Rapport `docs/mobile-audit.md` : mesure automatique de 23 pages sur deux tailles de téléphone (contenu coupé, cibles sous 44 px, textes trop petits, champs qui font zoomer l'iPhone), complétée par les problèmes relevés dans le code.
+- Outil de mesure : `tests/e2e/mobile-audit.spec.ts` (`MOBILE_AUDIT=1`, relevé non bloquant).
+- **Les 15 parcours essentiels sont rejoués en taille téléphone** (projet Playwright `telephone`, en CI aussi) : tous verts. Suite complète : 46 tests.
+- Corrigé tout de suite : le bouton « Retour », présent sur toutes les pages, passe de 40 à 44 px sur mobile.
+- Corrections suivantes : cartes 053 (forum), 054 (listes et filtres), 055 (seuil unique téléphone/ordinateur), 056 (carte et quiz), 057 (BBScheme), 058 (connexion, inscription, bannis), 059 (mesure de fluidité Lighthouse, qui demande ton accord pour ajouter la bibliothèque).

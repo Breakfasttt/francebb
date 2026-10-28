@@ -22,9 +22,10 @@
     justify-content: center;
   }
 
+  /* 44 px minimum : taille d'une cible confortable au pouce (règle mobile du projet) */
   :root body .page-header-back-wrapper .back-button {
-    width: 40px !important;
-    height: 40px !important;
+    width: 44px !important;
+    height: 44px !important;
     border-width: 2px !important;
     margin: 0 !important;
   }
