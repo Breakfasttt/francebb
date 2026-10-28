@@ -119,10 +119,9 @@ export async function saveTournamentResults(tournamentId: string, data: { result
       await tx.tournamentResult.deleteMany({ where: { tournamentId } });
       await tx.tournamentRound.deleteMany({ where: { tournamentId } });
 
-      // 2. Créer les nouveaux résultats
-      for (const res of data.results) {
-        await tx.tournamentResult.create({
-          data: {
+      // 2. Créer les nouveaux résultats (une requête pour tous)
+      await tx.tournamentResult.createMany({
+        data: data.results.map((res) => ({
             tournamentId,
             coachName: res.coachName,
             nafNumber: res.nafNumber ? String(res.nafNumber) : null,
@@ -135,9 +134,8 @@ export async function saveTournamentResults(tournamentId: string, data: { result
             points: Number(res.points) || 0,
             rank: res.rank ? Number(res.rank) : null,
             autoCalculate: res.autoCalculate ?? true
-          }
-        });
-      }
+        }))
+      });
 
       // 3. Créer les rondes et matchs
       for (const rnd of data.rounds) {
@@ -155,9 +153,9 @@ export async function saveTournamentResults(tournamentId: string, data: { result
            return tA - tB;
         });
 
-        for (const m of sortedMatches) {
-          await tx.tournamentMatch.create({
-            data: {
+        // Une requête par ronde pour tous ses matchs
+        await tx.tournamentMatch.createMany({
+          data: sortedMatches.map((m) => ({
               roundId: round.id,
               tableNumber: m.tableNumber ? Number(m.tableNumber) : null,
               coach1Name: m.coach1Name,
@@ -168,9 +166,8 @@ export async function saveTournamentResults(tournamentId: string, data: { result
               coach1Casualties: Number(m.coach1Casualties) || 0,
               coach2TD: Number(m.coach2TD) || 0,
               coach2Casualties: Number(m.coach2Casualties) || 0
-            }
-          });
-        }
+          }))
+        });
       }
 
       // 4. Marquer le tournoi comme terminé

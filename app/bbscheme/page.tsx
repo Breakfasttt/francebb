@@ -6,7 +6,6 @@
 
 import BackButton from "@/common/components/BackButton/BackButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import html2canvas from "html2canvas";
 import {
   ChevronLeft,
   ChevronRight,
@@ -43,7 +42,6 @@ import { getBoardState, saveBoardState } from "./actions";
 // @ts-ignore
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
-import gifshot from "gifshot";
 
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import Modal from "@/common/components/Modal/Modal";
@@ -1148,6 +1146,9 @@ export default function BBSchemePage() {
     const originalFrame = currentFrameIndex;
 
     try {
+      // Librairies d'export chargées à la demande (hors du JS initial de la page)
+      const [{ default: html2canvas }, { default: gifshot }] = await Promise.all([import("html2canvas"), import("gifshot")]);
+
       // Masquer les outils temporairement pour la capture si nécessaire
       // Capture frame by frame
       for (let i = 0; i < frames.length; i++) {

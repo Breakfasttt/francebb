@@ -41,13 +41,15 @@ Mobile 4G simulé (150 ms, 9 Mb/s, CPU ×4), médiane de 3 runs, copie locale de
 
 ### Suivi P2 (requêtes Prisma par rendu, connecté)
 
-| Route | Baseline | Après 014 |
-|---|---|---|
-| / | 11 | 10 |
-| /forum | 16 | **6** (anonyme 5 → 0) |
-| /forum/[id] | 31 | 22 |
-| /forum/topic/[id] | 89 | 85 |
-| /tournois | 9 | 8 |
+| Route | Baseline | Après 014 | Après P2 (015, 016, 020, 028) |
+|---|---|---|---|
+| / | 11 | 10 | 10 |
+| /forum | 16 | **6** (anonyme 5 → 0) | 7 (+1 : accès par rôle) |
+| /forum/[id] | 31 | 22 | **21** (-32 %) |
+| /forum/topic/[id] | 89 | 85 | **46** (-48 %) |
+| /tournois | 9 | 8 | 8 |
+
+JS `/bbscheme` : 235 → **183 kB** (-22 %, export GIF chargé à la demande).
 
 014 : accueil forum en `select` minimal + cache par audience, non-lus en une requête partagée, session mémoïsée par requête (`getSession`/`getActiveSession`), layout sans relecture du User, sidebar sans chargement inutilisé. LCP local inchangé (SQLite local ≈ 0 ms/requête) : le gain se voit en prod Turso.
 Tracer les requêtes d'une route : `TRACE_ROUTE=/forum node scripts/baseline.mjs` (Git Bash : préfixer `MSYS_NO_PATHCONV=1`).

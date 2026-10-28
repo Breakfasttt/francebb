@@ -30,12 +30,15 @@ const [firstForum, biggestTopic, user] = await Promise.all([
 ]);
 await prisma.$disconnect();
 
-const routes = ROUTES.map((route) =>
+const allRoutes = ROUTES.map((route) =>
   route.replace("[firstForum]", firstForum?.id ?? "none").replace("[biggestTopic]", biggestTopic?.id ?? "none")
 );
+// TRACE_ROUTE : ne mesure que cette route ("/forum/topic" = le topic le plus long)
+const TRACE_ROUTE = process.env.TRACE_ROUTE;
+const traced = TRACE_ROUTE && allRoutes.find((route) => route === TRACE_ROUTE || route.startsWith(TRACE_ROUTE + "/"));
+const routes = traced ? [traced] : allRoutes;
 
 let queryCount = 0;
-const TRACE_ROUTE = process.env.TRACE_ROUTE;
 let tracing = null;
 const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
   shell: true,
@@ -82,7 +85,7 @@ async function measure(browser, route, connected) {
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 
   const queriesBefore = queryCount;
-  if (TRACE_ROUTE && route === TRACE_ROUTE && connected) tracing = [];
+  if (traced && connected) tracing = [];
   await page.goto(BASE_URL + route, { waitUntil: "networkidle" });
   const metrics = await page.evaluate(
     () =>

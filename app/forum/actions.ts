@@ -88,8 +88,8 @@ export async function markTopicAsRead(topicId: string) {
       lastPostId: latestPost?.id || null
     }
   });
-
-  revalidatePath(`/forum/topic/${topicId}`);
+  // Pas de revalidatePath : appelée à chaque ouverture de topic, elle faisait re-rendre toute la page
+  // (~40 requêtes). Les listes du forum sont rendues à chaque visite, le non-lu y est donc déjà à jour.
 }
 
 export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
@@ -621,22 +621,26 @@ export async function createPost(topicId: string, content: string) {
         select: { id: true, email: true, notifMention: true }
       });
 
-      for (const mUser of mentionedUsers) {
-        await prisma.mention.create({
-          data: {
+      // Une requête par lot (post neuf : pas de doublon possible sur @@unique([postId, mentionedUserId]))
+      const [, followerRows] = await Promise.all([
+        prisma.mention.createMany({
+          data: mentionedUsers.map((mUser) => ({
             postId: post.id,
             mentionedUserId: mUser.id,
             mentionerId: session.user.id
-          }
-        }).catch(() => {});
+          }))
+        }).catch(() => null),
+        prisma.topicFollow.findMany({
+          where: { topicId, userId: { in: mentionedUsers.map((mUser) => mUser.id) } },
+          select: { userId: true }
+        })
+      ]);
+      const followerIds = new Set(followerRows.map((row) => row.userId));
 
-        if (mUser.email && mUser.notifMention) {
-          const isFollower = await prisma.topicFollow.findUnique({
-            where: { userId_topicId: { userId: mUser.id, topicId } }
-          });
-          if (!isFollower) {
-            sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
-          }
+      for (const mUser of mentionedUsers) {
+        // Les abonnés reçoivent déjà la notification de suivi
+        if (mUser.email && mUser.notifMention && !followerIds.has(mUser.id)) {
+          sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
         }
       }
     })());
@@ -654,12 +658,19 @@ export async function createPost(topicId: string, content: string) {
       }
     });
 
-    for (const follow of followers) {
-      if (follow.user.email && follow.user.notifFollowedTopic) {
-        const topicView = await prisma.topicView.findUnique({
-          where: { userId_topicId: { userId: follow.userId, topicId } }
-        });
-        if (!topicView || topicView.lastViewedAt >= topic.updatedAt) {
+    const notified = followers.filter((follow) => follow.user.email && follow.user.notifFollowedTopic);
+    const views = notified.length > 0
+      ? await prisma.topicView.findMany({
+          where: { topicId, userId: { in: notified.map((follow) => follow.userId) } },
+          select: { userId: true, lastViewedAt: true }
+        })
+      : [];
+    const lastViewByUser = new Map(views.map((view) => [view.userId, view.lastViewedAt]));
+
+    for (const follow of notified) {
+      if (follow.user.email) {
+        const lastViewedAt = lastViewByUser.get(follow.userId);
+        if (!lastViewedAt || lastViewedAt >= topic.updatedAt) {
           sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
         }
       }

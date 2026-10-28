@@ -1,5 +1,6 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
+import { getUnreadState } from "@/app/forum/unreadState";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Trophy, Lock as LockIcon } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
@@ -36,14 +37,14 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         include: {
           _count: { select: { topics: true } },
           topics: {
+            where: { isArchived: false },
             orderBy: { updatedAt: "desc" },
             take: 1,
-            include: {
-              author: true,
-              topicViews: {
-                where: { userId: userId || "" }
-              },
-              tournament: true
+            select: {
+              title: true,
+              updatedAt: true,
+              author: { select: { name: true } },
+              tournament: { select: { date: true, isCancelled: true, isFinished: true } }
             }
           }
         }
@@ -62,16 +63,12 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     notFound();
   }
 
-  // Count total topics for pagination
-  const totalTopics = await prisma.topic.count({ where: { forumId: id } });
-  const totalPages = Math.max(1, Math.ceil(totalTopics / TOPICS_PER_PAGE));
-
-  // Fetch paginated topics
-  const topics = await prisma.topic.findMany({
-    where: { 
-      forumId: id,
-      isArchived: false
-    },
+  // Topics paginés + total (mêmes critères : les archivés ne comptent pas) + non-lus des sous-forums, en parallèle
+  const listWhere = { forumId: id, isArchived: false };
+  const [totalTopics, topics, unread] = await Promise.all([
+    prisma.topic.count({ where: listWhere }),
+    prisma.topic.findMany({
+    where: listWhere,
     orderBy: [
       { isSticky: "desc" },
       { updatedAt: "desc" }
@@ -79,16 +76,19 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     skip,
     take: TOPICS_PER_PAGE,
     include: {
-      author: true,
+      author: { select: { name: true } },
       _count: {
         select: { posts: true }
       },
       topicViews: {
         where: { userId: userId || "" }
       },
-      tournament: true
+      tournament: { select: { date: true, isCancelled: true, isFinished: true } }
     }
-  });
+    }),
+    userId ? getUnreadState(userId) : null,
+  ]);
+  const totalPages = Math.max(1, Math.ceil(totalTopics / TOPICS_PER_PAGE));
 
   const forumHasNew = userId ? topics.some(topic => {
     const view = topic.topicViews[0];
@@ -130,10 +130,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px' }}>
             {forum.subForums.map((sub) => {
               const lastTopic = sub.topics[0];
-              const subHasNew = userId ? sub.topics.some(topic => {
-                const view = topic.topicViews[0];
-                return !view || topic.updatedAt > view.lastViewedAt;
-              }) : false;
+              const subHasNew = unread?.unreadForumIds.has(sub.id) ?? false;
 
               return (
                 <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>

@@ -1,7 +1,7 @@
 ---
 id: 020
 title: Supprimer les N+1 forum et tournois
-status: refine
+status: done
 epic: E03
 app: site
 depends_on: []
@@ -18,3 +18,7 @@ Boucles de requêtes dans `app/forum/actions.ts` (~674/707) et `app/tournois/act
 ## Action
 
 `createMany` / `findMany({ where: { id: { in } } })`.
+
+## Résultat
+
+`createPost` : mentions en `createMany`, abonnés et vues lus en une requête chacun (avant : 1-2 requêtes par user). Résultats de tournoi : `createMany` pour les résultats, un `createMany` par ronde pour les matchs.

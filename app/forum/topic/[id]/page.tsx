@@ -134,10 +134,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       select: { id: true }
     }),
-    prisma.forum.findMany({
-      orderBy: { name: "asc" },
-      select: { id: true, name: true }
-    })
+    // Liste des forums : uniquement pour la modale de déplacement (modérateurs)
+    isUserModerator
+      ? prisma.forum.findMany({
+          orderBy: { name: "asc" },
+          select: { id: true, name: true }
+        })
+      : []
   ]);
 
   if (!topic) notFound();
