@@ -1,7 +1,7 @@
 ---
 id: 025
 title: Spike : Prisma Migrate contre une copie Turso
-status: ready
+status: cancelled
 epic: E02
 app: site
 depends_on: [011]
@@ -24,3 +24,7 @@ Timebox : 2 h.
 ## Résultat
 
 À remplir : go/no-go, écart, durée de bascule.
+
+## Annulée (ADR-0004)
+
+La base de production repart de zéro sur Postgres : plus de base Turso à sauvegarder ni à migrer.

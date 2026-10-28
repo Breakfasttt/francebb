@@ -1,7 +1,7 @@
 ---
 id: 012
 title: Baseline des migrations Prisma en prod
-status: ready
+status: cancelled
 epic: E02
 app: site
 depends_on: [011, 025]
@@ -22,3 +22,7 @@ Seulement si l'écart consigné par la carte 025 est vide :
 2. `migrate resolve --applied 0_init` sur la copie, puis dump frais, puis prod.
 3. `dev.db` : marquer `0_init` appliquée (sauvegarde avant).
 4. Retirer `db push` de `DEPLOY.md`, `README.md` (FR) et du skill `database-ops`.
+
+## Annulée (ADR-0004)
+
+La base de production repart de zéro sur Postgres : plus de base Turso à sauvegarder ni à migrer.

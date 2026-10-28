@@ -7,29 +7,29 @@
 | Épic | Phase | Avancement | Cartes ouvertes |
 |---|---|---|---|
 | [E01 — Sécurité, filet de tests, baseline](epics/E01-filet-securite.md) | P0 | 4/4 | — |
-| [E02 — Gouvernance du dev IA](epics/E02-gouvernance-ia.md) | P1 | 8/13 | [011](011-backup-prod.md) [012](012-baseline-prisma.md) [025](025-spike-migrate-turso.md) [026](026-script-db-deploy.md) [040](040-fusion-branches.md) |
-| [E03 — Performance, forum mobile d'abord](epics/E03-perf-forum.md) | P2 | 5/8 | [017](017-layout-dynamique.md) [018](018-cache-components.md) [019](019-images-bundles.md) |
+| [E02 — Gouvernance du dev IA](epics/E02-gouvernance-ia.md) | P1 | 9/17 | [041](041-essai-postgres.md) [042](042-nettoyage-racine.md) [043](043-kanban-dossiers.md) [044](044-readme-glossaire.md) [045](045-fiches-fonctionnalites.md) [046](046-bascule-postgres.md) [047](047-mise-en-production-postgres.md) [048](048-nettoyage-claude.md) |
+| [E03 — Performance, forum mobile d'abord](epics/E03-perf-forum.md) | P2 | 5/9 | [017](017-layout-dynamique.md) [018](018-cache-components.md) [019](019-images-bundles.md) [049](049-audit-mobile.md) |
 | [E04 — Monorepo pnpm + Turborepo](epics/E04-monorepo.md) | P3 | 1/1 | — |
 | [E05 — UI shadcn/ui + Tailwind v4](epics/E05-ui-shadcn.md) | P4 | 6/7 | [013](013-eslint-archi.md) |
 | [E06 — Hub d'identité SSO (Better Auth + OIDC)](epics/E06-hub-sso.md) | P5 | 1/6 | [035](035-hub-deploiement.md) [036](036-hub-migration-comptes.md) [037](037-hub-ban-deconnexion.md) [038](038-hub-liens-magiques.md) [039](039-widget-bbaccount.md) |
 | [E07 — BBScheme en app séparée](epics/E07-bbscheme.md) | P6 | 0/1 | [024](024-extraction-bbscheme.md) |
 
-## En cours (1)
+## Prêtes (10)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
-| [040](040-fusion-branches.md) | Rassembler les branches de travail dans development | E02 | — | 0004 |
-
-## Prêtes (4)
-
-| Carte | Titre | Épic | Bloquée par | ADR |
-|---|---|---|---|---|
-| [011](011-backup-prod.md) | Backup Turso prod + restauration testée | E02 | — | — |
-| [012](012-baseline-prisma.md) | Baseline des migrations Prisma en prod | E02 | 011, 025 | 0002 |
 | [019](019-images-bundles.md) | next/image + import dynamique html2canvas/gifshot | E03 | — | — |
-| [025](025-spike-migrate-turso.md) | Spike : Prisma Migrate contre une copie Turso | E02 | 011 | 0002 |
+| [041](041-essai-postgres.md) | Essai Postgres sur Neon (4 h maximum) | E02 | — | 0004 |
+| [042](042-nettoyage-racine.md) | Nettoyer la racine et les fichiers morts | E02 | — | 0004 |
+| [043](043-kanban-dossiers.md) | Kanban rangé en dossiers par état | E02 | — | 0004 |
+| [044](044-readme-glossaire.md) | README d'entrée, glossaire, une règle à un seul endroit | E02 | 042 | 0004 |
+| [045](045-fiches-fonctionnalites.md) | Une fiche par fonctionnalité dans docs/features | E02 | 044 | 0004 |
+| [046](046-bascule-postgres.md) | Passer le site et le hub sur Postgres | E02 | 041 | 0004 |
+| [047](047-mise-en-production-postgres.md) | Mise en production sur les nouvelles bases | E02 | 046 | 0004 |
+| [048](048-nettoyage-claude.md) | Nettoyer le dossier .claude et renommer le conseil | E02 | 043, 044 | 0004 |
+| [049](049-audit-mobile.md) | Audit mobile de toutes les pages et tests sur téléphone | E03 | — | 0004 |
 
-## À raffiner (10)
+## À raffiner (9)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
@@ -37,14 +37,13 @@
 | [017](017-layout-dynamique.md) | Layout sans force-dynamic + jwt throttlé | E03 | — | — |
 | [018](018-cache-components.md) | Activer cacheComponents | E03 | 017 | — |
 | [024](024-extraction-bbscheme.md) | Extraire bbscheme en app + packages/bbscheme-player | E07 | — | — |
-| [026](026-script-db-deploy.md) | Script npm run db:deploy | E02 | 025, 012 | 0002 |
 | [035](035-hub-deploiement.md) | Déployer le hub sur un domaine parent commun | E06 | — | 0003 |
 | [036](036-hub-migration-comptes.md) | Migrer les 9 comptes vers le hub | E06 | 035, 011 | 0003 |
 | [037](037-hub-ban-deconnexion.md) | Ban global et déconnexion propagés | E06 | — | 0003 |
 | [038](038-hub-liens-magiques.md) | Envoi des liens magiques du hub | E06 | — | 0003 |
 | [039](039-widget-bbaccount.md) | Widget <BBAccount/> et packages/auth-client | E06 | 035 | 0003 |
 
-## Terminées (25)
+## Terminées (26)
 
 | Carte | Titre | Épic | Bloquée par | ADR |
 |---|---|---|---|---|
@@ -73,3 +72,13 @@
 | [032](032-modales-dialog.md) | Modales sur Radix Dialog | E05 | — | 0001 |
 | [033](033-recherche-users.md) | Une seule recherche d'utilisateurs + useDebounce | E05 | — | 0001 |
 | [034](034-boutons-types.md) | Boutons sans @ts-ignore | E05 | — | 0001 |
+| [040](040-fusion-branches.md) | Rassembler les branches de travail dans development | E02 | — | 0004 |
+
+## Annulées (4)
+
+| Carte | Titre | Épic | Bloquée par | ADR |
+|---|---|---|---|---|
+| [011](011-backup-prod.md) | Backup Turso prod + restauration testée | E02 | — | — |
+| [012](012-baseline-prisma.md) | Baseline des migrations Prisma en prod | E02 | — | 0002 |
+| [025](025-spike-migrate-turso.md) | Spike : Prisma Migrate contre une copie Turso | E02 | — | 0002 |
+| [026](026-script-db-deploy.md) | Script npm run db:deploy | E02 | — | 0002 |
