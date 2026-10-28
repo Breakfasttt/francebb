@@ -1,74 +1,67 @@
-import { ArrowLeft } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import "./page.css";
 
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
-import ForumCategory from "@/app/forum/component/ForumCategory";
+import ForumCategory, { type ForumIndexCategory } from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
-import { redirect } from "next/navigation";
+import { getUnreadState } from "@/app/forum/unreadState";
 
 import { unstable_cache } from "next/cache";
 
-// Cache pour les catégories du forum
+// Structure du forum partagée par tous les visiteurs d'une même audience (anonyme / membre) :
+// seul le dernier topic de chaque forum est chargé. L'état « non lu », propre à chaque user, est calculé hors cache.
 const getCachedCategories = unstable_cache(
-  async (userId: string | undefined) => {
+  async (audience: "anonymous" | "member"): Promise<ForumIndexCategory[]> => {
+    const publicOnly = audience === "anonymous" ? { allowedRoles: "ALL" } : {};
     return prisma.category.findMany({
-      where: !userId ? { allowedRoles: "ALL" } : undefined,
+      where: publicOnly,
       orderBy: { order: "asc" },
-      include: {
+      select: {
+        id: true,
+        name: true,
         forums: {
-          where: { 
-            parentForumId: null,
-            ...( !userId ? { allowedRoles: "ALL" } : {} )
-          },
+          where: { parentForumId: null, ...publicOnly },
           orderBy: { order: "asc" },
-          include: {
-            _count: {
-              select: { topics: true }
-            },
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            isLocked: true,
+            isTournamentForum: true,
+            _count: { select: { topics: true } },
             topics: {
               where: { isArchived: false },
               orderBy: { updatedAt: "desc" },
-              include: {
-                author: true,
-                _count: {
-                  select: { posts: true }
-                },
-                topicViews: {
-                  where: { userId: userId || "" }
-                }
-              }
+              take: 1,
+              select: { title: true, updatedAt: true, tournamentId: true, author: { select: { name: true } } },
             },
-            subForums: {
-              where: !userId ? { allowedRoles: "ALL" } : {},
-              include: {
-                topics: {
-                  include: {
-                    topicViews: {
-                      where: { userId: userId || "" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+            subForums: { where: publicOnly, select: { id: true } },
+          },
+        },
+      },
     });
   },
-  ["forum-categories-list"],
+  ["forum-categories-list-v2"],
   { revalidate: 60, tags: ["forum-categories"] }
 );
 
 export default async function ForumPage() {
-  const session = await auth();
+  const session = await getActiveSession();
   const userId = session?.user?.id;
 
-  const categories = await getCachedCategories(userId);
+  const [categories, unread] = await Promise.all([
+    getCachedCategories(userId ? "member" : "anonymous"),
+    userId ? getUnreadState(userId) : null,
+  ]);
+
+  // Forums (sous-forums compris) contenant au moins un topic non lu
+  const unreadForumIds = categories.flatMap((category) =>
+    category.forums
+      .filter((forum) => unread && [forum.id, ...forum.subForums.map((sub) => sub.id)].some((id) => unread.unreadForumIds.has(id)))
+      .map((forum) => forum.id)
+  );
 
   return (
     <div className="forum-page">
@@ -83,31 +76,13 @@ export default async function ForumPage() {
       <div className="forum-layout">
         <div className="forum-main-content">
           <DeletionToast />
-          {categories.map((category) => {
-            // Check if category has any unread topics (including sub-forums)
-            const categoryHasNew = userId ? category.forums.some(forum => {
-              const directUnread = forum.topics.some(topic => {
-                const view = topic.topicViews[0];
-                return !view || topic.updatedAt > view.lastViewedAt;
-              });
-              const subUnread = forum.subForums.some(sub =>
-                sub.topics.some(topic => {
-                  const view = topic.topicViews[0];
-                  return !view || topic.updatedAt > view.lastViewedAt;
-                })
-              );
-              return directUnread || subUnread;
-            }) : false;
-
-            return (
-              <ForumCategory 
-                key={category.id} 
-                category={category} 
-                categoryHasNew={categoryHasNew} 
-                currentUserId={userId}
-              />
-            );
-          })}
+          {categories.map((category) => (
+            <ForumCategory
+              key={category.id}
+              category={category}
+              unreadForumIds={unreadForumIds}
+            />
+          ))}
         </div>
         <ForumSidebar />
       </div>

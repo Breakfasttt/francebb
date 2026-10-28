@@ -1,7 +1,7 @@
 ---
 id: 014
 title: Forum index : requêtes bornées et cache non indexé par user
-status: refine
+status: done
 epic: E03
 app: site
 depends_on: []

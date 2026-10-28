@@ -3,6 +3,7 @@
  * Lance `next start` (build requis) sur une COPIE de dev.db, simule un mobile 4G (CDP),
  * et mesure par route, en anonyme et connecté : TTFB, FCP, LCP, JS transféré, requêtes Prisma.
  * Usage : npm run build && node scripts/baseline.mjs > logs/baseline.md
+ *         TRACE_ROUTE=/forum node scripts/baseline.mjs   → liste aussi les requêtes SQL de cette route (stderr)
  */
 import { copyFileSync, mkdirSync } from "node:fs";
 import { spawn, spawnSync } from "node:child_process";
@@ -34,6 +35,8 @@ const routes = ROUTES.map((route) =>
 );
 
 let queryCount = 0;
+const TRACE_ROUTE = process.env.TRACE_ROUTE;
+let tracing = null;
 const server = spawn("npx", ["next", "start", "-p", String(PORT)], {
   shell: true,
   env: { ...process.env, DATABASE_URL: `file:./${DB_COPY}`, TURSO_DATABASE_URL: "", PRISMA_QUERY_LOG: "1", AUTH_SECRET: SECRET, AUTH_URL: BASE_URL },
@@ -43,6 +46,7 @@ const ready = new Promise((resolve, reject) => {
   const onData = (chunk) => {
     const text = chunk.toString();
     queryCount += (text.match(/prisma:query/g) ?? []).length;
+    if (tracing) tracing.push(...text.split(/\r?\n/).filter((line) => line.includes("prisma:query")));
     if (text.includes("Ready")) resolve();
   };
   server.stdout.on("data", onData);
@@ -78,6 +82,7 @@ async function measure(browser, route, connected) {
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
 
   const queriesBefore = queryCount;
+  if (TRACE_ROUTE && route === TRACE_ROUTE && connected) tracing = [];
   await page.goto(BASE_URL + route, { waitUntil: "networkidle" });
   const metrics = await page.evaluate(
     () =>
@@ -101,6 +106,11 @@ async function measure(browser, route, connected) {
   );
   await page.waitForTimeout(500);
   const queries = queryCount - queriesBefore;
+  if (tracing) {
+    console.error(`--- ${route} (connecté) : ${tracing.length} requêtes`);
+    for (const line of tracing) console.error(line.slice(0, 220));
+    tracing = null;
+  }
   await context.close();
   return { ...metrics, queries };
 }

@@ -5,13 +5,30 @@ import { Hash, Folder, Bell, ChevronDown, ChevronUp, Trophy, Lock as LockIcon } 
 import Link from "next/link";
 import { parseInlineBBCode } from "@/lib/bbcode";
 
-interface CategoryProps {
-  category: any;
-  categoryHasNew: boolean;
-  currentUserId?: string;
+// Données minimales d'une catégorie de l'accueil du forum (chargées par app/forum/page.tsx).
+// updatedAt peut arriver en string : unstable_cache sérialise en JSON.
+export interface ForumIndexCategory {
+  id: string;
+  name: string;
+  forums: {
+    id: string;
+    name: string;
+    description: string | null;
+    isLocked: boolean;
+    isTournamentForum: boolean;
+    _count: { topics: number };
+    topics: { title: string; updatedAt: Date | string; tournamentId: string | null; author: { name: string | null } }[];
+    subForums: { id: string }[];
+  }[];
 }
 
-export default function ForumCategory({ category, categoryHasNew, currentUserId }: CategoryProps) {
+interface CategoryProps {
+  category: ForumIndexCategory;
+  unreadForumIds: string[];
+}
+
+export default function ForumCategory({ category, unreadForumIds }: CategoryProps) {
+  const categoryHasNew = category.forums.some((forum) => unreadForumIds.includes(forum.id));
   const [isExpanded, setIsExpanded] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -44,19 +61,9 @@ export default function ForumCategory({ category, categoryHasNew, currentUserId 
 
       {isExpanded && (
         <div className="forums-list animate-fade-in">
-          {category.forums.map((forum: any) => {
+          {category.forums.map((forum) => {
             const lastTopic = forum.topics[0];
-            const directUnread = currentUserId && forum.topics.some((topic: any) => {
-              const view = topic.topicViews[0];
-              return !view || topic.updatedAt > view.lastViewedAt;
-            });
-            const subUnread = currentUserId && forum.subForums.some((sub: any) =>
-              sub.topics.some((topic: any) => {
-                const view = topic.topicViews[0];
-                return !view || topic.updatedAt > view.lastViewedAt;
-              })
-            );
-            const forumHasNew = directUnread || subUnread;
+            const forumHasNew = unreadForumIds.includes(forum.id);
 
             return (
               <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>

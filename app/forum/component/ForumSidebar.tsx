@@ -1,13 +1,12 @@
-import { 
-  getRecentPosts, 
-  getRandomPostUrl, 
+import {
+  getRandomPostUrl,
   getUnreadTopicsCount,
   getSubForumCount
 } from "@/app/forum/actions";
 import Link from "next/link";
 import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Trophy, Users, Lock as LockIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
@@ -42,10 +41,11 @@ export default async function ForumSidebar({
   currentPage?: number;
   totalPages?: number;
 }) {
-  const recentPosts = await getRecentPosts(3);
-  const unreadTopics = await getUnreadTopicsCount();
-  const subForumCount = parentForumId ? await getSubForumCount(parentForumId) : 0;
-  const session = await auth();
+  const [unreadTopics, subForumCount, session] = await Promise.all([
+    getUnreadTopicsCount(),
+    parentForumId ? getSubForumCount(parentForumId) : 0,
+    getActiveSession(),
+  ]);
   const canCreateForum = isModerator(session?.user?.role);
 
   async function handleRandomPost() {

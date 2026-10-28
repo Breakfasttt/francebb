@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getSession } from "@/lib/authGuard";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
@@ -29,7 +29,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const session = await getSession();
 
   // 1. Initialisation des variables par défaut
   let userRole: UserRole = "COACH";
@@ -38,45 +38,35 @@ export default async function RootLayout({
   let pendingModCount = 0;
   let unreadCount = 0;
 
-  // 2. Fetching asynchrone parallélisé des données globales
+  // 2. Rôle, ban et thème viennent de la session (rafraîchis en BDD par le callback jwt, auth.ts)
   if (session?.user?.id) {
+    const user = session.user;
+    userRole = user.role as UserRole;
+    isBanned = user.isBanned;
+    userTheme = user.theme || "saison3";
+
     try {
-      const [user, pmCount] = await Promise.all([
-        prisma.user.findUnique({
-          where: { id: session.user.id },
-          select: { role: true, isBanned: true, theme: true }
-        }),
+      // 3. Compteurs : MP non lus, et file de modération pour les modérateurs (en parallèle)
+      const [pmCount, reports, resources] = await Promise.all([
         prisma.privateMessage.count({
           where: {
             conversation: {
               participants: {
                 some: {
-                  userId: session.user.id,
+                  userId: user.id,
                   deletedAt: null
                 }
               }
             },
-            authorId: { not: session.user.id },
+            authorId: { not: user.id },
             readAt: null
           }
-        })
+        }),
+        isModerator(userRole) ? prisma.moderationReport.count({ where: { status: "PENDING" } }) : 0,
+        isModerator(userRole) ? prisma.resource.count({ where: { status: "PENDING" } }) : 0,
       ]);
-
-      if (user) {
-        userRole = user.role as UserRole;
-        isBanned = user.isBanned;
-        userTheme = user.theme || "saison3";
-        unreadCount = pmCount;
-
-        // 3. Si modérateur, fetcher les compteurs de modération en parallèle
-        if (isModerator(userRole)) {
-          const [reports, resources] = await Promise.all([
-            prisma.moderationReport.count({ where: { status: "PENDING" } }),
-            prisma.resource.count({ where: { status: "PENDING" } })
-          ]);
-          pendingModCount = reports + resources;
-        }
-      }
+      unreadCount = pmCount;
+      pendingModCount = reports + resources;
     } catch (error) {
       console.error("Layout data fetching error:", error);
     }

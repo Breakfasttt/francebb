@@ -10,6 +10,7 @@ import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
+import { getUnreadState } from "@/app/forum/unreadState";
 import { logModerationAction } from "@/app/moderation/actions";
 
 export async function getUnreadMessagesCount() {
@@ -203,23 +204,9 @@ export async function getUnreadTopicsCount() {
   const session = await getActiveSession();
   if (!session?.user?.id) return 0;
 
-  // Optimisation Prisma : utiliser findMany avec select minimal pour le comptage
-  // Sur Turso/SQLite, c'est parfois plus rapide qu'un count complexe avec relations
-  const topics = await prisma.topic.findMany({
-    where: { isArchived: false },
-    select: {
-      updatedAt: true,
-      topicViews: {
-        where: { userId: session.user.id },
-        select: { lastViewedAt: true }
-      }
-    }
-  });
-
-  return topics.filter(topic => {
-    const view = topic.topicViews[0];
-    return !view || topic.updatedAt > view.lastViewedAt;
-  }).length;
+  // Requête partagée (mémoïsée par rendu) avec l'accueil du forum
+  const { count } = await getUnreadState(session.user.id);
+  return count;
 }
 export async function getUnreadTopics(page: number = 1, limit: number = 20) {
   const session = await getActiveSession();

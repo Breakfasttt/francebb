@@ -15,6 +15,7 @@ declare module "next-auth" {
       role: string;
       hasFinishedOnboarding: boolean;
       isBanned: boolean;
+      theme?: string;
     } & DefaultSession["user"];
   }
 

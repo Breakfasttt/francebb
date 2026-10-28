@@ -39,6 +39,19 @@ Mobile 4G simulé (150 ms, 9 Mb/s, CPU ×4), médiane de 3 runs, copie locale de
 - Toutes les routes sont dynamiques (`ƒ`) : `force-dynamic` dans `app/layout.tsx`.
 - Cible P2 : ≥ -30 % de requêtes par rendu et de LCP sur les routes forum.
 
+### Suivi P2 (requêtes Prisma par rendu, connecté)
+
+| Route | Baseline | Après 014 |
+|---|---|---|
+| / | 11 | 10 |
+| /forum | 16 | **6** (anonyme 5 → 0) |
+| /forum/[id] | 31 | 22 |
+| /forum/topic/[id] | 89 | 85 |
+| /tournois | 9 | 8 |
+
+014 : accueil forum en `select` minimal + cache par audience, non-lus en une requête partagée, session mémoïsée par requête (`getSession`/`getActiveSession`), layout sans relecture du User, sidebar sans chargement inutilisé. LCP local inchangé (SQLite local ≈ 0 ms/requête) : le gain se voit en prod Turso.
+Tracer les requêtes d'une route : `TRACE_ROUTE=/forum node scripts/baseline.mjs` (Git Bash : préfixer `MSYS_NO_PATHCONV=1`).
+
 ## Dette technique (app/, common/, lib/)
 
 | Compteur | Valeur |
