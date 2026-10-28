@@ -1276,8 +1276,7 @@ export async function searchUsersAction(query: string) {
       OR: [
         { name: { contains: query } },
         { name: { contains: query.toLowerCase() } },
-        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } },
-        { email: { contains: query.toLowerCase() } }
+        { name: { contains: query.charAt(0).toUpperCase() + query.slice(1) } }
       ],
       isBanned: false,
       id: { not: session.user.id },
@@ -1728,28 +1727,6 @@ export async function updateRegistrationStatus(params: {
     return { success: false, error: "Mise à jour impossible" };
   }
 }
-
-/**
- * Recherche d'utilisateurs pour l'inscription d'équipe
- */
-export async function findUsersSearch(query: string) {
-  const session = await getActiveSession();
-  if (!session?.user?.id) return [];
-
-  if (query.length < 2) return [];
-
-  return await prisma.user.findMany({
-    where: {
-      OR: [
-        { name: { contains: query } },
-        { email: { contains: query } }
-      ]
-    },
-    take: 5,
-    select: { id: true, name: true, image: true }
-  });
-}
-
 
 /**
  * Verrouiller / Déverrouiller les inscriptions d'un tournoi
