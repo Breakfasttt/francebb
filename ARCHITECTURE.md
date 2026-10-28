@@ -1,49 +1,71 @@
-# Architecture BBFrance
+# Architecture et règles de code
 
-Référence courte pour humains et IA. Décisions détaillées : `docs/adr/`. Plan en cours : `docs/adr/0001-plan-refacto.md`.
+Ce document dit **comment le code est organisé et quelles règles respecter** quand on le modifie. Les règles générales du projet sont dans le [README](README.md), les mots techniques dans le [glossaire](docs/GLOSSAIRE.md), les décisions et leurs raisons dans [docs/adr/](docs/adr/).
 
-## Aujourd'hui (P5 : hub en préparation)
+## Les applications
 
-Monorepo pnpm + Turborepo. Apps : `apps/site` (Next.js 16 App Router, en prod) et `apps/hub` (identité, Better Auth + OIDC, ADR-0003, pas encore en prod). Paquet partagé : `packages/ui`. Pour `apps/site`, les chemins ci-dessous sont relatifs à `apps/site`, sauf `kanban/`, `docs/`, `.claude/` (racine).
+| Application | Rôle | État |
+|---|---|---|
+| `apps/site` | Le site BBFrance (Next.js) | En ligne |
+| `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
+| `packages/ui` | Composants d'interface partagés (shadcn/ui) | Utilisé par le site |
+
+Plus tard : `apps/bbscheme` (éditeur BBScheme en application séparée).
+
+**Frontière** : une application n'importe jamais le code d'une autre. Ce qui est partagé passe par `packages/`.
+
+## Où mettre le code dans `apps/site`
 
 | Dossier | Contenu | Règle |
 |---|---|---|
-| `app/<route>/` | `page.tsx` + `page.css`, composants locaux dans `component/`, `actions.ts` (server actions) | Code BDD seulement dans `actions.ts` / `page.tsx` serveur |
-| `common/components/` | UI partagée (utilisée par ≥ 2 routes) | Inventaire : skill `reuse-first` |
-| `common/hooks`, `common/utils` | Hooks et utilitaires client | |
-| `lib/` | Serveur : Prisma, auth guard, rôles, BBCode, mail, crypto | Pas d'import client |
-| `prisma/` | Schéma, migrations, `firstSetup.ts` (intouchable), seeds | Toujours `upsert` |
-| `tests/e2e/` | Smoke Playwright sur base jetable | |
-| `kanban/`, `docs/` | Cartes, ADR, README de features, baseline | |
-| `.claude/` | CLAUDE.md, skills, agents du conseil, commandes, hooks | |
+| `app/<page>/` | La page (`page.tsx`), son style (`page.css`, `page-mobile.css`), ses composants propres (`component/`) et ses actions serveur (`actions.ts`) | Les requêtes à la base de données vont dans `actions.ts` ou dans `page.tsx`, jamais dans un composant d'affichage |
+| `common/components/` | Composants utilisés par au moins 2 pages | Inventaire : skill `.claude/skills/reuse-first` |
+| `common/hooks/`, `common/utils/` | Petites fonctions réutilisables côté navigateur | |
+| `lib/` | Fonctions côté serveur : base de données, connexion, rôles, BBCode, mail | Jamais importé par un composant navigateur |
+| `prisma/` | Structure de la base (`schema.prisma`), migrations, données de base (`firstSetup.ts`) | `firstSetup.ts` : ne pas modifier sans accord ; toujours `upsert` (crée ou met à jour, ne duplique jamais) |
+| `tests/e2e/` | Tests de parcours dans un navigateur, sur une base jetable | |
 
-## Cible (P3 → P6)
+Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle dit quels fichiers la composent.
 
-```
-apps/site       site + forum + tournois (client OIDC du hub en P5)
-apps/hub        identité SSO Better Auth + OIDC, API, widget (P5)
-apps/bbscheme   éditeur BBScheme (P6)
-packages/ui     shadcn/ui + tokens des 7 thèmes (P4)
-packages/config tsconfig, eslint
-packages/auth-client, packages/bbscheme-player
-```
+## Règles de code
 
-Frontières : une app n'importe jamais une autre app ; le partage passe par `packages/*`. Hub et services sur un domaine parent commun.
+- **Sécurité** : toute action serveur commence par `getActiveSession()` (`lib/authGuard.ts`). Cette fonction refuse les visiteurs non connectés et les bannis. Les droits (modérateur, admin) se vérifient côté serveur avec `lib/roles.ts`.
+- **Données personnelles** : le client `prisma` par défaut ne renvoie jamais l'email des membres. `prismaWithEmail` est réservé à la connexion et à l'envoi de mails.
+- **Erreurs** : pas de `throw` dans le nouveau code, on renvoie `null` et l'appelant gère le cas.
+- **Actions serveur plutôt que routes d'API** : une page qui doit modifier des données appelle une action serveur (`actions.ts`), pas une adresse `/api/…`. Les routes d'API sont réservées aux appels venant de l'extérieur du site.
+- **Base de données** : requêtes Prisma typées, avec `select` ou `include` pour ne charger que l'utile. Une seule requête pour toute une liste (pas de « N+1 », voir glossaire). Pagination par numéro de page (`skip` / `take`). Toute requête sur le forum passe par `lib/forumAccess.ts`, qui cache aux membres les catégories réservées à certains rôles.
+- **Next.js 16** : le fichier `proxy.ts` remplace l'ancien `middleware.ts` (code exécuté avant chaque page).
+- **Types** : TypeScript strict, jamais de `any`.
+- **Langue** : commentaires d'en-tête de fichier en français, noms de variables et de fonctions en anglais.
+- **Interface** :
+  - utiliser les composants existants (boutons, sélecteurs, fenêtres, notifications de `@bbfrance/ui`) ;
+  - couleurs uniquement via les variables CSS des thèmes (jamais de code couleur en dur) ;
+  - icônes Lucide uniquement ;
+  - chaque écran testé en taille téléphone.
 
-## Réutiliser avant créer
+## Réutiliser avant de créer
 
-1. Chercher dans le skill `reuse-first`, puis `grep`.
-2. Étendre l'existant plutôt que dupliquer (un 2e toast, une 5e recherche d'utilisateurs = refus).
-3. Nouveau partagé ⇒ ligne ajoutée à `reuse-first` dans le même commit.
+1. Chercher dans le skill `reuse-first`, puis dans le code.
+2. Étendre ce qui existe plutôt que dupliquer : un deuxième système de notifications ou une cinquième recherche de membres seront refusés.
+3. Un nouveau composant partagé est ajouté à `reuse-first` dans le même commit.
 
-## Politique de dépendances
+## Bibliothèques (dépendances)
 
-- Aucune dépendance sans accord explicite du user ; le hook `block-deps` demande confirmation.
-- Une lib déjà présente qui fait le job gagne (dates : `date-fns`, drag & drop : `@dnd-kit`, carte : `leaflet`, icônes : `lucide-react`).
-- Dépendance majeure (framework, auth, UI, BDD) ⇒ `/council` + ADR.
-- Pré-approuvées par l'ADR-0001 : turbo + pnpm (P3), tailwindcss v4 + deps shadcn + sonner + ladle + ts-morph (P4), better-auth (P5).
-- À retirer : `next-auth` (P5 + 30 j). Retirées : `next-themes` (morte), `react-hot-toast` (remplacée par sonner via `@bbfrance/ui`, P4).
+- Aucune nouvelle bibliothèque sans accord du responsable du projet. L'IA doit demander confirmation (hook `block-deps`).
+- Si une bibliothèque déjà présente fait le travail, on l'utilise :
+
+  | Besoin | Bibliothèque |
+  |---|---|
+  | Dates | `date-fns` |
+  | Glisser-déposer | `@dnd-kit` |
+  | Carte | `leaflet` |
+  | Icônes | `lucide-react` |
+  | Notifications | `sonner`, via `@bbfrance/ui` |
+
+- Bibliothèque majeure (cadre, connexion, interface, base de données) : passage par le conseil (`/council`) et un ADR.
+- Versions exactes, figées dans `pnpm-lock.yaml`.
 
 ## Données
 
-Prod Turso avec de vrais membres. Aucune suppression sans accord exprès. Backup testé (`scripts/turso-backup.mjs`) avant toute opération qui écrit en prod. Migrations : voir carte 012 / ADR-0002.
+- La base de production repart de zéro sur Postgres ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)). Une fois la nouvelle base en ligne, aucune donnée de membre ne doit être supprimée sans accord exprès.
+- Changement de structure de la base : uniquement par une migration Prisma, jamais à la main.

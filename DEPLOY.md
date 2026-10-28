@@ -4,6 +4,8 @@ Ce guide est conçu pour vous accompagner pas-à pas dans le déploiement de **B
 
 L'architecture choisie (**Vercel** pour le site + **Turso** pour les données) est la plus simple et la plus fiable pour commencer gratuitement.
 
+> **Attention : guide en cours de remplacement.** La base de données passe de Turso à Postgres (hébergeur Neon), voir [ADR-0004](docs/adr/0004-reorganisation-et-postgres.md). Les phases 2 et 4 ci-dessous (Turso, `db push`) décrivent l'ancienne méthode et seront réécrites à la carte 046. En particulier, la Phase 4 ne fonctionne pas : l'outil Prisma refuse une adresse Turso dans `DATABASE_URL`.
+
 ---
 
 ## 🛠️ Phase 0 : Préparer vos Outils

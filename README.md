@@ -1,260 +1,117 @@
-# 🏈 France Blood Bowl — BBFrance `v0.1.0-alpha`
+# BBFrance — la communauté Blood Bowl française
 
-La plateforme de référence pour la communauté **Blood Bowl en France**. Centrée sur les tournois, l'échange et la gestion de profil pour tous les coachs français.
+BBFrance est le site de la communauté française de **Blood Bowl** (jeu de plateau de football fantastique). On y trouve un forum, les tournois (annonce, inscriptions, résultats), les profils des coachs (les joueurs), une messagerie privée, un classement, des articles et des outils de jeu comme BBScheme (éditeur de schémas de jeu).
 
----
-
-## 🎯 But du Projet
-
-BBFrance est conçu comme le hub central du Blood Bowl hexagonal. Il vise à simplifier la vie des joueurs (recherche de tournois, inscriptions, échanges) et des organisateurs (gestion des participants, communication). La plateforme combine un forum communautaire riche avec un système de gestion de tournois moderne et performant.
+**Ce fichier est la porte d'entrée du projet.** Commence par lui : il explique les règles, le plan du dépôt et où trouver le reste. Un mot technique inconnu ? Il est expliqué dans le [glossaire](docs/GLOSSAIRE.md).
 
 ---
 
-## ✨ Fonctionnalités
+## Les règles du projet
 
-### 🏆 Gestion des Tournois
-- **Inscriptions Multi-modes** — Inscription individuelle ou par équipe (Team Mode).
-- **Zones de Validation** — Gestion dynamique des pré-inscriptions, des validés et de la liste d'attente.
-- **Mercenaires & Commissaires** — Inscription en tant que mercenaire pour compléter des équipes ou gestion par des commissaires dédiés.
-- **Détails Complets** — Format (Resurrection/Évolutif), dates, lieux (intégration Google Maps), tarifs, éditions (BB20, BB3, BB7) et plateformes.
-- **Lien Forum** — Chaque tournoi peut être lié à un topic dédié pour centraliser les discussions.
+### Deux règles absolues
 
-### 💬 Communauté & Forum
-- **Structure Hiérarchisée** — Catégories, forums et sous-forums pour une organisation claire.
-- **Richesse d'Édition** — Support complet du BBCode, citations, et sticky topics/posts.
-- **Interactions** — Réactions aux messages via emojis et système de mentions (@user).
-- **Suivi Intelligent** — Marqueurs de messages non-lus et recherche globale performante.
+1. **Tout doit être compréhensible par quelqu'un qui découvre le projet.** Code, documentation, cartes du kanban, messages de commit : on écrit en français clair (le code lui-même est en anglais). Chaque terme technique ou acronyme est expliqué, soit sur place, soit dans le [glossaire](docs/GLOSSAIRE.md).
+2. **Le site doit être impeccable sur téléphone.** La plupart des coachs le consultent sur mobile. Chaque page doit y être :
+   - lisible sans zoomer ;
+   - utilisable au pouce (boutons d'au moins 44 pixels) ;
+   - fluide, sans défilement horizontal.
 
-### 👤 Profils & Social
-- **Identité du Coach** — Profils avec numéro NAF, région, ligue et signature personnalisée.
-- **Cosmétique** — Cadres d'avatars dynamiques selon le prestige ou le rôle.
-- **Messagerie Privée** — Système de conversations privées avec notifications en temps réel et compteur de messages non-lus.
+   Une modification n'est terminée que si elle a été vérifiée en taille téléphone.
 
-### 🛡️ Administration & Sécurité
-- **Authentification Hybride** — Connexion via Discord, Google ou Email (Magic Link).
-- **Import Legacy** — Système prêt pour lier les anciens comptes Forumactif (mapping pseudo/email).
-- **Rôles (RBAC)** — Système granulaire de permissions (SUPERADMIN, ADMIN, MODERATOR, RTC, CHEF_LIGUE, COACH).
-- **Modération** — Outils complets pour bannir, archiver, déplacer ou supprimer des contenus.
-- **Configuration** — Panneau d'administration pour gérer les données de référence et les paramètres du site.
+### Les autres règles, et où elles sont écrites
 
----
+Chaque règle n'est écrite qu'à un seul endroit :
 
-## 🛠️ Stack Technique
+| Sujet | Où |
+|---|---|
+| Organisation du code, réutilisation, dépendances, données | [ARCHITECTURE.md](ARCHITECTURE.md) |
+| Tâches : comment créer, suivre et terminer une carte | [kanban/README.md](kanban/README.md) |
+| Mise en ligne | [DEPLOY.md](DEPLOY.md) |
+| Consignes propres à l'IA (Claude Code) | [.claude/CLAUDE.md](.claude/CLAUDE.md) |
 
-- **Framework** : [Next.js 16](https://nextjs.org) (App Router)
-- **Langage** : [TypeScript](https://www.typescriptlang.org)
-- **Base de Données** : [LibSQL](https://github.com/tursodatabase/libsql) (compatible SQLite) via [Prisma 7](https://www.prisma.io)
-- **Authentification** : [Auth.js v5](https://authjs.dev) (Discord, Google, Magic Links)
-- **Email** : [Resend](https://resend.com) ou SMTP générique via Nodemailer
-- **Style** : Vanilla CSS & Tailwind (variables CSS prioritaires)
-- **Composants** : [React 19](https://react.dev), [Lucide React](https://lucide.dev)
-- **UI partagée** : `packages/ui` (shadcn/ui : Radix, Tailwind v4) — notifications [sonner](https://sonner.emilkowal.ski)
+**Commits** (enregistrements dans l'historique git) :
+- le titre commence par le numéro de la carte concernée, ex. `[043] Kanban rangé en dossiers`, ou `[hotfix]` pour une correction urgente ;
+- moins de 50 caractères pour le titre, et le corps explique **pourquoi** ;
+- un contrôle automatique (`.githooks/commit-msg`) le vérifie. Pour l'activer, une fois par copie du projet : `git config core.hooksPath .githooks`.
 
 ---
 
-## 🚀 Développement & Compilation
+## Plan du dépôt
 
-### Configuration de l'environnement
+| Dossier ou fichier | Ce qu'il contient |
+|---|---|
+| `apps/site/` | **Le site BBFrance** (forum, tournois, profils…), avec sa base de données et ses tests |
+| `apps/hub/` | **Le hub de connexion** : un compte unique pour le site et les futures applications. Prêt, mais pas encore en ligne |
+| `packages/ui/` | Composants d'interface partagés entre les applications (fenêtres, notifications…) |
+| `docs/features/` | **Une fiche par fonctionnalité** : à quoi elle sert, ce que voit le coach, où est le code |
+| `docs/adr/` | Les décisions importantes et leurs raisons (voir « ADR » dans le glossaire) |
+| `docs/GLOSSAIRE.md` | Les mots techniques expliqués |
+| `docs/bilans/` | Comptes rendus des séances de travail |
+| `kanban/` | Les tâches, rangées par état (à faire, en cours, terminé…) |
+| `scripts/` | Petits outils du dépôt (vérification du kanban, envoi vers `master`) |
+| `.claude/` | Consignes et outils de l'IA qui aide au développement |
+| `.github/` | Vérifications automatiques lancées par GitHub à chaque envoi de code (la « CI ») |
+| `.githooks/` | Contrôle automatique des messages de commit |
+| `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `turbo.json` | Réglages communs : liste des applications, versions exactes des bibliothèques, commandes partagées |
 
-1. **Cloner le projet** :
-   ```bash
-   git clone https://github.com/Breakfasttt/francebb.git
-   cd francebb
-   ```
+Le dépôt est un **monorepo** : plusieurs applications dans un seul dépôt, qui partagent des composants via `packages/`.
 
-2. **Installer les dépendances** (monorepo **pnpm** + Turborepo, voir « Structure du repo ») :
-   ```bash
-   corepack enable        # une fois : active pnpm (version fixée par "packageManager" du package.json)
-   pnpm install
-   ```
+---
 
-3. **Variables d'environnement** (`apps/site/.env`) :
-    ```env
-    DATABASE_URL="file:./dev.db"
-    AUTH_SECRET="votre-secret-tres-long"
-    
-    # Authentification (OAuth & SMTP)
-    DISCORD_CLIENT_ID="..."
-    DISCORD_CLIENT_SECRET="..."
-    GOOGLE_CLIENT_ID="..."
-    GOOGLE_CLIENT_SECRET="..."
-    
-    SMTP_HOST="smtp.resend.com"
-    SMTP_PORT="465"
-    SMTP_USER="resend"
-    SMTP_PASSWORD="..."
-    EMAIL_FROM="votre-email@domaine.fr"
-    ```
+## Lancer le site sur son ordinateur
 
-### Initialisation & Lancement
+Prérequis : [Node.js](https://nodejs.org) 22 ou plus.
 
-1. **Préparer la base de données** (depuis `apps/site`) :
+```bash
+git clone https://github.com/Breakfasttt/francebb.git
+cd francebb
+corepack enable          # une seule fois : active pnpm, l'outil qui installe les bibliothèques
+pnpm install             # installe les bibliothèques de toutes les applications
+```
+
+1. Copier `apps/site/.env.example` en `apps/site/.env` et le remplir. Chaque variable y est expliquée. La connexion Discord/Google et l'envoi de mails en local sont détaillés dans [DEPLOY.md](DEPLOY.md).
+2. Créer la base de données locale, depuis `apps/site` :
    ```bash
    cd apps/site
-   pnpm exec prisma migrate dev
+   pnpm exec prisma migrate dev     # crée les tables
+   npx tsx prisma/firstSetup.ts     # ajoute les données de base (rôles, catégories du forum…)
    ```
+3. Lancer le site, depuis la racine : `pnpm dev`, puis ouvrir [http://localhost:3000](http://localhost:3000).
 
-2. **Lancer le serveur de développement** (depuis la racine) :
-   ```bash
-   pnpm dev
-   ```
+**Tester sur un vrai téléphone** (même réseau Wi-Fi) : lancer `pnpm --filter @bbfrance/site exec next dev -H 0.0.0.0`, puis ouvrir `http://<adresse IP de l'ordinateur>:3000` sur le téléphone.
 
-3. **Accès** : [http://localhost:3000](http://localhost:3000)
+> La base de données va passer de SQLite/Turso à Postgres ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)). Cette section sera mise à jour à ce moment-là.
 
-### 📱 Tester sur Mobile (LAN)
+---
 
-Pour tester l'interface mobile sur un vrai smartphone physique connecté au même réseau Wi-Fi :
+## Vérifier son travail
 
-1. **Identifier votre IP locale** (ex: `192.168.1.XX`).
-2. **Lancer avec l'option host** :
-   ```bash
-   pnpm --filter @bbfrance/site exec next dev -H 0.0.0.0
-   ```
-3. **Accéder depuis le smartphone** via `http://<VOTRE_IP_LOCALE>:3000`.
-
-> [!NOTE]
-> L'utilisation du host `0.0.0.0` expose le serveur de développement à tout votre réseau local. Utile uniquement pour la phase de test UX mobile.
-
-> [!TIP]
-> **[🧪 Test Local (OAuth & Emails)] (./DEPLOY.md#🧪-phase-tech--tester-localement-oauth--emails)** : Consultez cette section pour configurer la connexion Discord/Google et l'envoi de mails sur votre ordinateur.
-
-### ✅ Vérifications (tests & CI)
-
-| Commande | Rôle |
+| Commande | Ce qu'elle vérifie |
 |---|---|
-| `pnpm typecheck` | Vérification TypeScript (toutes les apps, via Turborepo) |
-| `pnpm lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `apps/site/lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). Dans `apps/site` : `node scripts/lint-ratchet.mjs --update` abaisse le plafond quand la dette baisse. |
-| `pnpm test:e2e` | Tests smoke Playwright (`apps/site/tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `pnpm --filter @bbfrance/site exec playwright install chromium`. |
-| `node scripts/baseline.mjs` (dans `apps/site`) | Mesures perf par route (après `pnpm build`), voir `docs/baseline.md`. |
-| `pnpm --filter @bbfrance/hub test:sso` | Test de bout en bout du hub d'identité : lance le hub (port 4100) et le site en `AUTH_MODE=hub` (port 3200) sur des bases jetables, vérifie connexion, reconnexion silencieuse et refus d'un email non vérifié. |
-| `pnpm kanban` | Liste les cartes par état et vérifie que le kanban est bien rangé (lancé aussi par la CI). |
+| `pnpm typecheck` | Pas d'incohérence de types dans le code TypeScript |
+| `pnpm lint:ratchet` | Qualité du code (ESLint). Le nombre d'erreurs ne doit jamais augmenter |
+| `pnpm test:e2e` | Parcours essentiels du site (lire le forum, répondre, se connecter…), joués dans un vrai navigateur sur une base de test jetable |
+| `pnpm --filter @bbfrance/hub test:sso` | Connexion au site via le hub, de bout en bout |
+| `pnpm kanban` | Liste les tâches et vérifie que le kanban est bien rangé |
 
-### 🗂️ Structure du repo (monorepo)
+Première fois pour les tests navigateur : `pnpm --filter @bbfrance/site exec playwright install chromium`.
 
-| Dossier | Contenu |
+GitHub relance automatiquement ces vérifications à chaque envoi de code (`.github/workflows/ci.yml`).
+
+---
+
+## Technologies utilisées
+
+| Rôle | Outil |
 |---|---|
-| `apps/site/` | Le site Next.js (forum, tournois, profils…) : tout le code de l'app, son `package.json`, Prisma, tests |
-| `apps/hub/` | Hub d'identité (Better Auth + OIDC) : connexion unique pour toutes les apps. **Pas encore en prod** : le site l'utilise seulement si `AUTH_MODE=hub` (voir `DEPLOY.md`, Phase 6). |
-| `apps/bbscheme/` | À venir (éditeur BBScheme) |
-| `packages/ui/` | Composants partagés (shadcn/ui : Radix + Tailwind v4), notifications, tokens des 7 thèmes |
-| `kanban/`, `docs/`, `.claude/` | Organisation, décisions, outillage IA (communs à tout le repo) |
-
-pnpm est en mode strict : une app ne peut utiliser que les dépendances déclarées dans **son** `package.json` (garde-fou des frontières). Les versions sont figées (`pnpm-lock.yaml`).
-
-La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban et les schémas Prisma (site et hub) puis lance typecheck, cliquet ESLint, build, tests smoke et test SSO sur chaque push (`development`, `master`) et chaque PR.
-
-### 🧭 Organisation du développement
-
-- **Kanban** : une carte = un fichier, rangé dans le dossier de son état (`kanban/a-faire/`, `en-cours/`, `termine/`, `annule/`, `deprecie/`). Voir `kanban/README.md`.
-- **Décisions** : `docs/adr/` (ADR), architecture et politique de dépendances dans `ARCHITECTURE.md`, fiches des features dans `docs/features/`.
-- **IA (Claude Code)** : règles dans `.claude/CLAUDE.md`, skills projet, conseil de 5 agents (`/council`), commandes `/card` et `/ship`, hooks (confirmation avant ajout de dépendance, ESLint après édition).
-- **Hook git** (une fois par clone) : `git config core.hooksPath .githooks` — refuse les trailers `Co-Authored-By` et exige un n° de carte `[NNN]` dans le sujet.
+| Site web | [Next.js 16](https://nextjs.org) et [React 19](https://react.dev), en TypeScript |
+| Accès à la base de données | [Prisma 7](https://www.prisma.io) |
+| Connexion des membres | [Auth.js v5](https://authjs.dev) aujourd'hui ; [Better Auth](https://www.better-auth.com) dans le hub |
+| Apparence | CSS avec 7 thèmes, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
+| Hébergement | [Vercel](https://vercel.com) |
 
 ---
 
-## 🌐 Déploiement & Setup (Détaillé)
+## Licence
 
-### ☁️ Option 1 : Architecture Moderne (Vercel + Turso) — Recommandé
-
-C'est la méthode idéale pour une application "edge-ready" avec une latence minimale. 
-
-> [!TIP]
-> **[👉 Suivez le Guide de Déploiement Détaillé (DEPLOY.md)](./DEPLOY.md)** pour une installation pas à pas (configuration de la base Turso, variables d'environnement Vercel et migration du schéma).
-
----
-
-### 🏠 Option 2 : Self-Hosted (VPS / Serveur dédié) — Indépendant
-
-Si vous souhaitez héberger vous-même votre base de données et votre application sur votre propre serveur.
-
-#### 1. Pré-requis sur le serveur
-Assurez-vous d'avoir installé :
-- **Node.js 20+**
-- **PM2** (`npm install -g pm2`) pour la gestion du processus.
-- **Nginx** pour le reverse proxy.
-
-#### 2. Déploiement étape par étape
-1. **Cloner et Installer** :
-   ```bash
-   git clone https://github.com/Breakfasttt/francebb.git /var/www/bbfrance
-   cd /var/www/bbfrance
-   npm install --production=false
-   ```
-
-2. **Configuration** : Créez un fichier `.env` à la racine :
-   ```env
-   # Pour SQLite local, on utilise une URL de fichier simple
-   DATABASE_URL="file:./prisma/prod.db"
-   AUTH_SECRET="un-secret-tres-long-et-aleatoire"
-   NEXTAUTH_URL="https://votre-domaine.com"
-   PORT=3000
-   ```
-
-3. **Génération & Migration** :
-   ```bash
-   npx prisma migrate deploy
-   ```
-
-4. **Build & Start** :
-   ```bash
-   npm run build
-   # Tester le lancement
-   npm start
-   ```
-
-#### 3. Automatisation avec PM2
-Pour que l'application tourne en tâche de fond et redémarre en cas de crash :
-```bash
-pm2 start "npm start" --name bbfrance
-pm2 save
-pm2 startup
-```
-
-#### 4. Configuration Nginx (Reverse Proxy)
-```nginx
-server {
-    listen 80;
-    server_name votre-domaine.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
----
-
-### 🐳 Option 3 : Déploiement via Docker (Auto-Hébergé complet)
-
-Pour une isolation totale et une base SQLite persistante.
-
-1. **Création du Dockerfile** (si absent) : Utilisez une image Node Alpine.
-2. **Volume** : Montez un volume pour persister le fichier `./prisma/prod.db`.
-3. **Environment** : Passez les variables via un fichier `.env` ou via votre orchestration (Docker Compose).
-
-Exemple rapide de `docker-compose.yml` :
-```yaml
-services:
-  bbfrance:
-    build: .
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./data:/app/prisma/data
-    environment:
-      - DATABASE_URL=file:/app/prisma/data/prod.db
-      - AUTH_SECRET=${AUTH_SECRET}
-      - NEXTAUTH_URL=${NEXTAUTH_URL}
-```
-
----
-
-## 📄 Licence & Contribution
-
-Ce projet est sous licence [MIT](./LICENSE).
-Les contributions sont les bienvenues via les Pull Requests. Pour tout changement majeur, merci de créer une issue au préalable.
+Projet sous licence [MIT](LICENSE). Les contributions sont bienvenues via des Pull Requests ; pour un changement important, ouvrir d'abord une issue.
