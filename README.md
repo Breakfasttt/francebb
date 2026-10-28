@@ -124,8 +124,16 @@ Pour tester l'interface mobile sur un vrai smartphone physique connecté au mêm
 | `npm run lint:ratchet` | ESLint avec cliquet : échoue si le nombre d'erreurs dépasse `lint-baseline.json` (dette tolérée, nouvelles erreurs bloquées). `-- --update` abaisse le plafond quand la dette baisse. |
 | `npm run test:e2e` | Tests smoke Playwright (`tests/e2e/`) sur une base jetable `e2e.db` recréée à chaque run (ne touche jamais `dev.db`). Port 3100, mode dev (provider `dev-login`). Première fois : `npx playwright install chromium`. |
 | `node scripts/baseline.mjs` | Mesures perf par route (après `npm run build`), voir `docs/baseline.md`. |
+| `npm run board` | Régénère `kanban/BOARD.md` depuis les cartes (`-- --check` : vérifie qu'il est à jour). |
 
-La CI GitHub Actions (`.github/workflows/ci.yml`) lance typecheck, cliquet ESLint, build et tests smoke sur chaque push (`development`, `master`) et chaque PR.
+La CI GitHub Actions (`.github/workflows/ci.yml`) vérifie le kanban puis lance typecheck, cliquet ESLint, build et tests smoke sur chaque push (`development`, `master`) et chaque PR.
+
+### 🧭 Organisation du développement
+
+- **Kanban** : une carte = un fichier `kanban/NNN-*.md` (statut dans le frontmatter), vue d'ensemble dans `kanban/BOARD.md`. Voir `kanban/README.md`.
+- **Décisions** : `docs/adr/` (ADR), architecture et politique de dépendances dans `ARCHITECTURE.md`, fiches des features dans `docs/features/`.
+- **IA (Claude Code)** : règles dans `.claude/CLAUDE.md`, skills projet, conseil de 5 agents (`/council`), commandes `/card` et `/ship`, hooks (confirmation avant ajout de dépendance, ESLint après édition).
+- **Hook git** (une fois par clone) : `git config core.hooksPath .githooks` — refuse les trailers `Co-Authored-By` et exige un n° de carte `[NNN]` dans le sujet.
 
 ---
 

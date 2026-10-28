@@ -1,0 +1,37 @@
+#!/bin/sh
+# Verrou de commit BBFrance (activation une fois par clone : git config core.hooksPath .githooks)
+# 1. Aucun trailer Co-Authored-By : les commits sont signés du seul compte perso breakyt.
+# 2. Auteur = breakyt <jeaneaut@gmail.com>.
+# 3. Sujet préfixé par une carte existante [NNN] (kanban/NNN-*.md), ou [hotfix].
+# Ne remplace pas la relecture de `git diff --cached --stat` avant de commiter.
+
+echec=0
+
+if grep -qi '^co-authored-by:' "$1"; then
+    echo "commit-msg : trailer Co-Authored-By interdit (commits au seul nom de breakyt)." >&2
+    echec=1
+fi
+
+auteur=$(git var GIT_AUTHOR_IDENT | sed 's/ [0-9]* [-+][0-9]*$//')
+if [ "$auteur" != "breakyt <jeaneaut@gmail.com>" ]; then
+    echo "commit-msg : auteur « $auteur » refusé, attendu « breakyt <jeaneaut@gmail.com> »." >&2
+    echec=1
+fi
+
+sujet=$(head -1 "$1")
+case "$sujet" in
+    "[hotfix]"*|Merge*|Revert*) ;;
+    \[[0-9][0-9][0-9]\]*)
+        carte=$(echo "$sujet" | cut -c2-4)
+        if ! ls kanban/"$carte"-*.md >/dev/null 2>&1; then
+            echo "commit-msg : carte $carte introuvable dans kanban/." >&2
+            echec=1
+        fi
+        ;;
+    *)
+        echo "commit-msg : sujet « $sujet » sans [NNN] (n° de carte) ni [hotfix]." >&2
+        echec=1
+        ;;
+esac
+
+exit $echec

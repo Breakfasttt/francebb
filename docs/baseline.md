@@ -53,7 +53,7 @@ Mobile 4G simulé (150 ms, 9 Mb/s, CPU ×4), médiane de 3 runs, copie locale de
 | @ts-ignore / @ts-expect-error | 7 |
 | `<img>` (hors next/image) | 36 |
 | Couleurs hex en CSS (hors thèmes) | 233 |
-| Erreurs ESLint (hors client Prisma généré) | 590 (+312 warnings) |
+| Erreurs ESLint (hors client Prisma généré) | 590 (+312 warnings) — 586 après P1 |
 
 ## Base de données
 

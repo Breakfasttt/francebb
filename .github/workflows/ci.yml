@@ -29,6 +29,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx prisma generate
+      - name: Kanban (BOARD.md à jour, cartes valides)
+        run: npm run board -- --check
       - name: Typecheck
         run: npm run typecheck
       - name: Lint (cliquet)
