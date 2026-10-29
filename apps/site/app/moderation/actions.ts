@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
+import { toggleBanUser } from "@/app/membres/actions";
 
 /**
  * Créer un nouveau signalement.
@@ -243,33 +244,19 @@ export async function getBannedUsers(page = 1, pageSize = 10) {
 }
 
 /**
- * Débannir un utilisateur.
+ * Débannir un utilisateur depuis l'onglet « Coachs bannis ».
+ * Passe par toggleBanUser (app/membres/actions.ts), la seule action de bannissement : elle vérifie que le
+ * modérateur a un rang strictement supérieur à celui du membre (sauf Super Admin) et trace le débannissement
+ * au journal. Ici, on transforme seulement son erreur éventuelle en message affichable (carte 060).
  */
 export async function unbanUserAction(userId: string) {
-  const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) return { success: false, error: "Non autorisé" };
-
   try {
-    await prisma.user.update({
-      where: { id: userId },
-      data: { 
-        isBanned: false,
-        banReason: null
-      }
-    });
-
-    await logModerationAction(
-      "USER_UNBANNED",
-      userId,
-      "USER",
-      "Débannissement via le dashboard de modération"
-    );
-
+    await toggleBanUser(userId, false);
     revalidatePath("/moderation");
     return { success: true };
   } catch (error) {
     console.error("[UNBAN_USER] Error:", error);
-    return { success: false, error: "Erreur serveur" };
+    return { success: false, error: error instanceof Error ? error.message : "Erreur serveur" };
   }
 }
 /**

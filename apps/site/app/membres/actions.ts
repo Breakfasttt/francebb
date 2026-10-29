@@ -41,8 +41,9 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
 }
 
 /**
- * Bannit ou débannit un membre. Seule version de cette action (liste des membres et fiche /spy) :
- * réservée aux modérateurs, qui ne peuvent agir que sur un rang inférieur au leur (sauf Super Admin), et tracée au journal.
+ * Bannit ou débannit un membre. Seule version de cette action (liste des membres, fiche /spy, et onglet
+ * « Coachs bannis » de /moderation via unbanUserAction) : réservée aux modérateurs, qui ne peuvent agir que sur
+ * un rang inférieur au leur (sauf Super Admin), et tracée au journal.
  */
 export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
   const session = await getActiveSession();
@@ -65,7 +66,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
   if (!target) throw new Error("Utilisateur cible non trouvé");
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    throw new Error("Vous ne pouvez pas bannir ce membre (hiérarchie insuffisante)");
+    throw new Error(`Vous ne pouvez pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)`);
   }
 
   await prisma.user.update({

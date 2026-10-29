@@ -77,6 +77,47 @@ test("un modérateur bannit un membre depuis sa fiche, et c'est tracé au journa
   }
 });
 
+test("un modérateur ne peut pas débannir un membre de rang égal, mais débannit un coach, et c'est tracé au journal", async ({ page }) => {
+  // Un modérateur banni (même rang que « Modo E2E ») et le coach cible banni, préparés directement en base
+  await withTestDb(async (prisma) => {
+    await prisma.user.upsert({
+      where: { id: E2E.bannedModoId },
+      update: { isBanned: true, banReason: "Test e2e" },
+      create: { id: E2E.bannedModoId, name: E2E.bannedModoName, email: "banned-modo@e2e.test", role: "MODERATOR", hasFinishedOnboarding: true, isBanned: true, banReason: "Test e2e" },
+    });
+    await prisma.user.update({ where: { id: E2E.targetId }, data: { isBanned: true, banReason: "Test e2e" } });
+  });
+
+  try {
+    await loginAs(page, E2E.modoId);
+    await page.goto("/moderation?tab=reports_user_banned", { waitUntil: "networkidle" });
+
+    // Refus : le serveur bloque le débannissement d'un membre de rang égal
+    await page.getByRole("row").filter({ hasText: E2E.bannedModoName }).getByRole("button", { name: "Débannir" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
+    await expect(page.getByText("Vous ne pouvez pas débannir ce membre (hiérarchie insuffisante)")).toBeVisible();
+
+    // Autorisé : le coach, de rang inférieur, est débanni
+    await page.getByRole("row").filter({ hasText: "Cible E2E" }).getByRole("button", { name: "Débannir" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
+    await expect(page.getByText("Utilisateur débanni")).toBeVisible();
+
+    await withTestDb(async (prisma) => {
+      const bannedModo = await prisma.user.findUnique({ where: { id: E2E.bannedModoId }, select: { isBanned: true } });
+      expect(bannedModo?.isBanned).toBe(true);
+      const refusedLog = await prisma.moderationLog.findFirst({ where: { action: "USER_UNBANNED", targetId: E2E.bannedModoId } });
+      expect(refusedLog).toBeNull();
+
+      const target = await prisma.user.findUnique({ where: { id: E2E.targetId }, select: { isBanned: true } });
+      expect(target?.isBanned).toBe(false);
+      const log = await prisma.moderationLog.findFirst({ where: { action: "USER_UNBANNED", targetId: E2E.targetId, moderatorId: E2E.modoId } });
+      expect(log).not.toBeNull();
+    });
+  } finally {
+    await withTestDb((prisma) => prisma.user.delete({ where: { id: E2E.bannedModoId } }));
+  }
+});
+
 test("BBQuizz : ni la bonne réponse ni le calcul du score ne passent par le navigateur", async ({ page }) => {
   // L'ancienne action qui acceptait le score envoyé par le navigateur ne doit pas revenir
   const actions = readFileSync("app/bbquizz/actions.ts", "utf-8");

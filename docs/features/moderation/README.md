@@ -25,7 +25,7 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 | `apps/site/app/moderation/actions.ts` | Actions serveur : `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`.  |
 | `apps/site/app/moderation/component/` | `ModerationSidebar`, `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab`. |
 | `apps/site/common/components/ReportModal/ReportModal.tsx` | Fenêtre de signalement. Utilisée par `ReportPostButton`, `TopicSidebar` (forum), `ProfileSidebar`, `ReportArticleButton`, `ReportLigueButton`. |
-| `apps/site/app/membres/actions.ts` | `toggleBanUser` (seule version, utilisée par `/membres` et la fiche `/spy/[id]` : contrôle de rang et entrée au journal) et `deleteUser`. |
+| `apps/site/app/membres/actions.ts` | `toggleBanUser` (seule version, utilisée par `/membres`, la fiche `/spy/[id]` et, via `unbanUserAction`, l'onglet « Coachs bannis » : contrôle de rang et entrée au journal) et `deleteUser`. |
 | `apps/site/app/ressources/actions.ts` | `getPendingResources`, `moderateResource` (onglet « Validation Ressources »). |
 
 `logModerationAction(action, targetId, targetType, details)` est appelée par les autres fonctionnalités (forum, articles, ligues, administration) pour remplir le journal.
@@ -34,7 +34,7 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 
 - Chaque action serveur passe par `getActiveSession()` puis `isModerator()` ; ne jamais s'appuyer sur le contrôle de la page.
 - **Toute fonction exportée d'un fichier « use server » est appelable depuis le navigateur par n'importe qui.** `logModerationAction` l'était, ce qui permettait d'écrire de fausses entrées au journal : elle est désormais dans `lib/moderationLog.ts` (carte 050). Ne jamais remettre une fonction interne dans un fichier d'actions.
-- Un seul `toggleBanUser` (`app/membres/actions.ts`) : contrôle de rang (un modérateur ne peut pas bannir un admin) et entrée au journal (carte 050, testé). `unbanUserAction` ne vérifie pas encore le rang.
+- Un seul `toggleBanUser` (`app/membres/actions.ts`) : contrôle de rang (un modérateur ne peut ni bannir ni débannir un membre de rang égal ou supérieur, sauf s'il est Super Admin) et entrée au journal (carte 050, testé). `unbanUserAction` (onglet « Coachs bannis ») se contente de l'appeler et de renvoyer son message d'erreur : ne jamais lui redonner sa propre écriture en base, sinon le contrôle de rang disparaîtrait (carte 060, testé).
 - `cleanupModerationLogs` (purge automatique, lancée à chaque ouverture de la page 1 du journal) supprime les entrées de plus de 3 mois. Jusqu'à la carte 051, elle calculait une date invalide et ne supprimait rien : au premier passage après la mise en ligne de la correction, toutes les entrées de plus de 3 mois disparaîtront d'un coup.
 - `deleteUser` (un modérateur supprime un membre) passe par `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`), comme la suppression de compte par le membre : ses contenus publics sont rattachés au compte fantôme, rien n'est effacé du forum (carte 051). L'action est tracée au journal (`USER_DELETED`).
 - `createReportAction` ne contrôle ni le type visé, ni les doublons, ni la fréquence : un membre peut envoyer de nombreux signalements.
@@ -54,7 +54,7 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 ## État
 
 - Fonctionne : signalements sur cinq types de contenu, tableau de bord avec compteurs, ban et débannissement, journal, validation des ressources.
-- Fonctionne aussi depuis la carte 051 : purge des journaux de plus de 3 mois.
-- Manque : contrôle de rang pour débannir, limite sur les signalements. Aucune carte ouverte ne les couvre.
+- Fonctionne aussi depuis la carte 051 : purge des journaux de plus de 3 mois. Depuis la carte 060, le débannissement depuis l'onglet « Coachs bannis » respecte le rang et reste tracé au journal.
+- Manque : limite sur les signalements. Aucune carte ouverte ne la couvre. L'onglet « Coachs bannis » affiche le bouton « Débannir » même quand le rang l'interdit : le serveur refuse alors et un message l'explique.
 - Hub : le ban global propagé à toutes les applications est prévu par la carte 037.
 - Téléphone : les onglets invisibles entre 769 et 1024 px et la fenêtre de signalement sont à traiter dans l'audit mobile (carte 049).

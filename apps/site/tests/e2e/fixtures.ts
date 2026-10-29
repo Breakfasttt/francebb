@@ -36,6 +36,9 @@ export const E2E = {
   targetId: "e2e_target",
   articleId: "e2e_article",
   moderatedArticleId: "e2e_article_moderated",
+  // Carte 060 : modérateur banni, créé par son test, que le modérateur « Modo E2E » (même rang) ne doit pas pouvoir débannir
+  bannedModoId: "e2e_banned_modo",
+  bannedModoName: "Modérateur banni E2E",
 };
 
 /** Les 7 thèmes du site, dans l'ordre des captures de référence. */
