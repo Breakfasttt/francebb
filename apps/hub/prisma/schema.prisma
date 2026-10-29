@@ -18,6 +18,10 @@ model User {
   image String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  role String?
+  banned Boolean? @default(false)
+  banReason String?
+  banExpires DateTime?
   session_userId Session[] @relation("Session_userId")
   account_userId Account[] @relation("Account_userId")
   oauthClient_userId OauthClient[] @relation("OauthClient_userId")
@@ -37,6 +41,7 @@ model Session {
   userAgent String?
   userId String
   userIdRef User @relation("Session_userId", fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
   oauthRefreshToken_sessionId OauthRefreshToken[] @relation("OauthRefreshToken_sessionId")
   oauthAccessToken_sessionId OauthAccessToken[] @relation("OauthAccessToken_sessionId")
   @@index([userId])

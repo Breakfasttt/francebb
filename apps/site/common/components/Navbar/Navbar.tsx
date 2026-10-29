@@ -97,7 +97,7 @@ const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, p
           </Link>
         )}
         <div className="desktop-only" style={{ marginLeft: '1rem' }}>
-          <SignInButton user={session?.user} />
+          <SignInButton user={session?.user} hubLogout={!!session?.hubLogout} />
         </div>
       </div>
 

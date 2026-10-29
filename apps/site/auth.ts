@@ -17,6 +17,8 @@ declare module "next-auth" {
       isBanned: boolean;
       theme?: string;
     } & DefaultSession["user"];
+    /** Membre connecté via le hub (AUTH_MODE=hub) : la déconnexion doit aussi fermer la session du hub. */
+    hubLogout?: boolean;
   }
 
   interface User {
@@ -127,10 +129,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session, account }) {
       // 1. Appliquer la logique de base (config edge)
       // @ts-ignore
       const updatedToken = await authConfig.callbacks.jwt({ token, user, trigger, session });
+
+      // Connexion via le hub : garder son jeton d'identité pour la déconnexion globale (route /auth/logout)
+      if (account?.provider === "hub" && account.id_token) updatedToken.hubIdToken = account.id_token;
 
       // 2. Node.js only : Rafraîchir depuis la BDD si on a un ID
       // On évite de le faire lors du sign in (user présent) car les données sont déjà fraîches

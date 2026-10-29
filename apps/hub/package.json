@@ -10,7 +10,8 @@
     "test:sso": "node scripts/e2e-setup.mjs && playwright test",
     "db:generate": "prisma generate",
     "db:start": "node ../../scripts/local-postgres.mjs start hub",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "ban": "node scripts/ban-user.mjs"
   },
   "dependencies": {
     "@better-auth/core": "1.7.7",

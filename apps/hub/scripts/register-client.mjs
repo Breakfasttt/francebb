@@ -32,6 +32,8 @@ await prisma.oauthClient.create({
     clientSecret: await hashClientSecret(clientSecret),
     name,
     redirectUris: [redirectUri],
+    // Après déconnexion globale (/auth/logout du site), le hub renvoie vers la page d'accueil de l'application
+    postLogoutRedirectUris: [`${new URL(redirectUri).origin}/`],
     tokenEndpointAuthMethod: "client_secret_basic",
     grantTypes: ["authorization_code", "refresh_token"],
     responseTypes: ["code"],

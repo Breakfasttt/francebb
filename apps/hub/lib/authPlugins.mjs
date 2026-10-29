@@ -4,14 +4,15 @@
  * - jwt : clés de signature (JWKS) des id_token OIDC.
  * - magicLink : connexion par lien envoyé par email.
  * - oauthProvider : le hub devient fournisseur OIDC pour le site, bbscheme et les futures apps.
+ * - admin : bannissement global (un compte banni ne peut plus se connecter à aucune application, carte 037).
  */
-import { jwt, magicLink } from "better-auth/plugins";
+import { admin, jwt, magicLink } from "better-auth/plugins";
 import { oauthProvider } from "@better-auth/oauth-provider";
 import { hashClientSecret } from "./clientSecret.mjs";
 
 /**
  * @param {{ sendMagicLink: (data: { email: string, url: string }) => Promise<void> }} options
- * @returns {[ReturnType<typeof jwt>, ReturnType<typeof magicLink>, ReturnType<typeof oauthProvider>]}
+ * @returns {[ReturnType<typeof jwt>, ReturnType<typeof magicLink>, ReturnType<typeof oauthProvider>, ReturnType<typeof admin>]}
  * Tuple explicite : sans lui, TypeScript perd le type de chaque plugin et `auth.api` n'expose plus leurs endpoints.
  */
 export function authPlugins({ sendMagicLink }) {
@@ -30,5 +31,6 @@ export function authPlugins({ sendMagicLink }) {
         ...(scopes.includes("email") ? { email: user.email, email_verified: user.emailVerified } : {}),
       }),
     }),
+    admin({ bannedUserMessage: "Ce compte BBFrance a été suspendu." }),
   ];
 }

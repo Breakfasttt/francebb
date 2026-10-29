@@ -36,6 +36,8 @@ export const authConfig = {
         // @ts-ignore
         session.user.theme = token.theme as string;
       }
+      // Le jeton du hub reste dans le cookie chiffré : le navigateur sait seulement qu'il faut passer par /auth/logout
+      if (token && typeof token.hubIdToken === "string") session.hubLogout = true;
       return session;
     },
     authorized({ auth, request }) {

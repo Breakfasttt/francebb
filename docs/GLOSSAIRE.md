@@ -23,6 +23,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Commit** | Enregistrement d'un lot de modifications dans l'historique git, avec un message qui explique pourquoi. |
 | **Conseil** (`/council`) | Réunion de 5 agents IA aux rôles différents, qui donnent leur avis avant une décision importante. Voir `.claude/commands/council.md`. |
 | **CSS** | Langage qui décrit l'apparence des pages (couleurs, tailles, positions). |
+| **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
 | **E2E** (*end-to-end*, de bout en bout) | Test qui joue un vrai parcours dans un vrai navigateur, comme un visiteur (ex. ouvrir le forum puis répondre). |
 | **Épic** | Grand chantier qui regroupe plusieurs cartes du kanban (`kanban/epics/`). |

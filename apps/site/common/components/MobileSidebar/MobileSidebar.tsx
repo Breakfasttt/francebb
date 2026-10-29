@@ -65,7 +65,7 @@ export default function MobileSidebar({
         <div className="mobile-sidebar-body">
           {/* 1. Connexion / Profil / Déconnexion */}
           <div className="mobile-sidebar-user-section">
-            <SignInButton user={session?.user} />
+            <SignInButton user={session?.user} hubLogout={!!session?.hubLogout} />
           </div>
 
           {/* 2. Icônes d'action style Desktop (Messagerie / Mod / Admin) */}

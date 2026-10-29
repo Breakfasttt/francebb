@@ -131,13 +131,19 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    ```bash
    HUB_DATABASE_URL="postgresql://…(base du hub)…" node scripts/register-client.mjs "BBFrance site" https://www.bbfrance.fr/api/auth/callback/hub
    ```
-   Le secret n'est affiché **qu'une seule fois** : le copier immédiatement.
+   Le secret n'est affiché **qu'une seule fois** : le copier immédiatement. Le script déclare aussi l'adresse où le hub renvoie le coach après une déconnexion (la page d'accueil du site, ici `https://www.bbfrance.fr/`). Un client enregistré avant la carte 037 n'a pas cette adresse : le supprimer et l'enregistrer de nouveau.
 5. **Sur le projet Vercel du site**, ajouter :
    - `AUTH_MODE=hub` ;
    - `HUB_ISSUER=https://auth.bbfrance.fr/api/auth` ;
    - `HUB_CLIENT_ID` et `HUB_CLIENT_SECRET`.
 
    Pour revenir en arrière immédiatement : vider `AUTH_MODE` et redéployer.
+6. **Bannir un compte de toutes les applications**, depuis `apps/hub` :
+   ```bash
+   HUB_DATABASE_URL="postgresql://…(base du hub)…" pnpm ban coach@exemple.fr "Raison du bannissement"
+   HUB_DATABASE_URL="postgresql://…(base du hub)…" pnpm ban coach@exemple.fr --unban
+   ```
+   Le compte ne peut plus se connecter, ses connexions au hub sont fermées et les accès donnés aux applications sont retirés. Une application où le coach est déjà connecté le garde connecté jusqu'à la fin de sa session : pour un effet immédiat sur le site, le bannir aussi depuis la modération du site.
 
 ---
 
