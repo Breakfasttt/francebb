@@ -34,9 +34,9 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 
 ## Les pièges
 
-- **Les boutons « Transférer propriété » et « Supprimer la ligue » ne font rien** : ils n'ont pas d'action au clic, et `deleteLigue` / `transferLigueOwnership` ne sont appelées nulle part.
-- Les actions de ce fichier utilisent `throw new Error(...)`, contraire à la règle du projet (retourner `null` ou `{ error }`).
-- `transferLigueOwnership` ne vérifie pas que le nouveau chef existe ni qu'il n'est pas banni.
+- « Transférer propriété » et « Supprimer la ligue » (bloc « Gestion Ligue », `LigueAdminActions.tsx`) ouvrent une fenêtre de confirmation ; le transfert demande de choisir le nouveau chef avec la recherche de membres (`UserSearch`). Réservés au chef de ligue et à la modération, vérifiés côté serveur. `transferLigueOwnership` refuse un nouveau chef inexistant ou banni ; transfert et suppression sont tracés au journal de modération (carte 051).
+- Supprimer une ligue garde ses tournois et ses articles : leur lien vers la ligue est seulement retiré.
+- `createLigue` et `updateLigue` utilisent encore `throw new Error(...)`, contraire à la règle du projet (retourner `null` ou `{ error }`) ; `deleteLigue` et `transferLigueOwnership` renvoient `{ success, error }`.
 - `searchAddressAction` et `reverseGeocodeAction` sont réservées aux membres connectés (carte 050) : sinon n'importe qui pouvait faire passer des requêtes Nominatim par notre serveur, dont la règle d'usage limite à une requête par seconde.
 - La clé ImgBB du blason est publique (`NEXT_PUBLIC_IMGBB_API_KEY`).
 - Les coordonnées : si latitude et longitude manquent, le serveur les calcule depuis la ville et l'adresse (géocodage) ; une ligue sans coordonnées n'apparaît pas sur la carte.
@@ -57,5 +57,6 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 ## État
 
 - Marche : annuaire, création, fiche, modification, commissaires, signalement, carte.
-- Manque : brancher le transfert et la suppression, styles mobiles de la page d'édition, actions sans `throw`, protection des actions de géocodage.
+- Marche aussi depuis la carte 051 : transfert de propriété et suppression de la ligue.
+- Manque : styles mobiles de la page d'édition, `createLigue` et `updateLigue` sans `throw`.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

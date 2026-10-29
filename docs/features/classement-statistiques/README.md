@@ -10,7 +10,7 @@ Le classement national de la Coupe de France (CDF) est calculé à partir des r�
 
 - `/classement` : visible par tous. Onglets : l'année CDF en cours (ou une autre année au choix), « glissant » (les 12 derniers mois), « par roster » (le meilleur coach de chaque roster sur l'année), « Hall of Fame » (le podium de chaque année) et « archives ». Chaque ligne déplie les meilleurs tournois du coach, avec un lien vers son profil (`/spy/[id]`) et vers le sujet du tournoi. Les modérateurs archivent une année ; seuls les admins suppriment une archive.
 - `/classement/edit-archive` : réservé aux modérateurs. Créer ou corriger une archive à la main, ou importer le classement d'une année depuis l'ancien site teamfrancebb.fr.
-- `/statistiques` : visible par tous. Compteurs : membres, ligues, articles, sujets, vues, connectés. Pour un admin, une « console » en plus : emails envoyés ce mois-ci, quota d'emails restant, taille de la base, signalements et ressources en attente.
+- `/statistiques` : visible par tous. Compteurs : membres, ligues, articles, sujets, vues, membres en ligne. Pour un admin, une « console » en plus : emails envoyés ce mois-ci, quota d'emails restant, taille de la base, signalements et ressources en attente.
 - **Sur téléphone** (`app/classement/page-mobile.css`) : sous 768 pixels, les onglets et la barre d'actions s'empilent sur une colonne, les boutons d'admin se rangent en grille de deux ; sous 850 et 640 pixels, les détails des tournois et le résumé du score passent sur une colonne. L'éditeur d'archives passe sur une colonne sous 1024 pixels et son tableau défile dans son cadre (`overflow-x: auto`). `/statistiques` réduit ses marges et ses titres (`app/statistiques/page-mobile.css`, `StatCard.css`).
 - **À vérifier** : la lisibilité du tableau de l'éditeur d'archives au pouce (outil de modération, peu utilisé sur téléphone).
 
@@ -30,13 +30,13 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 
 ## Les pièges
 
-- Les points ne sont **pas** calculés par le classement : ils sont calculés dans le navigateur au moment de la saisie des résultats, puis enregistrés dans `TournamentResult.points`. Changer la formule de `cdf.ts` ne recalcule pas les tournois déjà saisis, et le serveur fait confiance aux points envoyés.
+- Les points ne sont **pas** calculés par le classement : ils sont calculés au moment de l'enregistrement des résultats, puis rangés dans `TournamentResult.points`. Depuis la carte 051, c'est le serveur (`saveTournamentResults`) qui les recalcule avec `cdf.ts` à partir du rang ; l'éditeur ne fait que les afficher. Changer la formule de `cdf.ts` ne recalcule pas les tournois déjà enregistrés.
 - Seuls les tournois `isCDF` et terminés (`isFinished`) comptent. Un coach garde ses 4 meilleurs résultats (2 dans le classement par roster).
 - Une année archivée est lue depuis l'archive (JSON dans `RankingArchive.data`), plus jamais recalculée. Une archive par année au plus.
 - `getHallOfFame` recalcule le classement de chaque année l'une après l'autre : une série de requêtes par année, qui grandit avec le temps.
 - `fetchLegacyRanking` lit les pages HTML de l'ancien site avec deux analyseurs (format 2012 et format 2016+) : si l'ancien site change ou disparaît, l'import casse.
 - `app/classement/actions.ts` redéfinit sa propre fonction `isAdmin` au lieu d'utiliser celle de `lib/roles.ts`.
-- Statistiques : « Connectés » compte la table `Session`, alors que les sessions sont en JWT (`auth.ts`) : le chiffre est probablement toujours 0 (à vérifier). « Taille BDD » est demandée à Postgres (`pg_database_size`). Le quota d'emails (3000) et de stockage (500 Mo) sont écrits en dur.
+- Statistiques : le compteur « En ligne » (appelé « Connectés » avant la carte 051) compte les membres qui ont lu un sujet du forum ces 15 dernières minutes (table `TopicView`). Il comptait la table `Session`, toujours vide parce que les sessions sont des jetons JWT rangés dans un cookie (`auth.ts`). Un membre qui navigue sans ouvrir de sujet n'est pas compté. « Taille BDD » est demandée à Postgres (`pg_database_size`). Le quota d'emails (3000) et de stockage (500 Mo) sont écrits en dur.
 
 ## Les mots expliqués
 
@@ -53,5 +53,6 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 ## État
 
 - Marche : classement annuel, glissant, par roster, Hall of Fame, archives et import de l'ancien site, statistiques publiques.
-- Manque : compteur « Connectés » et taille de base fiables, recalcul des points côté serveur, Hall of Fame sans recalcul année par année.
+- Marche aussi depuis la carte 051 : points recalculés côté serveur, compteur « En ligne » basé sur une vraie activité.
+- Manque : taille de base fiable, Hall of Fame sans recalcul année par année.
 - Cartes : 049 (audit mobile) ; 046 et 047 (passage à Postgres) concernent la « Taille BDD ».

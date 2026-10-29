@@ -35,7 +35,8 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 - Chaque action serveur passe par `getActiveSession()` puis `isModerator()` ; ne jamais s'appuyer sur le contrôle de la page.
 - **Toute fonction exportée d'un fichier « use server » est appelable depuis le navigateur par n'importe qui.** `logModerationAction` l'était, ce qui permettait d'écrire de fausses entrées au journal : elle est désormais dans `lib/moderationLog.ts` (carte 050). Ne jamais remettre une fonction interne dans un fichier d'actions.
 - Un seul `toggleBanUser` (`app/membres/actions.ts`) : contrôle de rang (un modérateur ne peut pas bannir un admin) et entrée au journal (carte 050, testé). `unbanUserAction` ne vérifie pas encore le rang.
-- `cleanupModerationLogs` calcule une date invalide (`setMonth` appelé deux fois) : la purge automatique, lancée à chaque ouverture de la page 1 du journal, échoue sans rien supprimer (vérifié : la date vaut `Invalid Date`).
+- `cleanupModerationLogs` (purge automatique, lancée à chaque ouverture de la page 1 du journal) supprime les entrées de plus de 3 mois. Jusqu'à la carte 051, elle calculait une date invalide et ne supprimait rien : au premier passage après la mise en ligne de la correction, toutes les entrées de plus de 3 mois disparaîtront d'un coup.
+- `deleteUser` (un modérateur supprime un membre) passe par `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`), comme la suppression de compte par le membre : ses contenus publics sont rattachés au compte fantôme, rien n'est effacé du forum (carte 051). L'action est tracée au journal (`USER_DELETED`).
 - `createReportAction` ne contrôle ni le type visé, ni les doublons, ni la fréquence : un membre peut envoyer de nombreux signalements.
 - `getBannedUsers` lit le dernier journal de ban membre par membre (une requête par banni, défaut N+1) et renvoie l'email des bannis aux modérateurs.
 - `getPendingReportsByType` charge tous les signalements en attente puis pagine en mémoire.
@@ -53,6 +54,7 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 ## État
 
 - Fonctionne : signalements sur cinq types de contenu, tableau de bord avec compteurs, ban et débannissement, journal, validation des ressources.
-- Manque : contrôle de rang uniforme pour bannir et débannir, journal protégé contre les fausses entrées, purge des vieux journaux, limite sur les signalements. Aucune carte ouverte ne les couvre.
+- Fonctionne aussi depuis la carte 051 : purge des journaux de plus de 3 mois.
+- Manque : contrôle de rang pour débannir, limite sur les signalements. Aucune carte ouverte ne les couvre.
 - Hub : le ban global propagé à toutes les applications est prévu par la carte 037.
 - Téléphone : les onglets invisibles entre 769 et 1024 px et la fenêtre de signalement sont à traiter dans l'audit mobile (carte 049).

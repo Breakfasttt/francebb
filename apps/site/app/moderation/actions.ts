@@ -161,7 +161,8 @@ export async function cleanupModerationLogs(months = 3) {
   }
 
   const dateLimit = new Date();
-  dateLimit.setMonth(dateLimit.setMonth(dateLimit.getMonth()) - months);
+  // Recule de `months` mois (setMonth gère le passage d'une année à l'autre)
+  dateLimit.setMonth(dateLimit.getMonth() - months);
 
   try {
     const deleted = await prisma.moderationLog.deleteMany({

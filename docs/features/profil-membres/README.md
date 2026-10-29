@@ -26,6 +26,7 @@ Chaque coach gère son compte : informations publiques (pseudo, avatar, numéro 
 | `apps/site/app/membres/page.tsx` | Annuaire (rendu serveur). |
 | `apps/site/app/membres/component/MembersTable.tsx` | Tableau, filtres, tri, pagination et fenêtres de modération. |
 | `apps/site/app/membres/actions.ts` | Actions de modération des membres. |
+| `apps/site/lib/accountDeletion.ts` | `anonymizeAndDeleteUser` : suppression d'un compte avec rattachement de ses contenus publics au compte fantôme. Fonction interne (pas une action serveur), appelée par `deleteAccount` et `deleteUser`. |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public d'un coach. |
 | `apps/site/app/api/users/[id]/route.ts` | Données d'un membre (l'email seulement pour lui-même ou un modérateur). |
 
@@ -34,7 +35,7 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 ## Les pièges
 
 - Le bannissement depuis `/spy/[id]` utilise le `toggleBanUser` de `app/membres/actions.ts` (seule version) : il vérifie la hiérarchie des rôles (`canEditTargetRole`) et trace l'action au journal (carte 050).
-- `deleteAccount` (le coach supprime son compte) anonymise : ses sujets, messages, articles et résultats passent au compte fantôme `ghost_coach`. Mais `deleteUser` (un modérateur supprime un membre) **efface définitivement** ses sujets et ses messages du forum. Règle du projet : jamais de suppression de données sans accord exprès.
+- `deleteAccount` (le coach supprime son compte) et `deleteUser` (un modérateur supprime un membre) passent par la même fonction, `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`, carte 051) : ses sujets, messages, articles, ligues, tournois organisés et résultats passent au compte fantôme `ghost_coach` ; ses données privées (messages privés, réactions, inscriptions, parties de quiz) sont supprimées. Le texte de ses messages du forum est remplacé par « [Ce message a été supprimé suite à la clôture du compte] ». Avant, `deleteUser` effaçait définitivement ses sujets et messages. Toute nouvelle table liée à un membre doit être ajoutée à cette fonction, sinon la base refusera de supprimer le membre.
 - `/membres` charge tous les membres d'un coup (`include` sans `select`) et les envoie entiers au composant client. Le filtre, le tri et la pagination se font dans le navigateur. Cela contredit la règle « jamais un `User` complet vers un composant client » et ralentira avec le nombre de membres.
 - `/membres` utilise `auth()` puis relit le rôle en base ; `/profile` renvoie vers `/api/auth/signin` au lieu de `/auth/login`.
 - Dette : `throw` dans les deux fichiers d'actions (12 et 13), types `any` dans la page profil, un commentaire de test oublié dans `app/membres/page.tsx`.
@@ -53,6 +54,6 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 
 ## État
 
-- Marche : modification du profil, réglages, blocages, suppression de compte anonymisée, annuaire avec modération.
-- Manque : contrôle de hiérarchie dans le bannissement depuis le profil, suppression par un modérateur qui anonymise au lieu d'effacer, pagination côté serveur de `/membres`, version mobile de l'annuaire.
+- Marche : modification du profil, réglages, blocages, suppression de compte anonymisée (par le membre ou par un modérateur, carte 051), annuaire avec modération.
+- Manque : contrôle de hiérarchie dans le bannissement depuis le profil, pagination côté serveur de `/membres`, version mobile de l'annuaire.
 - Cartes : 049 (audit mobile), 019 (avatars en `next/image`).

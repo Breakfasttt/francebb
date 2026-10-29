@@ -29,6 +29,14 @@ export const ROLE_LABELS: Record<string, string> = {
   COACH: "Coach",
 };
 
+/**
+ * Puissance d'un rôle pour les droits (modération, administration, gestion des rôles).
+ * Seuls les rôles de base comptent ici : un rôle personnalisé (créé dans l'administration, table RoleConfig)
+ * a les droits d'un coach. Sa vraie puissance, lue en base, ne sert qu'à l'accès au forum (lib/forumAccess.ts).
+ * Les deux calculs restent cohérents parce qu'un rôle personnalisé est toujours sous Modérateur
+ * (imposé par createCustomRole et reorderRoles dans app/administration/actions.ts) : il n'aurait de toute
+ * façon aucun droit de modération.
+ */
 export function getRolePower(role: string): number {
   return ROLE_POWER[role] ?? ROLE_POWER.COACH;
 }

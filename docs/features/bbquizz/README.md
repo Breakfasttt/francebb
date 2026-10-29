@@ -19,8 +19,9 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 
 | Fichier | Rôle |
 |---|---|
-| `apps/site/app/bbquizz/page.tsx` | Page du jeu, redirige le visiteur vers la connexion |
-| `apps/site/app/bbquizz/component/QuizEngine/QuizEngine.tsx` | Déroulé d'une partie : chronomètres, jokers, score, envoi du résultat |
+| `apps/site/app/bbquizz/page.tsx` | Page du jeu, envoie le visiteur vers la connexion (`/auth/login`) |
+| `apps/site/app/bbquizz/component/QuizEngine/QuizEngine.tsx` | Affichage d'une partie : chronomètres, jokers, score ; il ne fait qu'afficher ce que renvoie le serveur |
+| `apps/site/lib/quizGame.ts` | Règles côté serveur : tirage équilibré des questions, lecture d'une question, temps restant et points |
 | `apps/site/app/bbquizz/component/QuizLeaderboard/QuizLeaderboard.tsx` | Classement (jour, semaine, tout temps) |
 | `apps/site/app/bbquizz/component/QuizForm/QuizForm.tsx` | Formulaire de question, partagé par proposer et éditer |
 | `apps/site/app/bbquizz/proposer/`, `valider/`, `editer/` | Pages de proposition, de validation et d'édition (`page.tsx` serveur + `*Content.tsx` client) |
@@ -28,24 +29,24 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 | `apps/site/app/bbquizz/data/questions.ts` | Questions de départ : insérées par `prisma/firstSetup.ts`, et utilisées si la base est vide |
 | `apps/site/app/bbquizz/utils.ts` | `translateCategory` : nom français d'une catégorie |
 
-Actions serveur (`app/bbquizz/actions.ts`) : `getRandomQuizQuestions`, `submitQuizAttempt`, `getQuizLeaderboard`, `getCommunityStats`, `suggestQuizQuestion` (membres) ; `getQuizSuggestions`, `handleQuizSuggestion`, `getAllQuizQuestions`, `updateQuizQuestion`, `deleteQuizQuestion` (modérateurs).
+Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`, `answerQuizQuestion`, `skipQuizQuestion`, `applyQuizFiftyFifty`, `applyQuizCommunity` (une partie), `getQuizLeaderboard`, `suggestQuizQuestion` (membres) ; `getQuizSuggestions`, `handleQuizSuggestion`, `getAllQuizQuestions`, `updateQuizQuestion`, `deleteQuizQuestion` (modérateurs).
 
 ## Les pièges
 
-- **Le score est calculé dans le navigateur et cru sur parole** par `submitQuizAttempt` : n'importe quel membre peut envoyer le score qu'il veut et prendre la tête du classement.
-- **Les bonnes réponses partent dans le navigateur** (`correctIndex` est renvoyé avec chaque question) : on peut les lire avant de répondre.
-- **Le visiteur non connecté est envoyé vers `/auth/signin`**, adresse qui n'existe pas (la page de connexion est `/auth/login`). Même erreur dans `proposer/page.tsx`.
-- Le joker « appel à la communauté » lit des compteurs (`timesOption0` à `3`) que rien n'incrémente : il affiche 0 % partout, ou des chiffres inventés (45/20/15/20) si la question n'est pas en base.
+- **La partie est tenue par le serveur** (carte 051), pour empêcher la triche. Le navigateur ne reçoit qu'une question à la fois, sans la bonne réponse ni l'explication ; elles ne sont révélées qu'après la réponse. Le serveur note l'heure d'envoi de chaque question et calcule lui-même les points (100 plus le bonus de rapidité, ou -25), puis enregistre le score final. Ne jamais renvoyer `correctIndex` ou `explanation` au navigateur avant la réponse, ni accepter un score venu du navigateur. Un test e2e le vérifie (`tests/e2e/security.spec.ts`).
+- La partie en cours est une ligne de la table `QuizGame` (une seule par membre, supprimée quand le résultat passe dans `QuizAttempt`). Chaque réponse fait avancer la partie seulement si elle en est encore à la question attendue : répondre deux fois ou rejouer une ancienne réponse ne compte pas.
+- Le chronomètre affiché dans le navigateur n'est qu'un affichage : c'est l'heure du serveur qui compte, avec 3 secondes de marge pour le trajet réseau. Une réponse arrivée trop tard compte comme fausse.
+- Le joker « appel à la communauté » lit les compteurs `timesOption0` à `3` de la question, augmentés à chaque réponse depuis la carte 051. Sans aucune réponse enregistrée (ou pour les questions de départ hors base), il affiche 25 % partout.
 - La série (`quizStreak`) est affichée dans le classement mais jamais mise à jour.
-- `getRandomQuizQuestions` charge toutes les questions de la base à chaque partie pour en garder 20, avec un mélange `sort(() => 0.5 - Math.random())` peu uniforme.
-- `submitQuizAttempt` retrouve le membre par son email : un compte sans email ne peut pas enregistrer de score.
 - `updateQuizQuestion` reçoit `data: any`.
+- Les pages `/bbquizz/valider` et `/bbquizz/editer` utilisent encore `auth()` au lieu de `getActiveSession()`.
 
 ## Les mots expliqués
 
 | Mot | Sens |
 |---|---|
 | Partie (*attempt*) | Une session de 20 questions ; enregistrée avec score, bonnes réponses et durée. |
+| Partie en cours (`QuizGame`) | Partie pas encore finie, gardée en base par le serveur : questions tirées, question en cours, heure d'envoi, score, jokers utilisés. |
 | Joker | Aide utilisable une fois par partie : 50/50, appel à la communauté, passer. |
 | Proposition (*suggestion*) | Question envoyée par un membre, en attente (`PENDING`) jusqu'à acceptation ou refus par un modérateur. |
 | Panthéon / classement | Les 10 meilleurs : meilleur score de tous les temps, ou meilleure partie du jour ou de la semaine. |
@@ -54,5 +55,6 @@ Actions serveur (`app/bbquizz/actions.ts`) : `getRandomQuizQuestions`, `submitQu
 ## État
 
 - Marche : partie complète, classements, proposition, validation, édition.
-- Manque : calcul du score côté serveur et réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté, série.
+- Marche aussi depuis la carte 051 : score calculé par le serveur, réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté.
+- Manque : série (`quizStreak`).
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

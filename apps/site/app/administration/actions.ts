@@ -146,6 +146,13 @@ export async function createCustomRole(data: { name: string, label: string, colo
     return { success: false, error: "Vous ne pouvez pas créer un rôle plus puissant ou égal au vôtre." };
   }
 
+  // Un rôle personnalisé reste sous Modérateur : lib/roles.ts ne connaît que les rôles de base et
+  // ne donnerait pas les droits de modération à ce rôle, alors que lib/forumAccess.ts lit sa puissance en base.
+  // La même limite est déjà imposée par reorderRoles.
+  if (!Number.isInteger(data.power) || data.power < 0 || data.power >= ROLE_POWER.MODERATOR) {
+    return { success: false, error: "Un rôle personnalisé doit rester sous le rang de Modérateur." };
+  }
+
   // Format ID from name
   const safeName = data.name.toUpperCase().replace(/[^A-Z0-9_]/g, "_");
 

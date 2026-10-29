@@ -70,11 +70,11 @@ export default async function StatistiquesPage() {
               description="Consultations cumulées des sujets"
             />
             <StatCard 
-              label="Connectés" 
+              label="En ligne" 
               value={stats.public.onlineUsers} 
               icon={<Activity size={24} />}
               variant="secondary"
-              description="Sessions actives actuellement"
+              description="Membres ayant lu le forum ces 15 dernières minutes"
             />
           </div>
         </section>

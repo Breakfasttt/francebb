@@ -2,7 +2,7 @@
  * BbQuizz main page
  * Entry point for the Blood Bowl Quiz minigame.
  */
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import QuizEngine from "./component/QuizEngine/QuizEngine";
@@ -16,10 +16,10 @@ export const metadata = {
 };
 
 export default async function QuizPage() {
-  const session = await auth();
+  const session = await getActiveSession();
 
   if (!session) {
-    redirect("/auth/signin?callbackUrl=/bbquizz");
+    redirect("/auth/login?callbackUrl=/bbquizz");
   }
 
   return (
@@ -33,7 +33,7 @@ export default async function QuizPage() {
 
       <div className="quiz-page-layout">
         <section className="quiz-main-section">
-          <QuizEngine session={session} />
+          <QuizEngine userRole={session.user.role} />
         </section>
 
         <aside className="quiz-sidebar">

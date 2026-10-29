@@ -7,6 +7,8 @@
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { revalidatePath } from "next/cache";
+import { isModerator } from "@/lib/roles";
+import { calculateCdfPoints, CdfTournamentType } from "@/common/utils/cdf";
 
 /**
  * Marque un tournoi comme terminé.
@@ -25,10 +27,10 @@ export async function finishTournament(tournamentId: string) {
 
   if (!tournament) return null;
 
-  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
+  // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+  const isAuthorizedRole = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
     console.warn(`[finishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
@@ -64,10 +66,10 @@ export async function cancelTournament(tournamentId: string) {
 
   if (!tournament) return null;
 
-  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
+  // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+  const isAuthorizedRole = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
     console.warn(`[cancelTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
@@ -105,12 +107,18 @@ export async function saveTournamentResults(tournamentId: string, data: { result
 
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+  const isAuthorizedRole = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
     console.warn(`[saveTournamentResults] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
     return { error: "Non autorisé" };
   }
+
+  // Points CDF recalculés ici avec la formule officielle (common/utils/cdf.ts), sans faire confiance
+  // aux points envoyés par le navigateur. Mêmes paramètres que l'éditeur de résultats.
+  const cdfType = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
+  const cdfRounds = tournament.totalMatches || parseInt(tournament.days || "1") * 3 || 5;
+  const cdfParticipants = data.results.length;
 
   try {
     // Utilisation d'une transaction pour tout mettre à jour proprement
@@ -131,7 +139,9 @@ export async function saveTournamentResults(tournamentId: string, data: { result
             draws: Number(res.draws) || 0,
             losses: Number(res.losses) || 0,
             casualties: Number(res.casualties) || 0,
-            points: Number(res.points) || 0,
+            points: tournament.isCDF
+              ? calculateCdfPoints(cdfType, cdfRounds, cdfParticipants, Number(res.rank) || 0)
+              : Number(res.points) || 0,
             rank: res.rank ? Number(res.rank) : null,
             autoCalculate: res.autoCalculate ?? true
         }))
@@ -290,10 +300,10 @@ export async function unfinishTournament(tournamentId: string) {
 
   if (!tournament) return null;
 
-  // Autorisation : Organisateur, Commissaire, ADMIN ou SUPERADMIN
+  // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+  const isAuthorizedRole = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
     console.warn(`[unfinishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
@@ -331,7 +341,7 @@ export async function clearTournamentResults(tournamentId: string) {
 
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = ["ADMIN", "SUPERADMIN"].includes(session.user.role);
+  const isAuthorizedRole = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
     return { error: "Non autorisé" };

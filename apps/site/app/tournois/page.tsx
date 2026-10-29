@@ -136,7 +136,7 @@ export default async function TournamentsPage({
                   {tournaments.map((t: any) => (
                     <Link 
                       key={t.id} 
-                      href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`}
+                      href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"}
                       style={{ display: 'contents' }}
                       className="tournament-card-link"
                     >
@@ -235,7 +235,7 @@ export default async function TournamentsPage({
                         </div>
                         
                         <div className="list-col-name">
-                          <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} className="tournament-link">
+                          <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"} className="tournament-link">
                             {t.name}
                           </Link>
                           <div className="organizer-small">Par {t.organizer.name}</div>
@@ -276,7 +276,7 @@ export default async function TournamentsPage({
 
                         <div className="list-col-action">
                           <ClassicButton 
-                            href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} 
+                            href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"} 
                             size="sm"
                           >
                             Voir

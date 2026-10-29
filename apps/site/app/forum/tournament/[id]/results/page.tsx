@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import TournamentResultsEditor from "./TournamentResultsEditor";
@@ -7,8 +7,8 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 
 export default async function TournamentResultsPage({ params }: { params: { id: string } }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session?.user) redirect("/api/auth/signin");
+  const session = await getActiveSession();
+  if (!session?.user) redirect(`/auth/login?callbackUrl=/forum/tournament/${id}/results`);
 
   const tournament = await prisma.tournament.findUnique({
     where: { id },
@@ -35,7 +35,7 @@ export default async function TournamentResultsPage({ params }: { params: { id: 
 
   if (!tournament) notFound();
 
-  // Autorisation : Organisateur, Commissaire ou Admin
+  // Autorisation : Organisateur, Commissaire ou modération (même règle que saveTournamentResults)
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
   const isSuperAdmin = isModerator(session.user.role || 'USER');

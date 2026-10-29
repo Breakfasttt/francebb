@@ -34,8 +34,10 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications BBFrance. |
 | **id_token** | Jeton signé que le hub remet au site après une connexion : « voici qui est connecté ». |
 | **ITP** (Safari) | Protection de Safari qui bloque les cookies entre sites différents. C'est pourquoi le hub et le site devront partager le même nom de domaine. |
+| **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
 | **Lighthouse** | Outil de Google qui note une page sur 100 : vitesse d'affichage, accessibilité, bonnes pratiques. Utilisé en mode mobile. |
+| **localStorage** | Petite mémoire propre au navigateur et à l'appareil, où une page peut ranger des réglages (ex. le thème d'un visiteur). Elle peut être bloquée, par exemple en navigation privée. |
 | **Merge** (fusion) | Réunir le travail d'une branche dans une autre. |
 | **Migration** (base de données) | Fichier qui décrit un changement de structure de la base (nouvelle table, nouvelle colonne), appliqué de façon contrôlée et enregistrée. |
 | **Monorepo** | Un seul dépôt git qui contient plusieurs applications (site, hub) et du code partagé (`packages/`). |

@@ -4,13 +4,13 @@
  * Captures Windows : comparaison locale uniquement (rendu des polices différent sous Linux en CI).
  */
 import { test, expect, type Page } from "@playwright/test";
-import { E2E, loginAs } from "./fixtures";
+import { E2E, E2E_THEMES, loginAs, themedModoId } from "./fixtures";
 
 const REPORT_BUTTON = "button:has(svg.lucide-triangle-alert)";
-const THEMES = ["default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
+const THEMES = E2E_THEMES;
 
 async function useTheme(page: Page, theme: string) {
-  // ThemeProvider relit le thème depuis localStorage au montage
+  // Pour un visiteur, ThemeProvider relit le thème depuis localStorage au montage
   await page.addInitScript((value) => {
     localStorage.setItem("theme", value);
     // Le bandeau cookies apparaît après 1,5 s et faussait les captures selon le timing
@@ -33,7 +33,8 @@ test.describe("rendu des thèmes", () => {
 
     test(`modale de signalement, thème ${theme}`, async ({ page }) => {
       await useTheme(page, theme);
-      await loginAs(page, E2E.modoId);
+      // Membre connecté : c'est le thème de son profil qui s'affiche (carte 051), d'où un modérateur par thème
+      await loginAs(page, themedModoId(theme));
       await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
       await page.locator(REPORT_BUTTON).first().click();
       const modal = page.locator(".report-modal");

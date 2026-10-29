@@ -224,20 +224,23 @@ export async function updateLigue(id: string, formData: FormData) {
 /**
  * Supprime une ligue.
  */
-export async function deleteLigue(id: string) {
+export async function deleteLigue(id: string): Promise<{ success: boolean; error?: string }> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non autorisé");
+  if (!session?.user?.id) return { success: false, error: "Non autorisé" };
 
   const ligue = await prisma.ligue.findUnique({
-    where: { id }
+    where: { id },
+    select: { name: true, creatorId: true }
   });
 
-  if (!ligue) throw new Error("Ligue introuvable");
+  if (!ligue) return { success: false, error: "Ligue introuvable" };
 
+  // Seuls le chef de ligue et la modération peuvent supprimer (vérifié ici, côté serveur)
   if (ligue.creatorId !== session.user.id && !isModerator(session.user.role)) {
-    throw new Error("Seul le créateur peut supprimer la ligue.");
+    return { success: false, error: "Seul le chef de ligue peut supprimer la ligue." };
   }
 
+  // Les tournois et articles rattachés gardent leur contenu : leur lien vers la ligue est simplement retiré
   await prisma.ligue.delete({
     where: { id }
   });
@@ -250,32 +253,51 @@ export async function deleteLigue(id: string) {
   );
 
   revalidatePath("/ligues");
-  redirect("/ligues");
+  return { success: true };
 }
 
 /**
- * Transfère la propriété d'une ligue.
+ * Transfère la propriété d'une ligue (chef de ligue) à un autre membre.
+ * Réservé au chef actuel et à la modération ; le nouveau chef doit exister et ne pas être banni.
  */
-export async function transferLigueOwnership(id: string, newOwnerId: string) {
+export async function transferLigueOwnership(id: string, newOwnerId: string): Promise<{ success: boolean; error?: string }> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non autorisé");
+  if (!session?.user?.id) return { success: false, error: "Non autorisé" };
 
   const ligue = await prisma.ligue.findUnique({
-    where: { id }
+    where: { id },
+    select: { name: true, creatorId: true }
   });
 
-  if (!ligue) throw new Error("Ligue introuvable");
+  if (!ligue) return { success: false, error: "Ligue introuvable" };
 
   if (ligue.creatorId !== session.user.id && !isModerator(session.user.role)) {
-    throw new Error("Seul le créateur peut transférer la propriété.");
+    return { success: false, error: "Seul le chef de ligue peut transférer la propriété." };
   }
+
+  if (newOwnerId === ligue.creatorId) return { success: false, error: "Ce membre est déjà le chef de la ligue." };
+
+  const newOwner = await prisma.user.findUnique({
+    where: { id: newOwnerId },
+    select: { name: true, isBanned: true }
+  });
+
+  if (!newOwner || newOwner.isBanned) return { success: false, error: "Nouveau chef introuvable ou banni." };
 
   await prisma.ligue.update({
     where: { id },
     data: { creatorId: newOwnerId }
   });
 
+  await logModerationAction(
+    "LIGUE_TRANSFERRED",
+    id,
+    "LIGUE",
+    `Transfert de la ligue ${ligue.name} à ${newOwner.name ?? newOwnerId}`
+  );
+
   revalidatePath(`/ligue/${id}`);
+  revalidatePath("/ligues");
   return { success: true };
 }
 

@@ -204,6 +204,13 @@ export type QuizQuestion = $Result.DefaultSelection<Prisma.$QuizQuestionPayload>
  */
 export type QuizAttempt = $Result.DefaultSelection<Prisma.$QuizAttemptPayload>
 /**
+ * Model QuizGame
+ * Partie de BBQuizz en cours, tenue par le serveur (carte 051) : le navigateur ne reçoit jamais la bonne
+ * réponse avant d'avoir répondu, et le score est calculé ici. Une seule partie en cours par membre ;
+ * la ligne est supprimée à la fin de la partie, quand le résultat est enregistré dans QuizAttempt.
+ */
+export type QuizGame = $Result.DefaultSelection<Prisma.$QuizGamePayload>
+/**
  * Model QuizDailyWinner
  * 
  */
@@ -764,6 +771,16 @@ export class PrismaClient<
   get quizAttempt(): Prisma.QuizAttemptDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.quizGame`: Exposes CRUD operations for the **QuizGame** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuizGames
+    * const quizGames = await prisma.quizGame.findMany()
+    * ```
+    */
+  get quizGame(): Prisma.QuizGameDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.quizDailyWinner`: Exposes CRUD operations for the **QuizDailyWinner** model.
     * Example usage:
     * ```ts
@@ -1284,6 +1301,7 @@ export namespace Prisma {
     TournamentMatch: 'TournamentMatch',
     QuizQuestion: 'QuizQuestion',
     QuizAttempt: 'QuizAttempt',
+    QuizGame: 'QuizGame',
     QuizDailyWinner: 'QuizDailyWinner',
     QuizQuestionSuggestion: 'QuizQuestionSuggestion',
     LegacyMember: 'LegacyMember',
@@ -1304,7 +1322,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizGame" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4120,6 +4138,80 @@ export namespace Prisma {
           }
         }
       }
+      QuizGame: {
+        payload: Prisma.$QuizGamePayload<ExtArgs>
+        fields: Prisma.QuizGameFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuizGameFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuizGameFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          findFirst: {
+            args: Prisma.QuizGameFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuizGameFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          findMany: {
+            args: Prisma.QuizGameFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
+          }
+          create: {
+            args: Prisma.QuizGameCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          createMany: {
+            args: Prisma.QuizGameCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuizGameCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
+          }
+          delete: {
+            args: Prisma.QuizGameDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          update: {
+            args: Prisma.QuizGameUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          deleteMany: {
+            args: Prisma.QuizGameDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuizGameUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuizGameUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
+          }
+          upsert: {
+            args: Prisma.QuizGameUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
+          }
+          aggregate: {
+            args: Prisma.QuizGameAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuizGame>
+          }
+          groupBy: {
+            args: Prisma.QuizGameGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuizGameGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuizGameCountArgs<ExtArgs>
+            result: $Utils.Optional<QuizGameCountAggregateOutputType> | number
+          }
+        }
+      }
       QuizDailyWinner: {
         payload: Prisma.$QuizDailyWinnerPayload<ExtArgs>
         fields: Prisma.QuizDailyWinnerFieldRefs
@@ -4636,6 +4728,7 @@ export namespace Prisma {
     tournamentMatch?: TournamentMatchOmit
     quizQuestion?: QuizQuestionOmit
     quizAttempt?: QuizAttemptOmit
+    quizGame?: QuizGameOmit
     quizDailyWinner?: QuizDailyWinnerOmit
     quizQuestionSuggestion?: QuizQuestionSuggestionOmit
     legacyMember?: LegacyMemberOmit
@@ -4741,6 +4834,7 @@ export namespace Prisma {
     postReactions: number
     privateMessages: number
     quizAttempts: number
+    quizGames: number
     dailyWins: number
     quizSuggestions: number
     rankingArchives: number
@@ -4784,6 +4878,7 @@ export namespace Prisma {
     postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
     privateMessages?: boolean | UserCountOutputTypeCountPrivateMessagesArgs
     quizAttempts?: boolean | UserCountOutputTypeCountQuizAttemptsArgs
+    quizGames?: boolean | UserCountOutputTypeCountQuizGamesArgs
     dailyWins?: boolean | UserCountOutputTypeCountDailyWinsArgs
     quizSuggestions?: boolean | UserCountOutputTypeCountQuizSuggestionsArgs
     rankingArchives?: boolean | UserCountOutputTypeCountRankingArchivesArgs
@@ -4955,6 +5050,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountQuizAttemptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: QuizAttemptWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountQuizGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizGameWhereInput
   }
 
   /**
@@ -8298,6 +8400,7 @@ export namespace Prisma {
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     privateMessages?: boolean | User$privateMessagesArgs<ExtArgs>
     quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
+    quizGames?: boolean | User$quizGamesArgs<ExtArgs>
     dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
     quizSuggestions?: boolean | User$quizSuggestionsArgs<ExtArgs>
     rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
@@ -8433,6 +8536,7 @@ export namespace Prisma {
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     privateMessages?: boolean | User$privateMessagesArgs<ExtArgs>
     quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
+    quizGames?: boolean | User$quizGamesArgs<ExtArgs>
     dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
     quizSuggestions?: boolean | User$quizSuggestionsArgs<ExtArgs>
     rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
@@ -8486,6 +8590,7 @@ export namespace Prisma {
       postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
       privateMessages: Prisma.$PrivateMessagePayload<ExtArgs>[]
       quizAttempts: Prisma.$QuizAttemptPayload<ExtArgs>[]
+      quizGames: Prisma.$QuizGamePayload<ExtArgs>[]
       dailyWins: Prisma.$QuizDailyWinnerPayload<ExtArgs>[]
       quizSuggestions: Prisma.$QuizQuestionSuggestionPayload<ExtArgs>[]
       rankingArchives: Prisma.$RankingArchivePayload<ExtArgs>[]
@@ -8949,6 +9054,7 @@ export namespace Prisma {
     postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     privateMessages<T extends User$privateMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$privateMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrivateMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quizAttempts<T extends User$quizAttemptsArgs<ExtArgs> = {}>(args?: Subset<T, User$quizAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    quizGames<T extends User$quizGamesArgs<ExtArgs> = {}>(args?: Subset<T, User$quizGamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     dailyWins<T extends User$dailyWinsArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyWinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quizSuggestions<T extends User$quizSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, User$quizSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rankingArchives<T extends User$rankingArchivesArgs<ExtArgs> = {}>(args?: Subset<T, User$rankingArchivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9903,6 +10009,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
+  }
+
+  /**
+   * User.quizGames
+   */
+  export type User$quizGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    where?: QuizGameWhereInput
+    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
+    cursor?: QuizGameWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
   }
 
   /**
@@ -50633,6 +50763,1185 @@ export namespace Prisma {
 
 
   /**
+   * Model QuizGame
+   */
+
+  export type AggregateQuizGame = {
+    _count: QuizGameCountAggregateOutputType | null
+    _avg: QuizGameAvgAggregateOutputType | null
+    _sum: QuizGameSumAggregateOutputType | null
+    _min: QuizGameMinAggregateOutputType | null
+    _max: QuizGameMaxAggregateOutputType | null
+  }
+
+  export type QuizGameAvgAggregateOutputType = {
+    currentIndex: number | null
+    score: number | null
+    correct: number | null
+  }
+
+  export type QuizGameSumAggregateOutputType = {
+    currentIndex: number | null
+    score: number | null
+    correct: number | null
+  }
+
+  export type QuizGameMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    currentIndex: number | null
+    questionServedAt: Date | null
+    score: number | null
+    correct: number | null
+    fiftyUsed: boolean | null
+    communityUsed: boolean | null
+    skipUsed: boolean | null
+    startedAt: Date | null
+  }
+
+  export type QuizGameMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    currentIndex: number | null
+    questionServedAt: Date | null
+    score: number | null
+    correct: number | null
+    fiftyUsed: boolean | null
+    communityUsed: boolean | null
+    skipUsed: boolean | null
+    startedAt: Date | null
+  }
+
+  export type QuizGameCountAggregateOutputType = {
+    id: number
+    userId: number
+    questionIds: number
+    currentIndex: number
+    questionServedAt: number
+    score: number
+    correct: number
+    fiftyUsed: number
+    communityUsed: number
+    skipUsed: number
+    startedAt: number
+    _all: number
+  }
+
+
+  export type QuizGameAvgAggregateInputType = {
+    currentIndex?: true
+    score?: true
+    correct?: true
+  }
+
+  export type QuizGameSumAggregateInputType = {
+    currentIndex?: true
+    score?: true
+    correct?: true
+  }
+
+  export type QuizGameMinAggregateInputType = {
+    id?: true
+    userId?: true
+    currentIndex?: true
+    questionServedAt?: true
+    score?: true
+    correct?: true
+    fiftyUsed?: true
+    communityUsed?: true
+    skipUsed?: true
+    startedAt?: true
+  }
+
+  export type QuizGameMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    currentIndex?: true
+    questionServedAt?: true
+    score?: true
+    correct?: true
+    fiftyUsed?: true
+    communityUsed?: true
+    skipUsed?: true
+    startedAt?: true
+  }
+
+  export type QuizGameCountAggregateInputType = {
+    id?: true
+    userId?: true
+    questionIds?: true
+    currentIndex?: true
+    questionServedAt?: true
+    score?: true
+    correct?: true
+    fiftyUsed?: true
+    communityUsed?: true
+    skipUsed?: true
+    startedAt?: true
+    _all?: true
+  }
+
+  export type QuizGameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizGame to aggregate.
+     */
+    where?: QuizGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizGames to fetch.
+     */
+    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuizGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuizGames
+    **/
+    _count?: true | QuizGameCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QuizGameAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuizGameSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuizGameMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuizGameMaxAggregateInputType
+  }
+
+  export type GetQuizGameAggregateType<T extends QuizGameAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuizGame]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuizGame[P]>
+      : GetScalarType<T[P], AggregateQuizGame[P]>
+  }
+
+
+
+
+  export type QuizGameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuizGameWhereInput
+    orderBy?: QuizGameOrderByWithAggregationInput | QuizGameOrderByWithAggregationInput[]
+    by: QuizGameScalarFieldEnum[] | QuizGameScalarFieldEnum
+    having?: QuizGameScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuizGameCountAggregateInputType | true
+    _avg?: QuizGameAvgAggregateInputType
+    _sum?: QuizGameSumAggregateInputType
+    _min?: QuizGameMinAggregateInputType
+    _max?: QuizGameMaxAggregateInputType
+  }
+
+  export type QuizGameGroupByOutputType = {
+    id: string
+    userId: string
+    questionIds: string[]
+    currentIndex: number
+    questionServedAt: Date | null
+    score: number
+    correct: number
+    fiftyUsed: boolean
+    communityUsed: boolean
+    skipUsed: boolean
+    startedAt: Date
+    _count: QuizGameCountAggregateOutputType | null
+    _avg: QuizGameAvgAggregateOutputType | null
+    _sum: QuizGameSumAggregateOutputType | null
+    _min: QuizGameMinAggregateOutputType | null
+    _max: QuizGameMaxAggregateOutputType | null
+  }
+
+  type GetQuizGameGroupByPayload<T extends QuizGameGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuizGameGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuizGameGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuizGameGroupByOutputType[P]>
+            : GetScalarType<T[P], QuizGameGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuizGameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questionIds?: boolean
+    currentIndex?: boolean
+    questionServedAt?: boolean
+    score?: boolean
+    correct?: boolean
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizGame"]>
+
+  export type QuizGameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questionIds?: boolean
+    currentIndex?: boolean
+    questionServedAt?: boolean
+    score?: boolean
+    correct?: boolean
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizGame"]>
+
+  export type QuizGameSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questionIds?: boolean
+    currentIndex?: boolean
+    questionServedAt?: boolean
+    score?: boolean
+    correct?: boolean
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["quizGame"]>
+
+  export type QuizGameSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    questionIds?: boolean
+    currentIndex?: boolean
+    questionServedAt?: boolean
+    score?: boolean
+    correct?: boolean
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: boolean
+  }
+
+  export type QuizGameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "questionIds" | "currentIndex" | "questionServedAt" | "score" | "correct" | "fiftyUsed" | "communityUsed" | "skipUsed" | "startedAt", ExtArgs["result"]["quizGame"]>
+  export type QuizGameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizGameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type QuizGameIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $QuizGamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuizGame"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      questionIds: string[]
+      currentIndex: number
+      questionServedAt: Date | null
+      score: number
+      correct: number
+      fiftyUsed: boolean
+      communityUsed: boolean
+      skipUsed: boolean
+      startedAt: Date
+    }, ExtArgs["result"]["quizGame"]>
+    composites: {}
+  }
+
+  type QuizGameGetPayload<S extends boolean | null | undefined | QuizGameDefaultArgs> = $Result.GetResult<Prisma.$QuizGamePayload, S>
+
+  type QuizGameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuizGameFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuizGameCountAggregateInputType | true
+    }
+
+  export interface QuizGameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizGame'], meta: { name: 'QuizGame' } }
+    /**
+     * Find zero or one QuizGame that matches the filter.
+     * @param {QuizGameFindUniqueArgs} args - Arguments to find a QuizGame
+     * @example
+     * // Get one QuizGame
+     * const quizGame = await prisma.quizGame.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuizGameFindUniqueArgs>(args: SelectSubset<T, QuizGameFindUniqueArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuizGame that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuizGameFindUniqueOrThrowArgs} args - Arguments to find a QuizGame
+     * @example
+     * // Get one QuizGame
+     * const quizGame = await prisma.quizGame.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuizGameFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizGameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizGame that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameFindFirstArgs} args - Arguments to find a QuizGame
+     * @example
+     * // Get one QuizGame
+     * const quizGame = await prisma.quizGame.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuizGameFindFirstArgs>(args?: SelectSubset<T, QuizGameFindFirstArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuizGame that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameFindFirstOrThrowArgs} args - Arguments to find a QuizGame
+     * @example
+     * // Get one QuizGame
+     * const quizGame = await prisma.quizGame.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuizGameFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizGameFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuizGames that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuizGames
+     * const quizGames = await prisma.quizGame.findMany()
+     * 
+     * // Get first 10 QuizGames
+     * const quizGames = await prisma.quizGame.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const quizGameWithIdOnly = await prisma.quizGame.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends QuizGameFindManyArgs>(args?: SelectSubset<T, QuizGameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuizGame.
+     * @param {QuizGameCreateArgs} args - Arguments to create a QuizGame.
+     * @example
+     * // Create one QuizGame
+     * const QuizGame = await prisma.quizGame.create({
+     *   data: {
+     *     // ... data to create a QuizGame
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuizGameCreateArgs>(args: SelectSubset<T, QuizGameCreateArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuizGames.
+     * @param {QuizGameCreateManyArgs} args - Arguments to create many QuizGames.
+     * @example
+     * // Create many QuizGames
+     * const quizGame = await prisma.quizGame.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuizGameCreateManyArgs>(args?: SelectSubset<T, QuizGameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuizGames and returns the data saved in the database.
+     * @param {QuizGameCreateManyAndReturnArgs} args - Arguments to create many QuizGames.
+     * @example
+     * // Create many QuizGames
+     * const quizGame = await prisma.quizGame.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuizGames and only return the `id`
+     * const quizGameWithIdOnly = await prisma.quizGame.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuizGameCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizGameCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuizGame.
+     * @param {QuizGameDeleteArgs} args - Arguments to delete one QuizGame.
+     * @example
+     * // Delete one QuizGame
+     * const QuizGame = await prisma.quizGame.delete({
+     *   where: {
+     *     // ... filter to delete one QuizGame
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuizGameDeleteArgs>(args: SelectSubset<T, QuizGameDeleteArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuizGame.
+     * @param {QuizGameUpdateArgs} args - Arguments to update one QuizGame.
+     * @example
+     * // Update one QuizGame
+     * const quizGame = await prisma.quizGame.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuizGameUpdateArgs>(args: SelectSubset<T, QuizGameUpdateArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuizGames.
+     * @param {QuizGameDeleteManyArgs} args - Arguments to filter QuizGames to delete.
+     * @example
+     * // Delete a few QuizGames
+     * const { count } = await prisma.quizGame.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuizGameDeleteManyArgs>(args?: SelectSubset<T, QuizGameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizGames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuizGames
+     * const quizGame = await prisma.quizGame.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuizGameUpdateManyArgs>(args: SelectSubset<T, QuizGameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuizGames and returns the data updated in the database.
+     * @param {QuizGameUpdateManyAndReturnArgs} args - Arguments to update many QuizGames.
+     * @example
+     * // Update many QuizGames
+     * const quizGame = await prisma.quizGame.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuizGames and only return the `id`
+     * const quizGameWithIdOnly = await prisma.quizGame.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuizGameUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizGameUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuizGame.
+     * @param {QuizGameUpsertArgs} args - Arguments to update or create a QuizGame.
+     * @example
+     * // Update or create a QuizGame
+     * const quizGame = await prisma.quizGame.upsert({
+     *   create: {
+     *     // ... data to create a QuizGame
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuizGame we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuizGameUpsertArgs>(args: SelectSubset<T, QuizGameUpsertArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuizGames.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameCountArgs} args - Arguments to filter QuizGames to count.
+     * @example
+     * // Count the number of QuizGames
+     * const count = await prisma.quizGame.count({
+     *   where: {
+     *     // ... the filter for the QuizGames we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuizGameCountArgs>(
+      args?: Subset<T, QuizGameCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuizGameCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuizGame.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuizGameAggregateArgs>(args: Subset<T, QuizGameAggregateArgs>): Prisma.PrismaPromise<GetQuizGameAggregateType<T>>
+
+    /**
+     * Group by QuizGame.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuizGameGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuizGameGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuizGameGroupByArgs['orderBy'] }
+        : { orderBy?: QuizGameGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuizGameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizGameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuizGame model
+   */
+  readonly fields: QuizGameFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuizGame.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuizGameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuizGame model
+   */
+  interface QuizGameFieldRefs {
+    readonly id: FieldRef<"QuizGame", 'String'>
+    readonly userId: FieldRef<"QuizGame", 'String'>
+    readonly questionIds: FieldRef<"QuizGame", 'String[]'>
+    readonly currentIndex: FieldRef<"QuizGame", 'Int'>
+    readonly questionServedAt: FieldRef<"QuizGame", 'DateTime'>
+    readonly score: FieldRef<"QuizGame", 'Int'>
+    readonly correct: FieldRef<"QuizGame", 'Int'>
+    readonly fiftyUsed: FieldRef<"QuizGame", 'Boolean'>
+    readonly communityUsed: FieldRef<"QuizGame", 'Boolean'>
+    readonly skipUsed: FieldRef<"QuizGame", 'Boolean'>
+    readonly startedAt: FieldRef<"QuizGame", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuizGame findUnique
+   */
+  export type QuizGameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizGame to fetch.
+     */
+    where: QuizGameWhereUniqueInput
+  }
+
+  /**
+   * QuizGame findUniqueOrThrow
+   */
+  export type QuizGameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizGame to fetch.
+     */
+    where: QuizGameWhereUniqueInput
+  }
+
+  /**
+   * QuizGame findFirst
+   */
+  export type QuizGameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizGame to fetch.
+     */
+    where?: QuizGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizGames to fetch.
+     */
+    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizGames.
+     */
+    cursor?: QuizGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizGames.
+     */
+    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
+  }
+
+  /**
+   * QuizGame findFirstOrThrow
+   */
+  export type QuizGameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizGame to fetch.
+     */
+    where?: QuizGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizGames to fetch.
+     */
+    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuizGames.
+     */
+    cursor?: QuizGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizGames.
+     */
+    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
+  }
+
+  /**
+   * QuizGame findMany
+   */
+  export type QuizGameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter, which QuizGames to fetch.
+     */
+    where?: QuizGameWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuizGames to fetch.
+     */
+    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuizGames.
+     */
+    cursor?: QuizGameWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuizGames from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuizGames.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuizGames.
+     */
+    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
+  }
+
+  /**
+   * QuizGame create
+   */
+  export type QuizGameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * The data needed to create a QuizGame.
+     */
+    data: XOR<QuizGameCreateInput, QuizGameUncheckedCreateInput>
+  }
+
+  /**
+   * QuizGame createMany
+   */
+  export type QuizGameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuizGames.
+     */
+    data: QuizGameCreateManyInput | QuizGameCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuizGame createManyAndReturn
+   */
+  export type QuizGameCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuizGames.
+     */
+    data: QuizGameCreateManyInput | QuizGameCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizGame update
+   */
+  export type QuizGameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * The data needed to update a QuizGame.
+     */
+    data: XOR<QuizGameUpdateInput, QuizGameUncheckedUpdateInput>
+    /**
+     * Choose, which QuizGame to update.
+     */
+    where: QuizGameWhereUniqueInput
+  }
+
+  /**
+   * QuizGame updateMany
+   */
+  export type QuizGameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuizGames.
+     */
+    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizGames to update
+     */
+    where?: QuizGameWhereInput
+    /**
+     * Limit how many QuizGames to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizGame updateManyAndReturn
+   */
+  export type QuizGameUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * The data used to update QuizGames.
+     */
+    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyInput>
+    /**
+     * Filter which QuizGames to update
+     */
+    where?: QuizGameWhereInput
+    /**
+     * Limit how many QuizGames to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * QuizGame upsert
+   */
+  export type QuizGameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * The filter to search for the QuizGame to update in case it exists.
+     */
+    where: QuizGameWhereUniqueInput
+    /**
+     * In case the QuizGame found by the `where` argument doesn't exist, create a new QuizGame with this data.
+     */
+    create: XOR<QuizGameCreateInput, QuizGameUncheckedCreateInput>
+    /**
+     * In case the QuizGame was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuizGameUpdateInput, QuizGameUncheckedUpdateInput>
+  }
+
+  /**
+   * QuizGame delete
+   */
+  export type QuizGameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+    /**
+     * Filter which QuizGame to delete.
+     */
+    where: QuizGameWhereUniqueInput
+  }
+
+  /**
+   * QuizGame deleteMany
+   */
+  export type QuizGameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuizGames to delete
+     */
+    where?: QuizGameWhereInput
+    /**
+     * Limit how many QuizGames to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuizGame without action
+   */
+  export type QuizGameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuizGame
+     */
+    select?: QuizGameSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuizGame
+     */
+    omit?: QuizGameOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuizGameInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model QuizDailyWinner
    */
 
@@ -56575,6 +57884,23 @@ export namespace Prisma {
   export type QuizAttemptScalarFieldEnum = (typeof QuizAttemptScalarFieldEnum)[keyof typeof QuizAttemptScalarFieldEnum]
 
 
+  export const QuizGameScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    questionIds: 'questionIds',
+    currentIndex: 'currentIndex',
+    questionServedAt: 'questionServedAt',
+    score: 'score',
+    correct: 'correct',
+    fiftyUsed: 'fiftyUsed',
+    communityUsed: 'communityUsed',
+    skipUsed: 'skipUsed',
+    startedAt: 'startedAt'
+  };
+
+  export type QuizGameScalarFieldEnum = (typeof QuizGameScalarFieldEnum)[keyof typeof QuizGameScalarFieldEnum]
+
+
   export const QuizDailyWinnerScalarFieldEnum: {
     date: 'date',
     userId: 'userId',
@@ -56953,6 +58279,7 @@ export namespace Prisma {
     postReactions?: PostReactionListRelationFilter
     privateMessages?: PrivateMessageListRelationFilter
     quizAttempts?: QuizAttemptListRelationFilter
+    quizGames?: QuizGameListRelationFilter
     dailyWins?: QuizDailyWinnerListRelationFilter
     quizSuggestions?: QuizQuestionSuggestionListRelationFilter
     rankingArchives?: RankingArchiveListRelationFilter
@@ -57023,6 +58350,7 @@ export namespace Prisma {
     postReactions?: PostReactionOrderByRelationAggregateInput
     privateMessages?: PrivateMessageOrderByRelationAggregateInput
     quizAttempts?: QuizAttemptOrderByRelationAggregateInput
+    quizGames?: QuizGameOrderByRelationAggregateInput
     dailyWins?: QuizDailyWinnerOrderByRelationAggregateInput
     quizSuggestions?: QuizQuestionSuggestionOrderByRelationAggregateInput
     rankingArchives?: RankingArchiveOrderByRelationAggregateInput
@@ -57096,6 +58424,7 @@ export namespace Prisma {
     postReactions?: PostReactionListRelationFilter
     privateMessages?: PrivateMessageListRelationFilter
     quizAttempts?: QuizAttemptListRelationFilter
+    quizGames?: QuizGameListRelationFilter
     dailyWins?: QuizDailyWinnerListRelationFilter
     quizSuggestions?: QuizQuestionSuggestionListRelationFilter
     rankingArchives?: RankingArchiveListRelationFilter
@@ -59859,6 +61188,93 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"QuizAttempt"> | Date | string
   }
 
+  export type QuizGameWhereInput = {
+    AND?: QuizGameWhereInput | QuizGameWhereInput[]
+    OR?: QuizGameWhereInput[]
+    NOT?: QuizGameWhereInput | QuizGameWhereInput[]
+    id?: StringFilter<"QuizGame"> | string
+    userId?: StringFilter<"QuizGame"> | string
+    questionIds?: StringNullableListFilter<"QuizGame">
+    currentIndex?: IntFilter<"QuizGame"> | number
+    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
+    score?: IntFilter<"QuizGame"> | number
+    correct?: IntFilter<"QuizGame"> | number
+    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
+    communityUsed?: BoolFilter<"QuizGame"> | boolean
+    skipUsed?: BoolFilter<"QuizGame"> | boolean
+    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type QuizGameOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questionIds?: SortOrder
+    currentIndex?: SortOrder
+    questionServedAt?: SortOrderInput | SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    fiftyUsed?: SortOrder
+    communityUsed?: SortOrder
+    skipUsed?: SortOrder
+    startedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type QuizGameWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: QuizGameWhereInput | QuizGameWhereInput[]
+    OR?: QuizGameWhereInput[]
+    NOT?: QuizGameWhereInput | QuizGameWhereInput[]
+    userId?: StringFilter<"QuizGame"> | string
+    questionIds?: StringNullableListFilter<"QuizGame">
+    currentIndex?: IntFilter<"QuizGame"> | number
+    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
+    score?: IntFilter<"QuizGame"> | number
+    correct?: IntFilter<"QuizGame"> | number
+    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
+    communityUsed?: BoolFilter<"QuizGame"> | boolean
+    skipUsed?: BoolFilter<"QuizGame"> | boolean
+    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type QuizGameOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questionIds?: SortOrder
+    currentIndex?: SortOrder
+    questionServedAt?: SortOrderInput | SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    fiftyUsed?: SortOrder
+    communityUsed?: SortOrder
+    skipUsed?: SortOrder
+    startedAt?: SortOrder
+    _count?: QuizGameCountOrderByAggregateInput
+    _avg?: QuizGameAvgOrderByAggregateInput
+    _max?: QuizGameMaxOrderByAggregateInput
+    _min?: QuizGameMinOrderByAggregateInput
+    _sum?: QuizGameSumOrderByAggregateInput
+  }
+
+  export type QuizGameScalarWhereWithAggregatesInput = {
+    AND?: QuizGameScalarWhereWithAggregatesInput | QuizGameScalarWhereWithAggregatesInput[]
+    OR?: QuizGameScalarWhereWithAggregatesInput[]
+    NOT?: QuizGameScalarWhereWithAggregatesInput | QuizGameScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"QuizGame"> | string
+    userId?: StringWithAggregatesFilter<"QuizGame"> | string
+    questionIds?: StringNullableListFilter<"QuizGame">
+    currentIndex?: IntWithAggregatesFilter<"QuizGame"> | number
+    questionServedAt?: DateTimeNullableWithAggregatesFilter<"QuizGame"> | Date | string | null
+    score?: IntWithAggregatesFilter<"QuizGame"> | number
+    correct?: IntWithAggregatesFilter<"QuizGame"> | number
+    fiftyUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
+    communityUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
+    skipUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
+    startedAt?: DateTimeWithAggregatesFilter<"QuizGame"> | Date | string
+  }
+
   export type QuizDailyWinnerWhereInput = {
     AND?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
     OR?: QuizDailyWinnerWhereInput[]
@@ -60365,6 +61781,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -60435,6 +61852,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -60503,6 +61921,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -60573,6 +61992,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -63496,6 +64916,103 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type QuizGameCreateInput = {
+    id?: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
+    user: UserCreateNestedOneWithoutQuizGamesInput
+  }
+
+  export type QuizGameUncheckedCreateInput = {
+    id?: string
+    userId: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
+  }
+
+  export type QuizGameUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutQuizGamesNestedInput
+  }
+
+  export type QuizGameUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizGameCreateManyInput = {
+    id?: string
+    userId: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
+  }
+
+  export type QuizGameUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizGameUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type QuizDailyWinnerCreateInput = {
     date: Date | string
     score: number
@@ -64140,6 +65657,12 @@ export namespace Prisma {
     none?: QuizAttemptWhereInput
   }
 
+  export type QuizGameListRelationFilter = {
+    every?: QuizGameWhereInput
+    some?: QuizGameWhereInput
+    none?: QuizGameWhereInput
+  }
+
   export type QuizDailyWinnerListRelationFilter = {
     every?: QuizDailyWinnerWhereInput
     some?: QuizDailyWinnerWhereInput
@@ -64294,6 +65817,10 @@ export namespace Prisma {
   }
 
   export type QuizAttemptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type QuizGameOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -66132,6 +67659,66 @@ export namespace Prisma {
     jokersUsed?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type QuizGameCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questionIds?: SortOrder
+    currentIndex?: SortOrder
+    questionServedAt?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    fiftyUsed?: SortOrder
+    communityUsed?: SortOrder
+    skipUsed?: SortOrder
+    startedAt?: SortOrder
+  }
+
+  export type QuizGameAvgOrderByAggregateInput = {
+    currentIndex?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+  }
+
+  export type QuizGameMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    currentIndex?: SortOrder
+    questionServedAt?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    fiftyUsed?: SortOrder
+    communityUsed?: SortOrder
+    skipUsed?: SortOrder
+    startedAt?: SortOrder
+  }
+
+  export type QuizGameMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    currentIndex?: SortOrder
+    questionServedAt?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+    fiftyUsed?: SortOrder
+    communityUsed?: SortOrder
+    skipUsed?: SortOrder
+    startedAt?: SortOrder
+  }
+
+  export type QuizGameSumOrderByAggregateInput = {
+    currentIndex?: SortOrder
+    score?: SortOrder
+    correct?: SortOrder
+  }
+
   export type QuizDailyWinnerCountOrderByAggregateInput = {
     date?: SortOrder
     userId?: SortOrder
@@ -66479,6 +68066,13 @@ export namespace Prisma {
     connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
   }
 
+  export type QuizGameCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
+    createMany?: QuizGameCreateManyUserInputEnvelope
+    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+  }
+
   export type QuizDailyWinnerCreateNestedManyWithoutUserInput = {
     create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
     connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
@@ -66760,6 +68354,13 @@ export namespace Prisma {
     connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
     createMany?: QuizAttemptCreateManyUserInputEnvelope
     connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
+  }
+
+  export type QuizGameUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
+    createMany?: QuizGameCreateManyUserInputEnvelope
+    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
   }
 
   export type QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput = {
@@ -67193,6 +68794,20 @@ export namespace Prisma {
     update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+  }
+
+  export type QuizGameUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
+    upsert?: QuizGameUpsertWithWhereUniqueWithoutUserInput | QuizGameUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizGameCreateManyUserInputEnvelope
+    set?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    disconnect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    delete?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    update?: QuizGameUpdateWithWhereUniqueWithoutUserInput | QuizGameUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizGameUpdateManyWithWhereWithoutUserInput | QuizGameUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
   }
 
   export type QuizDailyWinnerUpdateManyWithoutUserNestedInput = {
@@ -67758,6 +69373,20 @@ export namespace Prisma {
     update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
+  }
+
+  export type QuizGameUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
+    upsert?: QuizGameUpsertWithWhereUniqueWithoutUserInput | QuizGameUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: QuizGameCreateManyUserInputEnvelope
+    set?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    disconnect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    delete?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
+    update?: QuizGameUpdateWithWhereUniqueWithoutUserInput | QuizGameUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: QuizGameUpdateManyWithWhereWithoutUserInput | QuizGameUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
   }
 
   export type QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput = {
@@ -70009,6 +71638,29 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizAttemptsInput, UserUpdateWithoutQuizAttemptsInput>, UserUncheckedUpdateWithoutQuizAttemptsInput>
   }
 
+  export type QuizGameCreatequestionIdsInput = {
+    set: string[]
+  }
+
+  export type UserCreateNestedOneWithoutQuizGamesInput = {
+    create?: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuizGamesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type QuizGameUpdatequestionIdsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type UserUpdateOneRequiredWithoutQuizGamesNestedInput = {
+    create?: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuizGamesInput
+    upsert?: UserUpsertWithoutQuizGamesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizGamesInput, UserUpdateWithoutQuizGamesInput>, UserUncheckedUpdateWithoutQuizGamesInput>
+  }
+
   export type UserCreateNestedOneWithoutDailyWinsInput = {
     create?: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
     connectOrCreate?: UserCreateOrConnectWithoutDailyWinsInput
@@ -70365,6 +72017,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -70434,6 +72087,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -70517,6 +72171,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -70586,6 +72241,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -70654,6 +72310,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -70723,6 +72380,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -70806,6 +72464,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -70875,6 +72534,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -71543,6 +73203,42 @@ export namespace Prisma {
 
   export type QuizAttemptCreateManyUserInputEnvelope = {
     data: QuizAttemptCreateManyUserInput | QuizAttemptCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type QuizGameCreateWithoutUserInput = {
+    id?: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
+  }
+
+  export type QuizGameUncheckedCreateWithoutUserInput = {
+    id?: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
+  }
+
+  export type QuizGameCreateOrConnectWithoutUserInput = {
+    where: QuizGameWhereUniqueInput
+    create: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizGameCreateManyUserInputEnvelope = {
+    data: QuizGameCreateManyUserInput | QuizGameCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -72893,6 +74589,39 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
   }
 
+  export type QuizGameUpsertWithWhereUniqueWithoutUserInput = {
+    where: QuizGameWhereUniqueInput
+    update: XOR<QuizGameUpdateWithoutUserInput, QuizGameUncheckedUpdateWithoutUserInput>
+    create: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput>
+  }
+
+  export type QuizGameUpdateWithWhereUniqueWithoutUserInput = {
+    where: QuizGameWhereUniqueInput
+    data: XOR<QuizGameUpdateWithoutUserInput, QuizGameUncheckedUpdateWithoutUserInput>
+  }
+
+  export type QuizGameUpdateManyWithWhereWithoutUserInput = {
+    where: QuizGameScalarWhereInput
+    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type QuizGameScalarWhereInput = {
+    AND?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
+    OR?: QuizGameScalarWhereInput[]
+    NOT?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
+    id?: StringFilter<"QuizGame"> | string
+    userId?: StringFilter<"QuizGame"> | string
+    questionIds?: StringNullableListFilter<"QuizGame">
+    currentIndex?: IntFilter<"QuizGame"> | number
+    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
+    score?: IntFilter<"QuizGame"> | number
+    correct?: IntFilter<"QuizGame"> | number
+    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
+    communityUsed?: BoolFilter<"QuizGame"> | boolean
+    skipUsed?: BoolFilter<"QuizGame"> | boolean
+    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
+  }
+
   export type QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput = {
     where: QuizDailyWinnerWhereUniqueInput
     update: XOR<QuizDailyWinnerUpdateWithoutUserInput, QuizDailyWinnerUncheckedUpdateWithoutUserInput>
@@ -73536,6 +75265,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -73605,6 +75335,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -73677,6 +75408,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -73746,6 +75478,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -73829,6 +75562,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -73898,6 +75632,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -73976,6 +75711,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -74045,6 +75781,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -74201,6 +75938,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -74270,6 +76008,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -74490,6 +76229,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -74559,6 +76299,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -74742,6 +76483,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -74811,6 +76553,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -75474,6 +77217,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -75543,6 +77287,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -75832,6 +77577,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -75901,6 +77647,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -76064,6 +77811,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -76133,6 +77881,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -76205,6 +77954,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -76274,6 +78024,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -76436,6 +78187,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -76505,6 +78257,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -76583,6 +78336,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -76652,6 +78406,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -76780,6 +78535,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -76849,6 +78605,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -76921,6 +78678,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -76990,6 +78748,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -77125,6 +78884,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -77194,6 +78954,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -77272,6 +79033,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -77341,6 +79103,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -77440,6 +79203,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -77509,6 +79273,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -77623,6 +79388,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -77692,6 +79458,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -77796,6 +79563,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -77865,6 +79633,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -77979,6 +79748,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -78048,6 +79818,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -78192,6 +79963,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -78261,6 +80033,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -78389,6 +80162,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -78458,6 +80232,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -78524,6 +80299,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -78593,6 +80369,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -78665,6 +80442,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -78734,6 +80512,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -78852,6 +80631,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -78921,6 +80701,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -78999,6 +80780,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -79068,6 +80850,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -79176,6 +80959,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -79245,6 +81029,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -79363,6 +81148,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -79432,6 +81218,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -79541,6 +81328,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -79609,6 +81397,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -79742,6 +81531,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -79811,6 +81601,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -79939,6 +81730,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -80008,6 +81800,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -80075,6 +81868,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
@@ -80144,6 +81938,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
@@ -80227,6 +82022,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
@@ -80296,6 +82092,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80363,6 +82160,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -80432,6 +82230,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -80626,6 +82425,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -80695,6 +82495,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -80879,6 +82680,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -80948,6 +82750,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -81162,6 +82965,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -81231,6 +83035,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -81431,6 +83236,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -81500,6 +83306,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -81610,6 +83417,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -81679,6 +83487,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -81779,6 +83588,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -81848,6 +83658,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -82042,6 +83853,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -82111,6 +83923,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -82343,6 +84156,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -82412,6 +84226,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -82484,6 +84299,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -82553,6 +84369,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -82730,6 +84547,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -82799,6 +84617,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -82877,6 +84696,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -82946,6 +84766,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -83106,6 +84927,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -83175,6 +84997,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -83295,6 +85118,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -83364,6 +85188,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -83516,6 +85341,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -83585,6 +85411,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -83774,6 +85601,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -83843,6 +85671,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -83915,6 +85744,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -83984,6 +85814,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -84082,6 +85913,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -84151,6 +85983,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -84266,6 +86099,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -84335,6 +86169,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -84407,6 +86242,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -84476,6 +86312,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -84559,6 +86396,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -84628,6 +86466,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -84706,6 +86545,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -84775,6 +86615,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -84842,6 +86683,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -84911,6 +86753,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -84994,6 +86837,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -85063,6 +86907,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -85131,6 +86976,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -85200,6 +87046,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -85298,6 +87145,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -85367,6 +87215,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -85505,6 +87354,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -85574,6 +87424,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -85768,6 +87619,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -85837,6 +87689,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -86305,6 +88158,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -86374,6 +88228,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -86446,6 +88301,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -86515,6 +88371,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -86615,6 +88472,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -86684,6 +88542,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -86762,6 +88621,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -86831,6 +88691,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -86920,6 +88781,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -86989,6 +88851,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -87072,6 +88935,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -87141,6 +89005,299 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserCreateWithoutQuizGamesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutQuizGamesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutQuizGamesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
+  }
+
+  export type UserUpsertWithoutQuizGamesInput = {
+    update: XOR<UserUpdateWithoutQuizGamesInput, UserUncheckedUpdateWithoutQuizGamesInput>
+    create: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutQuizGamesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutQuizGamesInput, UserUncheckedUpdateWithoutQuizGamesInput>
+  }
+
+  export type UserUpdateWithoutQuizGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutQuizGamesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -87209,6 +89366,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
@@ -87278,6 +89436,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
@@ -87361,6 +89520,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
@@ -87430,6 +89590,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
@@ -87497,6 +89658,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
@@ -87566,6 +89728,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
@@ -87649,6 +89812,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
@@ -87718,6 +89882,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
@@ -87785,6 +89950,7 @@ export namespace Prisma {
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
@@ -87854,6 +90020,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
     quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
     dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
@@ -87937,6 +90104,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -88006,6 +90174,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -88234,6 +90403,19 @@ export namespace Prisma {
     duration: number
     jokersUsed?: number
     createdAt?: Date | string
+  }
+
+  export type QuizGameCreateManyUserInput = {
+    id?: string
+    questionIds?: QuizGameCreatequestionIdsInput | string[]
+    currentIndex?: number
+    questionServedAt?: Date | string | null
+    score?: number
+    correct?: number
+    fiftyUsed?: boolean
+    communityUsed?: boolean
+    skipUsed?: boolean
+    startedAt?: Date | string
   }
 
   export type QuizDailyWinnerCreateManyUserInput = {
@@ -89093,6 +91275,45 @@ export namespace Prisma {
     duration?: IntFieldUpdateOperationsInput | number
     jokersUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizGameUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizGameUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuizGameUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questionIds?: QuizGameUpdatequestionIdsInput | string[]
+    currentIndex?: IntFieldUpdateOperationsInput | number
+    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    score?: IntFieldUpdateOperationsInput | number
+    correct?: IntFieldUpdateOperationsInput | number
+    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
+    communityUsed?: BoolFieldUpdateOperationsInput | boolean
+    skipUsed?: BoolFieldUpdateOperationsInput | boolean
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuizDailyWinnerUpdateWithoutUserInput = {
@@ -90236,6 +92457,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -90305,6 +92527,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -90815,6 +93038,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -90883,6 +93107,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -91347,6 +93572,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -91416,6 +93642,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
@@ -91512,6 +93739,7 @@ export namespace Prisma {
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
@@ -91581,6 +93809,7 @@ export namespace Prisma {
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
     quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
     dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
     quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput

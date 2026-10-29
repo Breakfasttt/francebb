@@ -86,5 +86,6 @@ test("la recherche de membres se fait par pseudo, jamais par email", async ({ pa
   await search.fill("modo@e2e");
   await expect(page.getByText("Aucun résultat")).toBeVisible();
   await search.fill("Modo E2");
-  await expect(page.getByRole("dialog").getByText("Modo E2E")).toBeVisible();
+  // Plusieurs modérateurs de test s'appellent « Modo E2E » (un par thème, carte 051)
+  await expect(page.getByRole("dialog").getByText("Modo E2E").first()).toBeVisible();
 });

@@ -25,7 +25,9 @@ export async function getDashboardStats() {
       prisma.topic.count(),
       prisma.post.count(),
       prisma.topic.aggregate({ _sum: { views: true } }),
-      prisma.session.count({ where: { expires: { gte: new Date() } } })
+      // « En ligne » : membres ayant lu un sujet du forum ces 15 dernières minutes. La table Session reste vide
+      // (les sessions sont des jetons JWT rangés dans un cookie, voir auth.ts), elle ne peut pas servir ici.
+      prisma.topicView.groupBy({ by: ["userId"], where: { lastViewedAt: { gte: new Date(Date.now() - 15 * 60 * 1000) } } })
     ]);
 
     if (results[0].status === "fulfilled") userCount = results[0].value;
@@ -37,7 +39,7 @@ export async function getDashboardStats() {
       const agg = results[5].value as any;
       totalViews = agg?._sum?.views || 0;
     }
-    if (results[6].status === "fulfilled") onlineCount = results[6].value;
+    if (results[6].status === "fulfilled") onlineCount = results[6].value.length;
   } catch (e) {
     console.error("Erreur globale stats publiques:", e);
   }

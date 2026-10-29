@@ -50,7 +50,7 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 ## Les pièges
 
 - **Page bannie en couleurs écrites en dur** (`#ef4444`, `#aaa`, `#eee`…) : texte presque illisible dans le thème clair. Contraire aux règles de thème.
-- Thème : au chargement, le serveur pose le thème enregistré en base, puis `ThemeProvider` le remplace par celui du `localStorage`. Un coach qui change de thème sur un autre appareil garde l'ancien ici, avec un flash de couleurs. L'accès au `localStorage` n'est pas protégé par `try/catch`.
+- Thème : pour un membre connecté, le thème enregistré dans son profil gagne toujours ; `ThemeProvider` le recopie dans le `localStorage` (carte 051). Le `localStorage` ne sert plus qu'aux visiteurs, qui retrouvent le dernier thème utilisé sur l'appareil. Un thème choisi à l'instant s'affiche tout de suite, en attendant que le serveur renvoie le profil à jour. L'accès au `localStorage` est protégé par `try/catch` (il peut être bloqué en navigation privée).
 - `updateTheme` (`app/profile/actions.ts`) accepte n'importe quel texte, sans vérifier qu'il s'agit d'un des 7 thèmes, et utilise `throw`.
 - Accueil et `/spy` envoient vers `/auth/login?callback=…` ; ailleurs le paramètre est `callbackUrl` (retour après connexion à vérifier).
 - Accueil : l'article au hasard peut être un article masqué par la modération ; le lien Discord vaut `#` si le réglage est vide.
@@ -70,5 +70,5 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 ## État
 
 - Marche : toutes ces pages s'affichent et le changement de thème fonctionne.
-- Manque : couleurs de thème sur `/banned`, base comme seule source du thème, liste blanche dans `updateTheme`, hébergeur de la base dans les mentions légales.
-- Cartes ouvertes : 049 (audit mobile), 017 (layout sans `force-dynamic`, qui prévoit de lire le thème depuis un cookie : réglerait le conflit base / `localStorage`).
+- Manque : couleurs de thème sur `/banned`, liste blanche dans `updateTheme`, hébergeur de la base dans les mentions légales.
+- Cartes ouvertes : 049 (audit mobile), 017 (layout sans `force-dynamic`, qui prévoit de lire le thème depuis un cookie).

@@ -5,6 +5,8 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Page } from "@playwright/test";
+import { PrismaClient } from "../../prisma/generated-client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 /**
  * Base Postgres locale réservée aux tests (serveur « site-e2e » de scripts/local-postgres.mjs),
@@ -36,10 +38,41 @@ export const E2E = {
   moderatedArticleId: "e2e_article_moderated",
 };
 
+/** Les 7 thèmes du site, dans l'ordre des captures de référence. */
+export const E2E_THEMES = ["default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
+
+/**
+ * Carte 051 : pour un membre connecté, c'est le thème de son profil qui s'affiche. Le jeu de données contient donc
+ * un modérateur par thème (même nom « Modo E2E », pour que les captures soient identiques d'un thème à l'autre).
+ */
+export function themedModoId(theme: string): string {
+  return `e2e_modo_${theme}`;
+}
+
 export async function loginAs(page: Page, userId: string) {
   const csrfRes = await page.request.get("/api/auth/csrf");
   const { csrfToken } = (await csrfRes.json()) as { csrfToken: string };
   await page.request.post("/api/auth/callback/dev-login", {
     form: { csrfToken, userId, callbackUrl: "/" },
   });
+}
+
+/**
+ * Ouvre une connexion à la base de test, exécute `run`, puis referme la connexion.
+ * La petite base locale (« prisma dev ») coupe parfois une nouvelle connexion quand le site garde déjà la sienne
+ * ouverte (erreur « Server has closed the connection ») : on réessaie alors chaque seconde, 30 fois au plus.
+ */
+export async function withTestDb<T>(run: (prisma: PrismaClient) => Promise<T>): Promise<T> {
+  for (let attempt = 1; ; attempt++) {
+    const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: E2E_DATABASE_URL }) });
+    try {
+      return await run(prisma);
+    } catch (error) {
+      const refused = error instanceof Error && error.message.includes("Server has closed the connection");
+      if (!refused || attempt >= 30) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } finally {
+      await prisma.$disconnect();
+    }
+  }
 }

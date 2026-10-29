@@ -1,11 +1,13 @@
 /**
- * Tests des failles corrigées par la carte 050 (sécurité de la modération et de la connexion).
+ * Tests des failles corrigées par la carte 050 (sécurité de la modération et de la connexion)
+ * et par la carte 051 (BBQuizz : bonnes réponses et score gardés par le serveur).
  */
 import { readFileSync } from "node:fs";
 import { test, expect } from "@playwright/test";
 import { PrismaClient } from "../../prisma/generated-client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { E2E, E2E_DATABASE_URL, loginAs } from "./fixtures";
+import { E2E, E2E_DATABASE_URL, loginAs, withTestDb } from "./fixtures";
+import { questions as staticQuestions } from "../../app/bbquizz/data/questions";
 
 test("le journal de modération n'est pas une action serveur publique", () => {
   // Une fonction exportée d'un fichier « use server » devient appelable depuis le navigateur par n'importe qui
@@ -72,5 +74,55 @@ test("un modérateur bannit un membre depuis sa fiche, et c'est tracé au journa
     expect(log).not.toBeNull();
   } finally {
     await prisma.$disconnect();
+  }
+});
+
+test("BBQuizz : ni la bonne réponse ni le calcul du score ne passent par le navigateur", async ({ page }) => {
+  // L'ancienne action qui acceptait le score envoyé par le navigateur ne doit pas revenir
+  const actions = readFileSync("app/bbquizz/actions.ts", "utf-8");
+  expect(actions).not.toMatch(/export async function submitQuizAttempt/);
+
+  // Tout ce que le serveur renvoie aux actions du jeu est gardé pour être inspecté
+  const actionBodies: string[] = [];
+  page.on("response", async (response) => {
+    if (response.request().method() === "POST" && response.url().includes("/bbquizz")) {
+      actionBodies.push(await response.text().catch(() => ""));
+    }
+  });
+
+  await loginAs(page, E2E.coachId);
+  await page.goto("/bbquizz", { waitUntil: "networkidle" });
+  await page.getByRole("button", { name: "Commencer le quizz !" }).click();
+  await expect(page.locator(".question-text")).toBeVisible();
+
+  // Avant de répondre : aucune trace de la bonne réponse ni de l'explication
+  for (const body of actionBodies) {
+    expect(body).not.toContain("correctIndex");
+    expect(body).not.toContain("explanation");
+  }
+
+  // La base e2e n'a pas de questions : le jeu utilise celles de départ, où l'on retrouve la bonne réponse
+  const questionText = await page.locator(".question-text").innerText();
+  const correctIndex = staticQuestions.find((question) => question.question === questionText.trim())!.correctIndex;
+
+  // Après les 5 secondes de lecture, on répond juste : le serveur compte 100 points plus le bonus de rapidité
+  const answer = page.locator(".option-btn").nth(correctIndex);
+  await expect(answer).toBeEnabled({ timeout: 10_000 });
+  await answer.click();
+  await expect(page.locator(".points-feedback.plus")).toBeVisible();
+  const shownScore = await page.locator(".quiz-score").innerText();
+  page.removeAllListeners("response");
+  await page.close();
+
+  // La partie est tenue en base, avec le score calculé par le serveur
+  const game = await withTestDb((prisma) => prisma.quizGame.findFirst({ where: { userId: E2E.coachId } }));
+  try {
+    expect(game?.currentIndex).toBe(1);
+    expect(game?.correct).toBe(1);
+    expect(game?.score).toBeGreaterThanOrEqual(100);
+    expect(game?.score).toBeLessThanOrEqual(130);
+    expect(shownScore).toBe(`Score: ${game?.score}`);
+  } finally {
+    await withTestDb((prisma) => prisma.quizGame.deleteMany({ where: { userId: E2E.coachId } }));
   }
 });

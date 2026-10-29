@@ -4,7 +4,7 @@
  */
 import { PrismaClient } from "../../prisma/generated-client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { E2E, E2E_DATABASE_URL } from "./fixtures";
+import { E2E, E2E_DATABASE_URL, E2E_THEMES, themedModoId } from "./fixtures";
 
 export default async function globalSetup() {
   // Client direct (le loader Playwright ne résout pas l'alias "@/" utilisé par lib/prisma.ts)
@@ -45,6 +45,15 @@ export default async function globalSetup() {
     update: {},
     create: { id: E2E.modoId, name: "Modo E2E", email: "modo@e2e.test", role: "MODERATOR", hasFinishedOnboarding: true },
   });
+  // Un modérateur par thème, pour les captures de la fenêtre de signalement (le thème du profil gagne)
+  for (const theme of E2E_THEMES) {
+    const id = themedModoId(theme);
+    await prisma.user.upsert({
+      where: { id },
+      update: { theme },
+      create: { id, name: "Modo E2E", email: `${id}@e2e.test`, role: "MODERATOR", theme, hasFinishedOnboarding: true },
+    });
+  }
 
   const category = await prisma.category.upsert({
     where: { name: E2E.categoryName },

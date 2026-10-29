@@ -5,6 +5,7 @@ import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { encrypt, decrypt } from "@/lib/crypto";
+import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 
 export async function updateProfile(formData: FormData) {
   const session = await getActiveSession();
@@ -147,123 +148,10 @@ export async function deleteAccount() {
   const session = await getActiveSession();
   if (!session?.user?.id) throw new Error("Non connecté");
 
-  const userId = session.user.id;
-
-  try {
-    await prisma.$transaction(async (tx) => {
-      // 1. Définir l'utilisateur de secours (Ghost) pour l'anonymisation
-      const ghostId = "ghost_coach";
-      let ghost = await tx.user.findUnique({ where: { id: ghostId } });
-      if (!ghost) {
-        ghost = await tx.user.create({
-          data: {
-            id: ghostId,
-            name: "Coach Inconnu",
-            email: "ghost@breakfasttt.fr",
-            role: "COACH",
-            isBanned: true
-          }
-        });
-      }
-
-      // 2. Supprimer les données privées, éphémères ou sensibles
-      await tx.account.deleteMany({ where: { userId } });
-      await tx.session.deleteMany({ where: { userId } });
-      await tx.topicView.deleteMany({ where: { userId } });
-      await tx.postReaction.deleteMany({ where: { userId } });
-      await tx.articleReaction.deleteMany({ where: { userId } });
-      await tx.mention.deleteMany({ where: { OR: [{ mentionerId: userId }, { mentionedUserId: userId }] } });
-      await tx.tournamentRegistration.deleteMany({ where: { userId } });
-      await tx.tournamentMercenary.deleteMany({ where: { userId } });
-      await tx.tournamentTeamMember.deleteMany({ where: { userId } });
-      await tx.quizAttempt.deleteMany({ where: { userId } });
-      
-      // 3. Supprimer les messages privés et participations aux conversations
-      await tx.privateMessage.deleteMany({ where: { authorId: userId } });
-      await tx.conversationParticipant.deleteMany({ where: { userId } });
-
-      // 4. Anonymiser l'activité publique (Forum, Articles, Ligues, Tournois, Quiz)
-      await tx.topic.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId }
-      });
-
-      await tx.post.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId, content: "[Ce message a été supprimé suite à la clôture du compte]" }
-      });
-
-      await tx.article.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId }
-      });
-
-      await tx.ligue.updateMany({
-        where: { creatorId: userId },
-        data: { creatorId: ghostId }
-      });
-
-      await tx.tournamentTeam.updateMany({
-        where: { captainId: userId },
-        data: { captainId: ghostId }
-      });
-
-      await tx.quizQuestionSuggestion.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId }
-      });
-
-      await tx.tournamentResult.updateMany({
-        where: { userId },
-        data: { userId: ghostId }
-      });
-
-      await tx.tournamentMatch.updateMany({
-        where: { coach1UserId: userId },
-        data: { coach1UserId: ghostId }
-      });
-
-      await tx.tournamentMatch.updateMany({
-        where: { coach2UserId: userId },
-        data: { coach2UserId: ghostId }
-      });
-
-      await tx.rankingArchive.updateMany({
-        where: { archivedById: userId },
-        data: { archivedById: ghostId }
-      });
-
-      await tx.resource.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId }
-      });
-
-      // 5. Supprimer l'utilisateur lui-même (sauf si SUPERADMIN)
-      if (session.user.role === "SUPERADMIN") {
-        await tx.user.update({
-          where: { id: userId },
-          data: {
-            image: null,
-            signature: null,
-            nafNumber: null,
-            region: null,
-            ligues: { set: [] },
-            ownedLigues: { set: [] },
-            commissaireLigues: { set: [] },
-            ligueCustom: null,
-            avatarFrame: "auto"
-          }
-        });
-      } else {
-        await tx.user.delete({ where: { id: userId } });
-      }
-    });
-
-    return { success: true };
-  } catch (error) {
-    console.error("Erreur lors de la suppression du compte:", error);
-    return { success: false, error: "Une erreur est survenue lors de la suppression." };
-  }
+  // Contenus publics rattachés au compte fantôme, données privées supprimées (lib/accountDeletion.ts)
+  const ok = await anonymizeAndDeleteUser(session.user.id, session.user.role === "SUPERADMIN");
+  if (!ok) return { success: false, error: "Une erreur est survenue lors de la suppression." };
+  return { success: true };
 }
 
 export async function getReferenceDataAction(group: string) {

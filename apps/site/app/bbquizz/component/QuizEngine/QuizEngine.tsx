@@ -1,6 +1,8 @@
 /*
  * QuizEngine component for the Blood Bowl Quiz.
- * Handles game logic, timers, and scoring.
+ * Affiche une partie : chronomètres, jokers, réponses. Le serveur tient la partie (app/bbquizz/actions.ts) :
+ * il envoie une question à la fois sans la bonne réponse, calcule les points et enregistre le score final.
+ * Ce composant ne fait qu'afficher ce que le serveur renvoie.
  */
 "use client";
 
@@ -9,46 +11,59 @@ import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { isModerator } from "@/lib/roles";
 import { Award, Brain, Check, Edit2, FastForward, Gamepad2, Loader2, MinusCircle, Plus, PlusCircle, RefreshCcw, Scissors, Trophy, Users, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "@bbfrance/ui";
-import { getCommunityStats, getRandomQuizQuestions, submitQuizAttempt } from "../../actions";
-import { translateCategory } from "../../utils";
+import {
+  answerQuizQuestion,
+  applyQuizCommunity,
+  applyQuizFiftyFifty,
+  getQuizQuestion,
+  skipQuizQuestion,
+  startQuizGame,
+  type QuizFinalResult,
+  type QuizQuestionPayload,
+} from "../../actions";
+import { QUIZ_ANSWER_TIME, QUIZ_READ_TIME, translateCategory } from "../../utils";
 import "./QuizEngine.css";
 import CTAButton from "@/common/components/Button/CTAButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import ExplainButton from "@/common/components/Button/ExplainButton";
-interface Question {
-  category: string;
-  question: string;
-  options: string[];
+
+type Phase = "start" | "loading" | "reading" | "answering" | "result" | "finished";
+
+/** Ce que le serveur révèle après une réponse. */
+interface Reveal {
   correctIndex: number;
-  explanation?: string | null;
+  explanation: string | null;
+  points: number;
 }
 
-const READ_TIME = 5;
-const ANSWER_TIME = 30;
-
-export default function QuizEngine({ session }: { session: any }) {
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function QuizEngine({ userRole }: { userRole?: string | null }) {
+  const [payload, setPayload] = useState<QuizQuestionPayload | null>(null);
+  const [phase, setPhaseState] = useState<Phase>("start");
+  const [timeLeft, setTimeLeft] = useState(QUIZ_READ_TIME);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(READ_TIME);
-  const [phase, setPhase] = useState<"loading" | "start" | "reading" | "answering" | "result" | "finished">("loading");
+  const [totalCorrect, setTotalCorrect] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
-  const [jokers, setJokers] = useState({
-    fiftyFifty: true,
-    community: true,
-    skip: true,
-  });
+  const [reveal, setReveal] = useState<Reveal | null>(null);
+  const [jokers, setJokers] = useState({ fiftyFifty: true, community: true, skip: true });
   const [hiddenOptions, setHiddenOptions] = useState<number[]>([]);
   const [communityStats, setCommunityStats] = useState<number[] | null>(null);
-  const [totalCorrect, setTotalCorrect] = useState(0);
-  const [sessionDuration, setSessionDuration] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastPointsWon, setLastPointsWon] = useState<number | null>(null);
+  const [finalResult, setFinalResult] = useState<QuizFinalResult | null>(null);
+
+  // Valeurs lues par le chronomètre et les actions sans attendre un nouveau rendu
+  const gameIdRef = useRef<string | null>(null);
+  const phaseRef = useRef<Phase>("start");
+  const phaseEndRef = useRef(0);
+  const pendingFinalRef = useRef<QuizFinalResult | null>(null);
 
   const router = useRouter();
-  const isModo = isModerator(session?.user?.role);
+  const isModo = isModerator(userRole);
+
+  const setPhase = (next: Phase) => {
+    phaseRef.current = next;
+    setPhaseState(next);
+  };
 
   const openManagement = (mode: "suggest" | "validate" | "edit") => {
     if (mode === "suggest") router.push("/bbquizz/proposer");
@@ -56,148 +71,143 @@ export default function QuizEngine({ session }: { session: any }) {
     if (mode === "edit") router.push("/bbquizz/editer");
   };
 
-  // Initialize quiz
-  useEffect(() => {
-    async function init() {
-      const q = await getRandomQuizQuestions();
-      if (q) {
-        setQuestions(q);
-        setPhase("start");
-      } else {
-        toast.error("Erreur lors du chargement des questions");
-      }
-    }
-    init();
-  }, []);
-
-  const startQuiz = () => {
-    setPhase("reading");
-    setTimeLeft(READ_TIME);
+  const showFinished = (result: QuizFinalResult) => {
+    setFinalResult(result);
+    setScore(result.score);
+    setTotalCorrect(result.correct);
+    setPhase("finished");
+    toast.success("Score enregistré !");
   };
 
-  // Timer logic
-  useEffect(() => {
-    if (phase === "loading" || phase === "start" || phase === "finished" || phase === "result") return;
+  /** Demande la question en cours au serveur, puis lance les 5 secondes de lecture. */
+  const loadQuestion = async () => {
+    const gameId = gameIdRef.current;
+    if (!gameId) return;
+    setPhase("loading");
+    const next = await getQuizQuestion(gameId);
+    if (!next) {
+      toast.error("Erreur lors du chargement de la question");
+      setPhase("start");
+      return;
+    }
+    setPayload(next);
+    setSelectedOption(null);
+    setReveal(null);
+    setHiddenOptions([]);
+    setCommunityStats(null);
+    phaseEndRef.current = Date.now() + QUIZ_READ_TIME * 1000;
+    setTimeLeft(QUIZ_READ_TIME);
+    setPhase("reading");
+  };
 
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          if (phase === "reading") {
-            setPhase("answering");
-            return ANSWER_TIME;
-          } else if (phase === "answering") {
-            // Use setTimeout to avoid 'Cannot update a component while rendering' error
-            setTimeout(() => handleAnswer(-1), 0);
-            return 0;
-          }
-        }
-        return prev - 1;
-      });
-      setSessionDuration((prev) => prev + 1);
-    }, 1000);
+  const startQuiz = async () => {
+    setPhase("loading");
+    const game = await startQuizGame();
+    if (!game) {
+      toast.error("Erreur lors du chargement des questions");
+      setPhase("start");
+      return;
+    }
+    gameIdRef.current = game.gameId;
+    pendingFinalRef.current = null;
+    setScore(0);
+    setTotalCorrect(0);
+    setFinalResult(null);
+    setJokers({ fiftyFifty: true, community: true, skip: true });
+    await loadQuestion();
+  };
 
-    return () => clearInterval(timer);
-  }, [phase]);
-
-  const handleAnswer = useCallback((index: number) => {
-    if (phase !== "answering") return;
-
+  /** Envoie la réponse (-1 si le temps est écoulé) ; le serveur renvoie les points et la bonne réponse. */
+  const handleAnswer = async (index: number) => {
+    const gameId = gameIdRef.current;
+    if (phaseRef.current !== "answering" || !gameId) return;
     setSelectedOption(index);
     setPhase("result");
 
-    const currentQ = questions[currentIndex];
-    const isCorrect = index === currentQ.correctIndex;
-
-    if (isCorrect) {
-      const bonus = timeLeft;
-      const points = 100 + bonus;
-      setScore((prev) => prev + points);
-      setTotalCorrect((prev) => prev + 1);
-      setLastPointsWon(points);
-    } else {
-      setScore((prev) => Math.max(0, prev - 25));
-      setLastPointsWon(-25);
+    const result = await answerQuizQuestion(gameId, index);
+    if (!result) {
+      toast.error("Votre réponse n'a pas pu être enregistrée");
+      return;
     }
-  }, [currentIndex, questions, phase, timeLeft]);
-
-  const handleNext = useCallback(() => {
-    if (currentIndex >= questions.length - 1) {
-      finishQuiz();
-    } else {
-      setCurrentIndex((prev) => prev + 1);
-      setPhase("reading");
-      setTimeLeft(READ_TIME);
-      setSelectedOption(null);
-      setHiddenOptions([]);
-      setCommunityStats(null);
-      setLastPointsWon(null);
-    }
-  }, [currentIndex, questions.length]);
-
-  // Auto-advance logic in result phase
-  useEffect(() => {
-    if (phase !== "result") return;
-
-    const autoTimer = setTimeout(() => {
-      handleNext();
-    }, 5000); // 5 secondes d'attente avant la suite
-
-    return () => clearTimeout(autoTimer);
-  }, [phase, handleNext]);
-
-  const finishQuiz = async () => {
-    setPhase("finished");
-    setIsSubmitting(true);
-    const result = await submitQuizAttempt({
-      score,
-      totalQuestions: questions.length,
-      correctAnswers: totalCorrect,
-      duration: sessionDuration,
-      jokersUsed: [], // Could be improved to track which were used
-    });
-    setIsSubmitting(false);
-
-    if (result) {
-      setTimeout(() => toast.success("Score enregistré !"), 0);
-    }
+    setReveal({ correctIndex: result.correctIndex, explanation: result.explanation, points: result.points });
+    setScore(result.score);
+    setTotalCorrect(result.correct);
+    pendingFinalRef.current = result.finished;
   };
 
-  // Jokers
-  const useFiftyFifty = () => {
-    if (!jokers.fiftyFifty || phase !== "answering") return;
-    const currentQ = questions[currentIndex];
-    const incorrectIndices = [0, 1, 2, 3].filter(i => i !== currentQ.correctIndex);
-    const toHide = incorrectIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
-    setHiddenOptions(toHide);
+  const handleNext = () => {
+    if (pendingFinalRef.current) {
+      showFinished(pendingFinalRef.current);
+      return;
+    }
+    void loadQuestion();
+  };
+
+  // Chronomètre : compte à partir de l'heure de fin de la phase, pour rester juste même si l'onglet ralentit
+  useEffect(() => {
+    if (phase !== "reading" && phase !== "answering") return;
+    const timer = setInterval(() => {
+      const remaining = Math.max(0, Math.ceil((phaseEndRef.current - Date.now()) / 1000));
+      setTimeLeft(remaining);
+      if (remaining > 0) return;
+      if (phaseRef.current === "reading") {
+        phaseEndRef.current = Date.now() + QUIZ_ANSWER_TIME * 1000;
+        setTimeLeft(QUIZ_ANSWER_TIME);
+        setPhase("answering");
+      } else if (phaseRef.current === "answering") {
+        void handleAnswer(-1);
+      }
+    }, 250);
+    return () => clearInterval(timer);
+    // handleAnswer ne lit que des références (gameIdRef, phaseRef) : pas besoin de relancer le chronomètre
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  // Passage automatique à la question suivante 5 secondes après l'affichage de la bonne réponse
+  useEffect(() => {
+    if (phase !== "result" || !reveal) return;
+    const autoTimer = setTimeout(() => handleNext(), 5000);
+    return () => clearTimeout(autoTimer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, reveal]);
+
+  // Jokers : chacun est vérifié et décompté par le serveur
+  const handleFiftyFifty = async () => {
+    const gameId = gameIdRef.current;
+    if (!jokers.fiftyFifty || phaseRef.current !== "answering" || !gameId) return;
     setJokers(prev => ({ ...prev, fiftyFifty: false }));
+    const toHide = await applyQuizFiftyFifty(gameId);
+    if (!toHide) return;
+    setHiddenOptions(toHide);
     toast.success("50/50 activé !");
   };
 
-  const useCommunity = async () => {
-    if (!jokers.community || phase !== "answering") return;
-    const stats = await getCommunityStats(questions[currentIndex].question);
-    setCommunityStats(stats || [25, 25, 25, 25]);
+  const handleCommunity = async () => {
+    const gameId = gameIdRef.current;
+    if (!jokers.community || phaseRef.current !== "answering" || !gameId) return;
     setJokers(prev => ({ ...prev, community: false }));
+    const stats = await applyQuizCommunity(gameId);
+    if (!stats) return;
+    setCommunityStats(stats);
     toast.success("L'avis de la communauté est arrivé !");
   };
 
-  const useSkip = () => {
-    if (!jokers.skip) return;
+  const handleSkip = async () => {
+    const gameId = gameIdRef.current;
+    const current = phaseRef.current;
+    if (!jokers.skip || (current !== "reading" && current !== "answering") || !gameId) return;
     setJokers(prev => ({ ...prev, skip: false }));
+    setPhase("loading");
+    const result = await skipQuizQuestion(gameId);
+    if (!result) {
+      toast.error("Impossible de passer cette question");
+      setPhase("start");
+      return;
+    }
     toast("Question passée !");
-    handleNext();
+    if (result.finished) showFinished(result.finished);
+    else void loadQuestion();
   };
-
-  if (phase === "loading") {
-    return (
-      <div className="quiz-container fixed-size">
-        <div className="quiz-loading">
-          <Loader2 className="animate-spin size-12 text-primary" />
-          <p>Préparation du terrain de Blood Bowl...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (phase === "start") {
     return (
@@ -243,7 +253,18 @@ export default function QuizEngine({ session }: { session: any }) {
     );
   }
 
-  if (phase === "finished") {
+  if (phase === "loading" && !payload) {
+    return (
+      <div className="quiz-container fixed-size">
+        <div className="quiz-loading">
+          <Loader2 className="animate-spin size-12 text-primary" />
+          <p>Préparation du terrain de Blood Bowl...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === "finished" && finalResult) {
     return (
       <div className="quiz-container fixed-size">
         <div className="quiz-finished">
@@ -252,20 +273,20 @@ export default function QuizEngine({ session }: { session: any }) {
             <h2>Quizz Terminé !</h2>
             <div className="final-score">
               <Trophy className="text-yellow-400" />
-              <span>{score} points</span>
+              <span>{finalResult.score} points</span>
             </div>
             <div className="stats-grid">
               <div className="stat-item">
                 <span className="label">Réponses correctes</span>
-                <span className="value">{totalCorrect} / {questions.length}</span>
+                <span className="value">{finalResult.correct} / {finalResult.total}</span>
               </div>
               <div className="stat-item">
                 <span className="label">Temps total</span>
-                <span className="value">{sessionDuration}s</span>
+                <span className="value">{finalResult.duration}s</span>
               </div>
             </div>
             <div className="quiz-finished-actions">
-              <CTAButton 
+              <CTAButton
                 onClick={() => window.location.reload()}
                 icon={<RefreshCcw size={18} />}
               >
@@ -278,9 +299,12 @@ export default function QuizEngine({ session }: { session: any }) {
     );
   }
 
-  const currentQ = questions[currentIndex];
-  const maxTime = phase === "reading" ? READ_TIME : ANSWER_TIME;
+  if (!payload) return null;
+
+  const currentQ = payload.question;
+  const maxTime = phase === "reading" ? QUIZ_READ_TIME : QUIZ_ANSWER_TIME;
   const timeProgress = (timeLeft / maxTime) * 100;
+  const lastPointsWon = reveal?.points ?? null;
 
   return (
     <div className="quiz-container fixed-size">
@@ -288,11 +312,11 @@ export default function QuizEngine({ session }: { session: any }) {
         <div className="quiz-header">
           <div className="quiz-progress">
             <div className="progress-labels">
-              <span>Question {currentIndex + 1} / {questions.length}</span>
+              <span>Question {payload.index + 1} / {payload.total}</span>
               <span className={`timer-text ${phase}`}>{timeLeft}s</span>
             </div>
             <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}></div>
+              <div className="progress-fill" style={{ width: `${((payload.index + 1) / payload.total) * 100}%` }}></div>
             </div>
             {(phase === "reading" || phase === "answering") && (
               <div className="timer-bar">
@@ -313,16 +337,16 @@ export default function QuizEngine({ session }: { session: any }) {
 
           <h1 className="question-text">{currentQ.question}</h1>
 
-          <div className={`options-grid ${phase === "reading" ? "hidden" : ""}`}>
+          <div className={`options-grid ${phase === "reading" || phase === "loading" ? "hidden" : ""}`}>
             {currentQ.options.map((option, idx) => {
               const isHidden = hiddenOptions.includes(idx);
-              const isCorrect = idx === currentQ.correctIndex;
+              const isCorrect = reveal !== null && idx === reveal.correctIndex;
               const isSelected = selectedOption === idx;
 
               let className = "option-btn";
               if (phase === "result") {
                 if (isCorrect) className += " correct";
-                else if (isSelected) className += " incorrect";
+                else if (isSelected && reveal) className += " incorrect";
                 else className += " disabled";
               } else if (isHidden) {
                 className += " invisible";
@@ -349,6 +373,7 @@ export default function QuizEngine({ session }: { session: any }) {
 
           {phase === "result" && (
             <div className="explanation-section animate-fade-in">
+              {reveal === null && <Loader2 className="animate-spin size-5" />}
               {lastPointsWon !== null && (
                 <div className={`points-feedback ${lastPointsWon > 0 ? 'plus' : 'minus'}`}>
                   {lastPointsWon > 0 ? (
@@ -359,8 +384,8 @@ export default function QuizEngine({ session }: { session: any }) {
                   <span>{lastPointsWon > 0 ? `+${lastPointsWon}` : lastPointsWon} points</span>
                 </div>
               )}
-              {currentQ.explanation && (
-                <p className="explanation-text">{currentQ.explanation}</p>
+              {reveal?.explanation && (
+                <p className="explanation-text">{reveal.explanation}</p>
               )}
             </div>
           )}
@@ -370,8 +395,9 @@ export default function QuizEngine({ session }: { session: any }) {
               <Tooltip text="50/50 : Supprime deux mauvaises réponses">
                 <button
                   className="joker-btn"
+                  aria-label="Joker 50/50"
                   disabled={!jokers.fiftyFifty || phase !== "answering"}
-                  onClick={useFiftyFifty}
+                  onClick={handleFiftyFifty}
                 >
                   <Scissors className="size-5" />
                   <span className="joker-count">{jokers.fiftyFifty ? 1 : 0}</span>
@@ -380,8 +406,9 @@ export default function QuizEngine({ session }: { session: any }) {
               <Tooltip text="Avis mondial : Affiche le choix de la communauté">
                 <button
                   className="joker-btn"
+                  aria-label="Joker appel à la communauté"
                   disabled={!jokers.community || phase !== "answering"}
-                  onClick={useCommunity}
+                  onClick={handleCommunity}
                 >
                   <Users className="size-5" />
                   <span className="joker-count">{jokers.community ? 1 : 0}</span>
@@ -390,8 +417,9 @@ export default function QuizEngine({ session }: { session: any }) {
               <Tooltip text="Sauter : Passe à la question suivante (1 seule fois)">
                 <button
                   className="joker-btn"
-                  disabled={!jokers.skip}
-                  onClick={useSkip}
+                  aria-label="Joker passer la question"
+                  disabled={!jokers.skip || (phase !== "reading" && phase !== "answering")}
+                  onClick={handleSkip}
                 >
                   <Zap className="size-5" />
                   <span className="joker-count">{jokers.skip ? 1 : 0}</span>
@@ -399,7 +427,7 @@ export default function QuizEngine({ session }: { session: any }) {
               </Tooltip>
             </div>
 
-            {phase === "result" && (
+            {phase === "result" && reveal && (
               <CTAButton onClick={handleNext} icon={<FastForward size={18} />}>
                 Continuer
               </CTAButton>

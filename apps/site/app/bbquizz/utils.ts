@@ -35,3 +35,12 @@ export function translateCategory(category: string): string {
 
   return category;
 }
+
+/** Durée de lecture d'une question avant de pouvoir répondre (secondes). Partagée par le jeu et le serveur. */
+export const QUIZ_READ_TIME = 5;
+
+/** Durée pour répondre, après la lecture (secondes). Le bonus de rapidité vaut le nombre de secondes restantes. */
+export const QUIZ_ANSWER_TIME = 30;
+
+/** Nombre de questions d'une partie. */
+export const QUIZ_LENGTH = 20;

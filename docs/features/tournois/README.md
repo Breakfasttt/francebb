@@ -33,11 +33,10 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 
 ## Les pièges
 
-- Toute action qui modifie un tournoi vérifie que le coach est organisateur, commissaire ou modérateur. Mais les règles ne sont pas identiques partout : la page `/results` laisse entrer les modérateurs, alors que `saveTournamentResults` et `finishTournament` n'acceptent que ADMIN et SUPERADMIN en plus de l'organisateur et des commissaires. Un modérateur voit donc l'éditeur mais ne peut pas enregistrer.
-- `saveTournamentResults` efface puis réécrit tous les résultats et rondes du tournoi, dans une transaction. Les points CDF sont calculés dans le navigateur (éditeur) puis enregistrés tels quels : le serveur ne les recalcule pas.
+- Toute action qui modifie un tournoi vérifie que le coach est organisateur, commissaire ou modérateur (`isModerator`, qui inclut les admins). Depuis la carte 051, la même règle vaut partout : page `/results`, `updateTournament`, `saveTournamentResults`, `finishTournament`, `cancelTournament`, `unfinishTournament`, `clearTournamentResults`.
+- `saveTournamentResults` efface puis réécrit tous les résultats et rondes du tournoi, dans une transaction. Pour un tournoi CDF, le serveur recalcule les points de chaque coach avec `calculateCdfPoints` (`common/utils/cdf.ts`) à partir de son rang, avec les mêmes paramètres que l'éditeur (carte 051) : les points envoyés par le navigateur sont ignorés. Pour un tournoi hors CDF, les points saisis à la main sont gardés.
 - `/forum/edit-tournament/[id]` et `/results/view` ne vérifient pas l'accès par rôle du forum (`lib/forumAccess.ts`), contrairement au reste du forum.
-- La page `/results` utilise `auth()` au lieu de `getActiveSession()` et renvoie vers `/api/auth/signin` au lieu de `/auth/login`.
-- Une carte de tournoi sans sujet renvoie vers `/tournois/[id]`, adresse qui n'existe pas (page introuvable).
+- Un tournoi est toujours créé avec son sujet du forum, qui lui sert de fiche. Si ce sujet a été supprimé, les liens (liste `/tournois`, fiche d'une ligue, carte) mènent à la liste des tournois, faute de page dédiée. Avant la carte 051, ils menaient à `/tournois/[id]`, page inexistante.
 - `app/tournois/page.tsx` et les actions utilisent encore des types `any`.
 
 ## Les mots expliqués
@@ -56,5 +55,6 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 ## État
 
 - Marche : recherche, création, inscriptions individuelles et par équipes, saisie et affichage des résultats, import NAF.
-- Manque : page dédiée `/tournois/[id]` (ou retrait du lien), règles de droits unifiées pour les résultats, filtres mobiles avec `MobileFilterWrapper`.
+- Marche aussi depuis la carte 051 : règles de droits identiques pour les résultats, points CDF recalculés par le serveur, page `/results` réservée aux membres non bannis (`getActiveSession()`) avec renvoi vers `/auth/login`.
+- Manque : page dédiée `/tournois/[id]` pour un tournoi dont le sujet a été supprimé, filtres mobiles avec `MobileFilterWrapper`.
 - Cartes : 049 (audit mobile), 019 (images).

@@ -1,7 +1,7 @@
 /**
  * Page de proposition de question pour le Quizz.
  */
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ProposerContent from "./ProposerContent";
@@ -13,10 +13,10 @@ export const metadata = {
 };
 
 export default async function ProposerPage() {
-  const session = await auth();
+  const session = await getActiveSession();
 
   if (!session) {
-    redirect("/auth/signin?callbackUrl=/bbquizz/proposer");
+    redirect("/auth/login?callbackUrl=/bbquizz/proposer");
   }
 
   return (

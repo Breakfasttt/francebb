@@ -78,7 +78,7 @@ export default async function RootLayout({
   return (
     <html lang="fr" data-theme={userTheme} suppressHydrationWarning>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} enableSystem={false}>
+        <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
           <DebugThemeWidget />

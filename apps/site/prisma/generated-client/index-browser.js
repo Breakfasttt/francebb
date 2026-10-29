@@ -564,6 +564,20 @@ exports.Prisma.QuizAttemptScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.QuizGameScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questionIds: 'questionIds',
+  currentIndex: 'currentIndex',
+  questionServedAt: 'questionServedAt',
+  score: 'score',
+  correct: 'correct',
+  fiftyUsed: 'fiftyUsed',
+  communityUsed: 'communityUsed',
+  skipUsed: 'skipUsed',
+  startedAt: 'startedAt'
+};
+
 exports.Prisma.QuizDailyWinnerScalarFieldEnum = {
   date: 'date',
   userId: 'userId',
@@ -678,6 +692,7 @@ exports.Prisma.ModelName = {
   TournamentMatch: 'TournamentMatch',
   QuizQuestion: 'QuizQuestion',
   QuizAttempt: 'QuizAttempt',
+  QuizGame: 'QuizGame',
   QuizDailyWinner: 'QuizDailyWinner',
   QuizQuestionSuggestion: 'QuizQuestionSuggestion',
   LegacyMember: 'LegacyMember',

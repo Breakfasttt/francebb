@@ -43,6 +43,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Détection mobile | `common/hooks/useIsMobile.ts` |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
+| Supprimer un compte membre (contenus publics rattachés au compte fantôme) | `lib/accountDeletion.ts` (`anonymizeAndDeleteUser`), interne au serveur ; l'appelant vérifie les droits |
 | Adresse de retour après connexion | `lib/safeRedirect.ts` (`safeCallbackUrl`) |
 | Rechercher des membres | `lib/userSearch.ts` (`userSearchWhere`) ; actions `searchUsersAction` (forum), `searchUsers` (messagerie) |
 | Session serveur (connecté, non banni) | `lib/authGuard.ts` → `getActiveSession()` (jamais `auth()` direct dans une action) |

@@ -80,6 +80,7 @@ model User {
   postReactions            PostReaction[]
   privateMessages          PrivateMessage[]          @relation("SentPrivateMessages")
   quizAttempts             QuizAttempt[]
+  quizGames                QuizGame[]
   dailyWins                QuizDailyWinner[]
   quizSuggestions          QuizQuestionSuggestion[]
   rankingArchives          RankingArchive[]
@@ -651,6 +652,26 @@ model QuizAttempt {
   jokersUsed Int      @default(0)
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+/// Partie de BBQuizz en cours, tenue par le serveur (carte 051) : le navigateur ne reçoit jamais la bonne
+/// réponse avant d'avoir répondu, et le score est calculé ici. Une seule partie en cours par membre ;
+/// la ligne est supprimée à la fin de la partie, quand le résultat est enregistré dans QuizAttempt.
+model QuizGame {
+  id               String    @id @default(cuid())
+  userId           String
+  questionIds      String[]
+  currentIndex     Int       @default(0)
+  questionServedAt DateTime?
+  score            Int       @default(0)
+  correct          Int       @default(0)
+  fiftyUsed        Boolean   @default(false)
+  communityUsed    Boolean   @default(false)
+  skipUsed         Boolean   @default(false)
+  startedAt        DateTime  @default(now())
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }

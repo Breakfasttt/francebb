@@ -92,6 +92,7 @@ export default function LogsTab({ userRole }: LogsTabProps) {
       "USER_ROLE_CHANGED": "Rôle modifié",
       "USER_BANNED": "Utilisateur banni",
       "USER_UNBANNED": "Utilisateur débanni",
+      "USER_DELETED": "Utilisateur supprimé",
       // Articles
       "ARTICLE_MODERATED": "Article modéré",
       "ARTICLE_UNMODERATED": "Article restauré",
@@ -99,6 +100,7 @@ export default function LogsTab({ userRole }: LogsTabProps) {
       // Ligues
       "LIGUE_CREATED": "Ligue créée",
       "LIGUE_DELETED": "Ligue supprimée",
+      "LIGUE_TRANSFERRED": "Ligue transférée",
       // Resources
       "RESOURCE_APPROVED": "Ressource approuvée",
       "RESOURCE_REJECTED": "Ressource rejetée",

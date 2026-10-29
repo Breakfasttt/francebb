@@ -199,15 +199,25 @@ export default function OnboardingForm({ user }: { user: any }) {
           <div className="onboarding-section-box theme-section">
              <label className="section-label-inner"><Palette size={16} /> Thème favori</label>
              <div className="theme-grid-mini">
-                {['saison3', 'dark', 'blood', 'malpierre', 'naf'].map(t => (
-                  <button 
-                    key={t} 
-                    type="button" 
-                    className={`theme-dot ${mounted && theme === t ? 'active' : ''} ${t}`} 
-                    onClick={() => handleThemeChange(t)}
-                    title={t.charAt(0).toUpperCase() + t.slice(1)}
+                {/* Les 7 thèmes du site, mêmes identifiants que la page de profil */}
+                {[
+                  { id: 'saison3', label: 'Saison 3' },
+                  { id: 'dark', label: 'Sombre' },
+                  { id: 'light', label: 'Clair' },
+                  { id: 'blood', label: 'Blood' },
+                  { id: 'malpierre', label: 'Malpierre' },
+                  { id: 'nehekhara', label: 'Néhékhara' },
+                  { id: 'naf', label: 'NAF' },
+                ].map(t => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    className={`theme-dot ${mounted && theme === t.id ? 'active' : ''} ${t.id}`}
+                    onClick={() => handleThemeChange(t.id)}
+                    title={t.label}
+                    aria-label={`Thème ${t.label}`}
                   >
-                    {isThemePending && theme === t && <Loader2 size={10} className="animate-spin" />}
+                    {isThemePending && theme === t.id && <Loader2 size={10} className="animate-spin" />}
                   </button>
                 ))}
              </div>

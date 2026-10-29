@@ -123,7 +123,7 @@ export default async function LigueDetailPage({
               {ligue.tournaments.length > 0 ? (
                 <div className="mini-tournaments-list">
                   {ligue.tournaments.map(t => (
-                    <Link key={t.id} href={t.topic?.id ? `/forum/topic/${t.topic.id}` : `/tournois/${t.id}`} className="mini-t-item">
+                    <Link key={t.id} href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"} className="mini-t-item">
                       <div className="mini-t-date">
                         <Calendar size={18} />
                         <span>{new Date(t.date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short' })}</span>
@@ -172,7 +172,7 @@ export default async function LigueDetailPage({
 
         <aside className="ligue-sidebar">
           {canEdit && (
-            <LigueAdminActions ligueId={ligue.id} canManage={canManage} />
+            <LigueAdminActions ligueId={ligue.id} ligueName={ligue.name} canManage={canManage} />
           )}
 
           <PremiumCard className="commissaires-card">

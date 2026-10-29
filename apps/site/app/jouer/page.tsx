@@ -106,7 +106,7 @@ export default async function HowToPlayPage() {
           <h3>Prêt à lancer vos premiers dés ?</h3>
           <p>Rejoignez les milliers de coachs français déjà présents sur le forum et dans les ligues.</p>
           <div className="cta-buttons">
-            <a href="/auth/signin" className="cta-primary">Créer mon compte</a>
+            <a href="/auth/login" className="cta-primary">Créer mon compte</a>
             <a href="/forum" className="cta-secondary">Parcourir le forum</a>
           </div>
         </PremiumCard>

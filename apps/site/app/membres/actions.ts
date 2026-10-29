@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { canEditTargetRole, ROLE_POWER, UserRole, isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
+import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 
 export async function updateUserRole(userId: string, newRole: UserRole) {
   const session = await getActiveSession();
@@ -111,20 +112,12 @@ export async function deleteUser(userId: string) {
     throw new Error("Vous ne pouvez pas supprimer ce membre (hiérarchie insuffisante)");
   }
 
-  // Suppression cascade manuelle de Prisma si onDelete: Cascade n'est pas suffisant.
-  // Dans next-auth et prisma, souvent `user` cascade sur session/account.
-  // Mais par précaution pour les données forum :
-  
-  await prisma.$transaction([
-    prisma.privateMessage.deleteMany({ where: { authorId: userId } }),
-    prisma.conversation.deleteMany({ where: { OR: [{ user1Id: userId }, { user2Id: userId }] } }),
-    prisma.postReaction.deleteMany({ where: { userId } }),
-    prisma.mention.deleteMany({ where: { OR: [{ mentionerId: userId }, { mentionedUserId: userId }] } }),
-    prisma.topicView.deleteMany({ where: { userId } }),
-    prisma.post.deleteMany({ where: { authorId: userId } }),
-    prisma.topic.deleteMany({ where: { authorId: userId } }),
-    prisma.user.delete({ where: { id: userId } })
-  ]);
+  // Comme la suppression de compte par le membre (deleteAccount) : ses sujets, messages, articles et résultats
+  // sont rattachés au compte fantôme « Coach Inconnu » au lieu d'être effacés (lib/accountDeletion.ts).
+  const ok = await anonymizeAndDeleteUser(userId, false);
+  if (!ok) throw new Error("Erreur lors de la suppression du membre");
+
+  await logModerationAction("USER_DELETED", userId, "USER", "Suppression du membre (contenus rattachés au compte fantôme)");
 
   revalidatePath("/membres");
   return { success: true };
