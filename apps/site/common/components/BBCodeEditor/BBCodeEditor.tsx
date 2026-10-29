@@ -11,6 +11,7 @@ import { parseBBCode } from "@/lib/bbcode";
 import { siteConfig } from "@/lib/siteConfig";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Bot, ChevronDown, Code, DraftingCompass, Eye, EyeOff, Ghost, Hash, Image as ImageIcon, Italic, LayoutGrid, Link as LinkIcon, List, ListOrdered, Loader2, Minus, Palette, Smile, Sparkles, Strikethrough, Subscript, Superscript, Table as TableIcon, Type, Underline, User as UserIcon, WrapText, Youtube } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import "./BBCodeEditor-mobile.css";
 
 interface BBCodeEditorProps {
   name: string;

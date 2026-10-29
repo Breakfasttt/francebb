@@ -11,6 +11,7 @@ import UnreadSidebar from "./component/UnreadSidebar";
 import MarkAllAsReadButton from "../component/MarkAllAsReadButton";
 import MarkTopicReadButton from "./component/MarkTopicReadButton";
 import "../page.css";
+import "../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 

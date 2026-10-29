@@ -1,0 +1,50 @@
+/* Fenêtre de signalement : règles pour téléphone.
+ * L'affichage sur ordinateur n'est pas concerné. */
+
+@media (max-width: 768px) {
+  /* La fenêtre ne dépasse jamais la hauteur visible de l'écran : son contenu défile à l'intérieur.
+     100dvh suit la barre d'adresse du navigateur ; 3rem = marges de la couche sombre autour. */
+  .modal-overlay .report-modal {
+    max-height: calc(100dvh - 3rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1.25rem !important;
+  }
+
+  .modal-overlay .report-modal .modal-header {
+    margin-bottom: 1rem;
+  }
+
+  .modal-overlay .report-modal h3 {
+    font-size: 1.1rem;
+  }
+
+  /* Bouton de fermeture : 44 pixels, la taille d'un pouce */
+  .modal-overlay .report-modal .close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .modal-overlay .report-modal .reason-btn {
+    min-height: 44px;
+  }
+
+  /* 16 pixels : l'iPhone ne zoome plus automatiquement quand on écrit dedans */
+  .modal-overlay .report-modal .report-textarea {
+    font-size: 16px;
+  }
+
+  /* Boutons « Annuler » et « Envoyer » empilés, en pleine largeur */
+  .modal-overlay .report-modal .modal-actions {
+    flex-direction: column-reverse;
+    margin-top: 1.25rem !important;
+  }
+
+  .modal-overlay .report-modal .modal-actions .bb-button {
+    width: 100%;
+  }
+}

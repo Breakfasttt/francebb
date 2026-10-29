@@ -8,6 +8,7 @@ import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import DangerButton from "@/common/components/Button/DangerButton";
+import "./ReportModal-mobile.css";
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -128,7 +129,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                z-index: 2000;
+                z-index: var(--z-index-modal-bottom, 8000);
                 padding: 1.5rem;
               }
               :global(.report-modal) {

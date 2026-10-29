@@ -12,6 +12,7 @@ import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import EditPostForm from "@/app/forum/component/EditPostForm";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import "../../../page.css";
+import "../../../page-mobile.css";
 import { isModerator } from "@/lib/roles";
 
 export const dynamic = "force-dynamic";

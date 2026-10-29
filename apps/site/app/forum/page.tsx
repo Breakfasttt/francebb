@@ -1,5 +1,6 @@
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import "./page.css";
+import "./page-mobile.css";
 
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";

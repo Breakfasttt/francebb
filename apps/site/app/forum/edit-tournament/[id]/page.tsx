@@ -5,6 +5,7 @@ import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import "../../page.css";
+import "../../page-mobile.css";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";

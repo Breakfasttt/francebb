@@ -11,6 +11,7 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import "../page.css";
+import "../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 

@@ -1,0 +1,11 @@
+/* Éditeur de messages BBCode : règles pour téléphone.
+ * L'affichage sur ordinateur n'est pas concerné. */
+
+@media (max-width: 768px) {
+  /* Boutons de la barre d'outils (gras, italique, lien, image…) : 44 pixels, la taille d'un pouce.
+     La barre passe sur plusieurs lignes au besoin, rien n'est coupé. */
+  .bbcode-editor .editor-toolbar .toolbar-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

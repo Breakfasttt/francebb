@@ -15,7 +15,8 @@ Le forum est le cœur de la communauté : les coachs y discutent par catégories
 - `/forum/search` (recherche), `/forum/unread` (sujets non lus), `/forum/new-forum` (création de forum).
 - Accès : un visiteur lit les forums publics. Un membre connecté écrit. Un modérateur épingle, verrouille, archive, déplace, renomme, masque un message, crée ou supprime un forum. Un forum réservé à un rôle est invisible pour les autres : le visiteur est envoyé vers la connexion, le membre reçoit une page « introuvable ».
 - **Sur téléphone** (et tablette, jusqu'à 1024 pixels) : la colonne latérale du forum (boutons « nouveau sujet », non-lus, recherche, actions de modération) est masquée et son contenu est déplacé dans le menu latéral global avec `GlobalPortal` (cible `#mobile-page-sidebar-slot`). La pagination est répétée en bas de page. Les messages passent sur une colonne : l'auteur au-dessus du texte, ses statistiques masquées. Les colonnes « statistiques » et « dernier message » de l'accueil disparaissent.
-- **Problèmes possibles sur téléphone** : il n'y a pas de fichier `page-mobile.css` pour le forum, alors que `page.css` y renvoie (« Déplacé dans page-mobile.css ») ; les règles mobiles sont en fait à la fin de `page.css`. Le confort de l'éditeur BBCode et des fenêtres de modération sur petit écran est à vérifier (carte 049).
+- **Cibles tactiles sur téléphone** (jusqu'à 768 pixels, carte 053) : tout ce qui se touche au doigt mesure au moins 44 pixels de côté. Cela concerne les liens du fil d'Ariane (le chemin « Accueil Forum › catégorie › forum › sujet » en haut de page), les boutons « Profil » et « MP » sous le nom de l'auteur, les icônes en tête de message (marquer non lu, partager, signaler), les boutons sous le message (modérer, réactions, citer, modifier, supprimer) et la barre d'outils de l'éditeur de messages, qui passe sur plusieurs lignes. Sur ordinateur, rien ne change.
+- **Fenêtre de signalement sur téléphone** : elle ne dépasse jamais la hauteur de l'écran et son contenu défile à l'intérieur ; les boutons « Annuler » et « Envoyer » sont empilés en pleine largeur ; la zone de texte est en 16 pixels pour que l'iPhone ne zoome pas.
 
 ## Les fichiers
 
@@ -28,6 +29,8 @@ Le forum est le cœur de la communauté : les coachs y discutent par catégories
 | `apps/site/app/forum/search/page.tsx`, `apps/site/app/forum/unread/page.tsx` | Recherche et non-lus. |
 | `apps/site/app/forum/component/ForumSidebar.tsx`, `TopicSidebar.tsx` | Colonnes latérales (accueil/liste, sujet), copiées dans le menu mobile. |
 | `apps/site/app/forum/component/PostItem.tsx`, `PostActions.tsx`, `PostReactions.tsx` | Affichage d'un message et de ses actions. |
+| `apps/site/app/forum/page.css`, `page-mobile.css` | Style commun à toutes les pages du forum, et ses règles pour tablette et téléphone. Chaque page du forum importe les deux, `page-mobile.css` juste après `page.css`. |
+| `apps/site/common/components/BBCodeEditor/BBCodeEditor-mobile.css`, `common/components/ReportModal/ReportModal-mobile.css` | Règles pour téléphone de l'éditeur de messages et de la fenêtre de signalement (composants partagés, aussi utilisés hors du forum). |
 | `apps/site/app/forum/actions.ts` | Actions serveur du forum et des inscriptions aux tournois. |
 | `apps/site/lib/forumAccess.ts` | Droits d'accès par rôle. |
 
@@ -40,6 +43,9 @@ Actions serveur principales (`app/forum/actions.ts`) : `createTopic`, `createPos
 - Ne charger que ce qui est affiché (`select`) ; jamais un `User` complet envoyé à un composant client.
 - `markTopicAsRead` ne doit pas appeler `revalidatePath` : cela faisait recalculer toute la page à chaque ouverture (carte 016).
 - Supprimer un message est réservé à son auteur, et c'est une suppression douce (`isDeleted`). Un modérateur masque le message (`moderatePost`) au lieu de le supprimer.
+- Une nouvelle page du forum doit importer `page-mobile.css` juste après `page.css`, sinon elle perd toutes ses règles pour téléphone.
+- Les règles mobiles agrandissent la zone que l'on touche (`min-height`, `min-width`), jamais le texte ni les icônes : l'apparence reste la même, seule la surface tactile grandit. Les captures des 7 thèmes sur ordinateur (`visual-themes.spec.ts`) ne doivent pas changer.
+- La fenêtre de signalement doit rester au-dessus de la barre de navigation : elle utilise la valeur commune des fenêtres, `var(--z-index-modal-bottom)` (8000). Avec l'ancienne valeur (2000), la barre de navigation cachait le titre de la fenêtre sur téléphone.
 - Dette : `actions.ts` utilise encore `throw` (44 occurrences) au lieu de retourner `null`, contrairement à la règle du projet.
 
 ## Les mots expliqués
@@ -61,4 +67,5 @@ Actions serveur principales (`app/forum/actions.ts`) : `createTopic`, `createPos
 
 - Fait : accueil connecté 16 → 6 requêtes, anonyme 5 → 0 avec cache chaud (carte 014) ; liste d'un forum 31 → 21 (015) ; page sujet 85 → 46 (016) ; N+1 retirés de `createPost` (020) ; accès par rôle partout (028, +1 requête connecté pour lire `RoleConfig`).
 - `getRecentPosts`, `getForums`, `getSiblings` ont été supprimées (aucun appelant).
-- À faire : audit mobile complet (carte 049), images en `next/image` (carte 019), retrait des `throw`.
+- Téléphone (carte 053) : l'audit mobile ne relève plus aucune cible trop petite ni aucun contenu coupé sur `/forum`, `/forum/topic/[id]` et `/forum/topic/[id]/reply`, de 360 à 430 pixels de large (avant : 35 cibles trop petites sur un sujet, 27 sur la page de réponse).
+- À faire : images en `next/image` (carte 019), retrait des `throw`.

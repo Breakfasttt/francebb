@@ -14,7 +14,7 @@ interface ForumBreadcrumbsProps {
 
 export default function ForumBreadcrumbs({ items }: ForumBreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" style={{ marginBottom: '1.5rem', fontSize: '0.85rem' }}>
+    <nav aria-label="Breadcrumb" className="forum-breadcrumbs" style={{ marginBottom: '1.5rem', fontSize: '0.85rem' }}>
       <ol style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', listStyle: 'none', padding: 0, margin: 0 }}>
         <li style={{ display: 'flex', alignItems: 'center' }}>
           <Link href="/forum" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.3rem', textDecoration: 'none', fontWeight: 600 }}>

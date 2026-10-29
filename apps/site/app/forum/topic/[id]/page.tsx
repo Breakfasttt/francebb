@@ -19,6 +19,7 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { notFound, redirect } from "next/navigation";
 import "../../page.css";
+import "../../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 

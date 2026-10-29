@@ -12,6 +12,7 @@ import { parseBBCode, parseInlineBBCode } from "@/lib/bbcode";
 import ReplyForm from "@/app/forum/component/ReplyForm";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import "../../../page.css";
+import "../../../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 

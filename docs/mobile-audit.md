@@ -2,7 +2,7 @@
 
 **Règle absolue du projet : le site doit être impeccable sur téléphone.** Ce rapport liste ce qui ne l'est pas encore, page par page, et les cartes qui corrigent chaque point.
 
-Date : 28/10/2026. À refaire après chaque série de corrections.
+Date : 28/10/2026, mis à jour le 30/10/2026 après la carte 053 (forum). À refaire après chaque série de corrections.
 
 ## Comment l'audit est fait
 
@@ -25,8 +25,8 @@ Date : 28/10/2026. À refaire après chaque série de corrections.
 | Toutes les pages | — | Bouton « Retour » (40 px) | **Corrigé** dans cette carte : 44 px sur mobile |
 | `/` accueil, `/auth/login`, `/administration` | 0 | 0 | Correct |
 | `/forum`, `/forum/search`, `/tournois`, `/statistiques`, `/articles`, `/ressources`, `/media`, `/ligues`, `/messagerie`, `/moderation`, `/profile` | 0 | 1 (bouton « Retour ») | Correct une fois le bouton corrigé |
-| `/forum/topic/[id]` (un sujet) | 0 | 35 | Fil d'Ariane (liens de 22 px de haut), boutons « Profil » et « MP » de l'auteur (31 px), icônes d'action sur les messages (24 px) → carte 053 |
-| `/forum/topic/[id]/reply` (répondre) | 0 | 27 | Barre d'outils de l'éditeur de messages (boutons de 28 px), fil d'Ariane → carte 053 |
+| `/forum/topic/[id]` (un sujet) | 0 | 0 (35 avant) | **Corrigé** par la carte 053 : fil d'Ariane (liens de 22 px de haut), boutons « Profil » et « MP » de l'auteur (31 px) et icônes d'action sur les messages (24 px) passent à 44 px sur téléphone |
+| `/forum/topic/[id]/reply` (répondre) | 0 | 0 (27 avant) | **Corrigé** par la carte 053 : barre d'outils de l'éditeur de messages (boutons de 28 px) et fil d'Ariane à 44 px sur téléphone |
 | `/membres` | 1 | 3 | Tableau de 915 px dans un écran de 360 px (défile dans son cadre) ; noms des membres en liens de 24 px → carte 054 |
 | `/classement` | 0 | 6 | Onglets à 44 px tout juste : à la limite, acceptable |
 | `/carte` | (faux positif) | 7 | Boutons « Tournois » / « Ligues » (38 px) et zoom de la carte (30 px) → carte 056 |
@@ -42,7 +42,7 @@ Aucun texte de moins de 12 pixels n'apparaît dans les zones visibles, hormis 2 
 |---|---|---|
 | **Seuils incohérents** : certaines règles basculent en mode mobile à 1024 pixels, d'autres à 768. Entre les deux (tablettes), les onglets de la modération sont masqués sans être déplacés dans le menu, donc inaccessibles. | Modération, et partout où `.mobile-only` est utilisé | 055 |
 | Connexion et inscription : aucune règle mobile sur la page de connexion ; à l'inscription, champs en 0,9 rem (l'iPhone zoome) et boutons d'avatar et de thème trop petits. | `/auth/login`, `/auth/onboarding` | 058 |
-| Fenêtre de signalement sans hauteur maximale ni défilement interne. | Forum, articles | 053 |
+| Fenêtre de signalement sans hauteur maximale ni défilement interne, et dont le titre passait sous la barre de navigation. **Corrigé** : hauteur limitée à l'écran avec défilement interne, fenêtre placée au-dessus de la barre. | Forum, articles | 053 |
 | Filtres déplacés dans le menu latéral au lieu du bouton flottant (`MobileFilterWrapper`) prévu par le skill `mobile-ux`. | Articles, ressources, ligues, tournois, membres | 054 |
 | CSS mobile jamais chargé : `ressources/page-mobile.css` n'est importé nulle part ; `/ligue/edit/[id]` n'importe pas le CSS mobile du formulaire. | Ressources, édition de ligue | 054 |
 | Couleurs écrites en dur, presque illisible dans le thème clair. | `/banned` | 058 |

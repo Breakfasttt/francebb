@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft } from "lucide-react";
 import "../page.css";
+import "../page-mobile.css";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
