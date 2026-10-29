@@ -7,7 +7,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
+import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
 import "./ArticleFilterSidebar.css";
 import "./ArticleFilterSidebar-mobile.css";
 
@@ -158,11 +158,12 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
         {sidebarContent}
       </aside>
 
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="mobile-article-filters" style={{ padding: '1rem' }}>
+      {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir) */}
+      <MobileFilterWrapper title="Filtrer les articles" mobileOnly breakpoint={1024}>
+        <div className="mobile-article-filters">
           {sidebarContent}
         </div>
-      </GlobalPortal>
+      </MobileFilterWrapper>
     </>
   );
 }

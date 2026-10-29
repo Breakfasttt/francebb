@@ -6,7 +6,7 @@ import { Search, MapPin, Users, Calendar, Trophy, Euro, Home, Pizza, Clock, Spar
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
+import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
 import "./TournamentFilterSidebar.css";
 
 const DEPT_NAMES: Record<string, string> = {
@@ -219,11 +219,14 @@ export default function TournamentFilterSidebar() {
         {filterContent}
       </PremiumCard>
 
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="mobile-only" style={{ padding: '1rem' }}>
+      {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir).
+          L'emplacement "tournois-mobile-sort-slot" reçoit le tri et l'affichage (composant ActiveFilters). */}
+      <MobileFilterWrapper title="Filtrer les tournois" mobileOnly breakpoint={1024}>
+        <div className="tournois-mobile-filters">
+          <div id="tournois-mobile-sort-slot" />
           {filterContent}
         </div>
-      </GlobalPortal>
+      </MobileFilterWrapper>
     </>
   );
 }

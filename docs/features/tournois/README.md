@@ -14,8 +14,8 @@ Les coachs trouvent les tournois de Blood Bowl en France, s'y inscrivent seuls o
 - `/forum/edit-tournament/[id]` : modifier le tournoi (organisateur, commissaire ou modérateur).
 - `/forum/tournament/[id]/results` : saisir les résultats (classement et rondes), à la main ou par import d'un rapport NAF. Réservé à l'organisateur, aux commissaires et aux modérateurs.
 - `/forum/tournament/[id]/results/view` : le classement final, visible par tous.
-- **Sur téléphone** (`app/tournois/page-mobile.css`, 768 pixels) : la colonne de filtres est masquée et son contenu est déplacé dans le menu latéral global (`GlobalPortal`) ; le choix grille/liste et le tri y sont aussi déplacés (`MobilePortal`, dans `ActiveFilters.tsx`). La grille passe sur une colonne. En vue liste (sous 900 pixels), les colonnes lieu, format et prix sont masquées. Le formulaire de tournoi passe sur une colonne sous 1024 pixels. Le module d'inscription empile ses entrées sous 480 pixels. Dans l'éditeur de résultats, la liste des matchs défile dans son propre cadre (largeur minimale 600 pixels).
-- **Problèmes possibles** : les filtres ne passent pas par `MobileFilterWrapper` (bouton entonnoir) comme le demande le skill `mobile-ux`, mais par le menu latéral ; il faut le savoir pour les trouver. Chaque changement de filtre relance la recherche aussitôt. L'éditeur de résultats reste lourd à utiliser sur petit écran (à vérifier, carte 049).
+- **Sur téléphone** (`app/tournois/page-mobile.css`) : en dessous de 1024 pixels, la colonne de filtres est masquée et s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054). En haut du panneau, le choix grille/liste et le tri, envoyés par `ActiveFilters.tsx` dans l'emplacement `#tournois-mobile-sort-slot` ; en dessous, la recherche et tous les filtres. Chaque case à cocher est dans une ligne touchable de 44 pixels de haut ; les champs « nombre » et les listes déroulantes sont en 16 pixels (pas de zoom automatique sur iPhone). Sous 768 pixels, la croix qui retire un filtre actif mesure 44 pixels et la grille passe sur une colonne. En vue liste (sous 900 pixels), les colonnes lieu, format et prix sont masquées. Le formulaire de tournoi passe sur une colonne sous 1024 pixels. Le module d'inscription empile ses entrées sous 480 pixels. Dans l'éditeur de résultats, la liste des matchs défile dans son propre cadre (largeur minimale 600 pixels).
+- **Problèmes possibles** : les cases à cocher elles-mêmes mesurent 22 pixels (c'est toute la ligne, de 44 pixels, qui réagit au toucher) : l'audit automatique les compte donc comme cibles trop petites dans le panneau ouvert. Chaque changement de filtre relance la recherche aussitôt. L'éditeur de résultats reste lourd à utiliser sur petit écran (à vérifier, carte 049).
 
 ## Les fichiers
 
@@ -38,6 +38,7 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - `/forum/edit-tournament/[id]` et `/results/view` ne vérifient pas l'accès par rôle du forum (`lib/forumAccess.ts`), contrairement au reste du forum.
 - Un tournoi est toujours créé avec son sujet du forum, qui lui sert de fiche. Si ce sujet a été supprimé, les liens (liste `/tournois`, fiche d'une ligue, carte) mènent à la liste des tournois, faute de page dédiée. Avant la carte 051, ils menaient à `/tournois/[id]`, page inexistante.
 - `app/tournois/page.tsx` et les actions utilisent encore des types `any`.
+- Sur téléphone, le tri et l'affichage (`ActiveFilters.tsx`) sont envoyés par `GlobalPortal` dans l'emplacement `#tournois-mobile-sort-slot`, créé par `TournamentFilterSidebar.tsx` à l'intérieur du panneau de filtres. `GlobalPortal` cherche cet emplacement pendant 2 secondes après l'affichage de la page : si l'on agrandit la fenêtre au-delà de 1024 pixels puis qu'on la rétrécit plus tard, le tri n'apparaît plus dans le panneau avant un rechargement. Sans effet sur un téléphone.
 
 ## Les mots expliqués
 
@@ -56,5 +57,6 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 
 - Marche : recherche, création, inscriptions individuelles et par équipes, saisie et affichage des résultats, import NAF.
 - Marche aussi depuis la carte 051 : règles de droits identiques pour les résultats, points CDF recalculés par le serveur, page `/results` réservée aux membres non bannis (`getActiveSession()`) avec renvoi vers `/auth/login`.
-- Manque : page dédiée `/tournois/[id]` pour un tournoi dont le sujet a été supprimé, filtres mobiles avec `MobileFilterWrapper`.
-- Cartes : 049 (audit mobile), 019 (images).
+- Manque : page dédiée `/tournois/[id]` pour un tournoi dont le sujet a été supprimé.
+- Sur téléphone : filtres, tri et affichage derrière le bouton flottant ; aucun contenu coupé sur `/tournois` à 360, 390 et 430 pixels (carte 054).
+- Cartes : 049 (audit mobile), 054 (filtres sur téléphone), 019 (images).

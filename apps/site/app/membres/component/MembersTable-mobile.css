@@ -1,0 +1,142 @@
+/* Liste des membres : affichage téléphone (cartes empilées au lieu du tableau) */
+
+/* Sur ordinateur, les cartes et le tri du téléphone restent masqués : seul le tableau s'affiche */
+.members-card-list,
+.members-mobile-sort {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .members-table-card {
+    padding: 1rem !important;
+  }
+
+  /* Le tableau (915 pixels de large) est remplacé par les cartes */
+  .members-list-container {
+    display: none;
+  }
+
+  .members-mobile-sort {
+    display: block;
+  }
+
+  /* Bloc de filtres de l'ordinateur : masqué avant que le bouton flottant prenne le relais (évite un saut au chargement) */
+  .members-filter-section {
+    display: none;
+  }
+
+  /* Dans le panneau du bouton flottant, le bloc .members-filter-section (et son espacement) n'existe pas :
+     on garde de l'air entre la recherche et les listes déroulantes */
+  .bottom-sheet-content .members-search-wrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Champ de recherche en 16 pixels : sinon l'iPhone zoome quand on tape */
+  .premium-search-input {
+    font-size: 16px;
+  }
+
+  .members-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .member-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    min-width: 0;
+  }
+
+  .member-card.is-banned {
+    opacity: 0.6;
+  }
+
+  .member-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  /* Nom du membre : lien vers son profil, cible tactile de 44 pixels */
+  .member-card-name {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 44px;
+    min-width: 0;
+    flex: 1;
+    color: var(--foreground);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .member-card-name span {
+    overflow-wrap: anywhere;
+  }
+
+  .member-card-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1rem;
+    margin: 0;
+  }
+
+  .member-card-details > div {
+    min-width: 0;
+  }
+
+  .member-card-details dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .member-card-details dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  /* Lien NAF : zone touchable agrandie sans décaler le texte */
+  .member-card-details .naf-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin: -0.7rem 0;
+  }
+
+  .member-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .member-card-actions:empty {
+    display: none;
+  }
+
+  .member-card-actions .bb-button {
+    min-height: 44px;
+  }
+
+  .member-card-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+}

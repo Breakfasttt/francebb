@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { isModerator, UserRole } from "@/lib/roles";
 import { redirect } from "next/navigation";
 import "./page.css";
+import "./page-mobile.css";
 
 export const dynamic = "force-dynamic";
 

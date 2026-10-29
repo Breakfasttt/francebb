@@ -12,7 +12,7 @@ Les coachs publient des textes plus longs qu'un message de forum : guides tactiq
 - `/articles/[id]` : l'article, mis en forme en BBCode, avec à gauche l'auteur, la date, les vues, les tags et les boutons d'action ; en bas, les réactions.
 - `/articles/create` et `/articles/edit/[id]` : le formulaire (titre, tags, ligue, éditeur BBCode).
 - Accès : tout le monde lit. Un membre connecté écrit, réagit et signale. L'auteur ou un modérateur modifie et supprime. Seul un modérateur masque (« modère ») ou rétablit un article. Un article masqué reste lisible par son auteur et les modérateurs, avec un bandeau.
-- **Sur téléphone** (en dessous de 1024 pixels) : la colonne de filtres est masquée (classe `desktop-only`) et son contenu est déplacé dans le menu latéral global, via `GlobalPortal` vers `#mobile-page-sidebar-slot`. Le coach doit donc ouvrir le menu hamburger pour filtrer : il n'y a pas de bouton flottant de filtres (`MobileFilterWrapper`), contrairement à ce que recommande la skill `mobile-ux`. En mode liste, chaque ligne ne garde que le titre (tronqué), l'avatar et le nombre de vues ; le nom de l'auteur, les tags et la date sont cachés. Sur la page d'un article, la colonne de gauche passe au-dessus du texte. Taille des boutons de grille/liste (`mini-view-btn`) par rapport aux 44 pixels : à vérifier.
+- **Sur téléphone** (en dessous de 1024 pixels) : la colonne de filtres est masquée (classe `desktop-only`) et son contenu (bouton « Créer un article », recherche, tags, auteur, tri, choix grille ou liste) s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054). Dans ce panneau, les boutons grille/liste (`mini-view-btn`) et « Réinitialiser » mesurent 44 pixels. En mode liste, chaque ligne ne garde que le titre (tronqué), l'avatar et le nombre de vues ; le nom de l'auteur, les tags et la date sont cachés. Sur la page d'un article, la colonne de gauche passe au-dessus du texte.
 
 ## Les fichiers
 
@@ -21,7 +21,7 @@ Les coachs publient des textes plus longs qu'un message de forum : guides tactiq
 | `apps/site/app/articles/page.tsx` | Liste, filtres lus dans l'adresse, pagination |
 | `apps/site/app/articles/[id]/page.tsx` | Lecture d'un article, droits d'affichage, bandeau de modération |
 | `apps/site/app/articles/create/page.tsx`, `edit/[id]/page.tsx` | Création et modification (redirige vers la connexion si besoin) |
-| `apps/site/app/articles/component/ArticleFilterSidebar.tsx` | Filtres (ordinateur) et leur copie dans le menu mobile |
+| `apps/site/app/articles/component/ArticleFilterSidebar.tsx` | Filtres : colonne sur ordinateur, panneau du bouton flottant de filtres sur téléphone |
 | `apps/site/app/articles/component/ArticleCard.tsx` | Carte d'un article, en grille ou en ligne |
 | `apps/site/app/articles/component/ArticleForm.tsx` | Formulaire (BBCodeEditor, TagSelector, LigueSearch) |
 | `apps/site/app/articles/[id]/component/` | Réactions, compteur de vues, boutons supprimer, modérer, signaler |
@@ -49,10 +49,11 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 | Tag | Mot-clé libre attaché à un article. Un tag inconnu est créé à l'enregistrement (`connectOrCreate`). |
 | Modérer un article | Le masquer aux autres membres en gardant une raison et le nom du modérateur, sans le supprimer. |
 | Réaction | Émoji laissé sous un article ; la liste proposée est fixe (`COMMON_EMOJIS`). |
-| `GlobalPortal` | Composant qui affiche un morceau de page ailleurs dans le document, ici dans le menu latéral mobile. |
+| `MobileFilterWrapper` | Le bouton flottant de filtres du téléphone (voir `docs/GLOSSAIRE.md`). |
 
 ## État
 
 - Marche : liste, filtres, pagination, lecture, écriture, réactions, signalement, modération, vues.
-- Manque : protection des données de l'auteur dans l'API, masquage des articles modérés dans les listes, conservation de la ligue à l'édition, bouton de filtres flottant sur téléphone.
+- Manque : protection des données de l'auteur dans l'API, masquage des articles modérés dans les listes, conservation de la ligue à l'édition.
+- Sur téléphone : filtres derrière le bouton flottant ; aucun contenu coupé ni cible trop petite à 360, 390 et 430 pixels (carte 054).
 - Cartes ouvertes : 049 (audit mobile de toutes les pages). Aucune carte dédiée aux articles.

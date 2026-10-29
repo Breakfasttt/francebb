@@ -1,6 +1,7 @@
 "use client";
 
 import CTAButton from "@/common/components/Button/CTAButton";
+import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { Grid, List, Plus, Search } from "lucide-react";
@@ -19,8 +20,6 @@ interface ResourceFilterSidebarProps {
   viewMode: "grid" | "list";
   onViewModeChange: (mode: "grid" | "list") => void;
 }
-
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 export default function ResourceFilterSidebar({
   searchQuery,
@@ -102,11 +101,12 @@ export default function ResourceFilterSidebar({
         {sidebarContent}
       </aside>
 
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="mobile-resource-filters" style={{ padding: '1rem' }}>
+      {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir) */}
+      <MobileFilterWrapper title="Filtrer les ressources" mobileOnly breakpoint={1024}>
+        <div className="mobile-resource-filters">
           {sidebarContent}
         </div>
-      </GlobalPortal>
+      </MobileFilterWrapper>
     </>
   );
 }

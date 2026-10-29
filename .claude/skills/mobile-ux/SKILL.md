@@ -43,7 +43,12 @@ Si une page a sa propre colonne latérale (onglets du profil, de l'administratio
 
 ## Filtres et longs formulaires
 
-Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en haut à droite) ouvre une fenêtre avec tous les filtres et un bouton « Appliquer » (composant `MobileFilterWrapper`).
+Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/membres`, `/articles`, `/ressources`, `/ligues`, `/tournois` (carte 054).
+
+- Sur ordinateur, le composant affiche ses enfants dans une simple `<div className={className}>`. Avec `mobileOnly`, il n'affiche rien sur ordinateur : à utiliser quand la page a déjà sa colonne de filtres.
+- `breakpoint` (768 pixels par défaut) fixe la largeur sous laquelle le bouton flottant remplace les filtres. Les pages dont la colonne est masquée par la classe `desktop-only` utilisent `breakpoint={1024}`, le même seuil.
+- Le bouton et le panneau sont affichés directement dans `<body>` (portail React) : un parent masqué ou en verre dépoli ne peut pas les cacher ni les décaler.
+- Ne plus envoyer les filtres dans le menu latéral global (`#mobile-page-sidebar-slot`) : ce menu est réservé à la navigation et aux onglets des pages (profil, administration…).
 
 ## Titre de page et bouton retour
 

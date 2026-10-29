@@ -10,7 +10,7 @@ import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";
 import "./page.css";
 import "./page-mobile.css";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
+import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
 
 
 export const dynamic = "force-dynamic";
@@ -89,7 +89,8 @@ export default async function LiguesPage({
         </div>
       </PremiumCard>
 
-      <MobilePortal>
+      {/* Téléphone et tablette : recherche, filtres et affichage derrière le bouton flottant (entonnoir) */}
+      <MobileFilterWrapper title="Filtrer les ligues" mobileOnly breakpoint={1024}>
           <div className="ligues-mobile-sidebar-content mobile-only">
             <h3 className="sidebar-section-title">Recherche & Filtres</h3>
             <LigueFilters 
@@ -116,7 +117,7 @@ export default async function LiguesPage({
                 </CTAButton>
             </div>
           </div>
-      </MobilePortal>
+      </MobileFilterWrapper>
 
       {ligues.length > 0 ? (
         <>

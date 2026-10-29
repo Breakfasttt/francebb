@@ -6,3 +6,11 @@
     position: static;
   }
 }
+
+/* Panneau du bouton flottant de filtres : boutons assez grands pour le pouce (44 pixels) */
+@media (max-width: 1024px) {
+  .mobile-resource-filters .mini-view-btn {
+    width: 44px;
+    height: 44px;
+  }
+}

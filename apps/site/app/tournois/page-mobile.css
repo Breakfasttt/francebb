@@ -22,8 +22,11 @@
     padding: 0;
     margin-bottom: 1rem;
   }
+}
 
-  /* Actions transportées dans la sidebar */
+/* Panneau du bouton flottant de filtres (téléphone et tablette, même seuil que .desktop-only) */
+@media (max-width: 1024px) {
+  /* Tri et affichage, placés en haut du panneau de filtres */
   .tournois-mobile-actions-portal {
     padding: 1rem 0;
     display: flex;
@@ -81,6 +84,46 @@
     background: var(--glass-border);
     margin: 1rem 0.5rem;
     opacity: 0.3;
+  }
+
+  .view-toggle-mobile button {
+    min-height: 44px; /* cible tactile */
+  }
+
+  /* Cases à cocher des filtres : toute la ligne est touchable, sur 44 pixels de haut */
+  .tournois-mobile-filters .checkbox-label {
+    min-height: 44px;
+  }
+
+  .tournois-mobile-filters .checkbox-label input {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Champs « nombre » (places, prix…) : 16 pixels pour éviter le zoom de l'iPhone, 44 pixels de haut */
+  .tournois-mobile-filters .filter-item input[type="number"],
+  .tournois-mobile-filters .filter-item select {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  .tournois-mobile-filters .search-box {
+    margin-bottom: 1.5rem;
+  }
+
+  .tournois-mobile-filters .filter-section {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Pastilles des filtres actifs : bouton de retrait assez grand pour le pouce */
+@media (max-width: 768px) {
+  .active-filters-content .filter-tag button {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    /* Marges négatives : la zone touchable grandit sans épaissir la pastille */
+    margin: -0.75rem -0.8rem -0.75rem 0;
   }
 }
 

@@ -12,7 +12,7 @@
 - `/ressources/submit` : un membre connecté propose une ressource (titre, description de 200 caractères au plus, lien, image, tags). Elle reste invisible jusqu'à sa validation dans l'onglet ressources de `/moderation`.
 - `/ressources/edit/[id]` : l'auteur ou un modérateur modifie une ressource, qui **repasse alors en attente de validation**. Une ressource système n'est modifiable que par un admin, et seulement sa description et son image.
 - `/media` : un lecteur Twitch par chaîne et la playlist des vidéos de chaque chaîne YouTube. Visible par tous.
-- **Sur téléphone** : la colonne de filtres des ressources est masquée et copiée dans le menu latéral global (`GlobalPortal` vers `#mobile-page-sidebar-slot`), sans bouton flottant de filtres. **Le fichier `ressources/page-mobile.css` n'est importé nulle part** : ses règles (grille sur une colonne, liste sans cadre) ne s'appliquent pas, il faut vérifier sur un vrai téléphone si la grille déborde. En liste, les tags sont cachés. Les boutons modifier et supprimer d'une carte ont une icône de 12 pixels : sans doute sous les 44 pixels conseillés (à vérifier). Sur `/media`, les deux colonnes Twitch et YouTube s'empilent sous 1024 pixels et les lecteurs gardent un format 16/9.
+- **Sur téléphone** (en dessous de 1024 pixels) : la colonne de filtres des ressources est masquée ; son contenu (bouton « Soumettre une ressource », recherche, tags, choix grille ou liste en boutons de 44 pixels) s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054). `ressources/page-mobile.css` est maintenant importé par la page (il ne l'était nulle part avant la carte 054) : grille sur une colonne et liste sans cadre sous 768 pixels. En liste, les tags sont cachés. Les boutons modifier et supprimer d'une carte ont une icône de 12 pixels : sans doute sous les 44 pixels conseillés (à vérifier). Sur `/media`, les deux colonnes Twitch et YouTube s'empilent sous 1024 pixels et les lecteurs gardent un format 16/9.
 
 ## Les fichiers
 
@@ -22,7 +22,7 @@
 | `apps/site/app/ressources/submit/page.tsx` | Proposition d'une ressource |
 | `apps/site/app/ressources/edit/[id]/page.tsx` | Modification, droits vérifiés côté page et côté action |
 | `apps/site/app/ressources/component/ResourceCard/ResourceCard.tsx` | Carte d'une ressource (grille ou ligne) |
-| `apps/site/app/ressources/component/ResourceFilterSidebar/ResourceFilterSidebar.tsx` | Recherche, tags, choix grille/liste, copie mobile |
+| `apps/site/app/ressources/component/ResourceFilterSidebar/ResourceFilterSidebar.tsx` | Recherche, tags, choix grille/liste ; sur téléphone, le même contenu dans le panneau du bouton flottant de filtres |
 | `apps/site/app/ressources/component/ResourceForm/ResourceForm.tsx` | Formulaire, envoi d'image vers ImgBB |
 | `apps/site/app/ressources/actions.ts` | Actions serveur |
 | `apps/site/app/moderation/component/ResourceModerationTab.tsx` | Validation des propositions (feature modération) |
@@ -53,5 +53,6 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 ## État
 
 - Marche : proposition, validation, modification, suppression, recherche, pages vidéo.
-- Manque : import de `ressources/page-mobile.css`, tags proposés dans les filtres, clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
+- Sur téléphone : filtres derrière le bouton flottant ; aucun contenu coupé ni cible trop petite sur `/ressources` à 360, 390 et 430 pixels (carte 054).
+- Manque : tags proposés dans les filtres, clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

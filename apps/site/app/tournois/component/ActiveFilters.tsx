@@ -3,7 +3,7 @@
 import { X, Clock, LayoutGrid, LayoutList } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
+import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 interface ActiveFiltersProps {
   currentSort: string;
@@ -133,9 +133,10 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
         </div>
       </div>
 
-      <MobilePortal>
+      {/* Téléphone : tri et affichage envoyés dans le panneau du bouton flottant de filtres
+          (emplacement créé par TournamentFilterSidebar, absent sur ordinateur) */}
+      <GlobalPortal target="#tournois-mobile-sort-slot">
         <div className="tournois-mobile-actions-portal mobile-only">
-            <div className="sidebar-divider" />
             <h3 className="sidebar-section-title">Affichage & Tri</h3>
             
             <div className="view-toggle-mobile">
@@ -168,8 +169,9 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
                     <option value="participants_desc">Places (décroissant)</option>
                 </ClassicSelect>
             </div>
+            <div className="sidebar-divider" />
         </div>
-      </MobilePortal>
+      </GlobalPortal>
     </div>
   );
 }

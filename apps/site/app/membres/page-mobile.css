@@ -1,0 +1,8 @@
+/* Annuaire des membres : affichage téléphone */
+
+@media (max-width: 768px) {
+  .members-page main.container {
+    padding: 0 1rem 1.5rem 1rem;
+    min-height: auto;
+  }
+}

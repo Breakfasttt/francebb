@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
-import { Mail, Ban, Trash2, CheckCircle2, Search, Shield, Globe, Trophy } from "lucide-react";
+import { Mail, Ban, Trash2, CheckCircle2, Search, Shield, Globe, Trophy, ArrowDownAz } from "lucide-react";
 import { toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -16,7 +16,9 @@ import AdminButton from "@/common/components/Button/AdminButton";
 import DangerButton from "@/common/components/Button/DangerButton";
 
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
 import "./MembersTable.css";
+import "./MembersTable-mobile.css";
 
 const USERS_PER_PAGE = 25;
 
@@ -45,8 +47,19 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [banDetails, setBanDetails] = useState("");
   
-  type SortConfig = { key: "name" | "role" | "naf" | "region" | "ligue"; direction: "asc" | "desc" } | null;
+  type SortKey = "name" | "role" | "naf" | "region" | "ligue";
+  type SortConfig = { key: SortKey; direction: "asc" | "desc" } | null;
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+
+  // Tri choisi dans la liste déroulante du téléphone (pas d'en-têtes de colonnes cliquables sur les cartes)
+  const handleMobileSort = (value: string) => {
+    if (!value) {
+      setSortConfig(null);
+      return;
+    }
+    const [key, direction] = value.split("_") as [SortKey, "asc" | "desc"];
+    setSortConfig({ key, direction });
+  };
 
   const [roleModal, setRoleModal] = useState<{ isOpen: boolean, userId: string, newRole: UserRole | "", roleLabel: string }>({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
   const [banModal, setBanModal] = useState<{ isOpen: boolean, userId: string, isBanning: boolean, userName: string }>({ isOpen: false, userId: "", isBanning: false, userName: "" });
@@ -118,7 +131,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     startTransition(async () => {
       try {
         await deleteUser(deleteModal.userId);
-        toast.success("Utilisateur supprimé définitivement");
+        toast.success("Utilisateur supprimé (contenus rattachés au compte fantôme)");
         router.refresh();
       } catch (error: any) {
         toast.error(error.message);
@@ -211,7 +224,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   return (
     <PremiumCard className="members-table-card fade-in">
-      <div className="members-filter-section">
+      {/* Ordinateur : bloc de filtres au-dessus du tableau. Téléphone : bouton flottant (entonnoir). */}
+      <MobileFilterWrapper title="Filtrer les membres" className="members-filter-section">
         <div className="members-search-wrapper">
           <div className="search-input-group">
             <Search size={18} className="search-icon" />
@@ -262,6 +276,23 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             ))}
           </ClassicSelect>
 
+          {/* Tri : téléphone uniquement (masqué sur ordinateur par MembersTable-mobile.css) */}
+          <div className="members-mobile-sort">
+            <ClassicSelect
+              label="Trier par"
+              icon={<ArrowDownAz size={14} />}
+              value={sortConfig ? `${sortConfig.key}_${sortConfig.direction}` : ""}
+              onChange={(e) => handleMobileSort(e.target.value)}
+            >
+              <option value="">Ordre alphabétique</option>
+              <option value="name_desc">Nom (Z-A)</option>
+              <option value="role_asc">Rôle</option>
+              <option value="naf_asc">N° NAF</option>
+              <option value="region_asc">Région</option>
+              <option value="ligue_asc">Ligue</option>
+            </ClassicSelect>
+          </div>
+
           <div className="filter-actions">
             <ClassicButton 
               onClick={resetFilters}
@@ -271,7 +302,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             </ClassicButton>
           </div>
         </div>
-      </div>
+      </MobileFilterWrapper>
 
       <div className="members-list-container">
         <table className="admin-table">
@@ -417,6 +448,111 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         </table>
       </div>
 
+      {/* Téléphone : un membre par carte, empilées (le tableau est trop large pour l'écran) */}
+      <ul className="members-card-list">
+        {paginatedUsers.length > 0 ? paginatedUsers.map(user => {
+          const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
+          const selectableRoles = getAllowedRolesToAssign(currentUserRole);
+          const canModerate = canEdit || currentUserRole === "SUPERADMIN";
+          const regionLabel = allRegions.find(r => r.key === user.region)?.label || user.region;
+
+          return (
+            <li key={user.id} className={`member-card ${user.isBanned ? "is-banned" : ""}`}>
+              <div className="member-card-header">
+                <Link href={`/spy/${user.id}`} className="member-card-name">
+                  {user.image && <img src={user.image} alt="" className="user-avatar-sm" />}
+                  <span>{user.name}</span>
+                </Link>
+                <StatusBadge
+                  variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
+                >
+                  {getRoleLabel(user.role)}
+                </StatusBadge>
+              </div>
+
+              {user.isBanned && (
+                <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>
+              )}
+
+              <dl className="member-card-details">
+                <div>
+                  <dt>N° NAF</dt>
+                  <dd>
+                    {user.nafNumber ? (
+                      <a
+                        href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="naf-link"
+                      >
+                        {user.nafNumber}
+                      </a>
+                    ) : "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Région</dt>
+                  <dd>{regionLabel || "—"}</dd>
+                </div>
+                <div>
+                  <dt>Ligue(s)</dt>
+                  <dd className="ligues-list">
+                    {user.ligues && user.ligues.length > 0 ? user.ligues.map((l: { id: string; acronym: string }) => (
+                      <span key={l.id} className="ligue-mini-badge">{l.acronym}</span>
+                    )) : "—"}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="member-card-actions">
+                {user.id !== currentUserId && !user.isBanned && (
+                  <ClassicButton href={`/messagerie?userId=${user.id}`} icon={Mail} fullWidth>
+                    Message privé
+                  </ClassicButton>
+                )}
+                {showRoles && canEdit && (
+                  <ClassicSelect
+                    label="Rôle"
+                    value={user.role}
+                    disabled={isPending}
+                    onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
+                  >
+                    <option value={user.role} disabled>Changer le rôle...</option>
+                    {selectableRoles.map(role => (
+                      <option key={role} value={role}>{ROLE_LABELS[role]}</option>
+                    ))}
+                  </ClassicSelect>
+                )}
+                {showMod && canModerate && (
+                  <AdminButton
+                    onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
+                    isLoading={isPending}
+                    variant={user.isBanned ? "classic" : "admin"}
+                    fullWidth
+                  >
+                    {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
+                  </AdminButton>
+                )}
+                {showDelete && (
+                  <DangerButton
+                    onClick={() => handleDeleteClick(user.id, user.name)}
+                    isLoading={isPending}
+                    icon={Trash2}
+                    fullWidth
+                  >
+                    Supprimer
+                  </DangerButton>
+                )}
+              </div>
+            </li>
+          );
+        }) : (
+          <li className="member-card-empty">
+            Aucun membre ne correspond à vos critères de recherche.
+          </li>
+        )}
+      </ul>
+
       <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
         <Pagination 
           currentPage={currentPage}
@@ -516,8 +652,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           <strong>ATTENTION :</strong> Cette action est <strong>IRRÉVERSIBLE</strong>.
         </p>
         <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.5 }}>
-          Toutes les données de {deleteModal.userName} (messages, topics, conversations privées) 
-          seront supprimées définitivement de la base de données.
+          Le compte de {deleteModal.userName} et ses données privées (messages privés, réactions, inscriptions)
+          seront supprimés. Ses sujets, messages du forum, articles et résultats seront rattachés au compte « Coach Inconnu ».
         </p>
         <p style={{ color: 'var(--accent)', marginTop: '1rem', lineHeight: 1.5, background: 'var(--primary-transparent)', padding: '0.8rem', borderRadius: '6px', border: '1px solid var(--glass-border)' }}>
           <strong>RAPPEL SUPERADMIN :</strong> Cette option ne doit être utilisée <strong>QUE</strong> pour purger les faux comptes, les comptes buggés, ou vider les comptes abandonnés/fantômes. 

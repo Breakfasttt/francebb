@@ -13,6 +13,7 @@ import LigueEditSubmit from "../LigueEditSubmit";
 import { Shield, MapPin, Globe, Users, Info, Save } from "lucide-react";
 import { isModerator } from "@/lib/roles";
 import "@/app/ligues/create/page.css"; // Reuse create styles
+import "@/app/ligues/create/page-mobile.css"; // Règles téléphone du même formulaire
 
 export default async function EditLiguePage({
   params,

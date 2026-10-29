@@ -16,6 +16,7 @@ import { deleteResourceAction, getResources } from "./actions";
 import ResourceCard from "./component/ResourceCard/ResourceCard";
 import ResourceFilterSidebar from "./component/ResourceFilterSidebar/ResourceFilterSidebar";
 import "./page.css";
+import "./page-mobile.css";
 
 export default function RessourcesPage() {
   const { data: session } = useSession();

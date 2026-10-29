@@ -13,6 +13,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **BBCode** | Petit langage de mise en forme des messages du forum (`[b]gras[/b]`, `[url]…[/url]`). |
 | **Better Auth** | Bibliothèque de connexion utilisée par le hub. |
 | **Bibliothèque** (ou dépendance, paquet) | Code écrit par d'autres et utilisé par le projet (ex. Prisma, Next.js). Installée par pnpm. |
+| **Bouton flottant de filtres** (`MobileFilterWrapper`) | Sur téléphone, bouton rond en forme d'entonnoir, fixé en bas à droite de l'écran. Il ouvre un panneau qui monte du bas de l'écran avec les filtres de la page et un bouton « Appliquer les filtres ». Sur ordinateur, les filtres restent affichés dans la page. |
 | **Branche** (git) | Version parallèle du code, sur laquelle on travaille sans toucher la version principale avant de fusionner. |
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |

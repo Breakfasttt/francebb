@@ -54,12 +54,15 @@
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Panneau fermé : invisible (et ses champs inaccessibles au clavier), en plus d'être sous l'écran */
+  visibility: hidden;
+  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
   border-top: 1px solid var(--glass-border);
 }
 
 .mobile-filter-bottom-sheet.open {
   bottom: 0;
+  visibility: visible;
 }
 
 .bottom-sheet-header {
@@ -85,12 +88,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Cible tactile d'au moins 44 pixels */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .bottom-sheet-content {
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
+  /* Permet aux filtres de rétrécir pour que le contenu défile au lieu de déborder */
+  min-height: 0;
+}
+
+/* Champs en 16 pixels dans le panneau : sinon l'iPhone zoome quand on tape */
+.mobile-filter-bottom-sheet .bottom-sheet-content input,
+.mobile-filter-bottom-sheet .bottom-sheet-content select,
+.mobile-filter-bottom-sheet .bottom-sheet-content textarea {
+  font-size: 16px;
 }
 
 .bottom-sheet-footer {

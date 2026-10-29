@@ -4,6 +4,15 @@
     font-size: 16px !important; /* Empêche l'auto-zoom de l'iPhone sur les inputs */
   }
 
+  /* Liste avec une icône à gauche : la marge de gauche ci-dessus ne doit pas faire passer le texte sous l'icône */
+  .classic-select-wrapper.has-icon .classic-select-field {
+    padding-left: 2.8rem !important;
+  }
+
+  .classic-select-container.sm .classic-select-wrapper.has-icon .classic-select-field {
+    padding-left: 2.2rem !important;
+  }
+
   .classic-select-label {
     font-size: 0.75rem !important;
   }
