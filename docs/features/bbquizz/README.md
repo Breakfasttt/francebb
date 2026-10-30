@@ -13,7 +13,7 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 - `/bbquizz/valider` : un modérateur accepte ou refuse les propositions en attente.
 - `/bbquizz/editer` : un modérateur modifie ou supprime les questions existantes.
 - Ces trois pages s'ouvrent depuis l'écran d'accueil du jeu (`QuizEngine`).
-- **Sur téléphone** (et tablette, jusqu'à 1024 pixels depuis la carte 055) : le classement passe sous le jeu, les quatre réponses s'empilent sur une colonne avec des boutons d'au moins 48 pixels de haut, les titres rapetissent. Dans les pages de gestion, les boutons d'action prennent toute la largeur. Pas de colonne latérale à déplacer ni de filtre, donc pas besoin de `MobilePortal`. Le classement reste en bas de page : sur téléphone, il faut faire défiler toute la partie pour le voir. Lisibilité des 7 thèmes et taille des boutons de joker : à vérifier.
+- **Sur téléphone** (et tablette, jusqu'à 1024 pixels depuis la carte 055) : le classement passe sous le jeu, les quatre réponses s'empilent sur une colonne avec des boutons d'au moins 48 pixels de haut, les titres rapetissent. Dans les pages de gestion, les boutons d'action prennent toute la largeur. Pas de colonne latérale à déplacer ni de filtre, donc pas besoin de `MobilePortal`. Le classement reste en bas de page : sur téléphone, il faut faire défiler toute la partie pour le voir. Depuis la carte 056 (`QuizEngine-mobile.css`, `QuizLeaderboard-mobile.css`) : onglets du classement à 44 pixels (30 avant), jokers à 44 pixels (38 avant), lettres des réponses, pastilles des jokers et étiquette de catégorie à 12 pixels au moins. Lisibilité des 7 thèmes sur téléphone : à vérifier.
 
 ## Les fichiers
 
@@ -56,5 +56,6 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 
 - Marche : partie complète, classements, proposition, validation, édition.
 - Marche aussi depuis la carte 051 : score calculé par le serveur, réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté.
+- Sur téléphone (carte 056) : aucune cible trop petite ni texte de moins de 12 pixels, sur l'accueil du jeu comme pendant une partie, à 360, 390 et 430 pixels.
 - Manque : série (`quizStreak`).
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

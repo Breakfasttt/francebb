@@ -1,0 +1,33 @@
+/*
+ * Partie de quiz sur téléphone et tablette (carte 056).
+ * Les autres règles mobiles de la partie sont dans le bloc « Responsive » de QuizEngine.css.
+ */
+@media (max-width: 1024px) {
+  /* Jokers : 44 pixels pour le pouce (38 sur ordinateur), un peu plus espacés */
+  .quiz-jokers {
+    gap: 1rem;
+  }
+
+  .joker-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Petites pastilles et lettres des réponses : 12 pixels au moins, lisibles sans zoomer */
+  .joker-count {
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+  }
+
+  .option-letter {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 0.75rem;
+  }
+
+  .category-tag {
+    font-size: 0.75rem;
+  }
+}

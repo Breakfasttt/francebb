@@ -20,4 +20,66 @@
     height: 70vh !important;
     min-height: 70vh !important;
   }
+
+  /*
+   * Carte 056 : en plein écran, la carte prend la hauteur réellement visible (100dvh) et non 100vh,
+   * qui passe sous la barre d'adresse des navigateurs de téléphone. Les sélecteurs sont longs pour
+   * l'emporter sur les règles « !important » écrites dans CarteClient.tsx.
+   */
+  .carte-page-fixed .carte-content-body .carte-client-wrapper.is-fullscreen,
+  .carte-page-fixed .carte-content-body .carte-client-wrapper.is-fullscreen .map-view-leaflet {
+    height: 100dvh !important;
+  }
+
+  /* Boutons « Tournois » et « Ligues » : 44 pixels de haut au moins, pour le pouce */
+  .carte-client-wrapper .sliding-toggle .toggle-option {
+    min-height: 44px;
+  }
+
+  /*
+   * Boutons de zoom de Leaflet (la bibliothèque qui affiche la carte) : 44 pixels au lieu de 30,
+   * placés sous les boutons « Tournois / Ligues » pour ne pas les chevaucher sur un écran étroit.
+   */
+  .carte-client-wrapper .leaflet-top {
+    top: 4.5rem;
+  }
+
+  .carte-client-wrapper .leaflet-control-zoom.leaflet-bar a {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    font-size: 24px;
+  }
+
+  /*
+   * Repères de la carte : l'image du repère ne mesure que 25 × 41 pixels. Une marge intérieure de 10 pixels
+   * agrandit la zone qui réagit au toucher (45 × 61 pixels) ; le décalage « translate » remet l'image
+   * exactement à sa place.
+   */
+  .carte-client-wrapper .leaflet-container .leaflet-marker-pane img.leaflet-marker-icon {
+    box-sizing: content-box;
+    padding: 10px;
+    translate: -10px -10px;
+  }
+
+  /* Bulle d'un repère : croix de fermeture et lien « Détails » à 44 pixels */
+  .carte-client-wrapper .leaflet-container a.leaflet-popup-close-button {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    line-height: 44px;
+  }
+
+  .carte-client-wrapper .leaflet-popup-content {
+    margin-right: 44px;
+  }
+
+  /* « !important » nécessaire : le lien porte ses réglages d'ordinateur dans un attribut style */
+  .carte-client-wrapper .leaflet-popup .map-popup-link {
+    display: inline-flex !important;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 1rem !important;
+    font-size: 0.85rem !important;
+  }
 }

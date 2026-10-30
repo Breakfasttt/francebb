@@ -25,6 +25,7 @@ import {
 } from "../../actions";
 import { QUIZ_ANSWER_TIME, QUIZ_READ_TIME, translateCategory } from "../../utils";
 import "./QuizEngine.css";
+import "./QuizEngine-mobile.css";
 import CTAButton from "@/common/components/Button/CTAButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import ExplainButton from "@/common/components/Button/ExplainButton";

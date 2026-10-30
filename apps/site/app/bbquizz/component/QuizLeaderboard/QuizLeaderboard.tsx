@@ -11,6 +11,7 @@ import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import ToggleButton from "@/common/components/Button/ToggleButton";
 import { Trophy, Calendar, Globe, Zap, Loader2 } from "lucide-react";
 import "./QuizLeaderboard.css";
+import "./QuizLeaderboard-mobile.css";
 
 export default function QuizLeaderboard() {
   const [activeTab, setActiveTab ] = useState<"daily" | "weekly" | "alltime">("daily");

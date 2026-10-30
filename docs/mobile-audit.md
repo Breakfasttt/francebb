@@ -2,7 +2,7 @@
 
 **Règle absolue du projet : le site doit être impeccable sur téléphone.** Ce rapport liste ce qui ne l'est pas encore, page par page, et les cartes qui corrigent chaque point.
 
-Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 (listes et filtres) et 055 (seuil unique téléphone/ordinateur). À refaire après chaque série de corrections.
+Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 (listes et filtres) et 055 (seuil unique téléphone/ordinateur) et 056 (carte et quiz). À refaire après chaque série de corrections.
 
 ## Comment l'audit est fait
 
@@ -30,12 +30,14 @@ Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 
 | `/membres` | 0 (1 avant) | 0 (3 avant) | **Corrigé** par la carte 054 : le tableau de 915 px est remplacé sur téléphone par des cartes empilées, une par membre ; le nom de chaque membre est un lien de 44 px |
 | `/articles`, `/ressources`, `/ligues`, `/tournois`, `/membres` : panneau de filtres ouvert | 0 | 0 (sauf `/tournois`) | **Corrigé** par la carte 054 : filtres derrière le bouton flottant. Sur `/tournois`, les 9 cases à cocher mesurent 22 px, mais toute leur ligne (44 px de haut) réagit au toucher. Mesuré à 360, 390 et 430 px (`logs/054-mobile/`) |
 | `/classement` | 0 | 6 | Onglets à 44 px tout juste : à la limite, acceptable |
-| `/carte` | (faux positif) | 7 | Boutons « Tournois » / « Ligues » (38 px) et zoom de la carte (30 px) → carte 056 |
-| `/bbquizz` | 0 | 4 | Onglets « Du jour », « Semaine », « Panthéon » de 30 px → carte 056 |
+| `/carte` | (faux positif) | 2 (6 avant) | **Corrigé** par la carte 056 : boutons « Tournois » / « Ligues » (38 px) et zoom (30 px) à 44 px, zoom placé sous ces boutons ; dans la bulle d'un repère, croix et lien « Détails » à 44 px ; zone de toucher des repères agrandie. Restent les deux liens de texte du crédit « Leaflet | © OpenStreetMap », obligatoire. Les tuiles de la carte qui dépassent sont coupées par son cadre (faux positif) |
+| `/bbquizz` | 0 | 0 (3 avant) | **Corrigé** par la carte 056 : onglets « Du jour », « Semaine », « Panthéon » de 30 à 44 px. Pendant une partie : jokers de 38 à 44 px, lettres des réponses et pastilles des jokers à 12 px au moins. Mesuré à 360, 390 et 430 px (`logs/056-mobile/`) |
 | `/bbscheme` | 1 | 7 | Un bouton d'outil coupé de 18 px à droite ; boutons de 35 à 40 px → carte 057 |
 | `/jouer`, `/mentions-legales` | 0 | 2 à 3 | Liens dans le texte : tolérable |
 
 Depuis la carte 055, l'affichage téléphone s'applique jusqu'à 1024 pixels de large, donc aussi aux tablettes. La mesure ci-dessus (360 et 390 pixels) est restée identique après ce changement : 47 cibles trop petites au total avant comme après, aucun contenu coupé en plus. Les 9 cases à cocher de `/tournois` (22 pixels, dans une ligne touchable de 44 pixels) restent à traiter dans une carte d'interface : elles ne dépendent pas du seuil.
+
+Après la carte 056, l'audit complet compte 33 cibles trop petites au total (47 avant).
 
 Aucun texte de moins de 12 pixels n'apparaît dans les zones visibles, hormis 2 éléments sur `/profile` (à vérifier).
 

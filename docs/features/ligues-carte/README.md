@@ -14,7 +14,7 @@ L'annuaire des ligues permet à chaque club de Blood Bowl de se présenter (nom,
 - `/ligue/edit/[id]` : modification par le chef, un commissaire ou un modérateur. Seuls le chef et les modérateurs changent la liste des commissaires.
 - `/carte` : carte OpenStreetMap avec un interrupteur « Tournois / Ligues » et un bouton plein écran ; un clic sur un repère ouvre une bulle avec un lien vers le tournoi ou la ligue.
 - Un coach rejoint une ligue depuis son profil (`app/profile/actions.ts`), pas depuis la fiche de la ligue.
-- **Sur téléphone** : sur `/ligues`, en dessous de 1024 pixels (même seuil que les classes `desktop-only` et `mobile-only`, au lieu de 900 avant la carte 054), la barre de recherche est masquée et son contenu (recherche, zone, choix grille/liste en boutons de 44 pixels, « Créer une Ligue ») s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054) ; la grille passe sur une colonne sous 600 pixels. Sur `/ligue/[id]`, les colonnes s'empilent sous 1100 pixels et le bloc « Gestion Ligue » part dans le menu latéral. Le formulaire de modification `/ligue/edit/[id]` importe maintenant `ligues/create/page-mobile.css`, comme la création : il passe sur une colonne sous 1000 pixels et le bouton d'envoi du blason mesure 44 pixels sur téléphone (carte 054). Sur `/carte`, la carte prend 70 % de la hauteur d'écran jusqu'à 1024 pixels (carte 055) ; le plein écran utilise `100vh`, qui peut passer sous la barre d'adresse des navigateurs mobiles (à vérifier).
+- **Sur téléphone** : sur `/ligues`, en dessous de 1024 pixels (même seuil que les classes `desktop-only` et `mobile-only`, au lieu de 900 avant la carte 054), la barre de recherche est masquée et son contenu (recherche, zone, choix grille/liste en boutons de 44 pixels, « Créer une Ligue ») s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054) ; la grille passe sur une colonne sous 600 pixels. Sur `/ligue/[id]`, les colonnes s'empilent sous 1100 pixels et le bloc « Gestion Ligue » part dans le menu latéral. Le formulaire de modification `/ligue/edit/[id]` importe maintenant `ligues/create/page-mobile.css`, comme la création : il passe sur une colonne sous 1000 pixels et le bouton d'envoi du blason mesure 44 pixels sur téléphone (carte 054). Sur `/carte`, la carte prend 70 % de la hauteur d'écran jusqu'à 1024 pixels (carte 055). Depuis la carte 056 (`carte/page-mobile.css`) : boutons « Tournois » / « Ligues » et boutons de zoom à 44 pixels, le zoom placé sous les premiers pour ne pas les chevaucher ; croix et lien « Détails » de la bulle d'un repère à 44 pixels (classe `map-popup-link`) ; zone de toucher des repères agrandie à 45 × 61 pixels sans déplacer l'image ; en plein écran, hauteur réellement visible (`100dvh`) au lieu de `100vh`, qui passait sous la barre d'adresse des navigateurs de téléphone.
 
 ## Les fichiers
 
@@ -52,6 +52,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 | Zone géographique | Grande région de rattachement, choisie dans les données de référence `COACH_REGION`. |
 | Géocodage | Transformer une adresse en coordonnées (latitude, longitude), ou l'inverse, via le service gratuit Nominatim d'OpenStreetMap. |
 | Leaflet | Bibliothèque d'affichage de cartes ; elle ne fonctionne que dans le navigateur, d'où son chargement différé (`ssr: false`). |
+| `100dvh` | Hauteur de l'écran réellement visible. `100vh` compte aussi la place de la barre d'adresse des navigateurs de téléphone, et le bas de la page passe alors dessous. |
 | Blason | Logo de la ligue, hébergé sur ImgBB. |
 
 ## État
@@ -59,5 +60,6 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 - Marche : annuaire, création, fiche, modification, commissaires, signalement, carte.
 - Marche aussi depuis la carte 051 : transfert de propriété et suppression de la ligue.
 - Sur téléphone : filtres de `/ligues` derrière le bouton flottant, formulaire de modification sur une colonne ; aucun contenu coupé ni cible trop petite sur `/ligues` à 360, 390 et 430 pixels (carte 054).
+- Sur téléphone, `/carte` (carte 056) : aucune cible trop petite à 360, 390 et 430 pixels, hors les deux liens de texte du crédit obligatoire « Leaflet | © OpenStreetMap ».
 - Manque : `createLigue` et `updateLigue` sans `throw`.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

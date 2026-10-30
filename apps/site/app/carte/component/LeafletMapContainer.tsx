@@ -110,6 +110,7 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
                       href={viewType === "tournaments" 
                         ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : "/tournois") 
                         : `/ligue/${p.id}`} 
+                      className="map-popup-link"
                       style={{ background: "#c21d1d", color: "white", padding: "0.4rem 0.8rem", borderRadius: "8px", textDecoration: "none", fontSize: "0.75rem", fontWeight: 800, display: "inline-block" }}
                     >
                       Détails

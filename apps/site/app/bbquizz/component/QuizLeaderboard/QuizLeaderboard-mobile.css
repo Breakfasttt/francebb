@@ -1,0 +1,7 @@
+/* Classement du quiz sur téléphone et tablette (carte 056) */
+@media (max-width: 1024px) {
+  /* Onglets « Du jour », « Semaine », « Panthéon » : 44 pixels de haut au lieu de 30, pour le pouce */
+  .leaderboard-tabs .bb-button {
+    min-height: 44px;
+  }
+}
