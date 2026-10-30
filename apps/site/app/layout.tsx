@@ -13,6 +13,7 @@ import { DEFAULT_SITE_THEME } from "@/lib/themes";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
 import AppShell from "@/common/components/AppShell/AppShell";
+import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
 import { getNavCounts } from "@/common/components/Navbar/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./tailwind.css";
@@ -79,6 +80,7 @@ export default async function RootLayout({
           )}
 
           <main className="main-layout-wrapper">
+            {refonte && user?.id ? <NewLookBanner isLoggedIn /> : null}
             {children}
           </main>
           

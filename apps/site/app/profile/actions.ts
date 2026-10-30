@@ -179,6 +179,18 @@ export async function updateTheme(theme: string): Promise<ActionResult> {
   return { success: true };
 }
 
+/**
+ * Thème que le membre avait avant le passage de tous au thème Vestiaire (cartes 078 et 083), pour le bandeau
+ * « Nouveau look » ; null pour un visiteur, un membre inscrit après la bascule, ou un thème qui n'existe plus.
+ */
+export async function getPreviousTheme(): Promise<string | null> {
+  const session = await getActiveSession();
+  if (!session?.user?.id) return null;
+  const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { previousTheme: true } });
+  const previous = user?.previousTheme;
+  return previous && isSiteTheme(previous) && previous !== "vestiaire" ? previous : null;
+}
+
 export async function updateNotificationSettings(settings: {
   notifPm: boolean;
   notifMention: boolean;
