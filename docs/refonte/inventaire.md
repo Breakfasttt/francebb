@@ -44,31 +44,31 @@ Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/Navbar/`, `Mob
 
 Fichier actuel : `common/components/BBCodeEditor/BBCodeEditor.tsx`. Le BBCode est une syntaxe de mise en forme par balises entre crochets, par exemple `[b]gras[/b]`.
 
-- [ ] Gras, italique, souligné, barré.
-- [ ] Taille du texte (0,7 / 0,85 / 1 / 1,25 / 1,5 / 2 rem).
-- [ ] Couleur (10 pastilles).
-- [ ] Trait horizontal `[hr]`.
-- [ ] Listes : à points, à tirets, numérotée, par lettres.
-- [ ] Tableau (insertion d'un modèle).
-- [ ] Lien : adresse plus texte, ou texte sélectionné.
-- [ ] Lien vers un sujet du forum `[topic=id]`, avec une recherche par `GET /api/forum/topics/search`.
-- [ ] Image par adresse, ou par envoi de fichier vers ImgBB. Options : alignement gauche, centre ou droite ; habillage du texte ; taille réduite.
-- [ ] Galerie (liste d'adresses d'images).
-- [ ] Vidéo YouTube, avec les mêmes options d'alignement, d'habillage et de taille.
-- [ ] Mention d'un membre par un bouton, **et en tapant `@`** dans la zone de texte. La recherche passe par `GET /api/users/search`.
-- [ ] Spoiler (texte caché), avec un titre facultatif.
-- [ ] Accordéon (bloc repliable, avec un titre).
-- [ ] Bloc de code.
-- [ ] Alignement : centré, à droite, justifié.
-- [ ] Exposant et indice.
-- [ ] Schéma BBScheme (adresse ou identifiant), disposé à l'horizontale ou à la verticale.
-- [ ] Smileys.
-- [ ] Assistant de mise en forme par IA : il génère un texte de consigne à copier et ouvre Gemini, Claude ou ChatGPT.
-- [ ] Bouton Aperçu, qui affiche ou masque le rendu.
-- [ ] Compteur de caractères quand une longueur maximale est fixée.
-- [ ] La touche Échap ferme l'outil ouvert.
+- [x] Gras, italique, souligné, barré.
+- [x] Taille du texte (0,7 / 0,85 / 1 / 1,25 / 1,5 / 2 rem).
+- [x] Couleur (10 pastilles).
+- [x] Trait horizontal `[hr]`.
+- [x] Listes : à points, à tirets, numérotée, par lettres.
+- [x] Tableau (insertion d'un modèle).
+- [x] Lien : adresse plus texte, ou texte sélectionné.
+- [x] Lien vers un sujet du forum `[topic=id]`, avec une recherche par `GET /api/forum/topics/search`.
+- [x] Image par adresse, ou par envoi de fichier vers ImgBB. Options : alignement gauche, centre ou droite ; habillage du texte ; taille réduite.
+- [x] Galerie (liste d'adresses d'images).
+- [x] Vidéo YouTube, avec les mêmes options d'alignement, d'habillage et de taille.
+- [x] Mention d'un membre par un bouton, **et en tapant `@`** dans la zone de texte. La recherche passe par `GET /api/users/search`.
+- [x] Spoiler (texte caché), avec un titre facultatif.
+- [x] Accordéon (bloc repliable, avec un titre).
+- [x] Bloc de code.
+- [x] Alignement : centré, à droite, justifié.
+- [x] Exposant et indice.
+- [x] Schéma BBScheme (adresse ou identifiant), disposé à l'horizontale ou à la verticale.
+- [x] Smileys.
+- [ ] Assistant de mise en forme par IA : il génère un texte de consigne à copier et ouvre Gemini, Claude ou ChatGPT. *(Carte 087 : la consigne, sa copie et les trois boutons sont vérifiés ; l'ouverture de l'IA dans un nouvel onglet ne l'est pas.)*
+- [x] Bouton Aperçu, qui affiche ou masque le rendu.
+- [x] Compteur de caractères quand une longueur maximale est fixée.
+- [x] La touche Échap ferme l'outil ouvert.
 - [x] L'événement `bbcode-insert-text` insère une citation depuis le bouton « Citer » d'un message.
-- [ ] La zone de texte garde son attribut `name`, parce que les formulaires lisent son contenu par `FormData`.
+- [x] La zone de texte garde son attribut `name`, parce que les formulaires lisent son contenu par `FormData`.
 
 **Rendu des messages** (`BBCodeContent`, `lib/bbcode.ts`) :
 - [ ] Toutes les balises sont affichées correctement : `b i u s color size center right justify code sup sub hr bbscheme spoiler accordion quote url topic mention img youtube list table gallery`, plus les smileys écrits en texte.
@@ -162,21 +162,21 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [modo] Supprimer le sujet définitivement, avec un avertissement. Le tournoi lié est supprimé aussi.
 
 ### 3.4 `/forum/topic/[id]/reply` : page de réponse
-- [ ] [membre] Éditeur BBCode, boutons « Annuler » et « Publier ma réponse ».
-- [ ] [membre] `?quotePostId=` préremplit la citation.
-- [ ] [membre] Rappel des 3 derniers messages.
-- [ ] [visiteur] Est renvoyé vers le sujet.
+- [x] [membre] Éditeur BBCode, boutons « Annuler » et « Publier ma réponse ».
+- [x] [membre] `?quotePostId=` préremplit la citation.
+- [x] [membre] Rappel des 3 derniers messages.
+- [x] [visiteur] Est renvoyé vers le sujet.
 
 ### 3.5 `/forum/post/[id]/edit` : modifier un message
-- [ ] [auteur, modo] Éditeur prérempli, « Annuler », « Enregistrer les modifications », puis retour à `?page=N#post-id`.
-- [ ] [auteur, modo] Rappel des 3 derniers messages, avec le message modifié grisé et marqué « (Ce message) ».
+- [x] [auteur, modo] Éditeur prérempli, « Annuler », « Enregistrer les modifications », puis retour à `?page=N#post-id`.
+- [x] [auteur, modo] Rappel des 3 derniers messages, avec le message modifié grisé et marqué « (Ce message) ». *(Carte 087 : la marque « (Ce message) » est vérifiée par le test ; le grisé seulement sur les captures.)*
 
 ### 3.6 `/forum/new-topic?forumId=` : nouveau sujet
-- [ ] [membre] Titre avec bouton smiley et aperçu en direct.
-- [ ] [membre] Message dans l'éditeur BBCode.
-- [ ] [modo] Cases « Épingler » et « Verrouiller le sujet ».
-- [ ] [membre] « Créer le sujet » et « Annuler ». Une erreur s'affiche en notification, puis on est redirigé vers le sujet créé.
-- [ ] [membre] La création est refusée dans un forum verrouillé, sauf pour un modo.
+- [x] [membre] Titre avec bouton smiley et aperçu en direct.
+- [x] [membre] Message dans l'éditeur BBCode.
+- [x] [modo] Cases « Épingler » et « Verrouiller le sujet ».
+- [x] [membre] « Créer le sujet » et « Annuler ». Une erreur s'affiche en notification, puis on est redirigé vers le sujet créé.
+- [x] [membre] La création est refusée dans un forum verrouillé, sauf pour un modo.
 
 ### 3.7 `/forum/new-forum` : créer un forum
 - [ ] [modo] Champs : nom (obligatoire), description, catégorie, forum parent, « Insérer après ». Les erreurs sont affichées : nom vide, nom déjà pris, plus de 5 sous-forums.

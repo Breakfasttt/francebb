@@ -52,3 +52,11 @@ export function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`) || (href === "/ligues" && pathname.startsWith("/ligue/"));
 }
+
+/**
+ * Écrans de rédaction du forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran sur
+ * téléphone : la barre basse n'y est pas affichée, pour laisser la place à l'éditeur et à la barre d'envoi (carte 087).
+ */
+export function isComposePath(pathname: string): boolean {
+  return /^\/forum\/(topic\/[^/]+\/reply|post\/[^/]+\/edit|new-topic)\/?$/.test(pathname);
+}

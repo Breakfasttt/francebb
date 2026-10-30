@@ -35,6 +35,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
 | **E2E** (*end-to-end*, de bout en bout) | Test qui joue un vrai parcours dans un vrai navigateur, comme un visiteur (ex. ouvrir le forum puis répondre). |
+| **Écran de rédaction** | Page du forum où l'on écrit : répondre à un sujet, modifier un message, créer un sujet (carte 087). Sur téléphone, elle occupe tout l'écran : la barre de navigation du bas disparaît, la barre d'outils de l'éditeur reste collée en haut et la barre d'envoi (« Annuler », « Publier ») est collée en bas, à portée de pouce. Les adresses concernées sont reconnues par `isComposePath`. |
 | **Épic** | Grand chantier qui regroupe plusieurs cartes du kanban (`kanban/epics/`). |
 | **ESLint** / **lint** | Outil qui repère les erreurs et mauvaises pratiques dans le code. Le **cliquet** (*ratchet*) interdit que le nombre d'erreurs augmente : la dette peut baisser, jamais monter. Le plafond est compté pour le total et pour chaque règle (`apps/site/lint-baseline.json`). |
 | **Flag** (drapeau) | Réglage qui active ou désactive une fonctionnalité sans changer le code (ex. `AUTH_MODE=hub`). |
@@ -69,11 +70,13 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Pincement** (*pinch*) | Geste à deux doigts sur un écran tactile : les écarter agrandit, les rapprocher réduit. Sur BBScheme, il règle le zoom du terrain (hook `usePinchZoom`). |
 | **Playwright** | Outil qui pilote un vrai navigateur pour les tests automatiques : il ouvre les pages, clique et vérifie ce qui s'affiche, en taille ordinateur ou téléphone. Les tests du site sont dans `apps/site/tests/e2e/`. |
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
+| **Popover** (petit panneau) | Panneau qui s'ouvre juste sous un bouton, par-dessus la page, et se ferme par Échap ou par un clic à côté (composant `Popover` de `@bbfrance/ui`). Utilisé sur ordinateur, par exemple pour le panneau « Plus d'outils » de l'éditeur de messages ; sur téléphone, on lui préfère le panneau qui monte du bas (`Sheet`). |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
 | **Preflight** | Remise à zéro des styles par défaut du navigateur (marges, tailles de titre, listes), fournie par Tailwind. Elle n'est pas activée sur BBFrance tant que l'ancien CSS existe, parce qu'elle changerait l'apparence des pages pas encore refaites. |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
 | **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. Ce petit serveur ne sert qu'une connexion à la fois : un test qui ouvre sa propre connexion pendant que le site tourne doit attendre que le site lâche la sienne, parfois longtemps (carte 067). Préparer plutôt les données une fois pour toutes dans `globalSetup.ts`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
+| **Prompt** (consigne) | Texte que l'on donne à une intelligence artificielle pour lui dire quoi faire. L'assistant de mise en forme de l'éditeur de messages prépare un prompt avec les règles du BBCode du forum et le message du coach ; le coach le colle dans Gemini, Claude ou ChatGPT. |
 | **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur BBFrance, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
 | **Push** | Envoi des commits locaux vers GitHub. |
 | **Radix** | Bibliothèque de composants d'interface accessibles mais sans style (menus, fenêtres, onglets, interrupteurs). Elle gère le clavier et les lecteurs d'écran. Installée dans `packages/ui` sous le nom `radix-ui`, et utilisée par les composants shadcn/ui. |

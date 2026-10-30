@@ -299,8 +299,9 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
 
           {/* Signature Section */}
           <div className="form-group full-width-group">
-            <label>Signature du forum (250 car. max)</label>
+            <label htmlFor="signature">Signature du forum (250 car. max)</label>
             <BBCodeEditor
+              id="signature"
               name="signature"
               defaultValue={user.signature || ""}
               maxLength={250}

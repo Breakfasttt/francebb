@@ -5,7 +5,8 @@
  * - Téléphone : petite barre haute (bouton retour de la page, logo, connexion) et barre basse à cinq onglets
  *   (Accueil, Forum, Tournois, Messages, Plus) ; « Plus » ouvre le panneau du reste du site.
  * - Ordinateur : barre haute avec les destinations principales, un menu « Plus », les pastilles et le menu du compte.
- * La barre basse se cache pendant la saisie (clavier ouvert) et sur l'éditeur BBScheme, qui occupe tout l'écran.
+ * La barre basse se cache pendant la saisie (clavier ouvert), sur l'éditeur BBScheme et sur les écrans de rédaction du
+ * forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran.
  * L'ancienne coquille (Navbar, MobileSidebar) reste disponible avec REFONTE=0 (voir DEPLOY.md).
  */
 import { useCallback, useEffect, useState } from "react";
@@ -19,7 +20,7 @@ import { useNavCounts } from "@/common/components/Navbar/useNavCounts";
 import { signOutUser } from "@/common/utils/signOutUser";
 import MorePanel from "./MorePanel";
 import ThemePicker from "./ThemePicker";
-import { DESKTOP_NAV, MORE_ICON, MORE_NAV, PRIMARY_NAV, isActive } from "./navItems";
+import { DESKTOP_NAV, MORE_ICON, MORE_NAV, PRIMARY_NAV, isActive, isComposePath } from "./navItems";
 import "./AppShell.css";
 
 interface AppShellProps {
@@ -65,7 +66,8 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   const { unreadCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const immersive = pathname.startsWith("/bbscheme");
+  // Écrans plein écran sans barre basse : l'éditeur BBScheme et les écrans de rédaction du forum (carte 087)
+  const immersive = pathname.startsWith("/bbscheme") || isComposePath(pathname);
   const [moreOpen, setMoreOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const closeMore = useCallback(() => setMoreOpen(false), []);

@@ -1,10 +1,15 @@
 "use client";
 
+/**
+ * Champ du titre d'un sujet (nouveau sujet, nouveau tournoi, modification du titre) : bouton pour insérer un smiley
+ * et aperçu en direct du titre tel qu'il sera affiché (smileys et balises de titre convertis).
+ * Le champ garde id="title" : la page l'associe à son libellé « Titre du sujet ». Couleurs de la refonte (carte 087).
+ */
 import { useRef, useState } from "react";
-import { parseInlineBBCode } from "@/lib/bbcode";
 import { Smile } from "lucide-react";
+import { Button, Input, cn } from "@bbfrance/ui";
+import { parseInlineBBCode } from "@/lib/bbcode";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
-import ClassicButton from "@/common/components/Button/ClassicButton";
 
 interface TitleInputWithSmileyProps {
   initialValue?: string;
@@ -12,10 +17,10 @@ interface TitleInputWithSmileyProps {
   placeholder?: string;
 }
 
-export default function TitleInputWithSmiley({ 
-  initialValue = "", 
-  name = "title", 
-  placeholder = "Ex: Rechercher des joueurs, Stratégies Elfes..." 
+export default function TitleInputWithSmiley({
+  initialValue = "",
+  name = "title",
+  placeholder = "Ex: Rechercher des joueurs, Stratégies Elfes..."
 }: TitleInputWithSmileyProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [titleValue, setTitleValue] = useState(initialValue);
@@ -23,32 +28,37 @@ export default function TitleInputWithSmiley({
 
   const handleSmileySelect = (code: string) => {
     if (!inputRef.current) return;
-    
+
     const start = inputRef.current.selectionStart || 0;
     const end = inputRef.current.selectionEnd || 0;
     const currentVal = inputRef.current.value;
-    
+
     const newVal = currentVal.substring(0, start) + code + currentVal.substring(end);
     inputRef.current.value = newVal;
     setTitleValue(newVal);
-    
+
     inputRef.current.focus();
     const newPos = start + code.length;
     inputRef.current.setSelectionRange(newPos, newPos);
-    setIsSmileyOpen(false); // Auto-close after selection
+    setIsSmileyOpen(false); // La grille se referme après le choix
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-        <ClassicButton
+    <div className="flex flex-col gap-2">
+      <div className="flex items-stretch gap-2">
+        <Button
           type="button"
-          onClick={() => setIsSmileyOpen(!isSmileyOpen)}
+          variant="secondary"
+          size="tap-icon"
           title="Insérer un smiley"
-          icon={Smile}
-          style={{ width: 'auto', padding: '0 1rem', margin: 0, height: '45px' }}
-        />
-        <input
+          aria-label="Insérer un smiley dans le titre"
+          aria-expanded={isSmileyOpen}
+          onClick={() => setIsSmileyOpen(!isSmileyOpen)}
+          className={cn("shrink-0", isSmileyOpen && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
+        >
+          <Smile size={20} aria-hidden="true" />
+        </Button>
+        <Input
           type="text"
           id="title"
           name={name}
@@ -56,41 +66,22 @@ export default function TitleInputWithSmiley({
           ref={inputRef}
           value={titleValue}
           onChange={(e) => setTitleValue(e.target.value)}
-          placeholder="Ex: Rechercher des joueurs, Stratégies Elfes..."
-          style={{ 
-            flex: 1, 
-            padding: '0.8rem', 
-            background: 'var(--glass-bg, rgba(0,0,0,0.03))', 
-            border: '1px solid var(--glass-border)', 
-            borderRadius: '8px', 
-            color: 'var(--foreground)', 
-            fontSize: '1rem', 
-            height: '100%', 
-            minHeight: '45px' 
-          }}
+          placeholder={placeholder}
+          className="flex-1"
         />
       </div>
 
       {isSmileyOpen && (
-        <div className="active-tool-panel" style={{ background: "var(--card-bg)", padding: "1rem", border: "1px solid var(--glass-border)", borderRadius: "8px" }}>
+        <div className="rounded-bb-md border border-bb-border bg-bb-surface p-2">
           <SmileyGrid onSelect={handleSmileySelect} />
         </div>
       )}
-      
-      {/* Title Live Preview */}
+
+      {/* Aperçu du titre en direct */}
       {titleValue && titleValue.trim() !== "" && (
-        <div style={{ 
-          marginTop: '0.8rem', 
-          padding: '1rem 1.2rem', 
-          background: 'var(--primary-transparent)', 
-          backdropFilter: 'blur(5px)',
-          borderRadius: '12px', 
-          color: 'var(--foreground)',
-          borderLeft: '4px solid var(--primary)',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)'
-        }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.4rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Aperçu du titre :</span>
-          <div style={{ fontSize: '1.2rem', fontWeight: 900, lineHeight: 1.3, letterSpacing: '0.2px' }}>
+        <div className="rounded-bb-md border-l-4 border-bb-accent bg-bb-accent-soft px-4 py-3 text-bb-text">
+          <span className="mb-1 block text-xs font-bold tracking-wide text-bb-text-muted uppercase">Aperçu du titre :</span>
+          <div className="text-lg leading-snug font-extrabold break-words">
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(titleValue) }} />
           </div>
         </div>
@@ -98,4 +89,3 @@ export default function TitleInputWithSmiley({
     </div>
   );
 }
-

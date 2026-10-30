@@ -51,6 +51,12 @@
   html[data-typing] .refonte-shell {
     --app-page-bar-space: 0px;
   }
+
+  /* Barre d'envoi des écrans de rédaction (carte 087, data-page-bottom-bar="always") : elle reste affichée pendant
+     la saisie, pour que « Publier » reste à portée de pouce ; la place réservée reste donc la même. */
+  html[data-typing] .refonte-shell:has([data-page-bottom-bar="always"]) {
+    --app-page-bar-space: 60px;
+  }
 }
 
 /* Accueil : le grand logo était posé au milieu de l'ancienne barre ; la nouvelle barre y a ses liens,

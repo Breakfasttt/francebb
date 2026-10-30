@@ -29,3 +29,6 @@ export { Tooltip } from "./tooltip";
 export { Tabs, TabsList, TabsTrigger, TabsContent, LinkTabs, type LinkTab } from "./tabs";
 export { PageNav } from "./page-nav";
 export { EmptyState, Skeleton } from "./feedback";
+
+// Refonte de l'éditeur de message (carte 087)
+export { Popover, PopoverTrigger, PopoverClose, PopoverContent } from "./popover";

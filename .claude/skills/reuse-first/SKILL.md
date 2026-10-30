@@ -23,6 +23,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Bouton d'un écran refait | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
 | Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
+| Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent` (carte 087) ; sur téléphone, utiliser `Sheet` |
 | Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |
 | Étiquette, pastille de compteur | `Badge`, `CountBadge` |
 | Avatar avec initiale | `Avatar` (les cadres de rang restent dans `UserAvatar`) |
@@ -31,6 +32,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}`) |
 | Pagination compacte | `PageNav` |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
+| Éditeur de message BBCode | `BBCodeEditor` (`common/components/BBCodeEditor`) ; `screen` pour un écran de rédaction plein écran sur téléphone. Mise en page de ces écrans : `ComposeScreen`, `ComposeActionBar`, `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) |
 | Savoir si on est sur ordinateur | `useMediaQuery(DESKTOP_QUERY)` |
 
 ## Paquet BBScheme (`packages/bbscheme-player`, `@bbfrance/bbscheme-player`)

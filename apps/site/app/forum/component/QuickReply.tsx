@@ -2,7 +2,7 @@
 
 /**
  * Réponse rapide en bas d'un sujet (ancre id="quick-reply-area", visée par « Citer » et « Répondre »).
- * Carte de la refonte (carte 086) autour de l'éditeur BBCode, gardé tel quel (il est refait à la carte 087).
+ * Carte de la refonte (carte 086) autour de l'éditeur BBCode (refait à la carte 087).
  * Après l'envoi, l'éditeur est vidé, la page est rafraîchie, puis elle défile jusqu'au nouveau message, mis en valeur
  * par une animation (classe new-post-fade-in de app/forum/page.css). Un refus du serveur garde le texte en place.
  */
