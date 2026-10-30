@@ -23,9 +23,9 @@ Le profil d'un autre coach, ouvert depuis un message du forum ou le classement :
 ### Mentions légales — `/mentions-legales`
 Éditeur, hébergeur, propriété intellectuelle, RGPD, cookies. Visible par tous, lien en bas du menu mobile. **Sur téléphone** : une colonne, marges réduites.
 
-### Compte banni — `/banned` (`app/banned/page.tsx`)
-Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx`) et voit la raison du bannissement. Tout autre visiteur est renvoyé à l'accueil.
-**Sur téléphone** : carte centrée de 600 pixels au plus, qui s'adapte à la largeur.
+### Compte banni — `/banned` (`app/banned/page.tsx`, `page.css`, `page-mobile.css`)
+Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx`) et voit la raison du bannissement. Tout autre visiteur est renvoyé à l'accueil. Depuis la carte 058, la page n'utilise que des variables de thème (avant, ses couleurs écrites en dur la rendaient presque illisible dans le thème clair) : l'icône est une pastille de la couleur « danger » du thème, l'encadré de la raison a un liseré de cette même couleur, et le bouton de retour est un `CTAButton`. Captures de référence dans les 7 thèmes : test « page des bannis sur téléphone » de `tests/e2e/visual-themes.spec.ts`.
+**Sur téléphone** : marges réduites, bouton de retour sur toute la largeur et de 44 pixels de haut au moins. Audit mobile propre à 360 et 390 pixels.
 
 ### Page introuvable — 404 (`app/not-found.tsx`)
 « Terrain impraticable ! » et un bouton de retour à l'accueil. **Sur téléphone** : pas de règle mobile propre, la carte devrait s'adapter (à vérifier).
@@ -41,7 +41,7 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 | `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/` |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public (client), lit `/api/users/[id]` et les actions de `app/profile/actions.ts` |
 | `apps/site/app/mentions-legales/page.tsx` | Mentions légales |
-| `apps/site/app/banned/page.tsx`, `common/components/BannedRedirect/BannedRedirect.tsx` | Page et redirection des bannis |
+| `apps/site/app/banned/page.tsx` (+ `page.css`, `page-mobile.css`), `common/components/BannedRedirect/BannedRedirect.tsx` | Page et redirection des bannis |
 | `apps/site/app/not-found.tsx` | Page 404 |
 | `apps/site/app/theme/themes.css`, `theme.*.css` | Couleurs de chaque thème (`[data-theme='…']`) |
 | `apps/site/common/components/ThemeProvider/ThemeProvider.tsx` | `useTheme()` : thème actif, `setTheme`, liste des thèmes |
@@ -70,5 +70,5 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 ## État
 
 - Marche : toutes ces pages s'affichent et le changement de thème fonctionne.
-- Manque : couleurs de thème sur `/banned`, liste blanche dans `updateTheme`, hébergeur de la base dans les mentions légales.
+- Manque : liste blanche dans `updateTheme`, hébergeur de la base dans les mentions légales.
 - Cartes ouvertes : 049 (audit mobile), 017 (layout sans `force-dynamic`, qui prévoit de lire le thème depuis un cookie).

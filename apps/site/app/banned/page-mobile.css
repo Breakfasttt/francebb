@@ -1,0 +1,25 @@
+/* Page des membres bannis sur téléphone (carte 058) : marges réduites, bouton de retour pleine largeur. */
+@media (max-width: 1024px) {
+  .premium-card.banned-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .banned-title {
+    font-size: 1.6rem;
+  }
+
+  .banned-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .banned-reason {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .banned-card .bb-button {
+    width: 100%;
+    min-height: 44px;
+  }
+}

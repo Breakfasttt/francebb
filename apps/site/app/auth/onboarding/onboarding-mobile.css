@@ -1,0 +1,137 @@
+/*
+ * Inscription (onboarding) sur téléphone. Les deux premiers blocs viennent de onboarding.css (déplacés tels quels
+ * par la carte 058) ; le dernier ajoute les réglages de la carte 058 : champs en 16 pixels, boutons de 44 pixels,
+ * marges réduites pour laisser plus de largeur aux champs.
+ */
+@media (max-width: 1024px) {
+  .onboarding-wrapper {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .onboarding-wrapper {
+    padding: 1rem 0.5rem;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .onboarding-form-premium {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .avatar-studio-inline {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .studio-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .onboarding-section-box {
+    padding: 1rem;
+  }
+
+  .theme-section {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  /* Pastilles de thème utilisables au pouce : 44 pixels, sur deux lignes si besoin */
+  .theme-grid-mini {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .theme-dot {
+    width: 44px;
+    height: 44px;
+  }
+
+  .theme-dot.active {
+    transform: none;
+    border-width: 3px;
+  }
+
+  .gen-styles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Carte 058 */
+@media (max-width: 1024px) {
+  .onboarding-wrapper {
+    padding: 0.5rem 0;
+  }
+
+  .onboarding-subtitle {
+    margin-bottom: 1.5rem;
+  }
+
+  .onboarding-form-premium {
+    padding: 0.75rem;
+  }
+
+  .onboarding-section-box {
+    padding: 0.75rem;
+  }
+
+  /* Boutons de l'avatar (aléatoire, générer, envoyer une image) : 44 pixels au lieu de 36 */
+  .upload-btn-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .btn-group-avatar {
+    gap: 0.75rem;
+  }
+
+  /*
+   * Champs en 16 pixels : en dessous, l'iPhone zoome la page quand on tape dedans.
+   * !important : la recherche de ligues (MultiLigueSearch) écrit sa taille et sa hauteur dans l'attribut style.
+   */
+  .onboarding-section-box input,
+  .onboarding-section-box select,
+  .onboarding-section-box textarea {
+    font-size: 16px !important;
+    min-height: 44px;
+  }
+
+  /* Intitulés « Ligue référencée » et « Autre » : 12 pixels au moins (11 pixels écrits dans l'attribut style) */
+  .onboarding-section-box .form-group-sub label {
+    font-size: 0.75rem !important;
+  }
+
+  .onboarding-section-box .ligue-search-input {
+    height: 44px !important;
+  }
+
+  .onboarding-section-box .add-custom-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Générateur d'avatar (fenêtre) : champ en 16 pixels, styles à 44 pixels */
+  .avatar-gen-modal input {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  .style-item {
+    min-height: 44px;
+    font-size: 0.85rem;
+  }
+}

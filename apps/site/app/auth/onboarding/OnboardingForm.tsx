@@ -158,7 +158,7 @@ export default function OnboardingForm({ user }: { user: any }) {
                    <div className="btn-group-avatar">
                       <button type="button" className="upload-btn-icon" onClick={handleRandomAvatar} title="Aléatoire"><Dices size={16} /></button>
                       <button type="button" className="upload-btn-icon" onClick={() => setIsGeneratorOpen(true)} title="Générer"><Sparkles size={16} /></button>
-                      <button type="button" className="upload-btn-icon" onClick={() => fileInputRef.current?.click()}>{isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}</button>
+                      <button type="button" className="upload-btn-icon" onClick={() => fileInputRef.current?.click()} title="Envoyer une image" aria-label="Envoyer une image">{isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}</button>
                    </div>
                 </div>
              </div>

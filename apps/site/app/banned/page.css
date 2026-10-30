@@ -1,0 +1,76 @@
+/*
+ * Page des membres bannis (carte 058).
+ * Couleurs : uniquement des variables de thème, pour rester lisible dans les 7 thèmes (y compris le thème clair).
+ */
+.banned-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.premium-card.banned-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.banned-icon-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Pastille pleine couleur « danger » du thème, icône dans la couleur prévue pour le texte des pastilles */
+.banned-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 50%;
+  background: var(--danger);
+  color: var(--badge-text);
+  box-shadow: var(--glass-shadow);
+}
+
+.banned-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.banned-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+/* Encadré de la raison : liseré gauche dans la couleur « danger » du thème */
+.banned-reason {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--danger);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+/* Pas de liseré de titre propre au thème (saison3) : l'encadré a déjà le sien */
+.banned-reason h2 {
+  border-left: none;
+  padding-left: 0;
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+  color: var(--foreground);
+}
+
+.banned-reason p {
+  margin: 0;
+  color: var(--foreground);
+  font-style: italic;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}

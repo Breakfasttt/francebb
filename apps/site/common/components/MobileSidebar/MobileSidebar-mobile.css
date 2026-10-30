@@ -1,0 +1,54 @@
+/*
+ * Menu latéral du téléphone (carte 058).
+ * Profil du membre connecté : avant, la pastille de profil et le bouton « Déconnexion » partageaient une ligne ;
+ * le bouton gardait toute sa largeur et le pseudo était coupé (« Mo… »). Ils sont maintenant l'un sous l'autre,
+ * chacun sur toute la largeur du menu et à 44 pixels de haut. La barre de navigation de l'ordinateur ne change pas.
+ */
+@media (max-width: 1024px) {
+  .mobile-sidebar-user-section .signin-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+
+  .mobile-sidebar-user-section .user-capsule {
+    flex: none;
+    height: 44px;
+    padding: 0 14px 0 8px;
+  }
+
+  .mobile-sidebar-user-section .user-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mobile-sidebar-user-section .bb-button.signin-action {
+    width: 100%;
+    height: 44px;
+    justify-content: center;
+  }
+
+  /* Logo (lien vers l'accueil) : zone de toucher de 44 pixels de haut */
+  .mobile-sidebar-header .site-logo-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Croix de fermeture et icônes (messagerie, modération, administration) : 44 pixels */
+  .mobile-sidebar-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mobile-utility-icons .nav-icon-capsule {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Liens du pied de menu : zone de toucher de 44 pixels de haut */
+  .mobile-footer-links a {
+    min-height: 44px;
+    padding: 0 0.5rem;
+  }
+}

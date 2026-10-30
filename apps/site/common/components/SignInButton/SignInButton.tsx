@@ -34,7 +34,7 @@ export function SignInButton({ user, hubLogout = false }: SignInButtonProps) {
 
   if (!user) {
     return (
-      <CTAButton href="/auth/login" icon={LogIn} style={{ height: '40px' }}>
+      <CTAButton href="/auth/login" icon={LogIn} className="signin-action">
         Connexion
       </CTAButton>
     );
@@ -59,7 +59,7 @@ export function SignInButton({ user, hubLogout = false }: SignInButtonProps) {
       <ClassicButton
         onClick={handleDisconnect}
         icon={LogOut}
-        style={{ height: '40px' }}
+        className="signin-action"
       >
         Déconnexion
       </ClassicButton>

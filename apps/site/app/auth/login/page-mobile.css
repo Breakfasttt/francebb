@@ -1,0 +1,54 @@
+/*
+ * Connexion sur téléphone (carte 058). Aussi chargé par l'inscription (`/auth/onboarding`), qui reprend
+ * le conteneur `.login-container` et le titre `.login-title`.
+ * Les marges de la carte sont réduites : avant, il ne restait que 212 pixels de large pour les boutons
+ * sur un petit téléphone (360 pixels), et leur texte passait sur deux lignes.
+ */
+@media (max-width: 1024px) {
+  .login-container {
+    padding: 1rem;
+    min-height: auto;
+    justify-content: flex-start;
+  }
+
+  .login-card {
+    padding: 2rem 1.25rem !important; /* le style ordinateur force déjà sa marge intérieure avec !important */
+  }
+
+  .login-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-methods {
+    gap: 1rem;
+  }
+
+  .login-methods .bb-button {
+    min-height: 48px;
+  }
+
+  .login-divider {
+    margin: 0.5rem 0;
+  }
+
+  .input-with-icon input {
+    min-height: 48px;
+    font-size: 16px; /* 16 pixels au moins : sinon l'iPhone zoome la page quand on tape l'adresse */
+  }
+
+  .login-footer {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Section de développement (absente en production) : boutons à 44 pixels aussi */
+  .dev-back-button {
+    min-height: 44px;
+    padding: 0 0.5rem;
+  }
+
+  .dev-user-card {
+    min-height: 56px;
+  }
+}

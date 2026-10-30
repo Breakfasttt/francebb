@@ -7,16 +7,27 @@
  * - champs de saisie sous 16 pixels (l'iPhone zoome alors automatiquement en entrant dedans).
  * Lancé seulement avec MOBILE_AUDIT=1 (relevé, pas un test bloquant) : écrit logs/mobile-audit.json.
  */
-import { test, type Page } from "@playwright/test";
+import { test, type Browser, type Page } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { E2E, loginAs } from "./fixtures";
+import { E2E, loginAs, withTestDb } from "./fixtures";
 
 const PHONES = [
   { name: "téléphone récent (390 × 844)", width: 390, height: 844 },
   { name: "petit téléphone (360 × 640)", width: 360, height: 640 },
 ];
 
-const PAGES: { path: string; connected: boolean }[] = [
+/**
+ * Qui visite la page (carte 058) : `connected: false` ouvre la page en visiteur, sans session (avant, tout était
+ * mesuré connecté en modérateur, si bien que `/auth/login` renvoyait vers l'accueil et n'était jamais mesurée).
+ * `as` désigne un membre particulier : un nouveau membre qui n'a pas fini son inscription (`/auth/onboarding`)
+ * ou un membre banni (`/banned`). Sinon, la page est ouverte en modérateur.
+ */
+type Visitor = "visiteur" | "moderateur" | "nouveau" | "banni";
+
+/** Membre de test créé par l'audit seulement : inscription non terminée, donc renvoyé vers /auth/onboarding. */
+const NEWCOMER_ID = "e2e_audit_newcomer";
+
+const PAGES: { path: string; connected: boolean; as?: Visitor }[] = [
   { path: "/", connected: false },
   { path: "/forum", connected: false },
   { path: `/forum/topic/${E2E.topicId}`, connected: true },
@@ -38,12 +49,37 @@ const PAGES: { path: string; connected: boolean }[] = [
   { path: "/jouer", connected: false },
   { path: "/mentions-legales", connected: false },
   { path: "/auth/login", connected: false },
+  { path: "/auth/onboarding", connected: true, as: "nouveau" },
+  { path: "/banned", connected: true, as: "banni" },
   { path: "/moderation", connected: true },
   { path: "/administration", connected: true },
 ];
 
+function visitorOf(target: { connected: boolean; as?: Visitor }): Visitor {
+  return target.as ?? (target.connected ? "moderateur" : "visiteur");
+}
+
+/** Ouvre un navigateur séparé par visiteur, pour que chacun garde sa propre session (ou aucune). */
+async function openPageAs(browser: Browser, visitor: Visitor): Promise<Page> {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  // Bandeau cookies masqué : il apparaît après 1,5 s et fausserait les mesures
+  await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
+  const userIds: Record<Visitor, string | null> = {
+    visiteur: null,
+    moderateur: E2E.modoId,
+    nouveau: NEWCOMER_ID,
+    banni: E2E.bannedId,
+  };
+  const userId = userIds[visitor];
+  if (userId) await loginAs(page, userId);
+  return page;
+}
+
 type PageReport = {
   path: string;
+  finalPath: string;
+  visitor: Visitor;
   phone: string;
   overflowPx: number;
   cutElements: string[];
@@ -116,18 +152,26 @@ test.describe("audit mobile", () => {
   test.skip(process.env.MOBILE_AUDIT !== "1", "relevé lancé à la demande : MOBILE_AUDIT=1");
   test.setTimeout(10 * 60_000);
 
-  test("relevé de toutes les pages", async ({ page }) => {
+  test("relevé de toutes les pages", async ({ browser }) => {
     const reports: PageReport[] = [];
-    // Bandeau cookies masqué : il apparaît après 1,5 s et fausserait les mesures
-    await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
-    // Le modérateur voit toutes les pages (y compris modération et administration en lecture)
-    await loginAs(page, E2E.modoId);
+    // Nouveau membre (inscription non terminée), recréé à chaque relevé
+    await withTestDb((prisma) => prisma.user.upsert({
+      where: { id: NEWCOMER_ID },
+      update: { hasFinishedOnboarding: false },
+      create: { id: NEWCOMER_ID, name: "Nouveau E2E", email: "newcomer@e2e.test", hasFinishedOnboarding: false },
+    }));
+    // Un navigateur par visiteur ; le modérateur voit toutes les pages réservées (modération et administration en lecture)
+    const pages = new Map<Visitor, Page>();
+    for (const visitor of new Set(PAGES.map(visitorOf))) pages.set(visitor, await openPageAs(browser, visitor));
     for (const phone of PHONES) {
-      await page.setViewportSize({ width: phone.width, height: phone.height });
       for (const target of PAGES) {
+        const page = pages.get(visitorOf(target))!;
+        await page.setViewportSize({ width: phone.width, height: phone.height });
         const response = await page.goto(target.path, { waitUntil: "networkidle" }).catch(() => null);
         const metrics = await measure(page);
-        reports.push({ path: target.path, phone: phone.name, status: response?.status(), ...metrics });
+        // Adresse finale : une redirection (page réservée, membre déjà connecté…) se voit dans le relevé
+        const finalPath = new URL(page.url()).pathname;
+        reports.push({ path: target.path, finalPath, visitor: visitorOf(target), phone: phone.name, status: response?.status(), ...metrics });
       }
     }
     mkdirSync("logs", { recursive: true });

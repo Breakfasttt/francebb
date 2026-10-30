@@ -4,7 +4,9 @@ import { prisma } from "@/lib/prisma";
 import OnboardingForm from "./OnboardingForm";
 import OnboardingSuccess from "./OnboardingSuccess";
 import "../login/page.css";
+import "../login/page-mobile.css";
 import "./onboarding.css";
+import "./onboarding-mobile.css";
 
 export const metadata = {
   title: "Bienvenue - BBFrance",

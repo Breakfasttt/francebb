@@ -96,3 +96,11 @@
   border-color: var(--header-foreground);
   transform: translateY(-1px);
 }
+
+/*
+ * Boutons « Connexion » et « Déconnexion » : 40 pixels de haut dans la barre de navigation (ordinateur).
+ * Le menu latéral du téléphone les agrandit à 44 pixels (MobileSidebar.css).
+ */
+.bb-button.signin-action {
+  height: 40px;
+}

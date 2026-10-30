@@ -2,6 +2,7 @@ import { signIn, auth, isHubAuthMode } from "@/auth";
 import { redirect } from "next/navigation";
 import { safeCallbackUrl } from "@/lib/safeRedirect";
 import "./page.css";
+import "./page-mobile.css";
 import { Mail, LogIn } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import DevLoginSection from "./DevLoginSection";

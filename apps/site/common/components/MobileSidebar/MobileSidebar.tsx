@@ -7,6 +7,7 @@ import { X, Home, Map, MessageSquare, ShieldAlert, Settings, Mail, Github, BookO
 import SiteLogo from '@/common/components/SiteLogo/SiteLogo';
 import { SignInButton } from "@/common/components/SignInButton/SignInButton";
 import "./MobileSidebar.css";
+import "./MobileSidebar-mobile.css";
 
 interface MobileSidebarProps {
   isOpen: boolean;
