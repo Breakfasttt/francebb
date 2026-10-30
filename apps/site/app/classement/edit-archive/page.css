@@ -196,13 +196,13 @@
     border: none;
 }
 
-.admin-action-btn.outline {
+.admin-action-btn.is-outline {
     background: transparent;
     border: 1px solid var(--glass-border);
     color: var(--foreground);
 }
 
-.admin-action-btn.outline:hover {
+.admin-action-btn.is-outline:hover {
     background: var(--glass-border);
     border-color: var(--text-muted);
 }

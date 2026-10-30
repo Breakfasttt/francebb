@@ -257,7 +257,7 @@ export default async function TournamentsPage({
                         <div className="list-col-format">
                           <div className="format-badges">
                             <span className="f-badge">{t.gameEdition || "BB20"}</span>
-                            <span className="f-badge outline">{t.ruleset || "NAF"}</span>
+                            <span className="f-badge is-outline">{t.ruleset || "NAF"}</span>
                           </div>
                         </div>
 

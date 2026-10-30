@@ -338,7 +338,7 @@ export default function QuizEngine({ userRole }: { userRole?: string | null }) {
 
           <h1 className="question-text">{currentQ.question}</h1>
 
-          <div className={`options-grid ${phase === "reading" || phase === "loading" ? "hidden" : ""}`}>
+          <div className={`options-grid ${phase === "reading" || phase === "loading" ? "is-hidden" : ""}`}>
             {currentQ.options.map((option, idx) => {
               const isHidden = hiddenOptions.includes(idx);
               const isCorrect = reveal !== null && idx === reveal.correctIndex;
@@ -350,7 +350,7 @@ export default function QuizEngine({ userRole }: { userRole?: string | null }) {
                 else if (isSelected && reveal) className += " incorrect";
                 else className += " disabled";
               } else if (isHidden) {
-                className += " invisible";
+                className += " is-invisible";
               }
 
               return (

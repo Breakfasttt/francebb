@@ -65,7 +65,7 @@
   border-color: var(--danger);
 }
 
-.resource-card.grid:hover {
+.resource-card.view-grid:hover {
   transform: translateY(-5px);
   border-color: var(--primary-transparent);
 }
