@@ -1,0 +1,21 @@
+/* Colonne « Publication » des formulaires de sujet et de tournoi, sur tablette et téléphone (carte 064).
+ * Les colonnes latérales du forum sont masquées sur téléphone (page-mobile.css) ; celle-ci contient le bouton
+ * d'envoi du formulaire, elle reste donc affichée, en pleine largeur sous le message. */
+@media (max-width: 1024px) {
+  .forum-sidebar.create-topic-sidebar {
+    display: block !important;
+    width: 100% !important;
+    flex: none !important;
+    margin-top: 1.5rem;
+  }
+
+  /* Cases « Épingler » et « Verrouiller » (modérateurs) : toute la ligne, case et texte, se touche du pouce */
+  .create-topic-sidebar .forum-sidebar-label {
+    min-height: 44px;
+  }
+
+  /* En une seule colonne, le bloc n'a plus à suivre le défilement */
+  .create-topic-sidebar .sidebar-sticky-inner {
+    position: static;
+  }
+}

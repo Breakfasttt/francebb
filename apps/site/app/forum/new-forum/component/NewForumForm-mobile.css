@@ -1,0 +1,16 @@
+/* Formulaire de création d'un forum, sur tablette et téléphone : marges réduites et listes l'une sous l'autre,
+ * pour que rien ne dépasse de l'écran. */
+@media (max-width: 1024px) {
+  .new-forum-card {
+    padding: 1.25rem;
+  }
+
+  .new-forum-placement {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Côte à côte, les deux boutons élargissaient la carte au-delà d'un petit écran */
+  .new-forum-actions {
+    flex-direction: column;
+  }
+}

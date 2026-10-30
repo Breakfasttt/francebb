@@ -5,6 +5,7 @@ import { Search, X, User as UserIcon } from "lucide-react";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { searchUsersAction } from "@/app/forum/actions";
 import "./UserSearch.css";
+import "./UserSearch-mobile.css";
 
 interface User {
   id: string;

@@ -10,6 +10,7 @@ import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { createTopic } from "../actions";
+import ActionForm from "@/common/components/Form/ActionForm";
 import { prisma } from "@/lib/prisma";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
@@ -67,7 +68,7 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
  
       <ForumBreadcrumbs items={breadcrumbs} />
 
-      <form action={createTopic}>
+      <ActionForm action={createTopic} fallbackError="La création du sujet a échoué.">
         <input type="hidden" name="forumId" value={forumId} />
         
         <div className="forum-layout">
@@ -97,7 +98,7 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
             icon={<MessageSquarePlus size={18} />}
           />
         </div>
-      </form>
+      </ActionForm>
    </main>
   );
 }

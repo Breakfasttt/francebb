@@ -12,6 +12,10 @@ import { useState, useMemo } from "react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import ActionForm from "@/common/components/Form/ActionForm";
+import type { ActionResult } from "@/lib/actionResult";
+import "./NewForumForm.css";
+import "./NewForumForm-mobile.css";
 
 interface Forum {
   id: string;
@@ -31,7 +35,7 @@ interface NewForumFormProps {
   allForums: Forum[];
   initialCategoryId?: string;
   initialParentForumId?: string;
-  createAction: (formData: FormData) => Promise<void>;
+  createAction: (formData: FormData) => Promise<ActionResult>;
 }
 
 export default function NewForumForm({ 
@@ -64,34 +68,34 @@ export default function NewForumForm({
   }, [selectedCat, selectedParent, allForums]);
 
   return (
-    <div style={{ background: 'var(--card-bg)', backdropFilter: 'blur(10px)', padding: '2.5rem', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
-      <form action={createAction} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div className="new-forum-card">
+      <ActionForm action={createAction} fallbackError="La création du forum a échoué." className="new-forum-form">
         <div className="form-group">
-          <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Nom du forum</label>
+          <label htmlFor="name" className="new-forum-label">Nom du forum</label>
           <input
             type="text"
             id="name"
             name="name"
             required
             placeholder="Ex: Discussions générales, Archives..."
-            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
+            className="new-forum-field"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="description" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Description</label>
+          <label htmlFor="description" className="new-forum-label">Description</label>
           <textarea
             id="description"
             name="description"
             rows={3}
             placeholder="Décrivez brièvement le contenu de ce forum"
-            style={{ width: '100%', padding: '0.8rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--foreground)' }}
+            className="new-forum-field"
           ></textarea>
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 600 }}>Type et Emplacement</label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <label className="new-forum-label">Type et Emplacement</label>
+          <div className="new-forum-placement">
             <ClassicSelect
               label="Catégorie principale"
               id="categoryId"
@@ -138,22 +142,20 @@ export default function NewForumForm({
 
 
 
-        <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <AdminButton 
-            type="submit" 
+        <div className="new-forum-actions">
+          <AdminButton
+            type="submit"
             icon={FolderPlus}
-            style={{ flex: 1 }}
           >
             Créer le forum
           </AdminButton>
-          <ClassicButton 
-            href="/forum" 
-            style={{ flex: 1 }}
+          <ClassicButton
+            href="/forum"
           >
             Annuler
           </ClassicButton>
         </div>
-      </form>
+      </ActionForm>
     </div>
   );
 }

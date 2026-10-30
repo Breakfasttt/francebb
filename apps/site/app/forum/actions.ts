@@ -220,12 +220,16 @@ export async function getSubForumCount(parentForumId: string) {
   });
 }
 
-export async function createForum(formData: FormData) {
+/**
+ * Crée un forum (modérateurs seulement). En cas de refus, renvoie `{ success: false, error }` que le formulaire
+ * affiche dans une notification ; en cas de réussite, redirige vers le forum parent ou la liste des forums.
+ */
+export async function createForum(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
   const userRole = session?.user?.role;
 
   if (!userRole || !isModerator(userRole)) {
-    throw new Error("Seuls les modérateurs peuvent créer des forums.");
+    return { success: false, error: "Seuls les modérateurs peuvent créer des forums." };
   }
 
   const name = formData.get("name") as string;
@@ -234,10 +238,19 @@ export async function createForum(formData: FormData) {
   const parentForumId = formData.get("parentForumId") as string || null;
   const afterId = formData.get("afterId") as string;
 
+  if (!name?.trim()) {
+    return { success: false, error: "Le nom du forum est obligatoire." };
+  }
+  // Deux forums ne peuvent pas porter le même nom (contrainte de la base) : on le dit clairement au modérateur
+  const sameName = await prisma.forum.findUnique({ where: { name }, select: { id: true } });
+  if (sameName) {
+    return { success: false, error: `Un forum porte déjà le nom « ${name} ».` };
+  }
+
   if (parentForumId) {
     const count = await prisma.forum.count({ where: { parentForumId } });
     if (count >= 5) {
-      throw new Error("Le nombre maximum de sous-forums (5) a été atteint pour ce forum.");
+      return { success: false, error: "Le nombre maximum de sous-forums (5) a été atteint pour ce forum." };
     }
   }
 
@@ -399,10 +412,15 @@ export async function deleteForum(forumId: string, forumName: string): Promise<A
   redirect(`/forum?deletedForum=${encodeURIComponent(forumName)}`);
 }
 
-export async function createTopic(formData: FormData) {
+/**
+ * Crée un sujet et son premier message (et le tournoi, dans un forum de tournois). En cas de refus, renvoie
+ * `{ success: false, error }` que le formulaire affiche dans une notification ; en cas de réussite, redirige
+ * vers le nouveau sujet.
+ */
+export async function createTopic(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté pour créer un sujet.");
+    return { success: false, error: "Vous devez être connecté pour créer un sujet." };
   }
 
   const title = formData.get("title") as string;
@@ -412,7 +430,7 @@ export async function createTopic(formData: FormData) {
   const isLocked = formData.get("isLocked") === "on";
 
   if (!title || !content || !forumId) {
-    throw new Error(`Titre, contenu et forum sont obligatoires. (Titre: ${!!title}, Contenu: ${!!content}, Forum: ${!!forumId})`);
+    return { success: false, error: "Le titre et le message du sujet sont obligatoires." };
   }
 
   // Vérifier l'accès (rôle), si le forum est locké ou un forum de tournoi
@@ -421,10 +439,10 @@ export async function createTopic(formData: FormData) {
     where: { id: forumId, ...forumAccessWhere(roles) },
     select: { isLocked: true, isTournamentForum: true }
   });
-  if (!forum) throw new Error("Forum introuvable.");
+  if (!forum) return { success: false, error: "Forum introuvable." };
 
   if (forum?.isLocked && !isModerator(session.user.role)) {
-    throw new Error("Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet.");
+    return { success: false, error: "Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet." };
   }
 
   // Données de tournoi si applicable
@@ -432,7 +450,7 @@ export async function createTopic(formData: FormData) {
   if (forum?.isTournamentForum) {
     const tDateStr = formData.get("tDate") as string;
     const tEndDateStr = formData.get("tEndDate") as string;
-    if (!tDateStr) throw new Error("La date de début du tournoi est obligatoire.");
+    if (!tDateStr) return { success: false, error: "La date de début du tournoi est obligatoire." };
     
     const startDate = new Date(tDateStr);
     const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;

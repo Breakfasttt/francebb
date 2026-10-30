@@ -78,12 +78,13 @@ export async function searchAddressAction(query: string) {
 }
 
 /**
- * Crée une nouvelle ligue.
+ * Crée une nouvelle ligue. En cas de refus, renvoie `{ success: false, error }` que le formulaire affiche dans
+ * une notification ; en cas de réussite, redirige vers la page de la ligue.
  */
-export async function createLigue(formData: FormData) {
+export async function createLigue(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté pour créer une ligue.");
+    return { success: false, error: "Vous devez être connecté pour créer une ligue." };
   }
 
   const name = formData.get("name") as string;
@@ -98,7 +99,7 @@ export async function createLigue(formData: FormData) {
   const image = formData.get("image") as string;
 
   if (!name || !acronym) {
-    throw new Error("Le nom et l'acronyme sont obligatoires.");
+    return { success: false, error: "Le nom et l'acronyme de la ligue sont obligatoires." };
   }
 
   // Utiliser les coordonnées manuelles si fournies (depuis le MapPicker)

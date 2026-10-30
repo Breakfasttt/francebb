@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { createLigue } from "@/app/ligues/actions";
+import ActionForm from "@/common/components/Form/ActionForm";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearchWrapper from "./UserSearchWrapper";
 import LigueLocationFields from "./LigueLocationFields";
@@ -41,7 +42,7 @@ export default async function CreateLiguePage() {
         backHref="/ligues" 
       />
 
-      <form action={createLigue} className="ligue-form">
+      <ActionForm action={createLigue} className="ligue-form" fallbackError="La création de la ligue a échoué.">
         <div className="form-layout">
           <div className="form-main">
             <PremiumCard style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -126,7 +127,7 @@ export default async function CreateLiguePage() {
             </PremiumCard>
           </aside>
         </div>
-      </form>
+      </ActionForm>
 
     </main>
   );

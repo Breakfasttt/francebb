@@ -4,7 +4,7 @@
  */
 import { PrismaClient } from "../../prisma/generated-client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { E2E, E2E_DATABASE_URL, E2E_THEMES, themedModoId } from "./fixtures";
+import { E2E, E2E_DATABASE_URL, E2E_THEMES, themedBannedId, themedModoId } from "./fixtures";
 
 export default async function globalSetup() {
   // Client direct (le loader Playwright ne résout pas l'alias "@/" utilisé par lib/prisma.ts)
@@ -40,6 +40,24 @@ export default async function globalSetup() {
     },
   });
 
+  // Un membre banni par thème, pour les captures de la page des bannis (même nom et même raison partout)
+  for (const theme of E2E_THEMES) {
+    const id = themedBannedId(theme);
+    await prisma.user.upsert({
+      where: { id },
+      update: { theme, isBanned: true },
+      create: {
+        id,
+        name: "Banni E2E",
+        email: `${id}@e2e.test`,
+        theme,
+        hasFinishedOnboarding: true,
+        isBanned: true,
+        banReason: "Test e2e",
+      },
+    });
+  }
+
   await prisma.user.upsert({
     where: { id: E2E.modoId },
     update: {},
@@ -63,7 +81,7 @@ export default async function globalSetup() {
   const forum = await prisma.forum.upsert({
     where: { name: E2E.forumName },
     update: {},
-    create: { name: E2E.forumName, categoryId: category.id },
+    create: { id: E2E.forumId, name: E2E.forumName, categoryId: category.id },
   });
   await prisma.topic.upsert({
     where: { id: E2E.topicId },

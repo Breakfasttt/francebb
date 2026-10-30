@@ -12,4 +12,11 @@
   .btn-upload-blason {
     min-height: 44px;
   }
+
+  /* Petits textes du blason lisibles sans zoom (12 pixels au moins). « !important » : le composant déclare
+     ces tailles dans son propre style, plus prioritaire qu'une simple classe. */
+  .blason-placeholder,
+  .blason-hint {
+    font-size: 0.75rem !important;
+  }
 }

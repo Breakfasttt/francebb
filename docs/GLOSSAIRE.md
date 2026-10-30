@@ -58,7 +58,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
-| **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. |
+| **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. Ce petit serveur ne sert qu'une connexion à la fois : un test qui ouvre sa propre connexion pendant que le site tourne doit attendre que le site lâche la sienne, parfois longtemps (carte 067). Préparer plutôt les données une fois pour toutes dans `globalSetup.ts`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
 | **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur BBFrance, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
 | **Push** | Envoi des commits locaux vers GitHub. |

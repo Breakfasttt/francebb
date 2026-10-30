@@ -1,0 +1,7 @@
+/* Recherche de membres, sur tablette et téléphone (carte 064).
+ * Texte du champ à 16 pixels : en dessous, l'iPhone zoome tout seul quand on touche le champ. */
+@media (max-width: 1024px) {
+  .user-search-input-wrapper input {
+    font-size: 1rem;
+  }
+}

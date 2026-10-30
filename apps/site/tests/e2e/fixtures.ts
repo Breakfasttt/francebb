@@ -23,6 +23,8 @@ export const E2E = {
   bannedId: "e2e_banned",
   categoryName: "E2E Catégorie",
   forumName: "E2E Forum",
+  // Carte 064 : identifiant fixe, pour ouvrir directement la page de création d'un sujet dans ce forum
+  forumId: "e2e_forum",
   topicId: "e2e_topic",
   topicTitle: "E2E Topic de test",
   postContent: "Premier message du topic e2e",
@@ -50,6 +52,15 @@ export const E2E_THEMES = ["default", "light", "blood", "malpierre", "nehekhara"
  */
 export function themedModoId(theme: string): string {
   return `e2e_modo_${theme}`;
+}
+
+/**
+ * Carte 067 : de même, un membre banni par thème pour les captures de la page des bannis. Le test n'a ainsi plus
+ * besoin de changer le thème du banni dans la base pendant que le site tourne. La petite base locale n'accepte
+ * qu'une connexion à la fois : le test attendait que le site lâche la sienne, parfois plus de 60 secondes.
+ */
+export function themedBannedId(theme: string): string {
+  return `e2e_banned_${theme}`;
 }
 
 export async function loginAs(page: Page, userId: string) {

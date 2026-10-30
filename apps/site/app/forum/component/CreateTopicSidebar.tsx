@@ -5,8 +5,7 @@ import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import "./CreateTopicSidebar.css";
-
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
+import "./CreateTopicSidebar-mobile.css";
 
 interface CreateTopicSidebarProps {
   forumId: string;
@@ -74,17 +73,11 @@ export default function CreateTopicSidebar({ forumId, userRole = "COACH", submit
     </div>
   );
 
+  // Carte 064 : la colonne reste dans le formulaire, aussi sur téléphone (elle passe alors sous le message).
+  // Déplacée dans le menu latéral, elle sortait du formulaire : son bouton d'envoi et ses cases n'y étaient plus reliés.
   return (
-    <>
-      <aside className="forum-sidebar desktop-only">
-        {content}
-      </aside>
-
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="mobile-sidebar-section mobile-only">
-          {content}
-        </div>
-      </GlobalPortal>
-    </>
+    <aside className="forum-sidebar create-topic-sidebar">
+      {content}
+    </aside>
   );
 }

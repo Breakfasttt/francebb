@@ -36,7 +36,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 
 - « Transférer propriété » et « Supprimer la ligue » (bloc « Gestion Ligue », `LigueAdminActions.tsx`) ouvrent une fenêtre de confirmation ; le transfert demande de choisir le nouveau chef avec la recherche de membres (`UserSearch`). Réservés au chef de ligue et à la modération, vérifiés côté serveur. `transferLigueOwnership` refuse un nouveau chef inexistant ou banni ; transfert et suppression sont tracés au journal de modération (carte 051).
 - Supprimer une ligue garde ses tournois et ses articles : leur lien vers la ligue est seulement retiré.
-- `updateLigue`, `deleteLigue` et `transferLigueOwnership` renvoient `{ success, error }` (carte 052 pour `updateLigue`, dont l'erreur s'affiche maintenant dans la notification). `createLigue` lève encore une erreur (`throw`) : elle sert directement d'action de formulaire sur `/ligues/create`.
+- `updateLigue`, `deleteLigue` et `transferLigueOwnership` renvoient `{ success, error }` (carte 052 pour `updateLigue`, dont l'erreur s'affiche maintenant dans la notification). `createLigue` aussi depuis la carte 064 : son formulaire passe par `ActionForm`, qui affiche le refus dans une notification sans vider les champs, et elle redirige vers la nouvelle ligue en cas de succès.
 - `searchAddressAction` et `reverseGeocodeAction` sont réservées aux membres connectés (carte 050) : sinon n'importe qui pouvait faire passer des requêtes Nominatim par notre serveur, dont la règle d'usage limite à une requête par seconde.
 - La clé ImgBB du blason est publique (`NEXT_PUBLIC_IMGBB_API_KEY`).
 - Les coordonnées : si latitude et longitude manquent, le serveur les calcule depuis la ville et l'adresse (géocodage) ; une ligue sans coordonnées n'apparaît pas sur la carte.
@@ -61,5 +61,5 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 - Sur téléphone : filtres de `/ligues` derrière le bouton flottant, formulaire de modification sur une colonne ; aucun contenu coupé ni cible trop petite sur `/ligues` à 360, 390 et 430 pixels (carte 054).
 - Sur téléphone, `/carte` (carte 056) : aucune cible trop petite à 360, 390 et 430 pixels, hors les deux liens de texte du crédit obligatoire « Leaflet | © OpenStreetMap ».
 - Carte 052 : les liens de connexion de `/ligues/create` et de la page d'édition utilisent `?callbackUrl=` ; le membre revient bien sur la page après s'être connecté.
-- Manque : `createLigue` sans `throw`.
+- Carte 064 : `createLigue` sans `throw`, test e2e du refus (nom et acronyme vides), aussi en taille téléphone. Sur téléphone, le champ de recherche des commissaires est en 16 pixels (`UserSearch-mobile.css`) et les petits textes du blason à 12 pixels.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

@@ -150,7 +150,9 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       const res = await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
       if (!res.success) toast.error(res.error || "Erreur lors de la modification du tournoi.");
     } else {
-      await createTopic(formData);
+      // Même chose à la création : redirection vers le nouveau sujet en cas de succès, notification sinon
+      const res = await createTopic(formData);
+      if (res && !res.success) toast.error(res.error || "Erreur lors de la création du tournoi.");
     }
   };
 

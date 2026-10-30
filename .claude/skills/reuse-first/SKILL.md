@@ -21,6 +21,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 |---|---|
 | Bouton | `Button/` : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton` |
 | Champ / select | `Form/ClassicInput`, `Form/ClassicSelect` (jamais `<select>`) |
+| Formulaire envoyé à une action serveur qui renvoie `ActionResult` (refus en notification, champs gardés) | `Form/ActionForm` (au lieu de `<form action={monAction}>`) |
 | Conteneur carte | `PremiumCard` |
 | Modale / confirmation | `Modal`, `ConfirmModal`, `ReportModal` (jamais `window.confirm`) ; modale spécifique : `Dialog*` de `@bbfrance/ui` |
 | Notification | `toast` de `@bbfrance/ui` (sonner) |

@@ -33,6 +33,10 @@ const PAGES: { path: string; connected: boolean; as?: Visitor }[] = [
   { path: `/forum/topic/${E2E.topicId}`, connected: true },
   { path: `/forum/topic/${E2E.topicId}/reply`, connected: true },
   { path: "/forum/search", connected: true },
+  // Carte 064 : les trois formulaires de création
+  { path: "/forum/new-forum", connected: true },
+  { path: `/forum/new-topic?forumId=${E2E.forumId}`, connected: true },
+  { path: "/ligues/create", connected: true },
   { path: "/tournois", connected: false },
   { path: "/classement", connected: false },
   { path: "/statistiques", connected: false },

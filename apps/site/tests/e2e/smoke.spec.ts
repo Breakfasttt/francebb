@@ -104,6 +104,49 @@ test("un membre sans avatar affiche l'avatar par défaut, sans image introuvable
   expect(missingImages).toEqual([]);
 });
 
+// Carte 064 : un refus de l'action serveur s'affiche en notification, sans page d'erreur, et la saisie reste en place
+test("créer un forum au nom déjà pris affiche une notification d'erreur", async ({ page }) => {
+  await loginAs(page, E2E.modoId);
+  await page.goto("/forum/new-forum", { waitUntil: "networkidle" });
+  await page.locator("#name").fill(E2E.forumName);
+  await page.getByRole("button", { name: "Créer le forum" }).click();
+  await expect(page.getByText(`Un forum porte déjà le nom « ${E2E.forumName} ».`)).toBeVisible();
+  await expect(page).toHaveURL(/\/forum\/new-forum/);
+  await expect(page.locator("#name")).toHaveValue(E2E.forumName);
+});
+
+test("créer un sujet sans message affiche une notification d'erreur", async ({ page }) => {
+  await loginAs(page, E2E.coachId);
+  await page.goto(`/forum/new-topic?forumId=${E2E.forumId}`, { waitUntil: "networkidle" });
+  await page.locator('input[name="title"]').fill("Sujet sans message");
+  await page.getByRole("button", { name: "Créer le sujet" }).click();
+  await expect(page.getByText("Le titre et le message du sujet sont obligatoires.")).toBeVisible();
+  await expect(page).toHaveURL(/\/forum\/new-topic/);
+  await expect(page.locator('input[name="title"]')).toHaveValue("Sujet sans message");
+});
+
+test("après la création d'un sujet, le membre arrive sur le nouveau sujet", async ({ page }) => {
+  // Forum réservé aux modérateurs : le sujet créé ne change pas les pages vues par les visiteurs (captures des thèmes)
+  const title = `Sujet créé ${Date.now()}`;
+  await loginAs(page, E2E.modoId);
+  await page.goto(`/forum/new-topic?forumId=${E2E.secretForumId}`, { waitUntil: "networkidle" });
+  await page.locator('input[name="title"]').fill(title);
+  await page.locator('textarea[name="content"]').fill("Premier message du sujet créé par le test");
+  await page.getByRole("button", { name: "Créer le sujet" }).click();
+  await page.waitForURL(/\/forum\/topic\//);
+  await expect(page.getByText(title).first()).toBeVisible();
+});
+
+test("créer une ligue sans nom affiche une notification d'erreur", async ({ page }) => {
+  await loginAs(page, E2E.coachId);
+  await page.goto("/ligues/create", { waitUntil: "networkidle" });
+  // Le navigateur bloquerait l'envoi (champs obligatoires) : on le laisse passer pour tester le contrôle du serveur
+  await page.locator("form.ligue-form").evaluate((form) => ((form as HTMLFormElement).noValidate = true));
+  await page.getByRole("button", { name: "Créer la Ligue" }).click();
+  await expect(page.getByText("Le nom et l'acronyme de la ligue sont obligatoires.")).toBeVisible();
+  await expect(page).toHaveURL(/\/ligues\/create/);
+});
+
 test("choisir le thème « Sombre » dans le profil enregistre l'identifiant default", async ({ page }) => {
   // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts)
   const readTheme = () =>

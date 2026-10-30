@@ -4,7 +4,7 @@
  * Captures Windows : comparaison locale uniquement (rendu des polices différent sous Linux en CI).
  */
 import { test, expect, type Page } from "@playwright/test";
-import { E2E, E2E_THEMES, loginAs, themedModoId, withTestDb } from "./fixtures";
+import { E2E, E2E_THEMES, loginAs, themedBannedId, themedModoId } from "./fixtures";
 
 const REPORT_BUTTON = "button:has(svg.lucide-triangle-alert)";
 const THEMES = E2E_THEMES;
@@ -50,18 +50,13 @@ test.describe("rendu des thèmes", () => {
 
     test(`page des bannis sur téléphone, thème ${theme}`, async ({ page }) => {
       // Carte 058 : la page des bannis n'utilise que des variables de thème. Membre connecté : le thème de son
-      // profil s'affiche, d'où le changement de thème du membre banni avant la capture (remis ensuite par défaut)
-      await withTestDb((prisma) => prisma.user.update({ where: { id: E2E.bannedId }, data: { theme } }));
-      try {
-        await useTheme(page, theme);
-        await page.setViewportSize({ width: 390, height: 844 });
-        await loginAs(page, E2E.bannedId);
-        await page.goto("/banned", { waitUntil: "networkidle" });
-        await page.evaluate(() => document.fonts.ready);
-        await expect(page.locator(".banned-card")).toHaveScreenshot(`banni-telephone-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001 });
-      } finally {
-        await withTestDb((prisma) => prisma.user.update({ where: { id: E2E.bannedId }, data: { theme: "saison3" } }));
-      }
+      // profil s'affiche, d'où un membre banni par thème, préparé une fois pour toutes par globalSetup (carte 067)
+      await useTheme(page, theme);
+      await page.setViewportSize({ width: 390, height: 844 });
+      await loginAs(page, themedBannedId(theme));
+      await page.goto("/banned", { waitUntil: "networkidle" });
+      await page.evaluate(() => document.fonts.ready);
+      await expect(page.locator(".banned-card")).toHaveScreenshot(`banni-telephone-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001 });
     });
   }
 });
