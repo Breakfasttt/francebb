@@ -43,6 +43,7 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 - La fenêtre de suppression d'un membre et son message de confirmation annoncent maintenant (carte 054) le vrai comportement de `deleteUser` (contenus rattachés au compte « Coach Inconnu ») : l'ancien texte parlait d'une suppression définitive de tous les messages.
 - `/membres` utilise `getActiveSession()` puis relit le rôle en base ; `/profile` renvoie vers `/api/auth/signin` au lieu de `/auth/login`.
 - Les actions des membres et du profil renvoient `{ success, error }` au lieu de lever une erreur (carte 052) : le message de refus (rôle trop élevé, membre de l'équipe qu'on ne peut pas bloquer…) s'affiche dans la notification. `toggleBlockUser` renvoie aussi `isBlocked`.
+- Les 7 thèmes proposés dans l'onglet « Modifier » viennent de la liste officielle `lib/themes.ts` (carte 062) : identifiant enregistré, nom affiché et thème par défaut (`saison3`). Pour ajouter un thème, on l'ajoute à cette liste en plus de son fichier CSS ; l'action `updateTheme` refuse tout identifiant absent de la liste.
 - Dette : types `any` dans la page profil, un commentaire de test oublié dans `app/membres/page.tsx`.
 
 ## Les mots expliqués
@@ -61,4 +62,4 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 
 - Marche : modification du profil, réglages, blocages, suppression de compte anonymisée (par le membre ou par un modérateur, carte 051), annuaire avec modération, annuaire sur téléphone (cartes empilées et bouton de filtres, carte 054 : aucun contenu coupé ni cible trop petite à 360, 390 et 430 pixels).
 - Manque : contrôle de hiérarchie dans le bannissement depuis le profil, pagination côté serveur de `/membres`.
-- Cartes : 049 (audit mobile), 054 (annuaire sur téléphone), 019 (avatars en `next/image`).
+- Cartes : 049 (audit mobile), 054 (annuaire sur téléphone), 019 (avatars en `next/image`), 062 (identifiant du thème « Sombre »).

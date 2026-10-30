@@ -67,7 +67,7 @@
 }
 .theme-dot.active { border-color: var(--accent); transform: scale(1.2); }
 .theme-dot.saison3 { background: linear-gradient(135deg, #efebdd, #004175); }
-.theme-dot.dark { background: #1a1a20; }
+.theme-dot.default { background: #1a1a20; }
 .theme-dot.blood { background: #4a0000; }
 .theme-dot.malpierre { background: #082508; }
 .theme-dot.naf { background: #011b33; }

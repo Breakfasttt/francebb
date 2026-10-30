@@ -42,6 +42,7 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 - L'email de notification n'est envoyé qu'au premier message non lu, et seulement si le destinataire l'a activé (`notifPm`).
 - Le rafraîchissement toutes les 10 secondes refait une requête complète (et marque les messages lus) : à surveiller pour la charge.
 - Les actions d'écriture renvoient `{ success, error }` et les erreurs s'affichent en notification (carte 052). Les lectures `getConversations` et `getConversationMessages` renvoient `null` si le visiteur n'est pas connecté ou ne participe pas à la conversation ; `searchUsers` renvoie alors une liste vide.
+- Un coach sans avatar est affiché avec l'avatar par défaut du site (silhouette aux couleurs du thème actif) grâce au composant commun `MemberAvatarImage` (carte 065). Avant, les composants de la messagerie demandaient l'image `/images/default-avatar.png`, qui n'existe pas : le serveur répondait « introuvable » (erreur 404) et le navigateur affichait une image cassée.
 - Dette : la page utilise des types `any`. Les champs `user1Id` / `user2Id` de `Conversation` sont un ancien modèle, remplacé par `ConversationParticipant`.
 
 ## Les mots expliqués
@@ -59,4 +60,4 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 
 - Marche : conversations à deux et en groupe, chiffrement, compteur de non-lus, email de notification.
 - Manque : affichage des messages plus anciens que les 30 derniers, pagination de la liste au-delà de 20 conversations, redirection vers la connexion pour un visiteur, temps réel.
-- Cartes : 049 (audit mobile).
+- Cartes : 049 (audit mobile), 065 (avatar par défaut).

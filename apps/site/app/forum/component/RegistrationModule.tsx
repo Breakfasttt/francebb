@@ -34,6 +34,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import DangerButton from "@/common/components/Button/DangerButton";
 import BadgeButton from "@/common/components/Button/BadgeButton";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 interface RegistrationModuleProps {
   tournament: any;
@@ -406,7 +407,7 @@ function TeamRegistrationMode({ tournament, currentUser, canManage, isMercenary,
              {mercenaries.length === 0 && <div className="empty-text">Aucun mercenaire disponible</div>}
              {mercenaries.map((m: any) => (
                 <div key={m.id} className="compact-item">
-                   <img src={m.user.image || "/default-avatar.png"} alt="" className="avatar-xs" />
+                   <MemberAvatarImage image={m.user.image} className="avatar-xs" />
                    <span className="name">{m.user.name}</span>
                    {m.userId === currentUser?.id && <span className="me-badge" style={{ marginLeft: '0.4rem', color: 'var(--primary)', fontWeight: 600 }}>(Moi)</span>}
                 </div>
@@ -463,7 +464,7 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
       >
         {type === "PLAYER" ? (
           <>
-            <img src={item.user.image || "/default-avatar.png"} alt="" className="avatar-xs" />
+            <MemberAvatarImage image={item.user.image} className="avatar-xs" />
             <span className="entry-name">{item.user.name}</span>
           </>
         ) : (

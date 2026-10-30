@@ -13,6 +13,7 @@ import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSea
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { siteConfig } from "@/lib/siteConfig";
+import { SITE_THEMES } from "@/lib/themes";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight, Palette } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -202,16 +203,8 @@ export default function OnboardingForm({ user }: { user: any }) {
           <div className="onboarding-section-box theme-section">
              <label className="section-label-inner"><Palette size={16} /> Thème favori</label>
              <div className="theme-grid-mini">
-                {/* Les 7 thèmes du site, mêmes identifiants que la page de profil */}
-                {[
-                  { id: 'saison3', label: 'Saison 3' },
-                  { id: 'dark', label: 'Sombre' },
-                  { id: 'light', label: 'Clair' },
-                  { id: 'blood', label: 'Blood' },
-                  { id: 'malpierre', label: 'Malpierre' },
-                  { id: 'nehekhara', label: 'Néhékhara' },
-                  { id: 'naf', label: 'NAF' },
-                ].map(t => (
+                {/* Les 7 thèmes du site, lus dans la liste officielle (lib/themes.ts) */}
+                {SITE_THEMES.map(t => (
                   <button
                     key={t.id}
                     type="button"

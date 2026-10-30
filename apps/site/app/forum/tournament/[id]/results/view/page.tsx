@@ -4,6 +4,7 @@ import { Trophy, User as UserIcon, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import "@/app/forum/component/TournamentResultWidget.css"; // Réutiliser le CSS existant
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 export default async function TournamentResultsViewPage({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -56,7 +57,7 @@ export default async function TournamentResultsViewPage({ params }: { params: { 
                     <div className="coach-cell">
                       {res.user ? (
                         <Link href={`/profile/${res.user.id}`} className="coach-link" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                          <img src={res.user.image || "/default-avatar.png"} alt="" className="coach-avatar" style={{ width: '32px', height: '32px' }} />
+                          <MemberAvatarImage image={res.user.image} className="coach-avatar" style={{ width: '32px', height: '32px' }} />
                           <span className="coach-name" style={{ fontSize: '1.1rem' }}>{res.coachName}</span>
                         </Link>
                       ) : (

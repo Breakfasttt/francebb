@@ -4,6 +4,7 @@ import React from "react";
 import { parseBBCode } from "@/lib/bbcode";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 interface ChatBubbleProps {
     message: any;
@@ -14,9 +15,9 @@ export default function ChatBubble({ message, isSelf }: ChatBubbleProps) {
     return (
         <div className={`message-row ${isSelf ? 'is-self' : ''}`}>
             {!isSelf && (
-                <img 
-                    src={message.author.image || "/images/default-avatar.png"} 
-                    alt={message.author.name} 
+                <MemberAvatarImage
+                    image={message.author.image}
+                    alt={message.author.name}
                     className="msg-avatar"
                 />
             )}

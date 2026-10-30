@@ -28,6 +28,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Onglets | `TabSystem` |
 | Pagination | `Pagination` |
 | Avatar + cadre de rang | `UserAvatar` |
+| Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
 | Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch`, `MultiLigueSearch` |
 | Rang / statut / tags | `RankSelect`, `StatusBadge`, `TagSelector` |
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
@@ -57,12 +58,13 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Mail | `lib/mail.ts` |
 | Données de référence | `lib/referenceData.ts` |
 | Config site | `lib/siteConfig.ts` |
+| Liste des 7 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |
 | Points classement CDF | `common/utils/cdf.ts` |
 | Dates | `date-fns` (déjà installé) |
 | Drag & drop | `@dnd-kit/*` (déjà installé) |
 | Carte | `leaflet` / `react-leaflet` (déjà installé) |
 
 ## Doublons connus (ne pas en ajouter)
-- Thème « Sombre » (`dark`) proposé dans l'onboarding et le profil mais sans CSS dédié : il affiche le thème par défaut.
+- Aucun doublon connu pour l'instant.
 
 Nouveau composant partagé créé ? Ajouter sa ligne ici dans le même commit.

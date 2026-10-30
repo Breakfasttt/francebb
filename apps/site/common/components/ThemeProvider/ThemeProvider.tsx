@@ -10,6 +10,7 @@
  * L'accès au localStorage est protégé : il peut être bloqué (navigation privée, réglages du navigateur).
  */
 import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
+import { SITE_THEMES } from '@/lib/themes';
 
 type Theme = string;
 
@@ -81,7 +82,7 @@ export function ThemeProvider({
     <ThemeContext.Provider value={{
       theme,
       setTheme,
-      themes: ['saison3', 'default', 'light', 'blood', 'malpierre', 'naf', 'nehekhara']
+      themes: SITE_THEMES.map((siteTheme) => siteTheme.id)
     }}>
       {children}
     </ThemeContext.Provider>

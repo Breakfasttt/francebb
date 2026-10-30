@@ -7,8 +7,9 @@ import RankSelect from "@/common/components/RankSelect/RankSelect";
 import { toast } from "@bbfrance/ui";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { siteConfig } from "@/lib/siteConfig";
+import { DEFAULT_SITE_THEME, SITE_THEMES, type SiteThemeId } from "@/lib/themes";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { useSession } from "next-auth/react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -17,6 +18,13 @@ import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import CTAButton from "@/common/components/Button/CTAButton";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
+
+/** Icône affichée à côté du nom de certains thèmes ; les autres prennent l'icône d'étincelles. */
+const THEME_ICONS: Partial<Record<SiteThemeId, ReactNode>> = {
+  default: <Moon size={14} />,
+  light: <Sun size={14} />,
+  blood: <Droplets size={14} />,
+};
 
 const DICEBEAR_STYLES = [
   { id: "adventurer", label: "Aventurier" },
@@ -59,7 +67,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
   // Le profil n'est relu en base que toutes les 5 minutes (carte 017) : après une modification,
   // update() demande au serveur de relire tout de suite, pour que le pseudo et le thème soient à jour partout.
   const { update: refreshSession } = useSession();
-  const [currentTheme, setCurrentTheme] = useState(theme || user.theme || "dark");
+  const [currentTheme, setCurrentTheme] = useState(theme || user.theme || DEFAULT_SITE_THEME);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -305,15 +313,8 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
           <div className="appearance-box">
              <label className="section-label-inner"><Palette size={16} /> Apparence du site</label>
              <div className="theme-grid">
-               {[
-                 { id: 'saison3', label: 'Saison 3 (défaut)', icon: <Sparkles size={14} /> },
-                 { id: 'dark', label: 'Sombre', icon: <Moon size={14} /> },
-                 { id: 'light', label: 'Clair', icon: <Sun size={14} /> },
-                 { id: 'blood', label: 'Blood', icon: <Droplets size={14} /> },
-                 { id: 'malpierre', label: 'Malpierre', icon: <Sparkles size={14} /> },
-                 { id: 'nehekhara', label: 'Néhékhara', icon: <Sparkles size={14} /> },
-                 { id: 'naf', label: 'NAF', icon: <Sparkles size={14} /> },
-               ].map(t => (
+               {/* Les 7 thèmes du site, lus dans la liste officielle (lib/themes.ts) */}
+               {SITE_THEMES.map(t => (
                  <button
                    key={t.id}
                    type="button"
@@ -323,8 +324,8 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
                  >
                    <div className={`theme-preview ${t.id}`}></div>
                    <div className="theme-info">
-                     {t.icon}
-                     <span>{t.label}</span>
+                     {THEME_ICONS[t.id] ?? <Sparkles size={14} />}
+                     <span>{t.id === DEFAULT_SITE_THEME ? `${t.label} (défaut)` : t.label}</span>
                    </div>
                  </button>
                ))}
@@ -476,7 +477,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         .theme-card:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
         .theme-card.active { border-color: var(--primary); background: rgba(194, 29, 29, 0.05); }
         .theme-preview { height: 48px; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
-        .theme-preview.dark { background: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 50%, #c21d1d 100%); }
+        .theme-preview.default { background: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 50%, #c21d1d 100%); }
         .theme-preview.light { background: linear-gradient(135deg, #f0f1f4 0%, #ffffff 50%, #c21d1d 100%); }
         .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #4a0000 50%, #ff0000 100%); }
         .theme-preview.malpierre { background: linear-gradient(135deg, #020a02 0%, #082508 50%, #39ff14 100%); }

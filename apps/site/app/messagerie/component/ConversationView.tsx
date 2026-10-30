@@ -13,6 +13,7 @@ import ChatBubble from "./ChatBubble";
 import CTAButton from "@/common/components/Button/CTAButton";
 import InviteParticipantModal from "./InviteParticipantModal";
 import RenameConversationModal from "./RenameConversationModal";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 interface ConversationViewProps {
     conversationId: string;
@@ -114,8 +115,8 @@ export default function ConversationView({ conversationId, onBack, onUpdate }: C
                                 {conversation.participants.map((p: any) => (
                                     <Tooltip key={p.user.id} content={p.user.name} position="bottom">
                                         <Link href={`/profile/${p.user.id}`}>
-                                            <img
-                                                src={p.user.image || "/images/default-avatar.png"}
+                                            <MemberAvatarImage
+                                                image={p.user.image}
                                                 alt={p.user.name}
                                                 className="participant-avatar"
                                             />

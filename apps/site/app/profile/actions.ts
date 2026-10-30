@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { encrypt, decrypt } from "@/lib/crypto";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 import type { ActionResult } from "@/lib/actionResult";
+import { isSiteTheme } from "@/lib/themes";
 
 export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
@@ -166,6 +167,8 @@ export async function getReferenceDataAction(group: string) {
 export async function updateTheme(theme: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non connecté" };
+  // Seuls les identifiants de la liste officielle sont enregistrés (carte 062)
+  if (!isSiteTheme(theme)) return { success: false, error: "Thème inconnu" };
 
   await prisma.user.update({
     where: { id: session.user.id },

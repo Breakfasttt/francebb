@@ -5,7 +5,7 @@ description: Règles des 7 thèmes visuels de BBFrance - variables de couleur, e
 
 # Thèmes visuels BBFrance
 
-Le coach choisit l'un des **7 thèmes** du site : default, light, blood, malpierre, nehekhara, saison3, naf. Fichiers : `apps/site/app/theme/theme.<nom>.css`, importés par `themes.css`. Le thème actif est indiqué par l'attribut `data-theme` sur la balise `<html>`.
+Le coach choisit l'un des **7 thèmes** du site : default, light, blood, malpierre, nehekhara, saison3, naf. Leur liste officielle (identifiant et nom affiché) est dans `apps/site/lib/themes.ts` ; le thème « Sombre » a pour identifiant `default`. Fichiers : `apps/site/app/theme/theme.<nom>.css`, importés par `themes.css`. Le thème actif est indiqué par l'attribut `data-theme` sur la balise `<html>`.
 
 ## Règle d'or : aucune couleur écrite en dur
 
@@ -63,4 +63,5 @@ Les ajustements pour téléphone vont dans `globals-mobile.css`, dans le `page-m
 1. Créer `app/theme/theme.<nom>.css`.
 2. Y définir toutes les variables dans `[data-theme='<nom>']` (copier un thème existant pour n'en oublier aucune).
 3. L'importer dans `app/theme/themes.css`.
-4. Le thème par défaut est celui de `:root` (`theme.default.css`).
+4. Ajouter son identifiant et son nom à la liste officielle `apps/site/lib/themes.ts` : c'est elle qui alimente l'inscription, le profil et le contrôle de l'action `updateTheme`.
+5. Le thème par défaut est celui de `:root` (`theme.default.css`).

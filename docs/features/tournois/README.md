@@ -37,6 +37,7 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - `saveTournamentResults` efface puis réécrit tous les résultats et rondes du tournoi, dans une transaction. Pour un tournoi CDF, le serveur recalcule les points de chaque coach avec `calculateCdfPoints` (`common/utils/cdf.ts`) à partir de son rang, avec les mêmes paramètres que l'éditeur (carte 051) : les points envoyés par le navigateur sont ignorés. Pour un tournoi hors CDF, les points saisis à la main sont gardés.
 - `/forum/edit-tournament/[id]` et `/results/view` ne vérifient pas l'accès par rôle du forum (`lib/forumAccess.ts`), contrairement au reste du forum.
 - Un tournoi est toujours créé avec son sujet du forum, qui lui sert de fiche. Si ce sujet a été supprimé, les liens (liste `/tournois`, fiche d'une ligue, carte) mènent à la liste des tournois, faute de page dédiée. Avant la carte 051, ils menaient à `/tournois/[id]`, page inexistante.
+- Dans les inscriptions (`RegistrationModule.tsx`) et les résultats (`TournamentResultWidget.tsx`, `/results/view`), un coach sans avatar est affiché avec l'avatar par défaut du site, le composant commun `MemberAvatarImage` (carte 065). Avant, ces écrans demandaient l'image `/default-avatar.png`, qui n'existe pas (erreur 404, image cassée).
 - `app/tournois/page.tsx` et les actions utilisent encore des types `any`.
 - Sur téléphone, le tri et l'affichage (`ActiveFilters.tsx`) sont envoyés par `GlobalPortal` dans l'emplacement `#tournois-mobile-sort-slot`, créé par `TournamentFilterSidebar.tsx` à l'intérieur du panneau de filtres. Depuis la carte 055, ce portail n'existe qu'en mode téléphone : à chaque passage sous 1024 pixels (fenêtre rétrécie, tablette tournée), il est recréé et retrouve l'emplacement. Avant, si l'on agrandissait puis rétrécissait la fenêtre, le tri disparaissait du panneau jusqu'au rechargement.
 
@@ -59,4 +60,4 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - Marche aussi depuis la carte 051 : règles de droits identiques pour les résultats, points CDF recalculés par le serveur, page `/results` réservée aux membres non bannis (`getActiveSession()`) avec renvoi vers `/auth/login`.
 - Manque : page dédiée `/tournois/[id]` pour un tournoi dont le sujet a été supprimé.
 - Sur téléphone : filtres, tri et affichage derrière le bouton flottant ; aucun contenu coupé sur `/tournois` à 360, 390 et 430 pixels (carte 054).
-- Cartes : 049 (audit mobile), 054 (filtres sur téléphone), 019 (images).
+- Cartes : 049 (audit mobile), 054 (filtres sur téléphone), 019 (images), 065 (avatar par défaut).

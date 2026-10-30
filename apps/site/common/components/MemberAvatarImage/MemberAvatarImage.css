@@ -1,0 +1,21 @@
+/*
+ * Avatar par défaut d'un membre sans image.
+ * La taille, l'arrondi et la bordure viennent de la classe passée par la page (par exemple .msg-avatar) ;
+ * ici on ne fixe que le fond et la couleur de la silhouette, avec les variables du thème actif.
+ */
+.member-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--glass-bg);
+  color: var(--text-muted);
+}
+
+/* La silhouette occupe 60 % de l'avatar, quelle que soit sa taille */
+.member-avatar-fallback svg {
+  width: 60%;
+  height: 60%;
+}

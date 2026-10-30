@@ -44,7 +44,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Lighthouse** | Outil de Google qui note une page sur 100 : vitesse d'affichage, accessibilité, bonnes pratiques. Utilisé en mode mobile, qui simule un téléphone de milieu de gamme sur un réseau 4G lent. La note de vitesse se lance avec `pnpm --filter @bbfrance/site lighthouse` (voir `docs/mobile-audit.md`). |
 | **localStorage** | Petite mémoire propre au navigateur et à l'appareil, où une page peut ranger des réglages (ex. le thème d'un visiteur). Elle peut être bloquée, par exemple en navigation privée. |
 | **Merge** (fusion) | Réunir le travail d'une branche dans une autre. |
-| **Migration** (base de données) | Fichier qui décrit un changement de structure de la base (nouvelle table, nouvelle colonne), appliqué de façon contrôlée et enregistrée. |
+| **Migration** (base de données) | Fichier qui décrit un changement de structure de la base (nouvelle table, nouvelle colonne), appliqué de façon contrôlée et enregistrée. Une migration peut aussi corriger des données existantes (« migration de données ») : par exemple remplacer une ancienne valeur par la bonne dans toutes les lignes. |
 | **Monorepo** | Un seul dépôt git qui contient plusieurs applications (site, hub) et du code partagé (`packages/`). |
 | **N+1** | Défaut classique : une requête à la base par élément d'une liste, au lieu d'une seule requête pour toute la liste. Ralentit les pages. |
 | **Neon** | Hébergeur de bases Postgres, gratuit pour un petit site. Choisi pour la production (ADR-0004). |

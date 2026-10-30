@@ -8,6 +8,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { toast, Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle } from "@bbfrance/ui";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 interface InviteParticipantModalProps {
     conversationId: string;
@@ -110,7 +111,7 @@ export default function InviteParticipantModal({ conversationId, onClose, onSucc
                                                 onClick={() => toggleSelect(user)}
                                                 style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', padding: '0.6rem 1rem', cursor: 'pointer' }}
                                             >
-                                                <img src={user.image || "/images/default-avatar.png"} alt="" className="user-avatar-mini" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+                                                <MemberAvatarImage image={user.image} className="user-avatar-mini" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
                                                 <span className="user-name" style={{ flex: 1 }}>{user.name}</span>
                                                 {selected.find(u => u.id === user.id) && <Check size={18} style={{ color: 'var(--primary)' }} />}
                                             </div>

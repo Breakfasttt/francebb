@@ -9,6 +9,7 @@ import AdminButton from '@/common/components/Button/AdminButton';
 import CTAButton from '@/common/components/Button/CTAButton';
 import ClassicButton from '@/common/components/Button/ClassicButton';
 import ToggleButton from '@/common/components/Button/ToggleButton';
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 
 interface TournamentMatch {
@@ -166,7 +167,7 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
                             <div className="coach-cell">
                               {res.user ? (
                                 <Link href={`/profile/${res.user.id}`} className="coach-link">
-                                  <img src={res.user.image || "/default-avatar.png"} alt="" className="coach-avatar" />
+                                  <MemberAvatarImage image={res.user.image} className="coach-avatar" />
                                   <span className="coach-name">{res.coachName}</span>
                                 </Link>
                               ) : (

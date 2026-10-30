@@ -9,6 +9,7 @@ import { fr } from "date-fns/locale";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 
 export default function ConversationList() {
     const { data: session } = useSession();
@@ -73,9 +74,8 @@ export default function ConversationList() {
                                             <Users size={24} />
                                         </div>
                                     ) : (
-                                        <img 
-                                            src={targetUser?.image || "/images/default-avatar.png"} 
-                                            alt="" 
+                                        <MemberAvatarImage
+                                            image={targetUser?.image}
                                             className="conv-avatar-img"
                                         />
                                     )}
@@ -97,9 +97,9 @@ export default function ConversationList() {
                                         <div className="conv-participants-row">
                                             {conv.participants.map((p: any) => (
                                                 <Tooltip key={p.user.id} content={p.user.name}>
-                                                    <img 
-                                                        src={p.user.image || "/images/default-avatar.png"} 
-                                                        alt={p.user.name} 
+                                                    <MemberAvatarImage
+                                                        image={p.user.image}
+                                                        alt={p.user.name}
                                                         className="mini-participant-avatar"
                                                         style={{ 
                                                             borderColor: p.user.id === currentUserId ? 'var(--primary)' : 'var(--glass-border)'

@@ -2,7 +2,7 @@
  * Tests smoke : parcours critiques qui doivent rester verts à chaque phase du refacto.
  */
 import { test, expect } from "@playwright/test";
-import { E2E, loginAs } from "./fixtures";
+import { E2E, loginAs, withTestDb } from "./fixtures";
 
 const PUBLIC_PAGES = ["/", "/forum", "/tournois", "/classement", "/bbscheme", "/articles", "/ressources"];
 
@@ -88,4 +88,33 @@ test("la recherche de membres se fait par pseudo, jamais par email", async ({ pa
   await search.fill("Modo E2");
   // Plusieurs modérateurs de test s'appellent « Modo E2E » (un par thème, carte 051)
   await expect(page.getByRole("dialog").getByText("Modo E2E").first()).toBeVisible();
+});
+
+test("un membre sans avatar affiche l'avatar par défaut, sans image introuvable", async ({ page }) => {
+  // Carte 065 : les membres de test n'ont pas d'avatar ; aucune image ne doit répondre « introuvable » (404)
+  const missingImages: string[] = [];
+  page.on("response", (response) => {
+    if (response.request().resourceType() === "image" && response.status() === 404) missingImages.push(response.url());
+  });
+  await loginAs(page, E2E.coachId);
+  await page.goto("/messagerie", { waitUntil: "networkidle" });
+  await page.getByText("Nouvelle conversation").first().click();
+  await page.getByPlaceholder("Tapez un nom...").fill("Modo E2");
+  await expect(page.getByRole("dialog").locator(".member-avatar-fallback").first()).toBeVisible();
+  expect(missingImages).toEqual([]);
+});
+
+test("choisir le thème « Sombre » dans le profil enregistre l'identifiant default", async ({ page }) => {
+  // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts)
+  const readTheme = () =>
+    withTestDb((prisma) => prisma.user.findUniqueOrThrow({ where: { id: E2E.coachId }, select: { theme: true } }));
+  const { theme: initialTheme } = await readTheme();
+  await loginAs(page, E2E.coachId);
+  try {
+    await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "Sombre" }).click();
+    await expect.poll(async () => (await readTheme()).theme).toBe("default");
+  } finally {
+    await withTestDb((prisma) => prisma.user.update({ where: { id: E2E.coachId }, data: { theme: initialTheme } }));
+  }
 });
