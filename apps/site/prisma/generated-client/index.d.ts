@@ -8042,6 +8042,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string | null
+    previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
     quizTotalScore: number | null
@@ -8071,6 +8072,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string | null
+    previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
     quizTotalScore: number | null
@@ -8100,6 +8102,7 @@ export namespace Prisma {
     banReason: number
     avatarFrame: number
     theme: number
+    previousTheme: number
     equipe: number
     ligueCustom: number
     quizTotalScore: number
@@ -8145,6 +8148,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
+    previousTheme?: true
     equipe?: true
     ligueCustom?: true
     quizTotalScore?: true
@@ -8174,6 +8178,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
+    previousTheme?: true
     equipe?: true
     ligueCustom?: true
     quizTotalScore?: true
@@ -8203,6 +8208,7 @@ export namespace Prisma {
     banReason?: true
     avatarFrame?: true
     theme?: true
+    previousTheme?: true
     equipe?: true
     ligueCustom?: true
     quizTotalScore?: true
@@ -8319,6 +8325,7 @@ export namespace Prisma {
     banReason: string | null
     avatarFrame: string | null
     theme: string
+    previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
     quizTotalScore: number
@@ -8367,6 +8374,7 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
+    previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
     quizTotalScore?: boolean
@@ -8439,6 +8447,7 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
+    previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
     quizTotalScore?: boolean
@@ -8469,6 +8478,7 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
+    previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
     quizTotalScore?: boolean
@@ -8499,6 +8509,7 @@ export namespace Prisma {
     banReason?: boolean
     avatarFrame?: boolean
     theme?: boolean
+    previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
     quizTotalScore?: boolean
@@ -8514,7 +8525,7 @@ export namespace Prisma {
     notifNewsletter?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8627,6 +8638,7 @@ export namespace Prisma {
       banReason: string | null
       avatarFrame: string | null
       theme: string
+      previousTheme: string | null
       equipe: string | null
       ligueCustom: string | null
       quizTotalScore: number
@@ -9118,6 +9130,7 @@ export namespace Prisma {
     readonly banReason: FieldRef<"User", 'String'>
     readonly avatarFrame: FieldRef<"User", 'String'>
     readonly theme: FieldRef<"User", 'String'>
+    readonly previousTheme: FieldRef<"User", 'String'>
     readonly equipe: FieldRef<"User", 'String'>
     readonly ligueCustom: FieldRef<"User", 'String'>
     readonly quizTotalScore: FieldRef<"User", 'Int'>
@@ -57368,6 +57381,7 @@ export namespace Prisma {
     banReason: 'banReason',
     avatarFrame: 'avatarFrame',
     theme: 'theme',
+    previousTheme: 'previousTheme',
     equipe: 'equipe',
     ligueCustom: 'ligueCustom',
     quizTotalScore: 'quizTotalScore',
@@ -58246,6 +58260,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
+    previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
     quizTotalScore?: IntFilter<"User"> | number
@@ -58317,6 +58332,7 @@ export namespace Prisma {
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
+    previousTheme?: SortOrderInput | SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
     quizTotalScore?: SortOrder
@@ -58392,6 +58408,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
+    previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
     quizTotalScore?: IntFilter<"User"> | number
@@ -58462,6 +58479,7 @@ export namespace Prisma {
     banReason?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
+    previousTheme?: SortOrderInput | SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
     quizTotalScore?: SortOrder
@@ -58499,6 +58517,7 @@ export namespace Prisma {
     banReason?: StringNullableWithAggregatesFilter<"User"> | string | null
     avatarFrame?: StringNullableWithAggregatesFilter<"User"> | string | null
     theme?: StringWithAggregatesFilter<"User"> | string
+    previousTheme?: StringNullableWithAggregatesFilter<"User"> | string | null
     equipe?: StringNullableWithAggregatesFilter<"User"> | string | null
     ligueCustom?: StringNullableWithAggregatesFilter<"User"> | string | null
     quizTotalScore?: IntWithAggregatesFilter<"User"> | number
@@ -61748,6 +61767,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -61819,6 +61839,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -61888,6 +61909,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -61959,6 +61981,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -62029,6 +62052,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -62057,6 +62081,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -62086,6 +62111,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -65902,6 +65928,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
+    previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
     quizTotalScore?: SortOrder
@@ -65938,6 +65965,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
+    previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
     quizTotalScore?: SortOrder
@@ -65967,6 +65995,7 @@ export namespace Prisma {
     banReason?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
+    previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
     quizTotalScore?: SortOrder
@@ -71985,6 +72014,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -72055,6 +72085,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -72139,6 +72170,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -72209,6 +72241,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -72277,6 +72310,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -72347,6 +72381,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -72431,6 +72466,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -72501,6 +72537,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -75233,6 +75270,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -75303,6 +75341,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -75376,6 +75415,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -75446,6 +75486,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -75530,6 +75571,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -75600,6 +75642,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -75679,6 +75722,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -75749,6 +75793,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -75905,6 +75950,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -75975,6 +76021,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -76196,6 +76243,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -76266,6 +76314,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -76450,6 +76499,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -76520,6 +76570,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -76697,6 +76748,7 @@ export namespace Prisma {
     banReason?: StringNullableFilter<"User"> | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
+    previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
     quizTotalScore?: IntFilter<"User"> | number
@@ -77184,6 +77236,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -77254,6 +77307,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -77544,6 +77598,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -77614,6 +77669,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -77779,6 +77835,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -77849,6 +77906,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -77922,6 +77980,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -77992,6 +78051,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -78155,6 +78215,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -78225,6 +78286,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -78304,6 +78366,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -78374,6 +78437,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -78503,6 +78567,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -78573,6 +78638,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -78646,6 +78712,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -78716,6 +78783,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -78852,6 +78920,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -78922,6 +78991,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79001,6 +79071,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79071,6 +79142,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79171,6 +79243,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -79241,6 +79314,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -79356,6 +79430,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79426,6 +79501,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79531,6 +79607,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -79601,6 +79678,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -79716,6 +79794,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79786,6 +79865,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -79930,6 +80010,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80000,6 +80081,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80129,6 +80211,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80199,6 +80282,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80267,6 +80351,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80337,6 +80422,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80410,6 +80496,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80480,6 +80567,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80599,6 +80687,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80669,6 +80758,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80748,6 +80838,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80818,6 +80909,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -80927,6 +81019,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -80997,6 +81090,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81116,6 +81210,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -81186,6 +81281,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -81295,6 +81391,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81364,6 +81461,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81498,6 +81596,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81568,6 +81667,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81697,6 +81797,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -81767,6 +81868,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -81835,6 +81937,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81905,6 +82008,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -81989,6 +82093,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -82059,6 +82164,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -82127,6 +82233,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -82197,6 +82304,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -82392,6 +82500,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -82462,6 +82571,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -82647,6 +82757,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -82717,6 +82828,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -82932,6 +83044,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -83002,6 +83115,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -83203,6 +83317,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -83273,6 +83388,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -83384,6 +83500,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -83454,6 +83571,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -83555,6 +83673,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -83625,6 +83744,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -83820,6 +83940,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -83890,6 +84011,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -84124,6 +84246,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -84194,6 +84317,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -84267,6 +84391,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -84337,6 +84462,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -84515,6 +84641,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -84585,6 +84712,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -84664,6 +84792,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -84734,6 +84863,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -84895,6 +85025,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -84965,6 +85096,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85086,6 +85218,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -85156,6 +85289,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -85309,6 +85443,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85379,6 +85514,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85568,6 +85704,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85638,6 +85775,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85711,6 +85849,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85781,6 +85920,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -85881,6 +86021,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -85951,6 +86092,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86067,6 +86209,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86137,6 +86280,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86210,6 +86354,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86280,6 +86425,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86364,6 +86510,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86434,6 +86581,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86513,6 +86661,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86583,6 +86732,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86651,6 +86801,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86721,6 +86872,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -86805,6 +86957,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86875,6 +87028,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -86943,6 +87097,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -87013,6 +87168,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -87112,6 +87268,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -87182,6 +87339,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -87321,6 +87479,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -87391,6 +87550,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -87586,6 +87746,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -87656,6 +87817,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88125,6 +88287,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88195,6 +88358,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88268,6 +88432,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88338,6 +88503,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88439,6 +88605,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88509,6 +88676,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88588,6 +88756,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88658,6 +88827,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88749,6 +88919,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88819,6 +88990,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -88903,6 +89075,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -88973,6 +89146,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89041,6 +89215,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89111,6 +89286,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89195,6 +89371,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89265,6 +89442,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89333,6 +89511,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89403,6 +89582,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89487,6 +89667,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89557,6 +89738,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89625,6 +89807,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89695,6 +89878,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89779,6 +89963,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89849,6 +90034,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -89917,6 +90103,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -89987,6 +90174,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -90071,6 +90259,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -90141,6 +90330,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -92424,6 +92614,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -92494,6 +92685,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -92563,6 +92755,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -92977,6 +93170,7 @@ export namespace Prisma {
     banReason?: string | null
     avatarFrame?: string | null
     theme?: string
+    previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
     quizTotalScore?: number
@@ -93005,6 +93199,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93074,6 +93269,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93143,6 +93339,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93539,6 +93736,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93609,6 +93807,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93678,6 +93877,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93706,6 +93906,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93776,6 +93977,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number
@@ -93845,6 +94047,7 @@ export namespace Prisma {
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
     quizTotalScore?: IntFieldUpdateOperationsInput | number

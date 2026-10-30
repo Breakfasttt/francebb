@@ -149,6 +149,20 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
 
 ---
 
+## Refonte visuelle : passage de tous les membres au thème Vestiaire (carte 078)
+
+La migration `20261030180000_theme_vestiaire` écrit dans la table des membres : elle copie le thème de chacun dans la nouvelle colonne `previousTheme`, puis donne à tous le thème « vestiaire » (ADR 0006). Elle s'applique d'elle-même au déploiement, comme les autres migrations.
+
+1. **Avant de déployer** : sur Neon, créer une branche de sauvegarde de la base de production (**Branches** > **Create branch**, nom `avant-vestiaire`).
+2. Déployer comme d'habitude.
+3. **Pour annuler** la bascule, lancer sur la base, dans l'éditeur SQL de Neon :
+   ```sql
+   UPDATE "User" SET "theme" = "previousTheme" WHERE "previousTheme" IS NOT NULL;
+   ```
+   Chaque membre présent au moment de la bascule retrouve son ancien thème, même s'il en a choisi un autre depuis. Les membres inscrits après gardent le leur.
+
+---
+
 ## En cas de problème
 
 - **Le site affiche une erreur 500 ou une page blanche** : sur Vercel, onglet **Logs**, lire le message en rouge.

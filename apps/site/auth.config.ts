@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from "next-auth";
+import { DEFAULT_SITE_THEME } from "./lib/themes";
 
 /**
  * Partie de la configuration d'authentification qui ne lit pas la base (rappels jwt, session et authorized).
@@ -14,7 +15,7 @@ export const authConfig = {
         token.hasFinishedOnboarding = user.hasFinishedOnboarding || false;
         token.isBanned = user.isBanned || false;
         // @ts-ignore
-        token.theme = user.theme || "saison3";
+        token.theme = user.theme || DEFAULT_SITE_THEME;
       }
       if (trigger === "update" && session) {
         if (session.hasFinishedOnboarding !== undefined) token.hasFinishedOnboarding = session.hasFinishedOnboarding;

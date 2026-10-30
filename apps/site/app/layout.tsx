@@ -9,6 +9,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
+import { DEFAULT_SITE_THEME } from "@/lib/themes";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
 import { getNavCounts } from "@/common/components/Navbar/navCounts";
@@ -45,7 +46,7 @@ export default async function RootLayout({
   const user = session?.user;
   const userRole = (user?.role as UserRole | undefined) ?? "COACH";
   const isBanned = user?.isBanned ?? false;
-  const userTheme = user?.theme || "saison3";
+  const userTheme = user?.theme || DEFAULT_SITE_THEME;
 
   const isMod = isModerator(userRole);
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;

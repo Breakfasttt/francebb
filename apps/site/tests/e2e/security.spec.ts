@@ -112,17 +112,33 @@ test("un modérateur ne peut pas débannir un membre de rang égal, mais débann
     await prisma.user.update({ where: { id: E2E.targetId }, data: { isBanned: true, banReason: "Test e2e" } });
   });
 
+  // La liste des bannis est paginée par 10 et sans ordre fixe ; globalSetup y ajoute un banni par thème :
+  // on repart de la première page et on avance jusqu'à trouver la ligne du membre voulu.
+  const bannedRow = async (name: string) => {
+    await page.goto("/moderation?tab=reports_user_banned", { waitUntil: "networkidle" });
+    // La liste est chargée par le navigateur après l'affichage : on attend sa première ligne de données
+    const firstDataRow = page.getByRole("row").filter({ has: page.getByRole("button", { name: "Débannir" }) }).first();
+    for (let tries = 0; tries < 5; tries++) {
+      await expect(firstDataRow).toBeVisible();
+      const row = page.getByRole("row").filter({ hasText: name });
+      if (await row.count()) return row;
+      const shownFirst = await firstDataRow.textContent();
+      await page.locator("button[title='next']").first().click();
+      await expect(firstDataRow).not.toHaveText(shownFirst ?? "");
+    }
+    throw new Error(`Banni introuvable dans la liste : ${name}`);
+  };
+
   try {
     await loginAs(page, E2E.modoId);
-    await page.goto("/moderation?tab=reports_user_banned", { waitUntil: "networkidle" });
 
     // Refus : le serveur bloque le débannissement d'un membre de rang égal
-    await page.getByRole("row").filter({ hasText: E2E.bannedModoName }).getByRole("button", { name: "Débannir" }).click();
+    await (await bannedRow(E2E.bannedModoName)).getByRole("button", { name: "Débannir" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
     await expect(page.getByText("Vous ne pouvez pas débannir ce membre (hiérarchie insuffisante)")).toBeVisible();
 
     // Autorisé : le coach, de rang inférieur, est débanni
-    await page.getByRole("row").filter({ hasText: "Cible E2E" }).getByRole("button", { name: "Débannir" }).click();
+    await (await bannedRow("Cible E2E")).getByRole("button", { name: "Débannir" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
     await expect(page.getByText("Utilisateur débanni")).toBeVisible();
 

@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { authConfig } from "./auth.config";
+import { DEFAULT_SITE_THEME } from "@/lib/themes";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
@@ -170,7 +171,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (dbUser) {
             updatedToken.role = dbUser.role;
             updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
-            updatedToken.theme = dbUser.theme || "saison3";
+            updatedToken.theme = dbUser.theme || DEFAULT_SITE_THEME;
             updatedToken.name = dbUser.name;
             updatedToken.isBanned = dbUser.isBanned;
           }

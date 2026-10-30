@@ -47,7 +47,7 @@ export const E2E = {
 };
 
 /** Les 7 thèmes du site, dans l'ordre des captures de référence. */
-export const E2E_THEMES = ["default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
+export const E2E_THEMES = ["vestiaire", "default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
 
 /**
  * Carte 051 : pour un membre connecté, c'est le thème de son profil qui s'affiche. Le jeu de données contient donc

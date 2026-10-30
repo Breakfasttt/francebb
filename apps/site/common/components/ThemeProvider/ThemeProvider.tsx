@@ -10,7 +10,7 @@
  * L'accès au localStorage est protégé : il peut être bloqué (navigation privée, réglages du navigateur).
  */
 import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
-import { SITE_THEMES } from '@/lib/themes';
+import { DEFAULT_SITE_THEME, SITE_THEMES } from '@/lib/themes';
 
 type Theme = string;
 
@@ -46,7 +46,7 @@ function subscribeToStorage(onChange: () => void) {
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'saison3',
+  defaultTheme = DEFAULT_SITE_THEME,
   storageKey = 'theme',
   preferStoredTheme = false
 }: {

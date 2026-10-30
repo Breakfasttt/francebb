@@ -46,7 +46,9 @@ model User {
   isBanned                Boolean                  @default(false)
   banReason               String?
   avatarFrame             String?                  @default("auto")
-  theme                   String                   @default("saison3")
+  theme                   String                   @default("vestiaire")
+  // Thème du membre avant la refonte (carte 078), pour lui proposer d'y revenir (carte 083)
+  previousTheme           String?
   equipe                  String?
   ligueCustom             String?
   quizTotalScore          Int                      @default(0)

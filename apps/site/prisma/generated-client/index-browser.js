@@ -156,6 +156,7 @@ exports.Prisma.UserScalarFieldEnum = {
   banReason: 'banReason',
   avatarFrame: 'avatarFrame',
   theme: 'theme',
+  previousTheme: 'previousTheme',
   equipe: 'equipe',
   ligueCustom: 'ligueCustom',
   quizTotalScore: 'quizTotalScore',
