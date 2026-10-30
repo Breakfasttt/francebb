@@ -26,7 +26,8 @@ export default function AdministrationPage() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/administration");
+      // Visiteur non connecté : page de connexion du site, qui le ramènera ici ensuite
+      redirect(`/auth/login?callbackUrl=${encodeURIComponent("/administration")}`);
     },
   });
 

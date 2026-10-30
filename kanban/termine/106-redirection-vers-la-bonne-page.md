@@ -17,3 +17,8 @@ Quatre pages envoient les visiteurs vers `/api/auth/signin`, la page brute d'Aut
 ## Action
 
 - Remplacer la redirection par `/auth/login?callbackUrl=` dans les quatre pages, et ajouter un test.
+
+## Résultat
+
+- `/administration`, `/moderation`, `/profile` et le bouton de contact de `/spy/[id]` redirigent vers `/auth/login?callbackUrl=<page>`. Plus aucune occurrence de `/api/auth/signin` dans le site.
+- Test ajouté dans `smoke.spec.ts`, vert en taille ordinateur et en taille téléphone.

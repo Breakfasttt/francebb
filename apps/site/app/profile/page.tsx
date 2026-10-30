@@ -32,7 +32,8 @@ export default function ProfilePage() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/profile");
+      // Visiteur non connecté : page de connexion du site, qui le ramènera ici ensuite
+      redirect(`/auth/login?callbackUrl=${encodeURIComponent("/profile")}`);
     },
   });
 

@@ -21,7 +21,8 @@ export default function ModerationPage() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/moderation");
+      // Visiteur non connecté : page de connexion du site, qui le ramènera ici ensuite
+      redirect(`/auth/login?callbackUrl=${encodeURIComponent("/moderation")}`);
     },
   });
 

@@ -124,7 +124,8 @@ export default function SpyProfilePage() {
 
   const handleContact = async () => {
     if (!session?.user) {
-      redirect("/api/auth/signin");
+      // Visiteur non connecté : page de connexion du site, qui le ramènera sur ce profil ensuite
+      redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/spy/${id}`)}`);
       return;
     }
     try {

@@ -191,3 +191,14 @@ test("choisir le thème « Sombre » dans le profil enregistre l'identifiant def
     }).toBe("saison3");
   }
 });
+
+// Carte 106 : un visiteur non connecté arrive sur la page de connexion du site (et non sur la page brute d'Auth.js)
+for (const path of ["/administration", "/moderation", "/profile", "/spy/1"]) {
+  test(`visiteur non connecté : ${path} renvoie vers /auth/login avec callbackUrl`, async ({ page }) => {
+    await page.goto(path);
+    await page.waitForURL(/\/auth\/login/);
+    const url = new URL(page.url());
+    expect(url.pathname).toBe("/auth/login");
+    expect(url.searchParams.get("callbackUrl")).toBe(path);
+  });
+}
