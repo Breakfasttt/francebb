@@ -10,6 +10,7 @@ Le dossier dans lequel se trouve une carte **est** son état :
 |---|---|
 | `a-faire/` | Cartes pas encore commencées |
 | `en-cours/` | Cartes en train d'être réalisées (une ou deux à la fois) |
+| `a-tester/` | Cartes terminées par l'IA et vérifiées par les tests automatiques, qui attendent un essai à la main par un humain (sur un vrai téléphone, avec un vrai compte Discord…). Après l'essai réussi, elles passent dans `termine/` |
 | `termine/` | Cartes réalisées et validées |
 | `annule/` | Cartes abandonnées sans être réalisées (la raison est écrite dans la carte) |
 | `deprecie/` | Cartes terminées dont le résultat a été remplacé depuis (la carte indique par quoi) |

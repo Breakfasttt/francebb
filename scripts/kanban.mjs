@@ -1,7 +1,7 @@
 /**
  * Vérifie le kanban et affiche un résumé (aucun fichier généré).
  * Le kanban est rangé en dossiers : le dossier d'une carte EST son statut.
- *   kanban/a-faire/   kanban/en-cours/   kanban/termine/   kanban/annule/   kanban/deprecie/
+ *   kanban/a-faire/   kanban/en-cours/   kanban/a-tester/   kanban/termine/   kanban/annule/   kanban/deprecie/
  * Contrôles : chaque carte est dans un dossier connu, son numéro (id) correspond au début du nom de fichier
  * et n'existe qu'une fois, son épic existe, ses dépendances existent, le champ verify est rempli.
  * Usage : pnpm kanban   (lancé aussi par la CI : échoue si une carte est mal rangée ou invalide)
@@ -9,6 +9,7 @@
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 
 const FOLDERS = [
+  ["a-tester", "À tester par un humain"],
   ["en-cours", "En cours"],
   ["a-faire", "À faire"],
   ["termine", "Terminé"],
