@@ -213,6 +213,15 @@
   border: 1px solid var(--glass-border);
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
   cursor: grab;
+  /* Au doigt, le terrain défile mais le navigateur ne zoome pas la page : le pincement à deux doigts
+     règle le zoom du terrain (hook usePinchZoom). */
+  touch-action: pan-x pan-y;
+}
+
+/* Pendant un pincement, les animations de taille sont coupées pour que le terrain suive les doigts sans retard. */
+.pitch-viewport.pinching .pitch-resizer,
+.pitch-viewport.pinching .pitch-rotator {
+  transition: none !important;
 }
 
 .pitch-viewport.has-selection {

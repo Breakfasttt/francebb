@@ -18,6 +18,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |
 | **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo à chaque lecture de la session, et les range dans le cookie de session : un bannissement prend donc effet dès la page suivante. |
+| **CDP** (*Chrome DevTools Protocol*) | Protocole qui permet à un programme de piloter Chrome de l'intérieur. Les tests s'en servent pour ce que Playwright ne sait pas faire seul, par exemple simuler deux doigts posés sur l'écran (`Input.dispatchTouchEvent`). |
 | **Carte** (kanban) | Fichier qui décrit une tâche : pourquoi, quoi faire, comment vérifier que c'est fini. Voir `kanban/README.md`. |
 | **CI** (*Continuous Integration*, intégration continue) | Vérifications lancées automatiquement par GitHub à chaque envoi de code : types, qualité, tests. Définies dans `.github/workflows/ci.yml`. |
 | **Claim** | Une information sur l'utilisateur contenue dans un jeton de connexion (pseudo, email, « email vérifié »). |
@@ -33,6 +34,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **ESLint** / **lint** | Outil qui repère les erreurs et mauvaises pratiques dans le code. Le **cliquet** (*ratchet*) interdit que le nombre d'erreurs augmente : la dette peut baisser, jamais monter. Le plafond est compté pour le total et pour chaque règle (`apps/site/lint-baseline.json`). |
 | **Flag** (drapeau) | Réglage qui active ou désactive une fonctionnalité sans changer le code (ex. `AUTH_MODE=hub`). |
 | **Hook** | Script lancé automatiquement à un moment précis : avant un commit (`.githooks/`), ou quand l'IA modifie un fichier (`.claude/hooks/`). |
+| **Hook React** (`useQuelqueChose`) | Fonction réutilisable qui ajoute un comportement à un composant React (lire la largeur de l'écran, réagir à un geste…). Ceux du site sont dans `apps/site/common/hooks/`. À ne pas confondre avec le hook « script » ci-dessus. |
 | **Hotfix** | Petite correction urgente appliquée directement sur la version en ligne. |
 | **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications BBFrance. |
 | **id_token** | Jeton signé que le hub remet au site après une connexion : « voici qui est connecté ». |
@@ -56,6 +58,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **ORM** | Outil qui permet au code de parler à la base de données sans écrire de SQL. Ici : Prisma. |
 | **Paquet du dépôt** (dossier `packages/`) | Code partagé écrit par le projet lui-même, rangé dans `packages/<nom>` et nommé `@bbfrance/<nom>` (par exemple `@bbfrance/ui`, `@bbfrance/bbscheme-player`). Une application le déclare dans son `package.json` avec la version `workspace:*`, qui veut dire « la copie de ce dépôt » : ce n'est pas une bibliothèque téléchargée. Le site lit directement ses fichiers TypeScript grâce au réglage `transpilePackages` de `next.config.ts`. |
 | **PKCE** | Protection du parcours de connexion contre le vol du code d'autorisation. |
+| **Pincement** (*pinch*) | Geste à deux doigts sur un écran tactile : les écarter agrandit, les rapprocher réduit. Sur BBScheme, il règle le zoom du terrain (hook `usePinchZoom`). |
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |

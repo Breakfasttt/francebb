@@ -21,3 +21,13 @@ Sur téléphone, le terrain de BBScheme ne se règle qu'avec le curseur de zoom 
 - Empêcher que le geste zoome toute la page à la place du terrain (propriété CSS `touch-action` sur le terrain seulement).
 - Vérifier que déplacer un joueur, dessiner et faire défiler le terrain avec un seul doigt marchent comme avant ; vérifier l'affichage ordinateur inchangé.
 - Mettre à jour la fiche `docs/features/bbscheme`.
+
+## Résultat
+
+- Le pincement à deux doigts règle maintenant le zoom du terrain. Le nouveau hook `apps/site/common/hooks/usePinchZoom.ts` écoute les événements tactiles natifs du cadre `.pitch-viewport` : avec deux doigts, il annule le comportement par défaut du navigateur (la page entière ne zoome plus), calcule le zoom à partir de l'écart entre les doigts, dans les bornes du curseur (50 % à 200 %), et fait défiler le cadre pour garder le point situé entre les doigts au même endroit. Le curseur suit la valeur, puisqu'il lit la même variable `zoom`. Aucune bibliothèque ajoutée.
+- `page.tsx` : bornes du zoom réunies dans les constantes `ZOOM_MIN` et `ZOOM_MAX` (curseurs, molette, pincement) ; le défilement à un doigt s'interrompt dès qu'un deuxième doigt est posé.
+- `page.css` : `touch-action: pan-x pan-y` sur `.pitch-viewport` (défilement au doigt permis, zoom de la page bloqué) et animations de taille coupées pendant le geste (classe `pinching`).
+- Test `apps/site/tests/e2e/bbscheme-pinch.spec.ts`, en 390 × 844 pixels : deux doigts simulés par le protocole de pilotage de Chrome (CDP) agrandissent puis réduisent le terrain sans zoomer la page ; un seul doigt fait encore défiler le terrain agrandi. Le déplacement d'un pion se fait par deux touchers (le pion, puis la case) : il n'existait pas de test de glisser d'un pion, aucun n'a été ajouté.
+- Vérifications : ce test, `smoke.spec.ts` et `visual-themes.spec.ts` passent (69 tests) ; audit mobile de `/bbscheme` à 0 défaut en 390 × 844 et 360 × 640 ; `npx tsc --noEmit` sans erreur ; `lint-ratchet` sans plafond dépassé (site 817/817, `bbscheme-player` 23/23).
+- Fiche `docs/features/bbscheme/README.md`, glossaire (CDP, hook React, pincement) et skill `reuse-first` mis à jour.
+- **Reste à faire par le user** : l'essai sur un vrai téléphone (Android et iPhone), en vérifiant aussi le dessin au doigt et le choix d'un pion pendant et après un pincement.

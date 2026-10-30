@@ -63,6 +63,7 @@ import FigurineBox from "./component/FigurineBox";
 
 import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { usePinchZoom } from "@/common/hooks/usePinchZoom";
 
 import "./page-mobile.css";
 import "./page.css";
@@ -71,6 +72,10 @@ interface HistoryState {
   tokens: TokenData[];
   drawings: DrawingPath[];
 }
+
+/** Bornes du zoom du terrain, communes au curseur, à la molette de la souris et au pincement à deux doigts. */
+const ZOOM_MIN = 0.5;
+const ZOOM_MAX = 2;
 
 export default function BBSchemePage() {
   const [tokens, setTokens] = useState<TokenData[]>([
@@ -447,7 +452,7 @@ export default function BBSchemePage() {
       if (isEmbed) return; // Désactiver zoom en embed
       e.preventDefault();
       const delta = e.deltaY > 0 ? -0.05 : 0.05;
-      setZoom(prev => Math.max(0.5, Math.min(2, prev + delta)));
+      setZoom(prev => Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, prev + delta)));
     };
 
     viewport.addEventListener('wheel', handleWheel, { passive: false });
@@ -455,6 +460,9 @@ export default function BBSchemePage() {
       viewport.removeEventListener('wheel', handleWheel);
     };
   }, [isEmbed]);
+
+  // Pincement à deux doigts sur le terrain (téléphone) : même valeur et mêmes bornes que le curseur de zoom.
+  usePinchZoom(viewportRef, { zoom, min: ZOOM_MIN, max: ZOOM_MAX, onZoomChange: setZoom, enabled: !isEmbed });
 
   // Panning UI
   const [isPanning, setIsPanning] = useState(false);
@@ -489,7 +497,9 @@ export default function BBSchemePage() {
   const handleTouchStart = (e: React.TouchEvent) => {
     if (activeTool !== 'select' || !viewportRef.current) return;
     if ((e.target as HTMLElement).closest('button')) return;
-    
+    // Deux doigts : c'est un pincement (usePinchZoom), pas un défilement.
+    if (e.touches.length > 1) { setIsPanning(false); return; }
+
     const touch = e.touches[0];
     setIsPanning(true);
     setPanStart({
@@ -501,7 +511,7 @@ export default function BBSchemePage() {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isPanning || !viewportRef.current) return;
+    if (!isPanning || !viewportRef.current || e.touches.length > 1) return;
     const touch = e.touches[0];
     const dx = touch.clientX - panStart.x;
     const dy = touch.clientY - panStart.y;
@@ -1196,7 +1206,7 @@ export default function BBSchemePage() {
                   <ZoomIn size={16} />
                   <input
                     type="range"
-                    min="0.5" max="2" step="0.05"
+                    min={ZOOM_MIN} max={ZOOM_MAX} step="0.05"
                     value={zoom}
                     onChange={(e) => setZoom(parseFloat(e.target.value))}
                   />
@@ -1308,8 +1318,8 @@ export default function BBSchemePage() {
               <ZoomOut size={14} color="#fff" />
               <input
                 type="range"
-                min="0.5"
-                max="2"
+                min={ZOOM_MIN}
+                max={ZOOM_MAX}
                 step="0.05"
                 value={zoom}
                 onChange={(e) => setZoom(parseFloat(e.target.value))}
