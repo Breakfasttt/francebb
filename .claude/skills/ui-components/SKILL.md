@@ -9,7 +9,7 @@ Tous les chemins sont relatifs à `apps/site`. La liste complète de ce qui exis
 
 ## Boutons : jamais de `<button>` brut
 
-Chaque bouton passe par l'un de ces composants (`common/components/Button/`). Taille avec `size` (`xs`, `sm`, `md`, `lg`), icône Lucide avec `icon={<Icone size={18} />}`.
+Chaque bouton passe par l'un de ces composants (`common/components/Button/`). ESLint refuse un `<button>` ou un `<select>` natif dans un fichier `.tsx` (règle `react/forbid-elements`, voir `ARCHITECTURE.md`). Taille avec `size` (`xs`, `sm`, `md`, `lg`), icône Lucide avec `icon={<Icone size={18} />}`.
 
 | Composant | Quand l'utiliser |
 |---|---|

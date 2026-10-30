@@ -48,6 +48,18 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
   - chaque écran testé en taille téléphone ;
   - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `mobile-ux`).
 
+## Règles vérifiées automatiquement
+
+ESLint (l'outil qui relit le code, voir le glossaire) refuse dans `apps/site` trois écarts aux règles ci-dessus. Ces contrôles sont réglés dans `apps/site/eslint.config.mjs` :
+
+| Règle du projet | Ce qui est refusé | Règle ESLint |
+|---|---|---|
+| Frontière entre applications | Un import du code d'une autre application : par son nom de paquet (`@bbfrance/hub`), par un chemin qui passe par `apps/`, ou par un chemin relatif qui remonte jusqu'au dossier du hub | `no-restricted-imports` |
+| Couleurs via les variables des thèmes | Un code couleur hexadécimal (`#fff`, `#2E7D32`) écrit dans un fichier `.tsx` | `no-restricted-syntax` |
+| Composants existants | Un `<button>` ou un `<select>` natif dans un fichier `.tsx`. Seuls les composants de base (`common/components/Button/`, `ClassicSelect`) ont le droit de les utiliser | `react/forbid-elements` |
+
+Le code écrit avant ces règles contient encore des écarts. Le cliquet (`apps/site/scripts/lint-ratchet.mjs`) les tolère, mais il garde un plafond **pour chaque règle** dans `apps/site/lint-baseline.json` : une nouvelle erreur est refusée même si une autre a été corrigée ailleurs. Quand on corrige des écarts, on abaisse les plafonds avec `node scripts/lint-ratchet.mjs --update`.
+
 ## Réutiliser avant de créer
 
 1. Chercher dans le skill `reuse-first`, puis dans le code.

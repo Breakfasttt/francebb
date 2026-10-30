@@ -29,7 +29,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
 | **E2E** (*end-to-end*, de bout en bout) | Test qui joue un vrai parcours dans un vrai navigateur, comme un visiteur (ex. ouvrir le forum puis répondre). |
 | **Épic** | Grand chantier qui regroupe plusieurs cartes du kanban (`kanban/epics/`). |
-| **ESLint** / **lint** | Outil qui repère les erreurs et mauvaises pratiques dans le code. Le **cliquet** (*ratchet*) interdit que le nombre d'erreurs augmente : la dette peut baisser, jamais monter. |
+| **ESLint** / **lint** | Outil qui repère les erreurs et mauvaises pratiques dans le code. Le **cliquet** (*ratchet*) interdit que le nombre d'erreurs augmente : la dette peut baisser, jamais monter. Le plafond est compté pour le total et pour chaque règle (`apps/site/lint-baseline.json`). |
 | **Flag** (drapeau) | Réglage qui active ou désactive une fonctionnalité sans changer le code (ex. `AUTH_MODE=hub`). |
 | **Hook** | Script lancé automatiquement à un moment précis : avant un commit (`.githooks/`), ou quand l'IA modifie un fichier (`.claude/hooks/`). |
 | **Hotfix** | Petite correction urgente appliquée directement sur la version en ligne. |

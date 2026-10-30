@@ -12,7 +12,7 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, quiz, BBS
 | `pnpm dev` | Lance le site en local (port 3000) |
 | `pnpm build` | Prépare la version de production |
 | `pnpm exec prisma …` | Outils de base de données (migrations, génération du client) |
-| `node scripts/lint-ratchet.mjs` | Contrôle qualité avec plafond d'erreurs (`--update` pour abaisser le plafond) |
+| `node scripts/lint-ratchet.mjs` | Contrôle qualité avec plafond d'erreurs, au total et par règle (`--update` pour abaisser les plafonds) |
 | `node scripts/baseline.mjs` | Mesures de performance par page (voir `docs/baseline.md`) |
 
 ## Points à connaître
