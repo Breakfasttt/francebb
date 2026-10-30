@@ -6,10 +6,12 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 |---|---|
 | **Action serveur** (*server action*) | Fonction exécutée sur le serveur, appelée depuis une page (ex. « publier un message »). C'est une porte d'entrée publique : elle doit toujours vérifier qui l'appelle et ses droits. |
 | **ADR** (*Architecture Decision Record*) | Fiche qui garde la trace d'une décision importante : le problème, le choix, pourquoi, ce qu'on écarte. Rangées dans `docs/adr/`. |
+| **Alias (de variable CSS)** | Second nom donné à une variable CSS, qui pointe vers une autre variable. Pendant la refonte (ADR 0006), les anciennes variables de couleur restent comme alias des nouvelles, pour que les écrans pas encore refaits continuent de s'afficher. Elles sont supprimées à la fin du chantier. |
 | **API** | Adresse que le site expose pour échanger des données avec un programme (ex. `/api/articles`). |
 | **App Router** | Façon dont Next.js organise les pages : chaque dossier de `app/` correspond à une adresse du site (`app/forum/` → `/forum`). |
 | **Auth.js** | Bibliothèque qui gère la connexion des membres sur le site aujourd'hui. |
 | **Backup** | Copie de sauvegarde d'une base de données. |
+| **Barre de navigation basse** | Sur téléphone, barre fixée en bas de l'écran avec les destinations principales toujours visibles, à portée du pouce. Celle de BBFrance a cinq onglets : Accueil, Forum, Tournois, Messages et Plus. L'onglet « Plus » ouvre un panneau qui contient tout le reste (ADR 0006). |
 | **BBCode** | Petit langage de mise en forme des messages du forum (`[b]gras[/b]`, `[url]…[/url]`). |
 | **Better Auth** | Bibliothèque de connexion utilisée par le hub. |
 | **Bibliothèque** (ou dépendance, paquet) | Code écrit par d'autres et utilisé par le projet (ex. Prisma, Next.js). Installée par pnpm. |
@@ -26,6 +28,9 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Coach** | Joueur de Blood Bowl, donc membre du site. |
 | **Commit** | Enregistrement d'un lot de modifications dans l'historique git, avec un message qui explique pourquoi. |
 | **Conseil** (`/council`) | Réunion de 5 agents IA aux rôles différents, qui donnent leur avis avant une décision importante. Voir `.claude/commands/council.md`. |
+| **Contraste AA** | Niveau d'accessibilité de la norme WCAG : l'écart de luminosité entre un texte et son fond doit être d'au moins 4,5 pour 1 (3 pour 1 pour un grand texte). En dessous, le texte devient difficile à lire, surtout en plein soleil ou avec une vue faible. |
+| **Coquille** | Ce qui entoure chaque page du site : en-tête, navigation, pied de page. Pendant la refonte, la variable d'environnement `REFONTE` choisit entre l'ancienne et la nouvelle coquille (ADR 0006). |
+| **Couche CSS (`@layer`)** | Groupe de règles CSS dont on fixe la priorité. Une règle d'une couche de faible priorité perd toujours face à une règle d'une couche plus forte, quel que soit l'ordre des fichiers. La refonte range l'ancien CSS dans une couche faible, pour que les nouveaux styles l'emportent. |
 | **CSS** | Langage qui décrit l'apparence des pages (couleurs, tailles, positions). |
 | **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
@@ -39,6 +44,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications BBFrance. |
 | **id_token** | Jeton signé que le hub remet au site après une connexion : « voici qui est connecté ». |
 | **Import dynamique** (`import()`) | Chargement d'une bibliothèque seulement au moment où l'on s'en sert, au lieu de l'envoyer au navigateur avec la page. Exemple : les bibliothèques d'export GIF de BBScheme ne sont téléchargées que quand le coach clique sur le bouton d'export. La page s'ouvre plus vite. |
+| **Inventaire de non-régression** | Liste de tout ce que l'on peut voir ou faire sur le site, écran par écran, avec le rôle requis (`docs/refonte/inventaire.md`). Chaque carte de la refonte coche les lignes qu'elle a vérifiées, pour garantir qu'aucune fonctionnalité ne disparaît. |
 | **ITP** (Safari) | Protection de Safari qui bloque les cookies entre sites différents. C'est pourquoi le hub et le site devront partager le même nom de domaine. |
 | **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
@@ -61,18 +67,22 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Paquet du dépôt** (dossier `packages/`) | Code partagé écrit par le projet lui-même, rangé dans `packages/<nom>` et nommé `@bbfrance/<nom>` (par exemple `@bbfrance/ui`, `@bbfrance/bbscheme-player`). Une application le déclare dans son `package.json` avec la version `workspace:*`, qui veut dire « la copie de ce dépôt » : ce n'est pas une bibliothèque téléchargée. Le site lit directement ses fichiers TypeScript grâce au réglage `transpilePackages` de `next.config.ts`. |
 | **PKCE** | Protection du parcours de connexion contre le vol du code d'autorisation. |
 | **Pincement** (*pinch*) | Geste à deux doigts sur un écran tactile : les écarter agrandit, les rapprocher réduit. Sur BBScheme, il règle le zoom du terrain (hook `usePinchZoom`). |
+| **Playwright** | Outil qui pilote un vrai navigateur pour les tests automatiques : il ouvre les pages, clique et vérifie ce qui s'affiche, en taille ordinateur ou téléphone. Les tests du site sont dans `apps/site/tests/e2e/`. |
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
+| **Preflight** | Remise à zéro des styles par défaut du navigateur (marges, tailles de titre, listes), fournie par Tailwind. Elle n'est pas activée sur BBFrance tant que l'ancien CSS existe, parce qu'elle changerait l'apparence des pages pas encore refaites. |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
 | **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. Ce petit serveur ne sert qu'une connexion à la fois : un test qui ouvre sa propre connexion pendant que le site tourne doit attendre que le site lâche la sienne, parfois longtemps (carte 067). Préparer plutôt les données une fois pour toutes dans `globalSetup.ts`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
 | **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur BBFrance, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
 | **Push** | Envoi des commits locaux vers GitHub. |
+| **Radix** | Bibliothèque de composants d'interface accessibles mais sans style (menus, fenêtres, onglets, interrupteurs). Elle gère le clavier et les lecteurs d'écran. Installée dans `packages/ui` sous le nom `radix-ui`, et utilisée par les composants shadcn/ui. |
 | **RBAC** (*Role-Based Access Control*) | Droits accordés selon le rôle du membre (coach, modérateur, admin…). Voir `apps/site/lib/roles.ts`. |
 | **React** | Bibliothèque qui construit l'interface des pages à partir de composants. |
 | **Rebase** | Replacer les commits d'une branche au-dessus de la dernière version d'une autre branche. |
 | **RGPD** | Loi européenne sur la protection des données personnelles (emails, comptes…). Elle impose notamment de prévenir les membres avant d'effacer leurs données. |
 | **Rollback** (retour arrière) | Revenir à la version précédente quand une mise à jour pose problème. |
+| **Safe area (zone protégée)** | Partie de l'écran d'un iPhone que ne recouvrent ni l'encoche en haut ni la barre d'accueil en bas. Une barre fixée en bas doit ajouter cette marge (`env(safe-area-inset-bottom)`), sinon ses boutons passent sous la barre d'accueil. |
 | **Schéma** (base de données) | La liste des tables, de leurs colonnes et de leurs liens. |
 | **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. BBFrance n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (menu latéral global, colonnes latérales rangées dans ce menu, filtres derrière le bouton flottant) ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
 | **Seed** / **firstSetup** | Script qui remplit une base neuve avec les données de base (rôles, catégories du forum, listes de référence). |
@@ -95,4 +105,5 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **UX** (*User eXperience*) | Le confort d'utilisation : clarté, fluidité, facilité à faire ce qu'on veut. |
 | **Variable CSS** | Valeur nommée dans une feuille de style (par exemple `--mobile-nav-height: 64px`), réutilisée ailleurs avec `var(--mobile-nav-height)`. Changer la valeur à un seul endroit la change partout. Les couleurs des thèmes sont aussi des variables CSS. |
 | **Vercel** | Hébergeur du site : il le met en ligne automatiquement quand le code est envoyé sur GitHub. |
+| **Verre dépoli** | Effet de fond flou et légèrement transparent (`backdrop-filter: blur`). Joli, mais coûteux pour les téléphones modestes. Depuis l'ADR 0006, il est désactivé par défaut et chaque thème peut l'activer. |
 | **Worktree** | Deuxième copie de travail du même dépôt git, dans un autre dossier. |

@@ -1,0 +1,368 @@
+# Inventaire de non-régression de la refonte visuelle
+
+Cette liste de contrôle sert à vérifier qu'aucune fonctionnalité ne disparaît pendant la refonte visuelle (épic E08, carte 075). Chaque ligne décrit quelque chose que l'on peut voir ou faire aujourd'hui sur le site. Une carte de refonte coche les lignes de l'écran qu'elle refait. Elle ne les coche qu'après les avoir vérifiées par un test Playwright d'inventaire (un test automatique qui ouvre la page et contrôle que l'action est présente et utilisable), en taille ordinateur et en taille téléphone.
+
+**Les rôles.** Dans les listes ci-dessous, le rôle requis est indiqué entre crochets :
+- **[tous]** : tout le monde, connecté ou non ;
+- **[visiteur]** : une personne non connectée ;
+- **[membre]** : une personne connectée et non bannie ;
+- **[auteur]** : l'auteur du contenu concerné ;
+- **[modo]** : modérateur ou rôle supérieur (puissance 70 ou plus) ;
+- **[admin]** : administrateur (puissance 90 ou plus) ;
+- **[SA]** : super administrateur ;
+- **[orga]** : organisateur ou commissaire d'un tournoi, ou modérateur.
+
+**Ce qui ne doit jamais changer.** Les adresses (URL), les paramètres d'adresse et les ancres listés ici sont utilisés par des liens déjà partagés, par des courriels et par le code. Une refonte visuelle ne les modifie pas.
+
+**Ce qui n'existe pas aujourd'hui.** La dernière section liste ce que le site ne fait pas encore. La refonte ne doit pas l'inventer sans une carte dédiée.
+
+---
+
+## 1. Éléments présents sur toutes les pages
+
+Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/Navbar/`, `MobileSidebar/`, `PageHeader/`, `CookieBanner/`.
+
+- [ ] [tous] Le logo du site ramène à l'accueil. Sur l'accueil, la barre n'affiche pas de logo, parce que la page a déjà le sien en grand.
+- [ ] [visiteur] Un bouton « Connexion » mène à `/auth/login`.
+- [ ] [membre] Une pastille de profil (avatar ou initiale, plus le pseudo) mène à `/profile`.
+- [ ] [membre] Un bouton « Déconnexion » déconnecte et ramène à l'accueil. En mode hub, il ferme aussi la session du hub par un envoi POST vers `/auth/logout`.
+- [ ] [membre] Une icône Messagerie mène à `/messagerie` et affiche une pastille avec le nombre de messages privés non lus.
+- [ ] [modo] Une icône Modération mène à `/moderation` et affiche une pastille avec le nombre d'éléments en attente : signalements et ressources à valider, avec « 9+ » au-delà de 9.
+- [ ] [admin] Une icône Administration mène à `/administration`.
+- [ ] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-page-sidebar-slot` du menu latéral.
+- [ ] [tous] Sur téléphone, le bouton retour de la page reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-back-button-slot` de la barre.
+- [ ] [tous] Le menu de téléphone se ferme quand on change de page, et le défilement de la page est bloqué tant qu'il est ouvert.
+- [ ] [tous] Le pied de page donne accès aux mentions légales, à la mention « Conçu avec l'aide de l'IA », au GitHub (lien externe) et aux statistiques (`/statistiques`). Sur téléphone, ces liens sont aujourd'hui en bas du menu latéral.
+- [ ] [tous] Le bandeau cookies apparaît après 1,5 seconde si aucun consentement n'est enregistré. « Accepter » est mémorisé dans le navigateur, la croix ferme le bandeau pour la session, et un lien mène aux mentions légales.
+- [ ] [tous] Les notifications temporaires (toasts) s'affichent, sans être cachées par la navigation.
+- [ ] [tous] Le thème choisi est appliqué dès le premier affichage, sans éclair d'une autre couleur (ADR 0005). Pour un membre, il vient de sa session ; pour un visiteur, de la mémoire du navigateur.
+- [ ] [membre banni] Un membre banni est envoyé vers `/banned`.
+- [ ] [membre] Tant que le profil n'est pas terminé, le membre est renvoyé vers l'onboarding (`proxy.ts`).
+- [ ] [tous, en développement seulement] Le widget de comptes de test (`DebugAuthWidget`) et le widget de thème (`DebugThemeWidget`) restent utilisables.
+
+## 2. L'éditeur BBCode (partagé par le forum, les articles, la messagerie, les ligues, le profil et l'administration)
+
+Fichier actuel : `common/components/BBCodeEditor/BBCodeEditor.tsx`. Le BBCode est une syntaxe de mise en forme par balises entre crochets, par exemple `[b]gras[/b]`.
+
+- [ ] Gras, italique, souligné, barré.
+- [ ] Taille du texte (0,7 / 0,85 / 1 / 1,25 / 1,5 / 2 rem).
+- [ ] Couleur (10 pastilles).
+- [ ] Trait horizontal `[hr]`.
+- [ ] Listes : à points, à tirets, numérotée, par lettres.
+- [ ] Tableau (insertion d'un modèle).
+- [ ] Lien : adresse plus texte, ou texte sélectionné.
+- [ ] Lien vers un sujet du forum `[topic=id]`, avec une recherche par `GET /api/forum/topics/search`.
+- [ ] Image par adresse, ou par envoi de fichier vers ImgBB. Options : alignement gauche, centre ou droite ; habillage du texte ; taille réduite.
+- [ ] Galerie (liste d'adresses d'images).
+- [ ] Vidéo YouTube, avec les mêmes options d'alignement, d'habillage et de taille.
+- [ ] Mention d'un membre par un bouton, **et en tapant `@`** dans la zone de texte. La recherche passe par `GET /api/users/search`.
+- [ ] Spoiler (texte caché), avec un titre facultatif.
+- [ ] Accordéon (bloc repliable, avec un titre).
+- [ ] Bloc de code.
+- [ ] Alignement : centré, à droite, justifié.
+- [ ] Exposant et indice.
+- [ ] Schéma BBScheme (adresse ou identifiant), disposé à l'horizontale ou à la verticale.
+- [ ] Smileys.
+- [ ] Assistant de mise en forme par IA : il génère un texte de consigne à copier et ouvre Gemini, Claude ou ChatGPT.
+- [ ] Bouton Aperçu, qui affiche ou masque le rendu.
+- [ ] Compteur de caractères quand une longueur maximale est fixée.
+- [ ] La touche Échap ferme l'outil ouvert.
+- [ ] L'événement `bbcode-insert-text` insère une citation depuis le bouton « Citer » d'un message.
+- [ ] La zone de texte garde son attribut `name`, parce que les formulaires lisent son contenu par `FormData`.
+
+**Rendu des messages** (`BBCodeContent`, `lib/bbcode.ts`) :
+- [ ] Toutes les balises sont affichées correctement : `b i u s color size center right justify code sup sub hr bbscheme spoiler accordion quote url topic mention img youtube list table gallery`, plus les smileys écrits en texte.
+- [ ] Une citation affiche les onglets « Citation », « Par @nom » (lien vers le profil) et « Voir le message » (ancre `#post-id`). Si le message cité a été supprimé ou modéré, un texte d'explication remplace son contenu.
+- [ ] Une mention `@Pseudo` mène à `/spy/id`, ou à `/profile` quand il s'agit de soi.
+- [ ] Un schéma `[bbscheme]` affiche le lecteur : lecture, pause, image par image, vitesse.
+
+---
+
+## 3. Forum
+
+Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/actions.ts`, droits d'accès dans `lib/forumAccess.ts`.
+
+### 3.1 `/forum` : accueil du forum
+- [ ] [tous] Les catégories, triées par ordre, sont repliables. Une catégorie qui contient du non-lu est mise en valeur.
+- [ ] [tous] Seuls les forums de premier niveau sont listés. Pour chacun : icône (trophée pour un forum de tournoi, dossier sinon), nom, description, cadenas s'il est verrouillé, cloche s'il contient du non-lu (sous-forums compris), nombre de sujets.
+- [ ] [tous] Le dernier sujet de chaque forum : titre (avec un trophée pour un tournoi), auteur, date ; ou « Aucun sujet ».
+- [ ] [tous] Après une suppression, le message « Sujet supprimé » ou « Forum supprimé » s'affiche pendant 8 secondes (`?deletedTopic=`, `?deletedForum=`), puis l'adresse est nettoyée.
+- [ ] [tous] Liens « Recherche avancée » (`/forum/search`) et « Les membres » (`/membres`).
+- [ ] [membre] S'il y a du non-lu : lien « Posts non lus (N) » vers `/forum/unread`, et bouton « Tout marquer comme lu », avec confirmation.
+- [ ] [modo] Bouton « Nouveau forum » vers `/forum/new-forum`.
+- [ ] [tous] Les forums réservés à un rôle sont masqués à qui n'a pas ce rôle.
+
+### 3.2 `/forum/[id]` : un forum
+- [ ] [tous] Titre, cadenas, cloche de non-lu, description.
+- [ ] [visiteur] Un forum réservé envoie vers `/auth/login?callbackUrl=`. [membre sans le rôle] Il affiche une page introuvable.
+- [ ] [tous] Sous-forums (10 au plus), avec icône, nom, cadenas, cloche, description, nombre de sujets, dernier sujet et badge de tournoi (« Annulé », « Terminé », « Passé »).
+- [ ] [tous] Liste des sujets : icône épinglé, tournoi ou sujet ordinaire ; titre ; badge de statut du tournoi ; cadenas ; cloche de non-lu ; « Par X le date » ; nombre de messages ; nombre de vues ; date de dernière activité.
+- [ ] [tous] Les sujets épinglés sont en premier, puis les autres du plus récent au plus ancien. Les sujets archivés sont exclus.
+- [ ] [tous] Liste vide : « Aucun sujet dans ce forum pour le moment. »
+- [ ] [tous] Pagination de 30 sujets par page (`?page=`).
+- [ ] [membre] « Nouveau sujet » vers `/forum/new-topic?forumId=`. Dans un forum de tournoi, il y a aussi « Nouveau tournoi » vers `/forum/new-tournament?forumId=`. Si le forum est verrouillé et que le membre n'est pas modérateur, un bouton désactivé « Forum verrouillé » les remplace.
+- [ ] [tous] « Recherche avancée », avec le forum prérempli (`?forumId=`), et « Les membres ».
+- [ ] [modo] Nouveau sous-forum. Au-delà de 5 sous-forums, une fenêtre « Limite atteinte » s'ouvre.
+- [ ] [modo] Supprimer le forum, avec confirmation. Ses sous-forums, sujets et messages sont supprimés aussi.
+- [ ] [modo] Verrouiller ou déverrouiller le forum.
+
+### 3.3 `/forum/topic/[id]` : un sujet
+**Lecture et navigation**
+- [ ] [membre] Sans `?page=`, la page saute au premier message non lu (`?page=N#post-<id>`).
+- [ ] [membre] Le sujet est marqué comme lu et le compteur de vues augmente.
+- [ ] [tous] La page défile jusqu'à l'ancre `#post-<id>`.
+- [ ] [tous] Pagination de 20 messages par page. Une page trop grande est ramenée à la dernière.
+- [ ] [tous] Titre, badge « ARCHIVÉ », nom du forum, retour au forum, fil d'Ariane (chemin cliquable : Accueil Forum › catégorie › forum parent › forum › sujet).
+- [ ] [visiteur / membre sans le rôle] Même règle d'accès réservé que pour un forum.
+- [ ] [membre] Les messages des membres qu'on a bloqués sont masqués.
+
+**Sujet de tournoi**
+- [ ] [tous] Résumé du tournoi, widget de résultats quand il est terminé, module d'inscription.
+- [ ] [tous] Le premier message reste affiché, mis en valeur, sur les pages suivantes.
+
+**Un message (ancre `id="post-<id>"`)**
+- [ ] [tous] Avatar avec le cadre de rang. Rangs selon le nombre de messages : bronze 100, argent 300, or 700, platine 1000, diamant 2000, maître 4000, grand maître 10000. L'auteur banni a un style « banni ».
+- [ ] [tous] Nom et rôle de l'auteur.
+- [ ] [tous] Statistiques de l'auteur, si elles sont renseignées : numéro NAF avec lien vers `member.thenaf.net`, équipe, région, ligues (liens vers `/ligue/[id]`) et ligue saisie à la main.
+- [ ] [membre] Bouton « Profil » vers `/spy/[id]`, et bouton « MP » vers `/messagerie?userId=`, sauf sur ses propres messages.
+- [ ] [tous] « Posté le … », et « modifié le … » si le message a été modifié.
+- [ ] [tous] Numéro du message `#N`.
+- [ ] [membre] « Marquer comme non lu à partir d'ici ».
+- [ ] [tous] Partager : copie du lien `…/forum/topic/id?page=N#post-id`, avec la confirmation « Lien copié ! ».
+- [ ] [membre, pas l'auteur] Signaler le message (raisons : spam, harcèlement, contenu inapproprié, bot, autre ; plus des précisions).
+- [ ] [tous] Message supprimé : « Ce message a été supprimé par son auteur », sans actions.
+- [ ] [membre] Auteur bloqué ou banni : écran masqué, bouton « Afficher le message », bandeau « AFFICHAGE TEMPORAIRE » et bouton « Masquer à nouveau ».
+- [ ] [tous] Message modéré : bandeau avec le nom du modérateur et la raison. [auteur, modo] Le contenu d'origine reste visible avec une mention. [autres] « Contenu masqué par la modération ».
+- [ ] [tous] Signature de l'auteur sous le message.
+- [ ] [modo] « Modérer » (raison obligatoire) ou « Restaurer » (avec confirmation).
+- [ ] [tous] Les réactions affichent un émoji et un compteur, et celle du membre est mise en valeur. [membre] Choix parmi 10 émojis : 👍 ❤️ 😂 😢 😡 🔥 👀 🎉 👎 🍻. Une seule réaction par membre : un autre émoji remplace la réaction, le même émoji la retire. L'écran se met à jour tout de suite et revient en arrière si le serveur refuse.
+- [ ] [membre] « Citer » insère la citation dans la réponse rapide puis fait défiler jusqu'à elle. Sans réponse rapide, il mène à `/forum/topic/[id]/reply?quotePostId=`.
+- [ ] [auteur, modo] « Modifier » vers `/forum/post/[id]/edit`. Pour le premier message d'un tournoi, il mène à `/forum/edit-tournament/[tournamentId]`.
+- [ ] [auteur] « Supprimer », avec confirmation.
+
+**Réponse rapide (`id="quick-reply-area"`)**
+- [ ] [membre, sujet et forum non verrouillés, ou modo] Éditeur BBCode et bouton « Envoyer ma réponse ».
+- [ ] [membre] Après l'envoi, l'éditeur est vidé et la page défile jusqu'au nouveau message, mis en valeur par une animation.
+- [ ] [membre] Si le sujet est verrouillé pour lui, un encart « Sujet verrouillé » s'affiche.
+
+**Outils du sujet (aujourd'hui dans la colonne latérale)**
+- [ ] [tous] Nombre de vues.
+- [ ] [tous] Bandeau « Forum verrouillé » ou « Sujet verrouillé ».
+- [ ] [membre] « Répondre » fait défiler jusqu'à la réponse rapide.
+- [ ] [membre] « Suivre le sujet » ou « Arrêter de suivre ».
+- [ ] [auteur, modo, hors tournoi] « Modifier le titre », avec des smileys et un aperçu.
+- [ ] [membre, pas l'auteur] Signaler le sujet.
+- [ ] [tous] « Dernier message » (`?page=last#post-lastId`).
+- [ ] [tous] « Haut de page ».
+- [ ] [orga, tournoi non annulé] « Modifier le tournoi ». Si le tournoi est terminé : « Publier les résultats » et « Réouvrir le tournoi ». Sinon : « Terminer », « Bloquer / Réouvrir les inscriptions », « Annuler ». Chaque action demande une confirmation.
+- [ ] [modo] Épingler ou désépingler.
+- [ ] [modo] Déplacer vers un autre forum (fenêtre avec la liste des forums).
+- [ ] [modo] Archiver ou désarchiver.
+- [ ] [modo] Verrouiller ou déverrouiller le sujet.
+- [ ] [modo] Supprimer le sujet définitivement, avec un avertissement. Le tournoi lié est supprimé aussi.
+
+### 3.4 `/forum/topic/[id]/reply` : page de réponse
+- [ ] [membre] Éditeur BBCode, boutons « Annuler » et « Publier ma réponse ».
+- [ ] [membre] `?quotePostId=` préremplit la citation.
+- [ ] [membre] Rappel des 3 derniers messages.
+- [ ] [visiteur] Est renvoyé vers le sujet.
+
+### 3.5 `/forum/post/[id]/edit` : modifier un message
+- [ ] [auteur, modo] Éditeur prérempli, « Annuler », « Enregistrer les modifications », puis retour à `?page=N#post-id`.
+- [ ] [auteur, modo] Rappel des 3 derniers messages, avec le message modifié grisé et marqué « (Ce message) ».
+
+### 3.6 `/forum/new-topic?forumId=` : nouveau sujet
+- [ ] [membre] Titre avec bouton smiley et aperçu en direct.
+- [ ] [membre] Message dans l'éditeur BBCode.
+- [ ] [modo] Cases « Épingler » et « Verrouiller le sujet ».
+- [ ] [membre] « Créer le sujet » et « Annuler ». Une erreur s'affiche en notification, puis on est redirigé vers le sujet créé.
+- [ ] [membre] La création est refusée dans un forum verrouillé, sauf pour un modo.
+
+### 3.7 `/forum/new-forum` : créer un forum
+- [ ] [modo] Champs : nom (obligatoire), description, catégorie, forum parent, « Insérer après ». Les erreurs sont affichées : nom vide, nom déjà pris, plus de 5 sous-forums.
+
+### 3.8 `/forum/search` : recherche avancée
+- [ ] [tous] Filtres : mots-clés, auteur, forum (arborescence, sous-forums inclus), période (tout, 7 jours, 30 jours, 1 an), tri (récents ou anciens).
+- [ ] [tous] Résultats : trophée, titre du sujet, forum, auteur, ancienneté, vues, date du dernier message, bouton « Voir », extrait avec les mots surlignés.
+- [ ] [tous] 20 résultats par page. Message dédié si la recherche ne donne rien.
+
+### 3.9 `/forum/unread` : sujets non lus
+- [ ] [membre] Liste des sujets : trophée, titre, forum, auteur, nombre de messages, date du dernier message.
+- [ ] [membre] Marquer un sujet comme lu, et tout marquer comme lu.
+- [ ] [membre] Liste vide : « Vous êtes à jour », avec un bouton de retour.
+- [ ] [membre] Pagination de 20 par page.
+- [ ] [visiteur] Est renvoyé vers la connexion.
+
+---
+
+## 4. Tournois
+
+- [ ] [tous] `/tournois` : affichage en grille (10) ou en liste (20), pagination, recherche par nom.
+- [ ] [tous] Filtres de `/tournois` : région et département ; mode individuel ou par équipe ; plateforme ; version ; structure ; circuits (NAF, CDF, CGO, TGE, TSC) ; logement, repas, arrivée le vendredi ; prix maximum ; places restantes minimum ; historique.
+- [ ] [tous] Les filtres actifs s'affichent en pastilles, chacune avec une croix pour la retirer. Tri par date, prix ou places, dans les deux sens. Badges Passé, Terminé, Annulé. Une carte de tournoi ouvre son sujet.
+- [ ] [membre] `/forum/new-tournament?forumId=` : formulaire de tournoi complet, avec choix du lieu sur une carte et recherche d'adresse (géocodage).
+- [ ] [orga] `/forum/edit-tournament/[id]` : modifier le tournoi.
+- [ ] [membre] Module d'inscription : s'inscrire, se désinscrire, se déclarer mercenaire, créer, modifier ou supprimer une équipe.
+- [ ] [orga] Module d'inscription : changer le statut d'inscription et de paiement, ouvrir ou fermer les inscriptions.
+- [ ] [orga] `/forum/tournament/[id]/results` : saisie du classement et des rondes, import d'un rapport NAF, terminer, annuler, réouvrir, effacer les résultats.
+- [ ] [tous] `/forum/tournament/[id]/results/view` : classement final.
+
+## 5. Accueil et pages fixes
+
+- [ ] [tous] `/` : grand logo. Tuiles Jouer, Forum, Ligues (avec « Créer »), Tournois (avec « Créer »), La Carte, Championnat de France, Articles, Ressources, BBScheme, Quizz, Discord (lien réglé dans l'administration).
+- [ ] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
+- [ ] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
+- [ ] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
+- [ ] [tous] `/mentions-legales`.
+- [ ] [tous] `/media` : lecteurs Twitch avec le lien « Suivez… » et listes de lecture YouTube.
+- [ ] [tous] `/statistiques` : utilisateurs, ligues, articles, sujets du forum, vues totales, personnes en ligne.
+- [ ] [admin] `/statistiques` : courriels du mois, quota restant, quota de stockage, taille de la base, signalements, ressources.
+- [ ] [banni] `/banned` : raison du bannissement, bouton de retour.
+- [ ] [tous] Page 404 « Terrain impraticable ! », avec un bouton vers l'accueil.
+
+## 6. Connexion et compte
+
+- [ ] [visiteur] `/auth/login` : Discord, Google, adresse email avec « Recevoir un lien magique » ; en mode hub, « compte BBFrance » ; en développement, la section « Comptes de test ». Le paramètre `callbackUrl` est respecté.
+- [ ] [tous] `/auth/verify-request` (« Vérifiez votre boîte mail ») et `/auth/error` (message d'erreur lisible).
+- [ ] [membre] `/auth/onboarding` : pseudo ; avatar (adresse, aléatoire, générateur DiceBear avec graine et style, envoi d'image) ; NAF ; région ; équipe fétiche ; ligues ; signature BBCode ; thème. Puis écran de succès.
+
+## 7. Profil et membres
+
+- [ ] [membre] `/profile`, carte de profil : avatar avec cadre, pseudo, rôle, badge « Banni », lien NAF, nombre de messages, région, équipe, ligues.
+- [ ] [membre] Onglets gardés dans l'adresse (`?tab=`) : `followed`, `activity`, `articles`, `ressources`, `blocked`, `edit`, `settings`.
+- [ ] [membre] Onglet `followed` : sujets suivis, avec une pastille de non-lu et une pagination.
+- [ ] [membre] Onglet `activity` : activité récente sur le forum.
+- [ ] [membre] Onglet `articles` : mes articles, 6 par page.
+- [ ] [membre] Onglet `ressources` : mes ressources, avec Éditer et Supprimer (confirmation).
+- [ ] [membre] Onglet `blocked` : utilisateurs bloqués, avec « Débloquer ».
+- [ ] [membre] Onglet `edit` : avatar (4 façons), contour d'avatar, pseudo, NAF, région, équipe, ligues, signature (250 caractères), **choix du thème**.
+- [ ] [membre] Onglet `settings` : associer ou délier email, Discord et Google ; interrupteurs de notification par email (messages privés, mentions, sujets suivis, newsletter) ; « Supprimer mon compte » avec double confirmation. En développement : newsletter de test.
+- [ ] [membre] `/spy/[id]` : onglets Activité et Articles ; « Message privé » ; « Signaler » ; « Bloquer » ou « Débloquer » (pas sur un modérateur). Son propre identifiant renvoie vers `/profile`.
+- [ ] [modo] `/spy/[id]` : « Bannir » (raisons rapides plus détails) ou « Débannir ».
+- [ ] [membre] `/membres` : recherche par nom, filtres par ligue, région et rôle ; tri (A-Z, Z-A, en-têtes cliquables) ; 25 par page ; liens vers le profil, la NAF et le message privé.
+- [ ] [modo] `/membres` : voit les bannis, bannit ou débannit.
+- [ ] [rôle autorisé] `/membres` : « Changer le rôle ».
+- [ ] [SA] `/membres` : suppression définitive d'un membre.
+
+## 8. Messagerie `/messagerie`
+
+- [ ] [membre] Liste des conversations (20) : dernier message et nombre de non-lus.
+- [ ] [membre] « Nouvelle discussion » : recherche de coachs et titre facultatif.
+- [ ] [membre] Conversation (`?id=`) : 30 derniers messages, rafraîchis toutes les 10 secondes, marqués comme lus à l'ouverture.
+- [ ] [membre] Saisie avec l'éditeur BBCode et « Envoyer ».
+- [ ] [membre] Groupe : ajouter des participants, renommer, liste des participants.
+- [ ] [membre] « Quitter la conversation », avec confirmation.
+- [ ] [membre] `?userId=` ouvre ou reprend directement une conversation à deux.
+- [ ] [membre] La note sur le chiffrement est affichée.
+
+## 9. Ligues et carte
+
+- [ ] [tous] `/ligues` : grille (12) ou liste (20) ; recherche par nom ou acronyme ; filtre par zone ; pagination ; « Créer une ligue ». Les filtres sont dans l'adresse (`?view&query&region`).
+- [ ] [membre] `/ligues/create` : nom, acronyme, blason (envoi), zone, région, département, ville, adresse avec choix sur la carte, description BBCode, commissaires.
+- [ ] [tous] `/ligue/[id]` : blason, « À propos », chef, commissaires, membres, 5 prochains tournois et « Voir tout ».
+- [ ] [membre] `/ligue/[id]` : signaler la ligue.
+- [ ] [chef, commissaire, modo] `/ligue/[id]` : « Modifier ».
+- [ ] [chef, modo] `/ligue/[id]` : « Transférer la propriété » et « Supprimer la ligue ».
+- [ ] [chef, commissaire, modo] `/ligue/edit/[id]` : même formulaire que la création.
+- [ ] [tous] `/carte` : carte Leaflet ; bascule entre Tournois et Ligues ; plein écran ; zoom ; bulle avec un lien « Détails ».
+
+## 10. Articles
+
+- [ ] [tous] `/articles` : grille (12) ou liste (20) ; pagination ; filtres `query`, `tag`, `author`, `sort` (récents, anciens, titre A-Z, populaires) et `view` ; « Réinitialiser ».
+- [ ] [membre] « Créer un article ».
+- [ ] [tous] `/articles/[id]` : contenu, auteur, date, vues, tags, réactions émoji.
+- [ ] [auteur, modo] `/articles/[id]` : Modifier, Supprimer.
+- [ ] [modo] `/articles/[id]` : modérer, annuler la modération. Un article modéré n'est visible que par son auteur et les modos.
+- [ ] [membre, pas l'auteur] `/articles/[id]` : signaler.
+- [ ] [membre / auteur, modo] `/articles/create`, `/articles/edit/[id]` : titre, tags avec suggestions, ligue liée, contenu BBCode.
+
+## 11. Ressources
+
+- [ ] [tous] `/ressources` : outils officiels en premier (badge « Officiel ») ; grille ou liste ; 20 par page ; recherche par texte et par tags ; un clic ouvre le lien.
+- [ ] [auteur, modo] Éditer, et supprimer avec confirmation (une ressource officielle ne peut pas être supprimée).
+- [ ] [membre] `/ressources/submit` : titre, description (200 caractères), adresse, image (adresse ou envoi), tags ; puis attente de validation.
+- [ ] [auteur, modo ; admin pour une ressource officielle] `/ressources/edit/[id]` : la ressource modifiée repasse en attente de validation.
+
+## 12. Classement du Championnat de France (CDF)
+
+- [ ] [tous] `/classement` : onglets Année, Glissant, Par roster, Hall of Fame, Archives ; choix de l'année et de l'archive ; lignes dépliables (4 meilleurs tournois, liens vers le profil et vers le tournoi) ; fenêtre d'aide « Calcul des points CDF ».
+- [ ] [modo] `/classement` : archiver l'année (confirmation en 2 étapes), éditer une archive, importer des archives depuis l'ancien site, créer une archive.
+- [ ] [admin] `/classement` : supprimer une archive.
+- [ ] [modo] `/classement/edit-archive[?year=]` : année, nom, tableau de lignes (coach, lien vers un membre, NAF, points, nombre de tournois, détails) ; ajouter ou supprimer une ligne ; enregistrer.
+
+## 13. BBScheme `/bbscheme`
+
+- [ ] [tous] Choix du roster bleu et du roster rouge, Star Players, réserves des deux équipes, « Remettre en réserve ».
+- [ ] [tous] Outils : sélection ou déplacement (y compris du terrain), crayon, gomme, « Vider » les dessins, baguette (état du pion : debout, à terre, sonné, bonehead, stupid, fourchette), ballon, annuler, « Tout vider », désélectionner.
+- [ ] [tous] Images de l'animation : ajouter, dupliquer, supprimer, précédente, suivante, compteur `n/N`, 50 au plus. Lecture, pause, vitesse.
+- [ ] [tous] Vue : rotation, zoom (curseur, molette, pincement à deux doigts), plein écran.
+- [ ] [tous] « Partager » : enregistre et copie le lien `?id=`. Export en GIF avec barre de progression et « Télécharger ». Fenêtre « Infos ».
+- [ ] [tous] Paramètres d'adresse `?id=`, `&embed=true` et `&layout=vertical`.
+- [ ] [tous] Interface dédiée au téléphone : barre d'outils qui défile avec des flèches, panneaux de réserve, terrain vertical.
+
+## 14. BBQuizz
+
+- [ ] [membre] `/bbquizz` : « Jouer », « Proposer une question ».
+- [ ] [modo] `/bbquizz` : « Éditer », « Valider ».
+- [ ] [membre] Partie : 20 questions, chronomètre, 4 réponses, jokers 50/50, appel à la communauté et passer, explication, « Suivant », écran de fin avec « Rejouer ».
+- [ ] [membre] Classement Jour, Semaine, Tout temps.
+- [ ] [membre] `/bbquizz/proposer` : catégorie, question, 4 réponses, la bonne réponse, explication.
+- [ ] [modo] `/bbquizz/valider` : accepter ou refuser une proposition.
+- [ ] [modo] `/bbquizz/editer` : recherche, éditer, supprimer.
+
+## 15. Modération `/moderation`
+
+- [ ] [modo] Onglets (`?tab=`) avec pastilles de compteur : `logs`, `users`, `reports_post`, `reports_topic`, `reports_user`, `reports_article`, `reports_ligue`, `reports_user_banned`, `resources_validation`.
+- [ ] [modo] Journal : pagination, détails, « Purger », lien vers le profil du modérateur.
+- [ ] [modo] Signalements regroupés par contenu visé : « Marquer comme traité » ou ignorer, avec un commentaire.
+- [ ] [modo] Bannis : « Débannir ».
+- [ ] [modo] Ressources : approuver ou refuser.
+- [ ] [modo] L'onglet `users` renvoie vers `/membres`.
+
+## 16. Administration `/administration`
+
+- [ ] [admin] `general` : lien d'invitation Discord.
+- [ ] [admin] `roles` : créer, supprimer et réordonner les rôles par glisser-déposer.
+- [ ] [admin] `coachs` : chercher un coach, changer son rôle.
+- [ ] [admin] `structure` : catégories, forums et sous-forums : créer, modifier, supprimer, indenter ou désindenter, rôle minimum d'accès, glisser-déposer.
+- [ ] [admin] `reference` : données de référence (clé, libellé, groupe, ordre) : créer, éditer, supprimer.
+- [ ] [admin] `howtoplay` : textes des 6 sections de `/jouer`.
+- [ ] [admin] `info-mails` : objet et message BBCode, confirmation « Oui, diffuser », écran « Diffusion terminée ».
+- [ ] [SA] `reset` : remise à zéro, protégée par la saisie de « JE COMPRENDS LES RISQUES ».
+
+---
+
+## 17. Ce qui n'existe pas aujourd'hui
+
+La refonte ne les ajoute pas sans une carte dédiée :
+- sondages ;
+- pièces jointes autres que des images hébergées chez ImgBB ;
+- brouillons et sauvegarde automatique ;
+- fusion ou scission de sujets ;
+- marquer un seul forum comme lu ;
+- notifications sur le site pour les mentions (seulement des courriels) ;
+- compteur de non-lus du forum dans la navigation ;
+- coller ou glisser-déposer une image dans l'éditeur ;
+- Markdown (le site utilise uniquement le BBCode) ;
+- recherche globale sur tout le site ;
+- sélecteur de thème rapide. La refonte en ajoute un dans le panneau « Plus » et le menu de compte : c'est un ajout, pas une perte.
+
+## 18. Bugs repérés pendant l'inventaire
+
+Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne doit ni les corriger en passant, ni les aggraver.
+
+- **Contrôles d'accès manquants** :
+  - `moveTopic` ne vérifie pas le forum de destination ;
+  - `updatePost`, `deletePost`, `togglePostReaction` et `markTopicAsRead` ignorent `forumAccess` et le verrouillage ;
+  - `markAllTopicsAsRead` ignore les filtres (sujets archivés et inaccessibles).
+- **Liens cassés dans le forum** :
+  - le lien d'un résultat de `/forum/search` n'atteint pas le message (il manque `post-` et `?page=`) ;
+  - une citation faite depuis `/reply` n'a pas de pseudo.
+- **Liens morts sur le site** :
+  - `/profile/${id}` dans la messagerie ;
+  - `/profile?id=` sur la page d'un article ;
+  - `?ligueId=` n'est pas lu par `/tournois` ;
+  - `/media` n'a aucun lien d'entrée.
+- **Mauvais écran de connexion** : `/administration`, `/moderation`, `/profile` et `/spy` renvoient vers `/api/auth/signin` au lieu de `/auth/login`.
+- **Fenêtres du navigateur** : il reste des `alert()` à la place des notifications du site.
+- **Rôle affiché en code brut** : par exemple `MODERATOR`, au lieu de son libellé.
