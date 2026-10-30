@@ -157,3 +157,11 @@ Après la carte 061, l'audit complet (30 mesures par taille d'écran : les 28 pa
 1. Corriger dans l'ordre des cartes 053 à 058, en commençant par le forum (le plus utilisé).
 2. Après chaque correction : relancer l'audit, mettre à jour ce rapport et la fiche de la fonctionnalité.
 3. Quand l'audit est propre sur une page, ajouter un contrôle bloquant (aucun contenu coupé, aucune cible sous 44 px) pour qu'elle ne régresse plus.
+
+## Tester sur un vrai téléphone
+
+Le site de développement peut s'ouvrir sur un téléphone connecté au même Wi-Fi que le PC :
+
+1. Dans `apps/site`, lancer `corepack pnpm db:start`, puis, sous PowerShell, `$env:ALLOWED_DEV_ORIGINS="<adresse IP du PC>"; corepack pnpm dev -H 0.0.0.0`. L'option `-H 0.0.0.0` rend le serveur joignable depuis le réseau local, et `ALLOWED_DEV_ORIGINS` autorise le téléphone à charger les fichiers de Next.js (sans elle, la page s'affiche mais ne réagit pas). L'adresse IP du PC se lit avec `ipconfig` (ligne « Adresse IPv4 »).
+2. Le pare-feu de Windows doit laisser entrer le port 3000 sur le réseau privé. Une seule fois, dans un PowerShell administrateur : `New-NetFirewallRule -DisplayName "BBFrance dev 3000" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -Profile Private`.
+3. Sur le téléphone, ouvrir `http://<adresse IP du PC>:3000/` dans Chrome, en tapant l'adresse complète avec `http://`. Firefox pour Android n'a pas réussi à joindre le PC lors du premier essai (2026-10-30), alors que Chrome y arrivait.
