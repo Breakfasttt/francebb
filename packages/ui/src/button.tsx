@@ -16,11 +16,19 @@ export const buttonVariants = cva(
         outline: "border border-border bg-card text-foreground hover:bg-muted",
         ghost: "text-foreground hover:bg-muted",
         destructive: "bg-destructive text-white hover:opacity-90",
+        // Variantes de la refonte (ADR 0006), sur les variables v2 :
+        primary: "bg-bb-accent text-bb-on-accent hover:bg-bb-accent-hover focus-visible:outline-bb-focus",
+        secondary: "border border-bb-border bg-bb-surface-2 text-bb-text hover:border-bb-text-muted focus-visible:outline-bb-focus",
+        quiet: "text-bb-text-muted hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-bb-focus",
+        danger: "bg-bb-danger text-bb-on-danger hover:opacity-90 focus-visible:outline-bb-focus",
       },
       size: {
         sm: "px-3 py-1.5 text-sm",
         md: "px-6 py-3 text-[0.95rem]",
         icon: "size-9",
+        // Tailles tactiles de la refonte : au moins 44 px de haut (règle « mobile impeccable »)
+        tap: "min-h-11 rounded-bb-md px-4 text-[0.95rem]",
+        "tap-icon": "size-11 rounded-bb-md",
       },
     },
     defaultVariants: { variant: "default", size: "md" },

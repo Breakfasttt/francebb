@@ -16,6 +16,23 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Comportement de modale | `Dialog`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogTitle`, `DialogClose` |
 | Bouton pour nouveau code hors site | `Button` (variantes sur tokens) |
 
+**Composants de la refonte (ADR 0006, carte 082)**, à utiliser pour tout écran refait. Ils n'utilisent que les variables v2 `--bb-*` et les classes `bg-bb-*`, `text-bb-*`. Les composants historiques de `common/components` restent en place sur les écrans pas encore refaits.
+
+| Besoin | Utiliser |
+|---|---|
+| Bouton d'un écran refait | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
+| Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
+| Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
+| Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |
+| Étiquette, pastille de compteur | `Badge`, `CountBadge` |
+| Avatar avec initiale | `Avatar` (les cadres de rang restent dans `UserAvatar`) |
+| Champs de formulaire | `Field`, `Label`, `Input`, `Textarea`, `Select` |
+| Interrupteur, info-bulle | `Switch`, `Tooltip` |
+| Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}`) |
+| Pagination compacte | `PageNav` |
+| Liste vide, chargement | `EmptyState`, `Skeleton` |
+| Savoir si on est sur ordinateur | `useMediaQuery(DESKTOP_QUERY)` |
+
 ## Paquet BBScheme (`packages/bbscheme-player`, `@bbfrance/bbscheme-player`)
 | Besoin | Utiliser |
 |---|---|

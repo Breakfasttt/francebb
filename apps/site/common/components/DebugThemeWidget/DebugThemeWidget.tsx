@@ -5,7 +5,7 @@ import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { Paintbrush, Palette, Check } from "lucide-react";
 
 const THEMES = [
-  { id: "vestiaire", name: "Vestiaire", color: "#c8102e" },
+  { id: "vestiaire", name: "Vestiaire", color: "rgb(200, 16, 46)" },
   { id: "saison3", name: "Saison 3", color: "#ffd700" },
   { id: "default", name: "Default (Dark)", color: "#c21d1d" },
   { id: "light", name: "Light Mode", color: "#ffffff" },
