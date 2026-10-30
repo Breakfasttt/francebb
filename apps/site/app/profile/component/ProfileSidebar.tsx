@@ -98,9 +98,11 @@ export default function ProfileSidebar({
           setBanDetails("");
           router.refresh();
           if (onRefresh) onRefresh();
+        } else {
+          toast.error(res.error || "Erreur de bannissement");
         }
-      } catch (err: any) {
-        toast.error(err.message || "Erreur de bannissement");
+      } catch {
+        toast.error("Erreur de bannissement");
       }
     });
   };
@@ -109,12 +111,16 @@ export default function ProfileSidebar({
     startTransition(async () => {
       try {
         const res = await toggleBlockUser(user.id);
-        setIsBlocked(res.isBlocked);
         setShowBlockModal(false);
+        if (!res.success) {
+          toast.error(res.error || "Erreur de blocage");
+          return;
+        }
+        setIsBlocked(!!res.isBlocked);
         router.refresh();
         if (onRefresh) onRefresh();
-      } catch (err: any) {
-        toast.error(err.message || "Erreur de blocage");
+      } catch {
+        toast.error("Erreur de blocage");
         setShowBlockModal(false);
       }
     });

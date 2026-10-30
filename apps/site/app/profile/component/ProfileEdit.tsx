@@ -154,8 +154,10 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
           if (onUpdate) {
             setTimeout(() => onUpdate(), 1000);
           }
+        } else {
+          showToast(result.error || "Erreur lors de la mise à jour", "error");
         }
-      } catch (err) {
+      } catch {
         showToast("Erreur lors de la mise à jour", "error");
       }
     });

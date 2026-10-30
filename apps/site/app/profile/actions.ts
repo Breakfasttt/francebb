@@ -6,10 +6,11 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { encrypt, decrypt } from "@/lib/crypto";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
+import type { ActionResult } from "@/lib/actionResult";
 
-export async function updateProfile(formData: FormData) {
+export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   const name = formData.get("name") as string;
   const image = formData.get("image") as string;
@@ -42,10 +43,10 @@ export async function updateProfile(formData: FormData) {
   return { success: true };
 }
 
-export async function toggleBlockUser(blockedId: string) {
+export async function toggleBlockUser(blockedId: string): Promise<ActionResult & { isBlocked?: boolean }> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
-  if (session.user.id === blockedId) throw new Error("Vous ne pouvez pas vous bloquer vous-même");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
+  if (session.user.id === blockedId) return { success: false, error: "Vous ne pouvez pas vous bloquer vous-même" };
 
   // Vérifier si la cible est un staff (ADMIN/MODO)
   const targetUser = await prisma.user.findUnique({
@@ -54,7 +55,7 @@ export async function toggleBlockUser(blockedId: string) {
   });
 
   if (targetUser && (targetUser.role === "ADMIN" || targetUser.role === "MODERATOR" || targetUser.role === "SUPERADMIN")) {
-    throw new Error("Vous ne pouvez pas bloquer un membre de l'équipe (Administrateur/Modérateur)");
+    return { success: false, error: "Vous ne pouvez pas bloquer un membre de l'équipe (Administrateur/Modérateur)" };
   }
 
   const existingBlock = await prisma.block.findUnique({
@@ -132,9 +133,9 @@ export async function getUserActivity(userId: string, limit: number = 5) {
   return posts;
 }
 
-export async function reportUser(userId: string, reason: string) {
+export async function reportUser(userId: string, reason: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   // For now, we just log it or simulate a report
   // For now, we just log it or simulate a report
@@ -144,9 +145,9 @@ export async function reportUser(userId: string, reason: string) {
 }
 
 // Les actions de messagerie ont été migrées vers /app/messagerie/actions.ts
-export async function deleteAccount() {
+export async function deleteAccount(): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   // Contenus publics rattachés au compte fantôme, données privées supprimées (lib/accountDeletion.ts)
   const ok = await anonymizeAndDeleteUser(session.user.id, session.user.role === "SUPERADMIN");
@@ -162,9 +163,9 @@ export async function getReferenceDataAction(group: string) {
   });
 }
 
-export async function updateTheme(theme: string) {
+export async function updateTheme(theme: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   await prisma.user.update({
     where: { id: session.user.id },
@@ -180,9 +181,9 @@ export async function updateNotificationSettings(settings: {
   notifMention: boolean;
   notifFollowedTopic: boolean;
   notifNewsletter: boolean;
-}) {
+}): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   try {
     await prisma.user.update({
@@ -198,9 +199,9 @@ export async function updateNotificationSettings(settings: {
   }
 }
 
-export async function unlinkAccount(provider: string) {
+export async function unlinkAccount(provider: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté");
+  if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
   const userId = session.user.id;
 
@@ -226,7 +227,7 @@ export async function unlinkAccount(provider: string) {
 
 export async function sendTestNewsletter() {
   const session = await getActiveSession();
-  if (!session?.user?.email) throw new Error("Email non trouvé");
+  if (!session?.user?.email) return { success: false, error: "Email non trouvé" };
 
   // 1. Récupérer les 3 topics les plus populaires (plus de vues)
   const { roles: accessRoles } = await getForumAccess();

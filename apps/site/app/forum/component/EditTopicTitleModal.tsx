@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Modal from "@/common/components/Modal/Modal";
 import { updateTopicTitle } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
@@ -26,10 +27,14 @@ export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialT
 
     startTransition(async () => {
       try {
-        await updateTopicTitle(topicId, newTitle);
+        const res = await updateTopicTitle(topicId, newTitle);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors de la modification");
+          return;
+        }
         onClose();
-      } catch (error) {
-        alert(error instanceof Error ? error.message : "Erreur lors de la modification");
+      } catch {
+        toast.error("Erreur lors de la modification");
       }
     });
   };

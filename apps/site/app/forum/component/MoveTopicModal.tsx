@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import Modal from "@/common/components/Modal/Modal";
 import { moveTopic } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
@@ -22,10 +23,14 @@ export default function MoveTopicModal({ isOpen, onClose, topicId, allForums }: 
     if (!selectedForumId) return;
     startTransition(async () => {
       try {
-        await moveTopic(topicId, selectedForumId);
+        const res = await moveTopic(topicId, selectedForumId);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors du déplacement");
+          return;
+        }
         onClose();
-      } catch (error) {
-        alert(error instanceof Error ? error.message : "Erreur lors du déplacement");
+      } catch {
+        toast.error("Erreur lors du déplacement");
       }
     });
   };

@@ -39,7 +39,7 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 - Le joker « appel à la communauté » lit les compteurs `timesOption0` à `3` de la question, augmentés à chaque réponse depuis la carte 051. Sans aucune réponse enregistrée (ou pour les questions de départ hors base), il affiche 25 % partout.
 - La série (`quizStreak`) est affichée dans le classement mais jamais mise à jour.
 - `updateQuizQuestion` reçoit `data: any`.
-- Les pages `/bbquizz/valider` et `/bbquizz/editer` utilisent encore `auth()` au lieu de `getActiveSession()`.
+- Les pages `/bbquizz/valider` et `/bbquizz/editer` obtiennent la session par `getActiveSession()` (carte 052).
 
 ## Les mots expliqués
 

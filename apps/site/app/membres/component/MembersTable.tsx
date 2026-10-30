@@ -81,10 +81,11 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     if (!roleModal.userId || !roleModal.newRole) return;
     startTransition(async () => {
       try {
-        await updateUserRole(roleModal.userId, roleModal.newRole as UserRole);
-        toast.success("Rôle mis à jour");
-      } catch (error: any) {
-        toast.error(error.message);
+        const res = await updateUserRole(roleModal.userId, roleModal.newRole as UserRole);
+        if (res.success) toast.success("Rôle mis à jour");
+        else toast.error(res.error || "Erreur lors du changement de rôle");
+      } catch {
+        toast.error("Erreur lors du changement de rôle");
       } finally {
         setRoleModal({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
       }
@@ -116,9 +117,11 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           setBanReason("");
           setBanDetails("");
           router.refresh();
+        } else {
+          toast.error(res.error || "Erreur lors de l'opération");
         }
-      } catch (err: any) {
-        toast.error(err.message || "Erreur lors de l'opération");
+      } catch {
+        toast.error("Erreur lors de l'opération");
       }
     });
   }
@@ -130,11 +133,15 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const confirmDelete = () => {
     startTransition(async () => {
       try {
-        await deleteUser(deleteModal.userId);
-        toast.success("Utilisateur supprimé (contenus rattachés au compte fantôme)");
-        router.refresh();
-      } catch (error: any) {
-        toast.error(error.message);
+        const res = await deleteUser(deleteModal.userId);
+        if (res.success) {
+          toast.success("Utilisateur supprimé (contenus rattachés au compte fantôme)");
+          router.refresh();
+        } else {
+          toast.error(res.error || "Erreur lors de la suppression du membre");
+        }
+      } catch {
+        toast.error("Erreur lors de la suppression du membre");
       } finally {
         setDeleteModal({ isOpen: false, userId: "", userName: "" });
       }

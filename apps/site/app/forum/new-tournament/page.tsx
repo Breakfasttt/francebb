@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft, Trophy, Calendar, MapPin, Users, Coins, Monitor, Shield, Home, Utensils, BedDouble, Sun } from "lucide-react";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
   const { roles } = await getForumAccess();
   if (!canAccessForum(forum, roles)) notFound();
 
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     redirect("/forum");
   }

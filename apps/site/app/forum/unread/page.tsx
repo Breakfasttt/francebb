@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { Trophy, Clock, MessageSquare } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -18,8 +18,8 @@ export const dynamic = "force-dynamic";
 const POSTS_PER_PAGE = 20;
 
 export default async function UnreadPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
-  const session = await auth();
-  if (!session) redirect("/auth/login?callback=/forum/unread");
+  const session = await getActiveSession();
+  if (!session) redirect("/auth/login?callbackUrl=/forum/unread");
 
   const { page: pageStr } = await searchParams;
   const currentPage = Math.max(1, parseInt(pageStr || "1", 10));

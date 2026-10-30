@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
@@ -21,8 +21,8 @@ export default async function EditLiguePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await auth();
-  if (!session) redirect(`/auth/login?callback=/ligue/edit/${id}`);
+  const session = await getActiveSession();
+  if (!session) redirect(`/auth/login?callbackUrl=/ligue/edit/${id}`);
 
   const ligue = await prisma.ligue.findUnique({
     where: { id },

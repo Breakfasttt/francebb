@@ -1,6 +1,6 @@
 import ArticleCard from "@/app/articles/component/ArticleCard";
 import ArticleFilterSidebar from "@/app/articles/component/ArticleFilterSidebar";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import EmptyState from "@/common/components/EmptyState/EmptyState";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import Pagination from "@/common/components/Pagination/Pagination";
@@ -17,7 +17,7 @@ export default async function ArticlesPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const session = await auth();
+  const session = await getActiveSession();
   const params = await searchParams;
 
   const query = params.query as string | undefined;

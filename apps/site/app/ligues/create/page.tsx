@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
@@ -15,8 +15,8 @@ import "./page-mobile.css";
 
 
 export default async function CreateLiguePage() {
-  const session = await auth();
-  if (!session) redirect("/auth/login?callback=/ligues/create");
+  const session = await getActiveSession();
+  if (!session) redirect("/auth/login?callbackUrl=/ligues/create");
 
   const coachRegions = await prisma.referenceData.findMany({
     where: { group: "COACH_REGION", isActive: true },

@@ -6,7 +6,7 @@ import PageHeader from "@/common/components/PageHeader/PageHeader";
 import Pagination from "@/common/components/Pagination/Pagination";
 import { ArrowLeft, Eye, Trophy } from "lucide-react";
 import { parseBBCode } from "@/lib/bbcode";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { isModerator } from "@/lib/roles";
 import { formatDistanceToNow } from "date-fns";
@@ -46,7 +46,7 @@ function highlightKeyword(text: string, query: string, currentUserId?: string) {
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
-  const [session, { roles }] = await Promise.all([auth(), getForumAccess()]);
+  const [session, { roles }] = await Promise.all([getActiveSession(), getForumAccess()]);
   const params = await searchParams;
   
   const q = (params.q as string) || "";

@@ -60,7 +60,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
   // Sécurité : forum (ou catégorie / forum parent) réservé à un rôle supérieur
   if (!canAccessForum(forum, roles)) {
-    if (!userId) redirect("/auth/login?callback=/forum/" + id);
+    if (!userId) redirect("/auth/login?callbackUrl=/forum/" + id);
     notFound();
   }
 

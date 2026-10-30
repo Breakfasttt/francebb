@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import OnboardingForm from "./OnboardingForm";
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 export default async function OnboardingPage() {
-  const session = await auth();
+  const session = await getActiveSession();
 
   if (!session?.user?.id) {
     redirect("/auth/login");

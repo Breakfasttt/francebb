@@ -21,10 +21,10 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
   const handleToggle = () => {
     startTransition(async () => {
       try {
-        if (type === "forum") {
-          await toggleForumLock(id);
-        } else {
-          await toggleTopicLock(id);
+        const res = type === "forum" ? await toggleForumLock(id) : await toggleTopicLock(id);
+        if (!res.success) {
+          toast.error(res.error || "Une erreur est survenue");
+          return;
         }
         toast.success(isLocked ? `${type === "forum" ? "Forum" : "Sujet"} déverrouillé` : `${type === "forum" ? "Forum" : "Sujet"} verrouillé`);
         router.refresh();

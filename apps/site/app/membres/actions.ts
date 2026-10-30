@@ -6,29 +6,30 @@ import { canEditTargetRole, ROLE_POWER, UserRole, isModerator } from "@/lib/role
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
+import type { ActionResult } from "@/lib/actionResult";
 
-export async function updateUserRole(userId: string, newRole: UserRole) {
+export async function updateUserRole(userId: string, newRole: UserRole): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) throw new Error("Non authentifié");
+  if (!session?.user) return { success: false, error: "Non authentifié" };
 
   const me = await prisma.user.findUnique({
     where: { id: session.user.id }
   });
 
-  if (!me) throw new Error("Utilisateur non trouvé");
+  if (!me) return { success: false, error: "Utilisateur non trouvé" };
 
   const target = await prisma.user.findUnique({
     where: { id: userId }
   });
 
-  if (!target) throw new Error("Cible non trouvée");
+  if (!target) return { success: false, error: "Cible non trouvée" };
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole)) {
-    throw new Error("Permissions insuffisantes pour modifier cet utilisateur");
+    return { success: false, error: "Permissions insuffisantes pour modifier cet utilisateur" };
   }
 
   if (ROLE_POWER[newRole] >= ROLE_POWER[me.role as UserRole] && me.role !== "SUPERADMIN") {
-    throw new Error("Vous ne pouvez pas attribuer un rôle supérieur ou égal au vôtre");
+    return { success: false, error: "Vous ne pouvez pas attribuer un rôle supérieur ou égal au vôtre" };
   }
 
   await prisma.user.update({
@@ -45,9 +46,9 @@ export async function updateUserRole(userId: string, newRole: UserRole) {
  * « Coachs bannis » de /moderation via unbanUserAction) : réservée aux modérateurs, qui ne peuvent agir que sur
  * un rang inférieur au leur (sauf Super Admin), et tracée au journal.
  */
-export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string) {
+export async function toggleBanUser(userId: string, isBanned: boolean, reason?: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) throw new Error("Non authentifié");
+  if (!session?.user) return { success: false, error: "Non authentifié" };
 
   const me = await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -55,7 +56,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
   });
 
   if (!me || !isModerator(me.role)) {
-    throw new Error("Permissions insuffisantes pour cette action");
+    return { success: false, error: "Permissions insuffisantes pour cette action" };
   }
 
   const target = await prisma.user.findUnique({
@@ -63,10 +64,10 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
     select: { role: true }
   });
 
-  if (!target) throw new Error("Utilisateur cible non trouvé");
+  if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    throw new Error(`Vous ne pouvez pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)`);
+    return { success: false, error: `Vous ne pouvez pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)` };
   }
 
   await prisma.user.update({
@@ -89,9 +90,9 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
   return { success: true };
 }
 
-export async function deleteUser(userId: string) {
+export async function deleteUser(userId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) throw new Error("Non authentifié");
+  if (!session?.user) return { success: false, error: "Non authentifié" };
 
   const me = await prisma.user.findUnique({
     where: { id: session.user.id },
@@ -99,7 +100,7 @@ export async function deleteUser(userId: string) {
   });
 
   if (!me || !isModerator(me.role)) {
-    throw new Error("Permissions insuffisantes pour supprimer un utilisateur");
+    return { success: false, error: "Permissions insuffisantes pour supprimer un utilisateur" };
   }
 
   const target = await prisma.user.findUnique({
@@ -107,16 +108,16 @@ export async function deleteUser(userId: string) {
     select: { role: true }
   });
 
-  if (!target) throw new Error("Utilisateur cible non trouvé");
+  if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    throw new Error("Vous ne pouvez pas supprimer ce membre (hiérarchie insuffisante)");
+    return { success: false, error: "Vous ne pouvez pas supprimer ce membre (hiérarchie insuffisante)" };
   }
 
   // Comme la suppression de compte par le membre (deleteAccount) : ses sujets, messages, articles et résultats
   // sont rattachés au compte fantôme « Coach Inconnu » au lieu d'être effacés (lib/accountDeletion.ts).
   const ok = await anonymizeAndDeleteUser(userId, false);
-  if (!ok) throw new Error("Erreur lors de la suppression du membre");
+  if (!ok) return { success: false, error: "Erreur lors de la suppression du membre" };
 
   await logModerationAction("USER_DELETED", userId, "USER", "Suppression du membre (contenus rattachés au compte fantôme)");
 

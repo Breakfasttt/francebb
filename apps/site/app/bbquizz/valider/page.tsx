@@ -1,7 +1,7 @@
 /**
  * Page de validation des suggestions de questions (Modération).
  */
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
@@ -15,7 +15,7 @@ export const metadata = {
 };
 
 export default async function ValiderPage() {
-  const session = await auth();
+  const session = await getActiveSession();
 
   if (!isModerator(session?.user?.role)) {
     redirect("/bbquizz");

@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { SmilePlus } from "lucide-react";
 import { togglePostReaction } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface Reaction {
@@ -67,12 +68,17 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
 
     startTransition(async () => {
       try {
-        await togglePostReaction(postId, emoji);
+        const res = await togglePostReaction(postId, emoji);
+        if (!res.success) {
+          // Refus du serveur : on remet les réactions telles qu'elles étaient
+          setOptimisticReactions(initialReactions);
+          toast.error(res.error || "Erreur lors de l'ajout de la réaction");
+        }
       } catch (error) {
         console.error("Failed to toggle reaction:", error);
         // Rollback on error
         setOptimisticReactions(initialReactions);
-        alert("Erreur lors de l'ajout de la réaction");
+        toast.error("Erreur lors de l'ajout de la réaction");
       }
     });
   };

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createTopic, updateTournament } from "../actions";
+import { toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { 
@@ -145,7 +146,9 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   // On crée une version client-side de l'action pour injecter les IDs fixes en mode édition
   const formAction = async (formData: FormData) => {
     if (isEdit && initialData) {
-      await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
+      // En cas de succès, l'action redirige vers le sujet : on n'arrive ici qu'en cas de refus.
+      const res = await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
+      if (!res.success) toast.error(res.error || "Erreur lors de la modification du tournoi.");
     } else {
       await createTopic(formData);
     }

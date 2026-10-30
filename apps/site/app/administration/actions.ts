@@ -9,7 +9,7 @@ export async function resetDatabase(phrase: string) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.SUPERADMIN) {
-    throw new Error("Accès refusé. Seul un SUPERADMIN peut détruire le site.");
+    return { success: false, error: "Accès refusé. Seul un SUPERADMIN peut détruire le site." };
   }
   
   if (phrase !== "JE COMPRENDS LES RISQUES") {
@@ -465,7 +465,7 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
-    throw new Error("Accès refusé.");
+    return { success: false, error: "Accès refusé." };
   }
 
   if (!subject || !content) {

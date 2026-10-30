@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { sendPmNotification } from "@/lib/mail";
 import { encrypt, decrypt } from "@/lib/crypto";
+import type { ActionResult } from "@/lib/actionResult";
 
 const CONVERSATION_LIMIT = 50;
 
@@ -29,12 +30,13 @@ const CONVERSATIONS_PER_PAGE = 20;
 const MESSAGES_PER_PAGE = 30;
 
 /**
- * Récupère les conversations paginées pour l'utilisateur actuel
+ * Récupère les conversations paginées pour l'utilisateur actuel.
+ * Renvoie null si le visiteur n'est pas connecté (ou est banni).
  */
 export async function getConversations(page = 1) {
   const session = await getActiveSession();
   const userId = session?.user?.id;
-  if (!userId) throw new Error("Non autorisé");
+  if (!userId) return null;
 
   const skip = (page - 1) * CONVERSATIONS_PER_PAGE;
 
@@ -106,12 +108,13 @@ export async function getConversations(page = 1) {
 }
 
 /**
- * Récupère les messages d'une conversation
+ * Récupère les messages d'une conversation.
+ * Renvoie null si le visiteur n'est pas connecté ou ne participe pas (ou plus) à cette conversation.
  */
 export async function getConversationMessages(conversationId: string, page = 1) {
   const session = await getActiveSession();
   const userId = session?.user?.id;
-  if (!userId) throw new Error("Non autorisé");
+  if (!userId) return null;
 
   // Vérifier la participation
   const participant = await prisma.conversationParticipant.findUnique({
@@ -121,7 +124,7 @@ export async function getConversationMessages(conversationId: string, page = 1) 
   });
 
   if (!participant || participant.deletedAt) {
-    throw new Error("Accès refusé");
+    return null;
   }
 
   const skip = (page - 1) * MESSAGES_PER_PAGE;
@@ -171,16 +174,16 @@ export async function getConversationMessages(conversationId: string, page = 1) 
 /**
  * Envoie un message
  */
-export async function sendMessage(conversationId: string, content: string) {
+export async function sendMessage(conversationId: string, content: string): Promise<ActionResult & { messageId?: string }> {
   const session = await getActiveSession();
   const userId = session?.user?.id;
-  if (!userId) throw new Error("Non autorisé");
+  if (!userId) return { success: false, error: "Non autorisé" };
 
   const participant = await prisma.conversationParticipant.findUnique({
     where: { userId_conversationId: { userId, conversationId } }
   });
 
-  if (!participant) throw new Error("Accès refusé");
+  if (!participant) return { success: false, error: "Accès refusé" };
 
   // Conversation privée (à deux) : pas d'envoi si l'un des deux a bloqué l'autre
   const conversation = await prisma.conversation.findUnique({
@@ -188,7 +191,7 @@ export async function sendMessage(conversationId: string, content: string) {
     select: { isGroup: true, participants: { where: { userId: { not: userId } }, select: { userId: true } } }
   });
   if (!conversation?.isGroup && await hasBlockBetween(userId, conversation?.participants.map(p => p.userId) ?? [])) {
-    throw new Error("Impossible d'envoyer un message à ce membre.");
+    return { success: false, error: "Impossible d'envoyer un message à ce membre." };
   }
 
   const encryptedContent = encrypt(content);
@@ -248,16 +251,16 @@ export async function sendMessage(conversationId: string, content: string) {
 /**
  * Crée une conversation (1v1 ou Groupe)
  */
-export async function startConversation(userIds: string[], name?: string) {
+export async function startConversation(userIds: string[], name?: string): Promise<ActionResult & { conversationId?: string }> {
     const session = await getActiveSession();
     const myId = session?.user?.id;
-    if (!myId) throw new Error("Non autorisé");
+    if (!myId) return { success: false, error: "Non autorisé" };
 
     const allParticipants = [...new Set([myId, ...userIds])];
     const isGroup = allParticipants.length > 2 || !!name;
 
     if (await hasBlockBetween(myId, allParticipants.filter(uid => uid !== myId))) {
-        throw new Error("Impossible de démarrer une conversation avec un membre qui vous a bloqué ou que vous avez bloqué.");
+        return { success: false, error: "Impossible de démarrer une conversation avec un membre qui vous a bloqué ou que vous avez bloqué." };
     }
 
     // Vérifier la limite de 50 conversations
@@ -265,7 +268,7 @@ export async function startConversation(userIds: string[], name?: string) {
         where: { userId: myId, deletedAt: null }
     });
     if (myConvCount >= CONVERSATION_LIMIT) {
-        throw new Error(`Vous avez atteint la limite de ${CONVERSATION_LIMIT} conversations.`);
+        return { success: false, error: `Vous avez atteint la limite de ${CONVERSATION_LIMIT} conversations.` };
     }
 
     // Si c'est un 1v1, vérifier si elle existe déjà
@@ -309,10 +312,10 @@ export async function startConversation(userIds: string[], name?: string) {
 /**
  * Quitte une conversation
  */
-export async function leaveConversation(conversationId: string) {
+export async function leaveConversation(conversationId: string): Promise<ActionResult> {
     const session = await getActiveSession();
     const userId = session?.user?.id;
-    if (!userId) throw new Error("Non autorisé");
+    if (!userId) return { success: false, error: "Non autorisé" };
 
     await prisma.conversationParticipant.update({
         where: { userId_conversationId: { userId, conversationId } },
@@ -338,7 +341,7 @@ export async function leaveConversation(conversationId: string) {
  */
 export async function searchUsers(query: string) {
     const session = await getActiveSession();
-    if (!session?.user) throw new Error("Non autorisé");
+    if (!session?.user) return [];
 
     if (query.trim().length < USER_SEARCH_MIN_LENGTH) return [];
 
@@ -370,10 +373,10 @@ export async function searchUsers(query: string) {
 /**
  * Ajoute des participants à un groupe existant
  */
-export async function inviteToGroup(conversationId: string, userIds: string[]) {
+export async function inviteToGroup(conversationId: string, userIds: string[]): Promise<ActionResult> {
     const session = await getActiveSession();
     const myId = session?.user?.id;
-    if (!myId) throw new Error("Non autorisé");
+    if (!myId) return { success: false, error: "Non autorisé" };
 
     // Vérifier si la conversation est un groupe
     const conv = await prisma.conversation.findUnique({
@@ -381,17 +384,17 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
         select: { isGroup: true }
     });
 
-    if (!conv?.isGroup) throw new Error("Ce n'est pas un groupe");
+    if (!conv?.isGroup) return { success: false, error: "Ce n'est pas un groupe" };
 
     // Seul un membre du groupe peut y inviter quelqu'un (sinon n'importe qui pouvait s'ajouter et lire les messages)
     const inviter = await prisma.conversationParticipant.findUnique({
         where: { userId_conversationId: { userId: myId, conversationId } },
         select: { deletedAt: true }
     });
-    if (!inviter || inviter.deletedAt) throw new Error("Accès refusé");
+    if (!inviter || inviter.deletedAt) return { success: false, error: "Accès refusé" };
 
     if (await hasBlockBetween(myId, userIds.filter(uid => uid !== myId))) {
-        throw new Error("Impossible d'inviter un membre qui vous a bloqué ou que vous avez bloqué.");
+        return { success: false, error: "Impossible d'inviter un membre qui vous a bloqué ou que vous avez bloqué." };
     }
 
     // Filtrer pour ne pas ajouter des personnes déjà présentes
@@ -419,10 +422,10 @@ export async function inviteToGroup(conversationId: string, userIds: string[]) {
 /**
  * Renomme une conversation de groupe
  */
-export async function renameConversation(conversationId: string, name: string) {
+export async function renameConversation(conversationId: string, name: string): Promise<ActionResult> {
     const session = await getActiveSession();
     const myId = session?.user?.id;
-    if (!myId) throw new Error("Non autorisé");
+    if (!myId) return { success: false, error: "Non autorisé" };
 
     // Vérifier si la conversation est un groupe et si l'utilisateur participe
     const conv = await prisma.conversation.findUnique({
@@ -430,9 +433,9 @@ export async function renameConversation(conversationId: string, name: string) {
         include: { participants: { where: { userId: myId } } }
     });
 
-    if (!conv) throw new Error("Conversation introuvable");
-    if (!conv.isGroup) throw new Error("Seules les conversations de groupe peuvent être renommées");
-    if (conv.participants.length === 0) throw new Error("Vous ne participez pas à cette conversation");
+    if (!conv) return { success: false, error: "Conversation introuvable" };
+    if (!conv.isGroup) return { success: false, error: "Seules les conversations de groupe peuvent être renommées" };
+    if (conv.participants.length === 0) return { success: false, error: "Vous ne participez pas à cette conversation" };
 
     await prisma.conversation.update({
         where: { id: conversationId },

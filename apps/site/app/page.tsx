@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import { prisma } from "@/lib/prisma";
@@ -30,7 +30,7 @@ const getCachedDiscordInvite = unstable_cache(
 );
 
 export default async function Home() {
-  const session = await auth();
+  const session = await getActiveSession();
   const isAuth = !!session?.user;
 
   // 1. Requêtes parallélisées (certaines sont cachées)
@@ -91,7 +91,7 @@ export default async function Home() {
                   <div className="card-text">Ligues</div>
                 </PremiumCard>
               </Link>
-              <Link href={isAuth ? "/ligues/create" : "/auth/login?callback=/ligues/create"} style={{ display: 'contents' }}>
+              <Link href={isAuth ? "/ligues/create" : "/auth/login?callbackUrl=/ligues/create"} style={{ display: 'contents' }}>
                 <PremiumCard hoverEffect className="action-card-mini">
                   + Créer
                 </PremiumCard>
@@ -106,7 +106,7 @@ export default async function Home() {
                 </PremiumCard>
               </Link>
               {tournamentForum && (
-                <Link href={isAuth ? `/forum/new-tournament?forumId=${tournamentForum.id}` : `/auth/login?callback=/forum/new-tournament?forumId=${tournamentForum.id}`} style={{ display: 'contents' }}>
+                <Link href={isAuth ? `/forum/new-tournament?forumId=${tournamentForum.id}` : `/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-tournament?forumId=${tournamentForum.id}`)}`} style={{ display: 'contents' }}>
                   <PremiumCard hoverEffect className="action-card-mini">
                     + Créer
                   </PremiumCard>

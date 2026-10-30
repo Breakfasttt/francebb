@@ -1,4 +1,5 @@
-import { signIn, auth, isHubAuthMode } from "@/auth";
+import { signIn, isHubAuthMode } from "@/auth";
+import { getSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { safeCallbackUrl } from "@/lib/safeRedirect";
 import "./page.css";
@@ -18,7 +19,8 @@ export const metadata = {
 export default async function LoginPage(props: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
-  const session = await auth();
+  // Session brute (bannis compris) : un membre déjà connecté, même banni, n'a rien à faire sur cette page.
+  const session = await getSession();
   const searchParams = await props.searchParams;
   const callbackUrl = safeCallbackUrl(searchParams.callbackUrl);
 

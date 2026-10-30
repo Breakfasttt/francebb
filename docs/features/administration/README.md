@@ -35,7 +35,7 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 - Les puissances des rôles personnalisés sont en base (`RoleConfig`), mais `lib/roles.ts` ne connaît que les rôles de base : `getRolePower` donne les droits d'un coach à un rôle personnalisé, tandis que `lib/forumAccess.ts` lit sa vraie puissance pour l'accès au forum. Les deux restent cohérents parce qu'un rôle personnalisé est toujours sous Modérateur : `createCustomRole` le refuse au-dessus depuis la carte 051 (comme `reorderRoles` le faisait déjà). Il n'a donc jamais de droit de modération. Ne pas lever cette limite sans faire lire la base à `lib/roles.ts`.
 - `updateCoachRole` n'exige que le rang modérateur (alors que la page exige admin) et n'empêche pas d'attribuer un nom de rôle inexistant ; le Super Admin passe outre les contrôles de rang.
 - `sendGlobalInfoMail` envoie les mails un par un avec 500 ms d'attente : avec beaucoup de membres, l'appel peut dépasser la durée maximale d'une fonction sur Vercel (à vérifier). Il lit l'email par un `select` explicite, comme le veut l'omit global.
-- `getForumStructure` existe en double (`actions.ts` et `actionsStructure.ts`). `resetDatabase` et `sendGlobalInfoMail` lèvent encore une erreur (`throw`) au lieu de renvoyer `null`.
+- `getForumStructure` existe en double (`actions.ts` et `actionsStructure.ts`). `resetDatabase` et `sendGlobalInfoMail` renvoient `{ success: false, error }` quand l'accès est refusé (carte 052).
 
 ## Les mots expliqués
 

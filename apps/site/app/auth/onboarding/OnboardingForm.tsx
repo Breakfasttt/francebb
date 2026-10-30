@@ -104,10 +104,11 @@ export default function OnboardingForm({ user }: { user: any }) {
     setTheme(newTheme);
     startThemeUpdate(async () => {
       try {
-        await updateTheme(newTheme);
-        await update({ theme: newTheme });
-      } catch (e) {
-        // Silencieux
+        // Échec silencieux : le thème reste appliqué à l'écran et le membre pourra le changer depuis son profil.
+        const result = await updateTheme(newTheme);
+        if (result.success) await update({ theme: newTheme });
+      } catch {
+        // Silencieux, pour la même raison.
       }
     });
   };
@@ -137,9 +138,11 @@ export default function OnboardingForm({ user }: { user: any }) {
           toast.success("Bienvenue sur BBFrance !");
           // Redirection forcée pour s'assurer que le middleware capte le nouveau cookie
           window.location.href = "/";
+        } else {
+          toast.error(result.error || "Erreur de configuration");
         }
-      } catch (error: any) {
-        toast.error(error.message || "Erreur de configuration");
+      } catch {
+        toast.error("Erreur de configuration");
       }
     });
   };

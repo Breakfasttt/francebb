@@ -42,10 +42,15 @@ export default function ConversationView({ conversationId, onBack, onUpdate }: C
     async function loadMessages() {
         try {
             const data = await getConversationMessages(conversationId);
+            if (!data) {
+                toast.error("Accès refusé");
+                onBack();
+                return;
+            }
             setMessages(data.messages);
             setConversation(data.conversation);
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Impossible de charger la conversation");
             onBack();
         } finally {
             setLoading(false);
@@ -60,9 +65,11 @@ export default function ConversationView({ conversationId, onBack, onUpdate }: C
             if (res.success) {
                 setContent("");
                 loadMessages();
+            } else {
+                toast.error(res.error || "Erreur lors de l'envoi du message");
             }
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Erreur lors de l'envoi du message");
         } finally {
             setSending(false);
         }
@@ -70,11 +77,15 @@ export default function ConversationView({ conversationId, onBack, onUpdate }: C
 
     const handleLeave = async () => {
         try {
-            await leaveConversation(conversationId);
+            const res = await leaveConversation(conversationId);
+            if (!res.success) {
+                toast.error(res.error || "Impossible de quitter la conversation");
+                return;
+            }
             toast.success("Vous avez quitté la conversation");
             onBack();
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Impossible de quitter la conversation");
         }
     };
 

@@ -51,7 +51,7 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 
 - **Page bannie en couleurs écrites en dur** (`#ef4444`, `#aaa`, `#eee`…) : texte presque illisible dans le thème clair. Contraire aux règles de thème.
 - Thème : pour un membre connecté, le thème enregistré dans son profil gagne toujours ; `ThemeProvider` le recopie dans le `localStorage` (carte 051). Le `localStorage` ne sert plus qu'aux visiteurs, qui retrouvent le dernier thème utilisé sur l'appareil. Un thème choisi à l'instant s'affiche tout de suite, en attendant que le serveur renvoie le profil à jour. L'accès au `localStorage` est protégé par `try/catch` (il peut être bloqué en navigation privée).
-- `updateTheme` (`app/profile/actions.ts`) accepte n'importe quel texte, sans vérifier qu'il s'agit d'un des 7 thèmes, et utilise `throw`.
+- `updateTheme` (`app/profile/actions.ts`) accepte n'importe quel texte, sans vérifier qu'il s'agit d'un des 7 thèmes ; elle renvoie `{ success, error }` depuis la carte 052.
 - Accueil et `/spy` envoient vers `/auth/login?callback=…` ; ailleurs le paramètre est `callbackUrl` (retour après connexion à vérifier).
 - Accueil : l'article au hasard peut être un article masqué par la modération ; le lien Discord vaut `#` si le réglage est vide.
 - `/spy` : le renvoi vers `/profile` quand on ouvre son propre profil appelle `redirect()` dans un `useEffect`, à l'intérieur d'un `try/catch` qui intercepte la redirection (à vérifier). « Contacter » affiche les erreurs avec `alert()`.

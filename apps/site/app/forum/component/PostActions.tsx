@@ -7,6 +7,7 @@ import DangerButton from "@/common/components/Button/DangerButton";
 import Link from "next/link";
 import { moderatePost, unmoderatePost, deletePost } from "@/app/forum/actions";
 import { useState } from "react";
+import { toast } from "@bbfrance/ui";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import PostReactions from "@/app/forum/component/PostReactions";
@@ -62,25 +63,37 @@ export default function PostActions({
   };
 
   const onConfirmModerate = async (reason: string) => {
-    await moderatePost(postId, reason);
+    const res = await moderatePost(postId, reason);
+    if (!res.success) {
+      toast.error(res.error || "Erreur lors de la modération.");
+      return;
+    }
     window.location.reload();
   };
 
   const handleUnmoderate = async () => {
     try {
-      await unmoderatePost(postId);
+      const res = await unmoderatePost(postId);
+      if (!res.success) {
+        toast.error(res.error || "Erreur lors de la restauration.");
+        return;
+      }
       window.location.reload();
-    } catch (error) {
-      alert("Erreur lors de la restauration.");
+    } catch {
+      toast.error("Erreur lors de la restauration.");
     }
   };
 
   const handleDelete = async () => {
     try {
-      await deletePost(postId);
+      const res = await deletePost(postId);
+      if (!res.success) {
+        toast.error(res.error || "Erreur lors de la suppression.");
+        return;
+      }
       window.location.reload();
-    } catch (error: any) {
-      alert(error.message || "Erreur lors de la suppression.");
+    } catch {
+      toast.error("Erreur lors de la suppression.");
     }
   };
 

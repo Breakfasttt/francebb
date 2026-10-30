@@ -46,7 +46,9 @@ Actions serveur principales (`app/forum/actions.ts`) : `createTopic`, `createPos
 - Une nouvelle page du forum doit importer `page-mobile.css` juste après `page.css`, sinon elle perd toutes ses règles pour téléphone.
 - Les règles mobiles agrandissent la zone que l'on touche (`min-height`, `min-width`), jamais le texte ni les icônes : l'apparence reste la même, seule la surface tactile grandit. Les captures des 7 thèmes sur ordinateur (`visual-themes.spec.ts`) ne doivent pas changer.
 - La fenêtre de signalement doit rester au-dessus de la barre de navigation : elle utilise la valeur commune des fenêtres, `var(--z-index-modal-bottom)` (8000). Avec l'ancienne valeur (2000), la barre de navigation cachait le titre de la fenêtre sur téléphone.
-- Dette : `actions.ts` utilise encore `throw` (44 occurrences) au lieu de retourner `null`, contrairement à la règle du projet.
+- Les actions qui modifient le forum (messages, sujets, réactions, verrouillage, modération, modification d'un tournoi) renvoient `{ success, error }` (type `ActionResult` de `lib/actionResult.ts`) au lieu de lever une erreur ; le composant affiche `error` dans une notification. En cas de succès, `deleteForum`, `deleteTopicPermanent` et `updateTournament` redirigent : le composant ne reçoit donc une réponse qu'en cas de refus (carte 052).
+- `updateTournament` reçoit du navigateur l'identifiant du sujet et de son premier message : elle vérifie qu'ils appartiennent bien au tournoi, sinon un organisateur pourrait réécrire un autre sujet (carte 052).
+- Dette : `createForum` et `createTopic` lèvent encore une erreur (7 `throw`) ; elles servent directement d'action de formulaire (`<form action={...}>`) et il faudrait un petit composant navigateur pour afficher l'erreur.
 
 ## Les mots expliqués
 
@@ -68,4 +70,5 @@ Actions serveur principales (`app/forum/actions.ts`) : `createTopic`, `createPos
 - Fait : accueil connecté 16 → 6 requêtes, anonyme 5 → 0 avec cache chaud (carte 014) ; liste d'un forum 31 → 21 (015) ; page sujet 85 → 46 (016) ; N+1 retirés de `createPost` (020) ; accès par rôle partout (028, +1 requête connecté pour lire `RoleConfig`).
 - `getRecentPosts`, `getForums`, `getSiblings` ont été supprimées (aucun appelant).
 - Téléphone (carte 053) : l'audit mobile ne relève plus aucune cible trop petite ni aucun contenu coupé sur `/forum`, `/forum/topic/[id]` et `/forum/topic/[id]/reply`, de 360 à 430 pixels de large (avant : 35 cibles trop petites sur un sujet, 27 sur la page de réponse).
-- À faire : images en `next/image` (carte 019), retrait des `throw`.
+- Carte 052 : `throw` dans `actions.ts` 44 → 7, erreurs affichées en notification au lieu de fenêtres `alert()` du navigateur.
+- À faire : images en `next/image` (carte 019), retrait des derniers `throw` (`createForum`, `createTopic`).

@@ -41,8 +41,9 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 - `/membres` charge tous les membres d'un coup (`include` sans `select`) et les envoie entiers au composant client. Le filtre, le tri et la pagination se font dans le navigateur. Cela contredit la règle « jamais un `User` complet vers un composant client » et ralentira avec le nombre de membres.
 - L'annuaire existe en deux versions dans `MembersTable.tsx` : le tableau (ordinateur) et la liste de cartes (téléphone). Le CSS choisit laquelle afficher. Une colonne ou un bouton ajouté au tableau doit aussi être ajouté aux cartes.
 - La fenêtre de suppression d'un membre et son message de confirmation annoncent maintenant (carte 054) le vrai comportement de `deleteUser` (contenus rattachés au compte « Coach Inconnu ») : l'ancien texte parlait d'une suppression définitive de tous les messages.
-- `/membres` utilise `auth()` puis relit le rôle en base ; `/profile` renvoie vers `/api/auth/signin` au lieu de `/auth/login`.
-- Dette : `throw` dans les deux fichiers d'actions (12 et 13), types `any` dans la page profil, un commentaire de test oublié dans `app/membres/page.tsx`.
+- `/membres` utilise `getActiveSession()` puis relit le rôle en base ; `/profile` renvoie vers `/api/auth/signin` au lieu de `/auth/login`.
+- Les actions des membres et du profil renvoient `{ success, error }` au lieu de lever une erreur (carte 052) : le message de refus (rôle trop élevé, membre de l'équipe qu'on ne peut pas bloquer…) s'affiche dans la notification. `toggleBlockUser` renvoie aussi `isBlocked`.
+- Dette : types `any` dans la page profil, un commentaire de test oublié dans `app/membres/page.tsx`.
 
 ## Les mots expliqués
 

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteForum } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import DangerButton from "@/common/components/Button/DangerButton";
 
@@ -18,12 +19,17 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
   const handleDelete = () => {
     startTransition(async () => {
       try {
-        await deleteForum(forumId, forumName);
+        // En cas de succès, l'action redirige vers la liste des forums : on n'arrive ici qu'en cas de refus.
+        const res = await deleteForum(forumId, forumName);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors de la suppression du forum");
+          setIsModalOpen(false);
+        }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         if (errorMessage.includes("NEXT_REDIRECT")) return;
 
-        alert(errorMessage);
+        toast.error("Erreur lors de la suppression du forum");
         setIsModalOpen(false);
       }
     });

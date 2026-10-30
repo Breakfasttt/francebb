@@ -59,9 +59,11 @@ export default function InviteParticipantModal({ conversationId, onClose, onSucc
                 toast.success("Participants ajoutés");
                 onSuccess();
                 onClose();
+            } else {
+                toast.error(res.error || "Erreur lors de l'invitation");
             }
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Erreur lors de l'invitation");
         } finally {
             setLoading(false);
         }

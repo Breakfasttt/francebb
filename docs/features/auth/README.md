@@ -39,14 +39,15 @@ Utilisation dans une action serveur : `const session = await getActiveSession();
 
 ## Les pièges
 
-- Toute action serveur qui lit ou écrit pour un membre passe par `getActiveSession()`, jamais `auth()` directement (exceptions : `app/debugActions.ts` et `app/auth/login/actions.ts`). Les pages serveur utilisent encore souvent `auth()` ; la route `app/api/admin/backup/route.ts` aussi.
+- Toute action serveur qui lit ou écrit pour un membre passe par `getActiveSession()`, jamais `auth()` directement (exceptions : `app/debugActions.ts` et `app/auth/login/actions.ts`). Depuis la carte 052, les pages serveur font de même ; seules `/auth/login` et `/banned` utilisent `getSession()` (session brute, bannis compris), car elles concernent justement les bannis.
+- Le lien vers la page de connexion porte l'adresse de retour dans `?callbackUrl=` : c'est le seul nom que lit `/auth/login`. Plusieurs pages utilisaient `?callback=`, ignoré, et le membre revenait à l'accueil au lieu de la page demandée (corrigé par la carte 052).
 - Le rôle admin ou modérateur se vérifie **côté serveur**, jamais seulement dans la page.
 - Le fournisseur `dev-login` est toujours déclaré, mais son `authorize` refuse tout hors `NODE_ENV === "development"`. Les tests smoke s'en servent.
 - La session est un JWT ; `role` et `isBanned` sont rafraîchis depuis la base par le callback `jwt`. Ce rafraîchissement neutralise aussi le `role` que `auth.config.ts` accepte depuis `update()` côté navigateur : ne jamais retirer la relecture sans retirer cette ligne.
 - `User.email` n'est jamais renvoyé par `prisma` (omit global) : un `include: { author: true }` ne peut pas fuiter d'adresse. Besoin de l'email : `select: { email: true }` explicite ou `prismaWithEmail`. Test smoke « aucun email d'auteur ».
 - `allowDangerousEmailAccountLinking: true` sur Discord et Google : un compte Discord et un compte Google de même email deviennent le même membre. Le fournisseur `hub` l'utilise aussi, mais seulement pour un email certifié (`email_verified`, contrôlé dans `signIn`).
 - Le cookie `onboarding_sync` (60 s) évite une boucle de redirection juste après l'onboarding, le temps que le JWT soit régénéré.
-- `finishOnboarding` lève encore des erreurs (`throw`) au lieu de renvoyer `null`. L'adresse de retour après connexion (`callbackUrl`) passe par `safeCallbackUrl` (`lib/safeRedirect.ts`) : seule une adresse interne au site est acceptée, ce qui empêche la redirection vers un site extérieur (carte 050, testé).
+- `finishOnboarding` renvoie `{ success, error }` (carte 052) et le formulaire affiche l'erreur dans une notification. L'adresse de retour après connexion (`callbackUrl`) passe par `safeCallbackUrl` (`lib/safeRedirect.ts`) : seule une adresse interne au site est acceptée, ce qui empêche la redirection vers un site extérieur (carte 050, testé).
 
 ## Les mots expliqués
 

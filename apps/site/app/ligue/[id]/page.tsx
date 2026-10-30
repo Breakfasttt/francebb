@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -19,7 +19,7 @@ export default async function LigueDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await auth();
+  const session = await getActiveSession();
 
   const ligue = await prisma.ligue.findUnique({
     where: { id },

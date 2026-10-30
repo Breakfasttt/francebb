@@ -247,11 +247,12 @@ export async function getBannedUsers(page = 1, pageSize = 10) {
  * Débannir un utilisateur depuis l'onglet « Coachs bannis ».
  * Passe par toggleBanUser (app/membres/actions.ts), la seule action de bannissement : elle vérifie que le
  * modérateur a un rang strictement supérieur à celui du membre (sauf Super Admin) et trace le débannissement
- * au journal. Ici, on transforme seulement son erreur éventuelle en message affichable (carte 060).
+ * au journal. Elle renvoie déjà { success, error } ; on ajoute seulement le rafraîchissement de /moderation.
  */
 export async function unbanUserAction(userId: string) {
   try {
-    await toggleBanUser(userId, false);
+    const res = await toggleBanUser(userId, false);
+    if (!res.success) return res;
     revalidatePath("/moderation");
     return { success: true };
   } catch (error) {

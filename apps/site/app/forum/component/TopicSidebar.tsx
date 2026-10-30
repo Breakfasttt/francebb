@@ -201,10 +201,14 @@ export default function TopicSidebar({
   const handleToggleArchive = () => {
     startTransition(async () => {
       try {
-        await toggleArchiveTopic(topicId);
+        const res = await toggleArchiveTopic(topicId);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors de l'archivage");
+          return;
+        }
         router.refresh();
-      } catch (error: any) {
-        alert(error.message);
+      } catch {
+        toast.error("Erreur lors de l'archivage");
       }
     });
   };
@@ -212,9 +216,10 @@ export default function TopicSidebar({
   const handleTogglePin = () => {
     startTransition(async () => {
       try {
-        await togglePinTopic(topicId);
-      } catch (error) {
-        alert(error instanceof Error ? error.message : "Erreur lors du changement d'épinglage");
+        const res = await togglePinTopic(topicId);
+        if (!res.success) toast.error(res.error || "Erreur lors du changement d'épinglage");
+      } catch {
+        toast.error("Erreur lors du changement d'épinglage");
       }
     });
   };
@@ -222,13 +227,18 @@ export default function TopicSidebar({
   const handleDeleteTopic = () => {
     startTransition(async () => {
       try {
-        await deleteTopicPermanent(topicId, topicTitle);
+        // En cas de succès, l'action redirige vers le forum : on n'arrive ici qu'en cas de refus.
+        const res = await deleteTopicPermanent(topicId, topicTitle);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors de la suppression du sujet");
+          setShowDeleteModal(false);
+        }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         // Ignore Next.js redirect errors as they are handled by the framework
         if (errorMessage.includes("NEXT_REDIRECT")) return;
 
-        alert(errorMessage);
+        toast.error("Erreur lors de la suppression du sujet");
         setShowDeleteModal(false);
       }
     });

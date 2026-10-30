@@ -148,7 +148,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   // Sécurité : forum du topic (ou sa catégorie / son forum parent) réservé à un rôle supérieur
   if (!canAccessForum(topic.forum, roles)) {
-    if (!currentUserId) redirect("/auth/login?callback=/forum/topic/" + id);
+    if (!currentUserId) redirect("/auth/login?callbackUrl=/forum/topic/" + id);
     notFound();
   }
 

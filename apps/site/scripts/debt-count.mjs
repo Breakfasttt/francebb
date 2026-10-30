@@ -14,6 +14,10 @@ const COUNTERS = {
   "style={{ inline": /style=\{\{/g,
   "@ts-ignore / @ts-expect-error": /@ts-(ignore|expect-error)/g,
   "<img> (hors next/image)": /<img\b/g,
+  // Les actions serveur doivent renvoyer { success, error } plutôt que lever une erreur (carte 052).
+  "throw (lever une erreur)": /\bthrow\s/g,
+  // La session s'obtient par getActiveSession() (lib/authGuard.ts), pas par auth() direct (carte 052).
+  "auth() direct": /(?<![\w.])auth\(\)(?!\s*:)/g,
 };
 
 function listFiles(dir) {

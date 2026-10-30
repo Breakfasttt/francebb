@@ -1,6 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { parseBBCode } from "@/lib/bbcode";
@@ -30,7 +30,7 @@ export default async function ArticleDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await auth();
+  const session = await getActiveSession();
   const sessionUser = session?.user as any;
 
   const article = await prisma.article.findUnique({

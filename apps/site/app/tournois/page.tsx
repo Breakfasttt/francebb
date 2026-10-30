@@ -11,7 +11,6 @@ import { Search, MapPin, Calendar, Users, Trophy, Sparkles, GitBranch, Clock } f
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import Pagination from "@/common/components/Pagination/Pagination";
 import ClassicButton from "@/common/components/Button/ClassicButton";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +21,6 @@ export default async function TournamentsPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   // La page est accessible à tous
-  // const session = await auth();
 
   const params = await searchParams;
 

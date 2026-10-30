@@ -29,11 +29,15 @@ export default function ProfileBlockedUsers() {
   const handleUnblock = (userId: string) => {
     startTransition(async () => {
       try {
-        await toggleBlockUser(userId);
+        const res = await toggleBlockUser(userId);
+        if (!res.success) {
+          toast.error(res.error || "Erreur lors du déblocage");
+          return;
+        }
         setBlockedUsers(prev => prev.filter(u => u.id !== userId));
         toast.success("Utilisateur débloqué");
-      } catch (err: any) {
-        toast.error(err.message || "Erreur lors du déblocage");
+      } catch {
+        toast.error("Erreur lors du déblocage");
       }
     });
   };

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft } from "lucide-react";
 import "../page.css";
@@ -13,7 +13,7 @@ import NewForumForm from "./component/NewForumForm";
 
 export default async function NewForumPage({ searchParams }: { searchParams: Promise<{ categoryId?: string, parentForumId?: string }> }) {
   const { categoryId, parentForumId } = await searchParams;
-  const session = await auth();
+  const session = await getActiveSession();
   const userRole = session?.user?.role;
 
   if (!userRole || !isModerator(userRole)) {

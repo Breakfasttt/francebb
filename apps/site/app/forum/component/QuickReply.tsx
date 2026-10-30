@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import CTAButton from "@/common/components/Button/CTAButton";
 import { useRouter } from "next/navigation";
@@ -44,15 +45,20 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
               const editorTextarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
               if (editorTextarea && editorTextarea.value.trim()) {
                 setIsSubmitting(true);
-                createPost(topicId, editorTextarea.value).then((newPost) => {
-                  setResetKey(prev => prev + 1);
+                createPost(topicId, editorTextarea.value).then((res) => {
                   setIsSubmitting(false);
+                  // Refus du serveur (sujet verrouillé, session expirée…) : le texte reste dans l'éditeur
+                  if (!res.success) {
+                    toast.error(res.error || "Erreur lors de l'envoi de la réponse.");
+                    return;
+                  }
+                  setResetKey(prev => prev + 1);
                   router.refresh();
-                  
+
                   let attempts = 0;
                   const intervalId = setInterval(() => {
                     attempts++;
-                    const postEl = document.getElementById(`post-${newPost.id}`);
+                    const postEl = document.getElementById(`post-${res.postId}`);
                     if (postEl) {
                       clearInterval(intervalId);
                       postEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -62,6 +68,9 @@ export default function QuickReply({ topicId, onReplySuccess }: { topicId: strin
                       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                     }
                   }, 100);
+                }).catch(() => {
+                  setIsSubmitting(false);
+                  toast.error("Erreur lors de l'envoi de la réponse.");
                 });
               }
             }}

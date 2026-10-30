@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { updatePost } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import { Pencil, Loader2, Save } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
@@ -22,13 +23,15 @@ export default function EditPostForm({ postId, initialContent }: { postId: strin
     setIsSubmitting(true);
     try {
       const result = await updatePost(postId, content);
-      if (result?.topicId) {
+      if (result.success && result.topicId) {
         // Redirection vers la page précise et l'ancre du message
         router.push(`/forum/topic/${result.topicId}?page=${result.page || 1}#post-${postId}`);
+      } else {
+        toast.error(result.error || "Erreur lors de la modification du message.");
       }
     } catch (error) {
       console.error("Edit error:", error);
-      alert("Erreur lors de la modification du message.");
+      toast.error("Erreur lors de la modification du message.");
     } finally {
       setIsSubmitting(false);
     }

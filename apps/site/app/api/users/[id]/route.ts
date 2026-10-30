@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { NextResponse } from "next/server";
@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const session = await auth();
+  const session = await getActiveSession();
   const isSelf = session?.user?.id === id;
   const isMod = isModerator(session?.user?.role);
 

@@ -53,9 +53,11 @@ export default function NewConversationModal({ onClose }: { onClose: () => void 
                 toast.success("Conversation créée");
                 router.push(`/messagerie?id=${res.conversationId}`);
                 onClose();
+            } else {
+                toast.error(res.error || "Impossible de créer la conversation");
             }
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Impossible de créer la conversation");
         } finally {
             setLoading(false);
         }

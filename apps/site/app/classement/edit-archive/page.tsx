@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { notFound, redirect } from "next/navigation";
@@ -11,7 +11,7 @@ import "./page-mobile.css";
 
 export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string, importYear?: string }> }) {
   const { year: yearStr, importYear: importYearStr } = await searchParams;
-  const session = await auth();
+  const session = await getActiveSession();
   
   if (!session?.user || !isModerator(session.user.role)) {
     redirect("/classement");

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
 
   if (!tournament || !tournament.topic) notFound();
 
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session?.user?.id) {
     redirect(`/forum/topic/${tournament.topic.id}`);
   }

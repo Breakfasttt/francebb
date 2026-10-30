@@ -1,6 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { notFound, redirect } from "next/navigation";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import ArticleForm from "@/app/articles/component/ArticleForm";
@@ -12,7 +12,7 @@ export default async function EditArticlePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await auth();
+  const session = await getActiveSession();
   if (!session) redirect(`/auth/login?callbackUrl=/articles/edit/${id}`);
 
   const article = await prisma.article.findUnique({

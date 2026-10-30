@@ -27,9 +27,11 @@ export default function RenameConversationModal({ conversationId, currentName, o
                 toast.success("Conversation renommée");
                 onSuccess();
                 onClose();
+            } else {
+                toast.error(res.error || "Impossible de renommer la conversation");
             }
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch {
+            toast.error("Impossible de renommer la conversation");
         } finally {
             setLoading(false);
         }

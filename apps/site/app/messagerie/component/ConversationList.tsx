@@ -20,7 +20,7 @@ export default function ConversationList() {
         const fetch = async () => {
             try {
                 const data = await getConversations();
-                setConversations(data.conversations);
+                if (data) setConversations(data.conversations);
             } catch (error) {
                 console.error(error);
             } finally {

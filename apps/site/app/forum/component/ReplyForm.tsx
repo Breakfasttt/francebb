@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { createPost } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import { MessageSquare, Loader2, Send } from "lucide-react";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
@@ -28,12 +29,16 @@ export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteCont
     
     setIsSubmitting(true);
     try {
-      await createPost(topicId, content);
+      const res = await createPost(topicId, content);
+      if (!res.success) {
+        toast.error(res.error || "Erreur lors de l'envoi de la réponse.");
+        return;
+      }
       router.push(`/forum/topic/${topicId}`);
       router.refresh();
     } catch (error) {
       console.error("Reply error:", error);
-      alert("Erreur lors de l'envoi de la réponse.");
+      toast.error("Erreur lors de l'envoi de la réponse.");
     } finally {
       setIsSubmitting(false);
     }

@@ -1,5 +1,5 @@
 import MembersTable from "@/app/membres/component/MembersTable";
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
 import { isModerator, UserRole } from "@/lib/roles";
@@ -13,10 +13,10 @@ export const dynamic = "force-dynamic";
 //ce commentaire est juste un test
 
 export default async function MembersPage() {
-  const session = await auth();
+  const session = await getActiveSession();
 
   // 1. Authentification
-  if (!session?.user) redirect("/auth/login?callback=/membres");
+  if (!session?.user) redirect("/auth/login?callbackUrl=/membres");
 
   // 2. Récupérer le rôle complet depuis la DB
   const me = await prisma.user.findUnique({

@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
+import type { ActionResult } from "@/lib/actionResult";
 
 async function geocode(ville: string, address: string) {
   try {
@@ -148,23 +149,23 @@ export async function createLigue(formData: FormData) {
 /**
  * Met à jour une ligue existante.
  */
-export async function updateLigue(id: string, formData: FormData) {
+export async function updateLigue(id: string, formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non autorisé");
+  if (!session?.user?.id) return { success: false, error: "Non autorisé" };
 
   const ligue = await prisma.ligue.findUnique({
     where: { id },
     include: { commissaires: { select: { id: true } } }
   });
 
-  if (!ligue) throw new Error("Ligue introuvable");
+  if (!ligue) return { success: false, error: "Ligue introuvable" };
 
   const isCreator = ligue.creatorId === session.user.id;
   const isCommissaire = ligue.commissaires.some(c => c.id === session.user.id);
   const isMod = isModerator(session.user.role);
 
   if (!isCreator && !isCommissaire && !isMod) {
-    throw new Error("Vous n'avez pas l'autorisation de modifier cette ligue.");
+    return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette ligue." };
   }
 
   const name = formData.get("name") as string;

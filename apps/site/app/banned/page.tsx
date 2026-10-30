@@ -2,7 +2,7 @@
  * Page affichée à un membre banni : raison du bannissement et retour à l'accueil.
  * Couleurs : uniquement des variables de thème (lisible dans les 7 thèmes, y compris le thème clair).
  */
-import { auth } from "@/auth";
+import { getSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { Ban } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
@@ -14,7 +14,8 @@ import "./page-mobile.css";
 export const dynamic = "force-dynamic";
 
 export default async function BannedPage() {
-  const session = await auth();
+  // Session brute : getActiveSession() renverrait null pour un banni, or cette page lui est justement destinée.
+  const session = await getSession();
 
   if (!session?.user?.id) {
     redirect("/");

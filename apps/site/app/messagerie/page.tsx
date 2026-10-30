@@ -11,6 +11,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import NewConversationModal from "./component/NewConversationModal";
 import { useSession } from "next-auth/react";
+import { toast } from "@bbfrance/ui";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import "./page.css";
 
@@ -30,8 +31,11 @@ function MessagerieContent() {
                     const res = await startConversation([userId]);
                     if (res.success) {
                         router.replace(`/messagerie?id=${res.conversationId}`);
+                    } else {
+                        toast.error(res.error || "Impossible de démarrer la conversation");
+                        router.replace("/messagerie");
                     }
-                } catch (error: any) {
+                } catch (error) {
                     console.error(error);
                     router.replace("/messagerie");
                 } finally {
@@ -48,7 +52,7 @@ function MessagerieContent() {
         if (!activeId) return;
         try {
             const data = await getConversationMessages(activeId);
-            setConvInfo(data.conversation);
+            setConvInfo(data?.conversation ?? null);
         } catch (error) {
             console.error(error);
         }

@@ -4,10 +4,11 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import type { ActionResult } from "@/lib/actionResult";
 
-export async function finishOnboarding(formData: FormData) {
+export async function finishOnboarding(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non autorisé");
+  if (!session?.user?.id) return { success: false, error: "Non autorisé" };
 
   const name = formData.get("name") as string;
   const image = formData.get("image") as string;
@@ -20,7 +21,7 @@ export async function finishOnboarding(formData: FormData) {
   const avatarFrame = formData.get("avatarFrame") as string;
 
   if (!name || name.length < 3) {
-    throw new Error("Le pseudo doit faire au moins 3 caractères");
+    return { success: false, error: "Le pseudo doit faire au moins 3 caractères" };
   }
 
   await prisma.user.update({

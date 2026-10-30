@@ -1,7 +1,7 @@
 /**
  * Page de gestion et édition des questions du Quizz.
  */
-import { auth } from "@/auth";
+import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
@@ -17,7 +17,7 @@ export const metadata = {
 export default async function EditerPage(props: { searchParams: Promise<{ edit?: string }> }) {
   const searchParams = await props.searchParams;
   const editId = searchParams.edit;
-  const session = await auth();
+  const session = await getActiveSession();
 
   if (!isModerator(session?.user?.role)) {
     redirect("/bbquizz");

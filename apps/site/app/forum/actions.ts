@@ -14,6 +14,7 @@ import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { logModerationAction } from "@/lib/moderationLog";
+import type { ActionResult } from "@/lib/actionResult";
 
 export async function getUnreadMessagesCount() {
   const session = await getActiveSession();
@@ -329,12 +330,12 @@ export async function getAllForums() {
   });
 }
 
-export async function deleteForum(forumId: string, forumName: string) {
+export async function deleteForum(forumId: string, forumName: string): Promise<ActionResult> {
   const session = await getActiveSession();
   const userRole = session?.user?.role;
 
   if (!userRole || !isModerator(userRole)) {
-    throw new Error("Seuls les modérateurs peuvent supprimer des forums.");
+    return { success: false, error: "Seuls les modérateurs peuvent supprimer des forums." };
   }
 
   // Deleting a forum requires deleting all its content manually since we don't have cascade delete in schema
@@ -548,12 +549,12 @@ export async function createTopic(formData: FormData) {
   redirect(`/forum/topic/${topic.id}`);
 }
 
-export async function createPost(topicId: string, content: string) {
+export async function createPost(topicId: string, content: string): Promise<ActionResult & { postId?: string }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté pour répondre.");
+    return { success: false, error: "Vous devez être connecté pour répondre." };
   }
-  if (!content) throw new Error("Le contenu est obligatoire.");
+  if (!content) return { success: false, error: "Le contenu est obligatoire." };
 
   // Vérifier l'accès (rôle) et si le topic ou le forum est locké
   const { roles } = await getForumAccess();
@@ -562,10 +563,10 @@ export async function createPost(topicId: string, content: string) {
     include: { forum: { select: { isLocked: true } } }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   if ((topic.isLocked || topic.forum.isLocked) && !isModerator(session.user.role)) {
-    throw new Error("Ce sujet est verrouillé. Vous ne pouvez plus y répondre.");
+    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus y répondre." };
   }
 
   const post = await prisma.post.create({
@@ -663,13 +664,13 @@ export async function createPost(topicId: string, content: string) {
   await Promise.all(taskPromises);
 
   revalidatePath(`/forum/topic/${topicId}`);
-  return post;
+  return { success: true, postId: post.id };
 }
 
-export async function updatePost(postId: string, content: string) {
+export async function updatePost(postId: string, content: string): Promise<ActionResult & { topicId?: string; page?: number }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté pour modifier un message.");
+    return { success: false, error: "Vous devez être connecté pour modifier un message." };
   }
 
   const existingPost = await prisma.post.findUnique({
@@ -677,9 +678,9 @@ export async function updatePost(postId: string, content: string) {
     select: { id: true, authorId: true, topicId: true, createdAt: true }
   });
 
-  if (!existingPost) throw new Error("Message introuvable.");
+  if (!existingPost) return { success: false, error: "Message introuvable." };
   if (existingPost.authorId !== session.user.id && !isModerator(session.user.role)) {
-    throw new Error("Vous n'avez pas l'autorisation de modifier ce message.");
+    return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce message." };
   }
 
   await prisma.post.update({
@@ -704,7 +705,7 @@ export async function updatePost(postId: string, content: string) {
   const page = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
 
   revalidatePath(`/forum/topic/${existingPost.topicId}`);
-  return { topicId: existingPost.topicId, page };
+  return { success: true, topicId: existingPost.topicId, page };
 }
 
 export async function getPostById(postId: string) {
@@ -725,10 +726,10 @@ export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
   });
 }
 
-export async function moderatePost(postId: string, reason: string) {
+export async function moderatePost(postId: string, reason: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent modérer des messages.");
+    return { success: false, error: "Seuls les modérateurs peuvent modérer des messages." };
   }
 
   const post = await prisma.post.findUnique({
@@ -736,7 +737,7 @@ export async function moderatePost(postId: string, reason: string) {
   });
 
   if (!post) {
-    throw new Error("Message introuvable.");
+    return { success: false, error: "Message introuvable." };
   }
 
   await prisma.post.update({
@@ -757,19 +758,20 @@ export async function moderatePost(postId: string, reason: string) {
   );
 
   revalidatePath(`/forum/topic/${post.topicId}`);
+  return { success: true };
 }
 
-export async function unmoderatePost(postId: string) {
+export async function unmoderatePost(postId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent annuler une modération.");
+    return { success: false, error: "Seuls les modérateurs peuvent annuler une modération." };
   }
 
   const post = await prisma.post.findUnique({
     where: { id: postId }
   });
 
-  if (!post) throw new Error("Message introuvable.");
+  if (!post) return { success: false, error: "Message introuvable." };
 
   await prisma.post.update({
     where: { id: postId },
@@ -789,12 +791,13 @@ export async function unmoderatePost(postId: string) {
   );
 
   revalidatePath(`/forum/topic/${post.topicId}`);
+  return { success: true };
 }
 
-export async function deletePost(postId: string) {
+export async function deletePost(postId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté.");
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   const post = await prisma.post.findUnique({
@@ -802,13 +805,13 @@ export async function deletePost(postId: string) {
     include: { topic: { include: { posts: true } } }
   });
 
-  if (!post) throw new Error("Message introuvable.");
+  if (!post) return { success: false, error: "Message introuvable." };
 
   // Check if it's the author
   // NOTE: User said ONLY the creator can delete it. 
   // Modérateurs can moderate but not delete (based on requirement 6).
   if (post.authorId !== session.user.id) {
-    throw new Error("Seul l'auteur peut supprimer son message.");
+    return { success: false, error: "Seul l'auteur peut supprimer son message." };
   }
 
   // Soft delete: just mark the post as isDeleted
@@ -827,6 +830,7 @@ export async function deletePost(postId: string) {
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   revalidatePath(`/forum/${post.topic.forumId}`);
+  return { success: true };
 }
 
 export async function markAllTopicsAsRead() {
@@ -880,10 +884,10 @@ export async function markAllTopicsAsRead() {
   }
 }
 
-export async function togglePinTopic(topicId: string) {
+export async function togglePinTopic(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent épingler des sujets.");
+    return { success: false, error: "Seuls les modérateurs peuvent épingler des sujets." };
   }
 
   const topic = await prisma.topic.findUnique({
@@ -891,7 +895,7 @@ export async function togglePinTopic(topicId: string) {
     select: { isSticky: true }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   await prisma.topic.update({
     where: { id: topicId },
@@ -906,23 +910,24 @@ export async function togglePinTopic(topicId: string) {
   );
 
   revalidatePath(`/forum/topic/${topicId}`);
+  return { success: true };
 }
 
-export async function deleteTopicPermanent(topicId: string, topicTitle: string) {
+export async function deleteTopicPermanent(topicId: string, topicTitle: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non connecté.");
+  if (!session?.user?.id) return { success: false, error: "Non connecté." };
 
   const topic = await prisma.topic.findUnique({
     where: { id: topicId }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   const isAuthor = topic.authorId === session.user.id;
   const isMod = isModerator(session.user.role);
 
   if (!isAuthor && !isMod) {
-    throw new Error("Action non autorisée.");
+    return { success: false, error: "Action non autorisée." };
   }
 
   // Si le sujet est lié à un tournoi, on doit aussi supprimer le tournoi
@@ -950,17 +955,17 @@ export async function deleteTopicPermanent(topicId: string, topicTitle: string) 
   redirect(`/forum?deletedTopic=${encodeURIComponent(topicTitle)}`);
 }
 
-export async function moveTopic(topicId: string, newForumId: string) {
+export async function moveTopic(topicId: string, newForumId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent déplacer des sujets.");
+    return { success: false, error: "Seuls les modérateurs peuvent déplacer des sujets." };
   }
 
   const topic = await prisma.topic.findUnique({
     where: { id: topicId }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   await prisma.topic.update({
     where: { id: topicId },
@@ -977,12 +982,13 @@ export async function moveTopic(topicId: string, newForumId: string) {
   revalidatePath(`/forum/${topic.forumId}`);
   revalidatePath(`/forum/${newForumId}`);
   revalidatePath(`/forum/topic/${topicId}`);
+  return { success: true };
 }
 
-export async function updateTopicTitle(topicId: string, title: string) {
+export async function updateTopicTitle(topicId: string, title: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    throw new Error("Vous devez être connecté.");
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   const topic = await prisma.topic.findUnique({
@@ -990,11 +996,11 @@ export async function updateTopicTitle(topicId: string, title: string) {
     select: { authorId: true }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   const sessionUser = session.user as { id: string; role: string };
   if (topic.authorId !== sessionUser.id && !isModerator(sessionUser.role)) {
-    throw new Error("Vous n'avez pas l'autorisation de modifier ce sujet.");
+    return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce sujet." };
   }
 
   await prisma.topic.update({
@@ -1003,11 +1009,12 @@ export async function updateTopicTitle(topicId: string, title: string) {
   });
 
   revalidatePath(`/forum/topic/${topicId}`);
+  return { success: true };
 }
 
-export async function togglePostReaction(postId: string, emoji: string) {
+export async function togglePostReaction(postId: string, emoji: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Vous devez être connecté.");
+  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
 
   const userId = session.user.id;
 
@@ -1045,12 +1052,13 @@ export async function togglePostReaction(postId: string, emoji: string) {
   if (post) {
     revalidatePath(`/forum/topic/${post.topicId}`);
   }
+  return { success: true };
 }
 
-export async function toggleArchiveTopic(topicId: string) {
+export async function toggleArchiveTopic(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role)) {
-    throw new Error("Seuls les modérateurs peuvent archiver des sujets.");
+    return { success: false, error: "Seuls les modérateurs peuvent archiver des sujets." };
   }
 
   const topic = await prisma.topic.findUnique({
@@ -1058,7 +1066,7 @@ export async function toggleArchiveTopic(topicId: string) {
     select: { id: true, isArchived: true, forumId: true }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   await prisma.topic.update({
     where: { id: topicId },
@@ -1074,6 +1082,7 @@ export async function toggleArchiveTopic(topicId: string) {
 
   revalidatePath(`/forum/${topic.forumId}`);
   revalidatePath(`/forum/topic/${topicId}`);
+  return { success: true };
 }
 
 /**
@@ -1204,10 +1213,10 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
     return { topics: [], totalPages: 0 };
   }
 }
-export async function toggleForumLock(forumId: string) {
+export async function toggleForumLock(forumId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) {
-    throw new Error("Action non autorisée.");
+    return { success: false, error: "Action non autorisée." };
   }
 
   const forum = await prisma.forum.findUnique({
@@ -1215,7 +1224,7 @@ export async function toggleForumLock(forumId: string) {
     select: { isLocked: true }
   });
 
-  if (!forum) throw new Error("Forum introuvable.");
+  if (!forum) return { success: false, error: "Forum introuvable." };
 
   await prisma.forum.update({
     where: { id: forumId },
@@ -1234,10 +1243,10 @@ export async function toggleForumLock(forumId: string) {
   return { success: true };
 }
 
-export async function toggleTopicLock(topicId: string) {
+export async function toggleTopicLock(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) {
-    throw new Error("Action non autorisée.");
+    return { success: false, error: "Action non autorisée." };
   }
 
   const topic = await prisma.topic.findUnique({
@@ -1245,7 +1254,7 @@ export async function toggleTopicLock(topicId: string) {
     select: { isLocked: true, forumId: true }
   });
 
-  if (!topic) throw new Error("Sujet introuvable.");
+  if (!topic) return { success: false, error: "Sujet introuvable." };
 
   await prisma.topic.update({
     where: { id: topicId },
@@ -1290,23 +1299,34 @@ export async function searchUsersAction(query: string) {
  * Mettre à jour les informations d'un tournoi.
  * Seul le créateur, les commissaires ou la modération peuvent modifier.
  */
-export async function updateTournament(tournamentId: string, topicId: string, firstPostId: string, formData: FormData) {
+export async function updateTournament(tournamentId: string, topicId: string, firstPostId: string, formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) throw new Error("Non autorisé.");
+  if (!session?.user?.id) return { success: false, error: "Non autorisé." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
     include: { commissaires: true }
   });
 
-  if (!tournament) throw new Error("Tournoi introuvable.");
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
   const isOrganizer = tournament.organizerId === session.user.id;
   const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
   const isMod = isModerator(session.user.role);
 
   if (!isOrganizer && !isCommissaire && !isMod) {
-    throw new Error("Vous n'avez pas les droits pour modifier ce tournoi.");
+    return { success: false, error: "Vous n'avez pas les droits pour modifier ce tournoi." };
+  }
+
+  // Le sujet et son premier message arrivent du navigateur : on vérifie qu'ils appartiennent bien à ce tournoi,
+  // sinon un organisateur pourrait réécrire le titre ou le message d'un autre sujet (carte 052).
+  const firstPost = await prisma.post.findFirst({
+    where: { topicId, topic: { tournamentId } },
+    orderBy: { createdAt: "asc" },
+    select: { id: true }
+  });
+  if (!firstPost || firstPost.id !== firstPostId) {
+    return { success: false, error: "Ce sujet ne correspond pas à ce tournoi." };
   }
 
   const title = formData.get("title") as string;
@@ -1315,7 +1335,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   const tEndDateStr = formData.get("tEndDate") as string;
 
   if (!title || !content || !tDateStr) {
-    throw new Error("Titre, contenu et date de début sont obligatoires.");
+    return { success: false, error: "Titre, contenu et date de début sont obligatoires." };
   }
 
   const startDate = new Date(tDateStr);
@@ -1323,7 +1343,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   
   // Validation des dates (fail-safe)
   if (endDate < startDate) {
-    throw new Error("La date de fin ne peut pas être avant la date de début.");
+    return { success: false, error: "La date de fin ne peut pas être avant la date de début." };
   }
   
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());

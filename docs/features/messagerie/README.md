@@ -41,7 +41,8 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 - Un coach ne peut pas avoir plus de 50 conversations (`CONVERSATION_LIMIT`).
 - L'email de notification n'est envoyé qu'au premier message non lu, et seulement si le destinataire l'a activé (`notifPm`).
 - Le rafraîchissement toutes les 10 secondes refait une requête complète (et marque les messages lus) : à surveiller pour la charge.
-- Dette : les actions utilisent `throw` (15 occurrences) et la page des types `any`. Les champs `user1Id` / `user2Id` de `Conversation` sont un ancien modèle, remplacé par `ConversationParticipant`.
+- Les actions d'écriture renvoient `{ success, error }` et les erreurs s'affichent en notification (carte 052). Les lectures `getConversations` et `getConversationMessages` renvoient `null` si le visiteur n'est pas connecté ou ne participe pas à la conversation ; `searchUsers` renvoie alors une liste vide.
+- Dette : la page utilise des types `any`. Les champs `user1Id` / `user2Id` de `Conversation` sont un ancien modèle, remplacé par `ConversationParticipant`.
 
 ## Les mots expliqués
 

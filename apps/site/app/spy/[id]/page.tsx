@@ -2,6 +2,7 @@
 
 import { ArrowLeft, Trophy } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { toast } from "@bbfrance/ui";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
 import PageHeader from "@/common/components/PageHeader/PageHeader";
@@ -79,7 +80,7 @@ export default function SpyProfilePage() {
 
     if (status !== "loading") {
       if (!session) {
-        router.push(`/auth/login?callback=/spy/${id}`);
+        router.push(`/auth/login?callbackUrl=/spy/${id}`);
         return;
       }
       fetchData();
@@ -130,9 +131,11 @@ export default function SpyProfilePage() {
       const res = await startConversation([user.id]);
       if (res.success) {
         router.push(`/messagerie?id=${res.conversationId}`);
+      } else {
+        toast.error(res.error || "Impossible de démarrer la conversation");
       }
-    } catch (err: any) {
-      alert(err.message);
+    } catch {
+      toast.error("Impossible de démarrer la conversation");
     }
   };
 

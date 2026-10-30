@@ -20,9 +20,9 @@ export default function LigueEditSubmit({ ligueId }: LigueEditSubmitProps) {
         if (result.success) {
           toast.success("Ligue mise à jour avec succès !");
         } else {
-          toast.error("Erreur lors de la mise à jour.");
+          toast.error(result.error || "Erreur lors de la mise à jour.");
         }
-      } catch (error) {
+      } catch {
         toast.error("Une erreur est survenue.");
       }
     });
