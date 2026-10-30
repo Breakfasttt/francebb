@@ -8,7 +8,7 @@ import TopicSidebar from "@/app/forum/component/TopicSidebar";
 import TournamentSummary from "@/app/forum/component/TournamentSummary";
 import TournamentResultWidget from "@/app/forum/component/TournamentResultWidget";
 import { getActiveSession } from "@/lib/authGuard";
-import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
+import { getForumAccess, canAccessForum, forumAccessWhere } from "@/lib/forumAccess";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
@@ -138,6 +138,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     // Liste des forums : uniquement pour la modale de déplacement (modérateurs)
     isUserModerator
       ? prisma.forum.findMany({
+          // Seuls les forums accessibles au rôle du modérateur peuvent recevoir le sujet
+          where: forumAccessWhere(roles),
           orderBy: { name: "asc" },
           select: { id: true, name: true }
         })

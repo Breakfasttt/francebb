@@ -17,6 +17,30 @@ test("le journal de modération n'est pas une action serveur publique", () => {
   expect(actions).not.toMatch(/export async function logModerationAction/);
 });
 
+test("les actions du forum vérifient l'accès au sujet et le verrouillage (carte 103)", () => {
+  // Une action serveur est appelable directement par n'importe qui : chaque action sur un sujet ou un message
+  // existant doit filtrer par rôle (topicAccessWhere / forumAccessWhere) avant d'agir.
+  const actions = readFileSync("app/forum/actions.ts", "utf-8");
+  const body = (name: string) => {
+    const start = actions.indexOf(`export async function ${name}(`);
+    expect(start, `action ${name} introuvable`).toBeGreaterThan(-1);
+    const next = actions.indexOf("\nexport async function ", start + 1);
+    return actions.slice(start, next === -1 ? undefined : next);
+  };
+  for (const name of ["updatePost", "deletePost", "togglePostReaction"]) {
+    expect(body(name), name).toMatch(/findAccessiblePost\(/);
+    expect(body(name), name).toMatch(/isLockedFor\(/);
+  }
+  expect(body("markTopicAsRead")).toMatch(/topicAccessWhere\(roles\)/);
+  expect(body("markAllTopicsAsRead")).toMatch(/isArchived: false, \.\.\.topicAccessWhere\(roles\)/);
+  expect(body("moveTopic")).toMatch(/forumAccessWhere\(roles\)/);
+  expect(actions).toMatch(/async function findAccessiblePost[\s\S]*?topic: topicAccessWhere\(roles\)/);
+
+  // La liste des forums de destination proposée aux modérateurs est filtrée par rôle
+  const topicPage = readFileSync("app/forum/topic/[id]/page.tsx", "utf-8");
+  expect(topicPage).toMatch(/where: forumAccessWhere\(roles\)/);
+});
+
 test("après connexion, aucune redirection vers un site extérieur", async ({ page }) => {
   await loginAs(page, E2E.coachId);
   for (const target of ["https://example.com", "//example.com", "/\example.com"]) {

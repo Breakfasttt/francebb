@@ -52,7 +52,36 @@ export async function getRandomPostUrl() {
   return randomTopic ? `/forum/topic/${randomTopic.id}` : "/forum";
 }
 
+/**
+ * Retrouve un message seulement si son sujet est accessible au rôle du visiteur, avec l'état de verrouillage
+ * du sujet et du forum. Sert de garde commune aux actions sur un message existant (modifier, supprimer, réagir).
+ */
+async function findAccessiblePost(postId: string) {
+  const { roles } = await getForumAccess();
+  return prisma.post.findFirst({
+    where: { id: postId, topic: topicAccessWhere(roles) },
+    select: {
+      id: true,
+      authorId: true,
+      topicId: true,
+      createdAt: true,
+      isDeleted: true,
+      topic: { select: { forumId: true, isLocked: true, forum: { select: { isLocked: true } } } },
+    },
+  });
+}
+
+/** Vrai si le sujet ou son forum est verrouillé pour ce membre (les modérateurs passent outre). */
+function isLockedFor(post: { topic: { isLocked: boolean; forum: { isLocked: boolean } } }, role: string | undefined) {
+  return (post.topic.isLocked || post.topic.forum.isLocked) && !isModerator(role);
+}
+
 export async function markTopicAsRead(topicId: string) {
+  // Un sujet inexistant ou réservé à un autre rôle n'est ni compté ni marqué comme lu
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({ where: { id: topicId, ...topicAccessWhere(roles) }, select: { id: true } });
+  if (!topic) return;
+
   // Increment views safely using RAW SQL to avoid triggering Prisma's @updatedAt (which makes topics 'unread')
   await prisma.$executeRaw`UPDATE "Topic" SET "views" = Coalesce("views", 0) + 1 WHERE "id" = ${topicId}`;
 
@@ -691,14 +720,14 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     return { success: false, error: "Vous devez être connecté pour modifier un message." };
   }
 
-  const existingPost = await prisma.post.findUnique({
-    where: { id: postId },
-    select: { id: true, authorId: true, topicId: true, createdAt: true }
-  });
+  const existingPost = await findAccessiblePost(postId);
 
   if (!existingPost) return { success: false, error: "Message introuvable." };
   if (existingPost.authorId !== session.user.id && !isModerator(session.user.role)) {
     return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce message." };
+  }
+  if (isLockedFor(existingPost, session.user.role)) {
+    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus modifier ce message." };
   }
 
   await prisma.post.update({
@@ -818,12 +847,12 @@ export async function deletePost(postId: string): Promise<ActionResult> {
     return { success: false, error: "Vous devez être connecté." };
   }
 
-  const post = await prisma.post.findUnique({
-    where: { id: postId },
-    include: { topic: { include: { posts: true } } }
-  });
+  const post = await findAccessiblePost(postId);
 
   if (!post) return { success: false, error: "Message introuvable." };
+  if (isLockedFor(post, session.user.role)) {
+    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus supprimer ce message." };
+  }
 
   // Check if it's the author
   // NOTE: User said ONLY the creator can delete it. 
@@ -863,7 +892,10 @@ export async function markAllTopicsAsRead() {
   if (!userExists) return { success: false, error: "Utilisateur introuvable" };
 
   try {
+    // Uniquement les sujets que ce membre peut voir : les archivés et les forums réservés à d'autres rôles sont exclus
+    const { roles } = await getForumAccess();
     const topics = await prisma.topic.findMany({
+      where: { isArchived: false, ...topicAccessWhere(roles) },
       select: {
         id: true,
         updatedAt: true,
@@ -979,11 +1011,15 @@ export async function moveTopic(topicId: string, newForumId: string): Promise<Ac
     return { success: false, error: "Seuls les modérateurs peuvent déplacer des sujets." };
   }
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId }
-  });
+  // Le sujet et le forum de destination doivent tous deux être accessibles au rôle du modérateur
+  const { roles } = await getForumAccess();
+  const [topic, destination] = await Promise.all([
+    prisma.topic.findFirst({ where: { id: topicId, ...topicAccessWhere(roles) } }),
+    prisma.forum.findFirst({ where: { id: newForumId, ...forumAccessWhere(roles) }, select: { id: true } }),
+  ]);
 
   if (!topic) return { success: false, error: "Sujet introuvable." };
+  if (!destination) return { success: false, error: "Forum de destination introuvable." };
 
   await prisma.topic.update({
     where: { id: topicId },
@@ -1035,6 +1071,12 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
   if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
 
   const userId = session.user.id;
+
+  const target = await findAccessiblePost(postId);
+  if (!target || target.isDeleted) return { success: false, error: "Message introuvable." };
+  if (isLockedFor(target, session.user.role)) {
+    return { success: false, error: "Ce sujet est verrouillé." };
+  }
 
   const existing = await prisma.postReaction.findFirst({
     where: {
