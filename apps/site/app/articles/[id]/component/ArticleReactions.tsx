@@ -3,6 +3,7 @@
 import React, { useState, useTransition, useEffect } from "react";
 import { SmilePlus } from "lucide-react";
 import { toggleArticleReaction } from "@/app/articles/actions";
+import { toast } from "@bbfrance/ui";
 import "./ArticleReactions.css";
 
 interface Reaction {
@@ -42,7 +43,7 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
 
   const handleToggle = (emoji: string) => {
     if (!currentUserId) {
-      alert("Vous devez être connecté pour réagir.");
+      toast.error("Vous devez être connecté pour réagir.");
       return;
     }
 
@@ -75,7 +76,7 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
         console.error("Failed to toggle reaction:", error);
         // Rollback on error
         setOptimisticReactions(reactions);
-        alert("Erreur lors de l'ajout de la réaction");
+        toast.error("Erreur lors de l'ajout de la réaction");
       }
     });
   };

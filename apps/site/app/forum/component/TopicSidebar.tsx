@@ -281,7 +281,7 @@ export default function TopicSidebar({
     startTransition(async () => {
       const res = await toggleFollowTopic(topicId);
       if (!res.success) {
-        alert(res.error || "Impossible de mettre à jour le suivi.");
+        toast.error(res.error || "Impossible de mettre à jour le suivi.");
         return;
       }
 

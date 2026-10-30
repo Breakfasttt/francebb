@@ -41,7 +41,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
 
   const handleToggle = (emoji: string) => {
     if (!currentUserId) {
-      alert("Vous devez être connecté pour réagir.");
+      toast.error("Vous devez être connecté pour réagir.");
       return;
     }
 

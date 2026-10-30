@@ -8,6 +8,7 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import { siteConfig } from "@/lib/siteConfig";
 import { getResourceTags } from "../../actions";
+import { toast } from "@bbfrance/ui";
 import "./ResourceForm.css";
 import "./ResourceForm-mobile.css";
 
@@ -67,10 +68,10 @@ export default function ResourceForm({
       if (data.success) {
         setImageUrl(data.data.url);
       } else {
-        alert("Erreur lors de l'upload: " + (data.error?.message || "Inconnue"));
+        toast.error("Erreur lors de l'upload: " + (data.error?.message || "Inconnue"));
       }
     } catch (error) {
-      alert("Erreur réseau lors de l'upload.");
+      toast.error("Erreur réseau lors de l'upload.");
     } finally {
       setIsUploading(false);
     }

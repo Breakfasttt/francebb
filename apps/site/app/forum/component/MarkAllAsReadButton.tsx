@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CheckCheck } from "lucide-react";
 import { markAllTopicsAsRead } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import Modal from "@/common/components/Modal/Modal";
 import ClassicButton from "@/common/components/Button/ClassicButton";
@@ -17,7 +18,7 @@ export default function MarkAllAsReadButton() {
     if (result.success) {
       setIsConfirming(false);
     } else {
-      alert(result.error || "Une erreur est survenue.");
+      toast.error(result.error || "Une erreur est survenue.");
     }
     setIsLoading(false);
   }

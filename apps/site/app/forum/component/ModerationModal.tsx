@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, ShieldAlert, Loader2 } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import { toast } from "@bbfrance/ui";
 import ClassicButton from "@/common/components/Button/ClassicButton";
 import AdminButton from "@/common/components/Button/AdminButton";
 
@@ -35,7 +36,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
       await onConfirm(reason);
       onClose();
     } catch (error) {
-      alert("Erreur lors de la modération.");
+      toast.error("Erreur lors de la modération.");
     } finally {
       setIsSubmitting(false);
     }

@@ -3,6 +3,7 @@
 import { EyeOff } from "lucide-react";
 import { useTransition } from "react";
 import { markTopicAsUnreadFrom } from "@/app/forum/actions";
+import { toast } from "@bbfrance/ui";
 import { useRouter } from "next/navigation";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 
@@ -21,7 +22,7 @@ export default function MarkUnreadAction({ topicId, postId }: MarkUnreadActionPr
         await markTopicAsUnreadFrom(topicId, postId);
         router.push("/forum");
       } catch (error) {
-        alert(error instanceof Error ? error.message : "Une erreur est survenue");
+        toast.error(error instanceof Error ? error.message : "Une erreur est survenue");
       }
     });
   };
