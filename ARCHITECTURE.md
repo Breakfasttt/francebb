@@ -62,6 +62,8 @@ ESLint (l'outil qui relit le code, voir le glossaire) refuse dans `apps/site` tr
 
 Le code écrit avant ces règles contient encore des écarts. Le cliquet (`apps/site/scripts/lint-ratchet.mjs`) les tolère, mais il garde un plafond **pour chaque règle** dans `apps/site/lint-baseline.json` : une nouvelle erreur est refusée même si une autre a été corrigée ailleurs. Quand on corrige des écarts, on abaisse les plafonds avec `node scripts/lint-ratchet.mjs --update`.
 
+Le cliquet contrôle aussi les paquets partagés : `packages/ui` et `packages/bbscheme-player`. Chaque paquet a son propre plafond, dans son fichier `lint-baseline.json` (aujourd'hui 0 erreur pour `ui` et 23 pour `bbscheme-player`, dont 11 usages du type `any`). Les paquets n'installent pas ESLint : le cliquet réutilise celui du site avec la configuration `apps/site/eslint.packages.config.mjs`. Elle reprend les règles des couleurs en dur et des boutons natifs (définies une seule fois dans `apps/site/eslint.rules.mjs`, comme pour le site), mais pas l'interdiction d'importer une autre application, qui n'a pas de sens pour un paquet. Seul `packages/ui/src/button.tsx`, qui définit le composant Button, a le droit d'utiliser l'élément natif `<button>`. Le même `--update` abaisse tous les plafonds, celui du site comme ceux des paquets.
+
 ## Réutiliser avant de créer
 
 1. Chercher dans le skill `reuse-first`, puis dans le code.

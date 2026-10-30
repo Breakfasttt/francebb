@@ -1,0 +1,8 @@
+{
+  "maxErrors": 23,
+  "rules": {
+    "@typescript-eslint/no-explicit-any": 11,
+    "no-restricted-syntax": 11,
+    "react-hooks/set-state-in-effect": 1
+  }
+}
