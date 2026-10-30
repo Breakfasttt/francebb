@@ -8,7 +8,7 @@
 
 /* Téléphone : bouton d'envoi du blason assez grand pour le pouce (44 pixels).
    Ce fichier sert aussi au formulaire de modification d'une ligue (/ligue/edit/[id]). */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .btn-upload-blason {
     min-height: 44px;
   }

@@ -221,7 +221,7 @@ export default function TournamentFilterSidebar() {
 
       {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir).
           L'emplacement "tournois-mobile-sort-slot" reçoit le tri et l'affichage (composant ActiveFilters). */}
-      <MobileFilterWrapper title="Filtrer les tournois" mobileOnly breakpoint={1024}>
+      <MobileFilterWrapper title="Filtrer les tournois" mobileOnly>
         <div className="tournois-mobile-filters">
           <div id="tournois-mobile-sort-slot" />
           {filterContent}

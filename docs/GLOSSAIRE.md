@@ -62,6 +62,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **RGPD** | Loi européenne sur la protection des données personnelles (emails, comptes…). Elle impose notamment de prévenir les membres avant d'effacer leurs données. |
 | **Rollback** (retour arrière) | Revenir à la version précédente quand une mise à jour pose problème. |
 | **Schéma** (base de données) | La liste des tables, de leurs colonnes et de leurs liens. |
+| **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. BBFrance n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (menu latéral global, colonnes latérales rangées dans ce menu, filtres derrière le bouton flottant) ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
 | **Seed** / **firstSetup** | Script qui remplit une base neuve avec les données de base (rôles, catégories du forum, listes de référence). |
 | **shadcn/ui** | Collection de composants d'interface copiés dans le projet (`packages/ui`) et adaptés à nos 7 thèmes. |
 | **Skill** | Fiche de consignes que l'IA lit avant une tâche précise (ex. règles d'interface). Rangées dans `.claude/skills/`. |

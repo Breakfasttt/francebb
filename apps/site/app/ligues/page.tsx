@@ -90,7 +90,7 @@ export default async function LiguesPage({
       </PremiumCard>
 
       {/* Téléphone et tablette : recherche, filtres et affichage derrière le bouton flottant (entonnoir) */}
-      <MobileFilterWrapper title="Filtrer les ligues" mobileOnly breakpoint={1024}>
+      <MobileFilterWrapper title="Filtrer les ligues" mobileOnly>
           <div className="ligues-mobile-sidebar-content mobile-only">
             <h3 className="sidebar-section-title">Recherche & Filtres</h3>
             <LigueFilters 

@@ -810,7 +810,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
           border-width: 0;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .forum-block.level-2 { margin-left: 0.5rem; }
           .forum-block.level-3 { margin-left: 1rem; }
         }

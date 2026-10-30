@@ -159,7 +159,7 @@ export default function ArticleFilterSidebar({ availableTags, isAuthenticated }:
       </aside>
 
       {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir) */}
-      <MobileFilterWrapper title="Filtrer les articles" mobileOnly breakpoint={1024}>
+      <MobileFilterWrapper title="Filtrer les articles" mobileOnly>
         <div className="mobile-article-filters">
           {sidebarContent}
         </div>

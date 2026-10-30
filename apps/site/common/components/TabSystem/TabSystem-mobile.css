@@ -1,4 +1,4 @@
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .tab-system {
     flex-direction: column !important;
     gap: 0.5rem !important;

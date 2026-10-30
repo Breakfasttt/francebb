@@ -86,7 +86,7 @@
   color-scheme: dark;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .classic-input-field {
     padding: 0.7rem 1rem;
     font-size: 0.95rem;

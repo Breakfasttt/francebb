@@ -20,10 +20,22 @@ Vérification : tests automatiques en taille téléphone, plus un contrôle à l
 
 ## Principes
 
-- **Ne rien casser sur ordinateur** : les règles mobiles sont à part, dans `page-mobile.css` ou un bloc `@media (max-width: 768px)`.
+- **Ne rien casser sur ordinateur** : les règles mobiles sont à part, dans `page-mobile.css` ou un bloc `@media (max-width: 1024px)`.
 - Sur téléphone, on empile les éléments verticalement (`flex-direction: column`) et on garde de l'air (marges intérieures).
 - Un tableau trop large passe en liste verticale ou défile dans son propre cadre (`overflow-x: auto`), jamais la page entière.
 - Si un composant est trop complexe à adapter, on simplifie son affichage mobile.
+
+## Un seul seuil : 1024 pixels
+
+Le site passe de l'affichage ordinateur à l'affichage téléphone à **1024 pixels de large** (carte 055). Les tablettes reçoivent donc l'affichage téléphone. Ce seuil est le même partout :
+
+- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()`, `MobilePortal`, `MobileFilterWrapper`, `TabSystem` et `PageHeader`. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
+- en CSS : `@media (max-width: 1024px)` pour les règles téléphone, `@media (min-width: 1025px)` pour les règles réservées à l'ordinateur. Le CSS ne sait pas lire une variable dans un `@media`, d'où la valeur écrite en clair ;
+- les classes `.mobile-only` et `.desktop-only` (`globals.css`, `globals-mobile.css`) basculent à la même largeur.
+
+Pourquoi : avant la carte 055, une partie du site basculait à 768 pixels et l'autre à 1024. Entre les deux (tablettes), des colonnes étaient masquées par le CSS sans être encore déplacées dans le menu par le JavaScript : les onglets de la modération devenaient inaccessibles.
+
+D'autres largeurs (`600px`, `480px`, `900px`, `1100px`…) restent permises **seulement pour ajuster une grille ou un tableau à la place disponible** (passer de 3 colonnes de cartes à 2, réduire une marge). Elles ne doivent jamais masquer, déplacer ou remplacer une colonne latérale, un onglet, un menu ou des filtres : cela, c'est le rôle du seuil unique.
 
 ## Le menu latéral global (téléphone uniquement)
 
@@ -46,7 +58,7 @@ Si une page a sa propre colonne latérale (onglets du profil, de l'administratio
 Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/membres`, `/articles`, `/ressources`, `/ligues`, `/tournois` (carte 054).
 
 - Sur ordinateur, le composant affiche ses enfants dans une simple `<div className={className}>`. Avec `mobileOnly`, il n'affiche rien sur ordinateur : à utiliser quand la page a déjà sa colonne de filtres.
-- `breakpoint` (768 pixels par défaut) fixe la largeur sous laquelle le bouton flottant remplace les filtres. Les pages dont la colonne est masquée par la classe `desktop-only` utilisent `breakpoint={1024}`, le même seuil.
+- Le bouton flottant remplace les filtres jusqu'au seuil commun (1024 pixels), comme la classe `desktop-only` qui masque les colonnes de filtres. Le réglage `breakpoint` existe encore mais ne doit pas être utilisé : une autre valeur recréerait des largeurs où les filtres ne sont nulle part.
 - Le bouton et le panneau sont affichés directement dans `<body>` (portail React) : un parent masqué ou en verre dépoli ne peut pas les cacher ni les décaler.
 - Ne plus envoyer les filtres dans le menu latéral global (`#mobile-page-sidebar-slot`) : ce menu est réservé à la navigation et aux onglets des pages (profil, administration…).
 

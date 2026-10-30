@@ -102,7 +102,7 @@ export default function ResourceFilterSidebar({
       </aside>
 
       {/* Téléphone et tablette : filtres derrière le bouton flottant (entonnoir) */}
-      <MobileFilterWrapper title="Filtrer les ressources" mobileOnly breakpoint={1024}>
+      <MobileFilterWrapper title="Filtrer les ressources" mobileOnly>
         <div className="mobile-resource-filters">
           {sidebarContent}
         </div>

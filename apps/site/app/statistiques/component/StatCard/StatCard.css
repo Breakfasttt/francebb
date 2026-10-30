@@ -136,7 +136,7 @@
   box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .stat-card-value {
     font-size: 1.75rem;
   }

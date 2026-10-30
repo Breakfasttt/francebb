@@ -596,7 +596,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
           line-height: 1.4;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .report-main-content {
             flex-direction: column;
             align-items: flex-start;

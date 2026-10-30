@@ -18,7 +18,7 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .onboarding-wrapper {
     padding: 1.5rem;
     border-radius: 16px;
@@ -98,7 +98,7 @@
 .style-item { padding: 0.5rem; border-radius: 6px; border: 1px solid var(--glass-border); background: transparent; color: white; font-size: 0.8rem; cursor: pointer; }
 .style-item.active { background: var(--accent); border-color: var(--accent); }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .onboarding-wrapper {
     padding: 1rem 0.5rem;
     background: none;

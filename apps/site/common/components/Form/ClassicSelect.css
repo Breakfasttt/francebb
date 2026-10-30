@@ -110,7 +110,7 @@
 }
 
 /* Responsive specifics */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .classic-select-field {
     padding: 0.7rem 2.2rem 0.7rem 1rem;
     font-size: 0.95rem;

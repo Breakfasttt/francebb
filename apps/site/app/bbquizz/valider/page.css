@@ -107,7 +107,7 @@
   padding-top: 1.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .options-preview {
     grid-template-columns: 1fr;
   }

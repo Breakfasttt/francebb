@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import './TabSystem.css';
 import './TabSystem-mobile.css';
 import Tooltip from '@/common/components/Tooltip/Tooltip';
+import { useIsMobile } from '@/common/hooks/useIsMobile';
 
 export interface TabItem {
   id: string;
@@ -42,6 +43,8 @@ const TabSystem: React.FC<TabSystemProps> = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [targetSlot, setTargetSlot] = useState<Element | null>(null);
+  // Seuil commun téléphone/ordinateur, suivi quand la fenêtre change de taille
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
@@ -83,7 +86,7 @@ const TabSystem: React.FC<TabSystemProps> = ({
 
   // Auto-téléportation vers le menu mobile global si c'est une sidebar locale sur mobile
   const isSidebar = variant.includes('sidebar');
-  if (mounted && targetSlot && isSidebar && window.innerWidth <= 1024 && !noPortal) {
+  if (mounted && targetSlot && isSidebar && isMobile && !noPortal) {
     return createPortal(content, targetSlot);
   }
 

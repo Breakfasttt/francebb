@@ -3,6 +3,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import BackButton from '@/common/components/BackButton/BackButton';
+import { MOBILE_BREAKPOINT } from '@/common/hooks/useIsMobile';
 import './PageHeader.css';
 import './PageHeader-mobile.css';
 
@@ -41,7 +42,7 @@ export default function PageHeader({
     setMounted(true);
     
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 1024);
+      setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
       setTargetSlot(document.getElementById('mobile-back-button-slot'));
     };
 

@@ -10,7 +10,7 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Filter, X } from "lucide-react";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { MOBILE_BREAKPOINT, useIsMobile } from "@/common/hooks/useIsMobile";
 import Button from "@/common/components/Button/Button";
 import "./MobileFilterWrapper.css";
 
@@ -20,7 +20,7 @@ interface MobileFilterWrapperProps {
   className?: string; // Appliqué sur le wrapper en Desktop
   /** N'affiche rien sur ordinateur (la page affiche déjà ses filtres ailleurs). */
   mobileOnly?: boolean;
-  /** Largeur d'écran (en pixels) en dessous de laquelle on passe au bouton flottant. */
+  /** Largeur d'écran (en pixels) jusqu'à laquelle on passe au bouton flottant : le seuil commun (1024) par défaut. */
   breakpoint?: number;
 }
 
@@ -29,7 +29,7 @@ export default function MobileFilterWrapper({
   title = "Filtres",
   className = "",
   mobileOnly = false,
-  breakpoint = 768
+  breakpoint = MOBILE_BREAKPOINT
 }: MobileFilterWrapperProps) {
   const isMobile = useIsMobile(breakpoint);
   const [isOpenState, setIsOpen] = useState(false);

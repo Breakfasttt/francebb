@@ -117,7 +117,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .forum-page,
   .forum-detail-page,
   .topic-detail-page {
@@ -126,7 +126,7 @@
 }
 
 /* Cibles tactiles du forum (carte 053) : au moins 44 pixels de côté, la taille d'un pouce */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Fil d'Ariane : chaque lien devient une zone de 44 pixels de haut, le texte ne change pas */
   .forum-breadcrumbs a {
     display: inline-flex !important;

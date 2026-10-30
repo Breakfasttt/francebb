@@ -1,4 +1,4 @@
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .profile-content-layout {
     display: flex !important;
     flex-direction: column !important;
@@ -265,7 +265,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* ProfileEdit — mise en page une colonne */
   .form-row-box,
   .avatar-studio-box {

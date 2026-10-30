@@ -1,7 +1,7 @@
 /* Fenêtre de signalement : règles pour téléphone.
  * L'affichage sur ordinateur n'est pas concerné. */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* La fenêtre ne dépasse jamais la hauteur visible de l'écran : son contenu défile à l'intérieur.
      100dvh suit la barre d'adresse du navigateur ; 3rem = marges de la couche sombre autour. */
   .modal-overlay .report-modal {

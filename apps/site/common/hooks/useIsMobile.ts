@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 
-export function useIsMobile(breakpoint: number = 768) {
+/**
+ * Seuil unique entre l'affichage téléphone et l'affichage ordinateur (carte 055) :
+ * jusqu'à 1024 pixels de large, le site s'affiche en mode téléphone (menu latéral global,
+ * colonnes latérales déplacées dans ce menu, filtres derrière le bouton flottant).
+ * Les feuilles de style ne peuvent pas lire une constante JavaScript dans un `@media` :
+ * elles écrivent la même valeur, `@media (max-width: 1024px)`, et `(min-width: 1025px)` pour l'inverse.
+ */
+export const MOBILE_BREAKPOINT = 1024;
+
+/** Vrai quand la fenêtre mesure au plus `breakpoint` pixels de large (le seuil commun par défaut). */
+export function useIsMobile(breakpoint: number = MOBILE_BREAKPOINT) {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 

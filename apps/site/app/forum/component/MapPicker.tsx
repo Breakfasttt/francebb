@@ -283,7 +283,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
           gap: 1rem;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .map-picker-container {
              min-width: 100%;
              height: 600px;

@@ -6,7 +6,7 @@
   .cta-card h3 { font-size: 2rem; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .section-card { padding: 1.5rem !important; }
   .cta-buttons { flex-direction: column; }
   .cta-primary, .cta-secondary { width: 100%; text-align: center; }

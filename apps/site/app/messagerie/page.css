@@ -356,7 +356,7 @@
   border: 1px solid var(--glass-border);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .messagerie-container {
     height: auto;
     min-height: calc(100vh - 80px);

@@ -1,6 +1,6 @@
 /* styles spécifiques mobile pour le formulaire d'article */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .form-card {
     padding: 1.5rem;
   }

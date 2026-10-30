@@ -2,7 +2,7 @@
 
 **Règle absolue du projet : le site doit être impeccable sur téléphone.** Ce rapport liste ce qui ne l'est pas encore, page par page, et les cartes qui corrigent chaque point.
 
-Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum) et 054 (listes et filtres). À refaire après chaque série de corrections.
+Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 (listes et filtres) et 055 (seuil unique téléphone/ordinateur). À refaire après chaque série de corrections.
 
 ## Comment l'audit est fait
 
@@ -35,13 +35,15 @@ Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum) et 05
 | `/bbscheme` | 1 | 7 | Un bouton d'outil coupé de 18 px à droite ; boutons de 35 à 40 px → carte 057 |
 | `/jouer`, `/mentions-legales` | 0 | 2 à 3 | Liens dans le texte : tolérable |
 
+Depuis la carte 055, l'affichage téléphone s'applique jusqu'à 1024 pixels de large, donc aussi aux tablettes. La mesure ci-dessus (360 et 390 pixels) est restée identique après ce changement : 47 cibles trop petites au total avant comme après, aucun contenu coupé en plus. Les 9 cases à cocher de `/tournois` (22 pixels, dans une ligne touchable de 44 pixels) restent à traiter dans une carte d'interface : elles ne dépendent pas du seuil.
+
 Aucun texte de moins de 12 pixels n'apparaît dans les zones visibles, hormis 2 éléments sur `/profile` (à vérifier).
 
 ## Problèmes relevés à la lecture du code
 
 | Problème | Pages | Carte |
 |---|---|---|
-| **Seuils incohérents** : certaines règles basculent en mode mobile à 1024 pixels, d'autres à 768. Entre les deux (tablettes), les onglets de la modération sont masqués sans être déplacés dans le menu, donc inaccessibles. | Modération, et partout où `.mobile-only` est utilisé | 055 |
+| **Seuils incohérents** : certaines règles basculaient en mode mobile à 1024 pixels, d'autres à 768 ou 900. Entre les deux (tablettes), les onglets de la modération étaient masqués sans être déplacés dans le menu, donc inaccessibles. **Corrigé** : un seul seuil, 1024 pixels (`MOBILE_BREAKPOINT` en JavaScript, `@media (max-width: 1024px)` en CSS). Vérifié à 360, 800, 1000, 1024 et 1025 pixels sur 14 pages à colonne latérale ou à filtres : aucune colonne ni aucun onglet sans équivalent dans le menu ou le panneau de filtres, aucun défilement horizontal. | Modération, administration, profil, membres, et partout où `.mobile-only` est utilisé | 055 |
 | Connexion et inscription : aucune règle mobile sur la page de connexion ; à l'inscription, champs en 0,9 rem (l'iPhone zoome) et boutons d'avatar et de thème trop petits. | `/auth/login`, `/auth/onboarding` | 058 |
 | Fenêtre de signalement sans hauteur maximale ni défilement interne, et dont le titre passait sous la barre de navigation. **Corrigé** : hauteur limitée à l'écran avec défilement interne, fenêtre placée au-dessus de la barre. | Forum, articles | 053 |
 | Filtres déplacés dans le menu latéral au lieu du bouton flottant (`MobileFilterWrapper`) prévu par le skill `mobile-ux`. **Corrigé** : les filtres s'ouvrent avec le bouton flottant. | Articles, ressources, ligues, tournois, membres | 054 |

@@ -10,7 +10,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .help-content-wrapper {
     flex-direction: column;
     text-align: center;

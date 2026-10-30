@@ -45,7 +45,8 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
   - utiliser les composants existants (boutons, sélecteurs, fenêtres, notifications de `@bbfrance/ui`) ;
   - couleurs uniquement via les variables CSS des thèmes (jamais de code couleur en dur) ;
   - icônes Lucide uniquement ;
-  - chaque écran testé en taille téléphone.
+  - chaque écran testé en taille téléphone ;
+  - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `mobile-ux`).
 
 ## Réutiliser avant de créer
 

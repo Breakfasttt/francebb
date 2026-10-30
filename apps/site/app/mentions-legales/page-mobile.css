@@ -1,6 +1,6 @@
 /* styles spécifiques mobile pour la page des mentions légales */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .mentions-container {
     padding: 1rem;
     margin: 1rem auto;

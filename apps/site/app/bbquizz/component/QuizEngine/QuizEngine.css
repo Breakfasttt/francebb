@@ -514,7 +514,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .quiz-container.fixed-size {
     width: 100% !important;
     height: auto !important;

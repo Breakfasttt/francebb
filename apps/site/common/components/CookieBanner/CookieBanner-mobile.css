@@ -1,6 +1,6 @@
 /* Styles spécifiques mobile pour CookieBanner */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .cookie-banner-overlay {
     bottom: 0;
     left: 0;

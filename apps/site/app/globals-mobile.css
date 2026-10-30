@@ -1,5 +1,10 @@
 /* styles globaux spécifiques au mobile */
 
+/* Seuil unique téléphone/ordinateur (carte 055) : 1024 pixels, la constante MOBILE_BREAKPOINT
+   de common/hooks/useIsMobile.ts. Une règle pour téléphone s'écrit @media (max-width: 1024px),
+   une règle pour ordinateur seulement @media (min-width: 1025px). Ne pas inventer d'autre valeur
+   pour passer d'un affichage à l'autre (voir le skill mobile-ux). */
+
 /* ==========================================================================
    UTILITY CLASSES (MOBILE / DESKTOP DISPLAY)
    ========================================================================== */

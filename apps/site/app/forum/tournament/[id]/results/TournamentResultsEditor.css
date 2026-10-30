@@ -462,7 +462,7 @@ tr.dragging {
   color: var(--text-muted) !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .results-editor-actions {
     flex-direction: column;
     align-items: stretch !important;

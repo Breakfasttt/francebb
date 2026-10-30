@@ -1,4 +1,4 @@
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .classic-select-field {
     padding: 0.8rem 2.5rem 0.8rem 1rem !important;
     font-size: 16px !important; /* Empêche l'auto-zoom de l'iPhone sur les inputs */

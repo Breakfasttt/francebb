@@ -13,7 +13,7 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 - `/bbquizz/valider` : un modérateur accepte ou refuse les propositions en attente.
 - `/bbquizz/editer` : un modérateur modifie ou supprime les questions existantes.
 - Ces trois pages s'ouvrent depuis l'écran d'accueil du jeu (`QuizEngine`).
-- **Sur téléphone** : sous 768 pixels, le classement passe sous le jeu, les quatre réponses s'empilent sur une colonne avec des boutons d'au moins 48 pixels de haut, les titres rapetissent. Dans les pages de gestion, les boutons d'action prennent toute la largeur. Pas de colonne latérale à déplacer ni de filtre, donc pas besoin de `MobilePortal`. Le classement reste en bas de page : sur téléphone, il faut faire défiler toute la partie pour le voir. Lisibilité des 7 thèmes et taille des boutons de joker : à vérifier.
+- **Sur téléphone** (et tablette, jusqu'à 1024 pixels depuis la carte 055) : le classement passe sous le jeu, les quatre réponses s'empilent sur une colonne avec des boutons d'au moins 48 pixels de haut, les titres rapetissent. Dans les pages de gestion, les boutons d'action prennent toute la largeur. Pas de colonne latérale à déplacer ni de filtre, donc pas besoin de `MobilePortal`. Le classement reste en bas de page : sur téléphone, il faut faire défiler toute la partie pour le voir. Lisibilité des 7 thèmes et taille des boutons de joker : à vérifier.
 
 ## Les fichiers
 

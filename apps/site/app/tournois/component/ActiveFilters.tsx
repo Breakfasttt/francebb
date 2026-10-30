@@ -4,6 +4,7 @@ import { X, Clock, LayoutGrid, LayoutList } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
+import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 interface ActiveFiltersProps {
   currentSort: string;
@@ -13,6 +14,9 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentView = searchParams.get("view") || "grid";
+  // Le tri n'est envoyé dans le panneau de filtres qu'en mode téléphone. Le portail est recréé
+  // à chaque passage sous le seuil et cherche alors de nouveau son emplacement (recréé lui aussi).
+  const isMobile = useIsMobile();
 
   const removeFilter = (name: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -135,6 +139,7 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
 
       {/* Téléphone : tri et affichage envoyés dans le panneau du bouton flottant de filtres
           (emplacement créé par TournamentFilterSidebar, absent sur ordinateur) */}
+      {isMobile && (
       <GlobalPortal target="#tournois-mobile-sort-slot">
         <div className="tournois-mobile-actions-portal mobile-only">
             <h3 className="sidebar-section-title">Affichage & Tri</h3>
@@ -172,6 +177,7 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
             <div className="sidebar-divider" />
         </div>
       </GlobalPortal>
+      )}
     </div>
   );
 }

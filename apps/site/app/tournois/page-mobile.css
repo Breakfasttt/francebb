@@ -1,6 +1,6 @@
 /* styles spécifiques mobile pour la page tournois */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .tournois-grid {
     grid-template-columns: 1fr;
     gap: 1.2rem;
@@ -117,7 +117,7 @@
 }
 
 /* Pastilles des filtres actifs : bouton de retrait assez grand pour le pouce */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .active-filters-content .filter-tag button {
     min-width: 44px;
     min-height: 44px;

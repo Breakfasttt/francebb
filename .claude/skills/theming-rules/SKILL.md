@@ -56,7 +56,7 @@ Valeurs fixées dans `globals.css`, à respecter :
 
 ## Téléphone
 
-Les ajustements pour téléphone vont dans `globals-mobile.css`, dans le `page-mobile.css` de la page, ou dans un bloc `@media (max-width: 768px)`. Tout changement de thème est vérifié en taille téléphone, dans les 7 thèmes.
+Les ajustements pour téléphone vont dans `globals-mobile.css`, dans le `page-mobile.css` de la page, ou dans un bloc `@media (max-width: 1024px)` (seuil unique téléphone/ordinateur, voir le skill `mobile-ux`). Tout changement de thème est vérifié en taille téléphone, dans les 7 thèmes.
 
 ## Ajouter un thème
 
