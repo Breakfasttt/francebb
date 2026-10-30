@@ -55,7 +55,7 @@ body {
   background-attachment: fixed;
   background-size: cover;
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-bb, 'Inter'), system-ui, -apple-system, sans-serif;
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

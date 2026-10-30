@@ -82,7 +82,7 @@
   /* PageHeader System (Stripe Layout Override) */
   --header-container-bg: var(--secondary);
   --header-container-border-bottom: 6px solid var(--primary);
-  --header-title-family: 'Inter', system-ui, sans-serif;
+  --header-title-family: var(--font-bb, 'Inter'), system-ui, sans-serif;
   --header-title-shadow: 3px 3px 0px rgba(0, 0, 0, 0.6);
   --header-title-weight: 1000;
   --header-subtitle-color: var(--primary);

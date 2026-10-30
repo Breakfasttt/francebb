@@ -89,7 +89,7 @@
   --header-container-right: 50%;
   --header-container-padding: 3rem 2rem 1rem 2rem;
   --header-container-margin-top: -2rem;
-  --header-title-family: 'Inter', system-ui, sans-serif;
+  --header-title-family: var(--font-bb, 'Inter'), system-ui, sans-serif;
   --header-title-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   --header-title-color: var(--highlight);
   --header-title-weight: 1000;

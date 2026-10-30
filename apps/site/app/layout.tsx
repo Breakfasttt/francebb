@@ -6,6 +6,7 @@ import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWid
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Github, BarChart3, Image as ImageIcon } from "lucide-react";
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
@@ -16,6 +17,16 @@ import "./tailwind.css";
 import "./globals-mobile.css";
 import "@/common/styles/widgets.css";
 
+
+// Police du site (ADR 0006, carte 079) : Inter, servie par le site lui-même (licence libre OFL, app/fonts/).
+// Le build ne demande pas de réseau et aucune donnée de visiteur ne part chez Google. La variable CSS --font-bb
+// est lue par le CSS historique (globals.css, thèmes) et par les variables v2 (--bb-font-sans).
+const interFont = localFont({
+  src: "./fonts/inter-latin-wght.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-bb",
+});
 
 export const metadata: Metadata = {
   title: "BBFrance - Tournois de Blood Bowl en France",
@@ -42,7 +53,7 @@ export default async function RootLayout({
   const navCounts = user?.id ? getNavCounts(user.id, isMod) : undefined;
 
   return (
-    <html lang="fr" data-theme={userTheme} suppressHydrationWarning>
+    <html lang="fr" data-theme={userTheme} className={interFont.variable} suppressHydrationWarning>
       <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
