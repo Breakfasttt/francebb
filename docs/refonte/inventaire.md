@@ -23,16 +23,16 @@ Cette liste de contrôle sert à vérifier qu'aucune fonctionnalité ne dispara�
 Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/Navbar/`, `MobileSidebar/`, `PageHeader/`, `CookieBanner/`.
 
 - [ ] [tous] Le logo du site ramène à l'accueil. Sur l'accueil, la barre n'affiche pas de logo, parce que la page a déjà le sien en grand.
-- [ ] [visiteur] Un bouton « Connexion » mène à `/auth/login`.
-- [ ] [membre] Une pastille de profil (avatar ou initiale, plus le pseudo) mène à `/profile`.
-- [ ] [membre] Un bouton « Déconnexion » déconnecte et ramène à l'accueil. En mode hub, il ferme aussi la session du hub par un envoi POST vers `/auth/logout`.
-- [ ] [membre] Une icône Messagerie mène à `/messagerie` et affiche une pastille avec le nombre de messages privés non lus.
-- [ ] [modo] Une icône Modération mène à `/moderation` et affiche une pastille avec le nombre d'éléments en attente : signalements et ressources à valider, avec « 9+ » au-delà de 9.
+- [x] [visiteur] Un bouton « Connexion » mène à `/auth/login`.
+- [x] [membre] Une pastille de profil (avatar ou initiale, plus le pseudo) mène à `/profile`.
+- [x] [membre] Un bouton « Déconnexion » déconnecte et ramène à l'accueil. En mode hub, il ferme aussi la session du hub par un envoi POST vers `/auth/logout`.
+- [x] [membre] Une icône Messagerie mène à `/messagerie` et affiche une pastille avec le nombre de messages privés non lus.
+- [x] [modo] Une icône Modération mène à `/moderation` et affiche une pastille avec le nombre d'éléments en attente : signalements et ressources à valider, avec « 9+ » au-delà de 9.
 - [ ] [admin] Une icône Administration mène à `/administration`.
-- [ ] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-page-sidebar-slot` du menu latéral.
+- [x] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-page-sidebar-slot` du menu latéral.
 - [ ] [tous] Sur téléphone, le bouton retour de la page reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-back-button-slot` de la barre.
-- [ ] [tous] Le menu de téléphone se ferme quand on change de page, et le défilement de la page est bloqué tant qu'il est ouvert.
-- [ ] [tous] Le pied de page donne accès aux mentions légales, à la mention « Conçu avec l'aide de l'IA », au GitHub (lien externe) et aux statistiques (`/statistiques`). Sur téléphone, ces liens sont aujourd'hui en bas du menu latéral.
+- [x] [tous] Le menu de téléphone se ferme quand on change de page, et le défilement de la page est bloqué tant qu'il est ouvert.
+- [x] [tous] Le pied de page donne accès aux mentions légales, à la mention « Conçu avec l'aide de l'IA », au GitHub (lien externe) et aux statistiques (`/statistiques`). Sur téléphone, ces liens sont aujourd'hui en bas du menu latéral.
 - [ ] [tous] Le bandeau cookies apparaît après 1,5 seconde si aucun consentement n'est enregistré. « Accepter » est mémorisé dans le navigateur, la croix ferme le bandeau pour la session, et un lien mène aux mentions légales.
 - [ ] [tous] Les notifications temporaires (toasts) s'affichent, sans être cachées par la navigation.
 - [ ] [tous] Le thème choisi est appliqué dès le premier affichage, sans éclair d'une autre couleur (ADR 0005). Pour un membre, il vient de sa session ; pour un visiteur, de la mémoire du navigateur.
