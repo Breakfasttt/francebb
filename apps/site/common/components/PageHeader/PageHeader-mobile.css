@@ -30,6 +30,14 @@
     margin: 0 !important;
   }
 
+  /* Carte 063 : sur téléphone, le bouton retour va dans la barre de navigation (#mobile-back-button-slot), mais
+     seulement quand le JavaScript a démarré. Avant cela, il s'affichait un instant dans l'en-tête, puis l'en-tête
+     rétrécissait d'environ 60 pixels et toute la page remontait (« contenu qui saute », mesuré par Lighthouse).
+     On le cache donc dès le départ dans l'en-tête, à condition que l'emplacement de la barre existe. */
+  :root body:has(#mobile-back-button-slot) .page-header-container > .page-header-back-wrapper {
+    display: none !important;
+  }
+
   .page-header-content {
     align-items: center;
     /* Centrage */

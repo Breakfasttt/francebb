@@ -237,6 +237,12 @@ export default async function TournamentsPage({
                             {t.name}
                           </Link>
                           <div className="organizer-small">Par {t.organizer.name}</div>
+                          {/* Carte 061 : lieu, format et prix, affichés ici quand leurs colonnes sont masquées (écran étroit) */}
+                          <div className="list-mobile-details">
+                            <span>{t.ville || t.location}</span>
+                            <span>{t.gameEdition || "BB20"} · {t.ruleset || "NAF"}</span>
+                            <span className="price-val">{t.price === 0 ? "OFFERT" : `${t.price}€`}</span>
+                          </div>
                         </div>
 
                         <div className="list-col-location">

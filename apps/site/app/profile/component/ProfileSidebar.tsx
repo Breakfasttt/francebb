@@ -163,7 +163,9 @@ export default function ProfileSidebar({
         </MobilePortal>
       )}
 
-      <PremiumCard className={`profile-summary-box ${isMobile ? 'is-mobile' : ''}`} noOverflow>
+      {/* Carte 063 : la boîte est la même sur téléphone et sur ordinateur. Les différences sont en CSS
+          (page-mobile.css), pour qu'elle ne change pas de taille quand le JavaScript a démarré. */}
+      <PremiumCard className="profile-summary-box" noOverflow>
         {user.isBanned && (
            <StatusBadge variant="banned" className="banned-badge" icon={<Ban size={12} />}>
              Banni
@@ -186,7 +188,7 @@ export default function ProfileSidebar({
             image={user.image} 
             name={user.name} 
             postCount={postCount} 
-            size={isMobile ? 100 : 120} 
+            size={120}
             isBanned={user.isBanned}
             selectedRank={user.avatarFrame}
             isModerator={checkIsModerator(user.role)}

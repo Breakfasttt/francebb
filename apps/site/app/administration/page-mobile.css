@@ -25,3 +25,16 @@
     width: 100%;
   }
 }
+
+/*
+ * Carte 061 : tous les champs de saisie de l'administration en 16 pixels sur téléphone. En dessous, l'iPhone
+ * zoome sur la page dès qu'on touche le champ. Les onglets écrivent leurs champs en 0,9 ou 0,95 rem dans leur
+ * propre bloc de style, d'où « !important ».
+ */
+@media (max-width: 1024px) {
+  .admin-content-layout input:not([type="checkbox"]):not([type="radio"]),
+  .admin-content-layout textarea,
+  .admin-content-layout select {
+    font-size: 16px !important;
+  }
+}

@@ -20,6 +20,12 @@
   }
 }
 
+/* Hauteur de la barre de navigation sur téléphone (carte 061). Les pages qui placent des éléments fixes juste
+   en dessous (BBScheme) la lisent ici, au lieu de recopier un nombre qui peut devenir faux. */
+:root {
+  --mobile-nav-height: 64px;
+}
+
 @media (max-width: 1024px) {
   .nav {
     position: fixed !important; /* Passé de sticky à fixed pour garantir la visibilité */
@@ -30,7 +36,7 @@
     background: var(--nav-bg);
     backdrop-filter: blur(20px);
     border-bottom: 2px solid var(--accent);
-    min-height: 64px;
+    min-height: var(--mobile-nav-height);
     box-shadow: var(--glass-shadow);
     display: flex;
     align-items: center;

@@ -87,5 +87,6 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Turso** | Hébergeur de bases SQLite utilisé jusqu'ici, abandonné pour Postgres (ADR-0004). |
 | **TypeScript** / **typecheck** | TypeScript ajoute des types au code JavaScript ; le *typecheck* vérifie qu'il n'y a pas d'incohérence avant d'exécuter. |
 | **UX** (*User eXperience*) | Le confort d'utilisation : clarté, fluidité, facilité à faire ce qu'on veut. |
+| **Variable CSS** | Valeur nommée dans une feuille de style (par exemple `--mobile-nav-height: 64px`), réutilisée ailleurs avec `var(--mobile-nav-height)`. Changer la valeur à un seul endroit la change partout. Les couleurs des thèmes sont aussi des variables CSS. |
 | **Vercel** | Hébergeur du site : il le met en ligne automatiquement quand le code est envoyé sur GitHub. |
 | **Worktree** | Deuxième copie de travail du même dépôt git, dans un autre dossier. |

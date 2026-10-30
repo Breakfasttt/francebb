@@ -1,6 +1,14 @@
 /* BBSCHEME MOBILE - THE VICTORY VERSION (STABLE) */
 @media (max-width: 1024px) {
 
+  /* Carte 061 : hauteur des éléments fixés en haut de l'écran, calculée depuis la barre de navigation
+     (--mobile-nav-height, globals-mobile.css) plus les deux rangées d'outils de BBScheme (65 et 45 pixels).
+     Avant, 168 pixels étaient écrits en dur, en comptant une barre de navigation de 58 pixels au lieu de 64 :
+     les outils recouvraient le bas de la barre. */
+  .bbscheme-page {
+    --bbscheme-mobile-top: calc(var(--mobile-nav-height) + 65px + 45px);
+  }
+
   /* Layout global */
   .bbscheme-page {
     padding-top: 0 !important;
@@ -12,8 +20,7 @@
 
   .tool-layout.mobile-mode {
     display: block !important;
-    padding-top: 168px !important;
-    /* Navbar(58) + Row1(65) + Row2(45) */
+    padding-top: var(--bbscheme-mobile-top) !important;
     background: var(--background) !important;
     height: 100dvh !important;
     box-sizing: border-box !important;
@@ -35,7 +42,7 @@
   /* UI MOBILE FIXE */
   .mobile-bbscheme-ui {
     position: fixed !important;
-    top: 58px !important;
+    top: var(--mobile-nav-height) !important;
     left: 0 !important;
     width: 100% !important;
     z-index: 6100 !important;
@@ -318,12 +325,11 @@
   /* OVERLAYS RÉSERVES */
   .global-team-area {
     position: fixed !important;
-    top: 168px !important;
-    /* Navbar(58) + Row1(65) + Row2(45) */
+    top: var(--bbscheme-mobile-top) !important;
     left: 0 !important;
     width: 100% !important;
-    height: calc(100dvh - 168px) !important;
-    max-height: calc(100dvh - 168px) !important;
+    height: calc(100dvh - var(--bbscheme-mobile-top)) !important;
+    max-height: calc(100dvh - var(--bbscheme-mobile-top)) !important;
     padding: 0 !important;
     z-index: 5000 !important;
     background: var(--background) !important;
@@ -382,8 +388,8 @@
 
   /* PITCH */
   .pitch-viewport {
-    height: calc(100dvh - 168px) !important;
-    min-height: calc(100dvh - 168px) !important;
+    height: calc(100dvh - var(--bbscheme-mobile-top)) !important;
+    min-height: calc(100dvh - var(--bbscheme-mobile-top)) !important;
     /* Force stability */
     padding: 0 !important;
     background: transparent !important;
@@ -400,7 +406,7 @@
     flex-direction: column !important;
     padding: 0 15px !important;
     /* Ajoute les gouttières de chaque côté */
-    height: calc(100dvh - 168px) !important;
+    height: calc(100dvh - var(--bbscheme-mobile-top)) !important;
     /* Force rigid container */
     overflow: hidden !important;
     box-sizing: border-box !important;

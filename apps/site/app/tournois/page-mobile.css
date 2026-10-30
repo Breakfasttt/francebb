@@ -138,4 +138,15 @@
   .list-col-price {
     display: none;
   }
+  /* Carte 061 : leur contenu reste visible, sur une ligne sous le nom du tournoi */
+  .list-mobile-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .list-mobile-details .price-val {
+    font-size: inherit;
+  }
 }

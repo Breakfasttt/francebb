@@ -16,6 +16,9 @@ description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (r
 - Lisible dans les 7 thèmes.
 - Fluide : pas de saut de mise en page au chargement, réponse immédiate au toucher.
 
+Mesure rapide après une correction, sans écrire de test temporaire : dans `apps/site`, `node scripts/e2e-db.mjs` puis `MOBILE_AUDIT=1 MOBILE_AUDIT_PAGES=profile,tournois npx playwright test tests/e2e/mobile-audit.spec.ts --project=chromium` (chemins sans « / » au début sous Git Bash).
+Le résumé affiché à la fin donne, par page et par taille d'écran, les cibles trop petites, les textes sous 12 pixels, les champs sous 16 pixels et les éléments coupés ; le détail est dans `logs/mobile-audit.json` (voir `docs/mobile-audit.md`).
+
 Vérification : tests automatiques en taille téléphone, plus un contrôle à l'œil (sur un vrai téléphone : voir « Tester sur un vrai téléphone » dans le `README.md`).
 
 ## Principes

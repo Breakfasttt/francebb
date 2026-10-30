@@ -51,4 +51,4 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 
 - Fonctionne : tous les onglets, avec contrôle du rôle côté serveur dans chaque action.
 - Manque : une sauvegarde qui marche en production depuis la page ; la prise en compte des rôles personnalisés dans `lib/roles.ts` ; une protection plus forte de la remise à zéro en production. Aucune carte ouverte ne porte sur ces points.
-- Téléphone : à contrôler dans l'audit mobile (carte 049), en particulier le glisser-déposer et les sauts de mise en page.
+- Téléphone : mesurée par l'audit mobile depuis la carte 061, avec un compte administrateur créé par l'audit (avant, l'audit visitait la page en modérateur, renvoyé vers l'accueil). Premier onglet propre à 360 et 390 pixels ; tous les champs de saisie de l'administration passent en 16 pixels sur téléphone (`page-mobile.css`). Restent à contrôler à la main : les autres onglets, le glisser-déposer et les sauts de mise en page.

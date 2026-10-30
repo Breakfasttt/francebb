@@ -70,19 +70,24 @@ export default function ProfilePage() {
     if (status === "loading") return;
     if (!session?.user?.id) return;
 
+    // Carte 063 : la page s'affiche dès que la fiche du membre est arrivée. Le nombre de messages et l'activité
+    // arrivent ensuite et complètent la page (le nombre affiché passe de 0 au vrai chiffre, sans rien décaler).
+    // Avant, la page attendait les trois chargements (note Lighthouse du profil : 88 ainsi, 92 maintenant).
+    // Les chargements restent l'un après l'autre : la petite base des tests ne supporte qu'une connexion à la fois.
     try {
       const response = await fetch(`/api/users/${session.user.id}`);
-      const userData = await response.json();
-      setUser(userData);
-
-      const userStats = await getUserStats(session.user.id);
-      setStats(userStats);
-      const userActivities = await getUserActivity(session.user.id);
-      setActivities(userActivities);
+      setUser(await response.json());
     } catch (error) {
       console.error("Error fetching profile data:", error);
     } finally {
       setLoading(false);
+    }
+
+    try {
+      setStats(await getUserStats(session.user.id));
+      setActivities(await getUserActivity(session.user.id));
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
     }
   }
 
@@ -116,17 +121,29 @@ export default function ProfilePage() {
     setFollowedPage(page);
   }
 
-  if (loading || status === "loading") return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Chargement...</div>;
-  if (!user) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Utilisateur introuvable.</div>;
+  // Carte 063 : le titre de la page s'affiche tout de suite, sans attendre les données du membre. Avant, la page
+  // entière attendait la session puis le chargement du profil, et le titre (plus gros élément visible) arrivait tard.
+  const header = (
+    <PageHeader
+      title="Mon Compte"
+      subtitle="Gérez vos informations et votre activité"
+    />
+  );
+  const waitingMessage = (text: string) => (
+    <div className="profile-page">
+      {header}
+      <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>{text}</div>
+    </div>
+  );
+
+  if (loading || status === "loading") return waitingMessage("Chargement...");
+  if (!user) return waitingMessage("Utilisateur introuvable.");
 
   const isModerator = checkIsModerator((session?.user as any)?.role);
 
   return (
     <div className="profile-page">
-      <PageHeader
-        title="Mon Compte"
-        subtitle="Gérez vos informations et votre activité"
-      />
+      {header}
 
       <main className="container profile-page-container">
 

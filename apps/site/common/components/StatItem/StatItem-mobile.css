@@ -1,0 +1,9 @@
+/*
+ * StatItem sur téléphone (carte 061) : l'intitulé (« NAF », « Messages »…) passe de 11,2 à 12 pixels,
+ * la taille minimale des textes sur téléphone (skill mobile-ux).
+ */
+@media (max-width: 1024px) {
+  .stat-label {
+    font-size: 0.75rem;
+  }
+}

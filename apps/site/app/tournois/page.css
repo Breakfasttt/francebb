@@ -402,6 +402,11 @@
   color: var(--text-muted);
 }
 
+/* Lieu, format et prix repris sous le nom du tournoi : seulement quand leurs colonnes sont masquées (page-mobile.css) */
+.list-mobile-details {
+  display: none;
+}
+
 .list-col-location {
   display: flex;
   flex-direction: column;

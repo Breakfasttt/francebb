@@ -11,3 +11,10 @@
   .cta-buttons { flex-direction: column; }
   .cta-primary, .cta-secondary { width: 100%; text-align: center; }
 }
+
+/* Carte 061 : lien « Prochaine étape » en bas de chaque section, 44 pixels de haut pour le pouce (24 avant) */
+@media (max-width: 1024px) {
+  .next-section-link {
+    min-height: 44px;
+  }
+}

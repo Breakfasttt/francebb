@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import './StatItem.css';
+import './StatItem-mobile.css';
 
 interface StatItemProps {
   label: string;

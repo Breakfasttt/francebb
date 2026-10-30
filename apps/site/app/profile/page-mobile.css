@@ -297,3 +297,39 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/*
+ * Carte 063 : la carte de résumé du profil ne doit pas changer de taille quand le JavaScript a démarré.
+ * Le composant ne sait qu'après coup s'il est sur téléphone (hook useIsMobile) : la différence d'affichage
+ * est donc faite ici, en CSS, qui la connaît dès le premier affichage.
+ */
+@media (max-width: 1024px) {
+  /* Les onglets collés à droite de la carte (ordinateur) sont repris dans le menu latéral sur téléphone.
+     Sans cette règle, ils s'affichaient un instant en colonne dans la carte, puis disparaissaient. */
+  .profile-summary-box .tab-system.docked-sidebar {
+    display: none !important;
+  }
+
+  /* Cause principale du saut mesuré par Lighthouse : la liste des onglets destinée au menu latéral (MobilePortal)
+     est d'abord affichée à sa place d'origine, au-dessus de la carte (environ 400 pixels de haut), avant d'être
+     déplacée dans le menu une image plus tard. La carte descendait puis remontait. Seule la copie restée à sa
+     place d'origine est cachée : celle du menu latéral n'est pas dans .profile-sidebar-wrapper. */
+  .profile-sidebar-wrapper > .profile-sidebar-mobile-nav {
+    display: none !important;
+  }
+
+  /* Avatar de 100 pixels au lieu de 120 : réduit en CSS plutôt qu'avec une autre taille passée au composant */
+  .profile-avatar-container > * {
+    zoom: 0.84;
+  }
+
+  /* Carte 061 : intitulés des ligues du membre à 12 pixels au moins (0,7 rem, soit 11,2 pixels, écrit dans le composant) */
+  .multi-ligue-display > * {
+    font-size: 0.75rem !important;
+  }
+
+  /* Intitulés « Région », « Équipe », « Ligues » : 0,65 rem dans page.css, 12 pixels sur téléphone */
+  .profile-summary-box .profile-info-list .stat-item-container .stat-label {
+    font-size: 0.75rem;
+  }
+}

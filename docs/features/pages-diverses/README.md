@@ -14,11 +14,11 @@ Une grille de tuiles vers les rubriques (Jouer, Forum, Ligues, Tournois, Carte, 
 
 ### Jouer — `/jouer` (`app/jouer/page.tsx`)
 Le « Guide du Coach » : six sections illustrées (C'est quoi Blood Bowl, plateformes, communauté, tournois, NAF/CdF/RTC, challenges régionaux), dont le texte en BBCode est saisi par un admin dans l'administration (`getHowToPlaySettings`). Une section sans texte est masquée, sauf la première.
-**Sur téléphone** : images réduites à 250 pixels de haut, titres plus petits, boutons d'appel empilés en pleine largeur. Depuis la carte 019, les six images passent par `next/image` (voir le glossaire) : chacune pèse environ 1 Mo dans `public/images/how-to-play/` (des JPEG malgré leur extension `.png`), et le téléphone reçoit maintenant une version WebP à la largeur de l'écran, de 100 à 150 Ko. Elles se chargent seulement quand on approche de leur section.
+**Sur téléphone** : images réduites à 250 pixels de haut, titres plus petits, boutons d'appel empilés en pleine largeur, lien « Prochaine étape » de 44 pixels de haut (carte 061). Depuis la carte 019, les six images passent par `next/image` (voir le glossaire) : chacune pèse environ 1 Mo dans `public/images/how-to-play/` (des JPEG malgré leur extension `.png`), et le téléphone reçoit maintenant une version WebP à la largeur de l'écran, de 100 à 150 Ko. Elles se chargent seulement quand on approche de leur section.
 
 ### Profil public — `/spy/[id]` (`app/spy/[id]/page.tsx`)
 Le profil d'un autre coach, ouvert depuis un message du forum ou le classement : activité, articles, bouton « Contacter » (ouvre une conversation) et blocage. Réservé aux membres connectés.
-**Sur téléphone** (moins de 900 pixels) : la colonne du profil passe au-dessus du contenu ; `ProfileSidebar` utilise `MobilePortal` pour ses onglets.
+**Sur téléphone** (jusqu'à 1024 pixels) : la colonne du profil passe au-dessus du contenu ; `ProfileSidebar` utilise `MobilePortal` pour ses onglets (voir la fiche `profil-membres` pour le chargement sans saut, carte 063).
 
 ### Mentions légales — `/mentions-legales`
 Éditeur, hébergeur, propriété intellectuelle, RGPD, cookies. Visible par tous, lien en bas du menu mobile. **Sur téléphone** : une colonne, marges réduites.

@@ -25,7 +25,10 @@ export default defineConfig({
   reporter: "list",
   use: { baseURL: `http://localhost:${PORT}` },
   webServer: {
-    command: `npx next build && npx next start -p ${PORT}`,
+    // La base de test est recréée vide après `next build` (carte 063) : la préparation du site laisse la petite base
+    // locale dans un état où la page d'un sujet échouait ensuite (erreur 500, « Connection terminated unexpectedly »).
+    // Le jeu de données des tests est ajouté juste après, par globalSetup, que Playwright lance une fois le site prêt.
+    command: `npx next build && node scripts/e2e-db.mjs && npx next start -p ${PORT}`,
     url: `http://localhost:${PORT}`,
     stdout: "pipe",
     timeout: 15 * 60_000,

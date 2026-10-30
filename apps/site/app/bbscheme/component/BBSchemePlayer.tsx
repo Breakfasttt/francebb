@@ -16,6 +16,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getBoardState } from "../actions";
 import { DrawingPath, PlayerRosterInfo, RosterData, TokenData } from "../page";
 import "./BBSchemePlayer.css";
+import "./BBSchemePlayer-mobile.css";
 import Pitch from "./Pitch";
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 import ClassicButton from "@/common/components/Button/ClassicButton";

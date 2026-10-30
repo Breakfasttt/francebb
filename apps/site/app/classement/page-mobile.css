@@ -32,6 +32,8 @@
     width: 100%;
     justify-content: flex-start;
     padding: 1rem;
+    /* Carte 061 : les onglets mesuraient 43,8 pixels de haut, juste sous les 44 pixels d'une cible tactile */
+    min-height: 48px;
   }
 
   /* Barre d'actions */
