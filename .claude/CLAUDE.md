@@ -26,6 +26,7 @@ Ce fichier ne contient que ce qui est propre au travail de l'IA. Les règles du 
 - Ne modifier que les fichiers utiles à la carte. Un refactor ou un renommage hors carte se propose, il ne se fait pas.
 - Avant de supprimer du code, lister ce qui l'utilise. Pour déplacer du code, le copier à l'identique, sans le réécrire.
 - Un changement de mise en ligne se répercute dans `DEPLOY.md`.
+- **Choix du modèle des sous-agents** : une petite modification (correction de style, de texte, de taille de bouton, renommage dans un ou deux fichiers, carte sans décision de conception) est confiée à un agent lancé avec le modèle `sonnet`, moins coûteux. Les cartes qui touchent la sécurité, la connexion, la base de données ou l'architecture restent sur le modèle par défaut.
 
 ## Commits et git
 

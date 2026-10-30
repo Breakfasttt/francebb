@@ -4,7 +4,7 @@ title: Activer cacheComponents
 epic: E03
 app: site
 depends_on: [017]
-adr: 
+adr: 0005
 verify: build OK, plus aucun `export const dynamic`
 ---
 
@@ -36,3 +36,7 @@ La carte 017 est terminée. La 018 a été évaluée par deux essais de build (`
 
 1. `/council` sur l'option A ou B (et sur la façon de fournir la session aux pages navigateur), avec la question du cache sur Vercel.
 2. Puis une carte par étape : retrait des `export const dynamic` et correction des `new Date()` ; mise en page générale ; pages par groupe (forum, profil, modération…) ; remplacement de `unstable_cache` une fois la question de Vercel réglée.
+
+## Annulation (2026-10-30)
+
+Après passage devant le conseil, le user a décidé d'abandonner la carte : voir `docs/adr/0005-pas-de-cache-components.md`. En résumé, le gain de vitesse serait presque nul (presque toutes les pages dépendent du membre connecté), le chantier présente un risque de sécurité (données d'un membre servies à un autre, pages interdites qui répondent « 200 »), et le cache de `use cache` n'est pas conservé sur Vercel sans service payant. La carte 070 mesure désormais le temps de réponse des pages principales pour savoir si la question doit être rouverte.
