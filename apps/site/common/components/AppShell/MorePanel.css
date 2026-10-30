@@ -1,0 +1,51 @@
+/*
+ * Panneau « Plus » (carte 081). Toujours présent dans la page (voir MorePanel.tsx) : fermé, il est glissé sous
+ * l'écran et invisible ; ouvert, il monte du bas jusqu'à la barre de navigation basse, qui reste visible.
+ * Ordre de superposition (globals.css) : barre basse 5000, fond 7000, panneau 7100, fenêtres 8000, notifications 9000.
+ */
+.more-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 7000;
+  background: var(--bb-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s;
+}
+
+.more-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: max(2.75rem, env(safe-area-inset-top));
+  bottom: var(--app-bottom-nav-space, 0px);
+  z-index: 7100;
+  border-radius: 20px 20px 0 0;
+  border-top: 1px solid var(--bb-border);
+  box-shadow: var(--bb-shadow);
+  transform: translateY(105%);
+  visibility: hidden;
+  transition: transform 0.25s ease, visibility 0.25s;
+}
+
+.more-panel-root[data-open="true"] .more-panel-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.more-panel-root[data-open="true"] .more-panel {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* « Cette page » disparaît quand la page n'y a rien envoyé */
+.more-page-section:has(#mobile-page-sidebar-slot:empty) {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .more-panel,
+  .more-panel-overlay {
+    transition: none;
+  }
+}

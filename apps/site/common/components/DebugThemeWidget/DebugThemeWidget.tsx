@@ -24,7 +24,8 @@ export default function DebugThemeWidget() {
   return (
     <div style={{
       position: 'fixed',
-      bottom: '1.2rem',
+      // Au-dessus de la barre de navigation basse du téléphone (variable de la coquille, carte 081)
+      bottom: 'calc(var(--app-bottom-nav-space, 0px) + 1.2rem)',
       right: '9.5rem', // Offset to be next to Dev Auth
       zIndex: 9999,
       fontFamily: 'Inter, system-ui, sans-serif'

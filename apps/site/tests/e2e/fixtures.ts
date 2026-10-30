@@ -46,7 +46,7 @@ export const E2E = {
   bbschemeBoardId: "e2e_audit_board",
 };
 
-/** Les 7 thèmes du site, dans l'ordre des captures de référence. */
+/** Les 8 thèmes du site, dans l'ordre des captures de référence. */
 export const E2E_THEMES = ["vestiaire", "default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
 
 /**

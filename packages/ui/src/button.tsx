@@ -8,7 +8,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 export const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl font-bold whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+  // border-0, bg-transparent et la police héritée remplacent le reset (preflight) absent tant que le CSS historique existe
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-0 bg-transparent [font-family:inherit] font-bold whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
   {
     variants: {
       variant: {

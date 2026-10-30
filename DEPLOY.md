@@ -149,6 +149,12 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
 
 ---
 
+## Refonte visuelle : revenir à l'ancienne navigation (carte 081)
+
+La nouvelle navigation (barre basse sur téléphone, nouvelle barre haute) est active par défaut. En cas de problème, on revient à l'ancienne barre et à son menu latéral sans toucher au code : sur Vercel, **Settings** > **Environment Variables**, ajouter `REFONTE` avec la valeur `0`, puis redéployer. Supprimer la variable (ou lui donner une autre valeur) remet la nouvelle navigation. Cette variable disparaîtra à la fin de la refonte (carte 101).
+
+---
+
 ## Refonte visuelle : passage de tous les membres au thème Vestiaire (carte 078)
 
 La migration `20261030180000_theme_vestiaire` écrit dans la table des membres : elle copie le thème de chacun dans la nouvelle colonne `previousTheme`, puis donne à tous le thème « vestiaire » (ADR 0006). Elle s'applique d'elle-même au déploiement, comme les autres migrations.

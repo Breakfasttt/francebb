@@ -22,8 +22,9 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    // Règle absolue « mobile impeccable » : les parcours essentiels sont rejoués en taille téléphone
-    { name: "telephone", use: { ...devices["Pixel 7"] }, testMatch: /smoke\.spec\.ts/ },
+    // Règle absolue « mobile impeccable » : les parcours essentiels et les tests d'inventaire de la refonte
+    // (tests/e2e/inventaire/, ADR 0006) sont rejoués en taille téléphone
+    { name: "telephone", use: { ...devices["Pixel 7"] }, testMatch: /(smoke\.spec|inventaire[\\/].*\.spec)\.ts$/ },
   ],
   webServer: {
     // La base e2e.db est préparée en amont par scripts/e2e-db.mjs (npm run test:e2e).

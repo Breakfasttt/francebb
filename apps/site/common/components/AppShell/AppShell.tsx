@@ -1,0 +1,218 @@
+"use client";
+
+/**
+ * Nouvelle coquille du site (ADR 0006, carte 081) : ce qui entoure chaque page.
+ * - Téléphone : petite barre haute (bouton retour de la page, logo, connexion) et barre basse à cinq onglets
+ *   (Accueil, Forum, Tournois, Messages, Plus) ; « Plus » ouvre le panneau du reste du site.
+ * - Ordinateur : barre haute avec les destinations principales, un menu « Plus », les pastilles et le menu du compte.
+ * La barre basse se cache pendant la saisie (clavier ouvert) et sur l'éditeur BBScheme, qui occupe tout l'écran.
+ * L'ancienne coquille (Navbar, MobileSidebar) reste disponible avec REFONTE=0 (voir DEPLOY.md).
+ */
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
+import { ActionMenu, Avatar, Button, CountBadge, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
+import type { NavCounts } from "@/common/components/Navbar/navCounts";
+import { useNavCounts } from "@/common/components/Navbar/useNavCounts";
+import { signOutUser } from "@/common/utils/signOutUser";
+import MorePanel from "./MorePanel";
+import ThemePicker from "./ThemePicker";
+import { DESKTOP_NAV, MORE_ICON, MORE_NAV, PRIMARY_NAV, isActive } from "./navItems";
+import "./AppShell.css";
+
+interface AppShellProps {
+  user?: { id: string; name?: string | null; image?: string | null } | null;
+  hubLogout: boolean;
+  isAdmin: boolean;
+  isMod: boolean;
+  counts?: Promise<NavCounts>;
+}
+
+/** Marque la page pendant la saisie dans un champ : la barre basse s'efface pour laisser la place au clavier. */
+function useTypingFlag() {
+  useEffect(() => {
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement &&
+      (el.isContentEditable || el.tagName === "TEXTAREA" || el.tagName === "SELECT" ||
+        (el.tagName === "INPUT" && !["checkbox", "radio", "button", "submit", "range", "file", "color"].includes((el as HTMLInputElement).type)));
+    const onIn = (event: FocusEvent) => {
+      if (isField(event.target)) document.documentElement.dataset.typing = "true";
+    };
+    const onOut = () => delete document.documentElement.dataset.typing;
+    document.addEventListener("focusin", onIn);
+    document.addEventListener("focusout", onOut);
+    return () => {
+      document.removeEventListener("focusin", onIn);
+      document.removeEventListener("focusout", onOut);
+      delete document.documentElement.dataset.typing;
+    };
+  }, []);
+}
+
+const navLinkClass = (active: boolean) =>
+  cn(
+    // Lien actif : couleur et trait sous le lien, sans fond (le contraste reste celui de la barre dans chaque thème)
+    "inline-flex min-h-11 items-center border-b-2 px-3 text-[0.95rem] font-semibold",
+    active ? "border-bb-nav-active text-bb-nav-active" : "border-transparent text-bb-nav-text hover:border-bb-nav-text"
+  );
+
+const iconLinkClass =
+  "relative inline-flex size-11 items-center justify-center rounded-bb-md text-bb-nav-text hover:text-bb-nav-active";
+
+export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: AppShellProps) {
+  const { unreadCount, pendingModCount } = useNavCounts(counts);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const immersive = pathname.startsWith("/bbscheme");
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [themeOpen, setThemeOpen] = useState(false);
+  const closeMore = useCallback(() => setMoreOpen(false), []);
+  useTypingFlag();
+
+  const desktopMoreItems = MORE_NAV.filter((item) => !DESKTOP_NAV.includes(item)).map((item) => ({ label: item.label, href: item.href }));
+
+  return (
+    <>
+      {/* Barre haute */}
+      <header className="app-topbar sticky top-0 z-[5000] border-b border-bb-nav-border bg-bb-nav-bg font-bb-sans">
+        {/* Téléphone */}
+        <div className="flex h-14 items-center gap-2 px-2 lg:hidden">
+          <div id="mobile-back-button-slot" className="flex items-center" />
+          {/* SiteLogo est lui-même un lien vers l'accueil */}
+          {!isHome && <SiteLogo scale={0.5} />}
+          <div className="flex-1" />
+          {!user && (
+            <Button asChild variant="primary" size="tap">
+              <Link href="/auth/login">
+                <LogIn size={16} aria-hidden="true" /> Connexion
+              </Link>
+            </Button>
+          )}
+        </div>
+
+        {/* Ordinateur */}
+        <div className="mx-auto hidden h-16 max-w-[1280px] items-center gap-4 px-6 lg:flex">
+          <div className={cn("flex items-center", isHome && "invisible")}>
+            <SiteLogo scale={0.6} />
+          </div>
+          <nav aria-label="Navigation principale" className="flex flex-1 flex-wrap items-center gap-1">
+            {DESKTOP_NAV.map((item) => (
+              <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined} className={navLinkClass(isActive(pathname, item.href))}>
+                {item.label}
+              </Link>
+            ))}
+            <ActionMenu
+              label="Plus de rubriques"
+              items={desktopMoreItems}
+              linkComponent={Link}
+              triggerClassName="px-3 gap-1 font-semibold text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
+              trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>}
+            />
+          </nav>
+
+          {user ? (
+            <div className="flex items-center gap-1">
+              <Link href="/messagerie" aria-label={`Messagerie, ${unreadCount} message(s) non lu(s)`} className={iconLinkClass}>
+                <Mail size={22} aria-hidden="true" />
+                <CountBadge count={unreadCount} className="absolute top-1 right-0.5" aria-hidden="true" />
+              </Link>
+              {isMod && (
+                <Link href="/moderation" aria-label={`Modération, ${pendingModCount} action(s) en attente`} className={iconLinkClass}>
+                  <ShieldAlert size={22} aria-hidden="true" />
+                  <CountBadge count={pendingModCount} className="absolute top-1 right-0.5" aria-hidden="true" />
+                </Link>
+              )}
+              {isAdmin && (
+                <Link href="/administration" aria-label="Administration" className={iconLinkClass}>
+                  <Settings size={22} aria-hidden="true" />
+                </Link>
+              )}
+              <ActionMenu
+                label="Menu du compte"
+                triggerClassName="gap-2 rounded-full pr-2 pl-1 text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
+                trigger={<><Avatar name={user.name} src={user.image} size={34} ring /><span className="max-w-40 truncate text-sm font-semibold">{user.name || "Joueur"}</span><ChevronDown size={16} aria-hidden="true" /></>}
+                linkComponent={Link}
+                items={[
+                  { label: "Mon profil", href: "/profile", icon: <User size={16} aria-hidden="true" /> },
+                  { label: "Réglages du compte", href: "/profile?tab=settings", icon: <Settings size={16} aria-hidden="true" /> },
+                  { label: "Changer de thème", onSelect: () => setThemeOpen(true), icon: <Palette size={16} aria-hidden="true" /> },
+                  { label: "Déconnexion", onSelect: () => signOutUser(hubLogout), icon: <LogOut size={16} aria-hidden="true" /> },
+                ]}
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button type="button" variant="quiet" size="tap-icon" aria-label="Changer de thème" className="text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active" onClick={() => setThemeOpen(true)}>
+                <Palette size={20} aria-hidden="true" />
+              </Button>
+              <Button asChild variant="primary" size="tap">
+                <Link href="/auth/login">
+                  <LogIn size={16} aria-hidden="true" /> Connexion
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Barre basse du téléphone */}
+      {!immersive && (
+        <nav aria-label="Navigation principale" className="app-bottom-nav fixed inset-x-0 bottom-0 z-[5000] grid grid-cols-5 border-t border-bb-nav-border bg-bb-nav-bg font-bb-sans lg:hidden">
+          {PRIMARY_NAV.map(({ label, href, icon: Icon }) => {
+            const active = isActive(pathname, href);
+            const badge = href === "/messagerie" ? unreadCount : 0;
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                aria-label={badge ? `${label}, ${badge} non lu(s)` : undefined}
+                className={cn("flex min-h-[52px] flex-col items-center justify-center gap-0.5 text-[11.5px]", active ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
+              >
+                <span className="relative flex" aria-hidden="true">
+                  <Icon size={24} />
+                  <CountBadge count={badge} className="absolute -top-1 -right-2.5" />
+                </span>
+                {label}
+              </Link>
+            );
+          })}
+          <Button
+            type="button"
+            variant="quiet"
+            aria-expanded={moreOpen}
+            aria-controls="more-panel"
+            onClick={() => setMoreOpen((open) => !open)}
+            className={cn("flex h-auto min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-none bg-transparent p-0 text-[11.5px] hover:bg-transparent", moreOpen ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
+          >
+            <span className="relative flex" aria-hidden="true">
+              <MORE_ICON size={24} />
+              <CountBadge count={isMod ? pendingModCount : 0} className="absolute -top-1 -right-2.5" />
+            </span>
+            Plus
+          </Button>
+        </nav>
+      )}
+
+      <MorePanel
+        isOpen={moreOpen}
+        onClose={closeMore}
+        user={user}
+        hubLogout={hubLogout}
+        isAdmin={isAdmin}
+        isMod={isMod}
+        pendingModCount={pendingModCount}
+      />
+
+      <Sheet open={themeOpen} onOpenChange={setThemeOpen}>
+        <SheetContent side="center" title="Thème du site" description="Le thème change l'apparence de tout le site.">
+          <div className="pb-2">
+            <ThemePicker isLoggedIn={!!user} />
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
+  );
+}

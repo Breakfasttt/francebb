@@ -1,0 +1,9 @@
+/* Pastilles d'aperçu des thèmes : couleurs fixes, car chaque pastille montre un autre thème que le thème actif. */
+.theme-swatch[data-swatch="vestiaire"] { background: #c8102e; box-shadow: inset 0 0 0 5px #111215; }
+.theme-swatch[data-swatch="saison3"] { background: #9e1d1d; box-shadow: inset 0 0 0 5px #efebdd; }
+.theme-swatch[data-swatch="naf"] { background: #e6b000; box-shadow: inset 0 0 0 5px #011b33; }
+.theme-swatch[data-swatch="default"] { background: #ffd700; box-shadow: inset 0 0 0 5px #0a0a0c; }
+.theme-swatch[data-swatch="light"] { background: #c21d1d; box-shadow: inset 0 0 0 5px #e5e7eb; }
+.theme-swatch[data-swatch="blood"] { background: #bc3e3e; box-shadow: inset 0 0 0 5px #120000; }
+.theme-swatch[data-swatch="malpierre"] { background: #5e9e42; box-shadow: inset 0 0 0 5px #020a02; }
+.theme-swatch[data-swatch="nehekhara"] { background: #d97706; box-shadow: inset 0 0 0 5px #0b0e14; }

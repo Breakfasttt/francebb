@@ -36,7 +36,7 @@ test.describe("rendu des thèmes", () => {
       // Membre connecté : c'est le thème de son profil qui s'affiche (carte 051), d'où un modérateur par thème
       await loginAs(page, themedModoId(theme));
       await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
-      await page.locator(REPORT_BUTTON).first().click();
+      await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
       const modal = page.locator(".report-modal");
       await expect(modal).toBeVisible();
       // La modale est translucide : attendre que la page derrière (images, polices) soit stable
@@ -64,7 +64,7 @@ test.describe("rendu des thèmes", () => {
 test("le signalement sans raison affiche une notification d'erreur", async ({ page }) => {
   await loginAs(page, E2E.modoId);
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
-  await page.locator(REPORT_BUTTON).first().click();
+  await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
   await page.getByRole("button", { name: "Envoyer le signalement" }).click();
   await expect(page.getByText("Veuillez choisir une raison")).toBeVisible();
 });
@@ -72,7 +72,7 @@ test("le signalement sans raison affiche une notification d'erreur", async ({ pa
 test("la modale de signalement est un dialog accessible, fermé par Échap", async ({ page }) => {
   await loginAs(page, E2E.modoId);
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
-  await page.locator(REPORT_BUTTON).first().click();
+  await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
   const dialog = page.getByRole("dialog", { name: "Signaler un contenu" });
   await expect(dialog).toBeVisible();
   await page.keyboard.press("Escape");

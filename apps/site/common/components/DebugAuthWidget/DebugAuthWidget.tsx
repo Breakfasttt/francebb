@@ -57,7 +57,8 @@ export default function DebugAuthWidget() {
   return (
     <div style={{
       position: 'fixed',
-      bottom: '1.2rem',
+      // Au-dessus de la barre de navigation basse du téléphone (variable de la coquille, carte 081)
+      bottom: 'calc(var(--app-bottom-nav-space, 0px) + 1.2rem)',
       right: '1.2rem',
       zIndex: 9999,
       fontFamily: 'Inter, system-ui, sans-serif'

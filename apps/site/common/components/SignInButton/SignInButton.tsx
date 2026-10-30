@@ -5,6 +5,7 @@ import "./SignInButton.css";
 import { LogIn, LogOut } from "lucide-react";
 import CTAButton from "@/common/components/Button/CTAButton";
 import ClassicButton from "@/common/components/Button/ClassicButton";
+import { signOutUser } from "@/common/utils/signOutUser";
 
 interface SignInButtonProps {
   /** Membre connecté via le hub : la déconnexion passe par /auth/logout pour fermer aussi la session hub. */
@@ -17,20 +18,7 @@ interface SignInButtonProps {
 }
 
 export function SignInButton({ user, hubLogout = false }: SignInButtonProps) {
-  const handleDisconnect = () => {
-    if (hubLogout) {
-      // Formulaire POST : le navigateur suit la redirection vers la page de déconnexion du hub
-      const form = document.createElement("form");
-      form.method = "post";
-      form.action = "/auth/logout";
-      document.body.appendChild(form);
-      form.submit();
-      return;
-    }
-    import("next-auth/react").then(({ signOut }) => {
-      signOut({ callbackUrl: "/" });
-    });
-  };
+  const handleDisconnect = () => signOutUser(hubLogout);
 
   if (!user) {
     return (

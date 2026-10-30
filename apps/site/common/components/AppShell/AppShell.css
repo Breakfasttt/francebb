@@ -1,0 +1,56 @@
+/*
+ * Mise en page autour de la nouvelle coquille (carte 081). Ces règles ne s'appliquent que si le layout pose
+ * la classe `refonte-shell` sur <body> (REFONTE différent de 0).
+ * --app-bottom-nav-space : place occupée en bas par la barre de navigation (0 sur ordinateur, pendant la saisie
+ * et sur BBScheme). Les éléments fixés en bas (bandeau cookies, bouton de filtres, notifications) s'en servent.
+ */
+.refonte-shell {
+  --app-bottom-nav-space: 0px;
+}
+
+@media (max-width: 1024px) {
+  .refonte-shell:has(.app-bottom-nav) {
+    --app-bottom-nav-space: calc(58px + env(safe-area-inset-bottom));
+  }
+
+  html[data-typing] .refonte-shell {
+    --app-bottom-nav-space: 0px;
+  }
+
+  .app-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: transform 0.2s ease;
+  }
+
+  html[data-typing] .app-bottom-nav {
+    transform: translateY(100%);
+  }
+
+  /* L'ancienne barre fixe réservait 64 px en haut ; la nouvelle barre haute occupe sa place dans le flux */
+  .refonte-shell .main-layout-wrapper {
+    padding-top: 0 !important;
+    padding-bottom: calc(var(--app-bottom-nav-space) + 1.5rem);
+  }
+
+  .refonte-shell .cookie-banner-overlay {
+    bottom: var(--app-bottom-nav-space) !important;
+  }
+
+  .refonte-shell .mobile-filter-fab {
+    bottom: calc(var(--app-bottom-nav-space) + 1rem) !important;
+  }
+}
+
+/* Accueil : le grand logo était posé au milieu de l'ancienne barre ; la nouvelle barre y a ses liens,
+   il descend donc juste dessous, dans la page (la refonte de l'accueil, carte 090, le remplacera). */
+.refonte-shell .logo-overlay-container {
+  position: absolute;
+  top: 4.5rem;
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-bottom-nav {
+    transition: none;
+  }
+}

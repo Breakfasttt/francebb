@@ -12,6 +12,7 @@ import { Toaster } from "@bbfrance/ui";
 import { DEFAULT_SITE_THEME } from "@/lib/themes";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
+import AppShell from "@/common/components/AppShell/AppShell";
 import { getNavCounts } from "@/common/components/Navbar/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./tailwind.css";
@@ -52,10 +53,12 @@ export default async function RootLayout({
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
   // Compteurs de la barre de navigation : la promesse est transmise sans l'attendre, pour ne pas retarder la page
   const navCounts = user?.id ? getNavCounts(user.id, isMod) : undefined;
+  // Nouvelle coquille de la refonte (ADR 0006, carte 081) ; REFONTE=0 rend l'ancienne barre et son menu latéral
+  const refonte = process.env.REFONTE !== "0";
 
   return (
     <html lang="fr" data-theme={userTheme} className={interFont.variable} suppressHydrationWarning>
-      <body suppressHydrationWarning style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <body suppressHydrationWarning className={refonte ? "refonte-shell" : undefined} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
@@ -63,7 +66,17 @@ export default async function RootLayout({
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
           
-          <Navbar session={session} isAdmin={isAdmin} isMod={isMod} counts={navCounts} />
+          {refonte ? (
+            <AppShell
+              user={user ? { id: user.id, name: user.name, image: user.image } : null}
+              hubLogout={!!session?.hubLogout}
+              isAdmin={isAdmin}
+              isMod={isMod}
+              counts={navCounts}
+            />
+          ) : (
+            <Navbar session={session} isAdmin={isAdmin} isMod={isMod} counts={navCounts} />
+          )}
 
           <main className="main-layout-wrapper">
             {children}

@@ -49,6 +49,11 @@
   --bb-tap: 44px;
 }
 
+/* Seuil `lg:` aligné sur celui du site : téléphone jusqu'à 1024 px inclus, ordinateur à partir de 1025 px. */
+@theme {
+  --breakpoint-lg: 1025px;
+}
+
 /* Classes Tailwind des variables v2 : `bg-bb-surface`, `text-bb-text-muted`, `border-bb-border`, etc. */
 @theme inline {
   --color-bb-bg: var(--bb-bg);
