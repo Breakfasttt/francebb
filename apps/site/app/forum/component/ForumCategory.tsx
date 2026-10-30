@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Hash, Folder, Bell, ChevronDown, ChevronUp, Trophy, Lock as LockIcon } from "lucide-react";
-import Link from "next/link";
-import { parseInlineBBCode } from "@/lib/bbcode";
+/**
+ * Une catégorie de l'accueil du forum (refonte, carte 085) : une carte dont l'en-tête est un bouton qui replie ou
+ * déplie la liste de ses forums. Une catégorie qui contient du non-lu affiche un point bleu dans son en-tête.
+ */
+import { useId, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { Button } from "@bbfrance/ui";
+import { ForumRow, UnreadDot } from "@/app/forum/component/ForumListItems";
 
 // Données minimales d'une catégorie de l'accueil du forum (chargées par app/forum/page.tsx).
 // updatedAt peut arriver en string : unstable_cache sérialise en JSON.
@@ -30,84 +34,49 @@ interface CategoryProps {
 export default function ForumCategory({ category, unreadForumIds }: CategoryProps) {
   const categoryHasNew = category.forums.some((forum) => unreadForumIds.includes(forum.id));
   const [isExpanded, setIsExpanded] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
+  const listId = useId();
 
   return (
-    <section className={`forum-category ${!isExpanded ? 'collapsed' : ''}`}>
-      <div 
-        className="category-header accordion-header" 
+    <section className="overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface" aria-label={category.name}>
+      {/* En-tête repliable : une barre pleine largeur (le bouton de la refonte, élargi et aligné à gauche) */}
+      <Button
+        type="button"
+        variant="quiet"
+        aria-expanded={isExpanded}
+        aria-controls={listId}
         onClick={() => setIsExpanded(!isExpanded)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        style={{ 
-          borderColor: categoryHasNew ? 'var(--unread-marker)' : 'var(--glass-border)',
-          cursor: 'pointer'
-        }}
+        className="min-h-12 w-full justify-start gap-2 rounded-none px-3 py-2 text-left font-normal whitespace-normal hover:bg-transparent focus-visible:-outline-offset-2 lg:px-4"
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Hash size={20} style={{ color: categoryHasNew ? 'var(--unread-marker)' : 'var(--header-foreground)' }} />
-          <h2 style={{ 
-            color: 'var(--header-foreground)', 
-            margin: 0,
-            textShadow: categoryHasNew ? '0 0 10px rgba(var(--unread-marker-rgb, 194, 29, 29), 0.5)' : 'none'
-          }}>
-            {category.name}
-          </h2>
-        </div>
-        <div style={{ color: 'var(--text-muted)' }}>
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-        </div>
-      </div>
+        <span className={`flex-1 text-[0.8125rem] font-bold tracking-wider uppercase ${categoryHasNew ? "text-bb-text" : ""}`}>
+          {category.name}
+        </span>
+        {categoryHasNew && <UnreadDot />}
+        <ChevronDown size={20} aria-hidden="true" className={`shrink-0 transition-transform ${isExpanded ? "" : "-rotate-90"}`} />
+      </Button>
 
       {isExpanded && (
-        <div className="forums-list animate-fade-in">
+        <div id={listId} className="border-t border-bb-border">
           {category.forums.map((forum) => {
             const lastTopic = forum.topics[0];
-            const forumHasNew = unreadForumIds.includes(forum.id);
-
             return (
-              <Link key={forum.id} href={`/forum/${forum.id}`} className={`forum-item ${forumHasNew ? 'has-new' : ''}`}>
-                <div className="forum-info">
-                  <h3 style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    {forum.isTournamentForum ? (
-                      <Trophy size={18} style={{ color: forumHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: forumHasNew ? 1 : 0.6 }} />
-                    ) : (
-                      <Folder size={18} style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
-                    )}
-                    <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
-                    {forum.isLocked && <LockIcon size={14} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
-                    {forumHasNew && <Bell size={14} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
-                  </h3>
-                  {forum.description && <p>{forum.description}</p>}
-                </div>
-
-                <div className="forum-stats">
-                  <div><span className="stat-val">{forum._count.topics}</span> sujets</div>
-                </div>
-
-                <div className="forum-last-post">
-                  {lastTopic ? (
-                    <>
-                      <span className="last-post-title" style={{ 
-                        color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.4rem'
-                      }}>
-                        {lastTopic.tournamentId && <Trophy size={12} style={{ color: forumHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: forumHasNew ? 1 : 0.6 }} />}
-                        {lastTopic.title}
-                      </span>
-                      <span className="last-post-meta">
-                        Par <strong>{lastTopic.author.name}</strong>
-                        <br />
-                        {new Date(lastTopic.updatedAt).toLocaleDateString("fr-FR")}
-                      </span>
-                    </>
-                  ) : (
-                    <span style={{ color: 'var(--text-muted)' }}>Aucun sujet</span>
-                  )}
-                </div>
-              </Link>
+              <ForumRow
+                key={forum.id}
+                forum={{
+                  id: forum.id,
+                  name: forum.name,
+                  description: forum.description,
+                  isLocked: forum.isLocked,
+                  isTournamentForum: forum.isTournamentForum,
+                  topicCount: forum._count.topics,
+                  hasNew: unreadForumIds.includes(forum.id),
+                  lastTopic: lastTopic && {
+                    title: lastTopic.title,
+                    isTournament: !!lastTopic.tournamentId,
+                    authorName: lastTopic.author.name,
+                    date: lastTopic.updatedAt,
+                  },
+                }}
+              />
             );
           })}
         </div>

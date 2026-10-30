@@ -48,6 +48,9 @@ const ADMIN_ID = "e2e_audit_admin";
 const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boolean }[] = [
   { path: "/", connected: false },
   { path: "/forum", connected: false },
+  // Carte 085 : la page d'un forum et la liste des non-lus, refaites avec l'accueil du forum
+  { path: `/forum/${E2E.forumId}`, connected: true },
+  { path: "/forum/unread", connected: true },
   { path: `/forum/topic/${E2E.topicId}`, connected: true },
   { path: `/forum/topic/${E2E.topicId}/reply`, connected: true },
   { path: `/forum/topic/${BBSCHEME_TOPIC_ID}`, connected: true },

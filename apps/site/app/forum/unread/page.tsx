@@ -1,21 +1,26 @@
+/**
+ * Sujets non lus du membre (refonte, carte 085) : une ligne par sujet (titre, forum, auteur, messages, date du
+ * dernier message) avec un bouton pour le marquer comme lu, « Tout marquer comme lu » en tête, 20 sujets par page.
+ */
 import Link from "next/link";
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
-import { Trophy, Clock, MessageSquare } from "lucide-react";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import Pagination from "@/common/components/Pagination/Pagination";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import { Check, MessageSquare, Trophy } from "lucide-react";
+import { Avatar, Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
-import UnreadSidebar from "./component/UnreadSidebar";
+import ForumListHeader from "../component/ForumListHeader";
+import { UnreadDot } from "../component/ForumListItems";
 import MarkAllAsReadButton from "../component/MarkAllAsReadButton";
 import MarkTopicReadButton from "./component/MarkTopicReadButton";
-import "../page.css";
-import "../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 
 const POSTS_PER_PAGE = 20;
+
+/** Date et heure courtes du dernier message (« 12 mars, 18:30 »). */
+const lastActivity = (date: Date) =>
+  new Date(date).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 export default async function UnreadPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const session = await getActiveSession();
@@ -27,84 +32,79 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
   const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
   return (
-    <div className="unread-page-wrapper">
-      <PageHeader
-        title={<>Messages <span>non lus</span></>}
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
+        title="Messages non lus"
         subtitle="Liste des sujets ayant de nouvelles activités depuis votre dernière visite"
         backHref="/forum"
         backTitle="Retour au forum"
-      />
+      >
+        {unreadTopics.length > 0 && <MarkAllAsReadButton className="max-lg:w-full" />}
+      </ForumListHeader>
 
-      <main className="container forum-container">
-        <div className={`forum-layout ${unreadTopics.length <= 0 || totalPages <= 1 ? 'no-sidebar' : ''}`}>
-          <div className="forum-main-content">
-            <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px', background: 'var(--card-bg)', backdropFilter: 'blur(10px)' }}>
-              <div className="forum-item-header" style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 80px 120px 200px',
-                padding: '1rem 1.5rem',
-                background: 'rgba(255,255,255,0.03)',
-                borderBottom: '1px solid var(--glass-border)',
-                fontSize: '0.8rem',
-                color: 'var(--text-muted)',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                alignItems: 'center'
-              }}>
-                <span>Sujet</span>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <MarkAllAsReadButton />
-                </div>
-                <span style={{ textAlign: 'center' }}>Messages</span>
-                <span style={{ paddingLeft: '1.5rem', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>Dernier message</span>
-              </div>
-
-              {unreadTopics.length > 0 ? unreadTopics.map((topic) => (
-                <div key={topic.id} className="forum-item has-new" style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '1fr 80px 120px 200px',
-                  padding: '1.2rem 1.5rem',
-                  borderBottom: '1px solid var(--glass-border)',
-                  alignItems: 'center'
-                }}>
-                  <Link href={`/forum/topic/${topic.id}`} className="forum-info" style={{ textDecoration: 'none' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {topic.tournamentId && <Trophy size={16} color="var(--accent)" />}
-                      <h3 style={{ color: 'var(--unread-marker)', margin: 0 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
-                    </div>
-                    <p style={{ margin: '0.3rem 0 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Dans <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} /> • Par {topic.author.name}</p>
-                  </Link>
-
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <MarkTopicReadButton topicId={topic.id} />
-                  </div>
-
-                  <div className="forum-stats" style={{ textAlign: 'center', display: 'block' }}>
-                    <div><span className="stat-val">{topic._count.posts}</span> msgs</div>
-                  </div>
-
-                  <div className="forum-last-post" style={{ borderLeft: '1px solid rgba(255,255,255,0.05)', paddingLeft: '1.5rem' }}>
-                    <span className="last-post-meta">
-                      <Clock size={12} style={{ display: 'inline', marginRight: '4px' }} />
-                      {new Date(topic.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+      <div className="flex flex-col gap-4">
+        <Card className="overflow-hidden">
+          {unreadTopics.length > 0 ? (
+            <ul className="m-0 list-none p-0">
+              {unreadTopics.map((topic) => (
+                <li key={topic.id} className="flex items-center gap-1 border-b border-bb-border pr-1 last:border-b-0 lg:pr-2">
+                  <Link
+                    href={`/forum/topic/${topic.id}`}
+                    className="flex min-h-16 min-w-0 flex-1 items-start gap-3 py-3 pl-3 text-bb-text hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:items-center lg:pl-4"
+                  >
+                    <Avatar name={topic.author.name} src={topic.author.image} size={40} className="mt-0.5 lg:mt-0" aria-hidden="true" />
+                    <span className="flex min-w-0 flex-1 flex-col gap-1 lg:flex-row lg:items-center lg:gap-4">
+                      <span className="flex min-w-0 flex-1 flex-col gap-1">
+                        <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
+                          {topic.tournamentId && <Trophy size={15} role="img" aria-label="Tournoi" className="shrink-0 text-bb-accent-text" />}
+                          <span
+                            className="min-w-0 text-[1.0625rem] leading-snug font-bold break-words"
+                            dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }}
+                          />
+                          <UnreadDot />
+                        </span>
+                        <span className="text-[0.8125rem] text-bb-text-muted">
+                          dans <strong className="font-semibold text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} /> · par{" "}
+                          {topic.author.name}
+                        </span>
+                      </span>
+                      <span className="flex flex-wrap gap-x-3 text-[0.8125rem] text-bb-text-muted lg:flex-nowrap lg:gap-0 lg:text-sm">
+                        <span className="lg:w-24 lg:text-right">
+                          {topic._count.posts} {topic._count.posts > 1 ? "messages" : "message"}
+                        </span>
+                        <span className="lg:w-36 lg:text-right">{lastActivity(topic.updatedAt)}</span>
+                      </span>
                     </span>
-                  </div>
-                </div>
-              )) : (
-                <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
-                  <MessageSquare size={48} color="var(--text-muted)" style={{ marginBottom: '1.5rem' }} />
-                  <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Aucun nouveau message</h2>
-                  <p style={{ color: 'var(--text-muted)' }}>Vous êtes à jour ! Tous les sujets ont été lus.</p>
-                  <ClassicButton href="/forum" style={{ marginTop: '2rem' }}>
-                    Retour à l'index du forum
-                  </ClassicButton>
-                </div>
-              )}
-            </div>
-          </div>
-          {totalPages > 1 && <UnreadSidebar currentPage={currentPage} totalPages={totalPages} />}
-        </div>
-      </main>
+                  </Link>
+                  <MarkTopicReadButton topicId={topic.id} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState
+              icon={<MessageSquare size={40} />}
+              title="Aucun nouveau message"
+              action={
+                <Button asChild variant="primary" size="tap">
+                  <Link href="/forum">
+                    <Check size={18} aria-hidden="true" /> Retour à l&apos;index du forum
+                  </Link>
+                </Button>
+              }
+            >
+              Vous êtes à jour ! Tous les sujets ont été lus.
+            </EmptyState>
+          )}
+        </Card>
+
+        <PageNav
+          page={currentPage}
+          totalPages={totalPages}
+          hrefFor={(page) => `/forum/unread?page=${page}`}
+          linkComponent={Link}
+          className="self-center"
+        />
+      </div>
     </div>
   );
 }

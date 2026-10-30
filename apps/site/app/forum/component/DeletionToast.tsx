@@ -1,8 +1,14 @@
 "use client";
 
+/**
+ * Message affiché sur l'accueil du forum après la suppression d'un sujet ou d'un forum (paramètres d'adresse
+ * `?deletedTopic=` et `?deletedForum=`). Il reste 8 secondes, puis l'adresse est nettoyée de ces paramètres.
+ * Style de la refonte (ADR 0006, carte 085) : sur téléphone, il occupe la largeur de l'écran sous la barre du haut.
+ */
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Check, X } from "lucide-react";
+import { Button } from "@bbfrance/ui";
 
 export default function DeletionToast() {
   const searchParams = useSearchParams();
@@ -26,7 +32,7 @@ export default function DeletionToast() {
 
       const timer = setTimeout(() => {
         setShow(false);
-        // Clean up the URL by removing the parameters
+        // Nettoie l'adresse en retirant les paramètres de suppression
         const currentParams = new URLSearchParams(window.location.search);
         currentParams.delete("deletedTopic");
         currentParams.delete("deletedForum");
@@ -40,102 +46,19 @@ export default function DeletionToast() {
   if (!show || (!deletedTopic && !deletedForum)) return null;
 
   return (
-    <div className="deletion-toast-container">
-      <div className="deletion-toast">
-        <div className="toast-icon">
+    <div role="status" className="fixed inset-x-3 top-[4.25rem] z-[var(--z-index-toast)] lg:inset-x-auto lg:top-20 lg:right-6 lg:w-[420px]">
+      <div className="flex items-center gap-3 rounded-bb-lg border border-bb-border bg-bb-surface py-2 pr-1 pl-3 text-bb-text shadow-bb">
+        <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-full bg-bb-surface-2 text-bb-success-text">
           <Check size={18} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="m-0 text-sm text-bb-text-muted">{toastMessage}</p>
+          <strong title={toastTitle} className="block truncate font-semibold">{toastTitle}</strong>
         </div>
-        <div className="toast-content">
-          <p>{toastMessage}</p>
-          <strong title={toastTitle}>{toastTitle}</strong>
-        </div>
-        <button onClick={() => setShow(false)} className="toast-close">
-          <X size={14} />
-        </button>
+        <Button type="button" variant="quiet" size="tap-icon" aria-label="Fermer" onClick={() => setShow(false)}>
+          <X size={18} aria-hidden="true" />
+        </Button>
       </div>
-
-      <style jsx>{`
-        .deletion-toast-container {
-          position: fixed;
-          top: 8rem;
-          right: 2rem;
-          z-index: 9999;
-          animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .deletion-toast {
-          background: #1a1a20;
-          border: 1px solid rgba(34, 197, 94, 0.3);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(34, 197, 94, 0.1);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 0.75rem 1rem;
-          min-width: 300px;
-          max-width: 450px;
-          color: white;
-          backdrop-filter: blur(8px);
-        }
-
-        .toast-icon {
-          background: rgba(34, 197, 94, 0.2);
-          color: #22c55e;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .toast-content {
-          flex: 1;
-          font-size: 0.9rem;
-          overflow: hidden;
-        }
-
-        .toast-content p {
-          margin: 0;
-          color: #aaa;
-          font-size: 0.8rem;
-          font-weight: 500;
-        }
-
-        .toast-content strong {
-          display: block;
-          color: white;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-weight: 600;
-          margin-top: 1px;
-        }
-
-        .toast-close {
-          background: none;
-          border: none;
-          color: #555;
-          cursor: pointer;
-          padding: 4px;
-          border-radius: 4px;
-          transition: all 0.2s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .toast-close:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: white;
-        }
-
-        @keyframes slideInRight {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }

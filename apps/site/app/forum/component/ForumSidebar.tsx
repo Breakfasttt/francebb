@@ -1,45 +1,80 @@
-import {
-  getRandomPostUrl,
-  getUnreadTopicsCount,
-  getSubForumCount
-} from "@/app/forum/actions";
+/**
+ * Actions des listes du forum (refonte, carte 085).
+ * - `ForumPrimaryActions` : « Nouveau sujet », « Nouveau tournoi » (forum de tournois) ou, dans un forum verrouillé
+ *   pour un membre qui n'est pas modérateur, le bouton désactivé « Forum verrouillé ». Sur téléphone, la page les
+ *   affiche en haut de la liste ; sur ordinateur, ils sont en tête de la colonne latérale.
+ * - `ForumSidebar` : la colonne latérale, collée en haut de l'écran pendant le défilement sur ordinateur. Sur
+ *   téléphone, ses actions secondaires (recherche avancée, membres, non-lus, administration) sont envoyées dans la
+ *   rubrique « Cette page » du panneau « Plus », par un portail vers #mobile-page-sidebar-slot.
+ */
+import { getUnreadTopicsCount, getSubForumCount } from "@/app/forum/actions";
 import Link from "next/link";
-import { MessageSquare, Mail, Repeat, Clock, Bell, Search, FileText, Trophy, Users, Lock as LockIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+import { Lock as LockIcon, MessageSquare, PlusCircle, Search, Trophy, Users } from "lucide-react";
+import { Button, Card } from "@bbfrance/ui";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
-import { PlusCircle } from "lucide-react";
 import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
 import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
-import Pagination from "@/common/components/Pagination/Pagination";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import CTAButton from "@/common/components/Button/CTAButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
 import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
-const POSTS_PER_PAGE = 20;
+/** Titre discret d'un groupe d'actions de la colonne. */
+const groupTitle = "m-0 border-0 p-0 text-[0.8125rem] font-bold tracking-wider text-bb-text-muted uppercase not-italic";
 
-export default async function ForumSidebar({ 
-  forumId, 
-  forumName, 
-  categoryId, 
+interface PrimaryActionsProps {
+  forumId: string;
+  isLocked: boolean;
+  isTournamentForum: boolean;
+  /** Le visiteur est un membre connecté. */
+  isMember: boolean;
+  isModerator: boolean;
+  className?: string;
+}
+
+export function ForumPrimaryActions({ forumId, isLocked, isTournamentForum, isMember, isModerator: canModerate, className = "" }: PrimaryActionsProps) {
+  if (!isMember) return null;
+  if (isLocked && !canModerate) {
+    return (
+      <div className={`flex flex-col gap-2 ${className}`}>
+        <Button type="button" variant="secondary" size="tap" disabled className="w-full">
+          <LockIcon size={18} aria-hidden="true" /> Forum verrouillé
+        </Button>
+      </div>
+    );
+  }
+  return (
+    <div className={`flex flex-col gap-2 ${className}`}>
+      <Button asChild variant="primary" size="tap" className="w-full">
+        <Link href={`/forum/new-topic?forumId=${forumId}`}>
+          <PlusCircle size={18} aria-hidden="true" /> Nouveau sujet
+        </Link>
+      </Button>
+      {isTournamentForum && (
+        <Button asChild variant="secondary" size="tap" className="w-full">
+          <Link href={`/forum/new-tournament?forumId=${forumId}`}>
+            <Trophy size={18} aria-hidden="true" /> Nouveau tournoi
+          </Link>
+        </Button>
+      )}
+    </div>
+  );
+}
+
+export default async function ForumSidebar({
+  forumId,
+  forumName,
+  categoryId,
   parentForumId,
   isLocked,
   isTournamentForum,
-  currentPage,
-  totalPages
-}: { 
-  forumId?: string; 
-  forumName?: string; 
-  categoryId?: string; 
+}: {
+  forumId?: string;
+  forumName?: string;
+  categoryId?: string;
   parentForumId?: string;
   isLocked?: boolean;
   isTournamentForum?: boolean;
-  currentPage?: number;
-  totalPages?: number;
 }) {
   const [unreadTopics, subForumCount, session] = await Promise.all([
     getUnreadTopicsCount(),
@@ -47,137 +82,67 @@ export default async function ForumSidebar({
     getActiveSession(),
   ]);
   const canCreateForum = isModerator(session?.user?.role);
+  const showUnread = !!session && !forumId && !categoryId && !parentForumId && unreadTopics > 0;
 
-  async function handleRandomPost() {
-    "use server";
-    const url = await getRandomPostUrl();
-    redirect(url);
-  }
-
-  const content = (
-    <div className="sidebar-sticky-inner">
-      <div className="sidebar-widget-container">
-        {/* 1. Pages Block (Forum / Search) - Desktop Only here to stay sticky */}
-        {(totalPages && totalPages > 1) && (
-          <div className="desktop-only">
-            <PremiumCard className="sidebar-widget pagination-widget" style={{ padding: '1rem', marginBottom: '1.5rem' }}>
-              <Pagination 
-                currentPage={currentPage || 1}
-                totalPages={totalPages}
-                variant="sidebar"
-                baseUrl={forumId ? `/forum/${forumId}` : undefined}
-              />
-            </PremiumCard>
-          </div>
-        )}
-        
-        {/* 1. Pages Block (Forum / Search) */}
-
-
-        {/* Nouveau Sujet / Tournoi */}
-        {session && forumId && (!isLocked || canCreateForum) && (
-          <PremiumCard className="sidebar-widget nav-widget">
-            {isTournamentForum && (
-              <CTAButton href={`/forum/new-tournament?forumId=${forumId}`} icon={<Trophy size={18} />}>
-                Nouveau Tournoi
-              </CTAButton>
-            )}
-            <CTAButton href={`/forum/new-topic?forumId=${forumId}`} icon={<PlusCircle size={18} />}>
-              Nouveau Sujet
-            </CTAButton>
-          </PremiumCard>
-        )}
-
-        {forumId && isLocked && !canCreateForum && (
-          <div className="sidebar-widget-group">
-            <ClassicButton 
-              disabled 
-              icon={<LockIcon size={18} />}
-              style={{ opacity: 0.6 }}
-            >
-              Forum verrouillé
-            </ClassicButton>
-          </div>
-        )}
-
-        {/* Recherche Avancée */}
-        <PremiumCard className="sidebar-widget nav-widget">
-          <ClassicButton href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`} icon={<Search size={18} />}>
-            Recherche avancée
-          </ClassicButton>
-          
-          <ClassicButton href="/membres" icon={<Users size={18} />}>
-            Les membres
-          </ClassicButton>
-        </PremiumCard>
-
-        {/* Posts Non Lus */}
-        {session && !forumId && !categoryId && !parentForumId && unreadTopics > 0 && (
-          <PremiumCard className="sidebar-widget unread-widget" noOverflow>
-            <div className="sidebar-widget-group">
-              <ClassicButton href="/forum/unread" icon={<MessageSquare size={18} />} style={{ flex: 1 }}>
-                Posts non lus ({unreadTopics})
-              </ClassicButton>
-              <MarkAllAsReadButton />
-            </div>
-          </PremiumCard>
-        )}
-
-        {/* Admin Tools */}
-        {canCreateForum && (
-          <PremiumCard className="sidebar-widget admin-widget premium">
-            <h3 style={{ color: 'var(--primary)', margin: 0 }}>
-              <PlusCircle size={16} />
-              Administration
-            </h3>
-            
-            <div className="admin-actions-list">
-              <NewForumButton 
-                categoryId={categoryId}
-                parentForumId={parentForumId}
-                subForumCount={subForumCount}
-              />
-
-              {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
-              {forumId && (
-                <LockButton 
-                  id={forumId} 
-                  type="forum" 
-                  isLocked={isLocked || false} 
-                />
-              )}
-            </div>
-          </PremiumCard>
-        )}
+  // Actions secondaires : dans la colonne sur ordinateur, dans « Cette page » sur téléphone
+  const secondary = (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <Button asChild variant="secondary" size="tap" className="w-full justify-start">
+          <Link href={forumId ? `/forum/search?forumId=${forumId}` : `/forum/search`}>
+            <Search size={18} aria-hidden="true" /> Recherche avancée
+          </Link>
+        </Button>
+        <Button asChild variant="secondary" size="tap" className="w-full justify-start">
+          <Link href="/membres">
+            <Users size={18} aria-hidden="true" /> Les membres
+          </Link>
+        </Button>
       </div>
+
+      {showUnread && (
+        <div className="flex flex-col gap-2">
+          <Button asChild variant="secondary" size="tap" className="w-full justify-start">
+            <Link href="/forum/unread">
+              <MessageSquare size={18} aria-hidden="true" /> Sujets non lus ({unreadTopics})
+            </Link>
+          </Button>
+          <MarkAllAsReadButton className="w-full justify-start" />
+        </div>
+      )}
+
+      {canCreateForum && (
+        <section className="flex flex-col gap-2" aria-label="Administration du forum">
+          <h2 className={groupTitle}>Administration</h2>
+          <NewForumButton categoryId={categoryId} parentForumId={parentForumId} subForumCount={subForumCount} />
+          {forumId && <LockButton id={forumId} type="forum" isLocked={isLocked || false} refonte />}
+          {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
+        </section>
+      )}
     </div>
   );
 
   return (
     <>
-      <aside className="forum-sidebar desktop-only">
-        {content}
+      <aside className="hidden lg:sticky lg:top-20 lg:block" aria-label="Actions du forum">
+        <Card className="flex flex-col gap-4 p-4">
+          {forumId && (
+            <ForumPrimaryActions
+              forumId={forumId}
+              isLocked={!!isLocked}
+              isTournamentForum={!!isTournamentForum}
+              isMember={!!session}
+              isModerator={canCreateForum}
+            />
+          )}
+          {secondary}
+        </Card>
       </aside>
 
-      {/* Téléportation vers la sidebar mobile (Sans la pagination) */}
+      {/* Téléphone : la même colonne, sans les actions principales (déjà affichées en haut de la liste) */}
       <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="mobile-sidebar-section mobile-only">
-          {content}
-        </div>
+        <div className="lg:hidden">{secondary}</div>
       </GlobalPortal>
-
-      {/* Pagination mobile tout en bas de la page */}
-      {(totalPages && totalPages > 1) && (
-        <div className="mobile-only pagination-bottom-container" style={{ width: '100%', marginTop: '2rem', marginBottom: '2rem' }}>
-          <PremiumCard style={{ padding: '1rem', width: '100%' }}>
-            <Pagination 
-              currentPage={currentPage || 1}
-              totalPages={totalPages}
-              baseUrl={forumId ? `/forum/${forumId}` : undefined}
-            />
-          </PremiumCard>
-        </div>
-      )}
     </>
   );
 }

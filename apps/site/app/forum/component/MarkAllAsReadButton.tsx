@@ -1,14 +1,16 @@
 "use client";
 
+/**
+ * Bouton « Tout marquer comme lu » (accueil du forum et liste des non-lus), avec une fenêtre de confirmation.
+ * Style de la refonte (ADR 0006, carte 085) ; `className` permet à la colonne latérale de l'élargir.
+ */
 import { useState } from "react";
 import { CheckCheck } from "lucide-react";
 import { markAllTopicsAsRead } from "@/app/forum/actions";
-import { toast } from "@bbfrance/ui";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
+import { Button, toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
-import ClassicButton from "@/common/components/Button/ClassicButton";
 
-export default function MarkAllAsReadButton() {
+export default function MarkAllAsReadButton({ className }: { className?: string }) {
   const [isConfirming, setIsConfirming] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,13 +27,9 @@ export default function MarkAllAsReadButton() {
 
   return (
     <>
-    <Tooltip text="Tout marquer comme lu">
-      <ClassicButton
-        onClick={() => setIsConfirming(true)}
-        style={{ color: 'var(--text-muted)', cursor: 'pointer', height: '100%' }}
-        icon={CheckCheck}
-      />
-    </Tooltip>
+      <Button type="button" variant="secondary" size="tap" onClick={() => setIsConfirming(true)} className={className}>
+        <CheckCheck size={18} aria-hidden="true" /> Tout marquer comme lu
+      </Button>
 
       <Modal
         isOpen={isConfirming}

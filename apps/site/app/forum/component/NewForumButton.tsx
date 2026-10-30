@@ -1,10 +1,14 @@
 "use client";
 
+/**
+ * Bouton « Nouveau forum » de la colonne du forum (modérateurs). Dans un forum qui a déjà 5 sous-forums, il ouvre
+ * la fenêtre « Limite atteinte » au lieu d'aller au formulaire. Style de la refonte (ADR 0006, carte 085).
+ */
 import { useState } from "react";
+import Link from "next/link";
 import { PlusCircle, AlertCircle } from "lucide-react";
+import { Button } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
-import AdminButton from "@/common/components/Button/AdminButton";
-import CTAButton from "@/common/components/Button/CTAButton";
 
 interface NewForumButtonProps {
   categoryId?: string;
@@ -31,34 +35,28 @@ export default function NewForumButton({
 
   return (
     <>
-      <AdminButton 
-        href={href}
-        onClick={handleClick}
-        icon={PlusCircle}
-        fullWidth
-      >
-        Nouveau forum
-      </AdminButton>
+      <Button asChild variant="secondary" size="tap" className="w-full justify-start">
+        <Link href={href} onClick={handleClick}>
+          <PlusCircle size={18} aria-hidden="true" /> Nouveau forum
+        </Link>
+      </Button>
 
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         title="Limite atteinte"
       >
-        <div style={{ textAlign: "center", padding: "1rem 0" }}>
-          <AlertCircle size={48} color="var(--primary)" style={{ marginBottom: "1rem" }} />
-          <p style={{ color: "var(--foreground)", fontSize: "1.1rem", marginBottom: "1.5rem" }}>
+        <div className="flex flex-col items-center gap-4 py-4 text-center">
+          <AlertCircle size={48} aria-hidden="true" className="text-bb-accent-text" />
+          <p className="m-0 text-lg text-bb-text">
             Le nombre maximum de sous-forums (<strong>{LIMIT}</strong>) a été atteint pour ce forum.
           </p>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "2rem" }}>
-            Veuillez supprimer ou réorganiser les sous-forums existants avant d'en créer un nouveau.
+          <p className="m-0 text-sm text-bb-text-muted">
+            Veuillez supprimer ou réorganiser les sous-forums existants avant d&apos;en créer un nouveau.
           </p>
-          <CTAButton 
-            onClick={() => setIsModalOpen(false)} 
-            fullWidth
-          >
+          <Button type="button" variant="primary" size="tap" className="w-full" onClick={() => setIsModalOpen(false)}>
             Compris
-          </CTAButton>
+          </Button>
         </div>
       </Modal>
     </>

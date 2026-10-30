@@ -86,25 +86,25 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [ ] [tous] Les catégories, triées par ordre, sont repliables. Une catégorie qui contient du non-lu est mise en valeur.
 - [ ] [tous] Seuls les forums de premier niveau sont listés. Pour chacun : icône (trophée pour un forum de tournoi, dossier sinon), nom, description, cadenas s'il est verrouillé, cloche s'il contient du non-lu (sous-forums compris), nombre de sujets.
 - [ ] [tous] Le dernier sujet de chaque forum : titre (avec un trophée pour un tournoi), auteur, date ; ou « Aucun sujet ».
-- [ ] [tous] Après une suppression, le message « Sujet supprimé » ou « Forum supprimé » s'affiche pendant 8 secondes (`?deletedTopic=`, `?deletedForum=`), puis l'adresse est nettoyée.
-- [ ] [tous] Liens « Recherche avancée » (`/forum/search`) et « Les membres » (`/membres`).
-- [ ] [membre] S'il y a du non-lu : lien « Posts non lus (N) » vers `/forum/unread`, et bouton « Tout marquer comme lu », avec confirmation.
-- [ ] [modo] Bouton « Nouveau forum » vers `/forum/new-forum`.
-- [ ] [tous] Les forums réservés à un rôle sont masqués à qui n'a pas ce rôle.
+- [x] [tous] Après une suppression, le message « Sujet supprimé » ou « Forum supprimé » s'affiche pendant 8 secondes (`?deletedTopic=`, `?deletedForum=`), puis l'adresse est nettoyée.
+- [x] [tous] Liens « Recherche avancée » (`/forum/search`) et « Les membres » (`/membres`).
+- [x] [membre] S'il y a du non-lu : lien « Posts non lus (N) » vers `/forum/unread`, et bouton « Tout marquer comme lu », avec confirmation.
+- [x] [modo] Bouton « Nouveau forum » vers `/forum/new-forum`.
+- [x] [tous] Les forums réservés à un rôle sont masqués à qui n'a pas ce rôle.
 
 ### 3.2 `/forum/[id]` : un forum
 - [ ] [tous] Titre, cadenas, cloche de non-lu, description.
-- [ ] [visiteur] Un forum réservé envoie vers `/auth/login?callbackUrl=`. [membre sans le rôle] Il affiche une page introuvable.
+- [x] [visiteur] Un forum réservé envoie vers `/auth/login?callbackUrl=`. [membre sans le rôle] Il affiche une page introuvable.
 - [ ] [tous] Sous-forums (10 au plus), avec icône, nom, cadenas, cloche, description, nombre de sujets, dernier sujet et badge de tournoi (« Annulé », « Terminé », « Passé »).
 - [ ] [tous] Liste des sujets : icône épinglé, tournoi ou sujet ordinaire ; titre ; badge de statut du tournoi ; cadenas ; cloche de non-lu ; « Par X le date » ; nombre de messages ; nombre de vues ; date de dernière activité.
-- [ ] [tous] Les sujets épinglés sont en premier, puis les autres du plus récent au plus ancien. Les sujets archivés sont exclus.
-- [ ] [tous] Liste vide : « Aucun sujet dans ce forum pour le moment. »
-- [ ] [tous] Pagination de 30 sujets par page (`?page=`).
-- [ ] [membre] « Nouveau sujet » vers `/forum/new-topic?forumId=`. Dans un forum de tournoi, il y a aussi « Nouveau tournoi » vers `/forum/new-tournament?forumId=`. Si le forum est verrouillé et que le membre n'est pas modérateur, un bouton désactivé « Forum verrouillé » les remplace.
-- [ ] [tous] « Recherche avancée », avec le forum prérempli (`?forumId=`), et « Les membres ».
-- [ ] [modo] Nouveau sous-forum. Au-delà de 5 sous-forums, une fenêtre « Limite atteinte » s'ouvre.
-- [ ] [modo] Supprimer le forum, avec confirmation. Ses sous-forums, sujets et messages sont supprimés aussi.
-- [ ] [modo] Verrouiller ou déverrouiller le forum.
+- [x] [tous] Les sujets épinglés sont en premier, puis les autres du plus récent au plus ancien. Les sujets archivés sont exclus.
+- [x] [tous] Liste vide : « Aucun sujet dans ce forum pour le moment. »
+- [x] [tous] Pagination de 30 sujets par page (`?page=`).
+- [x] [membre] « Nouveau sujet » vers `/forum/new-topic?forumId=`. Dans un forum de tournoi, il y a aussi « Nouveau tournoi » vers `/forum/new-tournament?forumId=`. Si le forum est verrouillé et que le membre n'est pas modérateur, un bouton désactivé « Forum verrouillé » les remplace.
+- [x] [tous] « Recherche avancée », avec le forum prérempli (`?forumId=`), et « Les membres ».
+- [x] [modo] Nouveau sous-forum. Au-delà de 5 sous-forums, une fenêtre « Limite atteinte » s'ouvre.
+- [x] [modo] Supprimer le forum, avec confirmation. Ses sous-forums, sujets et messages sont supprimés aussi.
+- [x] [modo] Verrouiller ou déverrouiller le forum.
 
 ### 3.3 `/forum/topic/[id]` : un sujet
 **Lecture et navigation**
@@ -188,10 +188,10 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ### 3.9 `/forum/unread` : sujets non lus
 - [ ] [membre] Liste des sujets : trophée, titre, forum, auteur, nombre de messages, date du dernier message.
-- [ ] [membre] Marquer un sujet comme lu, et tout marquer comme lu.
-- [ ] [membre] Liste vide : « Vous êtes à jour », avec un bouton de retour.
-- [ ] [membre] Pagination de 20 par page.
-- [ ] [visiteur] Est renvoyé vers la connexion.
+- [x] [membre] Marquer un sujet comme lu, et tout marquer comme lu.
+- [x] [membre] Liste vide : « Vous êtes à jour », avec un bouton de retour.
+- [x] [membre] Pagination de 20 par page.
+- [x] [visiteur] Est renvoyé vers la connexion.
 
 ---
 

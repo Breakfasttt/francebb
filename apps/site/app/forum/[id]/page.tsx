@@ -1,17 +1,22 @@
+/**
+ * Page d'un forum (refonte, carte 085) : sous-forums, puis sujets en lignes à la manière de Discourse, pagination
+ * en bas. Sur ordinateur, les actions sont dans une colonne à droite ; sur téléphone, « Nouveau sujet » (et
+ * « Nouveau tournoi ») restent visibles en haut de la liste, le reste passe dans « Cette page » du panneau « Plus ».
+ */
+import Link from "next/link";
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { prisma } from "@/lib/prisma";
-import { ArrowLeft, Bell, Pin, Folder, FileText, ChevronLeft, ChevronRight, Trophy, Lock as LockIcon } from "lucide-react";
-import ForumSidebar from "@/app/forum/component/ForumSidebar";
-import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import { isModerator } from "@/lib/roles";
+import { Card, CardHeader, CardTitle, EmptyState, PageNav } from "@bbfrance/ui";
+import { MessageSquare } from "lucide-react";
+import ForumSidebar, { ForumPrimaryActions } from "@/app/forum/component/ForumSidebar";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { ForumRow, LockMark, TopicRow, UnreadDot } from "@/app/forum/component/ForumListItems";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
-import "../page.css";
-import "../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 
@@ -77,7 +82,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     skip,
     take: TOPICS_PER_PAGE,
     include: {
-      author: { select: { name: true } },
+      author: { select: { name: true, image: true } },
       _count: {
         select: { posts: true }
       },
@@ -105,168 +110,122 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   }
   breadcrumbs.push({ label: forum.name });
 
+  const canModerate = isModerator(session?.user?.role);
+
   return (
-    <div className="forum-detail-page">
-      <PageHeader
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <div className="pt-3 lg:pt-4">
+        <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
+      </div>
+      <ForumListHeader
         title={
-          <span style={{ color: forumHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-            <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
-            {forum.isLocked && <LockIcon size={20} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
-            {forumHasNew && <Bell size={20} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
-          </span>
+          <>
+            <span className="min-w-0 break-words" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} />
+            {forum.isLocked && <LockMark label="Forum verrouillé" size={20} />}
+            {forumHasNew && <UnreadDot />}
+          </>
         }
         subtitle={forum.description}
       />
- 
-      <main className="container forum-container">
- 
-      <ForumBreadcrumbs items={breadcrumbs} />
 
-       <div className="forum-layout">
-         <div className="forum-main-content">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
+        <div className="flex min-w-0 flex-col gap-4">
+          {/* Téléphone : les actions principales restent visibles en haut de la liste */}
+          <ForumPrimaryActions
+            forumId={id}
+            isLocked={forum.isLocked}
+            isTournamentForum={forum.isTournamentForum}
+            isMember={!!userId}
+            isModerator={canModerate}
+            className="lg:hidden"
+          />
 
-      {forum.subForums.length > 0 && (
-        <div className="sub-forums-section" style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>Sous-forums</h2>
-          <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px' }}>
-            {forum.subForums.map((sub) => {
-              const lastTopic = sub.topics[0];
-              const subHasNew = unread?.unreadForumIds.has(sub.id) ?? false;
+          {forum.subForums.length > 0 && (
+            <Card className="overflow-hidden">
+              <CardHeader>
+                <CardTitle className="text-[0.8125rem] tracking-wider text-bb-text-muted uppercase">Sous-forums</CardTitle>
+              </CardHeader>
+              {forum.subForums.map((sub) => {
+                const lastTopic = sub.topics[0];
+                return (
+                  <ForumRow
+                    key={sub.id}
+                    forum={{
+                      id: sub.id,
+                      name: sub.name,
+                      description: sub.description,
+                      isLocked: sub.isLocked,
+                      isTournamentForum: sub.isTournamentForum,
+                      topicCount: sub._count.topics,
+                      hasNew: unread?.unreadForumIds.has(sub.id) ?? false,
+                      lastTopic: lastTopic && {
+                        title: lastTopic.title,
+                        isTournament: !!lastTopic.tournament,
+                        tournament: lastTopic.tournament,
+                        authorName: lastTopic.author.name,
+                        date: lastTopic.updatedAt,
+                      },
+                    }}
+                  />
+                );
+              })}
+            </Card>
+          )}
 
-              return (
-                <Link key={sub.id} href={`/forum/${sub.id}`} className={`forum-item ${subHasNew ? 'has-new' : ''}`}>
-                  <div className="forum-info">
-                    <h3 style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      {sub.isTournamentForum ? (
-                        <Trophy size={16} style={{ color: subHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: subHasNew ? 1 : 0.6 }} />
-                      ) : (
-                        <Folder size={16} style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
-                      )}
-                      {sub.name}
-                      {sub.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
-                      {subHasNew && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
-                    </h3>
-                    {sub.description && <p>{sub.description}</p>}
-                  </div>
+          <Card className="overflow-hidden">
+            {/* En-têtes de colonnes, sur ordinateur seulement (sur téléphone, chaque ligne nomme ses chiffres) */}
+            <div aria-hidden="true" className="hidden items-center gap-4 border-b border-bb-border px-4 py-2 text-[0.8125rem] font-semibold text-bb-text-muted lg:flex">
+              <span className="flex-1 pl-[52px]">Sujet</span>
+              <span className="w-24 text-right">Messages</span>
+              <span className="w-20 text-right">Vues</span>
+              <span className="w-28 text-right">Activité</span>
+            </div>
+            {topics.length > 0 ? (
+              topics.map((topic) => {
+                const topicView = topic.topicViews[0];
+                return (
+                  <TopicRow
+                    key={topic.id}
+                    topic={{
+                      id: topic.id,
+                      title: topic.title,
+                      isSticky: topic.isSticky,
+                      isLocked: topic.isLocked,
+                      isTournament: !!topic.tournamentId,
+                      tournament: topic.tournament,
+                      hasNew: userId ? !topicView || topic.updatedAt > topicView.lastViewedAt : false,
+                      author: topic.author,
+                      createdAt: topic.createdAt,
+                      updatedAt: topic.updatedAt,
+                      postCount: topic._count.posts,
+                      views: topic.views || 0,
+                    }}
+                  />
+                );
+              })
+            ) : (
+              <EmptyState icon={<MessageSquare size={36} />} title="Aucun sujet dans ce forum pour le moment." />
+            )}
+          </Card>
 
-                  <div className="forum-stats">
-                    <div><span className="stat-val">{sub._count.topics}</span> sujets</div>
-                  </div>
-
-                  <div className="forum-last-post">
-                    {lastTopic ? (
-                      <>
-                        <span className="last-post-title" style={{ color: subHasNew ? 'var(--unread-marker)' : 'var(--foreground)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                          {lastTopic.title}
-                          {lastTopic.tournament && (
-                            <span className={`status-badge-inline ${lastTopic.tournament.isCancelled ? 'cancelled' : lastTopic.tournament.isFinished ? 'finished' : (new Date(lastTopic.tournament.date) < new Date() ? 'past' : '')}`}>
-                              {lastTopic.tournament.isCancelled ? 'Annulé' : lastTopic.tournament.isFinished ? 'Terminé' : (new Date(lastTopic.tournament.date) < new Date() ? 'Passé' : '')}
-                            </span>
-                          )}
-                        </span>
-                        <span className="last-post-meta">
-                          Par <strong>{lastTopic.author.name}</strong>
-                          <br />
-                          {new Date(lastTopic.updatedAt).toLocaleDateString("fr-FR")}
-                        </span>
-                      </>
-                    ) : (
-                      <span style={{ color: 'var(--text-muted)' }}>Aucun sujet</span>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <PageNav
+            page={currentPage}
+            totalPages={totalPages}
+            hrefFor={(page) => `/forum/${id}?page=${page}`}
+            linkComponent={Link}
+            className="self-center"
+          />
         </div>
-      )}
 
-      <div className="forums-list" style={{ borderTop: '1px solid var(--glass-border)', borderRadius: '12px' }}>
-        <div className="forum-item-header" style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 120px 200px',
-          padding: '1rem 1.5rem',
-          background: 'rgba(255,255,255,0.03)',
-          borderBottom: '1px solid var(--glass-border)',
-          fontSize: '0.8rem',
-          color: 'var(--text-muted)',
-          textTransform: 'uppercase',
-          letterSpacing: '1px'
-        }}>
-          <span>Sujet</span>
-          <span>Messages</span>
-          <span style={{ paddingLeft: '1.5rem', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>Dernier message</span>
-        </div>
-
-        {topics.length > 0 ? topics.map((topic) => {
-          const topicView = topic.topicViews[0];
-          const topicHasNew = userId ? (!topicView || topic.updatedAt > topicView.lastViewedAt) : false;
-
-          return (
-            <Link key={topic.id} href={`/forum/topic/${topic.id}`} className={`forum-item ${topicHasNew ? 'has-new' : ''}`}>
-              <div className="forum-info">
-                <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: topicHasNew ? 'var(--unread-marker)' : 'var(--foreground)' }}>
-                  {topic.isSticky ? (
-                    <Pin size={16} className="text-secondary" style={{ transform: 'rotate(45deg)' }} />
-                  ) : topic.tournamentId ? (
-                    <Trophy size={16} style={{ color: topicHasNew ? 'var(--accent)' : 'var(--foreground)', opacity: topicHasNew ? 1 : 0.6 }} />
-                  ) : (
-                    <FileText size={16} style={{ color: topicHasNew ? 'var(--unread-marker)' : 'var(--text-secondary)' }} />
-                  )}
-                  <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
-                  
-                  {topic.tournament && (
-                    <>
-                      {topic.tournament.isCancelled ? (
-                        <span className="status-badge-inline cancelled">Annulé</span>
-                      ) : topic.tournament.isFinished ? (
-                        <span className="status-badge-inline finished">Terminé</span>
-                      ) : new Date(topic.tournament.date) < new Date() ? (
-                        <span className="status-badge-inline past">Passé</span>
-                      ) : null}
-                    </>
-                  )}
-
-                  {topic.isLocked && <LockIcon size={12} style={{ color: 'var(--primary)', opacity: 0.8 }} />}
-                  {topicHasNew && <Bell size={12} fill="var(--unread-marker)" color="var(--unread-marker)" className="animate-pulse-subtle" />}
-                </h3>
-                <p>Par {topic.author.name} le {new Date(topic.createdAt).toLocaleDateString("fr-FR")}</p>
-              </div>
-
-              <div className="forum-stats">
-                <div><span className="stat-val">{topic._count.posts}</span> msgs</div>
-                <div><span className="stat-val">{(topic.views || 0).toLocaleString("fr-FR")}</span> vues</div>
-              </div>
-
-              <div className="forum-last-post">
-                <span className="last-post-meta">
-                  Dernière act.
-                  <br />
-                  {new Date(topic.updatedAt).toLocaleDateString("fr-FR")}
-                </span>
-              </div>
-            </Link>
-          );
-        }) : (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            Aucun sujet dans ce forum pour le moment.
-          </div>
-        )}
+        <ForumSidebar
+          forumId={id}
+          forumName={forum.name}
+          categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined}
+          parentForumId={id}
+          isLocked={forum.isLocked}
+          isTournamentForum={forum.isTournamentForum}
+        />
       </div>
-
-     </div>
-      <ForumSidebar 
-        forumId={id} 
-        forumName={forum.name} 
-        categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined} 
-        parentForumId={id} 
-        isLocked={forum.isLocked}
-        isTournamentForum={forum.isTournamentForum}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
     </div>
-  </main>
-  </div>
   );
 }

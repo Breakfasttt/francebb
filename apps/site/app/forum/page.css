@@ -1,7 +1,4 @@
-.forum-page,
-.forum-detail-page,
-.topic-detail-page,
-.unread-page-wrapper {
+.topic-detail-page {
   padding-top: 0.5rem;
   max-width: 1400px;
   margin: 0 auto;
@@ -29,19 +26,11 @@
   box-sizing: border-box;
 }
 
-.forum-layout.no-sidebar {
-  grid-template-columns: 1fr !important;
-}
-
 .forum-main-content {
   min-width: 0;
   /* Prevents content overflow */
   min-height: calc(100vh);
   /* Forces grid row to be tall enough for sidebar to stick */
-}
-
-.forum-category {
-  margin-bottom: 2.5rem;
 }
 
 .category-header {
@@ -53,16 +42,6 @@
   gap: 1rem;
   border-left: 4px solid var(--foreground);
   transition: all 0.2s ease;
-}
-
-.category-header.accordion-header:hover {
-  background: var(--primary-transparent);
-  border-left-width: 8px;
-}
-
-.forum-category.collapsed .category-header {
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
 }
 
 .animate-fade-in {
@@ -138,84 +117,6 @@
   border-radius: 0 0 12px 12px;
 }
 
-.forum-item {
-  display: grid;
-  grid-template-columns: 1fr 120px 200px;
-  padding: 1.4rem 1.8rem;
-  border-bottom: 1px solid var(--glass-border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  color: inherit;
-  border-left: 0 solid transparent;
-}
-
-.forum-item:last-child {
-  border-bottom: none;
-  border-radius: 0 0 12px 12px;
-}
-
-.forum-item:hover {
-  background: var(--primary-transparent);
-  border-left: 6px solid var(--primary);
-  box-shadow: -10px 0 20px rgba(0, 0, 0, 0.2);
-}
-
-.forum-info h3 {
-  margin: 0 0 0.3rem 0;
-  color: var(--foreground);
-  font-size: 1.1rem;
-}
-
-.forum-item.has-new h3 {
-  color: var(--unread-marker);
-  /* Theme-aware color for new content */
-}
-
-.forum-info p {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-}
-
-.forum-stats {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.stat-val {
-  color: var(--foreground);
-  font-weight: 600;
-}
-
-.forum-last-post {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  border-left: 1px solid var(--glass-border);
-  padding-left: 1.5rem;
-}
-
-.last-post-title {
-  color: var(--accent);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px;
-}
-
-.last-post-meta {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 0.2rem;
-}
-
 
 /* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
 
@@ -252,13 +153,6 @@
   overflow: hidden;
 }
 
-.sidebar-widget-group {
-  display: flex;
-  gap: 0.6rem;
-  align-items: stretch;
-  width: 100%;
-}
-
 .sidebar-widget h3 {
   margin: 0 0 0.5rem 0;
   font-size: 0.95rem;
@@ -291,12 +185,6 @@
 
 /* Legacy .widget-button styles have been replaced by the standardized Button system */
 
-.admin-actions-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
 .recent-posts-list {
   display: flex;
   flex-direction: column;
@@ -328,10 +216,6 @@
   transition: color 0.2s ease;
 }
 
-.recent-post-item.has-new .recent-post-topic {
-  color: var(--accent);
-}
-
 .recent-post-meta {
   font-size: 0.7rem;
   color: var(--text-muted);
@@ -340,22 +224,6 @@
 .message-widget {
   border: 1px solid var(--secondary);
   background: rgba(var(--secondary-rgb), 0.1);
-}
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 3s infinite ease-in-out;
-}
-
-@keyframes pulse-subtle {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.7;
-  }
 }
 
 .forum-post-card {
@@ -611,66 +479,6 @@
 .bb-accordion-content {
   background: transparent;
   color: var(--text-secondary);
-}
-
-/* Tournaments Status Badges for Lists */
-.status-badge-inline {
-  font-size: 0.6rem;
-  font-weight: 900;
-  padding: 0.1rem 0.6rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.5rem;
-  line-height: 1;
-  vertical-align: middle;
-  height: 18px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-}
-
-.status-badge-inline.cancelled {
-  background: #c21d1d;
-  color: white;
-  animation: heartbeat 2s infinite ease-in-out;
-  box-shadow: 0 0 10px rgba(194, 29, 29, 0.4);
-}
-
-.status-badge-inline.finished {
-  background: #444;
-  color: #ccc;
-  border: 1px solid #555;
-}
-
-.status-badge-inline.past {
-  background: rgba(255, 255, 255, 0.05);
-  color: #888;
-  border: 1px solid var(--glass-border);
-}
-
-@keyframes heartbeat {
-  0% {
-    transform: scale(1);
-  }
-
-  14% {
-    transform: scale(1.1);
-  }
-
-  28% {
-    transform: scale(1);
-  }
-
-  42% {
-    transform: scale(1.1);
-  }
-
-  70% {
-    transform: scale(1);
-  }
 }
 
 /* ==========================================================================

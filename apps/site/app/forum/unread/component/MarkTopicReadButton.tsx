@@ -1,10 +1,14 @@
 "use client";
 
+/**
+ * Bouton « Marquer ce sujet comme lu » d'une ligne de la liste des non-lus (refonte, carte 085) : une coche de
+ * 44 pixels. Le sujet quitte la liste dès que la page est rafraîchie.
+ */
 import { useTransition } from "react";
 import { Check } from "lucide-react";
+import { Button } from "@bbfrance/ui";
 import { markTopicAsRead } from "@/app/forum/actions";
 import { useRouter } from "next/navigation";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
 
 interface MarkTopicReadButtonProps {
   topicId: string;
@@ -27,33 +31,17 @@ export default function MarkTopicReadButton({ topicId }: MarkTopicReadButtonProp
   };
 
   return (
-    <Tooltip text="Marquer ce sujet comme lu">
-      <button
-        onClick={handleMarkAsRead}
-        disabled={isPending}
-        className="mark-topic-read-btn"
-        style={{
-          background: 'none',
-          border: 'none',
-          padding: '8px',
-          color: '#666',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 0.2s ease',
-          opacity: isPending ? 0.5 : 1,
-          borderRadius: '8px'
-        }}
-      >
-        <Check size={18} />
-      </button>
-      <style jsx>{`
-        .mark-topic-read-btn:hover {
-          color: #22c55e !important;
-          background: rgba(34, 197, 94, 0.1) !important;
-        }
-      `}</style>
-    </Tooltip>
+    <Button
+      type="button"
+      variant="quiet"
+      size="tap-icon"
+      onClick={handleMarkAsRead}
+      disabled={isPending}
+      aria-label="Marquer ce sujet comme lu"
+      title="Marquer ce sujet comme lu"
+      className="shrink-0 hover:text-bb-success-text"
+    >
+      <Check size={20} aria-hidden="true" />
+    </Button>
   );
 }

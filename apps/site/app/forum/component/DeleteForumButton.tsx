@@ -1,11 +1,14 @@
 "use client";
 
+/**
+ * Bouton « Supprimer le forum » de la colonne du forum (modérateurs), avec une fenêtre de confirmation.
+ * La suppression emporte les sous-forums, les sujets et les messages. Style de la refonte (ADR 0006, carte 085).
+ */
 import { useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 import { deleteForum } from "@/app/forum/actions";
-import { toast } from "@bbfrance/ui";
+import { Button, toast } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
-import DangerButton from "@/common/components/Button/DangerButton";
 
 interface DeleteForumButtonProps {
   forumId: string;
@@ -37,13 +40,9 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
 
   return (
     <>
-      <DangerButton 
-        onClick={() => setIsModalOpen(true)}
-        icon={Trash2}
-        fullWidth
-      >
-        Supprimer forum
-      </DangerButton>
+      <Button type="button" variant="danger" size="tap" className="w-full justify-start" onClick={() => setIsModalOpen(true)}>
+        <Trash2 size={18} aria-hidden="true" /> Supprimer le forum
+      </Button>
 
       <Modal
         isOpen={isModalOpen}
