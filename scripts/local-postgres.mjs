@@ -51,7 +51,8 @@ function serverName(name) {
 
 function isRunning(name) {
   const list = prisma("dev ls", { ignoreErrors: true });
-  return list.split("\n").some((line) => line.includes(` ${serverName(name)} `) && line.includes("running"));
+  // Le mot entier « running » : l'état d'une base arrêtée, « not_running », le contient aussi (carte 066)
+  return list.split("\n").some((line) => line.includes(` ${serverName(name)} `) && /\srunning(\s|$)/.test(line));
 }
 
 function writeDevEnv(name, url) {

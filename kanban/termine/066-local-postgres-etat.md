@@ -18,3 +18,7 @@ Repéré pendant la carte 017. `scripts/local-postgres.mjs` décide qu'une base 
 
 - Comparer l'état exact (ou un mot entier) au lieu de chercher une partie du texte.
 - Vérifier les deux cas : base arrêtée puis démarrée, et base déjà démarrée.
+
+## Résultat
+
+`isRunning` (`scripts/local-postgres.mjs`) cherche maintenant le mot entier `running`, précédé d'un espace : `not_running` n'est plus pris pour une base démarrée. Vérifié avec la base locale du hub : arrêtée, `pnpm db:start` la démarre ; lancé une seconde fois, il réutilise la base déjà démarrée. La base a ensuite été remise à l'arrêt.
