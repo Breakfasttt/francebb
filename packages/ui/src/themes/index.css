@@ -1,0 +1,14 @@
+/*
+ * Les 8 thèmes du site en variables v2 (ADR 0006). Chaque fichier définit les mêmes variables `--bb-*`
+ * sous `[data-theme="<id>"]` ; Vestiaire est aussi posé sur :root (thème par défaut).
+ * Un nouveau thème = un fichier de plus ici, une entrée dans apps/site/lib/themes.ts, et le test de contraste
+ * (apps/site/tests/e2e/contraste.spec.ts) le vérifie automatiquement.
+ */
+@import "./vestiaire.css";
+@import "./saison3.css";
+@import "./naf.css";
+@import "./default.css";
+@import "./light.css";
+@import "./blood.css";
+@import "./malpierre.css";
+@import "./nehekhara.css";

@@ -1,0 +1,110 @@
+/*
+ * Thème « Vestiaire » pour les écrans pas encore refaits (ADR 0006).
+ * Les anciennes variables (v1) sont ici des alias des variables v2 définies dans
+ * packages/ui/src/themes/vestiaire.css : un seul endroit à changer pour la couleur.
+ * Ce fichier disparaît avec les variables v1 à la fin de la refonte (carte 101).
+ */
+[data-theme='vestiaire'] {
+  --background: var(--bb-bg);
+  --bg-gradient: var(--bb-bg);
+  --foreground: var(--bb-text);
+  --primary: var(--bb-accent);
+  --primary-hover: var(--bb-accent-hover);
+  --secondary: var(--bb-surface-2);
+  --accent: var(--bb-accent-text);
+  --card-bg: var(--bb-surface);
+  --glass-border: var(--bb-border);
+  --glass-shadow: var(--bb-shadow);
+  --nav-bg: var(--bb-nav-bg);
+  --footer-bg: var(--bb-nav-bg);
+  --text-muted: var(--bb-text-muted);
+  --text-secondary: var(--bb-text-muted);
+  --glass-bg: var(--bb-surface);
+  --btn-shadow: rgba(200, 16, 46, 0.35);
+  --unread-marker: var(--bb-unread);
+  --primary-transparent: rgba(200, 16, 46, 0.2);
+  --category-header-bg: var(--bb-surface-2);
+  --admin-bg: rgba(200, 16, 46, 0.05);
+  --admin-border: rgba(200, 16, 46, 0.3);
+  --danger: var(--bb-danger-text);
+  --warning: var(--bb-warning-text);
+  --success: var(--bb-success-text);
+  --highlight: var(--bb-accent-text);
+  --highlight-hover: var(--bb-accent-text);
+  --header-foreground: var(--bb-text);
+  --category-hover-bg: var(--bb-surface-2);
+  --theme-overlay: rgba(255, 255, 255, 0.12);
+  --nav-btn-bg: rgba(255, 255, 255, 0.08);
+  --nav-btn-hover-bg: rgba(255, 255, 255, 0.14);
+  --nav-btn-border: var(--bb-border);
+  --nav-btn-color: var(--bb-text);
+  --badge-text: var(--bb-on-accent);
+  --accent-foreground: var(--bb-bg);
+
+  --home-card-bg: var(--bb-surface);
+  --home-card-border: var(--bb-border);
+  --home-mini-btn-bg: rgba(255, 255, 255, 0.06);
+  --home-mini-btn-color: var(--bb-accent-text);
+
+  --accent-rgb: 255, 123, 128;
+  --accent-transparent: var(--bb-accent-soft);
+  --success-rgb: 74, 222, 128;
+  --primary-rgb: 200, 16, 46;
+
+  --btn-classic-bg: var(--bb-surface-2);
+  --btn-classic-text: var(--bb-text);
+  --btn-classic-border: var(--bb-border);
+  --btn-classic-hover: rgba(255, 255, 255, 0.08);
+
+  --btn-cta-bg: var(--bb-accent);
+  --btn-cta-text: var(--bb-on-accent);
+  --btn-cta-glow: rgba(200, 16, 46, 0.35);
+  --btn-cta-hover: var(--bb-accent-hover);
+  --btn-cta-shiny: rgba(255, 255, 255, 0.2);
+
+  --tool-bg: var(--bb-bg);
+  --tool-box-bg: var(--bb-surface);
+  --tool-box-border: var(--bb-border);
+  --tool-box-header-bg: var(--bb-surface-2);
+  --tool-box-header-text: var(--bb-text);
+  --tool-text: var(--bb-text);
+  --tool-workspace-bg: transparent;
+  --tool-tooltip-bg: var(--bb-surface);
+  --tool-tooltip-border: var(--bb-border);
+  --tool-tooltip-text: var(--bb-text);
+  --tool-tooltip-stat-val: var(--bb-accent-text);
+  --tool-tooltip-stat-label: var(--bb-text-muted);
+
+  --input-bg: var(--bb-surface-2);
+  --input-color: var(--bb-text);
+  --input-border: 1px solid var(--bb-border);
+  --input-radius: var(--bb-radius-md);
+
+  --header-container-bg: var(--bb-surface);
+  --header-container-border-bottom: 1px solid var(--bb-border);
+  --header-title-family: var(--bb-font-sans);
+  --header-title-shadow: none;
+  --header-title-weight: 800;
+  --header-subtitle-color: var(--bb-text-muted);
+  --header-subtitle-weight: 600;
+
+  --back-btn-size: 44px;
+  --back-btn-bg: var(--bb-surface-2);
+  --back-btn-icon-color: var(--bb-text);
+  --back-btn-border: 1px solid var(--bb-border);
+  --back-btn-radius: var(--bb-radius-md);
+  --back-btn-shadow: none;
+
+  --card-border-width: 1px;
+  --card-shadow-custom: none;
+  --heading-decoration-border: none;
+  --nav-border-bottom: 1px solid var(--bb-nav-border);
+
+  --btn-danger-bg: var(--bb-danger);
+  --btn-danger-text: var(--bb-on-danger);
+  --btn-danger-hover: var(--bb-accent-hover);
+
+  --btn-admin-bg: #7c3aed;
+  --btn-admin-text: #ffffff;
+  --btn-admin-hover: #6d28d9;
+}

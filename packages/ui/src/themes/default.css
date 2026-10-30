@@ -1,0 +1,30 @@
+/* Thème « Sombre » (identifiant historique `default`) : noir profond, rouge et or, avec verre dépoli. */
+[data-theme="default"] {
+  --bb-scheme: dark;
+  --bb-bg: #0a0a0c;
+  --bb-surface: #17171c;
+  --bb-surface-2: #222229;
+  --bb-border: #2e2e36;
+  --bb-text: #f0f0f5;
+  --bb-text-muted: #a0a0ab;
+  --bb-accent: #c21d1d;
+  --bb-accent-hover: #a51818;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #ff6b6b;
+  --bb-accent-soft: rgba(255, 107, 107, 0.14);
+  --bb-danger: #c21d1d;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #ff6b6b;
+  --bb-success-text: #4ade80;
+  --bb-warning-text: #fbbf24;
+  --bb-unread: #ffd700;
+  --bb-rank: #ffd700;
+  --bb-focus: #ffd700;
+  --bb-nav-bg: #0e0e11;
+  --bb-nav-border: #2e2e36;
+  --bb-nav-text: #a0a0ab;
+  --bb-nav-active: #ffd700;
+  --bb-overlay: rgba(0, 0, 0, 0.65);
+  --bb-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --bb-glass-blur: 10px;
+}

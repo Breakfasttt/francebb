@@ -477,6 +477,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         .theme-card:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
         .theme-card.active { border-color: var(--primary); background: rgba(194, 29, 29, 0.05); }
         .theme-preview { height: 48px; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
+        .theme-preview.vestiaire { background: linear-gradient(135deg, #111215 0%, #252830 50%, #c8102e 100%); }
         .theme-preview.default { background: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 50%, #c21d1d 100%); }
         .theme-preview.light { background: linear-gradient(135deg, #f0f1f4 0%, #ffffff 50%, #c21d1d 100%); }
         .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #4a0000 50%, #ff0000 100%); }

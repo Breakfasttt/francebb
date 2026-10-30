@@ -1,0 +1,30 @@
+/* Thème « Clair » : gris doux et blanc, accent rouge. */
+[data-theme="light"] {
+  --bb-scheme: light;
+  --bb-bg: #e5e7eb;
+  --bb-surface: #ffffff;
+  --bb-surface-2: #f1f2f4;
+  --bb-border: #cfd3da;
+  --bb-text: #16181d;
+  --bb-text-muted: #4b5260;
+  --bb-accent: #c21d1d;
+  --bb-accent-hover: #a51818;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #b01a1a;
+  --bb-accent-soft: rgba(194, 29, 29, 0.08);
+  --bb-danger: #c21d1d;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #b01a1a;
+  --bb-success-text: #1f6b32;
+  --bb-warning-text: #8a5a00;
+  --bb-unread: #8a6508;
+  --bb-rank: #8a6508;
+  --bb-focus: #1d4ed8;
+  --bb-nav-bg: #ffffff;
+  --bb-nav-border: #cfd3da;
+  --bb-nav-text: #4b5260;
+  --bb-nav-active: #b01a1a;
+  --bb-overlay: rgba(22, 24, 29, 0.45);
+  --bb-shadow: 0 8px 24px rgba(22, 24, 29, 0.12);
+  --bb-glass-blur: 0px;
+}

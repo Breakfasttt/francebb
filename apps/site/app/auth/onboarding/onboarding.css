@@ -66,6 +66,7 @@
   width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
 }
 .theme-dot.active { border-color: var(--accent); transform: scale(1.2); }
+.theme-dot.vestiaire { background: linear-gradient(135deg, #111215, #c8102e); }
 .theme-dot.saison3 { background: linear-gradient(135deg, #efebdd, #004175); }
 .theme-dot.default { background: #1a1a20; }
 .theme-dot.blood { background: #4a0000; }

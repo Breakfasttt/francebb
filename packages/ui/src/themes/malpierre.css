@@ -1,0 +1,30 @@
+/* Thème « Malpierre » : sombre, vert de la pierre distordante des Skavens. */
+[data-theme="malpierre"] {
+  --bb-scheme: dark;
+  --bb-bg: #020a02;
+  --bb-surface: #0a160a;
+  --bb-surface-2: #112211;
+  --bb-border: #1f381f;
+  --bb-text: #e6f2e2;
+  --bb-text-muted: #9fb89a;
+  --bb-accent: #0a4d0a;
+  --bb-accent-hover: #083d08;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #6fb24f;
+  --bb-accent-soft: rgba(111, 178, 79, 0.14);
+  --bb-danger: #b3261e;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #ff8a80;
+  --bb-success-text: #8fe36a;
+  --bb-warning-text: #e6d35c;
+  --bb-unread: #b6f07a;
+  --bb-rank: #d4c25a;
+  --bb-focus: #b6f07a;
+  --bb-nav-bg: #010601;
+  --bb-nav-border: #1f381f;
+  --bb-nav-text: #9fb89a;
+  --bb-nav-active: #b6f07a;
+  --bb-overlay: rgba(0, 0, 0, 0.65);
+  --bb-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --bb-glass-blur: 0px;
+}

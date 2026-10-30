@@ -1,3 +1,6 @@
+/* Les 8 thèmes en variables v2 (doit rester le premier import du fichier). */
+@import "./themes/index.css";
+
 /*
  * Pont des tokens : les noms shadcn/Tailwind (`bg-primary`, `text-muted-foreground`, `border-border`…) pointent sur
  * les variables des 7 thèmes du site (app/theme/theme.*.css). Aucune couleur ici : changer de thème change tout.
@@ -21,4 +24,60 @@
   --color-warning: var(--warning);
   --color-border: var(--glass-border);
   --color-ring: var(--primary);
+}
+
+/*
+ * Variables v2 de la refonte (ADR 0006), définies par chaque thème dans ./themes/ :
+ * - fonds : --bb-bg (page), --bb-surface (cartes, panneaux), --bb-surface-2 (zones en relief : citation, champ) ;
+ * - texte : --bb-text (principal), --bb-text-muted (secondaire, toujours lisible : contraste AA) ;
+ * - accent : --bb-accent (fond des boutons principaux), --bb-accent-hover, --bb-on-accent (texte posé dessus),
+ *   --bb-accent-text (texte ou icône d'accent posé sur un fond), --bb-accent-soft (fond léger d'un élément actif) ;
+ * - états : --bb-danger / --bb-on-danger / --bb-danger-text, --bb-success-text, --bb-warning-text ;
+ * - forum : --bb-unread (non-lu), --bb-rank (cadre et badge de rang) ;
+ * - --bb-focus (contour du focus clavier), --bb-border ;
+ * - navigation : --bb-nav-bg, --bb-nav-border, --bb-nav-text, --bb-nav-active ;
+ * - --bb-overlay (fond derrière une fenêtre), --bb-shadow, --bb-glass-blur (verre dépoli : 0px = désactivé),
+ *   --bb-scheme (light ou dark, pour les contrôles natifs du navigateur).
+ * Les valeurs ci-dessous ne dépendent pas du thème.
+ */
+:root {
+  --bb-font-sans: var(--font-bb, "Inter"), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --bb-radius-sm: 8px;
+  --bb-radius-md: 12px;
+  --bb-radius-lg: 16px;
+  --bb-radius-full: 999px;
+  --bb-tap: 44px;
+}
+
+/* Classes Tailwind des variables v2 : `bg-bb-surface`, `text-bb-text-muted`, `border-bb-border`, etc. */
+@theme inline {
+  --color-bb-bg: var(--bb-bg);
+  --color-bb-surface: var(--bb-surface);
+  --color-bb-surface-2: var(--bb-surface-2);
+  --color-bb-border: var(--bb-border);
+  --color-bb-text: var(--bb-text);
+  --color-bb-text-muted: var(--bb-text-muted);
+  --color-bb-accent: var(--bb-accent);
+  --color-bb-accent-hover: var(--bb-accent-hover);
+  --color-bb-on-accent: var(--bb-on-accent);
+  --color-bb-accent-text: var(--bb-accent-text);
+  --color-bb-accent-soft: var(--bb-accent-soft);
+  --color-bb-danger: var(--bb-danger);
+  --color-bb-on-danger: var(--bb-on-danger);
+  --color-bb-danger-text: var(--bb-danger-text);
+  --color-bb-success-text: var(--bb-success-text);
+  --color-bb-warning-text: var(--bb-warning-text);
+  --color-bb-unread: var(--bb-unread);
+  --color-bb-rank: var(--bb-rank);
+  --color-bb-focus: var(--bb-focus);
+  --color-bb-nav-bg: var(--bb-nav-bg);
+  --color-bb-nav-border: var(--bb-nav-border);
+  --color-bb-nav-text: var(--bb-nav-text);
+  --color-bb-nav-active: var(--bb-nav-active);
+  --color-bb-overlay: var(--bb-overlay);
+  --radius-bb-sm: var(--bb-radius-sm);
+  --radius-bb-md: var(--bb-radius-md);
+  --radius-bb-lg: var(--bb-radius-lg);
+  --shadow-bb: var(--bb-shadow);
+  --font-bb-sans: var(--bb-font-sans);
 }

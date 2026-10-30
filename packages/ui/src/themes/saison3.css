@@ -1,0 +1,30 @@
+/* Thème « Saison 3 » : clair, parchemin et bleu marine, barre de navigation rouge (livre de règles officiel). */
+[data-theme="saison3"] {
+  --bb-scheme: light;
+  --bb-bg: #efebdd;
+  --bb-surface: #fbf8ef;
+  --bb-surface-2: #e9e2cd;
+  --bb-border: #d3c9ae;
+  --bb-text: #1d1a15;
+  --bb-text-muted: #5b5446;
+  --bb-accent: #9e1d1d;
+  --bb-accent-hover: #7d1515;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #9e1d1d;
+  --bb-accent-soft: rgba(158, 29, 29, 0.1);
+  --bb-danger: #9e1d1d;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #9e1d1d;
+  --bb-success-text: #1f6b32;
+  --bb-warning-text: #8a5a00;
+  --bb-unread: #004175;
+  --bb-rank: #8a6a12;
+  --bb-focus: #004175;
+  --bb-nav-bg: #9e1d1d;
+  --bb-nav-border: #7d1515;
+  --bb-nav-text: #f6dcdc;
+  --bb-nav-active: #ffcc00;
+  --bb-overlay: rgba(29, 26, 21, 0.5);
+  --bb-shadow: 0 8px 24px rgba(29, 26, 21, 0.18);
+  --bb-glass-blur: 0px;
+}

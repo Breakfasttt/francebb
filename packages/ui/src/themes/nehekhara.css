@@ -1,0 +1,30 @@
+/* Thème « Néhékhara » : sombre, ambre et turquoise des Rois des Tombes. */
+[data-theme="nehekhara"] {
+  --bb-scheme: dark;
+  --bb-bg: #0b0e14;
+  --bb-surface: #141924;
+  --bb-surface-2: #1c2331;
+  --bb-border: #2a3344;
+  --bb-text: #f3eee2;
+  --bb-text-muted: #a9b0bd;
+  --bb-accent: #d97706;
+  --bb-accent-hover: #e8860c;
+  --bb-on-accent: #0b0e14;
+  --bb-accent-text: #f59e0b;
+  --bb-accent-soft: rgba(245, 158, 11, 0.14);
+  --bb-danger: #c8102e;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #ff8a8a;
+  --bb-success-text: #4ade80;
+  --bb-warning-text: #fbbf24;
+  --bb-unread: #3fc1b4;
+  --bb-rank: #f59e0b;
+  --bb-focus: #3fc1b4;
+  --bb-nav-bg: #080a0f;
+  --bb-nav-border: #2a3344;
+  --bb-nav-text: #a9b0bd;
+  --bb-nav-active: #f59e0b;
+  --bb-overlay: rgba(0, 0, 0, 0.65);
+  --bb-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --bb-glass-blur: 0px;
+}
