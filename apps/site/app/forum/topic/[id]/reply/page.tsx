@@ -57,6 +57,7 @@ export default async function ReplyPage({
       quoteData = {
         postId: post.id,
         author: post.authorId,
+        authorName: post.author.name,
         content: post.content
       };
     }
@@ -93,7 +94,8 @@ export default async function ReplyPage({
           <ReplyForm 
             topicId={id} 
             quotePostId={quoteData?.postId} 
-            quoteAuthor={quoteData?.author} 
+            quoteAuthor={quoteData?.author}
+            quoteAuthorName={quoteData?.authorName ?? undefined}
             quoteContent={quoteData?.content} 
           />
 

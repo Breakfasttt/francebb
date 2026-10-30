@@ -9,16 +9,18 @@ import ClassicButton from "@/common/components/Button/ClassicButton";
 import CTAButton from "@/common/components/Button/CTAButton";
 import { useRouter } from "next/navigation";
 
-export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteContent }: { topicId: string; quotePostId?: string; quoteAuthor?: string; quoteContent?: string }) {
+// quoteAuthor est l'identifiant de l'auteur cité ; quoteAuthorName est son pseudo,
+// ajouté en troisième champ de la balise pour que la citation affiche le pseudo.
+export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteAuthorName, quoteContent }: { topicId: string; quotePostId?: string; quoteAuthor?: string; quoteAuthorName?: string; quoteContent?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [initialValue, setInitialValue] = useState("");
 
   useEffect(() => {
     if (quotePostId && quoteAuthor && quoteContent) {
-      setInitialValue(`[quote=${quoteAuthor}|${quotePostId}]${quoteContent}[/quote]\n`);
+      setInitialValue(`[quote=${quoteAuthor}|${quotePostId}|${quoteAuthorName ?? ""}]${quoteContent}[/quote]\n`);
     }
-  }, [quotePostId, quoteAuthor, quoteContent]);
+  }, [quotePostId, quoteAuthor, quoteAuthorName, quoteContent]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

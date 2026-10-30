@@ -57,6 +57,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const page = parseInt((params.page as string) || "1", 10);
   
   const POSTS_PER_PAGE = 20;
+  // Nombre de messages par page dans un sujet (même valeur que la page du sujet).
+  const TOPIC_POSTS_PER_PAGE = 20;
   const skip = (page - 1) * POSTS_PER_PAGE;
 
   // 1. Fetch Forums for the select options
@@ -151,6 +153,29 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   const totalPages = Math.max(1, Math.ceil(totalMatches / POSTS_PER_PAGE));
 
+  // Lien vers chaque message : on compte les messages qui le précèdent dans son sujet
+  // (même ordre que la page du sujet : date de création puis identifiant) pour en
+  // déduire la page du sujet qui le contient. Une requête de comptage par résultat, 20 au plus.
+  const topicPageByPostId = new Map<string, number>();
+  const countsBefore = await Promise.all(
+    posts.map(post =>
+      prisma.post.count({
+        where: {
+          topicId: post.topicId,
+          OR: [
+            { createdAt: { lt: post.createdAt } },
+            { createdAt: post.createdAt, id: { lt: post.id } }
+          ]
+        }
+      })
+    )
+  );
+  posts.forEach((post, i) => {
+    topicPageByPostId.set(post.id, Math.floor(countsBefore[i] / TOPIC_POSTS_PER_PAGE) + 1);
+  });
+  const postHref = (post: { id: string; topicId: string }) =>
+    `/forum/topic/${post.topicId}?page=${topicPageByPostId.get(post.id) ?? 1}#post-${post.id}`;
+
   return (
     <div className="container search-page-container fade-in">
       <PageHeader
@@ -187,7 +212,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                     <div>
                       <h3 className="post-result-title">
                         {post.topic.tournamentId && <Trophy size={18} style={{ color: "var(--accent)", opacity: 0.8 }} />}
-                        <Link href={`/forum/topic/${post.topicId}#${post.id}`}>
+                        <Link href={postHref(post)}>
                           Sujet: {post.topic.title}
                         </Link>
                       </h3>
@@ -212,7 +237,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                       </div>
                     </div>
                     
-                    <ClassicButton href={`/forum/topic/${post.topicId}#${post.id}`} size="sm">
+                    <ClassicButton href={postHref(post)} size="sm">
                       Voir
                     </ClassicButton>
                   </div>
