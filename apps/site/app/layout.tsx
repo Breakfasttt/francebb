@@ -4,7 +4,7 @@ import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
 import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWidget";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
-import { Github, BarChart3 } from "lucide-react";
+import { Github, BarChart3, Image as ImageIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
@@ -74,6 +74,9 @@ export default async function RootLayout({
             </a>
             <Link href="/statistiques" className="footer-link">
               <BarChart3 size={14} /> Statistiques
+            </Link>
+            <Link href="/media" className="footer-link">
+              <ImageIcon size={14} /> Médias
             </Link>
           </footer>
 

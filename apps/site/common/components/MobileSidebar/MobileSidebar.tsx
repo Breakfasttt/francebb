@@ -102,7 +102,8 @@ export default function MobileSidebar({
         <div className="mobile-sidebar-footer">
           <div className="mobile-footer-links">
             <Link href="/mentions-legales">Mentions légales</Link>
-            <a 
+            <Link href="/media">Médias</Link>
+            <a
               href="https://github.com/Breakfasttt/francebb" 
               target="_blank" 
               rel="noopener noreferrer"

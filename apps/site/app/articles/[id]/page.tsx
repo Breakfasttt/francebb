@@ -81,7 +81,7 @@ export default async function ArticleDetailPage({
             />
             <div className="author-details">
               <span className="author-label">Écrit par</span>
-              <Link href={`/profile?id=${article.authorId}`} className="author-name">
+              <Link href={`/spy/${article.authorId}`} className="author-name">
                 {article.author.name}
               </Link>
               <div className="author-meta">

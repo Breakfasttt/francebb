@@ -114,7 +114,7 @@ export default function ConversationView({ conversationId, onBack, onUpdate }: C
                             <div className="participants-list">
                                 {conversation.participants.map((p: any) => (
                                     <Tooltip key={p.user.id} content={p.user.name} position="bottom">
-                                        <Link href={`/profile/${p.user.id}`}>
+                                        <Link href={`/spy/${p.user.id}`}>
                                             <MemberAvatarImage
                                                 image={p.user.image}
                                                 alt={p.user.name}

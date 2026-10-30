@@ -45,6 +45,9 @@ export default async function TournamentsPage({
   const isTGE = params.isTGE === "true";
   const isTSC = params.isTSC === "true";
   
+  // Identifiant de la ligue, envoyé par le bouton « Voir tout » de la fiche d'une ligue
+  const ligueId = params.ligueId as string | undefined;
+
   const sort = (params.sort as string) || "date_asc";
   const view = (params.view as string) || "grid";
   const showHistory = params.history === "true";
@@ -66,6 +69,7 @@ export default async function TournamentsPage({
   }
 
   if (query) where.name = { contains: query, mode: "insensitive" };
+  if (ligueId) where.ligueId = ligueId;
   if (region) where.region = region;
   if (dept) where.departement = dept;
   if (edition) where.gameEdition = edition;

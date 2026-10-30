@@ -41,6 +41,7 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
     .map(([key, value]) => ({ key, value }));
 
   const filterLabels: Record<string, string> = {
+    ligueId: "Ligue",
     region: "Région",
     dept: "Département",
     edition: "Édition",
@@ -68,6 +69,8 @@ export default function ActiveFilters({ currentSort }: ActiveFiltersProps) {
       return "Non";
     }
     if (key === "isTeam" && value === "true") return "Par équipe";
+    // L'identifiant de la ligue n'a aucun sens pour le membre : on affiche un texte lisible.
+    if (key === "ligueId") return "sélectionnée";
     if (key === "platform") {
       if (value === "Tabletop") return "Plateau (IRL)";
       if (value === "VideoGame") return "Jeu Vidéo";
