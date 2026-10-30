@@ -8,33 +8,36 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 
 ## Ce que voit le coach
 
-- Sur le site, en mode hub : un bouton « Se connecter avec le compte BBFrance » sur `/auth/login`, qui l'envoie vers le hub.
-- `/sign-in` (sur le hub) : boutons « Continuer avec Discord » et « Continuer avec Google », puis un champ email et « Recevoir un lien de connexion ». En dev/test seulement, un formulaire de mot de passe. Une fois connecté, le coach revient automatiquement sur l'application qui l'a envoyé.
+- **Le hub est invisible** (carte 073). Sur le site, en mode hub, `/auth/login` garde ses boutons habituels : Discord, Google et lien par email. Chacun passe par le hub, qui enchaîne directement sur Discord, Google ou l'envoi du lien : le coach ne voit du hub qu'un court « Redirection… », ou, pour l'email, « Vérifie ta boîte mail ». Le lien reçu ramène le coach connecté sur le site, à condition de l'ouvrir dans le même navigateur. Un coach déjà connecté au hub revient sur le site sans aucun écran.
+- `/sign-in` (sur le hub), formulaire complet : boutons « Continuer avec Discord » et « Continuer avec Google », puis un champ email et « Recevoir un lien de connexion ». En dev/test seulement, un formulaire de mot de passe. Il ne s'affiche que si l'application n'indique pas de moyen de connexion, ou si le moyen indiqué échoue (avec le message d'erreur), ou si le lien par email a expiré.
 - `/consent` : écran « Autoriser l'accès » (Autoriser / Refuser), affiché seulement pour une application tierce. Les applications BBFrance sont enregistrées sans écran de consentement.
 - `/` (accueil du hub) : indique « Connecté : <pseudo> » ou « Non connecté ».
 - Sur le site, en mode hub, le bouton « Déconnexion » ferme aussi la session du hub : à la connexion suivante, le hub redemande les identifiants. Le coach revient ensuite sur l'accueil du site.
 - Un compte banni au hub voit « Ce compte BBFrance a été suspendu. » sur `/sign-in` et ne peut plus se connecter à aucune application.
 - Accès : tout visiteur. Le hub ne connaît aucun rôle métier (modérateur, admin) : ces rôles restent sur le site.
-- **Sur téléphone** : le hub n'a pas de fichier mobile, mais sa mise en page est simple et pensée pour : une seule carte centrée de largeur `min(420px, 100vw - 32px)` (16 px de marge de chaque côté), des boutons pleine largeur d'environ 44 px de haut, des champs à la taille de police du navigateur (pas de zoom iPhone). Points à vérifier : Discord et Google s'affichent même s'ils ne sont pas configurés ; un seul thème (les couleurs du thème par défaut du site), pas les 7 thèmes ; la reconnexion silencieuse sur Safari iOS n'est possible qu'avec un domaine parent commun (carte 035, non testable en local).
+- **Sur téléphone** : le hub n'a pas de fichier mobile, mais sa mise en page est simple et pensée pour : une seule carte centrée de largeur `min(420px, 100vw - 32px)` (16 px de marge de chaque côté), des boutons pleine largeur d'environ 44 px de haut, des champs à la taille de police du navigateur (pas de zoom iPhone). Points à vérifier : Discord et Google s'affichent même s'ils ne sont pas configurés au hub (le site les propose toujours en mode hub ; sans réglages au hub, le coach tombe sur le formulaire du hub avec une erreur) ; un seul thème (les couleurs du thème par défaut du site), pas les 7 thèmes ; la reconnexion silencieuse sur Safari iOS n'est possible qu'avec un domaine parent commun (carte 035, non testable en local).
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/hub/lib/auth.ts` | Instance Better Auth : base, fournisseurs Discord/Google (seulement si leurs clés existent), liaison de comptes, mot de passe dev, envoi du lien magique (`sendMagicLink`, qui appelle `lib/mail.ts`). |
-| `apps/hub/lib/mail.ts` | Envoi SMTP du lien magique (mêmes réglages `SMTP_*` que le site). Sans `SMTP_HOST`, le lien s'affiche dans la console, en développement seulement. |
+| `apps/hub/lib/mail.ts` | Envoi SMTP du lien magique (mêmes réglages `SMTP_*` que le site). Sans `SMTP_HOST`, le lien s'affiche dans la console, en développement seulement (en production, l'envoi est refusé et le lien n'est pas écrit dans les journaux). `HUB_DEV_MAIL_FILE` (tests) : fichier où écrire le dernier lien. |
+| `apps/hub/lib/oauthResume.ts` | `readRequestedLogin()` : lit le moyen demandé par l'application (`login_method` = `discord`, `google` ou `email`, avec `login_hint` pour l'email), seulement dans une demande signée par le hub. `magicLinkCallbacks()` : adresse de reprise du flux OIDC mise dans le lien magique. |
 | `apps/hub/lib/authPlugins.mjs` | `authPlugins()` : plugins `jwt`, `magicLink`, `oauthProvider` (pages, scopes, `customIdTokenClaims`) et `admin` (bannissement). Partagé avec le générateur de schéma. |
 | `apps/hub/lib/authClient.ts` | Client Better Auth du navigateur, utilisé par les pages `/sign-in` et `/consent`. |
 | `apps/hub/lib/clientSecret.mjs` | `hashClientSecret()` : hachage SHA-256 des secrets des applications clientes. |
 | `apps/hub/lib/prisma.mjs` | Client Prisma de la base du hub (`HUB_DATABASE_URL`), séparée de celle du site. |
 | `apps/hub/app/api/auth/[...all]/route.ts` | Toutes les adresses Better Auth : connexion, sessions, `authorize`, `token`, `userinfo`, clés. |
 | `apps/hub/app/api/auth/.well-known/openid-configuration/route.ts` | Document de découverte OIDC lu par le site. |
-| `apps/hub/app/sign-in/page.tsx`, `app/consent/page.tsx`, `app/page.tsx` | Pages de connexion, de consentement et d'accueil. `app/globals.css` : styles. |
+| `apps/hub/app/sign-in/page.tsx` | Page de connexion : connexion automatique (`AutoSignIn.tsx`) si l'application a indiqué un moyen, sinon formulaire complet (`SignInForm.tsx`). |
+| `app/consent/page.tsx`, `app/page.tsx` | Pages de consentement et d'accueil. `app/globals.css` : styles. |
 | `apps/hub/scripts/generate-schema.mjs` | Génère `prisma/schema.prisma` à partir des tables Better Auth (vérifié en CI). |
 | `apps/hub/scripts/register-client.mjs` | Enregistre une application cliente (avec son adresse de retour après déconnexion) et affiche une seule fois son id et son secret. |
 | `apps/hub/scripts/ban-user.mjs` | `pnpm ban <email> "<raison>"` ou `--unban` : bannit un compte, ferme ses sessions et révoque ses jetons d'accès aux applications. |
 | `apps/hub/scripts/e2e-setup.mjs`, `tests/sso.spec.ts` | Préparation sur base jetable et test de bout en bout hub ↔ site (`pnpm test:sso`, lancé en CI). |
-| `apps/site/auth.ts` | Côté site : fournisseur `hub` actif si `AUTH_MODE=hub` et `HUB_ISSUER` définis ; refus si `email_verified` n'est pas vrai. Garde l'id_token du hub dans le cookie de session chiffré (`hubIdToken`), jamais dans la session lisible par le navigateur, qui reçoit seulement `hubLogout: true`. |
+| `apps/site/app/auth/login/page.tsx` | En mode hub, les boutons Discord, Google et email appellent `signIn("hub", …, { login_method, login_hint })` : le moyen choisi part au hub dans la demande d'autorisation. Hors mode hub, rien ne change. |
+| `apps/site/auth.ts` | Côté site : fournisseur `hub` actif si `AUTH_MODE=hub` et `HUB_ISSUER` définis ; en mode hub, les fournisseurs directs Discord, Google et email du site sont retirés (une seule porte d'entrée : le hub) ; refus si `email_verified` n'est pas vrai. Garde l'id_token du hub dans le cookie de session chiffré (`hubIdToken`), jamais dans la session lisible par le navigateur, qui reçoit seulement `hubLogout: true`. |
 | `apps/site/app/auth/logout/route.ts` | Déconnexion du site (POST seulement) : lit l'id_token côté serveur (`getToken`), puis redirection vers la page de déconnexion du hub (`/oauth2/end-session`). Appelée par `SignInButton` quand `hubLogout` est vrai. |
 
 Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access`. L'id_token contient `name`, `picture`, `email`, `email_verified`.
@@ -50,6 +53,9 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 - Le chemin `/token` du plugin `jwt` est désactivé : il entre en conflit avec celui d'OAuth.
 - Un bannissement au hub n'agit pas sur une session déjà ouverte sur le site : elle dure jusqu'à son expiration. Pour un effet immédiat, bannir aussi le membre sur le site (son bannissement local reste en place).
 - La route de découverte OIDC force un type (`as unknown as`) : avec 4 plugins, TypeScript ne déduit plus tous les endpoints. Le test SSO vérifie que la route fonctionne.
+- Le moyen de connexion indiqué par le site n'est lu que dans une demande signée par le hub (paramètre `sig`), et seules les valeurs `discord`, `google` et `email` (avec une adresse valide) sont acceptées ; sinon, formulaire normal. Un rechargement de « Vérifie ta boîte mail » ne renvoie pas d'email (mémoire de l'onglet).
+- Le lien magique contient l'adresse `/api/auth/oauth2/authorize?…` de la demande d'origine, dont la partie après « ? » est encodée deux fois : Better Auth la décode deux fois. Si `pnpm test:sso` casse après une mise à jour de Better Auth, regarder d'abord `lib/oauthResume.ts`.
+- Le lien magique doit être ouvert dans le navigateur qui l'a demandé : le site y a rangé les cookies de vérification de la connexion (PKCE et state). Ailleurs, la connexion au hub réussit mais le site la refuse.
 - Le lien magique part par SMTP (carte 038). Si l'envoi échoue, le formulaire affiche une erreur au lieu de « Lien de connexion envoyé ». En production sans SMTP configuré, l'envoi est refusé.
 
 ## Les mots expliqués
@@ -62,9 +68,11 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 | Consentement | Écran où le coach accepte qu'une application lise son profil. Sauté pour les applications BBFrance (`skipConsent`). |
 | `email_verified` | Information de l'id_token : le hub certifie que le coach possède bien cet email. |
 | Déconnexion globale (`end_session`) | Adresse du hub qui ferme sa session ; l'application y envoie le coach avec son id_token au moment de la déconnexion. |
+| `login_method` | Paramètre propre à BBFrance, ajouté par le site à la demande d'autorisation : le moyen de connexion choisi sur son écran. Le hub le reçoit recopié et signé par le plugin, qui transmet les paramètres qu'il ne connaît pas. |
+| `login_hint` | Paramètre standard d'OIDC : l'adresse email saisie sur le site, pour que le hub envoie le lien sans la redemander. |
 | Reconnexion silencieuse | Une application obtient la connexion du hub sans rien demander, parce que le coach y est déjà connecté. |
 
 ## État
 
-- Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`).
+- Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`), hub invisible derrière les boutons du site (073 : parcours email testé sans aucun écran du hub, départ vers Discord et Google vérifié sans le suivre).
 - À faire : domaine et déploiement (035), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).

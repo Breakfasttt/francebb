@@ -1,8 +1,10 @@
 /**
  * Envoi des emails du hub (lien magique de connexion), par SMTP : même service et mêmes réglages que le site
  * (SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, EMAIL_FROM). Sans SMTP_HOST (développement), le lien est
- * seulement affiché dans la console.
+ * seulement affiché dans la console. Pour les tests automatiques (pnpm test:sso), HUB_DEV_MAIL_FILE indique en plus
+ * un fichier où écrire le dernier lien, que le test ouvre ensuite comme le ferait le membre depuis sa boîte mail.
  */
+import { writeFileSync } from "node:fs";
 import nodemailer from "nodemailer";
 
 const smtpPort = Number(process.env.SMTP_PORT || 465);
@@ -19,8 +21,10 @@ const transporter = process.env.SMTP_HOST
 /** Envoie le lien magique. Renvoie false si l'envoi a échoué (le hub affiche alors une erreur au membre). */
 export async function sendMagicLinkEmail(email: string, url: string): Promise<boolean> {
   if (!transporter) {
+    if (process.env.NODE_ENV === "production") return false;
     console.log(`[hub] SMTP non configuré : lien magique pour ${email} : ${url}`);
-    return process.env.NODE_ENV !== "production";
+    if (process.env.HUB_DEV_MAIL_FILE) writeFileSync(process.env.HUB_DEV_MAIL_FILE, JSON.stringify({ email, url }));
+    return true;
   }
   try {
     await transporter.sendMail({

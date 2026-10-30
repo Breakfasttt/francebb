@@ -50,21 +50,44 @@ const hubProviders = isHubAuthMode
     ]
   : [];
 
+/**
+ * Connexion directe du site (Discord, Google, lien par email), utilisée seulement hors mode hub.
+ * En mode hub, ces moyens passent tous par le hub (carte 073) : les garder ici laisserait une seconde porte
+ * d'entrée qui contourne le hub (bannissement global, déconnexion globale).
+ */
+const directProviders = isHubAuthMode
+  ? []
+  : [
+      Discord({
+        clientId: process.env.DISCORD_CLIENT_ID,
+        clientSecret: process.env.DISCORD_CLIENT_SECRET,
+        allowDangerousEmailAccountLinking: true,
+      }),
+      Google({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        allowDangerousEmailAccountLinking: true,
+      }),
+      Nodemailer({
+        server: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT),
+          secure: Number(process.env.SMTP_PORT) === 465,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASSWORD,
+          },
+        },
+        from: process.env.EMAIL_FROM,
+      }),
+    ];
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prismaWithEmail as unknown as Parameters<typeof PrismaAdapter>[0]),
   session: { strategy: "jwt" },
   providers: [
     ...hubProviders,
-    Discord({
-      clientId: process.env.DISCORD_CLIENT_ID,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: true,
-    }),
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      allowDangerousEmailAccountLinking: true,
-    }),
+    ...directProviders,
     Credentials({
       id: "dev-login",
       name: "Dev Login",
@@ -86,18 +109,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
       },
-    }),
-    Nodemailer({
-      server: {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: Number(process.env.SMTP_PORT) === 465,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
-        },
-      },
-      from: process.env.EMAIL_FROM,
     }),
   ],
   callbacks: {

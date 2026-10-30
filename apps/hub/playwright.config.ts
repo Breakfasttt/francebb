@@ -29,6 +29,13 @@ export default defineConfig({
         BETTER_AUTH_URL: "http://localhost:4100",
         HUB_DEV_PASSWORD_LOGIN: "1",
         NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN: "1",
+        // Le lien de connexion par email est écrit dans ce fichier : le test l'ouvre comme depuis une boîte mail
+        HUB_DEV_MAIL_FILE: "tests/.last-magic-link.json",
+        // Faux identifiants Discord et Google : le test vérifie seulement que le hub envoie vers eux, sans les suivre
+        DISCORD_CLIENT_ID: "e2e-discord-client",
+        DISCORD_CLIENT_SECRET: "e2e-discord-secret",
+        GOOGLE_CLIENT_ID: "e2e-google-client",
+        GOOGLE_CLIENT_SECRET: "e2e-google-secret",
       },
     },
     {

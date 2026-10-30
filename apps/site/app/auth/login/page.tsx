@@ -16,6 +16,16 @@ export const metadata = {
   title: "Connexion - BBFrance",
 };
 
+/**
+ * Mode hub (carte 073) : le hub reste invisible. Chaque bouton lance la connexion par le hub en lui indiquant
+ * le moyen choisi dans le paramètre `login_method` de la demande d'autorisation ; la page de connexion du hub
+ * enchaîne alors directement sur Discord, Google ou l'envoi du lien, sans afficher ses propres boutons.
+ * Pour le lien par email, l'adresse saisie est transmise dans `login_hint` (paramètre standard OIDC).
+ */
+async function signInThroughHub(method: "discord" | "google" | "email", redirectTo: string, email?: string) {
+  await signIn("hub", { redirectTo }, { login_method: method, ...(email ? { login_hint: email } : {}) });
+}
+
 export default async function LoginPage(props: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
@@ -30,12 +40,14 @@ export default async function LoginPage(props: {
 
   const error = searchParams.error;
 
-  const isDiscordEnabled = !!(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET);
-  const isGoogleEnabled = !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
-  const isEmailEnabled = !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
-
+  // En mode hub, les trois moyens sont proposés : c'est le hub qui les fournit (ses propres réglages Discord,
+  // Google et envoi d'emails), les réglages correspondants du site ne servent plus.
   const isHubEnabled = isHubAuthMode;
-  const hasAnyMethod = isHubEnabled || isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
+  const isDiscordEnabled = isHubEnabled || !!(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET);
+  const isGoogleEnabled = isHubEnabled || !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+  const isEmailEnabled = isHubEnabled || !!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD);
+
+  const hasAnyMethod = isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
   
   // Récupération des comptes de test en mode dev (aligné avec DebugAuthWidget)
   const devUsers = process.env.NODE_ENV === "development" 
@@ -77,26 +89,13 @@ export default async function LoginPage(props: {
             </div>
           )}
 
-          {/* Hub d'identité (AUTH_MODE=hub) */}
-          {isHubEnabled && (
-            <form
-              action={async () => {
-                "use server";
-                await signIn("hub", { redirectTo: callbackUrl });
-              }}
-            >
-              <CTAButton type="submit" fullWidth>
-                Se connecter avec le compte BBFrance
-              </CTAButton>
-            </form>
-          )}
-
           {/* Discord */}
           {isDiscordEnabled && (
             <form
               action={async () => {
                 "use server";
-                await signIn("discord", { redirectTo: callbackUrl });
+                if (isHubAuthMode) await signInThroughHub("discord", callbackUrl);
+                else await signIn("discord", { redirectTo: callbackUrl });
               }}
             >
               <ClassicButton type="submit" fullWidth className="discord-btn" icon={<DiscordIcon size={20} />}>
@@ -110,7 +109,8 @@ export default async function LoginPage(props: {
             <form
               action={async () => {
                 "use server";
-                await signIn("google", { redirectTo: callbackUrl });
+                if (isHubAuthMode) await signInThroughHub("google", callbackUrl);
+                else await signIn("google", { redirectTo: callbackUrl });
               }}
             >
               <ClassicButton type="submit" fullWidth className="google-btn" icon={<GoogleIcon size={20} />}>
@@ -132,8 +132,9 @@ export default async function LoginPage(props: {
               action={async (formData) => {
                 "use server";
                 const email = formData.get("email");
-                if (email) {
-                  await signIn("nodemailer", { email, redirectTo: callbackUrl });
+                if (typeof email === "string" && email) {
+                  if (isHubAuthMode) await signInThroughHub("email", callbackUrl, email.trim());
+                  else await signIn("nodemailer", { email, redirectTo: callbackUrl });
                 }
               }}
             >

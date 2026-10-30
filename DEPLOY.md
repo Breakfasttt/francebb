@@ -125,7 +125,7 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    - `BETTER_AUTH_URL` (ex. `https://auth.bbfrance.fr`) ;
    - `BETTER_AUTH_SECRET` (`openssl rand -base64 32`) ;
    - `HUB_DATABASE_URL` (base Neon du hub) ;
-   - Discord et Google, avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google` ;
+   - Discord et Google (`DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`), avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google`. Ils sont obligatoires : en mode hub, le site affiche toujours les boutons Discord et Google, qui passent par le hub ;
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` (même service d'envoi de mails que le site), pour les liens de connexion par email.
 4. **Enregistrer le site comme application cliente**, depuis `apps/hub` :
    ```bash
@@ -136,6 +136,8 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    - `AUTH_MODE=hub` ;
    - `HUB_ISSUER=https://auth.bbfrance.fr/api/auth` ;
    - `HUB_CLIENT_ID` et `HUB_CLIENT_SECRET`.
+
+   En mode hub, les boutons Discord, Google et email du site passent tous par le hub (carte 073) : les variables Discord, Google et SMTP du projet du site ne servent plus, mais il faut les garder pour pouvoir revenir en arrière.
 
    Pour revenir en arrière immédiatement : vider `AUTH_MODE` et redéployer.
 6. **Bannir un compte de toutes les applications**, depuis `apps/hub` :

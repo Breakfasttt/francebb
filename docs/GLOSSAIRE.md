@@ -43,6 +43,8 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
 | **LCP** (*Largest Contentful Paint*, affichage du plus grand élément) | Mesure de Lighthouse : temps qu'il faut pour que le plus gros élément visible de la page (grande image, gros bloc de texte) soit affiché. C'est le moment où le visiteur a l'impression que la page est là. Bon en dessous de 2,5 secondes. |
+| **Lien magique** | Connexion sans mot de passe : le coach saisit son email et reçoit un lien ; l'ouvrir le connecte. En mode hub, c'est le hub qui envoie ce lien. |
+| **login_hint** | Paramètre standard d'OIDC par lequel une application indique au hub l'adresse email du coach. Le site s'en sert pour que le hub envoie le lien magique sans redemander l'adresse. |
 | **Lighthouse** | Outil de Google qui note une page sur 100 : vitesse d'affichage, accessibilité, bonnes pratiques. Utilisé en mode mobile, qui simule un téléphone de milieu de gamme sur un réseau 4G lent. La note de vitesse se lance avec `pnpm --filter @bbfrance/site lighthouse` (voir `docs/mobile-audit.md`). |
 | **localStorage** | Petite mémoire propre au navigateur et à l'appareil, où une page peut ranger des réglages (ex. le thème d'un visiteur). Elle peut être bloquée, par exemple en navigation privée. |
 | **Merge** (fusion) | Réunir le travail d'une branche dans une autre. |
