@@ -34,14 +34,6 @@ declare module "next-auth" {
  * Le hub ne transmet que des emails vérifiés (contrôle dans signIn) : on peut rattacher au membre existant
  * par email, sans re-onboarding. La table User du site reste la référence (projection locale du compte hub).
  */
-/**
- * Délai maximal entre deux relectures du profil en base par le callback jwt (carte 017) : 5 minutes.
- * C'est aussi le délai maximal pour qu'un bannissement, un changement de rôle ou un changement de pseudo
- * fait par quelqu'un d'autre prenne effet sur la session du membre concerné. Cinq minutes limitent ce
- * délai tout en supprimant une requête sur presque chaque page vue (un membre change de page bien plus souvent).
- */
-const SESSION_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
-
 export const isHubAuthMode = process.env.AUTH_MODE === "hub" && !!process.env.HUB_ISSUER;
 const hubProviders = isHubAuthMode
   ? [
@@ -145,18 +137,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Connexion via le hub : garder son jeton d'identité pour la déconnexion globale (route /auth/logout)
       if (account?.provider === "hub" && account.id_token) updatedToken.hubIdToken = account.id_token;
 
-      // 2. Relecture du profil en base (rôle, bannissement, thème, pseudo), limitée dans le temps (carte 017).
-      // À la connexion (user présent), les données viennent d'être lues : on note seulement l'heure.
-      // Ensuite, on ne relit la base que si la dernière lecture date de plus de SESSION_REFRESH_INTERVAL_MS,
-      // ou si le navigateur demande une mise à jour de la session (update()). Dans ce dernier cas, la base
-      // écrase les valeurs envoyées par le navigateur : il ne peut donc pas s'attribuer un rôle lui-même.
-      // Le jeton relu n'est enregistré dans le cookie que par proxy.ts (et par la route /api/auth) :
-      // un composant serveur ne peut pas réécrire le cookie, il relit donc la base tant que le cookie est ancien.
-      const now = Date.now();
-      if (user) updatedToken.refreshedAt = now;
-      const refreshedAt = typeof updatedToken.refreshedAt === "number" ? updatedToken.refreshedAt : 0;
-      const isStale = now - refreshedAt > SESSION_REFRESH_INTERVAL_MS;
-      if (updatedToken?.id && !user && (isStale || trigger === "update")) {
+      // 2. Relecture du profil en base (rôle, bannissement, thème, pseudo) à chaque lecture de la session (carte 069).
+      // Ainsi, un bannissement ou un changement de rôle prend effet dès la page suivante du membre concerné.
+      // La lecture se fait par l'identifiant du membre (clé primaire de la table), elle reste donc très rapide.
+      // À la connexion (user présent), les données viennent d'être lues : pas besoin de relire la base.
+      // Quand le navigateur demande une mise à jour de la session (update()), la base écrase les valeurs qu'il
+      // envoie : il ne peut donc pas s'attribuer un rôle lui-même (règle de la carte 017, voir auth.config.ts).
+      if (updatedToken?.id && !user) {
         try {
           const dbUser = await prisma.user.findUnique({
             where: { id: updatedToken.id as string },
@@ -176,7 +163,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             updatedToken.name = dbUser.name;
             updatedToken.isBanned = dbUser.isBanned;
           }
-          updatedToken.refreshedAt = now;
         } catch (error) {
           console.error("Auth: Error refreshing user data from DB in JWT callback", error);
         }

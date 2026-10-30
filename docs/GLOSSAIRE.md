@@ -17,7 +17,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Branche** (git) | Version parallèle du code, sur laquelle on travaille sans toucher la version principale avant de fusionner. |
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |
-| **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo, au plus toutes les 5 minutes, et les range dans le cookie de session. |
+| **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo à chaque lecture de la session, et les range dans le cookie de session : un bannissement prend donc effet dès la page suivante. |
 | **Carte** (kanban) | Fichier qui décrit une tâche : pourquoi, quoi faire, comment vérifier que c'est fini. Voir `kanban/README.md`. |
 | **CI** (*Continuous Integration*, intégration continue) | Vérifications lancées automatiquement par GitHub à chaque envoi de code : types, qualité, tests. Définies dans `.github/workflows/ci.yml`. |
 | **Claim** | Une information sur l'utilisateur contenue dans un jeton de connexion (pseudo, email, « email vérifié »). |

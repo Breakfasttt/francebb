@@ -72,6 +72,8 @@ Mesure faite sur la base des tests e2e (base Postgres locale jetable, remplie av
 
 Toutes les routes restent dynamiques (`ƒ`) au build : la mise en page générale lit le cookie de session, ce qui rend chaque page dynamique tant que `cacheComponents` (carte 018) n'est pas activé.
 
+La carte 069 a supprimé ce délai de 5 minutes : le profil est de nouveau relu en base à chaque lecture de la session, pour qu'un bannissement soit immédiat. La ligne « Après 017 » de ce tableau ne vaut donc plus ; chaque page coûte de nouveau une requête de plus (une lecture du membre par son identifiant, très rapide).
+
 ## Dette technique (app/, common/, lib/)
 
 | Compteur | Valeur |

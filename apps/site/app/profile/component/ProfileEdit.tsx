@@ -64,8 +64,8 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
   const [isPending, startTransition] = useTransition();
   const [isUpdatingTheme, startThemeUpdate] = useTransition();
   const { theme, setTheme } = useTheme();
-  // Le profil n'est relu en base que toutes les 5 minutes (carte 017) : après une modification,
-  // update() demande au serveur de relire tout de suite, pour que le pseudo et le thème soient à jour partout.
+  // Après une modification, update() demande au serveur de relire le profil en base et de réécrire le cookie
+  // de session, pour que le pseudo et le thème soient à jour partout sans attendre la page suivante.
   const { update: refreshSession } = useSession();
   const [currentTheme, setCurrentTheme] = useState(theme || user.theme || DEFAULT_SITE_THEME);
   const [isUploading, setIsUploading] = useState(false);

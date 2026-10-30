@@ -4,8 +4,8 @@
  * À utiliser dans toutes les server actions et server components à la place de auth() : le ban n'était vérifié que côté client.
  * getSession() renvoie la session brute (bannis compris) : uniquement pour le layout, qui redirige les bannis.
  * Mémoïsé par requête (React cache) : un seul appel à auth() par rendu suffit.
- * Le bannissement vient du cookie de session, que le callback jwt d'auth.ts rafraîchit en base au plus toutes
- * les 5 minutes (carte 017) : un membre banni perd l'accès au plus 5 minutes après son bannissement.
+ * Le bannissement est relu en base par le callback jwt d'auth.ts à chaque lecture de la session (carte 069) :
+ * un membre banni perd l'accès dès sa demande suivante.
  */
 import { cache } from "react";
 import { auth } from "@/auth";

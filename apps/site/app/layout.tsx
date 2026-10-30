@@ -30,7 +30,7 @@ export default async function RootLayout({
   const session = await getSession();
 
   // Rôle, bannissement et thème viennent de la session (cookie), sans requête en base : le callback jwt
-  // d'auth.ts les relit en base au plus toutes les 5 minutes.
+  // d'auth.ts les relit en base à chaque lecture de la session (carte 069).
   const user = session?.user;
   const userRole = (user?.role as UserRole | undefined) ?? "COACH";
   const isBanned = user?.isBanned ?? false;

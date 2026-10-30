@@ -2,7 +2,7 @@
  * Tests smoke : parcours critiques qui doivent rester verts à chaque phase du refacto.
  */
 import { test, expect } from "@playwright/test";
-import { E2E, loginAs, withTestDb } from "./fixtures";
+import { E2E, loginAs } from "./fixtures";
 
 const PUBLIC_PAGES = ["/", "/forum", "/tournois", "/classement", "/bbscheme", "/articles", "/ressources"];
 
@@ -148,16 +148,24 @@ test("créer une ligue sans nom affiche une notification d'erreur", async ({ pag
 });
 
 test("choisir le thème « Sombre » dans le profil enregistre l'identifiant default", async ({ page }) => {
-  // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts)
-  const readTheme = () =>
-    withTestDb((prisma) => prisma.user.findUniqueOrThrow({ where: { id: E2E.coachId }, select: { theme: true } }));
-  const { theme: initialTheme } = await readTheme();
+  // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts).
+  // Le test ne lit pas la base lui-même : la base de test n'accepte qu'une connexion, déjà tenue par le site
+  // (carte 067). Il recharge la page, dont la balise <html> porte le thème lu en base par le serveur.
   await loginAs(page, E2E.coachId);
   try {
     await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "Sombre" }).click();
-    await expect.poll(async () => (await readTheme()).theme).toBe("default");
+    await expect.poll(async () => {
+      await page.reload({ waitUntil: "domcontentloaded" });
+      return page.locator("html").getAttribute("data-theme");
+    }).toBe("default");
   } finally {
-    await withTestDb((prisma) => prisma.user.update({ where: { id: E2E.coachId }, data: { theme: initialTheme } }));
+    // Le coach de test est créé avec le thème par défaut de la base, « saison3 » (globalSetup.ts)
+    await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "Saison 3" }).click();
+    await expect.poll(async () => {
+      await page.reload({ waitUntil: "domcontentloaded" });
+      return page.locator("html").getAttribute("data-theme");
+    }).toBe("saison3");
   }
 });
