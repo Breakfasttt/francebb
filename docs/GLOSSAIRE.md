@@ -35,6 +35,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Hotfix** | Petite correction urgente appliquée directement sur la version en ligne. |
 | **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications BBFrance. |
 | **id_token** | Jeton signé que le hub remet au site après une connexion : « voici qui est connecté ». |
+| **Import dynamique** (`import()`) | Chargement d'une bibliothèque seulement au moment où l'on s'en sert, au lieu de l'envoyer au navigateur avec la page. Exemple : les bibliothèques d'export GIF de BBScheme ne sont téléchargées que quand le coach clique sur le bouton d'export. La page s'ouvre plus vite. |
 | **ITP** (Safari) | Protection de Safari qui bloque les cookies entre sites différents. C'est pourquoi le hub et le site devront partager le même nom de domaine. |
 | **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
@@ -47,6 +48,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **N+1** | Défaut classique : une requête à la base par élément d'une liste, au lieu d'une seule requête pour toute la liste. Ralentit les pages. |
 | **Neon** | Hébergeur de bases Postgres, gratuit pour un petit site. Choisi pour la production (ADR-0004). |
 | **Next.js** | Le cadre (*framework*) avec lequel le site est construit, basé sur React. |
+| **next/image** (composant `Image`) | Remplaçant de la balise `<img>` fourni par Next.js. Le serveur réduit l'image à la taille où elle est affichée et la convertit au format WebP, bien plus léger ; le navigateur choisit la bonne version selon l'écran. Il faut lui donner la taille affichée (`width` et `height`, ou `sizes` avec `fill`), sinon il envoie une image trop grande. Réservé aux images du dossier `public/` : les images venues d'autres sites restent en `<img>` (carte 019). |
 | **OAuth** | Standard qui permet de se connecter avec un compte existant (Discord, Google) sans donner son mot de passe au site. |
 | **OIDC** (*OpenID Connect*) | Extension d'OAuth pour la connexion unique : une application demande au hub « qui est connecté ? ». |
 | **Onboarding** | Les étapes qu'un nouveau membre remplit à sa première connexion (pseudo, région…). |

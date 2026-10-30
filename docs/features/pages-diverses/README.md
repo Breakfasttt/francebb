@@ -14,7 +14,7 @@ Une grille de tuiles vers les rubriques (Jouer, Forum, Ligues, Tournois, Carte, 
 
 ### Jouer — `/jouer` (`app/jouer/page.tsx`)
 Le « Guide du Coach » : six sections illustrées (C'est quoi Blood Bowl, plateformes, communauté, tournois, NAF/CdF/RTC, challenges régionaux), dont le texte en BBCode est saisi par un admin dans l'administration (`getHowToPlaySettings`). Une section sans texte est masquée, sauf la première.
-**Sur téléphone** : images réduites à 250 pixels de haut, titres plus petits, boutons d'appel empilés en pleine largeur. Images en `<img>` simple, sans optimisation Next (à surveiller pour la vitesse).
+**Sur téléphone** : images réduites à 250 pixels de haut, titres plus petits, boutons d'appel empilés en pleine largeur. Depuis la carte 019, les six images passent par `next/image` (voir le glossaire) : chacune pèse environ 1 Mo dans `public/images/how-to-play/` (des JPEG malgré leur extension `.png`), et le téléphone reçoit maintenant une version WebP à la largeur de l'écran, de 100 à 150 Ko. Elles se chargent seulement quand on approche de leur section.
 
 ### Profil public — `/spy/[id]` (`app/spy/[id]/page.tsx`)
 Le profil d'un autre coach, ouvert depuis un message du forum ou le classement : activité, articles, bouton « Contacter » (ouvre une conversation) et blocage. Réservé aux membres connectés.
@@ -38,7 +38,8 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/page.tsx` | Accueil |
-| `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/` |
+| `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/`, affichées par `next/image` en mode `fill` (l'image remplit le cadre `.section-visual`, de hauteur fixe) |
+| `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut, menu latéral sur téléphone, grand logo de l'accueil). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public (client), lit `/api/users/[id]` et les actions de `app/profile/actions.ts` |
 | `apps/site/app/mentions-legales/page.tsx` | Mentions légales |
 | `apps/site/app/banned/page.tsx` (+ `page.css`, `page-mobile.css`), `common/components/BannedRedirect/BannedRedirect.tsx` | Page et redirection des bannis |

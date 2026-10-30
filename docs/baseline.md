@@ -51,6 +51,8 @@ Mobile 4G simulé (150 ms, 9 Mb/s, CPU ×4), médiane de 3 runs, copie locale de
 
 JS `/bbscheme` : 235 → **183 kB** (-22 %, export GIF chargé à la demande).
 
+Carte 019 (30/10/2026) : Next.js 16 n'affiche plus le poids des pages à la fin de `next build`. Le poids a été recalculé à partir des fichiers produits par le build : tous les fichiers JavaScript chargés à l'ouverture de `/bbscheme` (socle commun de Next.js, mise en page générale et page), compressés comme les envoie le serveur (gzip). Résultat : **211 kB**, sous l'objectif de 235 kB. Ce chiffre n'est pas comparable aux 183 kB ci-dessus, mesurés autrement ; à titre de repère, `/jouer` pèse 185,5 kB avec la même méthode, donc BBScheme ajoute environ 25 kB.
+
 014 : accueil forum en `select` minimal + cache par audience, non-lus en une requête partagée, session mémoïsée par requête (`getSession`/`getActiveSession`), layout sans relecture du User, sidebar sans chargement inutilisé. LCP local inchangé (SQLite local ≈ 0 ms/requête) : le gain se voit en prod Turso.
 Tracer les requêtes d'une route : `TRACE_ROUTE=/forum node scripts/baseline.mjs` (Git Bash : préfixer `MSYS_NO_PATHCONV=1`).
 

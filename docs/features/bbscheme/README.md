@@ -54,5 +54,6 @@ BBScheme est un plateau de Blood Bowl interactif : le coach place des joueurs de
 ## État
 
 - Marche : édition, animation, partage par lien, lecture dans les messages, interface téléphone dédiée.
+- Poids (carte 019) : les bibliothèques d'export GIF (`html2canvas` et `gifshot`) sont chargées par un import dynamique, seulement au clic sur l'export. Le JavaScript chargé à l'ouverture de `/bbscheme` pèse 211 Ko compressés (mesure du 30/10/2026, objectif sous 235 Ko). L'image du GIF exporté reste une balise `<img>` : c'est une image fabriquée dans le navigateur (adresse `data:`), que `next/image` ne sait pas optimiser.
 - Manque : limite de fréquence sur `saveBoardState`, nettoyage des composants inutilisés, mise à jour de la skill `mobile-ux` (qui parle encore de `DesktopOnlyFallback`), contrôle du lecteur sur téléphone.
 - Cartes ouvertes : 024 (extraire bbscheme en application et le lecteur en paquet `packages/bbscheme-player`), 049 (audit mobile).

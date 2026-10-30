@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getHowToPlaySettings } from "@/app/administration/actions";
 import { parseBBCode } from "@/lib/bbcode";
 import { Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map, ChevronRight } from "lucide-react";
@@ -69,7 +70,18 @@ export default async function HowToPlayPage() {
           return (
             <article key={section.key} className="guide-section" id={section.key}>
               <div className="section-visual">
-                <img src={section.image} alt={section.title} className="section-image" loading="lazy" />
+                {/*
+                  L'image remplit son cadre (.section-visual, de hauteur fixe). « sizes » indique
+                  sa largeur affichée : tout l'écran sur téléphone, 1200 pixels au plus sur
+                  ordinateur (largeur maximale de .container). next/image choisit le fichier adapté.
+                */}
+                <Image
+                  src={section.image}
+                  alt={section.title}
+                  fill
+                  sizes="(max-width: 1200px) 100vw, 1200px"
+                  className="section-image"
+                />
                 <div className="section-overlay"></div>
                 <div className="section-icon-float">
                   {section.icon}

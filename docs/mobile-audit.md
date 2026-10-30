@@ -56,6 +56,8 @@ Fichiers : `apps/site/playwright.lighthouse.config.ts` (préparation et lancemen
 | `/tournois` | visiteur | **95** | 95, 95, 95 | 3,0 s | 20 ms | 0,005 | Objectif atteint |
 | `/profile` | membre connecté | **75** | 75, 75, 88 | 3,9 s | 30 ms | **0,25** | **Sous l'objectif** : carte 063 |
 
+**Nouvelle mesure après la carte 019** (logo allégé, 30/10/2026, même machine) : accueil **97** (97, 97, 99 ; LCP 2,7 s), `/forum` **94** (LCP 2,9 s), sujet **91** (91, 91, 91 ; LCP 3,3 s), `/tournois` **98** (95, 98, 98 ; LCP 2,3 s), `/profile` **88** (88, 88, 88 ; LCP 3,9 s, CLS 0). Le gain du logo est faible sur la note, car c'est surtout le CSS bloquant qui retarde l'affichage. Sur le profil, le CLS est tombé à 0 sur les trois passages. La cause relevée plus bas (`useIsMobile`) n'a pas été modifiée ; le logo, qui avait auparavant une largeur nulle tant que l'image n'était pas arrivée, pouvait aussi faire bouger le menu. Ce point reste à confirmer par la carte 063.
+
 Le site réagit vite partout (TBT de 20 à 30 ms, très loin de la limite de 200 ms). Le point faible commun est l'affichage du plus gros élément (LCP de 2,6 à 3,9 secondes, au-dessus des 2,5 secondes conseillées), et, sur le profil, le contenu qui saute.
 
 ### Causes relevées par Lighthouse
@@ -63,7 +65,7 @@ Le site réagit vite partout (TBT de 20 à 30 ms, très loin de la limite de 200
 Communes aux 5 pages :
 
 - **Fichiers CSS qui bloquent l'affichage** : le navigateur attend une dizaine de petits fichiers de style avant de dessiner la page (gain estimé de 300 ms sur l'accueil et le forum, 460 ms sur les tournois, 610 ms sur le sujet et le profil). C'est la principale cause du LCP trop long.
-- **Logo trop lourd** : le logo du menu latéral (`img.logo-image`) pèse 85 Ko de plus que nécessaire pour sa taille d'affichage (96 × 42 pixels).
+- **Logo trop lourd** : le logo du menu latéral (`img.logo-image`) pèse 85 Ko de plus que nécessaire pour sa taille d'affichage (96 × 42 pixels). **Corrigé par la carte 019** : le logo est maintenant envoyé à sa taille d'affichage (15,6 Ko au lieu d'environ 106 Ko). Lighthouse relève encore 11 Ko de trop, car le téléphone simulé reçoit la version de 256 pixels de large alors qu'il en affiche 168 (96 pixels multipliés par la densité de son écran) ; c'est le palier le plus proche que propose `next/image`.
 - **JavaScript inutilisé** : environ 22 Ko chargés mais non utilisés sur la page, et 14 Ko de code de compatibilité pour d'anciens navigateurs (fonctions que tous les navigateurs récents connaissent déjà).
 - **Chaîne de chargement** : certains fichiers ne sont demandés qu'après d'autres, ce qui allonge l'attente.
 

@@ -71,4 +71,5 @@ Actions serveur principales (`app/forum/actions.ts`) : `createTopic`, `createPos
 - `getRecentPosts`, `getForums`, `getSiblings` ont été supprimées (aucun appelant).
 - Téléphone (carte 053) : l'audit mobile ne relève plus aucune cible trop petite ni aucun contenu coupé sur `/forum`, `/forum/topic/[id]` et `/forum/topic/[id]/reply`, de 360 à 430 pixels de large (avant : 35 cibles trop petites sur un sujet, 27 sur la page de réponse).
 - Carte 052 : `throw` dans `actions.ts` 44 → 7, erreurs affichées en notification au lieu de fenêtres `alert()` du navigateur.
-- À faire : images en `next/image` (carte 019), retrait des derniers `throw` (`createForum`, `createTopic`).
+- Carte 019 : les avatars des membres restent des balises `<img>` ordinaires, car ils viennent d'autres sites (Discord, Google, DiceBear, imgbb ou une adresse libre saisie dans le profil), que `next/image` ne peut pas optimiser sans ouvrir son optimiseur à tout Internet.
+- À faire : retrait des derniers `throw` (`createForum`, `createTopic`).
