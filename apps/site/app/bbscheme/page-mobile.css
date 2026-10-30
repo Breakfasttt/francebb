@@ -78,8 +78,10 @@
     border-bottom: 1px solid var(--glass-border) !important;
   }
 
+  /* Flèches de part et d'autre de la barre d'outils : 44 pixels de large, la taille d'une cible au pouce */
   .toolbar-slide-btn {
-    width: 35px !important;
+    width: 44px !important;
+    flex-shrink: 0 !important;
     height: 65px !important;
     background: rgba(0, 0, 0, 0.2) !important;
     border: none !important;
@@ -102,16 +104,30 @@
     scrollbar-width: none !important;
     height: 100% !important;
     box-sizing: border-box !important;
+    /* La barre défile de gauche à droite, au doigt ou avec les flèches. Après un glissement, l'outil le plus
+       proche se cale sur le bord gauche (« aimantation », scroll-snap) pour qu'il soit affiché en entier.
+       Un fondu sur les deux bords remplace la coupure nette de l'outil suivant : il indique qu'il reste des
+       outils à faire défiler. Le masque ne règle que la transparence, pas une couleur : il convient aux 7 thèmes. */
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 10px;
+    overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 24px), transparent 100%);
+  }
+
+  .mobile-scroll-toolbar > * {
+    scroll-snap-align: start;
   }
 
   .mobile-scroll-toolbar::-webkit-scrollbar {
     display: none;
   }
 
+  /* Boutons d'outils : 44 pixels (carte 057, 40 avant) */
   .mobile-tool-item {
-    flex: 0 0 40px !important;
-    width: 40px !important;
-    height: 40px !important;
+    flex: 0 0 44px !important;
+    width: 44px !important;
+    height: 44px !important;
     background: var(--nav-btn-bg) !important;
     border: 1px solid var(--nav-btn-border) !important;
     border-radius: 8px !important;
@@ -169,17 +185,19 @@
     padding: 0 10px !important;
     border-radius: 8px !important;
     border: 1px solid var(--nav-btn-border) !important;
-    height: 40px !important;
+    height: 44px !important;
     color: var(--nav-btn-color) !important;
   }
 
+  /* Champ de vitesse : texte de 16 pixels pour que l'iPhone ne zoome pas la page quand on tape dedans */
   .mobile-speed-control input {
-    width: 35px !important;
+    width: 48px !important;
+    height: 100% !important;
     background: transparent !important;
     border: none !important;
     color: var(--nav-btn-color) !important;
     font-weight: 900 !important;
-    font-size: 0.85rem !important;
+    font-size: 16px !important;
     text-align: center !important;
     padding: 0 !important;
     -moz-appearance: textfield;
@@ -193,7 +211,7 @@
   }
 
   .mobile-speed-control span {
-    font-size: 0.7rem !important;
+    font-size: 0.75rem !important;
     opacity: 0.7 !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
@@ -207,15 +225,20 @@
     padding: 0 12px !important;
     border-radius: 8px !important;
     border: 1px solid var(--nav-btn-border) !important;
-    height: 40px !important;
+    height: 44px !important;
     color: var(--nav-btn-color) !important;
   }
 
-  /* Premium Range Slider */
+  /* Curseur de zoom : la zone qui réagit au doigt prend toute la hauteur du bloc (44 pixels),
+     la piste dessinée reste fine et centrée */
   .mobile-zoom-control input[type="range"] {
     -webkit-appearance: none !important;
-    width: 80px !important;
+    width: 88px !important;
+    height: 100% !important;
+    margin: 0 !important;
     background: transparent !important;
+    /* Aucun texte dans un curseur : les 16 pixels évitent seulement que l'iPhone zoome la page en le touchant */
+    font-size: 16px !important;
   }
 
   .mobile-zoom-control input[type="range"]::-webkit-slider-runnable-track {
@@ -226,14 +249,15 @@
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
+  /* Poignée de 24 pixels (18 avant), plus facile à attraper au pouce ; décalage = (6 - 24) / 2 pour la centrer sur la piste */
   .mobile-zoom-control input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none !important;
-    height: 18px !important;
-    width: 18px !important;
+    height: 24px !important;
+    width: 24px !important;
     border-radius: 50% !important;
     background: var(--accent) !important;
     cursor: pointer !important;
-    margin-top: -7px !important;
+    margin-top: -10px !important;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
     border: 2px solid white !important;
   }
@@ -246,8 +270,8 @@
   }
 
   .mobile-zoom-control input[type="range"]::-moz-range-thumb {
-    height: 18px !important;
-    width: 18px !important;
+    height: 24px !important;
+    width: 24px !important;
     border-radius: 50% !important;
     background: var(--accent) !important;
     border: 2px solid white !important;
@@ -343,12 +367,13 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
   }
 
+  /* Bouton de fermeture d'un panneau de réserve : 44 pixels (32 avant) */
   .mobile-close-btn {
     background: var(--accent) !important;
     color: white !important;
     border: none !important;
-    width: 32px !important;
-    height: 32px !important;
+    width: 44px !important;
+    height: 44px !important;
     border-radius: 4px !important;
     display: flex !important;
     align-items: center !important;
@@ -401,5 +426,23 @@
     border-radius: 12px !important;
     margin-bottom: 30px !important;
     box-shadow: var(--glass-shadow) !important;
+  }
+
+  /* Textes de la réserve : 12 pixels au moins pour être lus sans zoomer (11 pixels avant) */
+  .figurine-box .box-header label,
+  .figurine-box .player-qty,
+  .figurine-box .empty-slot {
+    font-size: 0.75rem !important;
+  }
+
+  .figurine-box .player-type-info {
+    font-size: 0.875rem !important;
+  }
+
+  /* Liste des rosters : sur ordinateur elle fait 160 pixels et coupe les noms longs (« Alliance du Vieux Monde ») ;
+     dans le panneau plein écran du téléphone, elle prend la largeur disponible */
+  .figurine-box .box-header .classic-select-container {
+    width: 100% !important;
+    max-width: 320px !important;
   }
 }

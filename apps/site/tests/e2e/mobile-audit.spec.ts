@@ -74,8 +74,17 @@ async function measure(page: Page) {
       const rect = element.getBoundingClientRect();
       return `${element.tagName.toLowerCase()} « ${text || label || "(icône)"} » ${Math.round(rect.width)}×${Math.round(rect.height)}`;
     };
+    // Un élément placé dans un cadre qui défile lui-même de gauche à droite (overflow-x: auto, comme une barre
+    // d'outils ou un tableau large) n'est pas coupé : on l'atteint en faisant défiler ce cadre (carte 057)
+    const inOwnScrollFrame = (element: Element) => {
+      for (let parent = element.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+        const overflowX = getComputedStyle(parent).overflowX;
+        if ((overflowX === "auto" || overflowX === "scroll") && parent.scrollWidth > parent.clientWidth) return true;
+      }
+      return false;
+    };
     const cut = [...document.querySelectorAll("body *")].filter((element) => {
-      if (!visible(element)) return false;
+      if (!visible(element) || inOwnScrollFrame(element)) return false;
       const rect = element.getBoundingClientRect();
       return rect.right > viewport + 2 && rect.left >= 0;
     });

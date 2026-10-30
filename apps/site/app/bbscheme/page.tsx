@@ -186,6 +186,14 @@ export default function BBSchemePage() {
   const mobileToolbarRef = useRef<HTMLDivElement>(null);
   const [mobileActivePanel, setMobileActivePanel] = useState<'blue' | 'red' | null>(null);
 
+  // Barre d'outils sur téléphone : une flèche la fait défiler de sa largeur visible moins 60 pixels,
+  // pour qu'un outil déjà vu reste à l'écran comme point de repère
+  const scrollMobileToolbar = (direction: 1 | -1) => {
+    const toolbar = mobileToolbarRef.current;
+    if (!toolbar) return;
+    toolbar.scrollBy({ left: direction * Math.max(100, toolbar.clientWidth - 60), behavior: 'smooth' });
+  };
+
   // -- FIN DES HOOKS --
 
   useEffect(() => {
@@ -1219,7 +1227,8 @@ export default function BBSchemePage() {
           <div className="mobile-bbscheme-ui">
             {/* LIGNE 2 : TOOLBAR SLIDE */}
             <div className="mobile-toolbar-container">
-              <button className="toolbar-slide-btn left" onClick={() => mobileToolbarRef.current?.scrollBy({ left: -100, behavior: 'smooth' })}>
+              {/* Les flèches font défiler la barre d'un écran presque entier (moins un outil, qui reste visible pour se repérer) */}
+              <button className="toolbar-slide-btn left" aria-label="Outils précédents" onClick={() => scrollMobileToolbar(-1)}>
                 <ChevronLeft size={20} />
               </button>
               <div className="mobile-scroll-toolbar" ref={mobileToolbarRef}>
@@ -1235,7 +1244,7 @@ export default function BBSchemePage() {
                 </div>
                 <button className="mobile-tool-item" onClick={() => setSelectedId(null)} disabled={!selectedId} title="Désélectionner" style={{ position: 'relative' }}>
                   <MousePointer2 size={18} style={{ opacity: 0.5 }} />
-                  <X size={10} style={{ position: 'absolute', top: 5, right: 5, color: '#ef4444' }} />
+                  <X size={10} style={{ position: 'absolute', top: 5, right: 5, color: 'var(--danger)' }} />
                 </button>
                 <button className="mobile-tool-item" onClick={handleReturnToReserve} disabled={!selectedId || isBallSelected} title="Remettre en réserve">
                   <LogOut size={18} />
@@ -1294,12 +1303,12 @@ export default function BBSchemePage() {
 
                 {/* 4. Utilitaires */}
                 <button className="mobile-tool-item" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button>
-                <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} style={{ color: '#ef4444' }} /></button>
+                <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} style={{ color: 'var(--danger)' }} /></button>
                 <button className={`mobile-tool-item ${showTooltips ? 'active' : ''}`} onClick={() => setShowTooltips(!showTooltips)}><Info size={18} /></button>
                 <button className="mobile-tool-item" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button>
                 <button className="mobile-tool-item" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button>
               </div>
-              <button className="toolbar-slide-btn right" onClick={() => mobileToolbarRef.current?.scrollBy({ left: 100, behavior: 'smooth' })}>
+              <button className="toolbar-slide-btn right" aria-label="Outils suivants" onClick={() => scrollMobileToolbar(1)}>
                 <ChevronRight size={20} />
               </button>
             </div>
