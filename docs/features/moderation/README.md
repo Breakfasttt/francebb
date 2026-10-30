@@ -24,7 +24,7 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 | `apps/site/lib/moderationLog.ts` | `logModerationAction` et le type `ModerationAction` : écriture au journal, **interne au serveur** (volontairement hors d'un fichier « use server »). |
 | `apps/site/app/moderation/actions.ts` | Actions serveur : `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`.  |
 | `apps/site/app/moderation/component/` | `ModerationSidebar`, `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab`. |
-| `apps/site/common/components/ReportModal/ReportModal.tsx` | Fenêtre de signalement. Utilisée par `ReportPostButton`, `TopicSidebar` (forum), `ProfileSidebar`, `ReportArticleButton`, `ReportLigueButton`. |
+| `apps/site/common/components/ReportModal/ReportModal.tsx` | Fenêtre de signalement. Utilisée par `PostMoreMenu`, `TopicTools` (forum), `ProfileSidebar`, `ReportArticleButton`, `ReportLigueButton`. |
 | `apps/site/app/membres/actions.ts` | `toggleBanUser` (seule version, utilisée par `/membres`, la fiche `/spy/[id]` et, via `unbanUserAction`, l'onglet « Coachs bannis » : contrôle de rang et entrée au journal) et `deleteUser`. |
 | `apps/site/app/ressources/actions.ts` | `getPendingResources`, `moderateResource` (onglet « Validation Ressources »). |
 

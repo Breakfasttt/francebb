@@ -1,16 +1,16 @@
 {
-  "maxErrors": 810,
+  "maxErrors": 789,
   "rules": {
     "@next/next/no-html-link-for-pages": 1,
     "@typescript-eslint/ban-ts-comment": 8,
-    "@typescript-eslint/no-explicit-any": 377,
-    "no-restricted-syntax": 91,
+    "@typescript-eslint/no-explicit-any": 371,
+    "no-restricted-syntax": 84,
     "prefer-const": 9,
     "react-hooks/immutability": 5,
     "react-hooks/purity": 2,
     "react-hooks/set-state-in-effect": 21,
     "react-hooks/static-components": 7,
-    "react/forbid-elements": 203,
-    "react/no-unescaped-entities": 86
+    "react/forbid-elements": 196,
+    "react/no-unescaped-entities": 85
   }
 }

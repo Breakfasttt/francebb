@@ -4,7 +4,7 @@ import MarkAsRead from "@/app/forum/component/MarkAsRead";
 import PostItem from "@/app/forum/component/PostItem";
 import QuickReply from "@/app/forum/component/QuickReply";
 import RegistrationModule from "@/app/forum/component/RegistrationModule";
-import TopicSidebar from "@/app/forum/component/TopicSidebar";
+import { TopicPageNav, TopicReplyBar, TopicToolsAside, TopicToolsButton, TopicToolsProvider } from "@/app/forum/component/TopicTools";
 import TournamentSummary from "@/app/forum/component/TournamentSummary";
 import TournamentResultWidget from "@/app/forum/component/TournamentResultWidget";
 import { getActiveSession } from "@/lib/authGuard";
@@ -13,13 +13,14 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { getBlockedUsersIds } from "@/app/profile/actions";
-import { ArrowLeft, Lock as LockIcon } from "lucide-react";
+import { Lock as LockIcon } from "lucide-react";
+import { Badge, Card } from "@bbfrance/ui";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { notFound, redirect } from "next/navigation";
+// Styles des blocs BBCode (spoiler, accordéon, galerie) et animation du nouveau message, partagés par le forum
 import "../../page.css";
-import "../../page-mobile.css";
 
 export const dynamic = "force-dynamic";
 
@@ -207,39 +208,79 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   breadcrumbs.push({ label: topic.forum.name, href: `/forum/${topic.forumId}` });
   breadcrumbs.push({ label: topic.title });
 
+  // Peut-il répondre ? Membre, et sujet et forum non verrouillés (un modérateur peut toujours répondre)
+  const canReply = !!currentUserId && (!(topic.isLocked || topic.forum.isLocked) || isUserModerator);
+
   return (
-    <div className="topic-detail-page">
-      <PageHeader
-        title={
-          <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
-            {topic.isArchived && (
-              <span style={{ fontSize: '0.7rem', background: 'rgba(255,255,255,0.1)', color: '#888', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600 }}>
-                ARCHIVÉ
-              </span>
-            )}
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <MarkAsRead topicId={id} />
+
+      <TopicToolsProvider
+        topicId={id}
+        currentPage={safeCurrentPage}
+        totalPages={totalPages}
+        isModerator={isUserModerator}
+        isPinned={topic.isSticky}
+        isLocked={topic.isLocked}
+        isForumLocked={topic.forum.isLocked}
+        lastPostId={lastPost?.id || ""}
+        allForums={allForums}
+        topicTitle={topic.title}
+        authorId={topic.authorId}
+        currentUserId={currentUserId}
+        views={displayViews}
+        isArchived={topic.isArchived}
+        isTournament={!!topic.tournament}
+        tournamentId={topic.tournament?.id}
+        canEditTournament={!!canEditTournament}
+        isFinished={topic.tournament?.isFinished || false}
+        isCancelled={topic.tournament?.isCancelled || false}
+        registrationsLocked={topic.tournament?.registrationsLocked || false}
+      >
+        <div className="pt-3 lg:pt-4">
+          <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
+        </div>
+
+        {/* En-tête du sujet : retour, titre, badge « ARCHIVÉ », nom du forum et, sur téléphone, les outils */}
+        <header className="flex items-start gap-3 pt-3 pb-4 lg:pt-5">
+          {/* Téléphone : le bouton retour va dans la barre du haut ; ordinateur : il reste à gauche du titre */}
+          <MobilePortal targetId="mobile-back-button-slot">
+            <span className="lg:hidden">
+              <BackButton title="Retour au forum" style={{ width: 44, height: 44 }} />
+            </span>
+          </MobilePortal>
+          <span className="hidden shrink-0 lg:inline-flex">
+            <BackButton title="Retour au forum" />
           </span>
-        }
-        subtitle={<span style={{ color: 'var(--accent)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} />}
-        backTitle="Retour au forum"
-      />
+          <div className="min-w-0 flex-1">
+            <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic">
+              <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
+              {topic.isArchived && (
+                <Badge variant="neutral" className="ml-2 align-middle">
+                  ARCHIVÉ
+                </Badge>
+              )}
+            </h1>
+            <p className="m-0 mt-1 text-sm">
+              <Link
+                href={`/forum/${topic.forumId}`}
+                className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center"
+                dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }}
+              />
+            </p>
+          </div>
+          <TopicToolsButton />
+        </header>
 
-      <main className="container forum-container">
-        <MarkAsRead topicId={id} />
-
-      <ForumBreadcrumbs items={breadcrumbs} />
-
-      <div className="forum-layout">
-        <div className="forum-main-content">
-
-          <div className="posts-list" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Résumé du tournoi si applicable */}
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
+          <div className="flex min-w-0 flex-col gap-4">
+            {/* Blocs du tournoi : résumé, résultats quand il est terminé, inscriptions (refaits à la carte 089) */}
             {topic.tournament && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <section aria-label="Tournoi" className="flex min-w-0 flex-col gap-3">
                 <TournamentSummary tournament={topic.tournament} />
-                
+
                 {topic.tournament.isFinished && (
-                  <TournamentResultWidget 
+                  <TournamentResultWidget
                     tournamentId={topic.tournament.id}
                     results={topic.tournament.results}
                     rounds={topic.tournament.rounds}
@@ -253,8 +294,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   isOrganizer={!!isTournamentOrganizer}
                   isCommissioner={!!isTournamentCommissaire}
                 />
-              </div>
+              </section>
             )}
+
+            {/* Ordinateur : pagination en haut de la liste (sur téléphone, elle est dans la barre du bas) */}
+            <div className="hidden justify-end lg:flex">
+              <TopicPageNav />
+            </div>
 
             {/* Premier message persistant pour les tournois (si page > 1) */}
             {firstPostForTournament && (
@@ -292,51 +338,30 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 isBlocked={blockedUserIds.includes(post.authorId)}
               />
             ))}
+
+            {/* Pagination en bas de la liste, aussi sur téléphone : la barre du bas s'efface près de la réponse */}
+            <div className="flex justify-center">
+              <TopicPageNav />
+            </div>
+
+            {canReply ? (
+              <QuickReply topicId={id} />
+            ) : !currentUserId ? null : (
+              <Card id="quick-reply-area" className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">
+                <LockIcon size={32} aria-hidden="true" className="text-bb-danger-text" />
+                <h2 className="m-0 border-0 p-0 text-lg font-bold text-bb-danger-text normal-case not-italic">Sujet verrouillé</h2>
+                <p className="m-0 max-w-[50ch] text-sm text-bb-text-muted">
+                  Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération.
+                </p>
+              </Card>
+            )}
           </div>
 
-          {currentUserId && (!(topic.isLocked || topic.forum.isLocked) || isUserModerator) ? (
-            <QuickReply topicId={id} />
-          ) : !currentUserId ? null : (
-            <div id="quick-reply-area" style={{
-              padding: '3rem 2rem',
-              textAlign: 'center',
-              background: 'rgba(239, 68, 68, 0.03)',
-              borderRadius: '12px',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
-              color: '#888',
-              marginTop: '3rem'
-            }}>
-              <LockIcon size={32} style={{ marginBottom: '1rem', color: '#ef4444', opacity: 0.6 }} />
-              <h3 style={{ color: '#ef4444', marginBottom: '0.5rem' }}>Sujet verrouillé</h3>
-              <p>Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération.</p>
-            </div>
-          )}
+          <TopicToolsAside />
         </div>
-        <TopicSidebar
-          topicId={id}
-          currentPage={safeCurrentPage}
-          totalPages={totalPages}
-          isModerator={isUserModerator}
-          isPinned={topic.isSticky}
-          isLocked={topic.isLocked}
-          isForumLocked={topic.forum.isLocked}
-          lastPostId={lastPost?.id || ""}
-          lastPage={totalPages}
-          allForums={allForums}
-          topicTitle={topic.title}
-          authorId={topic.authorId}
-          currentUserId={currentUserId}
-          views={displayViews}
-          isArchived={topic.isArchived}
-          isTournament={!!topic.tournament}
-          tournamentId={topic.tournament?.id}
-          canEditTournament={canEditTournament}
-          isFinished={topic.tournament?.isFinished || false}
-          isCancelled={topic.tournament?.isCancelled || false}
-          registrationsLocked={topic.tournament?.registrationsLocked || false}
-        />
-      </div>
-    </main>
+
+        <TopicReplyBar />
+      </TopicToolsProvider>
     </div>
   );
 }

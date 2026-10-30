@@ -27,8 +27,9 @@ Le forum est le cœur de la communauté : les coachs y discutent par catégories
 | `apps/site/app/forum/[id]/page.tsx` | Liste des sujets d'un forum. |
 | `apps/site/app/forum/topic/[id]/page.tsx` | Page d'un sujet (et du tournoi qui lui est attaché). |
 | `apps/site/app/forum/search/page.tsx`, `apps/site/app/forum/unread/page.tsx` | Recherche et non-lus. |
-| `apps/site/app/forum/component/ForumSidebar.tsx`, `TopicSidebar.tsx` | Colonnes latérales (accueil/liste, sujet), copiées dans le menu mobile. |
-| `apps/site/app/forum/component/PostItem.tsx`, `PostActions.tsx`, `PostReactions.tsx` | Affichage d'un message et de ses actions. |
+| `apps/site/app/forum/component/ForumSidebar.tsx` | Colonne latérale de l'accueil et des listes, copiée dans le menu mobile. |
+| `apps/site/app/forum/component/TopicTools.tsx` | Outils d'un sujet (carte 086) : colonne de droite sur ordinateur ; sur téléphone, panneau « Outils du sujet », rubrique « Cette page » du panneau « Plus » et barre collée en bas (pagination et « Répondre »). |
+| `apps/site/app/forum/component/PostItem.tsx`, `PostActions.tsx`, `PostReactions.tsx`, `PostMoreMenu.tsx`, `PostAuthorSheet.tsx` | Un message : en-tête compact, pied avec les réactions et « Citer », menu « ⋯ » des actions rares (partager, signaler, non lu, modifier, supprimer, modérer) et « fiche coach » de l'auteur. |
 | `apps/site/app/forum/page.css`, `page-mobile.css` | Style commun à toutes les pages du forum, et ses règles pour tablette et téléphone. Chaque page du forum importe les deux, `page-mobile.css` juste après `page.css`. |
 | `apps/site/common/components/BBCodeEditor/BBCodeEditor-mobile.css`, `common/components/ReportModal/ReportModal-mobile.css` | Règles pour téléphone de l'éditeur de messages et de la fenêtre de signalement (composants partagés, aussi utilisés hors du forum). |
 | `apps/site/app/forum/actions.ts` | Actions serveur du forum et des inscriptions aux tournois. |

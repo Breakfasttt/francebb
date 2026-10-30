@@ -39,7 +39,33 @@ export const getRank = (postCount: number): Rank => {
   return "none";
 };
 
-export default function UserAvatar({ 
+/** Nom du rang affiché à côté du pseudo (page d'un sujet du forum) ; mêmes libellés que le choix du cadre dans le profil. */
+export const RANK_LABELS: Partial<Record<Rank, string>> = {
+  "bronze": "Bronze",
+  "silver": "Argent",
+  "gold": "Or",
+  "platinum": "Platine",
+  "diamond": "Diamant",
+  "master": "Master",
+  "grand-master": "Grand Master"
+};
+
+/**
+ * Rang réellement affiché : le cadre choisi par le membre s'il l'a débloqué (un modérateur peut tout choisir),
+ * sinon le rang que lui donne son nombre de messages.
+ */
+export const resolveRank = (postCount: number, selectedRank?: Rank | null, isModerator = false): Rank => {
+  let rank = (!selectedRank || selectedRank === "auto") ? getRank(postCount) : selectedRank;
+  if (rank !== "none" && rank !== "auto" && !isModerator) {
+    const minPosts = RANK_REQUIREMENTS[rank] || 0;
+    if (postCount < minPosts) {
+      rank = getRank(postCount);
+    }
+  }
+  return rank;
+};
+
+export default function UserAvatar({
   image, 
   name, 
   postCount = 0, 
@@ -49,16 +75,8 @@ export default function UserAvatar({
   selectedRank,
   isModerator = false 
 }: UserAvatarProps) {
-  let rank = (!selectedRank || selectedRank === "auto") ? getRank(postCount) : selectedRank;
-  
-  // Si ce n'est pas automatique/aucun et que l'utilisateur n'est pas modo, 
-  // on vérifie si le rang est débloqué.
-  if (rank !== "none" && rank !== "auto" && !isModerator) {
-    const minPosts = RANK_REQUIREMENTS[rank] || 0;
-    if (postCount < minPosts) {
-      rank = getRank(postCount);
-    }
-  }
+  // Si ce n'est pas automatique/aucun et que l'utilisateur n'est pas modo, on vérifie que le rang est débloqué
+  const rank = resolveRank(postCount, selectedRank, isModerator);
 
   const containerSize = size + 12; 
 

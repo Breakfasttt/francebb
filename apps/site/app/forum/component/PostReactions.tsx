@@ -1,10 +1,15 @@
 "use client";
 
+/**
+ * Réactions d'un message (refonte, carte 086) : une pastille par émoji avec son compteur, celle du membre mise en
+ * valeur, et un bouton d'ajout qui ouvre le choix de 10 émojis. Un membre n'a qu'une réaction par message : un autre
+ * émoji remplace la sienne, le même émoji la retire. L'écran se met à jour tout de suite et revient en arrière si le
+ * serveur refuse. Un visiteur voit les pastilles mais ne peut pas réagir.
+ */
 import { useState, useTransition, useEffect } from "react";
 import { SmilePlus } from "lucide-react";
 import { togglePostReaction } from "@/app/forum/actions";
-import { toast } from "@bbfrance/ui";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
+import { Button, cn, toast } from "@bbfrance/ui";
 
 interface Reaction {
   emoji: string;
@@ -22,16 +27,16 @@ const COMMON_EMOJIS = ["👍", "❤️", "😂", "😢", "😡", "🔥", "👀",
 export default function PostReactions({ postId, initialReactions, currentUserId }: PostReactionsProps) {
   const [isPending, startTransition] = useTransition();
   const [showPicker, setShowPicker] = useState(false);
-  
-  // Optimistic UI state
+
+  // Réactions affichées tout de suite, avant la réponse du serveur
   const [optimisticReactions, setOptimisticReactions] = useState(initialReactions);
 
-  // Sync state if server data changes (e.g. from revalidatePath)
+  // Se recale sur les données du serveur quand elles changent (après un rafraîchissement de la page)
   useEffect(() => {
     setOptimisticReactions(initialReactions);
   }, [initialReactions]);
 
-  // Group reactions locally
+  // Regroupe les réactions par émoji
   const grouped = optimisticReactions.reduce((acc, curr) => {
     if (!acc[curr.emoji]) acc[curr.emoji] = { count: 0, hasReacted: false };
     acc[curr.emoji].count++;
@@ -45,23 +50,18 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
       return;
     }
 
-    // Optimistic internal apply
+    // Application immédiate : ajout, remplacement ou retrait de la réaction du membre
     setOptimisticReactions(prev => {
       const existingIdx = prev.findIndex(r => r.userId === currentUserId);
       if (existingIdx >= 0) {
         if (prev[existingIdx].emoji === emoji) {
-          // Toggle off
           return prev.filter((_, i) => i !== existingIdx);
-        } else {
-          // Replace with new emoji
-          const next = [...prev];
-          next[existingIdx] = { ...next[existingIdx], emoji };
-          return next;
         }
-      } else {
-        // Add new
-        return [...prev, { emoji, userId: currentUserId }];
+        const next = [...prev];
+        next[existingIdx] = { ...next[existingIdx], emoji };
+        return next;
       }
+      return [...prev, { emoji, userId: currentUserId }];
     });
 
     setShowPicker(false);
@@ -76,7 +76,6 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
         }
       } catch (error) {
         console.error("Failed to toggle reaction:", error);
-        // Rollback on error
         setOptimisticReactions(initialReactions);
         toast.error("Erreur lors de l'ajout de la réaction");
       }
@@ -84,119 +83,73 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
   };
 
   if (Object.keys(grouped).length === 0 && !currentUserId) {
-    return null; // Don't show anything for guests if there are no reactions
+    return null; // Un visiteur ne voit rien s'il n'y a aucune réaction
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center" }}>
+    <div className="flex flex-wrap items-center gap-1.5">
       {Object.entries(grouped).map(([emoji, { count, hasReacted }]) => (
-        <Tooltip key={emoji} text={hasReacted ? "Retirer votre réaction" : "Réagir"}>
-          <button
-            onClick={() => handleToggle(emoji)}
-            disabled={isPending || !currentUserId}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              padding: "0.3rem 0.6rem",
-              borderRadius: "20px",
-              border: hasReacted ? "1px solid var(--primary)" : "1px solid var(--glass-border)",
-              background: hasReacted ? "var(--primary-transparent)" : "var(--glass-bg)",
-              color: hasReacted ? "var(--primary)" : "var(--text-muted)",
-              cursor: currentUserId ? (isPending ? "wait" : "pointer") : "default",
-              fontSize: "0.85rem",
-              transition: "all 0.2s"
-            }}
-            className={currentUserId ? "hover-brightness" : ""}
-          >
-            <span>{emoji}</span>
-            <span style={{ fontWeight: 700, color: hasReacted ? "var(--primary)" : "var(--foreground)" }}>{count}</span>
-          </button>
-        </Tooltip>
+        <Button
+          key={emoji}
+          type="button"
+          variant="quiet"
+          onClick={() => handleToggle(emoji)}
+          aria-pressed={hasReacted}
+          title={hasReacted ? "Retirer votre réaction" : "Réagir"}
+          disabled={isPending || !currentUserId}
+          className={cn(
+            "min-h-11 gap-1.5 rounded-full border px-3 text-sm disabled:opacity-100 lg:min-h-9",
+            hasReacted
+              ? "border-bb-accent bg-bb-accent-soft text-bb-accent-text hover:bg-bb-accent-soft"
+              : "border-bb-border bg-bb-surface-2 text-bb-text"
+          )}
+        >
+          <span>{emoji}</span>
+          <span className="font-bold">{count}</span>
+        </Button>
       ))}
 
       {currentUserId && (
-        <div style={{ position: "relative" }}>
-          <Tooltip text="Réagir">
-            <button
-              onClick={() => setShowPicker(!showPicker)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: "28px",
-                height: "28px",
-                borderRadius: "50%",
-                border: "1px dashed var(--glass-border)",
-                background: "transparent",
-                color: "var(--text-muted)",
-                cursor: "pointer",
-                transition: "all 0.2s"
-              }}
-              className="hover-border-accent hover-text-accent"
-            >
-              <SmilePlus size={14} />
-            </button>
-          </Tooltip>
+        <div className="relative">
+          <Button
+            type="button"
+            variant="quiet"
+            size="tap-icon"
+            onClick={() => setShowPicker(!showPicker)}
+            aria-label="Ajouter une réaction"
+            aria-expanded={showPicker}
+            title="Réagir"
+            className="rounded-full border border-dashed border-bb-border lg:size-9"
+          >
+            <SmilePlus size={18} aria-hidden="true" />
+          </Button>
 
           {showPicker && (
             <>
-              {/* Backdrop invisble pour fermer */}
-              <div 
-                style={{ position: "fixed", inset: 0, zIndex: 9 }} 
-                onClick={() => setShowPicker(false)}
-              />
-              <div style={{
-                position: "absolute",
-                bottom: "calc(100% + 10px)",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "var(--footer-bg)",
-                border: "1px solid var(--glass-border)",
-                borderRadius: "12px",
-                padding: "0.5rem",
-                display: "grid",
-                gridTemplateColumns: "repeat(5, 1fr)",
-                gap: "0.2rem",
-                boxShadow: "var(--glass-shadow)",
-                zIndex: 10
-              }}>
+              {/* Fond invisible : un appui à côté ferme le choix des émojis */}
+              <div aria-hidden="true" className="fixed inset-0 z-[9]" onClick={() => setShowPicker(false)} />
+              <div
+                role="group"
+                aria-label="Choisir une réaction"
+                className="absolute bottom-[calc(100%+8px)] left-0 z-10 grid w-max grid-cols-5 gap-1 rounded-bb-md border border-bb-border bg-bb-surface p-1.5 shadow-bb"
+              >
                 {COMMON_EMOJIS.map(emoji => (
-                  <button
+                  <Button
                     key={emoji}
+                    type="button"
+                    variant="quiet"
+                    size="tap-icon"
                     onClick={() => handleToggle(emoji)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      fontSize: "1.2rem",
-                      cursor: "pointer",
-                      padding: "0.4rem",
-                      borderRadius: "8px",
-                      transition: "background 0.2s"
-                    }}
-                    className="hover-bg-white-10"
+                    className="text-xl"
                   >
                     {emoji}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </>
           )}
         </div>
       )}
-
-      <style jsx>{`
-        .hover-border-accent:hover {
-          border-color: var(--accent) !important;
-          border-style: solid !important;
-        }
-        .hover-text-accent:hover {
-          color: var(--accent) !important;
-        }
-        .hover-bg-theme:hover {
-          background: var(--primary-transparent) !important;
-        }
-      `}</style>
     </div>
   );
 }

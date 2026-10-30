@@ -1,30 +1,38 @@
 "use client";
 
-import BadgeButton from "@/common/components/Button/BadgeButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import { parseBBCode } from "@/lib/bbcode";
-import { Ban, Eye, EyeOff, Info, Mail, MapPin, Shield, ShieldAlert, Trophy, User } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from 'react';
-import MarkUnreadAction from "./MarkUnreadAction";
-import PostActions from "./PostActions";
-import ReportPostButton from "./ReportPostButton";
-import SharePostButton from "./SharePostButton";
+/**
+ * Un message d'un sujet du forum (refonte, carte 086), repéré par l'ancre id="post-<id>".
+ *
+ * - En-tête compact : avatar avec son cadre de rang (40 pixels sur téléphone, 48 sur ordinateur), pseudo, badge de
+ *   rang, puis une ligne discrète « rôle · date · #N » (et « modifié le … »). Un appui sur l'avatar ou le pseudo ouvre
+ *   la « fiche coach » (PostAuthorSheet) avec les statistiques de l'auteur et les boutons Profil et MP.
+ * - À droite, le bouton « ⋯ » (PostMoreMenu) regroupe les actions rares : partager, signaler, marquer comme non lu,
+ *   modifier, supprimer, modérer ou restaurer.
+ * - Corps du message en 16 pixels, largeur de lecture limitée à environ 70 caractères ; citations sur fond de surface ;
+ *   signature séparée par un filet.
+ * - Sous le message, toujours visibles : les réactions et le bouton « Citer » (PostActions).
+ * - États conservés : message supprimé, auteur bloqué ou banni (masqué, avec « Afficher le message »), message modéré,
+ *   premier message d'un tournoi mis en valeur sur les pages suivantes.
+ */
+import React, { useState } from "react";
+import { Ban, Eye, EyeOff, Info, Shield } from "lucide-react";
+import { Badge, Button, cn } from "@bbfrance/ui";
+import UserAvatar, { RANK_LABELS, resolveRank, type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
-
 import { getRoleLabel, isModerator } from "@/lib/roles";
-
-import Tooltip from "@/common/components/Tooltip/Tooltip";
+import PostActions from "./PostActions";
+import PostMoreMenu from "./PostMoreMenu";
+import PostAuthorSheet from "./PostAuthorSheet";
 
 interface PostItemProps {
+  // Message lu par la page serveur, avec son auteur (ligues, nombre de messages), son modérateur et ses réactions
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   post: any;
   index: number;
   topicId: string;
   currentUserId?: string;
   isUserModerator: boolean;
-  quoteStatusMap: any;
+  quoteStatusMap: Record<string, { isDeleted: boolean; isModerated: boolean }>;
   safeCurrentPage: number;
   regionLabels: Record<string, string>;
   // Libellés des rôles personnalisés (nom du rôle -> libellé), chargés une seule fois par la page sujet
@@ -35,6 +43,18 @@ interface PostItemProps {
   firstPostId?: string;
   isBlocked?: boolean;
 }
+
+/** Date et heure à la française, comme avant la refonte (« 12 mars 2026 à 10:00 »). */
+const longDate = (date: Date | string) =>
+  new Date(date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+/**
+ * Mise en forme du corps du message. Les citations, produites par lib/bbcode.ts avec des styles écrits dans la balise,
+ * passent sur un encadré de surface : d'où les « ! » (priorité forte). Le `px-0!` annule la marge intérieure que
+ * l'ancien globals-mobile.css ajoute au rendu BBCode sur téléphone.
+ */
+const bodyClass =
+  "px-0! text-base leading-[1.6] text-bb-text break-words [&_blockquote]:bg-bb-surface-2! [&_blockquote]:not-italic! [&_blockquote]:text-bb-text! [&_blockquote]:border-bb-border!";
 
 const PostItem: React.FC<PostItemProps> = ({
   post,
@@ -50,226 +70,188 @@ const PostItem: React.FC<PostItemProps> = ({
   isTournament = false,
   tournamentId,
   firstPostId,
-  isBlocked = false
+  isBlocked = false,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
-  const isBannedAuthor = post.author.isBanned;
+  const [authorOpen, setAuthorOpen] = useState(false);
+  const author = post.author;
+  const isBannedAuthor = !!author.isBanned;
+  const isAuthorModerator = isModerator(author.role);
+  const postCount = author._count?.posts || 0;
+  const rank = resolveRank(postCount, author.avatarFrame as Rank | null, isAuthorModerator);
+  const rankLabel = RANK_LABELS[rank];
+  const roleLabel = roleLabels[author.role] ?? getRoleLabel(author.role || "COACH");
+  const name = author.name || "Coach";
+  const isEdited = new Date(post.updatedAt).getTime() > new Date(post.createdAt).getTime() + 1000;
+  const isHidden = (isBlocked || isBannedAuthor) && !isRevealed;
+  const isFirstTournamentPost = isTournament && post.id === firstPostId;
+  const openAuthor = () => setAuthorOpen(true);
+
+  const avatar = (size: number) => (
+    <UserAvatar
+      image={author.image}
+      name={author.name}
+      postCount={postCount}
+      size={size}
+      isBanned={isBannedAuthor}
+      selectedRank={author.avatarFrame}
+      isModerator={isAuthorModerator}
+    />
+  );
 
   return (
-    <PremiumCard
+    <article
       id={`post-${post.id}`}
-      className={`forum-post-card ${isFirstPostAlwaysVisible ? 'first-post-highlight' : ''}`}
-      style={{
-        borderColor: isFirstPostAlwaysVisible ? 'var(--accent)' : undefined,
-        background: isFirstPostAlwaysVisible ? 'var(--admin-bg)' : undefined,
-      }}
+      aria-label={`Message #${index + 1} de ${name}`}
+      className={cn(
+        "scroll-mt-20 rounded-bb-lg border bg-bb-surface text-bb-text",
+        isFirstPostAlwaysVisible ? "border-2 border-bb-accent" : "border-bb-border"
+      )}
     >
-      {/* Sidebar Auteur */}
-      <div className="post-author-sidebar">
-        <UserAvatar
-          image={post.author.image}
-          name={post.author.name}
-          postCount={post.author._count?.posts || 0}
-          size={90}
-          isBanned={isBannedAuthor}
-          selectedRank={post.author.avatarFrame}
-          isModerator={isModerator(post.author.role)}
-        />
+      {/* En-tête : avatar, pseudo et rang, ligne discrète, menu « ⋯ » */}
+      <header className="flex items-start gap-2.5 px-3 pt-3 lg:gap-3 lg:px-5 lg:pt-4">
+        {/* L'avatar ouvre aussi la fiche ; le pseudo (ci-dessous) porte le nom lu par les lecteurs d'écran */}
+        <Button type="button" variant="quiet" tabIndex={-1} aria-hidden="true" onClick={openAuthor} className="shrink-0 rounded-full p-0 hover:bg-transparent">
+          <span className="lg:hidden">{avatar(40)}</span>
+          <span className="hidden lg:block">{avatar(48)}</span>
+        </Button>
 
-        <div className="post-author-info">
-          <div className="author-name">{post.author.name}</div>
-          <div className="author-role">
-            {roleLabels[post.author.role] ?? getRoleLabel(post.author.role || 'COACH')}
-          </div>
-
-          {(post.author.nafNumber || post.author.region || (post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom || post.author.equipe) && (
-            <div className="author-stats-container">
-              {post.author.nafNumber && (
-                <div className="author-stat-item naf">
-                  <Trophy size={12} color="var(--unread-marker)" />
-                  <a
-                    href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${post.author.nafNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {post.author.nafNumber}
-                  </a>
-                </div>
-              )}
-              {post.author.equipe && (
-                <div className="author-stat-item team">
-                  <Trophy size={11} color="var(--accent)" /> {post.author.equipe}
-                </div>
-              )}
-              {post.author.region && (
-                <div className="author-stat-item region">
-                  <MapPin size={12} color="#3b82f6" /> {regionLabels[post.author.region] || post.author.region}
-                </div>
-              )}
-              {((post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom) && (
-                <div className="author-stat-item leagues">
-                  <Shield size={12} color="#22c55e" style={{ marginTop: '2px', flexShrink: 0 }} />
-                  <div className="leagues-list">
-                    {post.author.ligues?.map((ligue: any) => (
-                      <Tooltip key={ligue.id} text={ligue.name}>
-                        <Link
-                          href={`/ligue/${ligue.id}`}
-                          className="league-link"
-                        >
-                          {ligue.acronym || ligue.name}
-                        </Link>
-                      </Tooltip>
-                    ))}
-                    {post.author.ligueCustom && (
-                      <span className="custom-league">{post.author.ligueCustom}</span>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {currentUserId && (
-            <div className="author-actions">
-              <BadgeButton
-                href={`/spy/${post.author.id}`}
-                icon={User}
-              >
-                PROFIL
-              </BadgeButton>
-              {post.author.id !== currentUserId && (
-                <BadgeButton
-                  href={`/messagerie?userId=${post.author.id}`}
-                  icon={Mail}
-                >
-                  MP
-                </BadgeButton>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="post-main-content">
-        <div className="post-header-meta">
-          <div className="post-date">
-            <span>Posté le {new Date(post.createdAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-            {post.updatedAt.getTime() > post.createdAt.getTime() + 1000 && (
-              <span className="edit-date">• modifié le : {new Date(post.updatedAt).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-            )}
-          </div>
-          <div className="post-index-actions">
-            <span className="post-index">#{index + 1}</span>
-            {currentUserId && <MarkUnreadAction topicId={topicId} postId={post.id} />}
-            <SharePostButton postId={post.id} topicId={topicId} page={safeCurrentPage} />
-            {currentUserId && currentUserId !== post.authorId && (
-              <ReportPostButton postId={post.id} authorName={post.author.name} />
-            )}
-          </div>
-        </div>
-
-        {/* Message Content */}
-        {post.isDeleted ? (
-          <div className="post-deleted-placeholder">
-            Ce message a été supprimé par son auteur
-          </div>
-        ) : (isBlocked || isBannedAuthor) && !isRevealed ? (
-          <div className={`post-blocked-placeholder ${isBannedAuthor ? 'banned' : ''}`}>
-            {/* Background Icon Watermark */}
-            <div className="watermark">
-              {isBannedAuthor ? <Ban size={180} color="#ef4444" /> : <ShieldAlert size={180} />}
-            </div>
-
-            <div className="placeholder-icon">
-              {isBannedAuthor ? <Ban size={32} strokeWidth={2.5} /> : <EyeOff size={32} strokeWidth={2.5} />}
-            </div>
-
-            <div className="placeholder-text">
-              <h4>
-                {isBannedAuthor ? `Coach banni : ${post.author.name}` : `Utilisateur bloqué : ${post.author.name}`}
-              </h4>
-              <p>
-                {isBannedAuthor
-                  ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
-                  : "Ce contenu est masqué car vous avez bloqué cet utilisateur. Vous pouvez le gérer dans votre gestion de compte."
-                }
-              </p>
-            </div>
-
-            <ClassicButton
-              onClick={() => setIsRevealed(true)}
-              icon={Eye}
-              style={{ width: 'auto', padding: '0.8rem 2.2rem' }}
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5 pt-1 lg:pt-1.5">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <Button
+              type="button"
+              variant="quiet"
+              aria-label={`Voir la fiche de ${name}`}
+              onClick={openAuthor}
+              className="-my-2.5 min-h-11 max-w-full justify-start rounded-bb-sm px-0 text-base font-bold whitespace-normal text-bb-text hover:bg-transparent hover:underline"
             >
-              Afficher le message
-            </ClassicButton>
+              <span className="min-w-0 break-words">{name}</span>
+            </Button>
+            {rankLabel && <Badge variant="rank">{rankLabel}</Badge>}
+            {isFirstPostAlwaysVisible && <Badge variant="outline">Premier message</Badge>}
+          </div>
+          <p className="m-0 text-[0.8125rem] leading-snug text-bb-text-muted">
+            {roleLabel}
+            <span aria-hidden="true"> · </span>
+            <time dateTime={new Date(post.createdAt).toISOString()}>{longDate(post.createdAt)}</time>
+            <span aria-hidden="true"> · </span>
+            <span>#{index + 1}</span>
+            {isEdited && (
+              <>
+                <span aria-hidden="true"> · </span>
+                <span>modifié le {longDate(post.updatedAt)}</span>
+              </>
+            )}
+          </p>
+        </div>
+
+        <PostMoreMenu
+          postId={post.id}
+          topicId={topicId}
+          page={safeCurrentPage}
+          authorId={post.authorId}
+          authorName={author.name || ""}
+          currentUserId={currentUserId}
+          isModerator={isUserModerator}
+          isModerated={!!post.isModerated}
+          showContentActions={!post.isDeleted && !isHidden}
+          editHref={isFirstTournamentPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${post.id}/edit`}
+          editLabel={isFirstTournamentPost ? "Modifier le tournoi" : "Modifier"}
+        />
+      </header>
+
+      <div className="px-3 pt-2 pb-3 lg:pr-6 lg:pb-4 lg:pl-[92px]">
+        {post.isDeleted ? (
+          <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-4 text-center text-sm text-bb-text-muted italic">
+            Ce message a été supprimé par son auteur
+          </p>
+        ) : isHidden ? (
+          <div className="flex flex-col items-center gap-3 rounded-bb-md border border-dashed border-bb-border bg-bb-surface-2 px-4 py-6 text-center">
+            <span aria-hidden="true" className={isBannedAuthor ? "text-bb-danger-text" : "text-bb-text-muted"}>
+              {isBannedAuthor ? <Ban size={28} /> : <EyeOff size={28} />}
+            </span>
+            <h3 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+              {isBannedAuthor ? `Coach banni : ${author.name}` : `Utilisateur bloqué : ${author.name}`}
+            </h3>
+            <p className="m-0 max-w-[60ch] text-sm text-bb-text-muted">
+              {isBannedAuthor
+                ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
+                : "Ce contenu est masqué car vous avez bloqué cet utilisateur. Vous pouvez le gérer dans votre gestion de compte."}
+            </p>
+            <Button type="button" variant="secondary" size="tap" onClick={() => setIsRevealed(true)}>
+              <Eye size={18} aria-hidden="true" /> Afficher le message
+            </Button>
           </div>
         ) : (
-          <div className="post-actual-content-wrapper">
+          <>
             {post.isModerated && (
-              <div className="post-moderation-banner">
-                <Shield size={14} style={{ display: 'inline', marginRight: '0.5rem' }} />
-                Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
-              </div>
+              <p className="m-0 mb-3 flex items-start gap-2 rounded-bb-md border border-bb-danger-text px-3 py-2 text-sm text-bb-danger-text">
+                <Shield size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+                <span>
+                  Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
+                </span>
+              </p>
             )}
 
-            {(!post.isModerated || isUserModerator || currentUserId === post.authorId) ? (
-              <div className="post-content-inner">
+            {!post.isModerated || isUserModerator || currentUserId === post.authorId ? (
+              <div className="max-w-[70ch]">
                 {post.isModerated && (
-                  <div className="moderator-view-hint">
-                    [Contenu original visible par vous seul et les modérateurs]
-                  </div>
+                  <p className="m-0 mb-2 text-xs text-bb-text-muted italic">[Contenu original visible par vous seul et les modérateurs]</p>
                 )}
                 {(isBlocked || isBannedAuthor) && isRevealed && (
-                  <div className={`revealed-hint ${isBannedAuthor ? 'banned' : ''}`}>
-                    <Info size={12} /> {isBannedAuthor ? "AFFICHAGE TEMPORAIRE (COACH BANNI)" : "AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)"}
-                    <button
-                      onClick={() => setIsRevealed(false)}
-                      className="rehide-btn"
-                    >
+                  <div className="mb-3 flex flex-wrap items-center gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-1 text-xs font-semibold text-bb-text-muted">
+                    <Info size={14} aria-hidden="true" />
+                    <span className="flex-1">
+                      {isBannedAuthor ? "AFFICHAGE TEMPORAIRE (COACH BANNI)" : "AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)"}
+                    </span>
+                    <Button type="button" variant="quiet" size="tap" onClick={() => setIsRevealed(false)} className="text-xs">
                       Masquer à nouveau
-                    </button>
+                    </Button>
                   </div>
                 )}
-                <BBCodeContent 
+                <BBCodeContent
                   content={post.content}
                   quoteStatusMap={quoteStatusMap}
                   currentUserId={currentUserId}
-                  className={post.isModerated ? 'moderated-content' : ''}
+                  className={cn(bodyClass, post.isModerated && "opacity-70")}
                 />
 
-                {post.author.signature && (
-                  <BBCodeContent 
-                    content={post.author.signature}
-                    currentUserId={currentUserId}
-                    className="post-signature"
-                  />
+                {author.signature && (
+                  <div className="mt-4 border-t border-bb-border pt-3">
+                    <BBCodeContent content={author.signature} currentUserId={currentUserId} className="px-0! text-sm leading-normal text-bb-text-muted" />
+                  </div>
                 )}
               </div>
             ) : (
-              <div className="post-moderated-content-placeholder">
+              <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-4 text-center text-sm text-bb-text-muted italic">
                 Le contenu de ce message a été masqué par la modération.
-              </div>
+              </p>
             )}
 
             <PostActions
               postId={post.id}
               authorId={post.authorId}
-              authorName={post.author.name || ""}
+              authorName={author.name || ""}
               content={post.content}
               initialReactions={post.reactions}
               currentUserId={currentUserId}
-              isModerator={isUserModerator}
               topicId={topicId}
-              isModerated={post.isModerated}
-              isTournament={isTournament}
-              tournamentId={tournamentId}
-              isFirstPost={post.id === firstPostId}
             />
-          </div>
+          </>
         )}
       </div>
-    </PremiumCard>
+
+      <PostAuthorSheet
+        open={authorOpen}
+        onOpenChange={setAuthorOpen}
+        author={author}
+        roleLabel={roleLabel}
+        rankLabel={rankLabel}
+        regionLabel={author.region ? regionLabels[author.region] : undefined}
+        isAuthorModerator={isAuthorModerator}
+        currentUserId={currentUserId}
+      />
+    </article>
   );
 };
 

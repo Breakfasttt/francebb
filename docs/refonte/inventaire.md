@@ -67,14 +67,14 @@ Fichier actuel : `common/components/BBCodeEditor/BBCodeEditor.tsx`. Le BBCode es
 - [ ] Bouton Aperçu, qui affiche ou masque le rendu.
 - [ ] Compteur de caractères quand une longueur maximale est fixée.
 - [ ] La touche Échap ferme l'outil ouvert.
-- [ ] L'événement `bbcode-insert-text` insère une citation depuis le bouton « Citer » d'un message.
+- [x] L'événement `bbcode-insert-text` insère une citation depuis le bouton « Citer » d'un message.
 - [ ] La zone de texte garde son attribut `name`, parce que les formulaires lisent son contenu par `FormData`.
 
 **Rendu des messages** (`BBCodeContent`, `lib/bbcode.ts`) :
 - [ ] Toutes les balises sont affichées correctement : `b i u s color size center right justify code sup sub hr bbscheme spoiler accordion quote url topic mention img youtube list table gallery`, plus les smileys écrits en texte.
-- [ ] Une citation affiche les onglets « Citation », « Par @nom » (lien vers le profil) et « Voir le message » (ancre `#post-id`). Si le message cité a été supprimé ou modéré, un texte d'explication remplace son contenu.
-- [ ] Une mention `@Pseudo` mène à `/spy/id`, ou à `/profile` quand il s'agit de soi.
-- [ ] Un schéma `[bbscheme]` affiche le lecteur : lecture, pause, image par image, vitesse.
+- [x] Une citation affiche les onglets « Citation », « Par @nom » (lien vers le profil) et « Voir le message » (ancre `#post-id`). Si le message cité a été supprimé ou modéré, un texte d'explication remplace son contenu.
+- [x] Une mention `@Pseudo` mène à `/spy/id`, ou à `/profile` quand il s'agit de soi.
+- [x] Un schéma `[bbscheme]` affiche le lecteur : lecture, pause, image par image, vitesse.
 
 ---
 
@@ -108,58 +108,58 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ### 3.3 `/forum/topic/[id]` : un sujet
 **Lecture et navigation**
-- [ ] [membre] Sans `?page=`, la page saute au premier message non lu (`?page=N#post-<id>`).
-- [ ] [membre] Le sujet est marqué comme lu et le compteur de vues augmente.
-- [ ] [tous] La page défile jusqu'à l'ancre `#post-<id>`.
+- [x] [membre] Sans `?page=`, la page saute au premier message non lu (`?page=N#post-<id>`).
+- [x] [membre] Le sujet est marqué comme lu et le compteur de vues augmente.
+- [x] [tous] La page défile jusqu'à l'ancre `#post-<id>`.
 - [ ] [tous] Pagination de 20 messages par page. Une page trop grande est ramenée à la dernière.
-- [ ] [tous] Titre, badge « ARCHIVÉ », nom du forum, retour au forum, fil d'Ariane (chemin cliquable : Accueil Forum › catégorie › forum parent › forum › sujet).
-- [ ] [visiteur / membre sans le rôle] Même règle d'accès réservé que pour un forum.
-- [ ] [membre] Les messages des membres qu'on a bloqués sont masqués.
+- [x] [tous] Titre, badge « ARCHIVÉ », nom du forum, retour au forum, fil d'Ariane (chemin cliquable : Accueil Forum › catégorie › forum parent › forum › sujet).
+- [x] [visiteur / membre sans le rôle] Même règle d'accès réservé que pour un forum.
+- [x] [membre] Les messages des membres qu'on a bloqués sont masqués.
 
 **Sujet de tournoi**
-- [ ] [tous] Résumé du tournoi, widget de résultats quand il est terminé, module d'inscription.
-- [ ] [tous] Le premier message reste affiché, mis en valeur, sur les pages suivantes.
+- [x] [tous] Résumé du tournoi, widget de résultats quand il est terminé, module d'inscription.
+- [x] [tous] Le premier message reste affiché, mis en valeur, sur les pages suivantes.
 
 **Un message (ancre `id="post-<id>"`)**
 - [ ] [tous] Avatar avec le cadre de rang. Rangs selon le nombre de messages : bronze 100, argent 300, or 700, platine 1000, diamant 2000, maître 4000, grand maître 10000. L'auteur banni a un style « banni ».
-- [ ] [tous] Nom et rôle de l'auteur.
-- [ ] [tous] Statistiques de l'auteur, si elles sont renseignées : numéro NAF avec lien vers `member.thenaf.net`, équipe, région, ligues (liens vers `/ligue/[id]`) et ligue saisie à la main.
-- [ ] [membre] Bouton « Profil » vers `/spy/[id]`, et bouton « MP » vers `/messagerie?userId=`, sauf sur ses propres messages.
-- [ ] [tous] « Posté le … », et « modifié le … » si le message a été modifié.
-- [ ] [tous] Numéro du message `#N`.
-- [ ] [membre] « Marquer comme non lu à partir d'ici ».
-- [ ] [tous] Partager : copie du lien `…/forum/topic/id?page=N#post-id`, avec la confirmation « Lien copié ! ».
-- [ ] [membre, pas l'auteur] Signaler le message (raisons : spam, harcèlement, contenu inapproprié, bot, autre ; plus des précisions).
-- [ ] [tous] Message supprimé : « Ce message a été supprimé par son auteur », sans actions.
-- [ ] [membre] Auteur bloqué ou banni : écran masqué, bouton « Afficher le message », bandeau « AFFICHAGE TEMPORAIRE » et bouton « Masquer à nouveau ».
-- [ ] [tous] Message modéré : bandeau avec le nom du modérateur et la raison. [auteur, modo] Le contenu d'origine reste visible avec une mention. [autres] « Contenu masqué par la modération ».
-- [ ] [tous] Signature de l'auteur sous le message.
-- [ ] [modo] « Modérer » (raison obligatoire) ou « Restaurer » (avec confirmation).
-- [ ] [tous] Les réactions affichent un émoji et un compteur, et celle du membre est mise en valeur. [membre] Choix parmi 10 émojis : 👍 ❤️ 😂 😢 😡 🔥 👀 🎉 👎 🍻. Une seule réaction par membre : un autre émoji remplace la réaction, le même émoji la retire. L'écran se met à jour tout de suite et revient en arrière si le serveur refuse.
+- [x] [tous] Nom et rôle de l'auteur.
+- [x] [tous] Statistiques de l'auteur, si elles sont renseignées : numéro NAF avec lien vers `member.thenaf.net`, équipe, région, ligues (liens vers `/ligue/[id]`) et ligue saisie à la main.
+- [x] [membre] Bouton « Profil » vers `/spy/[id]`, et bouton « MP » vers `/messagerie?userId=`, sauf sur ses propres messages.
+- [x] [tous] « Posté le … », et « modifié le … » si le message a été modifié.
+- [x] [tous] Numéro du message `#N`.
+- [x] [membre] « Marquer comme non lu à partir d'ici ».
+- [x] [tous] Partager : copie du lien `…/forum/topic/id?page=N#post-id`, avec la confirmation « Lien copié ! ».
+- [x] [membre, pas l'auteur] Signaler le message (raisons : spam, harcèlement, contenu inapproprié, bot, autre ; plus des précisions).
+- [x] [tous] Message supprimé : « Ce message a été supprimé par son auteur », sans actions.
+- [x] [membre] Auteur bloqué ou banni : écran masqué, bouton « Afficher le message », bandeau « AFFICHAGE TEMPORAIRE » et bouton « Masquer à nouveau ».
+- [x] [tous] Message modéré : bandeau avec le nom du modérateur et la raison. [auteur, modo] Le contenu d'origine reste visible avec une mention. [autres] « Contenu masqué par la modération ».
+- [x] [tous] Signature de l'auteur sous le message.
+- [x] [modo] « Modérer » (raison obligatoire) ou « Restaurer » (avec confirmation).
+- [x] [tous] Les réactions affichent un émoji et un compteur, et celle du membre est mise en valeur. [membre] Choix parmi 10 émojis : 👍 ❤️ 😂 😢 😡 🔥 👀 🎉 👎 🍻. Une seule réaction par membre : un autre émoji remplace la réaction, le même émoji la retire. L'écran se met à jour tout de suite et revient en arrière si le serveur refuse.
 - [ ] [membre] « Citer » insère la citation dans la réponse rapide puis fait défiler jusqu'à elle. Sans réponse rapide, il mène à `/forum/topic/[id]/reply?quotePostId=`.
-- [ ] [auteur, modo] « Modifier » vers `/forum/post/[id]/edit`. Pour le premier message d'un tournoi, il mène à `/forum/edit-tournament/[tournamentId]`.
-- [ ] [auteur] « Supprimer », avec confirmation.
+- [x] [auteur, modo] « Modifier » vers `/forum/post/[id]/edit`. Pour le premier message d'un tournoi, il mène à `/forum/edit-tournament/[tournamentId]`.
+- [x] [auteur] « Supprimer », avec confirmation.
 
 **Réponse rapide (`id="quick-reply-area"`)**
-- [ ] [membre, sujet et forum non verrouillés, ou modo] Éditeur BBCode et bouton « Envoyer ma réponse ».
-- [ ] [membre] Après l'envoi, l'éditeur est vidé et la page défile jusqu'au nouveau message, mis en valeur par une animation.
-- [ ] [membre] Si le sujet est verrouillé pour lui, un encart « Sujet verrouillé » s'affiche.
+- [x] [membre, sujet et forum non verrouillés, ou modo] Éditeur BBCode et bouton « Envoyer ma réponse ».
+- [x] [membre] Après l'envoi, l'éditeur est vidé et la page défile jusqu'au nouveau message, mis en valeur par une animation.
+- [x] [membre] Si le sujet est verrouillé pour lui, un encart « Sujet verrouillé » s'affiche.
 
 **Outils du sujet (aujourd'hui dans la colonne latérale)**
-- [ ] [tous] Nombre de vues.
-- [ ] [tous] Bandeau « Forum verrouillé » ou « Sujet verrouillé ».
-- [ ] [membre] « Répondre » fait défiler jusqu'à la réponse rapide.
-- [ ] [membre] « Suivre le sujet » ou « Arrêter de suivre ».
-- [ ] [auteur, modo, hors tournoi] « Modifier le titre », avec des smileys et un aperçu.
-- [ ] [membre, pas l'auteur] Signaler le sujet.
-- [ ] [tous] « Dernier message » (`?page=last#post-lastId`).
-- [ ] [tous] « Haut de page ».
-- [ ] [orga, tournoi non annulé] « Modifier le tournoi ». Si le tournoi est terminé : « Publier les résultats » et « Réouvrir le tournoi ». Sinon : « Terminer », « Bloquer / Réouvrir les inscriptions », « Annuler ». Chaque action demande une confirmation.
-- [ ] [modo] Épingler ou désépingler.
-- [ ] [modo] Déplacer vers un autre forum (fenêtre avec la liste des forums).
-- [ ] [modo] Archiver ou désarchiver.
-- [ ] [modo] Verrouiller ou déverrouiller le sujet.
-- [ ] [modo] Supprimer le sujet définitivement, avec un avertissement. Le tournoi lié est supprimé aussi.
+- [x] [tous] Nombre de vues.
+- [x] [tous] Bandeau « Forum verrouillé » ou « Sujet verrouillé ».
+- [x] [membre] « Répondre » fait défiler jusqu'à la réponse rapide.
+- [x] [membre] « Suivre le sujet » ou « Arrêter de suivre ».
+- [x] [auteur, modo, hors tournoi] « Modifier le titre », avec des smileys et un aperçu.
+- [x] [membre, pas l'auteur] Signaler le sujet.
+- [x] [tous] « Dernier message » (`?page=last#post-lastId`).
+- [x] [tous] « Haut de page ».
+- [x] [orga, tournoi non annulé] « Modifier le tournoi ». Si le tournoi est terminé : « Publier les résultats » et « Réouvrir le tournoi ». Sinon : « Terminer », « Bloquer / Réouvrir les inscriptions », « Annuler ». Chaque action demande une confirmation.
+- [x] [modo] Épingler ou désépingler.
+- [x] [modo] Déplacer vers un autre forum (fenêtre avec la liste des forums).
+- [x] [modo] Archiver ou désarchiver.
+- [x] [modo] Verrouiller ou déverrouiller le sujet.
+- [x] [modo] Supprimer le sujet définitivement, avec un avertissement. Le tournoi lié est supprimé aussi.
 
 ### 3.4 `/forum/topic/[id]/reply` : page de réponse
 - [ ] [membre] Éditeur BBCode, boutons « Annuler » et « Publier ma réponse ».

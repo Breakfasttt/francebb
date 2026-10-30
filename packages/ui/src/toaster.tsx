@@ -12,8 +12,9 @@ export function Toaster() {
   return (
     <Sonner
       position="bottom-right"
-      // Sur téléphone, au-dessus de la barre de navigation basse (variable posée par la coquille du site)
-      mobileOffset={{ bottom: "calc(var(--app-bottom-nav-space, 0px) + 16px)" }}
+      // Sur téléphone, au-dessus de la barre de navigation basse et d'une éventuelle barre d'actions collée en bas
+      // par la page (variables posées par la coquille du site)
+      mobileOffset={{ bottom: "calc(var(--app-bottom-nav-space, 0px) + var(--app-page-bar-space, 0px) + 16px)" }}
       toastOptions={{
         style: {
           background: "var(--card-bg)",
