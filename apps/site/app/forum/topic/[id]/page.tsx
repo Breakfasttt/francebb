@@ -185,6 +185,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const postContents = topic.posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
 
+  // Libellés lisibles des rôles (y compris personnalisés), lus une seule fois pour tous les messages
+  const roleConfigs = await prisma.roleConfig.findMany({ select: { name: true, label: true } });
+  const roleLabels: Record<string, string> = Object.fromEntries(roleConfigs.map(r => [r.name, r.label]));
+
   const regionLabels: Record<string, string> = {
     "IDF": "R1 - Île-de-France",
     "Nord-Ouest": "R2 - Nord-Ouest",
@@ -263,6 +267,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 quoteStatusMap={quoteStatusMap}
                 safeCurrentPage={safeCurrentPage}
                 regionLabels={regionLabels}
+                roleLabels={roleLabels}
                 isFirstPostAlwaysVisible={true}
                 isBlocked={blockedUserIds.includes(firstPostForTournament.authorId)}
               />
@@ -280,6 +285,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 quoteStatusMap={quoteStatusMap}
                 safeCurrentPage={safeCurrentPage}
                 regionLabels={regionLabels}
+                roleLabels={roleLabels}
                 isTournament={!!topic.tournament}
                 tournamentId={topic.tournament?.id}
                 firstPostId={topic.posts[0]?.id}

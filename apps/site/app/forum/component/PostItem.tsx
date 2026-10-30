@@ -14,7 +14,7 @@ import ReportPostButton from "./ReportPostButton";
 import SharePostButton from "./SharePostButton";
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 
-import { isModerator } from "@/lib/roles";
+import { getRoleLabel, isModerator } from "@/lib/roles";
 
 import Tooltip from "@/common/components/Tooltip/Tooltip";
 
@@ -27,6 +27,8 @@ interface PostItemProps {
   quoteStatusMap: any;
   safeCurrentPage: number;
   regionLabels: Record<string, string>;
+  // Libellés des rôles personnalisés (nom du rôle -> libellé), chargés une seule fois par la page sujet
+  roleLabels?: Record<string, string>;
   isFirstPostAlwaysVisible?: boolean;
   isTournament?: boolean;
   tournamentId?: string;
@@ -43,6 +45,7 @@ const PostItem: React.FC<PostItemProps> = ({
   quoteStatusMap,
   safeCurrentPage,
   regionLabels,
+  roleLabels = {},
   isFirstPostAlwaysVisible = false,
   isTournament = false,
   tournamentId,
@@ -76,7 +79,7 @@ const PostItem: React.FC<PostItemProps> = ({
         <div className="post-author-info">
           <div className="author-name">{post.author.name}</div>
           <div className="author-role">
-            {post.author.role || 'COACH'}
+            {roleLabels[post.author.role] ?? getRoleLabel(post.author.role || 'COACH')}
           </div>
 
           {(post.author.nafNumber || post.author.region || (post.author.ligues && post.author.ligues.length > 0) || post.author.ligueCustom || post.author.equipe) && (
