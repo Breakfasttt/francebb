@@ -12,8 +12,8 @@
     gap: 0.6rem 1rem;
   }
 
-  /* Quatre classes : plus précis que « .bb-button.icon-only.size-xs » (28 pixels) de Button.css */
-  .bb-player-root .bb-player-controls .bb-button.icon-only {
+  /* Les boutons de @bbfrance/ui font 36 pixels (taille « icon ») : on les porte à 44 pixels pour le pouce */
+  .bb-player-root .bb-player-controls .bb-player-btn {
     min-width: 44px;
     min-height: 44px;
     padding: 0.5rem;

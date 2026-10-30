@@ -1,4 +1,4 @@
-import { ToolType } from "../page";
+import { ToolType } from "@bbfrance/bbscheme-player";
 import { User, Users, Goal, Eraser, MousePointer2, RefreshCcw } from "lucide-react";
 import "./Toolbar.css";
 import "./Toolbar-mobile.css";

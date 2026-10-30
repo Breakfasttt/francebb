@@ -32,12 +32,11 @@ type Visitor = "visiteur" | "moderateur" | "nouveau" | "banni" | "admin";
 const NEWCOMER_ID = "e2e_audit_newcomer";
 
 /**
- * Sujet créé par l'audit seulement (carte 061) : son message contient un schéma BBScheme, pour mesurer le lecteur
- * BBSchemePlayer tel qu'il s'affiche dans le forum. Le schéma est vide (terrain sans joueurs), ce qui suffit pour
- * mesurer les commandes du lecteur.
+ * Sujet dont le message contient un schéma BBScheme (carte 061), pour mesurer le lecteur BBSchemePlayer tel qu'il
+ * s'affiche dans le forum. Le schéma est vide (terrain sans joueurs), ce qui suffit pour mesurer les commandes du
+ * lecteur. Depuis la carte 024, ce sujet est créé par globalSetup, car le test smoke l'utilise aussi.
  */
-const BBSCHEME_TOPIC_ID = "e2e_audit_bbscheme_topic";
-const BBSCHEME_BOARD_ID = "e2e_audit_board";
+const BBSCHEME_TOPIC_ID = E2E.bbschemeTopicId;
 
 /** Administrateur créé par l'audit seulement (carte 061), pour mesurer /administration. */
 const ADMIN_ID = "e2e_audit_admin";
@@ -234,25 +233,6 @@ test.describe("audit mobile", () => {
         where: { id: ADMIN_ID },
         update: { role: "ADMIN" },
         create: { id: ADMIN_ID, name: "Admin E2E", email: "admin@e2e.test", role: "ADMIN", hasFinishedOnboarding: true },
-      });
-    });
-    // Sujet dont le message affiche le lecteur BBScheme (carte 061)
-    await withTestDb(async (prisma) => {
-      await prisma.bBSchemeState.upsert({
-        where: { id: BBSCHEME_BOARD_ID },
-        update: {},
-        create: { id: BBSCHEME_BOARD_ID, hash: BBSCHEME_BOARD_ID, data: "{}" },
-      });
-      await prisma.topic.upsert({
-        where: { id: BBSCHEME_TOPIC_ID },
-        update: {},
-        create: {
-          id: BBSCHEME_TOPIC_ID,
-          title: "Schéma BBScheme de l'audit",
-          forumId: E2E.forumId,
-          authorId: E2E.coachId,
-          posts: { create: { content: `Voici le schéma : [bbscheme]${BBSCHEME_BOARD_ID}[/bbscheme]`, authorId: E2E.coachId } },
-        },
       });
     });
     // Un navigateur par visiteur ; le modérateur voit toutes les pages réservées (modération et administration en lecture)

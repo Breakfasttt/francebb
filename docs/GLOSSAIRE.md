@@ -54,6 +54,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **OIDC** (*OpenID Connect*) | Extension d'OAuth pour la connexion unique : une application demande au hub « qui est connecté ? ». |
 | **Onboarding** | Les étapes qu'un nouveau membre remplit à sa première connexion (pseudo, région…). |
 | **ORM** | Outil qui permet au code de parler à la base de données sans écrire de SQL. Ici : Prisma. |
+| **Paquet du dépôt** (dossier `packages/`) | Code partagé écrit par le projet lui-même, rangé dans `packages/<nom>` et nommé `@bbfrance/<nom>` (par exemple `@bbfrance/ui`, `@bbfrance/bbscheme-player`). Une application le déclare dans son `package.json` avec la version `workspace:*`, qui veut dire « la copie de ce dépôt » : ce n'est pas une bibliothèque téléchargée. Le site lit directement ses fichiers TypeScript grâce au réglage `transpilePackages` de `next.config.ts`. |
 | **PKCE** | Protection du parcours de connexion contre le vol du code d'autorisation. |
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |

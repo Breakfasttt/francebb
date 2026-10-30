@@ -1,8 +1,14 @@
 "use client";
 
+/**
+ * Lecteur BBScheme : affiche un plateau enregistré et rejoue son animation (lecture, image par image, vitesse,
+ * rotation). Copié depuis apps/site/app/bbscheme/component/BBSchemePlayer.tsx (carte 024). Le paquet ne peut pas
+ * appeler la base de données : c'est l'application qui fournit la fonction `loadBoard` (action serveur du site).
+ * Les boutons viennent de @bbfrance/ui, car un paquet n'a pas accès aux boutons propres au site.
+ */
+
 import {
   Clock,
-  HelpCircle,
   Info,
   Loader2,
   Pause,
@@ -13,22 +19,27 @@ import {
   ExternalLink
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { getBoardState } from "../actions";
-import { DrawingPath, PlayerRosterInfo, RosterData, TokenData } from "../page";
+import { Button } from "@bbfrance/ui";
+import { DrawingPath, PlayerRosterInfo, TokenData } from "./types";
 import "./BBSchemePlayer.css";
 import "./BBSchemePlayer-mobile.css";
 import Pitch from "./Pitch";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
-import ToggleButton from "@/common/components/Button/ToggleButton";
 
-interface BBSchemePlayerProps {
-  boardId: string;
-  layout?: string;
+/** Réponse de la fonction qui lit un plateau : son contenu JSON, ou une erreur. */
+export interface BoardStateResult {
+  success: boolean;
+  data?: string;
+  error?: string;
 }
 
-const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
+export interface BBSchemePlayerProps {
+  boardId: string;
+  layout?: string;
+  /** Lit le plateau `id` (dans le site : l'action serveur `getBoardState`). */
+  loadBoard: (id: string) => Promise<BoardStateResult>;
+}
+
+const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBoard }) => {
   const [frames, setFrames] = useState<TokenData[][]>([]);
   const [tokens, setTokens] = useState<TokenData[]>([]);
   const [drawings, setDrawings] = useState<DrawingPath[]>([]);
@@ -40,7 +51,7 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
   const [loading, setLoading] = useState(true);
   const [showTooltips, setShowTooltips] = useState(true);
 
-  const playTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const playTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Hydratation
@@ -49,7 +60,7 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
 
     const loadState = async () => {
       setLoading(true);
-      const result = await getBoardState(boardId);
+      const result = await loadBoard(boardId);
       if (result.success && result.data) {
         try {
           const parsed = JSON.parse(result.data);
@@ -290,23 +301,34 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
 
       <div className="bb-player-controls theme-aware">
         <div className="ctrl-group main-actions">
-          <ClassicButton 
-            onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} 
+          <Button
+            className="bb-player-btn"
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))}
             disabled={currentFrameIndex === 0}
-            size="xs"
-            icon={<SkipBack size={14} />}
-          />
-          <CTAButton 
+            aria-label="Image précédente"
+          >
+            <SkipBack size={14} />
+          </Button>
+          <Button
+            className="bb-player-btn"
+            size="icon"
             onClick={() => setIsPlaying(!isPlaying)}
-            icon={isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
-            size="sm"
-          />
-          <ClassicButton 
-            onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} 
+            aria-label={isPlaying ? "Pause" : "Lecture"}
+          >
+            {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
+          </Button>
+          <Button
+            className="bb-player-btn"
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))}
             disabled={currentFrameIndex === frames.length - 1}
-            size="xs"
-            icon={<SkipForward size={14} />}
-          />
+            aria-label="Image suivante"
+          >
+            <SkipForward size={14} />
+          </Button>
         </div>
 
         <div className="player-progress">
@@ -338,25 +360,37 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout }) => {
           <div className="divider" />
 
           <div className="secondary-actions">
-            <ToggleButton 
-              active={showTooltips} 
+            <Button
+              className="bb-player-btn"
+              variant={showTooltips ? "default" : "outline"}
+              size="icon"
+              aria-pressed={showTooltips}
               onClick={() => setShowTooltips(!showTooltips)}
-              size="xs"
-              icon={<Info size={16} />}
               title={showTooltips ? "Masquer les infos" : "Afficher les infos"}
-            />
-            <ClassicButton 
-              onClick={toggleRotation} 
-              size="xs" 
-              icon={<RotateCw size={14} />}
+              aria-label={showTooltips ? "Masquer les infos" : "Afficher les infos"}
+            >
+              <Info size={16} />
+            </Button>
+            <Button
+              className="bb-player-btn"
+              variant="outline"
+              size="icon"
+              onClick={toggleRotation}
               title="Pivoter le terrain"
-            />
-            <ClassicButton 
-              onClick={() => window.open(`/bbscheme?id=${boardId}`, '_blank')} 
-              size="xs" 
-              icon={<ExternalLink size={14} />}
+              aria-label="Pivoter le terrain"
+            >
+              <RotateCw size={14} />
+            </Button>
+            <Button
+              className="bb-player-btn"
+              variant="outline"
+              size="icon"
+              onClick={() => window.open(`/bbscheme?id=${boardId}`, '_blank')}
               title="Ouvrir dans l'éditeur BBScheme"
-            />
+              aria-label="Ouvrir dans l'éditeur BBScheme"
+            >
+              <ExternalLink size={14} />
+            </Button>
           </div>
         </div>
       </div>

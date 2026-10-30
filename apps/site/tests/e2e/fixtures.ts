@@ -41,6 +41,9 @@ export const E2E = {
   // Carte 060 : modérateur banni, créé par son test, que le modérateur « Modo E2E » (même rang) ne doit pas pouvoir débannir
   bannedModoId: "e2e_banned_modo",
   bannedModoName: "Modérateur banni E2E",
+  // Cartes 061 et 024 : sujet dont le message contient un schéma BBScheme (plateau vide), créé par globalSetup
+  bbschemeTopicId: "e2e_audit_bbscheme_topic",
+  bbschemeBoardId: "e2e_audit_board",
 };
 
 /** Les 7 thèmes du site, dans l'ordre des captures de référence. */

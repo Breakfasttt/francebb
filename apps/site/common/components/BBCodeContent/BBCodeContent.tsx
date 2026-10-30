@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect } from "react";
 import { parseBBCode } from "@/lib/bbcode";
-import BBSchemePlayer from "@/app/bbscheme/component/BBSchemePlayer";
+import { BBSchemePlayer } from "@bbfrance/bbscheme-player";
+import { getBoardState } from "@/app/bbscheme/actions";
 
 interface BBCodeContentProps {
   content: string;
@@ -34,7 +35,7 @@ const BBCodeContent: React.FC<BBCodeContentProps> = ({
           import('react-dom/client').then(({ createRoot }) => {
             if (!this.root) {
               this.root = createRoot(this);
-              this.root.render(<BBSchemePlayer boardId={boardId} layout={layout || 'horizontal'} />);
+              this.root.render(<BBSchemePlayer boardId={boardId} layout={layout || 'horizontal'} loadBoard={getBoardState} />);
             }
           });
         }

@@ -1,5 +1,5 @@
 import React from "react";
-import { TokenData, TokenType } from "../page";
+import { TokenData, TokenType } from "@bbfrance/bbscheme-player";
 import "./Sidebar.css";
 import "./Sidebar-mobile.css";
 

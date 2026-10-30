@@ -21,7 +21,7 @@ Le plan des dossiers et leurs règles sont dans `ARCHITECTURE.md` (section « O�
 
 - Utilisé par une seule page : `app/<page>/component/<Nom>/<Nom>.tsx`.
 - Utilisé par au moins deux pages : `common/components/<Nom>/<Nom>.tsx`, puis l'ajouter au skill `reuse-first`.
-- Partagé entre plusieurs applications (site, hub…) : `packages/ui/src/` (voir `packages/ui/CLAUDE.md`).
+- Partagé entre plusieurs applications (site, hub…) : `packages/ui/src/` (voir `packages/ui/CLAUDE.md`). Une partie de BBScheme (lecteur, terrain, pions) : `packages/bbscheme-player/src/` (voir son `CLAUDE.md`).
 - Un composant = un dossier, avec `<Nom>.tsx`, `<Nom>.css` et `<Nom>-mobile.css`.
 
 ## Autres cas

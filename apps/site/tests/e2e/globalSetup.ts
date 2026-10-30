@@ -118,6 +118,24 @@ export default async function globalSetup() {
     },
   });
 
+  // Cartes 061 et 024 : sujet dont le message affiche le lecteur BBScheme (plateau vide : terrain sans joueurs)
+  await prisma.bBSchemeState.upsert({
+    where: { id: E2E.bbschemeBoardId },
+    update: {},
+    create: { id: E2E.bbschemeBoardId, hash: E2E.bbschemeBoardId, data: "{}" },
+  });
+  await prisma.topic.upsert({
+    where: { id: E2E.bbschemeTopicId },
+    update: {},
+    create: {
+      id: E2E.bbschemeTopicId,
+      title: "Schéma BBScheme de l'audit",
+      forumId: forum.id,
+      authorId: E2E.coachId,
+      posts: { create: { content: `Voici le schéma : [bbscheme]${E2E.bbschemeBoardId}[/bbscheme]`, authorId: E2E.coachId } },
+    },
+  });
+
   // Carte 050 : un membre ordinaire que le modérateur bannira
   await prisma.user.upsert({
     where: { id: E2E.targetId },

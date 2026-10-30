@@ -24,6 +24,28 @@ test("le forum affiche la catégorie et le topic", async ({ page }) => {
   await expect(page.getByText(E2E.postContent)).toBeVisible();
 });
 
+// Carte 024 : la balise [bbscheme] d'un message affiche le lecteur venu du paquet @bbfrance/bbscheme-player
+test("un message contenant [bbscheme] affiche le lecteur", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await loginAs(page, E2E.coachId);
+  await page.goto(`/forum/topic/${E2E.bbschemeTopicId}`);
+  const player = page.locator("bb-scheme .bb-player-root");
+  await expect(player).toBeVisible({ timeout: 20_000 });
+  await expect(player.locator(".bb-player-viewport")).toBeVisible();
+  await expect(player.getByRole("button", { name: "Lecture" })).toBeVisible();
+  await expect(player.locator(".frame-info")).toHaveText("1 / 1");
+  // Sur téléphone : boutons de 44 pixels au moins et lecteur pas plus large que l'écran
+  const viewport = page.viewportSize();
+  if (viewport && viewport.width <= 1024) {
+    const playBox = await player.getByRole("button", { name: "Lecture" }).boundingBox();
+    expect(playBox?.height ?? 0).toBeGreaterThanOrEqual(44);
+    const playerBox = await player.boundingBox();
+    expect((playerBox?.x ?? 0) + (playerBox?.width ?? 0)).toBeLessThanOrEqual(viewport.width);
+  }
+  expect(pageErrors).toEqual([]);
+});
+
 test("un coach connecté peut répondre à un topic", async ({ page }) => {
   await loginAs(page, E2E.coachId);
   const reply = `Réponse smoke ${Date.now()}`;

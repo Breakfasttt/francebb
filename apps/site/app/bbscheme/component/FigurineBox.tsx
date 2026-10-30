@@ -1,6 +1,5 @@
 import React from 'react';
-import { TokenData, PlayerRosterInfo } from '../page';
-import Token from './Token';
+import { TokenData, PlayerRosterInfo, Token } from '@bbfrance/bbscheme-player';
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import './FigurineBox.css';
 

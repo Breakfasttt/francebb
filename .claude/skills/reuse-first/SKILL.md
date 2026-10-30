@@ -16,6 +16,13 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Comportement de modale | `Dialog`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogTitle`, `DialogClose` |
 | Bouton pour nouveau code hors site | `Button` (variantes sur tokens) |
 
+## Paquet BBScheme (`packages/bbscheme-player`, `@bbfrance/bbscheme-player`)
+| Besoin | Utiliser |
+|---|---|
+| Afficher un plateau BBScheme enregistré (lecture animée) | `BBSchemePlayer` ; lui passer `loadBoard={getBoardState}` (action serveur de `app/bbscheme/actions.ts`) |
+| Terrain et pions d'un plateau | `Pitch`, `Token` |
+| Types d'un plateau | `TokenData`, `BoardFrame`, `DrawingPath`, `PlayerRosterInfo`, `RosterData`, `ToolType`… (plus dans `app/bbscheme/page.tsx`) |
+
 ## Composants (`common/components/`)
 | Besoin | Utiliser |
 |---|---|

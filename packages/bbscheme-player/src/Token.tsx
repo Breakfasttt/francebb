@@ -1,5 +1,5 @@
 import React from "react";
-import { TokenData, ToolType } from "../page";
+import { TokenData, ToolType } from "./types";
 import { 
   HelpCircle, 
   Star

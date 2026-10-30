@@ -1,6 +1,5 @@
 import React from "react";
-import { TokenData } from "../page";
-import Token from "./Token";
+import { TokenData, Token } from "@bbfrance/bbscheme-player";
 import "./Dugout.css";
 
 interface DugoutProps {

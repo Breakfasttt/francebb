@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Paquets du monorepo consommés en sources TypeScript (pas d'étape de build)
-  transpilePackages: ["@bbfrance/ui"],
+  transpilePackages: ["@bbfrance/ui", "@bbfrance/bbscheme-player"],
   allowedDevOrigins: (process.env.ALLOWED_DEV_ORIGINS || 'localhost:3000').split(','),
   // Images (carte 019) : pas de section « images », les réglages par défaut suffisent.
   // next/image n'optimise que les images du dossier public/ (converties en WebP, au format

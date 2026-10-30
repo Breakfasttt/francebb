@@ -9,6 +9,7 @@ Ce document dit **comment le code est organisé et quelles règles respecter** q
 | `apps/site` | Le site BBFrance (Next.js) | En ligne |
 | `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
 | `packages/ui` | Composants d'interface partagés (shadcn/ui) | Utilisé par le site |
+| `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types (carte 024) | Utilisé par le site (messages du forum et éditeur `/bbscheme`) |
 
 Plus tard : `apps/bbscheme` (éditeur BBScheme en application séparée).
 
