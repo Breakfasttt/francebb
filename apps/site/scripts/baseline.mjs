@@ -65,7 +65,9 @@ await ready;
 async function sessionCookie() {
   if (!user) return null;
   const value = await encode({
-    token: { id: user.id, sub: user.id, name: user.name, role: user.role, hasFinishedOnboarding: true, isBanned: false },
+    // refreshedAt (carte 017) : profil relu en base à l'instant, comme pour un membre qui navigue déjà sur le site.
+    // Sans ce champ, chaque mesure partirait d'un jeton à rafraîchir et compterait une relecture inhabituelle.
+    token: { id: user.id, sub: user.id, name: user.name, role: user.role, hasFinishedOnboarding: true, isBanned: false, refreshedAt: Date.now() },
     secret: SECRET,
     salt: "authjs.session-token",
   });

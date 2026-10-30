@@ -3,7 +3,6 @@ import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
 import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWidget";
-import { prisma } from "@/lib/prisma";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Github, BarChart3 } from "lucide-react";
 import type { Metadata } from "next";
@@ -11,13 +10,12 @@ import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import Navbar from "@/common/components/Navbar/Navbar";
+import { getNavCounts } from "@/common/components/Navbar/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./tailwind.css";
 import "./globals-mobile.css";
 import "@/common/styles/widgets.css";
 
-
-export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "BBFrance - Tournois de Blood Bowl en France",
@@ -31,49 +29,17 @@ export default async function RootLayout({
 }>) {
   const session = await getSession();
 
-  // 1. Initialisation des variables par défaut
-  let userRole: UserRole = "COACH";
-  let isBanned = false;
-  let userTheme = "saison3";
-  let pendingModCount = 0;
-  let unreadCount = 0;
-
-  // 2. Rôle, ban et thème viennent de la session (rafraîchis en BDD par le callback jwt, auth.ts)
-  if (session?.user?.id) {
-    const user = session.user;
-    userRole = user.role as UserRole;
-    isBanned = user.isBanned;
-    userTheme = user.theme || "saison3";
-
-    try {
-      // 3. Compteurs : MP non lus, et file de modération pour les modérateurs (en parallèle)
-      const [pmCount, reports, resources] = await Promise.all([
-        prisma.privateMessage.count({
-          where: {
-            conversation: {
-              participants: {
-                some: {
-                  userId: user.id,
-                  deletedAt: null
-                }
-              }
-            },
-            authorId: { not: user.id },
-            readAt: null
-          }
-        }),
-        isModerator(userRole) ? prisma.moderationReport.count({ where: { status: "PENDING" } }) : 0,
-        isModerator(userRole) ? prisma.resource.count({ where: { status: "PENDING" } }) : 0,
-      ]);
-      unreadCount = pmCount;
-      pendingModCount = reports + resources;
-    } catch (error) {
-      console.error("Layout data fetching error:", error);
-    }
-  }
+  // Rôle, bannissement et thème viennent de la session (cookie), sans requête en base : le callback jwt
+  // d'auth.ts les relit en base au plus toutes les 5 minutes.
+  const user = session?.user;
+  const userRole = (user?.role as UserRole | undefined) ?? "COACH";
+  const isBanned = user?.isBanned ?? false;
+  const userTheme = user?.theme || "saison3";
 
   const isMod = isModerator(userRole);
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
+  // Compteurs de la barre de navigation : la promesse est transmise sans l'attendre, pour ne pas retarder la page
+  const navCounts = user?.id ? getNavCounts(user.id, isMod) : undefined;
 
   return (
     <html lang="fr" data-theme={userTheme} suppressHydrationWarning>
@@ -85,13 +51,7 @@ export default async function RootLayout({
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
           
-          <Navbar 
-            session={session} 
-            isAdmin={isAdmin} 
-            isMod={isMod} 
-            unreadCount={unreadCount} 
-            pendingModCount={pendingModCount}
-          />
+          <Navbar session={session} isAdmin={isAdmin} isMod={isMod} counts={navCounts} />
 
           <main className="main-layout-wrapper">
             {children}

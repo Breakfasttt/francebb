@@ -32,13 +32,14 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 - **Sécurité** :
   - toute action serveur commence par `getActiveSession()` (`lib/authGuard.ts`), qui refuse les visiteurs non connectés et les bannis ;
   - les droits (modérateur, admin) se vérifient côté serveur avec `lib/roles.ts` ;
+  - le rôle, le bannissement, le thème et le pseudo d'un membre voyagent dans son cookie de session, relu en base au plus toutes les 5 minutes (callback `jwt` d'`auth.ts`, carte 017). Un changement fait par un modérateur sur un autre membre prend donc effet en 5 minutes au plus. Quand un membre modifie son propre profil, le composant appelle `update()` de `useSession()` après l'action serveur : la session est alors relue tout de suite. `update()` ne peut pas servir à se donner des droits, car la base écrase toujours ce que le navigateur envoie ;
   - **toute fonction exportée d'un fichier `"use server"` est appelable depuis le navigateur par n'importe qui** : n'y exporter que de vraies actions, qui vérifient elles-mêmes l'appelant. Une fonction interne (journal, calcul) va dans `lib/` ;
   - une adresse de retour fournie par l'utilisateur passe par `safeCallbackUrl` (`lib/safeRedirect.ts`).
 - **Données personnelles** : le client `prisma` par défaut ne renvoie jamais l'email des membres. `prismaWithEmail` est réservé à la connexion et à l'envoi de mails.
 - **Erreurs** : pas de `throw` dans le nouveau code. Une action qui lit des données renvoie `null` (ou une liste vide) et l'appelant gère le cas ; une action qui modifie des données renvoie `{ success, error }` (type `ActionResult` de `lib/actionResult.ts`) et le composant affiche `error` dans une notification. En production, Next.js remplace le message d'une erreur levée par un texte générique : le membre ne saurait pas pourquoi son action a échoué. Le lien vers la page de connexion porte l'adresse de retour dans `?callbackUrl=`.
 - **Actions serveur plutôt que routes d'API** : une page qui doit modifier des données appelle une action serveur (`actions.ts`), pas une adresse `/api/…`. Les routes d'API sont réservées aux appels venant de l'extérieur du site.
 - **Base de données** : requêtes Prisma typées, avec `select` ou `include` pour ne charger que l'utile. Une seule requête pour toute une liste (pas de « N+1 », voir glossaire). Pagination par numéro de page (`skip` / `take`). Toute requête sur le forum passe par `lib/forumAccess.ts`, qui cache aux membres les catégories réservées à certains rôles.
-- **Next.js 16** : le fichier `proxy.ts` remplace l'ancien `middleware.ts` (code exécuté avant chaque page).
+- **Next.js 16** : le fichier `proxy.ts` remplace l'ancien `middleware.ts` (code exécuté avant chaque page). Il utilise la configuration complète d'Auth.js (`auth.ts`) : c'est lui qui enregistre dans le cookie la session relue en base.
 - **Types** : TypeScript strict, jamais de `any`.
 - **Langue** : commentaires d'en-tête de fichier en français, noms de variables et de fonctions en anglais.
 - **Interface** :

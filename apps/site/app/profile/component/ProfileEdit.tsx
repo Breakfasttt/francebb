@@ -10,6 +10,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
+import { useSession } from "next-auth/react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import ClassicSelect from "@/common/components/Form/ClassicSelect";
@@ -55,6 +56,9 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
   const [isPending, startTransition] = useTransition();
   const [isUpdatingTheme, startThemeUpdate] = useTransition();
   const { theme, setTheme } = useTheme();
+  // Le profil n'est relu en base que toutes les 5 minutes (carte 017) : après une modification,
+  // update() demande au serveur de relire tout de suite, pour que le pseudo et le thème soient à jour partout.
+  const { update: refreshSession } = useSession();
   const [currentTheme, setCurrentTheme] = useState(theme || user.theme || "dark");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -127,6 +131,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
     startThemeUpdate(async () => {
       const result = await updateTheme(newTheme);
       if (result.success) {
+        await refreshSession();
         showToast("Thème mis à jour !", "success");
       } else {
         showToast("Erreur lors du changement de thème", "error");
@@ -150,6 +155,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
       try {
         const result = await updateProfile(data);
         if (result.success) {
+          await refreshSession();
           showToast("Profil mis à jour !", "success");
           if (onUpdate) {
             setTimeout(() => onUpdate(), 1000);

@@ -17,6 +17,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Branche** (git) | Version parallèle du code, sur laquelle on travaille sans toucher la version principale avant de fusionner. |
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |
+| **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo, au plus toutes les 5 minutes, et les range dans le cookie de session. |
 | **Carte** (kanban) | Fichier qui décrit une tâche : pourquoi, quoi faire, comment vérifier que c'est fini. Voir `kanban/README.md`. |
 | **CI** (*Continuous Integration*, intégration continue) | Vérifications lancées automatiquement par GitHub à chaque envoi de code : types, qualité, tests. Définies dans `.github/workflows/ci.yml`. |
 | **Claim** | Une information sur l'utilisateur contenue dans un jeton de connexion (pseudo, email, « email vérifié »). |
@@ -59,6 +60,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
 | **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
+| **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur BBFrance, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
 | **Push** | Envoi des commits locaux vers GitHub. |
 | **RBAC** (*Role-Based Access Control*) | Droits accordés selon le rôle du membre (coach, modérateur, admin…). Voir `apps/site/lib/roles.ts`. |
 | **React** | Bibliothèque qui construit l'interface des pages à partir de composants. |

@@ -56,6 +56,22 @@ Carte 019 (30/10/2026) : Next.js 16 n'affiche plus le poids des pages à la fin 
 014 : accueil forum en `select` minimal + cache par audience, non-lus en une requête partagée, session mémoïsée par requête (`getSession`/`getActiveSession`), layout sans relecture du User, sidebar sans chargement inutilisé. LCP local inchangé (SQLite local ≈ 0 ms/requête) : le gain se voit en prod Turso.
 Tracer les requêtes d'une route : `TRACE_ROUTE=/forum node scripts/baseline.mjs` (Git Bash : préfixer `MSYS_NO_PATHCONV=1`).
 
+### Carte 017 (30/10/2026) : session relue en base au plus toutes les 5 minutes
+
+Mesure faite sur la base des tests e2e (base Postgres locale jetable, remplie avec le jeu de données des tests), car la base de développement locale est presque vide : `node scripts/e2e-db.mjs`, puis le `globalSetup` des tests, puis `DATABASE_URL=<adresse de la base site-e2e> node scripts/baseline.mjs`. Les chiffres ne sont donc pas comparables aux tableaux ci-dessus (autres données) ; seul l'écart avant/après compte. Le membre connecté de la mesure a un cookie relu en base il y a moins de 5 minutes, comme un membre qui navigue déjà sur le site.
+
+| Route (connecté) | Requêtes avant 017 | Après 017 |
+|---|---|---|
+| / | 4 | 3 |
+| /forum | 5 | 4 |
+| /forum/[id] | 19 | 18 |
+| /forum/topic/[id] | 37 | 35 |
+| /tournois | 6 | 5 |
+| /classement | 8 | 7 |
+| /bbscheme | 2 | 1 |
+
+Toutes les routes restent dynamiques (`ƒ`) au build : la mise en page générale lit le cookie de session, ce qui rend chaque page dynamique tant que `cacheComponents` (carte 018) n'est pas activé.
+
 ## Dette technique (app/, common/, lib/)
 
 | Compteur | Valeur |

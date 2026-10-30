@@ -79,4 +79,5 @@ Other notable behavior changes:
 - Removed: AMP support; `next lint` (use ESLint/Biome directly); `eslint` option in `next.config.*`; `serverRuntimeConfig/publicRuntimeConfig` (use env vars); `experimental.ppr` + route-level `experimental_ppr`; `unstable_rootParams`.
 - Deprecated: `middleware.ts` filename (prefer `proxy.ts`); `next/legacy/image`; `images.domains` (prefer `images.remotePatterns`); `revalidateTag(tag)` single-arg form.
 - `proxy.ts` note: `proxy` runs on `nodejs` only; Edge runtime is not supported in `proxy`. Keep `middleware.ts` if you must stay on Edge.
+  - BBFrance (card 017): `proxy.ts` uses the full Auth.js config from `auth.ts` (database access allowed). Only the proxy and `/api/auth/*` can rewrite the session cookie: `auth()` in a Server Component or Server Action reads the cookie but never persists a refreshed JWT.
 - Config rename example: `skipMiddlewareUrlNormalize` → `skipProxyUrlNormalize`.

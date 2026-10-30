@@ -8,16 +8,37 @@ import SiteLogo from '@/common/components/SiteLogo/SiteLogo';
 import { SignInButton } from "@/common/components/SignInButton/SignInButton";
 import MobileSidebar from '@/common/components/MobileSidebar/MobileSidebar';
 import GlobalPortal from '@/common/components/GlobalPortal/GlobalPortal';
+import type { NavCounts } from './navCounts';
 
 interface NavbarProps {
   session: any;
   isAdmin: boolean;
   isMod: boolean;
-  unreadCount: number;
-  pendingModCount: number;
+  /** Compteurs envoyés par le serveur plus tard que la page (carte 017) ; absents pour un visiteur. */
+  counts?: Promise<NavCounts>;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, unreadCount, pendingModCount }) => {
+/**
+ * Attend les compteurs sans bloquer l'affichage : la barre est rendue tout de suite sans pastille,
+ * puis les pastilles apparaissent quand la promesse est résolue.
+ */
+function useNavCounts(counts?: Promise<NavCounts>): NavCounts {
+  const [resolved, setResolved] = React.useState<{ source: Promise<NavCounts>; value: NavCounts } | null>(null);
+  React.useEffect(() => {
+    if (!counts) return;
+    let active = true;
+    counts.then((value) => {
+      if (active) setResolved({ source: counts, value });
+    });
+    return () => {
+      active = false;
+    };
+  }, [counts]);
+  return resolved && resolved.source === counts ? resolved.value : { unreadCount: 0, pendingModCount: 0 };
+}
+
+const Navbar: React.FC<NavbarProps> = ({ session, isAdmin, isMod, counts }) => {
+  const { unreadCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
   const isHome = pathname === '/';
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);

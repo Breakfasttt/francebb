@@ -1,8 +1,8 @@
 import type { NextAuthConfig } from "next-auth";
 
 /**
- * Configuration d'authentification compatible avec le runtime Edge.
- * Utilisée principalement par le middleware (proxy.ts).
+ * Partie de la configuration d'authentification qui ne lit pas la base (rappels jwt, session et authorized).
+ * Elle est complétée dans auth.ts, qu'utilisent à la fois les pages et le proxy (proxy.ts).
  */
 export const authConfig = {
   providers: [], // Les providers sont définis dans auth.ts pour le runtime Node.js
@@ -20,7 +20,7 @@ export const authConfig = {
         if (session.hasFinishedOnboarding !== undefined) token.hasFinishedOnboarding = session.hasFinishedOnboarding;
         if (session.name) token.name = session.name;
         if (session.theme) token.theme = session.theme;
-        if (session.role) token.role = session.role;
+        // Le rôle ne vient jamais du navigateur : il est relu en base par auth.ts (sécurité, carte 017)
       }
       return token;
     },
