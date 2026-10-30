@@ -20,6 +20,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Carte** (kanban) | Fichier qui décrit une tâche : pourquoi, quoi faire, comment vérifier que c'est fini. Voir `kanban/README.md`. |
 | **CI** (*Continuous Integration*, intégration continue) | Vérifications lancées automatiquement par GitHub à chaque envoi de code : types, qualité, tests. Définies dans `.github/workflows/ci.yml`. |
 | **Claim** | Une information sur l'utilisateur contenue dans un jeton de connexion (pseudo, email, « email vérifié »). |
+| **CLS** (*Cumulative Layout Shift*, décalage cumulé de la mise en page) | Mesure de Lighthouse : à quel point le contenu saute pendant le chargement (une image qui apparaît et pousse le texte vers le bas, par exemple). 0 = rien ne bouge ; bon en dessous de 0,1. |
 | **Coach** | Joueur de Blood Bowl, donc membre du site. |
 | **Commit** | Enregistrement d'un lot de modifications dans l'historique git, avec un message qui explique pourquoi. |
 | **Conseil** (`/council`) | Réunion de 5 agents IA aux rôles différents, qui donnent leur avis avant une décision importante. Voir `.claude/commands/council.md`. |
@@ -37,7 +38,8 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **ITP** (Safari) | Protection de Safari qui bloque les cookies entre sites différents. C'est pourquoi le hub et le site devront partager le même nom de domaine. |
 | **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
-| **Lighthouse** | Outil de Google qui note une page sur 100 : vitesse d'affichage, accessibilité, bonnes pratiques. Utilisé en mode mobile. |
+| **LCP** (*Largest Contentful Paint*, affichage du plus grand élément) | Mesure de Lighthouse : temps qu'il faut pour que le plus gros élément visible de la page (grande image, gros bloc de texte) soit affiché. C'est le moment où le visiteur a l'impression que la page est là. Bon en dessous de 2,5 secondes. |
+| **Lighthouse** | Outil de Google qui note une page sur 100 : vitesse d'affichage, accessibilité, bonnes pratiques. Utilisé en mode mobile, qui simule un téléphone de milieu de gamme sur un réseau 4G lent. La note de vitesse se lance avec `pnpm --filter @bbfrance/site lighthouse` (voir `docs/mobile-audit.md`). |
 | **localStorage** | Petite mémoire propre au navigateur et à l'appareil, où une page peut ranger des réglages (ex. le thème d'un visiteur). Elle peut être bloquée, par exemple en navigation privée. |
 | **Merge** (fusion) | Réunir le travail d'une branche dans une autre. |
 | **Migration** (base de données) | Fichier qui décrit un changement de structure de la base (nouvelle table, nouvelle colonne), appliqué de façon contrôlée et enregistrée. |
@@ -73,6 +75,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **SQLite** | Base de données qui tient dans un seul fichier. Pratique en local, mais limitée pour un site en ligne. |
 | **SSO** (*Single Sign-On*) | Connexion unique : un seul compte et une seule connexion pour plusieurs applications. |
 | **Tailwind** | Système de mise en forme par petites classes (`p-4` = marge intérieure de 16 pixels). Utilisé dans `packages/ui`. |
+| **TBT** (*Total Blocking Time*, temps de blocage total) | Mesure de Lighthouse : pendant le chargement, temps total où le téléphone est trop occupé à exécuter le JavaScript de la page pour réagir à un toucher. Plus il est court, plus la page répond vite. Bon en dessous de 200 millisecondes. |
 | **Thème** | Jeu de couleurs du site. Il y en a 7, au choix du coach (`apps/site/app/theme/`). |
 | **Token** (jeton) | Mot de passe technique qui donne accès à un service (GitHub, base de données). S'il fuite, il faut le révoquer. |
 | **Tokens de thème** | Noms de couleurs (`primary`, `card`…) qui pointent vers les couleurs du thème actif. |

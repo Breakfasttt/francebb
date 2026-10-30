@@ -94,6 +94,7 @@ Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`
 | `pnpm typecheck` | Pas d'incohérence de types dans le code TypeScript |
 | `pnpm lint:ratchet` | Qualité du code (ESLint). Le nombre d'erreurs ne doit jamais augmenter |
 | `pnpm test:e2e` | Parcours essentiels du site (lire le forum, répondre, se connecter…), joués dans un vrai navigateur sur une base de test locale recréée vide à chaque fois |
+| `pnpm --filter @bbfrance/site lighthouse` | Fluidité sur téléphone : note Lighthouse sur 100 des pages principales, mesurée sur la version de production du site (environ 5 minutes, résultats dans `apps/site/logs/lighthouse/`) |
 | `pnpm --filter @bbfrance/hub test:sso` | Connexion au site via le hub, de bout en bout |
 | `pnpm kanban` | Liste les tâches et vérifie que le kanban est bien rangé |
 

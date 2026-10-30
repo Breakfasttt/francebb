@@ -2,7 +2,7 @@
 
 **Règle absolue du projet : le site doit être impeccable sur téléphone.** Ce rapport liste ce qui ne l'est pas encore, page par page, et les cartes qui corrigent chaque point.
 
-Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 (listes et filtres) et 055 (seuil unique téléphone/ordinateur), 056 (carte et quiz), 057 (BBScheme) et 058 (connexion, inscription et page des bannis). À refaire après chaque série de corrections.
+Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 (listes et filtres) et 055 (seuil unique téléphone/ordinateur), 056 (carte et quiz), 057 (BBScheme) et 058 (connexion, inscription et page des bannis) ; première mesure de fluidité le 30/10/2026 (carte 059). À refaire après chaque série de corrections.
 
 ## Comment l'audit est fait
 
@@ -15,8 +15,72 @@ Date : 28/10/2026, mis à jour le 30/10/2026 après les cartes 053 (forum), 054 
    Le résultat détaillé est écrit dans `apps/site/logs/mobile-audit.json`.
 2. **Tests des parcours en taille téléphone** : les 15 tests essentiels du site (lire le forum, répondre, profil, accès réservés…) sont rejoués en taille téléphone (projet Playwright `telephone`, à chaque `pnpm test:e2e` et en CI). Ils passent tous.
 3. **Lecture du code** : problèmes relevés en rédigeant les fiches `docs/features/` (carte 045).
+4. **Fluidité** (depuis la carte 059) : note de vitesse Lighthouse sur 100, en mode mobile. Voir la section « Fluidité sur téléphone » plus bas.
 
-**Pas encore mesuré : la fluidité.** Les mesures de vitesse et de réactivité (Lighthouse, l'outil de Google qui note une page sur 100) demandent d'ajouter la bibliothèque `lighthouse` : en attente de ton accord (voir carte 059).
+## Fluidité sur téléphone (carte 059)
+
+Mesure du 30/10/2026. **Objectif : 90/100 sur chaque page.**
+
+### Comment la mesure est faite
+
+Commande, à lancer dans `apps/site` (ou `pnpm --filter @bbfrance/site lighthouse` depuis la racine) :
+
+```bash
+pnpm lighthouse
+```
+
+Elle prend environ 5 minutes et fait, dans l'ordre :
+
+1. elle recrée vide la base de test locale des tests e2e (serveur `site-e2e`, jamais la base de développement ni la production) et y ajoute le petit jeu de données des tests (un forum, un sujet, quelques membres) ;
+2. elle prépare le site dans sa **version de production** (`next build`), puis le lance (`next start`, adresse `http://localhost:3200`). Le mode développement (`next dev`) est bien plus lent et fausserait les notes ;
+3. elle passe chaque page dans **Lighthouse** en mode mobile, qui simule un téléphone de milieu de gamme sur un réseau 4G lent. Chaque page est mesurée 3 fois et la mesure du milieu (la médiane) est gardée, car la note varie d'un passage à l'autre.
+
+Le profil est mesuré connecté, avec le membre de test « Coach E2E » ; les autres pages sont mesurées en visiteur sans compte. Comme la connexion de test (`dev-login`) n'existe pas en production, le script fabrique lui-même le cookie de session du membre, avec une clé de chiffrement créée pour la mesure et jetée ensuite.
+
+Fichiers : `apps/site/playwright.lighthouse.config.ts` (préparation et lancement du site) et `apps/site/tests/lighthouse/lighthouse-mobile.spec.ts` (liste des pages et mesure). Les résultats sont écrits dans `apps/site/logs/lighthouse/` : un rapport par page (`accueil.html`, `profil.html`…, à ouvrir dans un navigateur, avec le détail de chaque cause) et `summary.json` (notes et causes principales). Variables facultatives : `LIGHTHOUSE_RUNS` (nombre de passages par page, 3 par défaut) et `LIGHTHOUSE_OUT` (dossier des résultats).
+
+### Ce que veulent dire les indicateurs
+
+- **Note** : note de vitesse de Lighthouse, sur 100. 90 et plus est « bon » pour Google.
+- **LCP** (*Largest Contentful Paint*) : temps avant que le plus gros élément visible (grand titre, grande image) soit affiché, c'est-à-dire le moment où la page « est là ». Bon sous 2,5 secondes.
+- **TBT** (*Total Blocking Time*) : temps pendant lequel le téléphone, occupé par le JavaScript, ne peut pas réagir à un toucher. Bon sous 200 millisecondes.
+- **CLS** (*Cumulative Layout Shift*) : à quel point le contenu saute pendant le chargement. 0 = rien ne bouge ; bon sous 0,1.
+
+### Résultats
+
+| Page | Visiteur | Note | Passages | LCP | TBT | CLS | Verdict |
+|---|---|---|---|---|---|---|---|
+| `/` accueil | visiteur | **97** | 97, 97, 98 | 2,6 s | 20 ms | 0 | Objectif atteint |
+| `/forum` | visiteur | **93** | 93, 93, 93 | 2,9 s | 20 ms | 0,082 | Objectif atteint |
+| `/forum/topic/[id]` (un sujet) | visiteur | **91** | 91, 91, 94 | 3,4 s | 20 ms | 0,065 | Objectif atteint de justesse |
+| `/tournois` | visiteur | **95** | 95, 95, 95 | 3,0 s | 20 ms | 0,005 | Objectif atteint |
+| `/profile` | membre connecté | **75** | 75, 75, 88 | 3,9 s | 30 ms | **0,25** | **Sous l'objectif** : carte 063 |
+
+Le site réagit vite partout (TBT de 20 à 30 ms, très loin de la limite de 200 ms). Le point faible commun est l'affichage du plus gros élément (LCP de 2,6 à 3,9 secondes, au-dessus des 2,5 secondes conseillées), et, sur le profil, le contenu qui saute.
+
+### Causes relevées par Lighthouse
+
+Communes aux 5 pages :
+
+- **Fichiers CSS qui bloquent l'affichage** : le navigateur attend une dizaine de petits fichiers de style avant de dessiner la page (gain estimé de 300 ms sur l'accueil et le forum, 460 ms sur les tournois, 610 ms sur le sujet et le profil). C'est la principale cause du LCP trop long.
+- **Logo trop lourd** : le logo du menu latéral (`img.logo-image`) pèse 85 Ko de plus que nécessaire pour sa taille d'affichage (96 × 42 pixels).
+- **JavaScript inutilisé** : environ 22 Ko chargés mais non utilisés sur la page, et 14 Ko de code de compatibilité pour d'anciens navigateurs (fonctions que tous les navigateurs récents connaissent déjà).
+- **Chaîne de chargement** : certains fichiers ne sont demandés qu'après d'autres, ce qui allonge l'attente.
+
+Propre au profil :
+
+- **Contenu qui saute** (CLS de 0,25, plus du double de la limite) : la carte de résumé du profil (`ProfileSidebar`, boîte `profile-summary-box`) est d'abord affichée dans sa version ordinateur, puis remplacée par sa version téléphone une fois le JavaScript chargé (`useIsMobile` ne connaît la largeur de l'écran que dans le navigateur). Tout ce qui est en dessous est décalé.
+- **Plus gros élément affiché tard** : le sous-titre de la page (« Gérez vos informations et votre activité ») n'apparaît qu'après 3,9 secondes, à cause des fichiers CSS bloquants.
+
+Lighthouse signale aussi que le retour arrière instantané du navigateur (*back/forward cache*) est impossible ; ses raisons viennent du navigateur de test et des pages qui demandent à ne pas être gardées en mémoire (connexion), elles ne sont pas à traiter.
+
+### Limites de la mesure locale
+
+- **Ordinateur et réseau** : Lighthouse simule le téléphone et la 4G lente par calcul, à partir de ce qui se passe sur l'ordinateur du développeur. Une machine plus lente ou occupée par autre chose donne des notes plus basses. Comparer les notes d'une même machine, pas d'une machine à l'autre.
+- **Pas d'hébergement réel** : le site et la base tournent sur l'ordinateur. En ligne, le temps de réponse de Vercel (l'hébergeur) et de Neon (la base) s'ajoute, mais le réseau de diffusion de Vercel accélère les fichiers statiques. La note en ligne peut donc être un peu différente.
+- **Très peu de données** : la base de test ne contient qu'un forum, un sujet d'un message et quelques membres. Une page avec beaucoup de messages ou de tournois sera plus lourde. Les pages préparées à l'avance pendant `next build` le sont en plus avec une base vide.
+- **Variation** : la note varie de quelques points d'un passage à l'autre (le profil est passé de 75 à 88), d'où les 3 passages et la médiane. Le sujet, à 91, est à la limite : à surveiller.
+- **Ce que Lighthouse ne voit pas** : la fluidité pendant l'utilisation (défilement, ouverture d'un menu) n'est pas mesurée, seulement le chargement de la page.
 
 ## Résultats de la mesure automatique (petit téléphone, 360 × 640)
 

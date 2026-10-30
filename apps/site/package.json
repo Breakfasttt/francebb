@@ -10,6 +10,7 @@
     "lint:ratchet": "node scripts/lint-ratchet.mjs",
     "typecheck": "tsc --noEmit",
     "test:e2e": "node scripts/e2e-db.mjs && playwright test",
+    "lighthouse": "node scripts/e2e-db.mjs && playwright test -c playwright.lighthouse.config.ts",
     "db:start": "node ../../scripts/local-postgres.mjs start site",
     "db:migrate": "prisma migrate dev",
     "db:setup": "npx tsx prisma/firstSetup.ts",
@@ -49,6 +50,7 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.0",
+    "lighthouse": "13.5.0",
     "tailwindcss": "4.1.11",
     "typescript": "5.9.3"
   }
