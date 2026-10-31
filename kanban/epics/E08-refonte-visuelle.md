@@ -24,9 +24,9 @@ La décision qui encadre le chantier est l'ADR 0006 (`docs/adr/0006-refonte-visu
 | Socle | 076 à 084 : essai de la barre basse, couleurs et thèmes, thème « Vestiaire » pour tous, police, cohabitation avec l'ancien CSS, nouvelle coquille, composants, bandeau du nouveau look, base des tests d'inventaire |
 | Forum | 085 à 089 : listes, page d'un sujet, éditeur, recherche et modération, tournois |
 | Site | 090 à 100 : accueil, connexion, profil, messagerie, ligues, articles, ressources, classement, quizz, modération et administration, BBScheme |
-| Finition | 101 et 102 : suppression de l'ancien CSS, mise à jour des skills, captures des thèmes |
+| Finition | 101 et 102 : suppression de l'ancien CSS, mise à jour des skills, captures des thèmes ; 114 : liste des tests manuels à dérouler sur un vrai téléphone |
 
-Les bugs repérés pendant l'inventaire sont dans les cartes 103 à 108, rattachées à l'épic E01.
+Les bugs repérés pendant l'inventaire sont dans les cartes 103 à 108, rattachées à l'épic E01. Les bugs repérés pendant la refonte elle-même sont dans les cartes 109 à 113 (épic E01) : ils seront traités une fois la refonte terminée, et la même règle vaut pour ceux qui seront trouvés ensuite.
 
 ## Terminé quand
 
