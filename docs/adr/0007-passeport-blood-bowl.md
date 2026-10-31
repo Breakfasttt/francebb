@@ -64,8 +64,9 @@ Le nom de coach supprimé reste réservé : le hub garde son empreinte, pas le n
 - chiffrement des jetons Discord et Google (`encryptOAuthTokens`) ;
 - renouvellement régulier des clés JWKS (les clés publiques qui servent à vérifier les jetons du hub) ;
 - en-têtes de sécurité envoyés au navigateur ;
-- journal d'audit (la liste des actions sensibles), dans lequel l'identifiant et l'adresse IP sont remplacés par une empreinte, et qui est conservé 1 an ;
-- double authentification (un code en plus à la connexion) facultative pour chaque coach.
+- journal d'audit (la liste des actions sensibles), dans lequel l'identifiant et l'adresse IP sont remplacés par une empreinte, et qui est conservé 1 an.
+
+La double authentification (un code en plus à la connexion) n'est finalement pas retenue. Le plugin de Better Auth ne protège que la connexion par mot de passe, qui n'existe pas en production. La sécurité repose sur Discord et Google, qui ont leur propre double authentification, et sur la boîte mail du coach.
 
 **Documentation de l'API en JSON.** `GET /api/doc` renvoie la description complète de l'API au format OpenAPI. OpenAPI est un format standard que des outils et des IA savent lire. `GET /api/doc?route=<chemin>` ne renvoie que la partie qui décrit une route. Les routes d'administration en sont exclues. Les routes propres au hub sont préfixées par `/api/v1`.
 

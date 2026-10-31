@@ -21,6 +21,5 @@ Le coach doit pouvoir gérer son passeport à un endroit unique, même si une ap
 - Pages en une colonne, adaptées au téléphone :
   - profil ;
   - comptes liés, avec la possibilité de retirer l'accès accordé à une application (get-consents et delete-consent) ;
-  - sessions actives ;
-  - double authentification.
+  - sessions actives.
 - Pas de lien codé en dur vers une application. Un bouton de retour n'apparaît que si le client appelant a fourni une adresse de retour enregistrée pour lui.

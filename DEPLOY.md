@@ -126,7 +126,10 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    - `BETTER_AUTH_SECRET` (`openssl rand -base64 32`) ;
    - `HUB_DATABASE_URL` (base Neon du hub) ;
    - Discord et Google (`DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`), avec les adresses de retour `https://auth.bbfrance.fr/api/auth/callback/discord` et `…/google`. Ils sont obligatoires : en mode hub, le site affiche toujours les boutons Discord et Google, qui passent par le hub ;
-   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` (même service d'envoi de mails que le site), pour les liens de connexion par email.
+   - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` (même service d'envoi de mails que le site), pour les liens de connexion par email ;
+   - `CRON_SECRET` (`openssl rand -base64 32`) : secret de la purge nocturne (carte 118). Vercel lance chaque nuit à 3 h l'adresse `/api/cron/purge`, déclarée dans `apps/hub/vercel.json`, avec ce secret. La purge efface le journal d'audit de plus d'un an, les sessions et les liens de connexion expirés. Sans `CRON_SECRET`, la purge refuse de tourner.
+
+   `BETTER_AUTH_SECRET` sert aussi à chiffrer les jetons Discord et Google en base et à calculer les empreintes du journal d'audit : **ne jamais le changer** une fois le hub en ligne, sinon ces jetons deviennent illisibles (les coachs devront se reconnecter avec Discord ou Google).
 4. **Enregistrer le site comme application cliente**, depuis `apps/hub` :
    ```bash
    HUB_DATABASE_URL="postgresql://…(base du hub)…" node scripts/register-client.mjs "BBFrance site" https://www.bbfrance.fr/api/auth/callback/hub

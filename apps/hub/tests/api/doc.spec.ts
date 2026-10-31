@@ -8,14 +8,17 @@ import { test, expect } from "@playwright/test";
 
 type OpenApiDocument = { openapi: string; info: { title: string }; paths: Record<string, Record<string, unknown>> };
 
-/** Chemins des routes Next.js de app/api propres au hub (hors routes de Better Auth et découverte OIDC). */
+/**
+ * Chemins des routes Next.js publiques de app/api propres au hub : hors routes de Better Auth, découverte OIDC
+ * et tâches planifiées internes (`/api/cron`, appelées seulement par Vercel avec un secret).
+ */
 function hubRouteFiles(dir = "app/api"): string[] {
   return readdirSync(dir).flatMap((name) => {
     const full = join(dir, name);
     if (statSync(full).isDirectory()) return hubRouteFiles(full);
     if (name !== "route.ts") return [];
     const route = "/" + relative("app", dir).split(sep).join("/");
-    return route.startsWith("/api/auth") ? [] : [route];
+    return route.startsWith("/api/auth") || route.startsWith("/api/cron") ? [] : [route];
   });
 }
 

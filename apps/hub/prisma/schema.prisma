@@ -248,3 +248,22 @@ model OauthClientAssertion {
   expiresAt DateTime
   @@map("oauthClientAssertion")
 }
+
+model AuditLog {
+  id String @id
+  action String
+  userHash String?
+  ipHash String?
+  createdAt DateTime
+  @@index([userHash])
+  @@index([createdAt])
+  @@map("auditLog")
+}
+
+model RateLimit {
+  id String @id
+  key String @unique
+  count Int
+  lastRequest BigInt
+  @@map("rateLimit")
+}

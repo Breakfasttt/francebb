@@ -5,9 +5,9 @@
  */
 import { writeFileSync } from "node:fs";
 import { getAuthTables } from "better-auth/db";
-import { authPlugins } from "../lib/authPlugins.mjs";
+import { authPlugins, rateLimitOptions } from "../lib/authPlugins.mjs";
 
-const tables = getAuthTables({ plugins: authPlugins({ sendMagicLink: async () => {} }) });
+const tables = getAuthTables({ plugins: authPlugins({ sendMagicLink: async () => {} }), rateLimit: rateLimitOptions });
 const modelNameOf = (key) => tables[key].modelName.charAt(0).toUpperCase() + tables[key].modelName.slice(1);
 
 // Postgres : Better Auth utilise de vraies colonnes tableau (String[]) et JSON (Json)
@@ -29,7 +29,9 @@ const models = Object.entries(tables).map(([key, table]) => {
       if (Array.isArray(value)) attributes += " @default([])";
     }
     if (field.type === "date" && typeof field.defaultValue === "function") attributes += " @default(now())";
-    lines.push(`  ${name} ${PRISMA_TYPES[field.type]}${optional}${attributes}`);
+    // Un nombre marqué `bigint` (date en millisecondes de la limite de requêtes) dépasse la taille d'un Int
+    const prismaType = field.type === "number" && field.bigint ? "BigInt" : PRISMA_TYPES[field.type];
+    lines.push(`  ${name} ${prismaType}${optional}${attributes}`);
     if (field.references) {
       const target = modelNameOf(field.references.model);
       const relationName = `${modelNameOf(key)}_${name}`;

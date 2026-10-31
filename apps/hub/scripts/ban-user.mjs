@@ -12,6 +12,7 @@ import { existsSync } from "node:fs";
 
 for (const file of [".env.local", ".env"]) if (existsSync(file)) process.loadEnvFile(file);
 const { prisma } = await import("../lib/prisma.mjs");
+const { writeAudit } = await import("../lib/audit.mjs");
 
 const [email, reasonOrFlag] = process.argv.slice(2);
 if (!email || !reasonOrFlag) {
@@ -27,6 +28,7 @@ if (!user) {
 
 if (reasonOrFlag === "--unban") {
   await prisma.user.update({ where: { id: user.id }, data: { banned: false, banReason: null, banExpires: null } });
+  await writeAudit({ action: "bannissement levé", userId: user.id });
   console.log(`Bannissement levé pour ${user.name}.`);
 } else {
   const now = new Date();
@@ -36,6 +38,7 @@ if (reasonOrFlag === "--unban") {
     prisma.oauthAccessToken.updateMany({ where: { userId: user.id, revoked: null }, data: { revoked: now } }),
     prisma.oauthRefreshToken.updateMany({ where: { userId: user.id, revoked: null }, data: { revoked: now } }),
   ]);
+  await writeAudit({ action: "bannissement", userId: user.id });
   console.log(`${user.name} est banni du hub : sessions fermées, accès aux applications révoqués.`);
 }
 await prisma.$disconnect();
