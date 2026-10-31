@@ -8,23 +8,24 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 
 ## Ce que voit le coach
 
-- `/bbquizz` : le jeu et, à côté, le classement. Pour chaque question : 5 secondes de lecture, puis 30 secondes pour répondre, puis l'explication. Jokers : « 50/50 » (retire deux mauvaises réponses), « appel à la communauté » (pourcentages des réponses), « passer ». Réservé aux membres connectés.
-- `/bbquizz/proposer` : un membre propose une question (catégorie, 4 réponses, la bonne, une explication).
-- `/bbquizz/valider` : un modérateur accepte ou refuse les propositions en attente.
-- `/bbquizz/editer` : un modérateur modifie ou supprime les questions existantes.
-- Ces trois pages s'ouvrent depuis l'écran d'accueil du jeu (`QuizEngine`).
-- **Sur téléphone** (et tablette, jusqu'à 1024 pixels depuis la carte 055) : le classement passe sous le jeu, les quatre réponses s'empilent sur une colonne avec des boutons d'au moins 48 pixels de haut, les titres rapetissent. Dans les pages de gestion, les boutons d'action prennent toute la largeur. Pas de colonne latérale à déplacer ni de filtre, donc pas besoin de `MobilePortal`. Le classement reste en bas de page : sur téléphone, il faut faire défiler toute la partie pour le voir. Depuis la carte 056 (`QuizEngine-mobile.css`, `QuizLeaderboard-mobile.css`) : onglets du classement à 44 pixels (30 avant), jokers à 44 pixels (38 avant), lettres des réponses, pastilles des jokers et étiquette de catégorie à 12 pixels au moins. Lisibilité des 7 thèmes sur téléphone : à vérifier.
+- `/bbquizz` : le jeu et, à droite sur ordinateur, le classement (onglets « Du jour », « Semaine », « Panthéon »). L'accueil du jeu rappelle les règles et propose « Commencer le quizz ! ». Pendant une partie, une barre en haut de la carte montre la question en cours (« Question 3 / 20 »), le chronomètre et le score ; une fine barre de temps passe à l'orange pendant la lecture. Pour chaque question : 5 secondes de lecture (réponses floutées), puis 30 secondes pour répondre, puis les points gagnés ou perdus, l'explication et « Suivant » (sinon, la question suivante arrive seule après 5 secondes). Jokers, une fois chacun par partie : « 50/50 » (deux mauvaises réponses barrées), « Communauté » (pourcentage des réponses déjà données, en barre dans chaque réponse), « Passer ». Écran de fin : score, bonnes réponses, temps total, « Rejouer ». Réservé aux membres connectés.
+- « Proposer une question » est sous le titre de `/bbquizz` ; pour un modérateur, le menu « Gestion du quizz » mène à « Valider les propositions » et « Éditer les questions ».
+- `/bbquizz/proposer` : un membre propose une question, dans un formulaire en trois blocs (la question avec sa catégorie, les quatre réponses avec « Bonne réponse » à cocher, l'explication facultative).
+- `/bbquizz/valider` : un modérateur approuve ou rejette les propositions en attente (une carte par proposition, la bonne réponse marquée en vert).
+- `/bbquizz/editer` : un modérateur cherche, modifie (`?edit=<identifiant>`, même formulaire que la proposition) ou supprime une question, après confirmation.
+- **Sur téléphone** (jusqu'à 1024 pixels) : pendant une partie, le titre de la page et le classement sont masqués, pour que la question, le chronomètre, le score, les quatre réponses (pleine largeur, 56 pixels de haut au moins) et les jokers tiennent dans l'écran sans défiler. Le classement est sous l'accueil du jeu et sous l'écran de fin. La proposition et la gestion des questions sont des écrans plein écran (`ComposeScreen`, sans la barre du bas, voir `isComposePath`), avec « Annuler » et « Envoyer » ou « Enregistrer » collés en bas. Comme `isComposePath` ne lit que le chemin de l'adresse, la liste de `/bbquizz/editer` est elle aussi sans barre du bas.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/bbquizz/page.tsx` | Page du jeu, envoie le visiteur vers la connexion (`/auth/login`) |
-| `apps/site/app/bbquizz/component/QuizEngine/QuizEngine.tsx` | Affichage d'une partie : chronomètres, jokers, score ; il ne fait qu'afficher ce que renvoie le serveur |
+| `apps/site/app/bbquizz/component/QuizEngine.tsx` | Écran du jeu : titre et actions, accueil, partie (chronomètres, jokers, score), écran de fin, place du classement ; il ne fait qu'afficher ce que renvoie le serveur |
 | `apps/site/lib/quizGame.ts` | Règles côté serveur : tirage équilibré des questions, lecture d'une question, temps restant et points |
-| `apps/site/app/bbquizz/component/QuizLeaderboard/QuizLeaderboard.tsx` | Classement (jour, semaine, tout temps) |
-| `apps/site/app/bbquizz/component/QuizForm/QuizForm.tsx` | Formulaire de question, partagé par proposer et éditer |
-| `apps/site/app/bbquizz/proposer/`, `valider/`, `editer/` | Pages de proposition, de validation et d'édition (`page.tsx` serveur + `*Content.tsx` client) |
+| `apps/site/app/bbquizz/component/QuizLeaderboard.tsx` | Classement (jour, semaine, tout temps) |
+| `apps/site/app/bbquizz/component/QuizForm.tsx` | Formulaire de question en blocs, partagé par proposer et éditer |
+| `apps/site/app/bbquizz/proposer/`, `valider/`, `editer/` | Pages de proposition, de validation et d'édition (`page.tsx` serveur + `*Content.tsx` client ; `editer/EditQuestion.tsx` pour la modification) |
+| `apps/site/tests/e2e/inventaire/bbquizz.spec.ts` | Test d'inventaire de la refonte (carte 098), en taille ordinateur et téléphone |
 | `apps/site/app/bbquizz/actions.ts` | Actions serveur |
 | `apps/site/app/bbquizz/data/questions.ts` | Questions de départ : insérées par `prisma/firstSetup.ts`, et utilisées si la base est vide |
 | `apps/site/app/bbquizz/utils.ts` | `translateCategory` : nom français d'une catégorie |
@@ -33,7 +34,7 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 
 ## Les pièges
 
-- **La partie est tenue par le serveur** (carte 051), pour empêcher la triche. Le navigateur ne reçoit qu'une question à la fois, sans la bonne réponse ni l'explication ; elles ne sont révélées qu'après la réponse. Le serveur note l'heure d'envoi de chaque question et calcule lui-même les points (100 plus le bonus de rapidité, ou -25), puis enregistre le score final. Ne jamais renvoyer `correctIndex` ou `explanation` au navigateur avant la réponse, ni accepter un score venu du navigateur. Un test e2e le vérifie (`tests/e2e/security.spec.ts`).
+- **La partie est tenue par le serveur** (carte 051), pour empêcher la triche. Le navigateur ne reçoit qu'une question à la fois, sans la bonne réponse ni l'explication ; elles ne sont révélées qu'après la réponse. Le serveur note l'heure d'envoi de chaque question et calcule lui-même les points (100 plus le bonus de rapidité, ou -25), puis enregistre le score final. Ne jamais renvoyer `correctIndex` ou `explanation` au navigateur avant la réponse, ni accepter un score venu du navigateur. Un test e2e le vérifie (`tests/e2e/security.spec.ts`) : depuis la carte 098, il repère la question, les réponses, les points gagnés et le score par leur rôle et leur nom accessible (zone « Question en cours », groupe « Réponses », zone d'annonce « Score », voir « Rôle ARIA » dans le glossaire). Ne pas renommer ces éléments sans adapter le test.
 - La partie en cours est une ligne de la table `QuizGame` (une seule par membre, supprimée quand le résultat passe dans `QuizAttempt`). Chaque réponse fait avancer la partie seulement si elle en est encore à la question attendue : répondre deux fois ou rejouer une ancienne réponse ne compte pas.
 - Le chronomètre affiché dans le navigateur n'est qu'un affichage : c'est l'heure du serveur qui compte, avec 3 secondes de marge pour le trajet réseau. Une réponse arrivée trop tard compte comme fausse.
 - Le joker « appel à la communauté » lit les compteurs `timesOption0` à `3` de la question, augmentés à chaque réponse depuis la carte 051. Sans aucune réponse enregistrée (ou pour les questions de départ hors base), il affiche 25 % partout.
@@ -56,6 +57,6 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 
 - Marche : partie complète, classements, proposition, validation, édition.
 - Marche aussi depuis la carte 051 : score calculé par le serveur, réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté.
-- Sur téléphone (carte 056) : aucune cible trop petite ni texte de moins de 12 pixels, sur l'accueil du jeu comme pendant une partie, à 360, 390 et 430 pixels.
+- Refonte visuelle (carte 098, ADR 0006) : composants de `packages/ui`, plus aucun fichier CSS propre au quizz. L'audit mobile mesure `/bbquizz`, `/bbquizz/proposer`, `/bbquizz/valider` et `/bbquizz/editer` : rien à signaler en dehors de la coquille.
 - Manque : série (`quizStreak`).
-- Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.
+- Cartes ouvertes : 049 (audit mobile), 098 (refonte visuelle, en attente de validation sur téléphone).

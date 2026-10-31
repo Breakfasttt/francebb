@@ -320,13 +320,15 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 14. BBQuizz
 
-- [ ] [membre] `/bbquizz` : « Jouer », « Proposer une question ».
-- [ ] [modo] `/bbquizz` : « Éditer », « Valider ».
-- [ ] [membre] Partie : 20 questions, chronomètre, 4 réponses, jokers 50/50, appel à la communauté et passer, explication, « Suivant », écran de fin avec « Rejouer ».
-- [ ] [membre] Classement Jour, Semaine, Tout temps.
-- [ ] [membre] `/bbquizz/proposer` : catégorie, question, 4 réponses, la bonne réponse, explication.
-- [ ] [modo] `/bbquizz/valider` : accepter ou refuser une proposition.
-- [ ] [modo] `/bbquizz/editer` : recherche, éditer, supprimer.
+- [x] [membre] `/bbquizz` : « Jouer », « Proposer une question ». *Le bouton pour jouer s'appelle « Commencer le quizz ! ». Le test vérifie aussi qu'un visiteur est envoyé vers la connexion et qu'un membre ne voit ni « Éditer » ni « Valider ».*
+- [x] [modo] `/bbquizz` : « Éditer », « Valider ». *Depuis la refonte, ces deux actions sont dans le menu « Gestion du quizz » (« Éditer les questions », « Valider les propositions »).*
+- [x] [membre] Partie : 20 questions, chronomètre, 4 réponses, jokers 50/50, appel à la communauté et passer, explication, « Suivant », écran de fin avec « Rejouer ». *Le test joue deux questions d'une vraie partie de 20 (score, chronomètre, les trois jokers, « Suivant »), puis une partie d'une seule question enregistrée pour le test, pour vérifier les points gagnés, l'explication, l'écran de fin, « Rejouer » et l'enregistrement du score. Le passage automatique à la question suivante après 5 secondes et la fin du temps de réponse ne sont pas vérifiés à part. Avant la refonte, « Suivant » s'appelait « Continuer » et « Rejouer » « Recommencer une partie ».*
+- [x] [membre] Classement Jour, Semaine, Tout temps. *Onglets « Du jour », « Semaine » et « Panthéon » (tout temps) ; le test vérifie qu'une partie vieille de 30 jours n'apparaît que dans le Panthéon.*
+- [x] [membre] `/bbquizz/proposer` : catégorie, question, 4 réponses, la bonne réponse, explication. *Le test vérifie la proposition enregistrée dans la base.*
+- [x] [modo] `/bbquizz/valider` : accepter ou refuser une proposition. *Boutons « Approuver » et « Rejeter » ; le test vérifie que la question approuvée entre dans le jeu et que la question rejetée n'y entre pas. Un membre qui ouvre cette page est renvoyé vers `/bbquizz`.*
+- [x] [modo] `/bbquizz/editer` : recherche, éditer, supprimer. *La modification est vérifiée dans la base, la suppression passe par une confirmation (`ConfirmDialog` depuis la refonte, la fenêtre `confirm()` du navigateur avant). Un membre qui ouvre cette page est renvoyé vers `/bbquizz`.*
+
+*Section vérifiée par `tests/e2e/inventaire/bbquizz.spec.ts` (carte 098), en taille ordinateur et en taille téléphone.*
 
 ## 15. Modération `/moderation`
 

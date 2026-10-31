@@ -1,14 +1,12 @@
 /*
- * BbQuizz main page
- * Entry point for the Blood Bowl Quiz minigame.
+ * Page du jeu BBQuizz `/bbquizz` (refonte, carte 098, ADR 0006) : le quizz Blood Bowl et son classement.
+ * Réservée aux membres connectés : un visiteur est envoyé vers la connexion, puis ramené ici.
+ * L'affichage (accueil du jeu, partie, écran de fin, emplacement du classement) est dans QuizEngine.
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import QuizEngine from "./component/QuizEngine/QuizEngine";
-import QuizLeaderboard from "./component/QuizLeaderboard/QuizLeaderboard";
-import "./page.css";
-import "./page-mobile.css";
+import QuizEngine from "./component/QuizEngine";
+import QuizLeaderboard from "./component/QuizLeaderboard";
 
 export const metadata = {
   title: "Quizz Blood Bowl - BBFrance",
@@ -22,28 +20,5 @@ export default async function QuizPage() {
     redirect("/auth/login?callbackUrl=/bbquizz");
   }
 
-  return (
-    <div className="bbquizz-page">
-      <PageHeader 
-        title="Quizz Blood Bowl" 
-        subtitle="Devenez une encyclopédie vivante de la NAF"
-      />
-
-      <main className="container">
-
-      <div className="quiz-page-layout">
-        <section className="quiz-main-section">
-          <QuizEngine userRole={session.user.role} />
-        </section>
-
-        <aside className="quiz-sidebar">
-          <div className="sidebar-header">
-            <h2>Classement</h2>
-          </div>
-          <QuizLeaderboard />
-        </aside>
-      </div>
-    </main>
-    </div>
-  );
+  return <QuizEngine userRole={session.user.role} leaderboard={<QuizLeaderboard />} />;
 }

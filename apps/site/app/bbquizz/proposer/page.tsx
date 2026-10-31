@@ -1,12 +1,12 @@
 /**
- * Page de proposition de question pour le Quizz.
+ * Proposition d'une question `/bbquizz/proposer` (refonte, carte 098) : écran de saisie plein écran sur téléphone
+ * (`ComposeScreen`, sans la barre de navigation du bas : voir `isComposePath`), avec la barre d'envoi collée en bas.
+ * Réservée aux membres connectés ; la question proposée attend la validation d'un modérateur (`/bbquizz/valider`).
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
 import ProposerContent from "./ProposerContent";
-import "./page.css";
-import "./page-mobile.css";
 
 export const metadata = {
   title: "Proposer une question - Quizz Blood Bowl",
@@ -20,18 +20,13 @@ export default async function ProposerPage() {
   }
 
   return (
-    <div className="proposer-page-wrapper">
-      <PageHeader 
-        title="Proposer une question" 
-        subtitle="Contribuez à l'encyclopédie du Quizz Blood Bowl"
-      />
-
-      <main className="container">
-
-      <div className="proposer-page-layout">
-        <ProposerContent />
-      </div>
-    </main>
-    </div>
+    <ComposeScreen
+      title="Proposer une question"
+      subtitle="Contribuez au Quizz Blood Bowl : votre question sera relue par la modération."
+      backHref="/bbquizz"
+      backTitle="Retour au quizz"
+    >
+      <ProposerContent />
+    </ComposeScreen>
   );
 }

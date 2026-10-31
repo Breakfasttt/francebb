@@ -1,163 +1,118 @@
 /**
- * Contenu client pour la page d'édition des questions.
+ * Liste des questions du quizz pour la modération (`/bbquizz/editer`, refonte, carte 098) : recherche dans le texte
+ * et la catégorie, lien « Proposer » vers le formulaire de proposition, puis, pour chaque question, « Éditer » (ouvre
+ * `?edit=<identifiant>`) et « Supprimer », après confirmation dans `ConfirmDialog` (avant la refonte : la fenêtre
+ * `confirm()` du navigateur).
  */
 "use client";
 
-import React, { useState } from "react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { updateQuizQuestion, deleteQuizQuestion } from "../actions";
-import { toast } from "@bbfrance/ui";
-import { Edit2, Trash2, Brain, Search, Plus } from "lucide-react";
-import QuizForm from "../component/QuizForm/QuizForm";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
+import { useState } from "react";
 import Link from "next/link";
+import { Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { Badge, Button, Card, ConfirmDialog, EmptyState, Input, toast } from "@bbfrance/ui";
+import { deleteQuizQuestion } from "../actions";
 import { translateCategory } from "../utils";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import CTAButton from "@/common/components/Button/CTAButton";
-import AdminButton from "@/common/components/Button/AdminButton";
-import DangerButton from "@/common/components/Button/DangerButton";
 
-interface QuizQuestion {
+interface QuestionRow {
   id: string;
   category: string;
   question: string;
-  options: string;
-  correctIndex: number;
-  explanation: string | null;
-  createdAt: Date;
 }
 
-export default function EditerContent({ initialQuestions }: { initialQuestions: any[] }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const editId = searchParams.get("edit");
-
-  const [questions, setQuestions] = useState<QuizQuestion[]>(initialQuestions);
-  const [editingQuestion, setEditingQuestion] = useState<QuizQuestion | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+export default function EditerContent({ initialQuestions }: { initialQuestions: QuestionRow[] }) {
+  const [questions, setQuestions] = useState<QuestionRow[]>(initialQuestions);
   const [searchTerm, setSearchTerm] = useState("");
+  const [toDelete, setToDelete] = useState<QuestionRow | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
-  // Synchroniser l'état local avec l'URL pour l'édition
-  useEffect(() => {
-    if (editId) {
-      const q = questions.find(item => item.id === editId);
-      if (q) setEditingQuestion(q);
-      else setEditingQuestion(null);
-    } else {
-      setEditingQuestion(null);
-    }
-  }, [editId, questions]);
-
-  const handleEdit = (q: QuizQuestion) => {
-    router.push(`/bbquizz/editer?edit=${q.id}`);
-  };
-
-  const handleCancel = () => {
-    router.push("/bbquizz/editer");
-  };
-
-  const handleUpdate = async (formData: any) => {
-    if (!editingQuestion) return;
-    
-    setIsLoading(true);
-    const res = await updateQuizQuestion(editingQuestion.id, formData);
-    setIsLoading(false);
-
-    if (res) {
-      toast.success("Question mise à jour");
-      setQuestions(prev => prev.map(q => q.id === editingQuestion.id ? { ...q, ...formData, options: JSON.stringify(formData.options) } : q));
-      handleCancel();
-    } else {
-      toast.error("Une erreur est survenue");
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("Supprimer cette question définitivement ?")) return;
-    
-    const res = await deleteQuizQuestion(id);
+  const handleDelete = async () => {
+    if (!toDelete) return;
+    setDeleting(true);
+    const res = await deleteQuizQuestion(toDelete.id);
+    setDeleting(false);
     if (res) {
       toast.success("Question supprimée");
-      setQuestions(prev => prev.filter(q => q.id !== id));
+      setQuestions((prev) => prev.filter((q) => q.id !== toDelete.id));
+      setToDelete(null);
     } else {
       toast.error("Une erreur est survenue");
     }
   };
 
-  const filteredQuestions = questions.filter(q => 
-    q.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    translateCategory(q.category).toLowerCase().includes(searchTerm.toLowerCase())
+  const term = searchTerm.toLowerCase();
+  const filteredQuestions = questions.filter(
+    (q) => q.question.toLowerCase().includes(term) || translateCategory(q.category).toLowerCase().includes(term)
   );
 
-  if (editingQuestion) {
-    return (
-      <QuizForm 
-        title="Édition de question"
-        submitLabel="Sauvegarder les modifications"
-        initialData={{
-          category: editingQuestion.category,
-          question: editingQuestion.question,
-          options: JSON.parse(editingQuestion.options),
-          correctIndex: editingQuestion.correctIndex,
-          explanation: editingQuestion.explanation || ""
-        }}
-        onSubmit={handleUpdate}
-        onCancel={handleCancel}
-        isLoading={isLoading}
-      />
-    );
-  }
-
   return (
-    <div className="editer-content">
-      <div className="admin-toolbar">
-        <div className="search-wrapper">
-          <Search size={18} />
-          <input 
-            type="text" 
-            placeholder="Rechercher une question..." 
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-2">
+        <div className="relative min-w-0 flex-1">
+          <Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" />
+          <Input
+            type="text"
+            enterKeyHint="search"
+            aria-label="Rechercher une question"
+            placeholder="Rechercher…"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
           />
         </div>
-        <CTAButton href="/bbquizz/proposer" icon={<Plus size={18} />}>
-          Proposer
-        </CTAButton>
+        <Button asChild variant="secondary" size="tap" className="shrink-0">
+          <Link href="/bbquizz/proposer">
+            <Plus size={18} aria-hidden="true" /> Proposer
+          </Link>
+        </Button>
       </div>
 
       {filteredQuestions.length === 0 ? (
-        <EmptyState 
-          title="Aucune question trouvée" 
-          description="Essayez un autre terme de recherche ou proposez une nouvelle question." 
-        />
+        <EmptyState icon={<Search size={32} />} title="Aucune question trouvée">
+          Essayez un autre terme de recherche ou proposez une nouvelle question.
+        </EmptyState>
       ) : (
-        <div className="questions-grid">
-          {filteredQuestions.map((q) => (
-            <PremiumCard key={q.id} className="question-item-card">
-              <div className="question-info">
-                <div className="category-tag">
-                  <Brain size={12} />
-                  {translateCategory(q.category)}
+        <Card>
+          <ul className="m-0 list-none p-0">
+            {filteredQuestions.map((q) => (
+              <li key={q.id} className="flex items-start gap-2 border-b border-bb-border py-3 pr-2 pl-4 last:border-b-0">
+                <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5 pt-1">
+                  <Badge variant="neutral">{translateCategory(q.category)}</Badge>
+                  <p className="m-0 text-[0.95rem] break-words text-bb-text">{q.question}</p>
                 </div>
-                <p className="question-text">{q.question}</p>
-              </div>
-              <div className="question-actions">
-                <AdminButton 
-                  onClick={() => handleEdit(q)}
-                  title="Éditer"
-                  icon={<Edit2 size={18} />}
-                />
-                <DangerButton 
-                  onClick={() => handleDelete(q.id)}
-                  title="Supprimer"
-                  icon={<Trash2 size={18} />}
-                />
-              </div>
-            </PremiumCard>
-          ))}
-        </div>
+                <div className="flex shrink-0 gap-1">
+                  <Button asChild variant="quiet" size="tap-icon">
+                    <Link href={`/bbquizz/editer?edit=${q.id}`} aria-label={`Éditer la question « ${q.question} »`} title="Éditer">
+                      <Pencil size={18} aria-hidden="true" />
+                    </Link>
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="quiet"
+                    size="tap-icon"
+                    className="text-bb-danger-text hover:text-bb-danger-text"
+                    aria-label={`Supprimer la question « ${q.question} »`}
+                    title="Supprimer"
+                    onClick={() => setToDelete(q)}
+                  >
+                    <Trash2 size={18} aria-hidden="true" />
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
       )}
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        onOpenChange={(open) => !open && setToDelete(null)}
+        title="Supprimer cette question ?"
+        message={`« ${toDelete?.question ?? ""} » sera supprimée définitivement du quizz.`}
+        confirmLabel="Supprimer"
+        danger
+        pending={deleting}
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

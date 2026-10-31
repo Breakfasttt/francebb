@@ -1,19 +1,20 @@
 /**
- * Contenu client pour la page de proposition de question.
+ * Contenu client de la page de proposition d'une question : envoie le formulaire à l'action `suggestQuizQuestion`,
+ * puis ramène au jeu.
  */
 "use client";
 
-import React, { useState } from "react";
-import QuizForm from "../component/QuizForm/QuizForm";
-import { suggestQuizQuestion } from "../actions";
-import { toast } from "@bbfrance/ui";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "@bbfrance/ui";
+import QuizForm, { type QuizFormData } from "../component/QuizForm";
+import { suggestQuizQuestion } from "../actions";
 
 export default function ProposerContent() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (formData: any) => {
+  const handleSubmit = async (formData: QuizFormData) => {
     setIsLoading(true);
     const res = await suggestQuizQuestion(formData);
     setIsLoading(false);
@@ -27,14 +28,13 @@ export default function ProposerContent() {
   };
 
   return (
-    <div className="proposer-content">
-      <QuizForm 
-        title="Nouvelle Proposition"
-        submitLabel="Envoyer la proposition"
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        onCancel={() => router.push("/bbquizz")}
-      />
-    </div>
+    <QuizForm
+      submitLabel="Envoyer la proposition"
+      shortSubmitLabel="Envoyer"
+      cancelHref="/bbquizz"
+      note="Votre question sera relue par un modérateur avant d'entrer dans le jeu."
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+    />
   );
 }

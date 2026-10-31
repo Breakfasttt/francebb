@@ -1,14 +1,14 @@
 /**
- * Page de validation des suggestions de questions (Modération).
+ * Validation des questions proposées `/bbquizz/valider` (refonte, carte 098), réservée à la modération : chaque
+ * proposition en attente montre sa question, ses quatre réponses (la bonne est marquée) et son explication, avec
+ * « Approuver » (la question entre dans le jeu) et « Rejeter ».
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import ValiderContent from "./ValiderContent";
 import { getQuizSuggestions } from "../actions";
-import "./page.css";
-import "./page-mobile.css";
 
 export const metadata = {
   title: "Validation Quizz - BBFrance",
@@ -24,18 +24,25 @@ export default async function ValiderPage() {
   const suggestions = await getQuizSuggestions();
 
   return (
-    <div className="valider-page-wrapper">
-      <PageHeader 
-        title="Validation des questions" 
-        subtitle="Modération des propositions de la communauté"
+    <div className="mx-auto w-full max-w-[900px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
+        title="Validation des questions"
+        subtitle="Les questions proposées par la communauté, en attente de relecture."
+        backHref="/bbquizz"
+        backTitle="Retour au quizz"
       />
-
-      <main className="container">
-
-      <div className="valider-page-layout">
-        <ValiderContent initialSuggestions={suggestions} />
-      </div>
-      </main>
+      <ValiderContent
+        initialSuggestions={suggestions.map((s) => ({
+          id: s.id,
+          category: s.category,
+          question: s.question,
+          options: JSON.parse(s.options) as string[],
+          correctIndex: s.correctIndex,
+          explanation: s.explanation,
+          authorName: s.author.name,
+          createdAt: s.createdAt.toISOString(),
+        }))}
+      />
     </div>
   );
 }

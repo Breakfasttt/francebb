@@ -174,7 +174,9 @@ test("BBQuizz : ni la bonne réponse ni le calcul du score ne passent par le nav
   await loginAs(page, E2E.coachId);
   await page.goto("/bbquizz", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "Commencer le quizz !" }).click();
-  await expect(page.locator(".question-text")).toBeVisible();
+  // Repères par rôle et nom accessible (carte 098) : la question est le titre de la zone « Question en cours »
+  const questionHeading = page.getByRole("region", { name: "Question en cours" }).getByRole("heading", { level: 2 });
+  await expect(questionHeading).toBeVisible();
 
   // Avant de répondre : aucune trace de la bonne réponse ni de l'explication
   for (const body of actionBodies) {
@@ -183,15 +185,16 @@ test("BBQuizz : ni la bonne réponse ni le calcul du score ne passent par le nav
   }
 
   // La base e2e n'a pas de questions : le jeu utilise celles de départ, où l'on retrouve la bonne réponse
-  const questionText = await page.locator(".question-text").innerText();
+  const questionText = await questionHeading.innerText();
   const correctIndex = staticQuestions.find((question) => question.question === questionText.trim())!.correctIndex;
 
   // Après les 5 secondes de lecture, on répond juste : le serveur compte 100 points plus le bonus de rapidité
-  const answer = page.locator(".option-btn").nth(correctIndex);
+  const answer = page.getByRole("group", { name: "Réponses" }).getByRole("button").nth(correctIndex);
   await expect(answer).toBeEnabled({ timeout: 10_000 });
   await answer.click();
-  await expect(page.locator(".points-feedback.plus")).toBeVisible();
-  const shownScore = await page.locator(".quiz-score").innerText();
+  // Points gagnés (bonne réponse) : « +N points », jamais « -25 points »
+  await expect(page.getByRole("status").filter({ hasText: /^\+\d+ points$/ })).toBeVisible();
+  const shownScore = await page.getByRole("status", { name: "Score", exact: true }).innerText();
   page.removeAllListeners("response");
   await page.close();
 
@@ -202,7 +205,7 @@ test("BBQuizz : ni la bonne réponse ni le calcul du score ne passent par le nav
     expect(game?.correct).toBe(1);
     expect(game?.score).toBeGreaterThanOrEqual(100);
     expect(game?.score).toBeLessThanOrEqual(130);
-    expect(shownScore).toBe(`Score: ${game?.score}`);
+    expect(shownScore).toBe(`${game?.score}`);
   } finally {
     await withTestDb((prisma) => prisma.quizGame.deleteMany({ where: { userId: E2E.coachId } }));
   }

@@ -1,14 +1,17 @@
 /**
- * Page de gestion et édition des questions du Quizz.
+ * Gestion des questions du quizz `/bbquizz/editer` (refonte, carte 098), réservée à la modération : la liste des
+ * questions avec une recherche, « Éditer » et « Supprimer ». `?edit=<identifiant>` ouvre le formulaire de modification
+ * de cette question (adresse inchangée par la refonte) ; un identifiant inconnu ramène à la liste.
+ * Les deux vues sont des écrans plein écran sur téléphone (`ComposeScreen`, sans la barre de navigation du bas : voir
+ * `isComposePath`, qui ne lit que le chemin de l'adresse et ne peut donc pas distinguer la liste du formulaire).
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
 import EditerContent from "./EditerContent";
+import EditQuestion from "./EditQuestion";
 import { getAllQuizQuestions } from "../actions";
-import "./page.css";
-import "./page-mobile.css";
 
 export const metadata = {
   title: "Gestion Quizz - BBFrance",
@@ -24,20 +27,41 @@ export default async function EditerPage(props: { searchParams: Promise<{ edit?:
   }
 
   const questions = await getAllQuizQuestions();
+  const editing = editId ? questions.find((question) => question.id === editId) : undefined;
+
+  if (editing) {
+    return (
+      <ComposeScreen
+        title="Modifier une question"
+        subtitle="La modification compte dès la prochaine partie."
+        backHref="/bbquizz/editer"
+        backTitle="Retour à la liste des questions"
+      >
+        <EditQuestion
+          key={editing.id}
+          question={{
+            id: editing.id,
+            category: editing.category,
+            question: editing.question,
+            options: JSON.parse(editing.options),
+            correctIndex: editing.correctIndex,
+            explanation: editing.explanation || "",
+          }}
+        />
+      </ComposeScreen>
+    );
+  }
 
   return (
-    <div className="editer-page-wrapper">
-      <PageHeader 
-        title={editId ? "Édition de question" : "Gestion des questions"} 
-        subtitle={editId ? "Modifiez les détails de la question" : "Mise à jour et suppression des questions du Quizz"}
+    <ComposeScreen
+      title="Gestion des questions"
+      subtitle={`${questions.length} question${questions.length > 1 ? "s" : ""} dans le quizz : recherche, modification et suppression.`}
+      backHref="/bbquizz"
+      backTitle="Retour au quizz"
+    >
+      <EditerContent
+        initialQuestions={questions.map((question) => ({ id: question.id, category: question.category, question: question.question }))}
       />
-
-      <main className="container">
-
-      <div className="editer-page-layout">
-        <EditerContent initialQuestions={questions} />
-      </div>
-      </main>
-    </div>
+    </ComposeScreen>
   );
 }
