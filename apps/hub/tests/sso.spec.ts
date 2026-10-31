@@ -170,7 +170,9 @@ test("la déconnexion du site ferme aussi la session du hub", async ({ page }) =
   expect(sessionJson).not.toMatch(/eyJ[\w-]+\.[\w-]+\./);
 
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.getByRole("button", { name: "Déconnexion" }).first().click();
+  // Nouvelle coquille du site (carte 081) : « Déconnexion » est dans le menu du compte
+  await page.getByRole("button", { name: "Menu du compte" }).click();
+  await page.getByRole("menuitem", { name: "Déconnexion" }).click();
   await page.waitForURL((url) => url.origin === SITE && !url.pathname.startsWith("/auth"));
   expect(await siteSessionName(page)).toBeUndefined();
 
