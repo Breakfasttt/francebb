@@ -11,6 +11,8 @@ const databases = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8")
 
 export default defineConfig({
   testDir: "./tests",
+  // Tests de l'API seule : configuration à part (playwright.api.config.ts, pnpm test:api)
+  testIgnore: "api/**",
   globalSetup: "./tests/globalSetup.ts",
   fullyParallel: false,
   workers: 1,

@@ -59,6 +59,8 @@ jobs:
         run: pnpm test:e2e
       - name: SSO hub ↔ site
         run: pnpm --filter @bbfrance/hub test:sso
+      - name: API du hub (documentation, profil, événements)
+        run: pnpm --filter @bbfrance/hub test:api
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

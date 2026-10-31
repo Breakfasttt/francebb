@@ -7,6 +7,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
+import { openAPI } from "better-auth/plugins";
 import { prisma } from "./prisma.mjs";
 import { authPlugins } from "./authPlugins.mjs";
 import { sendMagicLinkEmail } from "./mail";
@@ -32,10 +33,13 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
-  // /token du plugin jwt entre en conflit avec le endpoint OAuth : désactivé (doc oauth-provider)
-  disabledPaths: ["/token"],
+  // /token du plugin jwt entre en conflit avec le endpoint OAuth : désactivé (doc oauth-provider).
+  // Les deux adresses du plugin openAPI montrent aussi les routes d'administration : la documentation publique
+  // passe uniquement par GET /api/doc, qui les retire (carte 117)
+  disabledPaths: ["/token", "/open-api/generate-schema", "/reference"],
   emailAndPassword: { enabled: !isProduction && process.env.HUB_DEV_PASSWORD_LOGIN === "1" },
   socialProviders,
   account: { accountLinking: { enabled: true } },
-  plugins: [...authPlugins({ sendMagicLink }), nextCookies()],
+  // openAPI : décrit les routes pour GET /api/doc ; il n'ajoute aucune table, d'où sa place hors de authPlugins
+  plugins: [...authPlugins({ sendMagicLink }), openAPI({ disableDefaultReference: true }), nextCookies()],
 });

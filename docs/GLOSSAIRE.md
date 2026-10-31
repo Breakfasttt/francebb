@@ -39,6 +39,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Épic** | Grand chantier qui regroupe plusieurs cartes du kanban (`kanban/epics/`). |
 | **ESLint** / **lint** | Outil qui repère les erreurs et mauvaises pratiques dans le code. Le **cliquet** (*ratchet*) interdit que le nombre d'erreurs augmente : la dette peut baisser, jamais monter. Le plafond est compté pour le total et pour chaque règle (`apps/site/lint-baseline.json`). |
 | **Flag** (drapeau) | Réglage qui active ou désactive une fonctionnalité sans changer le code (ex. `AUTH_MODE=hub`). |
+| **HMAC** | Empreinte calculée à partir d'un message et d'un secret connu seulement de l'expéditeur et du destinataire. Le destinataire refait le calcul : si l'empreinte est identique, le message vient bien de l'expéditeur et n'a pas été modifié. Le hub signe ainsi les webhooks qu'il envoie aux applications (ADR-0007). |
 | **Hook** | Script lancé automatiquement à un moment précis : avant un commit (`.githooks/`), ou quand l'IA modifie un fichier (`.claude/hooks/`). |
 | **Hook React** (`useQuelqueChose`) | Fonction réutilisable qui ajoute un comportement à un composant React (lire la largeur de l'écran, réagir à un geste…). Ceux du site sont dans `apps/site/common/hooks/`. À ne pas confondre avec le hook « script » ci-dessus. |
 | **Hotfix** | Petite correction urgente appliquée directement sur la version en ligne. |
@@ -48,6 +49,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Inventaire de non-régression** | Liste de tout ce que l'on peut voir ou faire sur le site, écran par écran, avec le rôle requis (`docs/refonte/inventaire.md`). Chaque carte de la refonte coche les lignes qu'elle a vérifiées, pour garantir qu'aucune fonctionnalité ne disparaît. |
 | **ITP** (Safari) | Protection de Safari qui bloque les cookies entre sites différents. C'est pourquoi le hub et le site devront partager le même nom de domaine. |
 | **JWT** (*JSON Web Token*) | Jeton signé qui contient la session d'un membre (qui il est, son rôle) et voyage dans un cookie. Le site ne garde donc aucune liste des sessions en base : la table `Session` reste vide. |
+| **JWKS** (*JSON Web Key Set*) | Liste des clés publiques du hub, publiée à l'adresse `/api/auth/jwks`. Une application s'en sert pour vérifier qu'un jeton a bien été signé par le hub. Ces clés sont renouvelées régulièrement. |
 | **Kanban** | Tableau des tâches rangées par état (à faire, en cours, terminé). Ici, ce sont les dossiers de `kanban/`. |
 | **LCP** (*Largest Contentful Paint*, affichage du plus grand élément) | Mesure de Lighthouse : temps qu'il faut pour que le plus gros élément visible de la page (grande image, gros bloc de texte) soit affiché. C'est le moment où le visiteur a l'impression que la page est là. Bon en dessous de 2,5 secondes. |
 | **Lien magique** | Connexion sans mot de passe : le coach saisit son email et reçoit un lien ; l'ouvrir le connecte. En mode hub, c'est le hub qui envoie ce lien. |
@@ -64,13 +66,16 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **OAuth** | Standard qui permet de se connecter avec un compte existant (Discord, Google) sans donner son mot de passe au site. |
 | **OIDC** (*OpenID Connect*) | Extension d'OAuth pour la connexion unique : une application demande au hub « qui est connecté ? ». |
 | **Onboarding** | Les étapes qu'un nouveau membre remplit à sa première connexion (pseudo, région…). |
+| **OpenAPI** | Format standard de description d'une API : la liste des adresses, ce qu'elles attendent et ce qu'elles renvoient, écrite en JSON. Des outils et des IA savent le lire pour appeler l'API sans lire le code. Le hub publie la sienne sur `GET /api/doc` (carte 117). |
 | **ORM** | Outil qui permet au code de parler à la base de données sans écrire de SQL. Ici : Prisma. |
 | **Paquet du dépôt** (dossier `packages/`) | Code partagé écrit par le projet lui-même, rangé dans `packages/<nom>` et nommé `@bbfrance/<nom>` (par exemple `@bbfrance/ui`, `@bbfrance/bbscheme-player`). Une application le déclare dans son `package.json` avec la version `workspace:*`, qui veut dire « la copie de ce dépôt » : ce n'est pas une bibliothèque téléchargée. Le site lit directement ses fichiers TypeScript grâce au réglage `transpilePackages` de `next.config.ts`. |
+| **Passeport Blood Bowl** | Le compte d'un coach dans le hub : son identifiant, son pseudo et son profil commun à toutes les applications (ADR-0007). |
 | **PKCE** | Protection du parcours de connexion contre le vol du code d'autorisation. |
 | **Pincement** (*pinch*) | Geste à deux doigts sur un écran tactile : les écarter agrandit, les rapprocher réduit. Sur BBScheme, il règle le zoom du terrain (hook `usePinchZoom`). |
 | **Playwright** | Outil qui pilote un vrai navigateur pour les tests automatiques : il ouvre les pages, clique et vérifie ce qui s'affiche, en taille ordinateur ou téléphone. Les tests du site sont dans `apps/site/tests/e2e/`. |
 | **pnpm** | Outil qui installe les bibliothèques. Strict : une application ne peut utiliser que ce qu'elle déclare dans son `package.json`. |
 | **Popover** (petit panneau) | Panneau qui s'ouvre juste sous un bouton, par-dessus la page, et se ferme par Échap ou par un clic à côté (composant `Popover` de `@bbfrance/ui`). Utilisé sur ordinateur, par exemple pour le panneau « Plus d'outils » de l'éditeur de messages ; sur téléphone, on lui préfère le panneau qui monte du bas (`Sheet`). |
+| **Portée** (*scope*) | Droit qu'une application demande au hub lors de la connexion d'un coach, par exemple `email` (lire son adresse) ou `bbfrance:profile` (lire son profil). Le hub ne donne que les informations couvertes par les portées accordées. |
 | **Postgres** (PostgreSQL) | Base de données très répandue, choisie pour remplacer SQLite/Turso (ADR-0004). |
 | **Preflight** | Remise à zéro des styles par défaut du navigateur (marges, tailles de titre, listes), fournie par Tailwind. Elle n'est pas activée sur BBFrance tant que l'ancien CSS existe, parce qu'elle changerait l'apparence des pages pas encore refaites. |
 | **Prisma** | ORM du projet. `schema.prisma` décrit les tables ; `prisma migrate` crée les migrations. |
@@ -109,4 +114,5 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Variable CSS** | Valeur nommée dans une feuille de style (par exemple `--mobile-nav-height: 64px`), réutilisée ailleurs avec `var(--mobile-nav-height)`. Changer la valeur à un seul endroit la change partout. Les couleurs des thèmes sont aussi des variables CSS. |
 | **Vercel** | Hébergeur du site : il le met en ligne automatiquement quand le code est envoyé sur GitHub. |
 | **Verre dépoli** | Effet de fond flou et légèrement transparent (`backdrop-filter: blur`). Joli, mais coûteux pour les téléphones modestes. Depuis l'ADR 0006, il est désactivé par défaut et chaque thème peut l'activer. |
+| **Webhook** | Message qu'un service envoie de lui-même à l'adresse d'une autre application quand quelque chose se produit. Le hub prévient ainsi les applications qu'un profil a changé, qu'un coach est banni ou qu'un compte est supprimé (ADR-0007). |
 | **Worktree** | Deuxième copie de travail du même dépôt git, dans un autre dossier. |

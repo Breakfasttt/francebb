@@ -8,6 +8,7 @@
     "start": "next start -p 4000",
     "typecheck": "tsc --noEmit",
     "test:sso": "node scripts/e2e-setup.mjs && playwright test",
+    "test:api": "node scripts/api-test-setup.mjs && playwright test --config playwright.api.config.ts",
     "db:generate": "prisma generate",
     "db:start": "node ../../scripts/local-postgres.mjs start hub",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",

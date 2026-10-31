@@ -30,17 +30,19 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 | `apps/hub/lib/prisma.mjs` | Client Prisma de la base du hub (`HUB_DATABASE_URL`), séparée de celle du site. |
 | `apps/hub/app/api/auth/[...all]/route.ts` | Toutes les adresses Better Auth : connexion, sessions, `authorize`, `token`, `userinfo`, clés. |
 | `apps/hub/app/api/auth/.well-known/openid-configuration/route.ts` | Document de découverte OIDC lu par le site. |
+| `apps/hub/app/api/doc/route.ts`, `apps/hub/lib/apiDoc/` | `GET /api/doc` : documentation de l'API au format OpenAPI (carte 117). `buildApiDoc()` part de la description du plugin `openAPI()` de Better Auth, retire les routes d'administration et de développement, et ajoute les routes propres au hub décrites dans `hubRoutes.ts`. `?route=<chemin>` ne renvoie qu'une route. |
 | `apps/hub/app/sign-in/page.tsx` | Page de connexion : connexion automatique (`AutoSignIn.tsx`) si l'application a indiqué un moyen, sinon formulaire complet (`SignInForm.tsx`). |
 | `app/consent/page.tsx`, `app/page.tsx` | Pages de consentement et d'accueil. `app/globals.css` : styles. |
 | `apps/hub/scripts/generate-schema.mjs` | Génère `prisma/schema.prisma` à partir des tables Better Auth (vérifié en CI). |
 | `apps/hub/scripts/register-client.mjs` | Enregistre une application cliente (avec son adresse de retour après déconnexion) et affiche une seule fois son id et son secret. |
 | `apps/hub/scripts/ban-user.mjs` | `pnpm ban <email> "<raison>"` ou `--unban` : bannit un compte, ferme ses sessions et révoque ses jetons d'accès aux applications. |
 | `apps/hub/scripts/e2e-setup.mjs`, `tests/sso.spec.ts` | Préparation sur base jetable et test de bout en bout hub ↔ site (`pnpm test:sso`, lancé en CI). |
+| `apps/hub/scripts/api-test-setup.mjs`, `playwright.api.config.ts`, `tests/api/` | Tests de l'API du hub seul, sans le site (`pnpm test:api`). Ils partagent la base de test `hub-e2e` avec `test:sso` : ne pas lancer les deux en même temps. |
 | `apps/site/app/auth/login/page.tsx` | En mode hub, les boutons Discord, Google et email appellent `signIn("hub", …, { login_method, login_hint })` : le moyen choisi part au hub dans la demande d'autorisation. Hors mode hub, rien ne change. |
 | `apps/site/auth.ts` | Côté site : fournisseur `hub` actif si `AUTH_MODE=hub` et `HUB_ISSUER` définis ; en mode hub, les fournisseurs directs Discord, Google et email du site sont retirés (une seule porte d'entrée : le hub) ; refus si `email_verified` n'est pas vrai. Garde l'id_token du hub dans le cookie de session chiffré (`hubIdToken`), jamais dans la session lisible par le navigateur, qui reçoit seulement `hubLogout: true`. |
 | `apps/site/app/auth/logout/route.ts` | Déconnexion du site (POST seulement) : lit l'id_token côté serveur (`getToken`), puis redirection vers la page de déconnexion du hub (`/oauth2/end-session`). Appelée par `SignInButton` quand `hubLogout` est vrai. |
 
-Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access`. L'id_token contient `name`, `picture`, `email`, `email_verified`.
+Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi indiquée par le champ `service_documentation` de la découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access`. L'id_token contient `name`, `picture`, `email`, `email_verified`.
 
 ## Les pièges
 
@@ -50,7 +52,8 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 - Connexion par mot de passe : dev/test uniquement (`HUB_DEV_PASSWORD_LOGIN=1`, refusée en production par `lib/auth.ts`).
 - `prisma/schema.prisma` est généré : ne pas l'éditer. Après un ajout de plugin : `node scripts/generate-schema.mjs` puis `pnpm exec prisma migrate dev`.
 - better-auth et ses compagnons (`@better-auth/core`, `better-call`…) se montent ensemble, sinon deux copies coexistent et les types des plugins cassent.
-- Le chemin `/token` du plugin `jwt` est désactivé : il entre en conflit avec celui d'OAuth.
+- Le chemin `/token` du plugin `jwt` est désactivé : il entre en conflit avec celui d'OAuth. Les adresses `/open-api/generate-schema` et `/reference` du plugin `openAPI` le sont aussi, parce qu'elles montrent les routes d'administration : la documentation passe uniquement par `/api/doc`.
+- Une nouvelle route dans `app/api` doit être décrite dans `lib/apiDoc/hubRoutes.ts`, sinon `pnpm test:api` échoue.
 - Un bannissement au hub n'agit pas sur une session déjà ouverte sur le site : elle dure jusqu'à son expiration. Pour un effet immédiat, bannir aussi le membre sur le site (son bannissement local reste en place).
 - La route de découverte OIDC force un type (`as unknown as`) : avec 4 plugins, TypeScript ne déduit plus tous les endpoints. Le test SSO vérifie que la route fonctionne.
 - Le moyen de connexion indiqué par le site n'est lu que dans une demande signée par le hub (paramètre `sig`), et seules les valeurs `discord`, `google` et `email` (avec une adresse valide) sont acceptées ; sinon, formulaire normal. Un rechargement de « Vérifie ta boîte mail » ne renvoie pas d'email (mémoire de l'onglet).
@@ -75,4 +78,5 @@ Adresses publiques : découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-
 ## État
 
 - Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`), hub invisible derrière les boutons du site (073 : parcours email testé sans aucun écran du hub, départ vers Discord et Google vérifié sans le suivre).
-- À faire : domaine et déploiement (035), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).
+- Fait aussi : documentation de l'API en JSON (117).
+- À faire : passeport Blood Bowl (épic E09, ADR-0007, cartes 118 à 127), domaine et déploiement (035), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).
