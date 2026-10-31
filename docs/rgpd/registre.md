@@ -4,7 +4,7 @@
 
 ## Responsable du traitement
 
-BBFrance, site communautaire de Blood Bowl. Contact pour exercer ses droits : *(adresse à compléter par le responsable du projet)*.
+BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel et bénévole par **breakyt**. Contact pour exercer ses droits : l'adresse de la variable d'environnement `CONTACT_EMAIL` du site, affichée dans les mentions légales (`apps/site/app/mentions-legales/page.tsx`).
 
 ## Les droits du coach et où les exercer
 
@@ -51,7 +51,8 @@ BBFrance, site communautaire de Blood Bowl. Contact pour exercer ses droits : *(
 |---|---|
 | But | Liens de connexion, notifications, messages sur la suppression du compte. |
 | Données | Adresse email, date, objet du message (journal des envois du site). |
-| Durée | Effacé avec le compte. *(Durée maximale du journal des envois à décider.)* |
+| Base légale | Intérêt légitime : vérifier qu'un email est bien parti, éviter les envois en double. |
+| Durée | 6 mois, et effacé plus tôt si le compte est supprimé. C'est la durée de référence recommandée par la CNIL pour les journaux techniques (recommandation sur la journalisation de 2021). Il n'existe pas de durée légale minimale. |
 
 ## Sous-traitants
 
@@ -60,11 +61,16 @@ BBFrance, site communautaire de Blood Bowl. Contact pour exercer ses droits : *(
 | Neon | Hébergement des bases Postgres du hub et du site | Toutes |
 | Vercel | Hébergement des applications | Toutes, en transit ; journaux techniques |
 | Discord, Google | Connexion avec un compte existant, au choix du coach | Identifiant, pseudo, email, avatar transmis par le fournisseur |
-| Service d'envoi d'emails (SMTP) | Envoi des emails | Adresse email, contenu du message |
+| Resend | Envoi des emails | Adresse email, contenu du message |
 
-## Points à trancher par le responsable du projet
+**Transferts hors de l'Union européenne** : Vercel et Resend sont des sociétés américaines. Leurs contrats de traitement des données intègrent les clauses contractuelles types de la Commission européenne, et les deux adhèrent au cadre de protection des données UE–États-Unis (Data Privacy Framework). Neon héberge les bases à Francfort (Allemagne).
 
-1. L'adresse de contact pour les demandes RGPD.
-2. La durée maximale du journal des envois d'emails du site (proposition : 1 an).
-3. Le texte des mentions légales et de la politique de confidentialité du site, à mettre à jour à partir de ce registre (non modifié : texte juridique à valider).
-4. L'annonce aux membres (forum, Discord) au moment de la mise en ligne du passeport.
+## Décisions (31/10/2026)
+
+1. L'adresse de contact est réglée par la variable `CONTACT_EMAIL`, pour pouvoir la changer sans toucher au code.
+2. Le journal des envois d'emails est gardé 6 mois, la durée de référence de la CNIL pour les journaux techniques (il n'existe pas de durée légale minimale). Chaque envoi efface les entrées plus anciennes (`apps/site/lib/mail.ts`).
+3. Les mentions légales et la politique de confidentialité sont réunies sur la page `/mentions-legales` du site.
+
+## Reste à faire
+
+- L'annonce aux membres (forum, Discord) au moment de la mise en ligne du passeport.

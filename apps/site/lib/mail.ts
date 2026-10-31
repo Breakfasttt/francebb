@@ -4,6 +4,9 @@ import { prisma } from "./prisma";
 /**
  * Configuration du transporteur Nodemailer
  */
+/** Durée de conservation du journal des emails envoyés : 6 mois (registre RGPD, carte 126). */
+const MAIL_LOG_RETENTION_MS = 183 * 24 * 60 * 60 * 1000;
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT),
@@ -42,6 +45,11 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
         status: "SENT"
       }
     }).catch(e => console.error("Erreur log mail:", e));
+
+    // Le journal des envois n'est gardé que 6 mois (registre RGPD, carte 126) : chaque envoi efface les entrées plus anciennes
+    await prisma.mailLog.deleteMany({
+      where: { sentAt: { lt: new Date(Date.now() - MAIL_LOG_RETENTION_MS) } }
+    }).catch(e => console.error("Erreur purge journal mail:", e));
 
     return { success: true, messageId: info.messageId };
   } catch (error) {

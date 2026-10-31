@@ -25,7 +25,24 @@ Le RGPD demande de tenir un registre de ce qu'on fait des données, et d'informe
 ## Avancement (31/10)
 
 - Brouillon du registre des traitements écrit : `docs/rgpd/registre.md` (droits du coach, quatre traitements, durées, sous-traitants).
-- **À faire après la relecture du user** :
-  - compléter l'adresse de contact et la durée du journal des emails ;
-  - mettre à jour les mentions légales et la politique de confidentialité du site ;
-  - préparer l'annonce sur le forum et Discord.
+- Décisions du user : l'adresse de contact est réglée par la variable `CONTACT_EMAIL` (`.env`) ; l'éditeur est breakyt ; les emails partent par Resend ; on garde la ligne sur les transferts vers les États-Unis telle que Vercel et Resend la décrivent.
+- Journal des emails : 6 mois, durée de référence de la CNIL pour les journaux techniques. `apps/site/lib/mail.ts` efface les entrées plus anciennes à chaque envoi.
+- Page `/mentions-legales` réécrite : éditeur, hébergement, contenus des membres, puis la politique de confidentialité (responsable, données, finalités, bases légales, durées, destinataires, transferts hors de l'Union européenne, droits, recours auprès de la CNIL, cookies). Seul le texte change : la page garde ses composants et son CSS, que la refonte du site reprendra.
+- **Reste à faire** :
+  - vérifier la page en taille téléphone, quand le serveur du site est libre (l'autre session l'utilise pour la refonte) ;
+  - renseigner `CONTACT_EMAIL` sur Vercel ;
+  - publier l'annonce sur le forum et Discord (texte ci-dessous) à la mise en ligne du passeport.
+
+## Annonce proposée (forum et Discord)
+
+> **Nouveau : le passeport Blood Bowl**
+>
+> Ton compte BBFrance devient ton passeport Blood Bowl : une seule connexion (Discord, Google ou lien par email) pour toutes les applications BBFrance, et un profil de coach commun (pseudo, avatar, NAF, région).
+>
+> Depuis ton passeport, tu peux :
+> - modifier ton profil, qui se met à jour partout ;
+> - voir les applications et les appareils qui ont accès à ton compte, et leur retirer cet accès ;
+> - télécharger toutes tes données ;
+> - supprimer ton compte : tu as 30 jours pour changer d'avis, puis tes données sont effacées dans toutes les applications.
+>
+> Les mentions légales expliquent ce que nous gardons, pourquoi et combien de temps. Une question sur tes données ? Écris à l'adresse indiquée sur cette page.

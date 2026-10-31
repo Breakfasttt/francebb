@@ -86,6 +86,7 @@ Vercel récupère le code sur GitHub. Le dépôt du projet est `github.com/Break
 | `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Application Discord **de production**, avec l'adresse de retour `https://<adresse du site>/api/auth/callback/discord` |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Idem chez Google, avec `…/api/auth/callback/google` |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Service d'envoi de mails |
+| `CONTACT_EMAIL` | Adresse de contact affichée dans les mentions légales : demandes sur les données personnelles (RGPD) et signalements. Une modification demande un nouveau déploiement. |
 | `ENCRYPTION_KEY` | 64 caractères hexadécimaux : `openssl rand -hex 32` |
 | `NEXT_PUBLIC_IMGBB_API_KEY` | Clé gratuite sur [imgbb.com](https://imgbb.com) (envoi d'images) |
 
