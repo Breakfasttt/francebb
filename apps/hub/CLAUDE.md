@@ -7,5 +7,6 @@ Le hub est l'application qui gère les comptes : un membre s'y connecte une fois
 - Le client Prisma généré n'est pas enregistré dans git : lancer `pnpm db:generate` avant `typecheck` ou `dev`.
 - Les versions de better-auth et de ses compagnons (`@better-auth/core`, `better-call`, `@better-auth/utils`, `@better-fetch/fetch`) se montent toutes en même temps. Sinon, deux copies de `@better-auth/core` coexistent et TypeScript ne reconnaît plus les plugins.
 - **Le hub est indépendant (ADR-0007)** : il ne connaît aucune application en particulier, seulement des « clients enregistrés ». Jamais de lien, d'identifiant, de thème ni de règle propre au site codés en dur ici.
+- **Apparence (carte 128)** : composants de `packages/ui` et classes Tailwind, comme le site. Pas de CSS écrit à la main dans `app/globals.css`, et pas d'attribut `data-theme` : le thème par défaut s'applique seul.
 - **Documentation de l'API** : toute nouvelle route de `app/api` ajoute sa description OpenAPI dans `lib/apiDoc/hubRoutes.ts` (visible sur `GET /api/doc`). `pnpm test:api` échoue sinon. Les routes propres au hub sont préfixées par `/api/v1`.
 - En local : copier `.env.example` en `.env`, puis `pnpm db:start` (base Postgres locale sans Docker), `pnpm exec prisma migrate deploy` et `pnpm dev` (port 4000). Le site est enregistré comme application cliente avec `scripts/register-client.mjs`.

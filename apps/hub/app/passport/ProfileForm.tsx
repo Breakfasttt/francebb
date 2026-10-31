@@ -5,6 +5,8 @@
  * adresse que celle des applications, avec la session du coach : les vérifications sont donc les mêmes partout.
  */
 import { useState } from "react";
+import { Button, Field, Input, Select } from "@bbfrance/ui";
+import { ErrorMessage, SuccessMessage } from "../components/Messages";
 
 type Profile = { name: string; image: string | null; naf: string | null; region: string | null; locale: string | null; timezone: string | null };
 
@@ -65,43 +67,40 @@ export default function ProfileForm({ initial }: { initial: Profile }) {
   };
 
   const field = (name: keyof typeof form, label: string, input: React.ReactNode, help?: string) => (
-    <div className="hub-field">
-      <label htmlFor={`profile-${name}`}>{label}</label>
+    <Field label={label} htmlFor={`profile-${name}`} hint={help} error={errors[name]}>
       {input}
-      {help && <p className="hub-muted hub-help">{help}</p>}
-      {errors[name] && <p className="hub-error" role="alert">{errors[name]}</p>}
-    </div>
+    </Field>
   );
 
   return (
-    <form onSubmit={save} noValidate>
-      {field("name", "Pseudo", <input id="profile-name" value={form.name} onChange={update("name")} autoComplete="nickname" maxLength={32} required />, "Le nom affiché dans toutes les applications. Unique.")}
-      {field("naf", "Numéro NAF", <input id="profile-naf" value={form.naf} onChange={update("naf")} inputMode="numeric" maxLength={10} />, "Facultatif. Déclaré par toi, il n'est pas vérifié.")}
-      {field("region", "Région", <input id="profile-region" value={form.region} onChange={update("region")} maxLength={60} />)}
-      {field("image", "Adresse de l'avatar", <input id="profile-image" value={form.image} onChange={update("image")} type="url" inputMode="url" placeholder="https://…" />, "Facultatif. Une image en https.")}
+    <form onSubmit={save} noValidate className="flex flex-col gap-4">
+      {field("name", "Pseudo", <Input id="profile-name" value={form.name} onChange={update("name")} autoComplete="nickname" maxLength={32} required />, "Le nom affiché dans toutes les applications. Unique.")}
+      {field("naf", "Numéro NAF", <Input id="profile-naf" value={form.naf} onChange={update("naf")} inputMode="numeric" maxLength={10} />, "Facultatif. Déclaré par toi, il n'est pas vérifié.")}
+      {field("region", "Région", <Input id="profile-region" value={form.region} onChange={update("region")} maxLength={60} />)}
+      {field("image", "Adresse de l'avatar", <Input id="profile-image" value={form.image} onChange={update("image")} type="url" inputMode="url" placeholder="https://…" />, "Facultatif. Une image en https.")}
       {field(
         "locale",
         "Langue",
-        <select id="profile-locale" value={form.locale} onChange={update("locale")}>
+        <Select id="profile-locale" value={form.locale} onChange={update("locale")}>
           {LOCALES.map((locale) => (
             <option key={locale.value} value={locale.value}>{locale.label}</option>
           ))}
-        </select>,
+        </Select>,
       )}
       {field(
         "timezone",
         "Fuseau horaire",
-        <select id="profile-timezone" value={form.timezone} onChange={update("timezone")}>
+        <Select id="profile-timezone" value={form.timezone} onChange={update("timezone")}>
           {timezones.map((timezone) => (
             <option key={timezone} value={timezone}>{timezone.replace("_", " ")}</option>
           ))}
-        </select>,
+        </Select>,
       )}
-      {errors.form && <p className="hub-error" role="alert">{errors.form}</p>}
-      {status === "saved" && <p className="hub-success" role="status">Profil enregistré. Les applications sont prévenues.</p>}
-      <button className="hub-button primary" type="submit" disabled={status === "saving"}>
+      {errors.form && <ErrorMessage>{errors.form}</ErrorMessage>}
+      {status === "saved" && <SuccessMessage>Profil enregistré. Les applications sont prévenues.</SuccessMessage>}
+      <Button variant="primary" size="tap" type="submit" disabled={status === "saving"}>
         {status === "saving" ? "Enregistrement…" : "Enregistrer"}
-      </button>
+      </Button>
     </form>
   );
 }

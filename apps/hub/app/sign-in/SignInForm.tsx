@@ -9,6 +9,9 @@
 import { useState } from "react";
 import { authClient } from "@/lib/authClient";
 import { magicLinkCallbacks } from "@/lib/oauthResume";
+import { Button, Input } from "@bbfrance/ui";
+import CenteredCard from "../components/CenteredCard";
+import { ErrorMessage, Muted } from "../components/Messages";
 
 const DEV_PASSWORD_LOGIN = process.env.NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN === "1";
 
@@ -55,24 +58,23 @@ export default function SignInForm({ errorCode, errorMessage, initialEmail }: { 
   };
 
   return (
-    <main className="hub-card">
-      <h1>Connexion</h1>
-      <button className="hub-button" onClick={() => signInSocial("discord")}>Continuer avec Discord</button>
-      <button className="hub-button" onClick={() => signInSocial("google")}>Continuer avec Google</button>
-      <p className="hub-separator">ou</p>
-      <form onSubmit={sendMagicLink}>
-        <input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Email" />
-        <button className="hub-button primary" type="submit">Recevoir un lien de connexion</button>
+    <CenteredCard title="Connexion">
+      <Button variant="secondary" size="tap" onClick={() => signInSocial("discord")}>Continuer avec Discord</Button>
+      <Button variant="secondary" size="tap" onClick={() => signInSocial("google")}>Continuer avec Google</Button>
+      <Muted className="text-center">ou</Muted>
+      <form onSubmit={sendMagicLink} className="flex flex-col gap-2.5">
+        <Input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Email" />
+        <Button variant="primary" size="tap" type="submit">Recevoir un lien de connexion</Button>
       </form>
       {DEV_PASSWORD_LOGIN && (
-        <form onSubmit={signInWithPassword}>
-          <p className="hub-muted">Dev uniquement</p>
-          <input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} aria-label="Mot de passe" />
-          <button className="hub-button" type="submit">Connexion mot de passe (dev)</button>
+        <form onSubmit={signInWithPassword} className="flex flex-col gap-2.5">
+          <Muted>Dev uniquement</Muted>
+          <Input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} aria-label="Mot de passe" />
+          <Button variant="secondary" size="tap" type="submit">Connexion mot de passe (dev)</Button>
         </form>
       )}
-      {message && <p className="hub-muted">{message}</p>}
-      {error && <p className="hub-error">{error}</p>}
-    </main>
+      {message && <Muted role="status">{message}</Muted>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </CenteredCard>
   );
 }

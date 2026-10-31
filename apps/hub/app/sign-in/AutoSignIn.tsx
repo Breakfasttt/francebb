@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from "react";
 import { authClient } from "@/lib/authClient";
 import { magicLinkCallbacks, type LoginMethod } from "@/lib/oauthResume";
 import SignInForm from "./SignInForm";
+import CenteredCard from "../components/CenteredCard";
+import { Muted } from "../components/Messages";
 
 /** Mémorise, pour cet onglet, qu'un lien a déjà été envoyé pour cette demande : recharger la page ne renvoie pas d'email. */
 function sentKey() {
@@ -68,16 +70,15 @@ export default function AutoSignIn({ method, email }: { method: LoginMethod; ema
   if (status === "failed") return <SignInForm errorMessage={error} initialEmail={email} />;
 
   return (
-    <main className="hub-card" aria-live="polite">
+    <CenteredCard aria-live="polite" title={status === "sent" ? "Vérifie ta boîte mail" : undefined}>
       {status === "sent" ? (
         <>
-          <h1>Vérifie ta boîte mail</h1>
-          <p>Un lien de connexion vient d&apos;être envoyé à {email}.</p>
-          <p className="hub-muted">Ouvre-le sur cet appareil, dans ce navigateur : tu reviendras connecté sur BBFrance.</p>
+          <p className="m-0">Un lien de connexion vient d&apos;être envoyé à {email}.</p>
+          <Muted>Ouvre-le sur cet appareil, dans ce navigateur : tu reviendras connecté sur BBFrance.</Muted>
         </>
       ) : (
-        <p>Redirection…</p>
+        <p className="m-0">Redirection…</p>
       )}
-    </main>
+    </CenteredCard>
   );
 }

@@ -38,6 +38,16 @@ test("le passeport tient sur un téléphone, sans défilement horizontal, avec d
   }
 });
 
+test("la page de connexion tient sur un téléphone, avec des cibles de 44 pixels (carte 128)", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Connexion" })).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
+  for (const target of await page.locator("main button, main input").all()) {
+    expect((await target.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+  }
+});
+
 test("le coach modifie son profil depuis le passeport", async ({ page }) => {
   await signUpInPage(page);
   await page.goto("/");
@@ -49,7 +59,7 @@ test("le coach modifie son profil depuis le passeport", async ({ page }) => {
   await page.getByLabel("Numéro NAF").fill("abc");
   await page.getByRole("button", { name: "Enregistrer" }).click();
   // Next.js ajoute à chaque page une zone « alert » invisible : on cible le message du formulaire
-  await expect(page.locator("form .hub-error")).toContainText("chiffres");
+  await expect(page.locator("form [role=alert]")).toContainText("chiffres");
 
   const profile = (await (await page.request.get("/api/v1/profile")).json()) as Record<string, unknown>;
   expect(profile).toMatchObject({ region: "Pays de la Loire", naf: "42" });

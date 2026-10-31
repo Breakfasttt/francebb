@@ -58,7 +58,7 @@ async function watchHubButtons(page: Page) {
   await page.context().addInitScript((hubOrigin) => {
     if (window.location.origin !== hubOrigin) return;
     const check = () => {
-      if (document.querySelector(".hub-button")) (window as unknown as { reportHubButton: () => void }).reportHubButton();
+      if (document.querySelector("button")) (window as unknown as { reportHubButton: () => void }).reportHubButton();
     };
     new MutationObserver(check).observe(document, { childList: true, subtree: true });
     document.addEventListener("DOMContentLoaded", check);

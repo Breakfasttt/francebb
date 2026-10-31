@@ -4,6 +4,7 @@
  * Déconnexion du passeport sur cet appareil. Les applications gardent leur propre session.
  */
 import { authClient } from "@/lib/authClient";
+import { Button } from "@bbfrance/ui";
 
 export default function SignOutButton() {
   const signOut = async () => {
@@ -11,6 +12,6 @@ export default function SignOutButton() {
     window.location.href = "/";
   };
   return (
-    <button className="hub-button" type="button" onClick={signOut}>Se déconnecter du passeport</button>
+    <Button variant="secondary" size="tap" type="button" onClick={signOut}>Se déconnecter du passeport</Button>
   );
 }

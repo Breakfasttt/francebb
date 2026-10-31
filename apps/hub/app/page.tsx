@@ -17,6 +17,16 @@ import Applications from "./passport/Applications";
 import Sessions from "./passport/Sessions";
 import SignOutButton from "./passport/SignOutButton";
 import DeleteAccount from "./passport/DeleteAccount";
+import PassportSection from "./passport/PassportSection";
+import ItemList from "./passport/ItemList";
+import { Muted } from "./components/Messages";
+import { Avatar, buttonVariants, cn } from "@bbfrance/ui";
+
+/**
+ * Lien présenté comme un bouton secondaire, à la taille tactile (44 pixels au moins). `cn` retire les classes de base
+ * contredites par la variante (sans fond, sans bordure), comme le fait le composant Button.
+ */
+const linkButton = cn(buttonVariants({ variant: "secondary", size: "tap" }));
 
 const PROVIDER_LABELS: Record<string, string> = { discord: "Discord", google: "Google", credential: "Mot de passe (développement)" };
 
@@ -34,69 +44,59 @@ export default async function PassportPage(props: { searchParams: Promise<Record
   const profile = publicProfile(user) as { name: string; image: string | null; naf: string | null; region: string | null; locale: string | null; timezone: string | null };
 
   return (
-    <main className="hub-page">
-      <header className="hub-page-header">
-        <h1>Mon passeport Blood Bowl</h1>
-        <p className="hub-muted">
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <Avatar name={profile.name} src={profile.image} size={48} />
+          <h1 className="m-0 text-2xl font-bold uppercase text-bb-accent-text">Mon passeport Blood Bowl</h1>
+        </div>
+        <Muted>
           Ton identité de coach, commune à toutes les applications. Les réglages propres à une application (thème,
           notifications…) se changent dans l&apos;application elle-même.
-        </p>
+        </Muted>
         {user.deletionScheduledAt && (
-          <p className="hub-warning" role="status">
+          <p className="m-0 rounded-bb-md border border-bb-warning-text px-4 py-3" role="status">
             Suppression de ton compte prévue le {user.deletionScheduledAt.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.
             Les applications n&apos;y ont plus accès. Pour l&apos;annuler, va en bas de cette page.
           </p>
         )}
         {back && (
-          <a className="hub-button" href={back.url}>Retour vers {back.name}</a>
+          <a className={linkButton} href={back.url}>Retour vers {back.name}</a>
         )}
       </header>
 
-      <section className="hub-card" aria-labelledby="profile-title">
-        <h2 id="profile-title">Profil</h2>
+      <PassportSection id="profile" title="Profil">
         <ProfileForm initial={profile} />
-      </section>
+      </PassportSection>
 
-      <section className="hub-card" aria-labelledby="accounts-title">
-        <h2 id="accounts-title">Moyens de connexion</h2>
-        <ul className="hub-list">
-          {accounts.map((account) => (
-            <li key={account.providerId}>
-              <strong>{PROVIDER_LABELS[account.providerId] ?? account.providerId}</strong>
-            </li>
-          ))}
-          <li>
-            <div>
-              <strong>Lien par email</strong>
-              <p className="hub-muted hub-help">{user.email}</p>
-            </div>
-          </li>
-        </ul>
-      </section>
+      <PassportSection id="accounts" title="Moyens de connexion">
+        <ItemList
+          items={[
+            ...accounts.map((account) => ({ key: account.providerId, name: PROVIDER_LABELS[account.providerId] ?? account.providerId })),
+            { key: "email", name: "Lien par email", detail: user.email },
+          ]}
+        />
+      </PassportSection>
 
-      <section className="hub-card" aria-labelledby="apps-title">
-        <h2 id="apps-title">Applications liées</h2>
+      <PassportSection id="apps" title="Applications liées">
         <Applications initial={applications} />
-      </section>
+      </PassportSection>
 
-      <section className="hub-card" aria-labelledby="sessions-title">
-        <h2 id="sessions-title">Appareils connectés au passeport</h2>
+      <PassportSection id="sessions" title="Appareils connectés au passeport">
         <Sessions currentToken={session.session.token} />
-      </section>
+      </PassportSection>
 
-      <section className="hub-card" aria-labelledby="export-title">
-        <h2 id="export-title">Mes données</h2>
-        <p className="hub-muted">
+      <PassportSection id="export" title="Mes données">
+        <Muted>
           Un fichier avec tout ce que le hub et les applications BBFrance savent de toi (profil, connexions, et les
           données de chaque application).
-        </p>
-        <a className="hub-button" href="/api/v1/account/export" download>Télécharger mes données</a>
-      </section>
+        </Muted>
+        <a className={linkButton} href="/api/v1/account/export" download>Télécharger mes données</a>
+      </PassportSection>
 
-      <section className="hub-card" aria-labelledby="delete-title">
-        <h2 id="delete-title">Supprimer mon compte</h2>
+      <PassportSection id="delete" title="Supprimer mon compte">
         <DeleteAccount scheduledAt={user.deletionScheduledAt?.toISOString() ?? null} />
-      </section>
+      </PassportSection>
 
       <SignOutButton />
     </main>

@@ -5,6 +5,9 @@
  */
 import { useState } from "react";
 import { describeScopes } from "@/lib/scopes";
+import { Button } from "@bbfrance/ui";
+import { ErrorMessage, Muted } from "../components/Messages";
+import ItemList from "./ItemList";
 
 type Application = { clientId: string; name: string; scopes: string[] };
 
@@ -23,23 +26,20 @@ export default function Applications({ initial }: { initial: Application[] }) {
     else setError("Impossible de retirer cet accès, réessaie.");
   };
 
-  if (applications.length === 0) return <p className="hub-muted">Aucune application n&apos;a accès à ton compte.</p>;
+  if (applications.length === 0) return <Muted>Aucune application n&apos;a accès à ton compte.</Muted>;
   return (
     <>
-      <ul className="hub-list">
-        {applications.map((application) => (
-          <li key={application.clientId}>
-            <div>
-              <strong>{application.name}</strong>
-              <p className="hub-muted hub-help">
-                Peut {describeScopes(application.scopes).join(", ")}.
-              </p>
-            </div>
-            <button className="hub-button" type="button" onClick={() => revoke(application)}>Retirer l&apos;accès</button>
-          </li>
-        ))}
-      </ul>
-      {error && <p className="hub-error" role="alert">{error}</p>}
+      <ItemList
+        items={applications.map((application) => ({
+          key: application.clientId,
+          name: application.name,
+          detail: `Peut ${describeScopes(application.scopes).join(", ")}.`,
+          action: (
+            <Button variant="secondary" size="tap" type="button" onClick={() => revoke(application)}>Retirer l&apos;accès</Button>
+          ),
+        }))}
+      />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </>
   );
 }

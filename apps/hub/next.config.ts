@@ -24,6 +24,8 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Paquet du monorepo consommé en sources TypeScript (pas d'étape de build), comme sur le site
+  transpilePackages: ["@bbfrance/ui"],
   async headers() {
     return [
       {

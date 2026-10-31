@@ -6,6 +6,9 @@
  */
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/authClient";
+import { Button } from "@bbfrance/ui";
+import { ErrorMessage, Muted } from "../components/Messages";
+import ItemList from "./ItemList";
 
 type HubSession = { token: string; userAgent?: string | null; createdAt: Date | string };
 
@@ -39,28 +42,23 @@ export default function Sessions({ currentToken }: { currentToken: string }) {
     await load();
   };
 
-  if (error) return <p className="hub-error" role="alert">{error}</p>;
-  if (!sessions) return <p className="hub-muted">Chargement…</p>;
+  if (error) return <ErrorMessage>{error}</ErrorMessage>;
+  if (!sessions) return <Muted>Chargement…</Muted>;
   const others = sessions.filter((session) => session.token !== currentToken);
   return (
     <>
-      <ul className="hub-list">
-        {sessions.map((session) => (
-          <li key={session.token}>
-            <div>
-              <strong>{describeDevice(session.userAgent)}</strong>
-              <p className="hub-muted hub-help">
-                {session.token === currentToken ? "Cet appareil" : `Connecté le ${new Date(session.createdAt).toLocaleDateString("fr-FR")}`}
-              </p>
-            </div>
-            {session.token !== currentToken && (
-              <button className="hub-button" type="button" onClick={() => revoke(session.token)}>Déconnecter</button>
-            )}
-          </li>
-        ))}
-      </ul>
+      <ItemList
+        items={sessions.map((session) => ({
+          key: session.token,
+          name: describeDevice(session.userAgent),
+          detail: session.token === currentToken ? "Cet appareil" : `Connecté le ${new Date(session.createdAt).toLocaleDateString("fr-FR")}`,
+          action: session.token !== currentToken && (
+            <Button variant="secondary" size="tap" type="button" onClick={() => revoke(session.token)}>Déconnecter</Button>
+          ),
+        }))}
+      />
       {others.length > 1 && (
-        <button className="hub-button" type="button" onClick={revokeOthers}>Déconnecter tous les autres appareils</button>
+        <Button variant="secondary" size="tap" type="button" onClick={revokeOthers}>Déconnecter tous les autres appareils</Button>
       )}
     </>
   );
