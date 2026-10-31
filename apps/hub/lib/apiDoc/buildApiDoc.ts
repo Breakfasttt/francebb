@@ -6,7 +6,7 @@
  * - Seuls les schémas réellement cités sont gardés, pour ne pas décrire les tables internes (comptes, secrets des clients).
  */
 import { auth } from "@/lib/auth";
-import { hubRoutes } from "./hubRoutes";
+import { hubRoutes, hubWebhooks } from "./hubRoutes";
 
 type OpenApiDocument = {
   openapi: string;
@@ -77,6 +77,7 @@ export async function buildApiDoc(): Promise<OpenApiDocument> {
     },
     servers: [{ url: process.env.BETTER_AUTH_URL ?? "" }],
     paths,
+    webhooks: hubWebhooks,
     components: { ...generated.components, schemas },
   };
 }

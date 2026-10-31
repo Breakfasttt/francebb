@@ -5,7 +5,8 @@
  * - magicLink : connexion par lien envoyé par email.
  * - oauthProvider : le hub devient fournisseur OIDC pour le site, bbscheme et les futures apps.
  * - admin : bannissement global (un compte banni ne peut plus se connecter à aucune application, carte 037).
- * - hubTables : tables propres au hub, journal d'audit (lib/audit.mjs, carte 118) et pseudos réservés (carte 119).
+ * - hubTables : tables propres au hub : journal d'audit (lib/audit.mjs, carte 118), pseudos réservés (carte 119),
+ *   adresses des applications et événements à leur envoyer (lib/events.mjs, carte 121).
  *
  * Profil du coach (carte 119, ADR-0007) : champs ajoutés à la table user (userAdditionalFields), transmis aux
  * applications sous la portée `bbfrance:profile`, modifiables seulement par /api/v1/profile (lib/passportPlugin.ts).
@@ -68,6 +69,33 @@ const hubTables = {
       fields: {
         nameHash: { type: /** @type {const} */ ("string"), required: true, unique: true },
         createdAt: { type: /** @type {const} */ ("date"), required: true },
+      },
+    },
+    // Adresses où le hub prévient une application cliente (événements) et lui demande les données d'un coach (export),
+    // avec le secret de signature, chiffré par BETTER_AUTH_SECRET. Une ligne par application (scripts/client-hooks.mjs)
+    clientHook: {
+      fields: {
+        clientId: { type: /** @type {const} */ ("string"), required: true, unique: true },
+        eventsUrl: { type: /** @type {const} */ ("string"), required: false },
+        exportUrl: { type: /** @type {const} */ ("string"), required: false },
+        secret: { type: /** @type {const} */ ("string"), required: true },
+        createdAt: { type: /** @type {const} */ ("date"), required: true },
+      },
+    },
+    // Un événement à envoyer à une application : gardé jusqu'à son accusé de réception, renvoyé en cas d'échec
+    outboundEvent: {
+      fields: {
+        eventId: { type: /** @type {const} */ ("string"), required: true, index: true },
+        clientId: { type: /** @type {const} */ ("string"), required: true, index: true },
+        type: { type: /** @type {const} */ ("string"), required: true },
+        version: { type: /** @type {const} */ ("number"), required: true },
+        payload: { type: /** @type {const} */ ("json"), required: true },
+        status: { type: /** @type {const} */ ("string"), required: true, index: true },
+        attempts: { type: /** @type {const} */ ("number"), required: true },
+        nextAttemptAt: { type: /** @type {const} */ ("date"), required: true },
+        lastError: { type: /** @type {const} */ ("string"), required: false },
+        createdAt: { type: /** @type {const} */ ("date"), required: true },
+        deliveredAt: { type: /** @type {const} */ ("date"), required: false },
       },
     },
     auditLog: {

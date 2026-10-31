@@ -11,7 +11,8 @@ import { openAPI } from "better-auth/plugins";
 import { prisma } from "./prisma.mjs";
 import { authPlugins, rateLimitOptions, userAdditionalFields } from "./authPlugins.mjs";
 import { passportPlugin } from "./passportPlugin";
-import { nameKeyOf, uniqueNameFor } from "./profile";
+import { nameKeyOf, publicProfile, uniqueNameFor } from "./profile";
+import { emitUserEvent } from "./events.mjs";
 import { writeAudit } from "./audit.mjs";
 import { sendMagicLinkEmail } from "./mail";
 
@@ -62,7 +63,13 @@ export const auth = betterAuth({
       update: {
         // Garde la clé d'unicité alignée sur le pseudo, quel que soit le chemin de la modification
         before: async (data) => (typeof data.name === "string" ? { data: { ...data, nameKey: nameKeyOf(data.name) } } : undefined),
-        after: async (user, ctx) => writeAudit({ action: `compte modifié (${ctx?.path ?? "serveur"})`, userId: user.id }) },
+        // Journal, puis événement signé aux applications qui connaissent ce coach (carte 121)
+        after: async (user, ctx) => {
+          await writeAudit({ action: `compte modifié (${ctx?.path ?? "serveur"})`, userId: user.id });
+          const fields = user as typeof user & Record<string, unknown>;
+          await emitUserEvent(fields.banned ? "user.banned" : "user.updated", user.id, { profile: publicProfile(fields), banned: Boolean(fields.banned) });
+        },
+      },
       delete: { after: async (user) => writeAudit({ action: "compte supprimé", userId: user.id }) },
     },
     session: {

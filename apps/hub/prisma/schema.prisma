@@ -261,6 +261,35 @@ model ReservedName {
   @@map("reservedName")
 }
 
+model ClientHook {
+  id String @id
+  clientId String @unique
+  eventsUrl String?
+  exportUrl String?
+  secret String
+  createdAt DateTime
+  @@map("clientHook")
+}
+
+model OutboundEvent {
+  id String @id
+  eventId String
+  clientId String
+  type String
+  version Int
+  payload Json
+  status String
+  attempts Int
+  nextAttemptAt DateTime
+  lastError String?
+  createdAt DateTime
+  deliveredAt DateTime?
+  @@index([eventId])
+  @@index([clientId])
+  @@index([status])
+  @@map("outboundEvent")
+}
+
 model AuditLog {
   id String @id
   action String

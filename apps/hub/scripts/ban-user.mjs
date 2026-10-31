@@ -5,14 +5,15 @@
  * Adresse de la base : HUB_DATABASE_URL (en local, lue dans .env.local écrit par `pnpm db:start`).
  *
  * Effets d'un bannissement : le compte ne peut plus se connecter au hub (plugin admin de Better Auth), ses sessions
- * hub sont fermées et ses jetons d'accès aux applications révoqués. Une application où le membre est déjà connecté
- * garde sa propre session jusqu'à son expiration : bannir aussi le membre sur le site pour un effet immédiat.
+ * hub sont fermées et ses jetons d'accès aux applications révoqués. Les applications qui connaissent le coach reçoivent
+ * l'événement signé `user.banned` (carte 121) et coupent son accès sans attendre la fin de leur propre session.
  */
 import { existsSync } from "node:fs";
 
 for (const file of [".env.local", ".env"]) if (existsSync(file)) process.loadEnvFile(file);
 const { prisma } = await import("../lib/prisma.mjs");
 const { writeAudit } = await import("../lib/audit.mjs");
+const { emitUserEvent } = await import("../lib/events.mjs");
 
 const [email, reasonOrFlag] = process.argv.slice(2);
 if (!email || !reasonOrFlag) {
@@ -29,6 +30,8 @@ if (!user) {
 if (reasonOrFlag === "--unban") {
   await prisma.user.update({ where: { id: user.id }, data: { banned: false, banReason: null, banExpires: null } });
   await writeAudit({ action: "bannissement levé", userId: user.id });
+  // Les applications qui connaissent le coach lèvent aussi leur bannissement (carte 121)
+  await emitUserEvent("user.updated", user.id, { banned: false });
   console.log(`Bannissement levé pour ${user.name}.`);
 } else {
   const now = new Date();
@@ -39,6 +42,9 @@ if (reasonOrFlag === "--unban") {
     prisma.oauthRefreshToken.updateMany({ where: { userId: user.id, revoked: null }, data: { revoked: now } }),
   ]);
   await writeAudit({ action: "bannissement", userId: user.id });
+  // Les applications qui connaissent le coach coupent son accès sans attendre la fin de leur session (carte 121)
+  // La raison reste au hub : elle peut contenir des informations personnelles
+  await emitUserEvent("user.banned", user.id, { banned: true });
   console.log(`${user.name} est banni du hub : sessions fermées, accès aux applications révoqués.`);
 }
 await prisma.$disconnect();

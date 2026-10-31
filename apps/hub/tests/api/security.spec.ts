@@ -72,13 +72,13 @@ test("inscription et connexion sont journalisées sans identifiant ni IP en clai
 });
 
 test("la purge planifiée refuse un appel sans secret et efface le journal de plus d'un an", async ({ request }) => {
-  expect((await request.get("/api/cron/purge")).status()).toBe(401);
-  expect((await request.get("/api/cron/purge", { headers: { authorization: "Bearer mauvais" } })).status()).toBe(401);
+  expect((await request.get("/api/cron/daily")).status()).toBe(401);
+  expect((await request.get("/api/cron/daily", { headers: { authorization: "Bearer mauvais" } })).status()).toBe(401);
 
   const old = await prisma.auditLog.create({ data: { id: randomUUID(), action: "test ancien", createdAt: new Date("2020-01-01") } });
   const recent = await prisma.auditLog.create({ data: { id: randomUUID(), action: "test récent", createdAt: new Date() } });
 
-  const response = await request.get("/api/cron/purge", { headers: { authorization: `Bearer ${HUB_API_TEST_CRON_SECRET}` } });
+  const response = await request.get("/api/cron/daily", { headers: { authorization: `Bearer ${HUB_API_TEST_CRON_SECRET}` } });
   expect(response.status()).toBe(200);
   expect(await prisma.auditLog.findUnique({ where: { id: old.id } })).toBeNull();
   expect(await prisma.auditLog.findUnique({ where: { id: recent.id } })).not.toBeNull();

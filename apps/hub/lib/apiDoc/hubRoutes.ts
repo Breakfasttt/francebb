@@ -32,6 +32,63 @@ const errorSchema = {
 
 const profileSecurity = [{ bearerAuth: [] }, { apiKeyCookie: [] }];
 
+/**
+ * Événements signés envoyés par le hub aux applications (carte 121, lib/events.mjs), décrits dans la partie
+ * `webhooks` d'OpenAPI 3.1 : ce sont des requêtes que l'application reçoit, pas des routes du hub.
+ */
+const eventHeaders = [
+  { name: "X-BBFrance-Event-Id", in: "header", required: true, schema: { type: "string" }, description: "Identifiant unique de l'événement : ignorer un identifiant déjà traité." },
+  { name: "X-BBFrance-Timestamp", in: "header", required: true, schema: { type: "string" }, description: "Date d'envoi en secondes : refuser un envoi de plus de 5 minutes." },
+  {
+    name: "X-BBFrance-Signature",
+    in: "header",
+    required: true,
+    schema: { type: "string" },
+    description: "« v1=<empreinte> » : HMAC SHA-256, en hexadécimal, de « <timestamp>.<corps brut> » avec le secret d'événements de l'application. Code de vérification de référence : apps/hub/lib/verifyEvent.mjs.",
+  },
+];
+
+function eventOperation(type: string, summary: string, data: Record<string, unknown>) {
+  return {
+    post: {
+      tags: ["Événements"],
+      operationId: type.replace(".", "_"),
+      summary,
+      description:
+        "Envoyé en POST à l'adresse d'événements de l'application (scripts/client-hooks.mjs), seulement pour un coach que l'application connaît déjà. Répondre 2xx pour accuser réception ; sinon le hub renvoie l'événement plus tard (1 min, 5 min, 30 min, 2 h, puis toutes les 12 h, 10 essais au plus). Ignorer les champs inconnus : la version ne change que si un champ disparaît ou change de sens.",
+      parameters: eventHeaders,
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                id: { type: "string" },
+                type: { type: "string", const: type },
+                version: { type: "integer", const: 1 },
+                createdAt: { type: "string", format: "date-time" },
+                data: { type: "object", properties: { userId: { type: "string", description: "Identifiant du coach (le `sub` des jetons)." }, ...data } },
+              },
+            },
+          },
+        },
+      },
+      responses: { "2XX": { description: "Accusé de réception." } },
+    },
+  };
+}
+
+export const hubWebhooks = {
+  "user.updated": eventOperation("user.updated", "Le profil d'un coach a changé (ou son bannissement a été levé)", {
+    profile: { ...profileSchema, description: "Profil complet après la modification (absent quand seul le bannissement change)." },
+    banned: { type: "boolean", const: false },
+  }),
+  "user.banned": eventOperation("user.banned", "Un coach est banni de toutes les applications : couper son accès tout de suite", {
+    banned: { type: "boolean", const: true },
+  }),
+};
+
 export const hubRoutes: OpenApiPaths = {
   "/api/v1/profile": {
     get: {

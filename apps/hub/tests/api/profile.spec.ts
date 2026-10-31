@@ -3,62 +3,10 @@
  * par userinfo avec la portée bbfrance:profile, modification par PATCH /api/v1/profile avec bbfrance:profile:write.
  * Les jetons sont obtenus par le vrai parcours OIDC (autorisation avec PKCE, puis échange du code).
  */
-import { createHash, randomBytes, randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { test, expect, request as playwrightRequest, type APIRequestContext } from "@playwright/test";
+import { randomBytes } from "node:crypto";
+import { test, expect, request as playwrightRequest } from "@playwright/test";
 import { HUB_API_TEST_URL } from "../../playwright.api.config";
-
-const client = JSON.parse(readFileSync("tests/.api-client.json", "utf-8")) as { clientId: string; clientSecret: string };
-const REDIRECT_URI = "http://localhost:4299/callback";
-
-/**
- * Crée un compte (inscription par mot de passe, réservée aux tests) et renvoie un contexte qui porte sa session,
- * comme le navigateur du coach sur les pages du hub : il envoie l'en-tête Origin, sans lequel Better Auth refuse
- * toute demande accompagnée d'un cookie (protection contre les requêtes forgées).
- */
-async function newCoach(name: string) {
-  const context = await playwrightRequest.newContext({ baseURL: HUB_API_TEST_URL, extraHTTPHeaders: { origin: HUB_API_TEST_URL } });
-  const ip = `10.9.${Math.floor(Math.random() * 250)}.${Math.floor(Math.random() * 250)}`;
-  const response = await context.post("/api/auth/sign-up/email", {
-    headers: { "x-forwarded-for": ip },
-    data: { email: `profil-${randomUUID()}@e2e.test`, password: "profil-password-123", name },
-  });
-  expect(response.ok(), await response.text()).toBe(true);
-  const { user } = (await response.json()) as { user: { id: string; name: string } };
-  return { context, user };
-}
-
-/** Parcours OIDC complet pour le coach connecté dans `context` : renvoie le jeton d'accès et l'id_token. */
-async function getTokens(context: APIRequestContext, scope: string) {
-  const verifier = randomBytes(32).toString("base64url");
-  const challenge = createHash("sha256").update(verifier).digest("base64url");
-  const authorize = await context.get("/api/auth/oauth2/authorize", {
-    maxRedirects: 0,
-    params: {
-      response_type: "code",
-      client_id: client.clientId,
-      redirect_uri: REDIRECT_URI,
-      scope,
-      state: randomUUID(),
-      code_challenge: challenge,
-      code_challenge_method: "S256",
-    },
-  });
-  const location = authorize.headers()["location"] ?? "";
-  const code = new URL(location, HUB_API_TEST_URL).searchParams.get("code");
-  expect(code, `pas de code d'autorisation (${authorize.status()} ${location})`).toBeTruthy();
-
-  // L'échange du code se fait de serveur à serveur, sans cookie, comme le ferait l'application
-  const app = await playwrightRequest.newContext({ baseURL: HUB_API_TEST_URL });
-  const token = await app.post("/api/auth/oauth2/token", {
-    headers: { authorization: `Basic ${Buffer.from(`${client.clientId}:${client.clientSecret}`).toString("base64")}` },
-    form: { grant_type: "authorization_code", code: code!, redirect_uri: REDIRECT_URI, code_verifier: verifier },
-  });
-  expect(token.ok(), await token.text()).toBe(true);
-  return (await token.json()) as { access_token: string; id_token: string };
-}
-
-const decodeJwt = (jwt: string) => JSON.parse(Buffer.from(jwt.split(".")[1], "base64url").toString()) as Record<string, unknown>;
+import { decodeJwt, getTokens, newCoach } from "./helpers";
 
 test("deux pseudos identiques à la casse près ne coexistent pas", async () => {
   const base = `Doublon ${randomBytes(3).toString("hex")}`;

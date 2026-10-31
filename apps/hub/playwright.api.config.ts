@@ -4,14 +4,14 @@
  */
 import { readFileSync } from "node:fs";
 import { defineConfig } from "@playwright/test";
+import { HUB_API_TEST_CRON_SECRET, HUB_API_TEST_SECRET } from "./tests/api/secrets.mjs";
 
 // Adresses des bases Postgres locales de test, enregistrées par scripts/local-postgres.mjs
 const databases = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8")) as Record<string, string>;
 
 export const HUB_API_TEST_URL = "http://localhost:4200";
-// Secrets de test uniquement : les tests en ont besoin pour recalculer les empreintes du journal et appeler la purge
-export const HUB_API_TEST_SECRET = "test-api-secret-0123456789abcdef0123456789";
-export const HUB_API_TEST_CRON_SECRET = "test-cron-secret";
+// Secrets de test uniquement (tests/api/secrets.mjs), repris par les tests pour recalculer empreintes et signatures
+export { HUB_API_TEST_SECRET, HUB_API_TEST_CRON_SECRET } from "./tests/api/secrets.mjs";
 
 export default defineConfig({
   testDir: "./tests/api",
