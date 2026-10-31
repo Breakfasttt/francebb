@@ -21,3 +21,11 @@ Le RGPD demande de tenir un registre de ce qu'on fait des données, et d'informe
 - Lister les sous-traitants : Neon, Vercel, Discord, Google, service d'envoi de mails.
 - Mettre à jour les mentions légales et la politique de confidentialité du site.
 - Préparer une annonce pour le forum et Discord.
+
+## Avancement (31/10)
+
+- Brouillon du registre des traitements écrit : `docs/rgpd/registre.md` (droits du coach, quatre traitements, durées, sous-traitants).
+- **À faire après la relecture du user** :
+  - compléter l'adresse de contact et la durée du journal des emails ;
+  - mettre à jour les mentions légales et la politique de confidentialité du site ;
+  - préparer l'annonce sur le forum et Discord.
