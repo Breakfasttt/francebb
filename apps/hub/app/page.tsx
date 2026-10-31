@@ -84,6 +84,15 @@ export default async function PassportPage(props: { searchParams: Promise<Record
         <Sessions currentToken={session.session.token} />
       </section>
 
+      <section className="hub-card" aria-labelledby="export-title">
+        <h2 id="export-title">Mes données</h2>
+        <p className="hub-muted">
+          Un fichier avec tout ce que le hub et les applications BBFrance savent de toi (profil, connexions, et les
+          données de chaque application).
+        </p>
+        <a className="hub-button" href="/api/v1/account/export" download>Télécharger mes données</a>
+      </section>
+
       <section className="hub-card" aria-labelledby="delete-title">
         <h2 id="delete-title">Supprimer mon compte</h2>
         <DeleteAccount scheduledAt={user.deletionScheduledAt?.toISOString() ?? null} />

@@ -10,6 +10,8 @@ import { HUB_API_TEST_URL } from "../../playwright.api.config";
 import { client, getTokens } from "./helpers";
 
 test.use({ viewport: { width: 375, height: 740 }, hasTouch: true });
+// La base locale ne sert qu'une requête à la fois : finir les échanges de la page avant le test suivant
+test.afterEach(async ({ page }) => page.waitForLoadState("networkidle"));
 
 /** Crée un compte et connecte le navigateur de la page (les cookies de page.request sont ceux de la page). */
 async function signUpInPage(page: Page) {

@@ -24,7 +24,7 @@ const SEND_TIMEOUT_MS = 5000;
 const RETRY_DELAYS_MS = [60_000, 5 * 60_000, 30 * 60_000, 2 * 3600_000, 12 * 3600_000];
 
 /** Applications qui connaissent ce coach : un jeton, un jeton de rafraîchissement ou un consentement pour lui. */
-async function clientsKnowingUser(userId) {
+export async function clientsKnowingUser(userId) {
   // Lectures l'une après l'autre : la base locale de développement (prisma dev) ne sert qu'une requête à la fois
   const access = await prisma.oauthAccessToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] });
   const refresh = await prisma.oauthRefreshToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] });
@@ -65,23 +65,35 @@ export async function emitUserEvent(type, userId, data) {
 }
 
 /** Envoie un événement à son application ; renvoie le message d'erreur, ou `null` si l'application a accusé réception. */
-async function send(event, hook) {
+/**
+ * Envoie en POST un message signé à une application (événement, ou demande d'export : carte 125).
+ * @param {string} url
+ * @param {{ secret: string }} hook ligne clientHook (secret chiffré)
+ * @param {{ id: string }} payload contenu JSON, dont `id` est l'identifiant unique du message
+ * @param {number} timeoutMs
+ * @returns {Promise<Response>} lève une erreur si l'application est injoignable
+ */
+export async function signedPost(url, hook, payload, timeoutMs = SEND_TIMEOUT_MS) {
   const secret = await symmetricDecrypt({ key: process.env.BETTER_AUTH_SECRET ?? "", data: hook.secret });
-  const body = JSON.stringify(event.payload);
+  const body = JSON.stringify(payload);
   const timestamp = Math.floor(Date.now() / 1000).toString();
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-bbfrance-event-id": payload.id,
+      "x-bbfrance-timestamp": timestamp,
+      "x-bbfrance-signature": signEvent(secret, timestamp, body),
+    },
+    body,
+    signal: AbortSignal.timeout(timeoutMs),
+    redirect: "error",
+  });
+}
+
+async function send(event, hook) {
   try {
-    const response = await fetch(hook.eventsUrl, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-bbfrance-event-id": event.eventId,
-        "x-bbfrance-timestamp": timestamp,
-        "x-bbfrance-signature": signEvent(secret, timestamp, body),
-      },
-      body,
-      signal: AbortSignal.timeout(SEND_TIMEOUT_MS),
-      redirect: "error",
-    });
+    const response = await signedPost(hook.eventsUrl, hook, event.payload);
     return response.ok ? null : `réponse ${response.status}`;
   } catch (error) {
     return error instanceof Error ? error.message : String(error);

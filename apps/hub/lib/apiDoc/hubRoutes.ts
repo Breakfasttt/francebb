@@ -117,6 +117,20 @@ export const hubRoutes: OpenApiPaths = {
       },
     },
   },
+  "/api/v1/account/export": {
+    get: {
+      tags: ["Passeport"],
+      operationId: "exportAccountData",
+      summary: "Télécharger toutes les données du coach (fichier JSON)",
+      description:
+        "Réservé aux pages du passeport. Rassemble les données du hub et celles de chaque application qui connaît le coach : le hub appelle en POST l'adresse d'export de l'application avec un message signé `{ id, type: \"user.export\", version, createdAt, data: { userId } }` (mêmes en-têtes de signature que les événements) ; l'application répond 200 avec ses données en JSON.",
+      security: sessionOnly,
+      responses: {
+        "200": { description: "Fichier JSON : `exportedAt`, `hub`, `applications` (une partie par application).", content: { "application/json": { schema: { type: "object" } } } },
+        "401": { description: "Pas de session sur le hub.", content: { "application/json": { schema: errorSchema } } },
+      },
+    },
+  },
   "/api/v1/account/delete/cancel": {
     post: {
       tags: ["Passeport"],

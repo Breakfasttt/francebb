@@ -22,6 +22,7 @@ import { listUserApplications, revokeUserApplication } from "./applications";
 import { writeAudit } from "./audit.mjs";
 import { cancelDeletion, requestDeletion } from "./accountDeletion";
 import { consumeThirdPartyQuota, isThirdPartyClient, thirdPartyAppsEnabled } from "./thirdParty";
+import { exportUserData } from "./dataExport";
 
 type EndpointContext = Parameters<typeof getSessionFromCtx>[0];
 type OAuthProviderOptions = Parameters<typeof getOAuthProviderApi>[1];
@@ -116,6 +117,19 @@ export const passportPlugin = () =>
         if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
         const scheduledAt = await requestDeletion(session.user.id, session.session.token);
         return ctx.json({ scheduledAt: scheduledAt.toISOString() });
+      }),
+      // Export des données du coach (carte 125) : fichier JSON à télécharger, réservé à sa session sur le hub
+      exportData: createAuthEndpoint("/v1/account/export", { method: "GET" }, async (ctx) => {
+        const session = await getSessionFromCtx(ctx);
+        if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
+        const data = await exportUserData(session.user.id);
+        return new Response(JSON.stringify(data, null, 2), {
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            "content-disposition": `attachment; filename="passeport-bbfrance-${new Date().toISOString().slice(0, 10)}.json"`,
+            "cache-control": "no-store",
+          },
+        });
       }),
       cancelDeletion: createAuthEndpoint("/v1/account/delete/cancel", { method: "POST" }, async (ctx) => {
         const session = await getSessionFromCtx(ctx);

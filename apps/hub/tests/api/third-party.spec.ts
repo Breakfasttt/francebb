@@ -15,6 +15,8 @@ const pending = JSON.parse(readFileSync("tests/.api-third-party-pending.json", "
 const REDIRECT_URI = "http://localhost:4299/tiers";
 
 test.use({ viewport: { width: 375, height: 740 }, hasTouch: true });
+// La base locale ne sert qu'une requête à la fois : finir les échanges de la page avant le test suivant
+test.afterEach(async ({ page }) => page.waitForLoadState("networkidle"));
 
 async function signUpInPage(page: Page) {
   const response = await page.request.post("/api/auth/sign-up/email", {
