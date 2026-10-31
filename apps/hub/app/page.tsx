@@ -1,6 +1,7 @@
 /**
  * Accueil du hub = le passeport Blood Bowl du coach (carte 120, ADR-0007) : profil, moyens de connexion, applications
- * qui ont accès au compte, appareils connectés. Sans session, formulaire de connexion (qui ramène ici).
+ * qui ont accès au compte, appareils connectés, suppression du compte (carte 123). Sans session, formulaire de
+ * connexion (qui ramène ici).
  *
  * Le hub ne connaît aucune application : un bouton de retour n'apparaît que si l'application qui a ouvert le passeport
  * a donné `client_id` et `return_to`, et que cette adresse appartient bien à ce client enregistré.
@@ -15,6 +16,7 @@ import ProfileForm from "./passport/ProfileForm";
 import Applications from "./passport/Applications";
 import Sessions from "./passport/Sessions";
 import SignOutButton from "./passport/SignOutButton";
+import DeleteAccount from "./passport/DeleteAccount";
 
 const PROVIDER_LABELS: Record<string, string> = { discord: "Discord", google: "Google", credential: "Mot de passe (développement)" };
 
@@ -39,6 +41,12 @@ export default async function PassportPage(props: { searchParams: Promise<Record
           Ton identité de coach, commune à toutes les applications. Les réglages propres à une application (thème,
           notifications…) se changent dans l&apos;application elle-même.
         </p>
+        {user.deletionScheduledAt && (
+          <p className="hub-warning" role="status">
+            Suppression de ton compte prévue le {user.deletionScheduledAt.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}.
+            Les applications n&apos;y ont plus accès. Pour l&apos;annuler, va en bas de cette page.
+          </p>
+        )}
         {back && (
           <a className="hub-button" href={back.url}>Retour vers {back.name}</a>
         )}
@@ -74,6 +82,11 @@ export default async function PassportPage(props: { searchParams: Promise<Record
       <section className="hub-card" aria-labelledby="sessions-title">
         <h2 id="sessions-title">Appareils connectés au passeport</h2>
         <Sessions currentToken={session.session.token} />
+      </section>
+
+      <section className="hub-card" aria-labelledby="delete-title">
+        <h2 id="delete-title">Supprimer mon compte</h2>
+        <DeleteAccount scheduledAt={user.deletionScheduledAt?.toISOString() ?? null} />
       </section>
 
       <SignOutButton />

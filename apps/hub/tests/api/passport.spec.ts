@@ -57,6 +57,8 @@ test("le bouton de retour n'apparaît que pour une adresse enregistrée de l'app
   await signUpInPage(page);
   await page.goto(`/?client_id=${client.clientId}&return_to=${encodeURIComponent("http://localhost:4299/accueil")}`);
   await expect(page.getByRole("link", { name: "Retour vers Application de test API" })).toHaveAttribute("href", "http://localhost:4299/accueil");
+  // Attendre la liste des appareils avant de changer de page : la base locale ne sert qu'une requête à la fois
+  await expect(page.getByText("Cet appareil")).toBeVisible();
 
   await page.goto(`/?client_id=${client.clientId}&return_to=${encodeURIComponent("https://piege.example/")}`);
   await expect(page.getByRole("heading", { name: "Mon passeport Blood Bowl" })).toBeVisible();

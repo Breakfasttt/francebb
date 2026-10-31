@@ -13,6 +13,7 @@ import { authPlugins, rateLimitOptions, userAdditionalFields } from "./authPlugi
 import { passportPlugin } from "./passportPlugin";
 import { nameKeyOf, publicProfile, uniqueNameFor } from "./profile";
 import { emitUserEvent } from "./events.mjs";
+import { isBannedEmail } from "./accountDeletion";
 import { writeAudit } from "./audit.mjs";
 import { sendMagicLinkEmail } from "./mail";
 
@@ -55,6 +56,8 @@ export const auth = betterAuth({
       create: {
         // Un compte créé par Discord ou Google garde son pseudo s'il est libre, sinon « Pseudo 2 », « Pseudo 3 »…
         before: async (user) => {
+          // Un compte banni puis supprimé ne revient pas avec le même email (ADR-0007)
+          if (await isBannedEmail(user.email)) return false;
           const name = await uniqueNameFor(user.name);
           return { data: { ...user, name, nameKey: nameKeyOf(name), locale: "fr", timezone: "Europe/Paris" } };
         },

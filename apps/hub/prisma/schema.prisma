@@ -27,6 +27,9 @@ model User {
   region String?
   locale String?
   timezone String?
+  deletionScheduledAt DateTime?
+  deletionReminderSentAt DateTime?
+  deletionEventId String?
   session_userId Session[] @relation("Session_userId")
   account_userId Account[] @relation("Account_userId")
   oauthClient_userId OauthClient[] @relation("OauthClient_userId")
@@ -259,6 +262,13 @@ model ReservedName {
   nameHash String @unique
   createdAt DateTime
   @@map("reservedName")
+}
+
+model BannedEmail {
+  id String @id
+  emailHash String @unique
+  createdAt DateTime
+  @@map("bannedEmail")
 }
 
 model ClientHook {

@@ -40,6 +40,10 @@ export const userAdditionalFields = {
   region: { type: /** @type {const} */ ("string"), required: false, input: false },
   locale: { type: /** @type {const} */ ("string"), required: false, input: false },
   timezone: { type: /** @type {const} */ ("string"), required: false, input: false },
+  // Suppression demandée (carte 123) : date d'effacement prévue, rappel envoyé, événement user.deleted en cours
+  deletionScheduledAt: { type: /** @type {const} */ ("date"), required: false, input: false },
+  deletionReminderSentAt: { type: /** @type {const} */ ("date"), required: false, input: false },
+  deletionEventId: { type: /** @type {const} */ ("string"), required: false, input: false },
 };
 
 /**
@@ -68,6 +72,13 @@ const hubTables = {
     reservedName: {
       fields: {
         nameHash: { type: /** @type {const} */ ("string"), required: true, unique: true },
+        createdAt: { type: /** @type {const} */ ("date"), required: true },
+      },
+    },
+    // Empreintes des emails des comptes bannis puis supprimés : un banni ne peut pas revenir en recréant un compte
+    bannedEmail: {
+      fields: {
+        emailHash: { type: /** @type {const} */ ("string"), required: true, unique: true },
         createdAt: { type: /** @type {const} */ ("date"), required: true },
       },
     },

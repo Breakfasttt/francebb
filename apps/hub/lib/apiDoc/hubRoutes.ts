@@ -87,11 +87,49 @@ export const hubWebhooks = {
   "user.banned": eventOperation("user.banned", "Un coach est banni de toutes les applications : couper son accès tout de suite", {
     banned: { type: "boolean", const: true },
   }),
+  "user.deletion_scheduled": eventOperation(
+    "user.deletion_scheduled",
+    "Le coach a demandé la suppression de son compte : couper son accès pendant le délai de grâce (30 jours)",
+    { scheduledAt: { type: "string", format: "date-time", description: "Date d'effacement prévue." } },
+  ),
+  "user.deletion_cancelled": eventOperation("user.deletion_cancelled", "Le coach a annulé la suppression : il peut de nouveau se connecter", {}),
+  "user.deleted": eventOperation(
+    "user.deleted",
+    "Effacer ou anonymiser toutes les données personnelles du coach, puis accuser réception (2xx)",
+    {},
+  ),
 };
 
 const sessionOnly = [{ apiKeyCookie: [] }];
 
 export const hubRoutes: OpenApiPaths = {
+  "/api/v1/account/delete": {
+    post: {
+      tags: ["Passeport"],
+      operationId: "requestAccountDeletion",
+      summary: "Demander la suppression du compte",
+      description:
+        "Réservé aux pages du passeport. Effacement prévu dans 30 jours : d'ici là, le coach peut annuler. Les applications perdent l'accès et reçoivent `user.deletion_scheduled`, puis `user.deleted` à l'échéance. Le hub efface ses données quand toutes ont accusé réception.",
+      security: sessionOnly,
+      responses: {
+        "200": { description: "Suppression programmée.", content: { "application/json": { schema: { type: "object", properties: { scheduledAt: { type: "string", format: "date-time" } } } } } },
+        "401": { description: "Pas de session sur le hub.", content: { "application/json": { schema: errorSchema } } },
+      },
+    },
+  },
+  "/api/v1/account/delete/cancel": {
+    post: {
+      tags: ["Passeport"],
+      operationId: "cancelAccountDeletion",
+      summary: "Annuler la suppression du compte pendant le délai de grâce",
+      security: sessionOnly,
+      responses: {
+        "200": { description: "Suppression annulée.", content: { "application/json": { schema: { type: "object", properties: { cancelled: { type: "boolean" } } } } } },
+        "401": { description: "Pas de session sur le hub.", content: { "application/json": { schema: errorSchema } } },
+        "409": { description: "Aucune suppression en cours, ou effacement déjà commencé.", content: { "application/json": { schema: errorSchema } } },
+      },
+    },
+  },
   "/api/v1/applications": {
     get: {
       tags: ["Passeport"],

@@ -10,15 +10,17 @@
  * C'est le seul moyen de modifier le profil : la route /update-user de Better Auth est désactivée (lib/auth.ts).
  *
  * Il donne aussi au coach, avec sa session seulement, la liste des applications qui ont accès à son compte et le
- * moyen de leur retirer cet accès (/api/v1/applications, carte 120).
+ * moyen de leur retirer cet accès (/api/v1/applications, carte 120), et de demander ou d'annuler la suppression de son
+ * compte (/api/v1/account/delete, carte 123). Pendant le délai de grâce, aucune application ne peut obtenir de connexion.
  */
 import type { BetterAuthPlugin } from "better-auth";
-import { APIError, createAuthEndpoint, getSessionFromCtx } from "better-auth/api";
+import { APIError, createAuthEndpoint, createAuthMiddleware, getSessionFromCtx } from "better-auth/api";
 import { getOAuthProviderApi } from "@better-auth/oauth-provider";
 import { PROFILE_SCOPE, PROFILE_WRITE_SCOPE } from "./authPlugins.mjs";
 import { isNameAvailable, nameKeyOf, publicProfile, validateProfileUpdate } from "./profile";
 import { listUserApplications, revokeUserApplication } from "./applications";
 import { writeAudit } from "./audit.mjs";
+import { cancelDeletion, requestDeletion } from "./accountDeletion";
 
 type EndpointContext = Parameters<typeof getSessionFromCtx>[0];
 type OAuthProviderOptions = Parameters<typeof getOAuthProviderApi>[1];
@@ -51,6 +53,18 @@ async function resolveCoach(ctx: EndpointContext, requiredScope: string) {
 export const passportPlugin = () =>
   ({
     id: "bbfrance-passport",
+    hooks: {
+      before: [
+        {
+          // Compte en cours de suppression : plus de connexion aux applications, retour au passeport pour annuler
+          matcher: (ctx) => ctx.path === "/oauth2/authorize",
+          handler: createAuthMiddleware(async (ctx) => {
+            const session = await getSessionFromCtx(ctx);
+            if ((session?.user as Record<string, unknown> | undefined)?.deletionScheduledAt) throw ctx.redirect("/?suppression=en-cours");
+          }),
+        },
+      ],
+    },
     endpoints: {
       profile: createAuthEndpoint("/v1/profile", { method: ["GET", "PATCH"] }, async (ctx) => {
         if (ctx.request?.method !== "PATCH") {
@@ -85,6 +99,18 @@ export const passportPlugin = () =>
         await revokeUserApplication(session.user.id, clientId);
         await writeAudit({ action: `accès retiré à l'application ${clientId}`, userId: session.user.id });
         return ctx.json({ revoked: clientId });
+      }),
+      requestDeletion: createAuthEndpoint("/v1/account/delete", { method: "POST" }, async (ctx) => {
+        const session = await getSessionFromCtx(ctx);
+        if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
+        const scheduledAt = await requestDeletion(session.user.id, session.session.token);
+        return ctx.json({ scheduledAt: scheduledAt.toISOString() });
+      }),
+      cancelDeletion: createAuthEndpoint("/v1/account/delete/cancel", { method: "POST" }, async (ctx) => {
+        const session = await getSessionFromCtx(ctx);
+        if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
+        if (!(await cancelDeletion(session.user.id))) throw new APIError("CONFLICT", { message: "Aucune suppression à annuler, ou effacement déjà commencé." });
+        return ctx.json({ cancelled: true });
       }),
     },
   }) satisfies BetterAuthPlugin;
