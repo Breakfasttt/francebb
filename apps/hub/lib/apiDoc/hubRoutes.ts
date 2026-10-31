@@ -89,7 +89,47 @@ export const hubWebhooks = {
   }),
 };
 
+const sessionOnly = [{ apiKeyCookie: [] }];
+
 export const hubRoutes: OpenApiPaths = {
+  "/api/v1/applications": {
+    get: {
+      tags: ["Passeport"],
+      operationId: "listApplications",
+      summary: "Applications qui ont accès au compte du coach",
+      description: "Réservé aux pages du passeport (session du coach sur le hub) : une application ne voit pas les autres.",
+      security: sessionOnly,
+      responses: {
+        "200": {
+          description: "Liste des applications.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: { type: "object", properties: { clientId: { type: "string" }, name: { type: "string" }, scopes: { type: "array", items: { type: "string" } } } },
+              },
+            },
+          },
+        },
+        "401": { description: "Pas de session sur le hub.", content: { "application/json": { schema: errorSchema } } },
+      },
+    },
+  },
+  "/api/v1/applications/revoke": {
+    post: {
+      tags: ["Passeport"],
+      operationId: "revokeApplication",
+      summary: "Retirer l'accès d'une application au compte du coach",
+      description: "Réservé aux pages du passeport. Les jetons de l'application sont révoqués et son consentement effacé : elle devra redemander la connexion.",
+      security: sessionOnly,
+      requestBody: { required: true, content: { "application/json": { schema: { type: "object", required: ["clientId"], properties: { clientId: { type: "string" } } } } } },
+      responses: {
+        "200": { description: "Accès retiré.", content: { "application/json": { schema: { type: "object", properties: { revoked: { type: "string" } } } } } },
+        "400": { description: "clientId manquant.", content: { "application/json": { schema: errorSchema } } },
+        "401": { description: "Pas de session sur le hub.", content: { "application/json": { schema: errorSchema } } },
+      },
+    },
+  },
   "/api/v1/profile": {
     get: {
       tags: ["Passeport"],

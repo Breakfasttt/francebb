@@ -25,11 +25,10 @@ const RETRY_DELAYS_MS = [60_000, 5 * 60_000, 30 * 60_000, 2 * 3600_000, 12 * 360
 
 /** Applications qui connaissent ce coach : un jeton, un jeton de rafraîchissement ou un consentement pour lui. */
 async function clientsKnowingUser(userId) {
-  const [access, refresh, consents] = await Promise.all([
-    prisma.oauthAccessToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] }),
-    prisma.oauthRefreshToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] }),
-    prisma.oauthConsent.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] }),
-  ]);
+  // Lectures l'une après l'autre : la base locale de développement (prisma dev) ne sert qu'une requête à la fois
+  const access = await prisma.oauthAccessToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] });
+  const refresh = await prisma.oauthRefreshToken.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] });
+  const consents = await prisma.oauthConsent.findMany({ where: { userId }, select: { clientId: true }, distinct: ["clientId"] });
   return [...new Set([...access, ...refresh, ...consents].map((row) => row.clientId))];
 }
 

@@ -8,12 +8,17 @@
  * - les pages du passeport, avec la session du coach sur le hub (cookie).
  *
  * C'est le seul moyen de modifier le profil : la route /update-user de Better Auth est désactivée (lib/auth.ts).
+ *
+ * Il donne aussi au coach, avec sa session seulement, la liste des applications qui ont accès à son compte et le
+ * moyen de leur retirer cet accès (/api/v1/applications, carte 120).
  */
 import type { BetterAuthPlugin } from "better-auth";
 import { APIError, createAuthEndpoint, getSessionFromCtx } from "better-auth/api";
 import { getOAuthProviderApi } from "@better-auth/oauth-provider";
 import { PROFILE_SCOPE, PROFILE_WRITE_SCOPE } from "./authPlugins.mjs";
 import { isNameAvailable, nameKeyOf, publicProfile, validateProfileUpdate } from "./profile";
+import { listUserApplications, revokeUserApplication } from "./applications";
+import { writeAudit } from "./audit.mjs";
 
 type EndpointContext = Parameters<typeof getSessionFromCtx>[0];
 type OAuthProviderOptions = Parameters<typeof getOAuthProviderApi>[1];
@@ -65,6 +70,21 @@ export const passportPlugin = () =>
           { ...data, ...(data.name ? { nameKey: nameKeyOf(data.name) } : {}) },
         );
         return ctx.json(publicProfile(updated as Record<string, unknown>));
+      }),
+      // Réservé à la session du coach sur le hub : une application ne peut pas voir ni retirer l'accès des autres
+      applications: createAuthEndpoint("/v1/applications", { method: "GET" }, async (ctx) => {
+        const session = await getSessionFromCtx(ctx);
+        if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
+        return ctx.json(await listUserApplications(session.user.id));
+      }),
+      revokeApplication: createAuthEndpoint("/v1/applications/revoke", { method: "POST" }, async (ctx) => {
+        const session = await getSessionFromCtx(ctx);
+        if (!session) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
+        const clientId = (ctx.body as { clientId?: unknown } | undefined)?.clientId;
+        if (typeof clientId !== "string" || !clientId) throw new APIError("BAD_REQUEST", { message: "clientId manquant." });
+        await revokeUserApplication(session.user.id, clientId);
+        await writeAudit({ action: `accès retiré à l'application ${clientId}`, userId: session.user.id });
+        return ctx.json({ revoked: clientId });
       }),
     },
   }) satisfies BetterAuthPlugin;
