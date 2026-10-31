@@ -31,6 +31,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 | `apps/hub/app/api/auth/[...all]/route.ts` | Toutes les adresses Better Auth : connexion, sessions, `authorize`, `token`, `userinfo`, clés. |
 | `apps/hub/app/api/auth/.well-known/openid-configuration/route.ts` | Document de découverte OIDC lu par le site. |
 | `apps/hub/app/api/doc/route.ts`, `apps/hub/lib/apiDoc/` | `GET /api/doc` : documentation de l'API au format OpenAPI (carte 117). `buildApiDoc()` part de la description du plugin `openAPI()` de Better Auth, retire les routes d'administration et de développement, et ajoute les routes propres au hub décrites dans `hubRoutes.ts`. `?route=<chemin>` ne renvoie qu'une route. |
+| `apps/hub/lib/profile.ts`, `lib/passportPlugin.ts`, `app/api/v1/profile/route.ts` | Profil du coach (carte 119). `GET`/`PATCH /api/v1/profile`, avec le jeton d'accès d'une application (portées `bbfrance:profile` pour lire, `bbfrance:profile:write` pour modifier) ou la session du coach sur le hub. `validateProfileUpdate()` vérifie les champs, `isNameAvailable()` l'unicité du pseudo et les pseudos réservés, `uniqueNameFor()` rend unique le pseudo d'un nouveau compte Discord ou Google (« Pseudo 2 »). |
 | `apps/hub/lib/audit.mjs` | `writeAudit()` : journal d'audit (table `auditLog`) des inscriptions, connexions, modifications, bannissements et suppressions. Identifiant et adresse IP remplacés par une empreinte HMAC (`auditHash`). Appelé par les `databaseHooks` de `lib/auth.ts` et par `scripts/ban-user.mjs`. |
 | `apps/hub/lib/purge.ts`, `app/api/cron/purge/route.ts`, `vercel.json` | Purge nocturne (3 h, tâche planifiée Vercel, secret `CRON_SECRET`) : journal de plus d'un an, sessions et vérifications expirées, compteurs de limite inactifs. |
 | `apps/hub/next.config.ts` | En-têtes de sécurité de toutes les réponses : CSP, HSTS, nosniff, Referrer-Policy, Permissions-Policy. |
@@ -45,7 +46,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 | `apps/site/auth.ts` | Côté site : fournisseur `hub` actif si `AUTH_MODE=hub` et `HUB_ISSUER` définis ; en mode hub, les fournisseurs directs Discord, Google et email du site sont retirés (une seule porte d'entrée : le hub) ; refus si `email_verified` n'est pas vrai. Garde l'id_token du hub dans le cookie de session chiffré (`hubIdToken`), jamais dans la session lisible par le navigateur, qui reçoit seulement `hubLogout: true`. |
 | `apps/site/app/auth/logout/route.ts` | Déconnexion du site (POST seulement) : lit l'id_token côté serveur (`getToken`), puis redirection vers la page de déconnexion du hub (`/oauth2/end-session`). Appelée par `SignInButton` quand `hubLogout` est vrai. |
 
-Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi indiquée par le champ `service_documentation` de la découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access`. L'id_token contient `name`, `picture`, `email`, `email_verified`.
+Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi indiquée par le champ `service_documentation` de la découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access bbfrance:profile bbfrance:profile:write`. L'id_token contient `name`, `picture`, `email`, `email_verified` et, avec `bbfrance:profile`, `naf`, `region`, `locale`, `zoneinfo`, `member_since` (aussi renvoyés par userinfo).
 
 ## Les pièges
 
@@ -58,6 +59,10 @@ Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi i
 - Le chemin `/token` du plugin `jwt` est désactivé : il entre en conflit avec celui d'OAuth. Les adresses `/open-api/generate-schema` et `/reference` du plugin `openAPI` le sont aussi, parce qu'elles montrent les routes d'administration : la documentation passe uniquement par `/api/doc`.
 - Sécurité (carte 118) : limite de requêtes stockée en base (table `rateLimit`, active en production ou avec `HUB_RATE_LIMIT=1`), jetons Discord et Google chiffrés avec `BETTER_AUTH_SECRET` (à ne jamais changer en production), nouvelle clé de signature tous les 90 jours, l'ancienne restant valable 30 jours. Le schéma généré traduit les nombres `bigint` de Better Auth en `BigInt`.
 - La CSP autorise les scripts en ligne, dont Next.js a besoin. Si une page du hub ne s'affiche plus, regarder d'abord la console du navigateur (message « Content Security Policy »).
+- **Identifiant et pseudo sont distincts** (ADR-0007) : `User.id` (le `sub` des jetons) ne change jamais et sert aux applications à rattacher leurs données ; le pseudo (`name`) change. Son unicité passe par `nameKey` (minuscules, unique en base).
+- Le profil ne se modifie que par `/api/v1/profile` : `/update-user` de Better Auth est désactivé, et les champs ajoutés ont `input: false`. Le numéro NAF est déclaré par le coach, jamais vérifié.
+- Un client enregistré avant la carte 119 n'a pas les portées `bbfrance:profile` : le supprimer et l'enregistrer de nouveau.
+- Toute demande accompagnée d'un cookie du hub doit porter l'en-tête `Origin` (protection de Better Auth contre les requêtes forgées) : un navigateur l'envoie tout seul, un test doit l'ajouter. Les applications appellent `/oauth2/token` sans cookie.
 - Une nouvelle route dans `app/api` doit être décrite dans `lib/apiDoc/hubRoutes.ts`, sinon `pnpm test:api` échoue.
 - Un bannissement au hub n'agit pas sur une session déjà ouverte sur le site : elle dure jusqu'à son expiration. Pour un effet immédiat, bannir aussi le membre sur le site (son bannissement local reste en place).
 - La route de découverte OIDC force un type (`as unknown as`) : avec 4 plugins, TypeScript ne déduit plus tous les endpoints. Le test SSO vérifie que la route fonctionne.
@@ -83,5 +88,5 @@ Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi i
 ## État
 
 - Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`), hub invisible derrière les boutons du site (073 : parcours email testé sans aucun écran du hub, départ vers Discord et Google vérifié sans le suivre).
-- Fait aussi : documentation de l'API en JSON (117), durcissement de la sécurité (118).
+- Fait aussi : documentation de l'API en JSON (117), durcissement de la sécurité (118), profil du coach lu et modifié par l'API (119).
 - À faire : passeport Blood Bowl (épic E09, ADR-0007, cartes 118 à 127), domaine et déploiement (035), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).

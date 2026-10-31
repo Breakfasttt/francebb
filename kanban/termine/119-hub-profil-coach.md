@@ -31,3 +31,13 @@ Le hub devient la référence de la fiche du coach (ADR-0007). Chaque applicatio
 - Écriture : créer la route `PATCH /api/v1/profile`. Elle demande le jeton d'accès du coach avec la portée `bbfrance:profile:write`, vérifie les données, enregistre la modification, écrit une ligne dans le journal d'audit et prépare l'événement `user.updated` (carte 121).
 - Réserver les noms supprimés : avant d'accepter un nom, vérifier qu'il n'est pas dans la table des empreintes de noms supprimés.
 - Documenter les champs et la route dans `/api/doc`.
+
+## Résultat
+
+- **Champs du profil** ajoutés à la table `user` : `nameKey` (pseudo en minuscules, unique), `naf`, `region`, `locale`, `timezone`. Migration `20261031130000_profil_coach`, qui remplit `nameKey`, la langue et le fuseau des comptes existants. Table `reservedName` pour les pseudos supprimés.
+- **Pseudo unique** sans tenir compte des majuscules. Un nouveau compte Discord ou Google dont le pseudo est pris reçoit « Pseudo 2 ». L'identifiant (`User.id`, le `sub` des jetons) ne change jamais.
+- **Lecture** : portée `bbfrance:profile`, dans l'id_token et par userinfo (`naf`, `region`, `locale`, `zoneinfo`, `member_since`), et `GET /api/v1/profile`.
+- **Écriture** : `PATCH /api/v1/profile` (`lib/passportPlugin.ts`), avec le jeton d'accès et la portée `bbfrance:profile:write`, ou la session du coach sur le hub. Les données sont vérifiées (`lib/profile.ts`). Un pseudo pris renvoie 409, une donnée invalide 400 avec le détail par champ. `/update-user` de Better Auth est fermé.
+- `register-client.mjs` donne les deux nouvelles portées aux applications. La route est documentée dans `/api/doc`.
+- **Tests** : `pnpm --filter @bbfrance/hub test:api`, 16 tests verts, dont le parcours OIDC complet (autorisation, échange du code, id_token, userinfo, écriture refusée sans la portée, jeton inventé refusé).
+- **Reste pour la carte 122** : la lecture de ces champs par le site.

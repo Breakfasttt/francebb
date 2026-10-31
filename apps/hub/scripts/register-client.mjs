@@ -38,7 +38,7 @@ await prisma.oauthClient.create({
     grantTypes: ["authorization_code", "refresh_token"],
     responseTypes: ["code"],
     // Droits demandables par l'application : à lister explicitement (une liste vide n'en autorise aucun)
-    scopes: ["openid", "profile", "email", "offline_access"],
+    scopes: ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"],
     // App BBFrance : pas d'écran de consentement, déconnexion globale autorisée
     skipConsent: true,
     enableEndSession: true,

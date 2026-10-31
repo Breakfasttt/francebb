@@ -22,6 +22,11 @@ model User {
   banned Boolean? @default(false)
   banReason String?
   banExpires DateTime?
+  nameKey String? @unique
+  naf String?
+  region String?
+  locale String?
+  timezone String?
   session_userId Session[] @relation("Session_userId")
   account_userId Account[] @relation("Account_userId")
   oauthClient_userId OauthClient[] @relation("OauthClient_userId")
@@ -247,6 +252,13 @@ model OauthClientAssertion {
   id String @id
   expiresAt DateTime
   @@map("oauthClientAssertion")
+}
+
+model ReservedName {
+  id String @id
+  nameHash String @unique
+  createdAt DateTime
+  @@map("reservedName")
 }
 
 model AuditLog {

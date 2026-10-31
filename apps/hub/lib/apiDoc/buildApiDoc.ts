@@ -32,6 +32,8 @@ const HIDDEN_ROUTES = [
   /^\/oauth2\/register$/,
   /^\/oauth2\/(create|update|delete|get)-client/,
   /^\/oauth2\/client\//,
+  // Plugin du passeport : documenté sous son adresse publique /api/v1/… (hubRoutes.ts)
+  /^\/v1\//,
 ];
 
 function isHidden(path: string) {

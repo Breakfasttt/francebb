@@ -35,6 +35,8 @@ backup.sql
 
 # Hub : identifiants du client de test, recréés par apps/hub/scripts/e2e-setup.mjs
 .sso-client.json
+# Hub : identifiants de l'application de test des tests d'API (apps/hub/scripts/api-test-setup.mjs)
+.api-client.json
 # Hub : dernier lien de connexion par email écrit pendant les tests (apps/hub/lib/mail.ts, HUB_DEV_MAIL_FILE)
 .last-magic-link.json
 # Hub : client Prisma généré par `pnpm db:generate` (le site, lui, versionne le sien)

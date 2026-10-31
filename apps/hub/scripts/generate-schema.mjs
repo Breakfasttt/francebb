@@ -5,9 +5,13 @@
  */
 import { writeFileSync } from "node:fs";
 import { getAuthTables } from "better-auth/db";
-import { authPlugins, rateLimitOptions } from "../lib/authPlugins.mjs";
+import { authPlugins, rateLimitOptions, userAdditionalFields } from "../lib/authPlugins.mjs";
 
-const tables = getAuthTables({ plugins: authPlugins({ sendMagicLink: async () => {} }), rateLimit: rateLimitOptions });
+const tables = getAuthTables({
+  plugins: authPlugins({ sendMagicLink: async () => {} }),
+  rateLimit: rateLimitOptions,
+  user: { additionalFields: userAdditionalFields },
+});
 const modelNameOf = (key) => tables[key].modelName.charAt(0).toUpperCase() + tables[key].modelName.slice(1);
 
 // Postgres : Better Auth utilise de vraies colonnes tableau (String[]) et JSON (Json)
