@@ -57,6 +57,21 @@
   html[data-typing] .refonte-shell:has([data-page-bottom-bar="always"]) {
     --app-page-bar-space: 60px;
   }
+
+  /* Écran qui couvre tout le téléphone sans avoir sa propre adresse, repéré par l'attribut data-fullscreen (une
+     conversation de la messagerie, ouverte par le paramètre ?id=, carte 093) : la barre basse est retirée, comme sur
+     les écrans de rédaction (isComposePath), et la page restée derrière ne défile plus. */
+  .refonte-shell:has([data-fullscreen]) {
+    --app-bottom-nav-space: 0px;
+  }
+
+  .refonte-shell:has([data-fullscreen]) .app-bottom-nav {
+    display: none;
+  }
+
+  html:has([data-fullscreen]) {
+    overflow: hidden;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

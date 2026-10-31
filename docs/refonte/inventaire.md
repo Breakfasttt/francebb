@@ -254,14 +254,16 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 8. Messagerie `/messagerie`
 
-- [ ] [membre] Liste des conversations (20) : dernier message et nombre de non-lus.
-- [ ] [membre] « Nouvelle discussion » : recherche de coachs et titre facultatif.
-- [ ] [membre] Conversation (`?id=`) : 30 derniers messages, rafraîchis toutes les 10 secondes, marqués comme lus à l'ouverture.
-- [ ] [membre] Saisie avec l'éditeur BBCode et « Envoyer ».
-- [ ] [membre] Groupe : ajouter des participants, renommer, liste des participants.
-- [ ] [membre] « Quitter la conversation », avec confirmation.
-- [ ] [membre] `?userId=` ouvre ou reprend directement une conversation à deux.
-- [ ] [membre] La note sur le chiffrement est affichée.
+*Vérifiée par `apps/site/tests/e2e/inventaire/messagerie.spec.ts` (carte 093), en taille ordinateur et en taille téléphone.*
+
+- [x] [membre] Liste des conversations (20) : dernier message et nombre de non-lus.
+- [x] [membre] « Nouvelle discussion » : recherche de coachs et titre facultatif. *(Carte 093 : le bouton s'appelle « Nouvelle conversation » et ouvre la fenêtre « Nouvelle discussion ». Vérifié avec un seul coach sans titre (conversation à deux) et avec deux coachs et un titre (groupe).)*
+- [x] [membre] Conversation (`?id=`) : 30 derniers messages, rafraîchis toutes les 10 secondes, marqués comme lus à l'ouverture. *(Carte 093 : le rafraîchissement est vérifié par un message écrit dans la base pendant la lecture, qui apparaît sans recharger la page.)*
+- [x] [membre] Saisie avec l'éditeur BBCode et « Envoyer ».
+- [x] [membre] Groupe : ajouter des participants, renommer, liste des participants. *(Carte 093 : « Ajouter des participants » n'est plus proposé dans une conversation à deux, où l'action serveur le refusait toujours (« Ce n'est pas un groupe »).)*
+- [x] [membre] « Quitter la conversation », avec confirmation.
+- [x] [membre] `?userId=` ouvre ou reprend directement une conversation à deux.
+- [x] [membre] La note sur le chiffrement est affichée. *(Carte 093 : vérifiée dans la fenêtre « Nouvelle discussion » ; sur ordinateur, elle est aussi rappelée dans la colonne de droite quand aucune conversation n'est ouverte.)*
 
 ## 9. Ligues et carte
 

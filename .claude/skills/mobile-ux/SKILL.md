@@ -72,6 +72,10 @@ Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton �
 
 Utiliser `<PageHeader />`. Sur téléphone, le bouton retour (`BackButton`) est déplacé dans la barre de navigation (emplacement `#mobile-back-button-slot`) : il reste accessible même quand on fait défiler la page.
 
+## Écrans plein écran
+
+Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois) retirent la barre de navigation du bas grâce à leur adresse (`isComposePath` dans `common/components/AppShell/navItems.ts`). Un écran plein écran qui n'a pas sa propre adresse, comme une conversation de la messagerie ouverte par `?id=` (carte 093), pose l'attribut `data-fullscreen` sur son cadre : `AppShell.css` retire alors la barre du bas et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
+
 ## Pages impossibles sur téléphone
 
 Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone (ex. l'éditeur BBScheme et son grand plateau interactif), afficher `<DesktopOnlyFallback>` avec un message clair : « Optimisé pour ordinateur ou tablette ».

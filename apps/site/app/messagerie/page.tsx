@@ -1,126 +1,125 @@
 "use client";
 
-import React, { Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+/**
+ * Messagerie privée (refonte, carte 093, ADR 0006).
+ * - Ordinateur : deux colonnes de la hauteur de l'écran, la liste des conversations à gauche et la conversation
+ *   ouverte à droite (ou une invitation à en choisir une).
+ * - Téléphone : comme une application de messagerie, la liste seule, puis la conversation en plein écran
+ *   (voir ConversationView). La conversation n'a pas sa propre adresse : c'est le paramètre `?id=` qui l'ouvre.
+ * Les adresses n'ont pas changé : `?id=` ouvre une conversation, `?userId=` ouvre ou reprend une conversation à deux
+ * avec ce membre (lien « MP » du forum, des profils et de l'annuaire).
+ */
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Lock, MessagesSquare, Plus } from "lucide-react";
+import { Button, Card, EmptyState, Skeleton, toast } from "@bbfrance/ui";
 import ConversationList from "./component/ConversationList";
 import ConversationView from "./component/ConversationView";
-import { startConversation, getConversationMessages } from "./actions";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { Plus, LogOut } from "lucide-react";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
-import NewConversationModal from "./component/NewConversationModal";
-import { useSession } from "next-auth/react";
-import { toast } from "@bbfrance/ui";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
-import "./page.css";
+import NewConversationModal, { ENCRYPTION_NOTE } from "./component/NewConversationModal";
+import { startConversation } from "./actions";
+// Styles des blocs BBCode (accordéons, spoilers, galeries) des messages, comme dans les sujets du forum ; avant la
+// carte 093, la messagerie en gardait une copie dans son propre page.css
+import "@/app/forum/page.css";
 
 function MessagerieContent() {
-    const { data: session } = useSession();
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const activeId = searchParams.get("id");
-    const userId = searchParams.get("userId");
-    const [initializing, setInitializing] = React.useState(!!userId);
-    const [showModal, setShowModal] = React.useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const activeId = searchParams.get("id");
+  const userId = searchParams.get("userId");
+  const [showNew, setShowNew] = useState(false);
+  // Change à chaque événement qui modifie la liste (message envoyé, groupe renommé…) : la liste se recharge
+  const [listVersion, setListVersion] = useState(0);
+  const refreshList = useCallback(() => setListVersion((version) => version + 1), []);
 
-    React.useEffect(() => {
-        if (userId) {
-            const start = async () => {
-                try {
-                    const res = await startConversation([userId]);
-                    if (res.success) {
-                        router.replace(`/messagerie?id=${res.conversationId}`);
-                    } else {
-                        toast.error(res.error || "Impossible de démarrer la conversation");
-                        router.replace("/messagerie");
-                    }
-                } catch (error) {
-                    console.error(error);
-                    router.replace("/messagerie");
-                } finally {
-                    setInitializing(false);
-                }
-            };
-            start();
-        }
-    }, [userId]);
-
-    const [convInfo, setConvInfo] = React.useState<any>(null);
-
-    const fetchInfo = async () => {
-        if (!activeId) return;
-        try {
-            const data = await getConversationMessages(activeId);
-            setConvInfo(data?.conversation ?? null);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    React.useEffect(() => {
-        if (activeId) {
-            fetchInfo();
+  // ?userId= : ouvre ou reprend la conversation à deux avec ce membre, puis remplace l'adresse par ?id=
+  useEffect(() => {
+    if (!userId) return;
+    let cancelled = false;
+    startConversation([userId])
+      .then((res) => {
+        if (cancelled) return;
+        if (res.success) {
+          router.replace(`/messagerie?id=${res.conversationId}`);
         } else {
-            setConvInfo(null);
+          toast.error(res.error || "Impossible de démarrer la conversation");
+          router.replace("/messagerie");
         }
-    }, [activeId]);
-
-    const handleUpdate = () => {
-        fetchInfo();
-        router.refresh();
+      })
+      .catch((error) => {
+        console.error(error);
+        if (!cancelled) router.replace("/messagerie");
+      });
+    return () => {
+      cancelled = true;
     };
+  }, [userId, router]);
 
-    const handleBack = () => {
-        router.push("/messagerie");
-    };
-
-    if (initializing) return <div className="messagerie-container">Initialisation...</div>;
-
-    const convTitle = convInfo?.name || (convInfo?.isGroup ? "Groupe" : convInfo?.participants.find((p: any) => p.user.id !== session?.user?.id)?.user.name || "Chat");
-
+  if (userId) {
     return (
-        <>
-            <PageHeader 
-                title={activeId ? (convTitle || "Chargement...") : "Messagerie"}
-                subtitle={activeId 
-                    ? (convInfo?.isGroup ? "Conversation de groupe" : "Discussion privée")
-                    : "Discutez avec les autres coachs de la communauté"
-                }
-                backHref={activeId ? "/messagerie" : "/"}
-                backTitle={activeId ? "Retour à la liste" : "Retour"}
-            />
-            
-            <div className={`messagerie-container ${activeId ? 'has-active-chat' : ''}`}>
-                {!activeId && (
-                     <div style={{ padding: '0 1rem', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
-                        <CTAButton 
-                            icon={<Plus size={18} />}
-                            onClick={() => setShowModal(true)}
-                        >
-                            Nouvelle conversation
-                        </CTAButton>
-                    </div>
-                )}
-                
-                {activeId ? (
-                    <ConversationView conversationId={activeId} onBack={handleBack} onUpdate={handleUpdate} />
-                ) : (
-                    <ConversationList />
-                )}
-            </div>
-
-            {showModal && (
-                <NewConversationModal onClose={() => setShowModal(false)} />
-            )}
-        </>
+      <div className="mx-auto w-full max-w-[1232px] px-4 py-10 font-bb-sans text-bb-text">
+        <EmptyState icon={<MessagesSquare size={32} />} title="Ouverture de la conversation…" />
+      </div>
     );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-[1232px] px-3 pt-3 font-bb-sans text-base text-bb-text lg:grid lg:h-[calc(100dvh-8.5rem)] lg:min-h-[480px] lg:grid-cols-[minmax(300px,360px)_1fr] lg:gap-4 lg:px-6 lg:pt-4">
+      {/* Colonne de la liste ; sur téléphone, cachée quand une conversation est ouverte */}
+      <section aria-labelledby="messagerie-title" className={activeId ? "max-lg:hidden lg:flex lg:min-h-0 lg:flex-col" : "lg:flex lg:min-h-0 lg:flex-col"}>
+        {/* Titre et sous-titre sur toute la largeur, puis le bouton « Nouvelle conversation » sur toute la largeur */}
+        <header className="flex flex-col gap-3 pb-3">
+          <div>
+            <h1 id="messagerie-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
+              Messagerie
+            </h1>
+            <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Vos discussions privées avec les autres coachs</p>
+          </div>
+          <Button type="button" variant="primary" size="tap" onClick={() => setShowNew(true)} className="w-full gap-1.5">
+            <Plus size={18} aria-hidden="true" />
+            Nouvelle conversation
+          </Button>
+        </header>
+        <Card className="overflow-hidden lg:min-h-0 lg:flex-1 lg:overflow-y-auto">
+          <ConversationList activeId={activeId} version={listVersion} />
+        </Card>
+      </section>
+
+      {/* Conversation ouverte (plein écran sur téléphone), ou invitation à en choisir une sur ordinateur */}
+      {activeId ? (
+        <Card className="max-lg:contents lg:flex lg:min-h-0 lg:flex-col lg:overflow-hidden">
+          <ConversationView key={activeId} conversationId={activeId} onChange={refreshList} onClose={() => router.push("/messagerie")} />
+        </Card>
+      ) : (
+        <Card className="hidden lg:flex lg:min-h-0 lg:flex-col lg:items-center lg:justify-center">
+          <EmptyState icon={<MessagesSquare size={40} />} title="Choisissez une conversation">
+            <p className="m-0">Ou commencez-en une nouvelle avec le bouton « Nouvelle conversation ».</p>
+            <p className="m-0 mt-4 flex items-start justify-center gap-2 text-left">
+              <Lock size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+              <span>{ENCRYPTION_NOTE}</span>
+            </p>
+          </EmptyState>
+        </Card>
+      )}
+
+      {showNew && <NewConversationModal onClose={() => setShowNew(false)} />}
+    </div>
+  );
+}
+
+function LoadingList() {
+  return (
+    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-3 px-3 pt-3 lg:px-6 lg:pt-4">
+      <Skeleton className="h-10 w-48" />
+      <Skeleton className="h-16 w-full" />
+      <Skeleton className="h-16 w-full" />
+    </div>
+  );
 }
 
 export default function MessageriePage() {
-    return (
-        <Suspense fallback={<div className="messagerie-container">Chargement...</div>}>
-            <MessagerieContent />
-        </Suspense>
-    );
+  return (
+    <Suspense fallback={<LoadingList />}>
+      <MessagerieContent />
+    </Suspense>
+  );
 }

@@ -38,6 +38,9 @@ const NEWCOMER_ID = "e2e_audit_newcomer";
  */
 const BBSCHEME_TOPIC_ID = E2E.bbschemeTopicId;
 
+/** Conversation entre le modérateur et le coach de test, créée par l'audit seulement (carte 093). */
+const AUDIT_CONVERSATION_ID = "e2e_audit_conversation";
+
 /** Administrateur créé par l'audit seulement (carte 061), pour mesurer /administration. */
 const ADMIN_ID = "e2e_audit_admin";
 
@@ -82,6 +85,8 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/carte", connected: false },
   { path: "/membres", connected: true },
   { path: "/messagerie", connected: true },
+  // Carte 093 : une conversation ouverte, en plein écran sur téléphone (en-tête, bulles, zone de saisie)
+  { path: `/messagerie?id=${AUDIT_CONVERSATION_ID}`, connected: true },
   { path: "/profile", connected: true },
   // Carte 092 : les onglets du profil qui ont des formulaires, le profil vu par un autre membre, les filtres de l'annuaire
   { path: "/profile?tab=edit", connected: true },
@@ -289,6 +294,20 @@ test.describe("audit mobile", () => {
           },
         });
       }
+    });
+    // Carte 093 : conversation à deux avec quelques messages (texte en clair : le site affiche tel quel un texte non chiffré)
+    await withTestDb(async (prisma) => {
+      if (await prisma.conversation.findUnique({ where: { id: AUDIT_CONVERSATION_ID } })) return;
+      await prisma.conversation.create({
+        data: {
+          id: AUDIT_CONVERSATION_ID, isGroup: false,
+          participants: { create: [{ userId: E2E.modoId }, { userId: E2E.coachId }] },
+          messages: { create: [
+            { authorId: E2E.coachId, content: "Bonjour, une question sur le tournoi de l'audit.", createdAt: new Date("2026-03-10T09:00:00Z") },
+            { authorId: E2E.modoId, content: "Oui, avec un [b]lien[/b] : [url=https://example.com]fiche du tournoi[/url]", createdAt: new Date("2026-03-10T09:05:00Z") },
+          ] },
+        },
+      });
     });
     // Un navigateur par visiteur ; le modérateur voit toutes les pages réservées (modération et administration en lecture)
     const pages = new Map<Visitor, Page>();

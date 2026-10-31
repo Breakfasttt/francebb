@@ -8,22 +8,25 @@ La messagerie permet aux coachs de s'écrire en privé, à deux ou en groupe, sa
 
 ## Ce que voit le coach
 
-- `/messagerie` : la liste de ses 20 conversations les plus récentes (l'action sait paginer, mais la page ne montre pas de pagination), avec le dernier message et le nombre de messages non lus. Le bouton « Nouvelle conversation » ouvre une fenêtre de recherche de coachs.
-- `/messagerie?id=…` : une conversation. Le coach lit les 30 derniers messages, écrit avec l'éditeur BBCode, et peut, dans un groupe, inviter d'autres coachs, renommer la conversation ou la quitter. La conversation se rafraîchit toute seule toutes les 10 secondes.
+- `/messagerie` : la liste de ses 20 conversations les plus récentes (l'action sait paginer, mais la page ne montre pas de pagination), avec l'heure (ou la date) du dernier message, son début et la pastille du nombre de messages non lus. Le bouton « Nouvelle conversation » ouvre la fenêtre « Nouvelle discussion » : note sur le chiffrement, titre facultatif (avec un titre, la discussion devient un groupe) et recherche de coachs.
+- `/messagerie?id=…` : une conversation. Le coach lit les 30 derniers messages en bulles (les siens à droite), écrit avec l'éditeur BBCode et « Envoyer ». Le bouton « Participants » ouvre la liste des participants, avec un lien vers leur profil. Le menu « ⋯ » (« Actions de la conversation ») propose, dans un groupe, « Ajouter des participants » et « Renommer le groupe », et partout « Quitter la conversation », avec confirmation. La conversation se rafraîchit toute seule toutes les 10 secondes.
 - `/messagerie?userId=…` : ouvre directement une conversation avec un coach (lien depuis la liste des membres ou un profil). Si une conversation à deux existe déjà, elle est reprise.
 - Accès : membres connectés uniquement. Un visiteur non connecté voit seulement « Aucune conversation pour le moment » (l'erreur est cachée), sans être invité à se connecter.
-- **Sur téléphone** (et tablette : `@media (max-width: 1024px)` à la fin de `app/messagerie/page.css`, seuil unique de la carte 055, pas de fichier `page-mobile.css`) : la page prend toute la largeur avec une marge de 1rem et un espace de 8rem en bas ; les bulles de message prennent jusqu'à 90 % de la largeur ; la zone des messages fait 500 pixels de haut, au plus 70 % de l'écran. Le bouton retour du `PageHeader` ramène à la liste. Quelques règles de la messagerie sont aussi dans `app/profile/page-mobile.css` (`.conversation-card`, `.conv-view-header`…), ce qui est déroutant.
-- **À vérifier** : le comportement de l'éditeur BBCode quand le clavier du téléphone s'ouvre (la zone de saisie reste-t-elle visible ?), et la taille des boutons des fenêtres d'invitation et de renommage.
+- **Sur ordinateur** (refonte, carte 093) : deux colonnes de la hauteur de l'écran, la liste à gauche (la conversation ouverte y est mise en valeur) et la conversation à droite. Sans conversation ouverte, la colonne de droite invite à en choisir une et rappelle la note sur le chiffrement.
+- **Sur téléphone et tablette** (jusqu'à 1024 pixels) : comme une application de messagerie. La liste seule, puis la conversation en plein écran : en-tête avec la flèche de retour à la liste, messages au milieu, zone de saisie collée en bas. La barre de navigation du bas est retirée pendant la conversation, et le cadre suit la partie visible de l'écran : quand le clavier s'ouvre, la zone de saisie remonte au-dessus de lui. Les fenêtres (nouvelle discussion, ajout, renommage, participants, confirmation) sont des panneaux qui montent du bas.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `apps/site/app/messagerie/page.tsx` | Page client : affiche la liste ou la conversation selon l'adresse. |
-| `apps/site/app/messagerie/component/ConversationList.tsx` | Liste des conversations et compteur de non-lus. |
-| `apps/site/app/messagerie/component/ConversationView.tsx` | Fil de messages, saisie, rafraîchissement automatique. |
+| `apps/site/app/messagerie/page.tsx` | Page client : les deux colonnes, l'ouverture par `?userId=`. Importe `app/forum/page.css` pour les styles des blocs BBCode (spoilers, accordéons, galeries). |
+| `apps/site/app/messagerie/component/ConversationList.tsx` | Liste des conversations et pastille des non-lus. |
+| `apps/site/app/messagerie/component/ConversationView.tsx` | En-tête, fil de messages, saisie, rafraîchissement automatique, participants, départ ; plein écran sur téléphone. |
 | `apps/site/app/messagerie/component/ChatBubble.tsx` | Une bulle de message. |
-| `apps/site/app/messagerie/component/NewConversationModal.tsx`, `InviteParticipantModal.tsx`, `RenameConversationModal.tsx` | Fenêtres de création, d'invitation et de renommage. |
+| `apps/site/app/messagerie/component/conversationText.ts` | Nom affiché d'une conversation, aperçu du dernier message sans balises BBCode. |
+| `apps/site/app/messagerie/component/MemberPicker.tsx` | Recherche et choix de coachs, partagé par la création et l'ajout de participants. |
+| `apps/site/app/messagerie/component/NewConversationModal.tsx`, `InviteParticipantModal.tsx`, `RenameConversationModal.tsx` | Fenêtres de création (avec la note sur le chiffrement), d'invitation et de renommage. |
+| `apps/site/tests/e2e/inventaire/messagerie.spec.ts` | Test d'inventaire de la refonte (section 8 de `docs/refonte/inventaire.md`). |
 | `apps/site/app/messagerie/actions.ts` | Actions serveur. |
 | `apps/site/lib/crypto.ts` | `encrypt` / `decrypt` : chiffrement des messages. |
 | `apps/site/lib/userSearch.ts` | `userSearchWhere` : filtre commun de recherche de coachs. |
@@ -43,7 +46,10 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 - Le rafraîchissement toutes les 10 secondes refait une requête complète (et marque les messages lus) : à surveiller pour la charge.
 - Les actions d'écriture renvoient `{ success, error }` et les erreurs s'affichent en notification (carte 052). Les lectures `getConversations` et `getConversationMessages` renvoient `null` si le visiteur n'est pas connecté ou ne participe pas à la conversation ; `searchUsers` renvoie alors une liste vide.
 - Un coach sans avatar est affiché avec l'avatar par défaut du site (silhouette aux couleurs du thème actif) grâce au composant commun `MemberAvatarImage` (carte 065). Avant, les composants de la messagerie demandaient l'image `/images/default-avatar.png`, qui n'existe pas : le serveur répondait « introuvable » (erreur 404) et le navigateur affichait une image cassée.
-- Dette : la page utilise des types `any`. Les champs `user1Id` / `user2Id` de `Conversation` sont un ancien modèle, remplacé par `ConversationParticipant`.
+- Plein écran sur téléphone : la conversation n'a pas sa propre adresse (paramètre `?id=`), la coquille ne peut donc pas la reconnaître par son adresse comme les écrans de rédaction du forum (`isComposePath`). C'est la conversation qui pose l'attribut `data-fullscreen` ; `AppShell.css` retire alors la barre du bas et bloque le défilement de la page restée derrière. Le cadre recopie la position et la hauteur de `window.visualViewport` dans les variables `--chat-top` et `--chat-height`.
+- Le fil est affiché en `flex-col-reverse` : les messages arrivent du plus récent au plus ancien, le plus récent est en bas, et le navigateur garde le fil calé en bas sans calcul de défilement.
+- « Ajouter des participants » et « Renommer le groupe » ne sont proposés que dans un groupe (avant la carte 093, l'ajout était proposé partout, mais l'action le refusait dans une conversation à deux).
+- Dette : les champs `user1Id` / `user2Id` de `Conversation` sont un ancien modèle, remplacé par `ConversationParticipant`.
 
 ## Les mots expliqués
 
@@ -60,4 +66,4 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 
 - Marche : conversations à deux et en groupe, chiffrement, compteur de non-lus, email de notification.
 - Manque : affichage des messages plus anciens que les 30 derniers, pagination de la liste au-delà de 20 conversations, redirection vers la connexion pour un visiteur, temps réel.
-- Cartes : 049 (audit mobile), 065 (avatar par défaut).
+- Cartes : 049 (audit mobile), 065 (avatar par défaut), 093 (refonte : deux colonnes sur ordinateur, plein écran sur téléphone).
