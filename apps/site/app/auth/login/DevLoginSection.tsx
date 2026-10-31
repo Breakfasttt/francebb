@@ -3,10 +3,8 @@
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { createDevUser } from "./actions";
-import { User, Shield, UserPlus, ArrowLeft } from "lucide-react";
-import AdminButton from "@/common/components/Button/AdminButton";
-import CTAButton from "@/common/components/Button/CTAButton";
-import { toast } from "@bbfrance/ui";
+import { Shield, UserPlus, ArrowLeft } from "lucide-react";
+import { Avatar, Button, toast } from "@bbfrance/ui";
 
 interface DevUser {
   id: string;
@@ -22,8 +20,9 @@ interface DevLoginSectionProps {
 }
 
 /**
- * Section de connexion pour le développement.
- * Permet de choisir un compte de test ou d'en créer un nouveau.
+ * Section de connexion pour le développement (n'existe qu'avec NODE_ENV=development).
+ * Permet de choisir un compte de test ou d'en créer un nouveau. Refonte (carte 091) : boutons et couleurs de
+ * packages/ui, une ligne par compte, assez haute pour le pouce ; la connexion elle-même n'a pas changé.
  */
 export default function DevLoginSection({ initialUsers, callbackUrl }: DevLoginSectionProps) {
   const [showSelector, setShowSelector] = useState(false);
@@ -36,8 +35,8 @@ export default function DevLoginSection({ initialUsers, callbackUrl }: DevLoginS
     setIsCreating(false);
 
     if (result) {
-      // @ts-ignore
-      setUsers(prev => [result, ...prev]);
+      // Le client Prisma du site ne renvoie pas l'email : seuls les champs affichés sont gardés
+      setUsers(prev => [{ id: result.id, name: result.name, email: null, role: result.role, image: result.image }, ...prev]);
       toast.success("Compte de test créé !");
     } else {
       toast.error("Échec de la création.");
@@ -50,68 +49,56 @@ export default function DevLoginSection({ initialUsers, callbackUrl }: DevLoginS
 
   if (!showSelector) {
     return (
-      <div className="dev-login-teaser" style={{ marginTop: "2rem" }}>
-        <AdminButton 
-          onClick={() => setShowSelector(true)}
-          icon={<Shield size={18} />}
-          fullWidth
-        >
+      <div className="border-t border-dashed border-bb-border pt-4">
+        <Button type="button" variant="quiet" size="tap" className="w-full" onClick={() => setShowSelector(true)}>
+          <Shield size={18} aria-hidden="true" />
           🚀 Mode Développement
-        </AdminButton>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="dev-login-container">
-      <div className="dev-login-header">
-        <button onClick={() => setShowSelector(false)} className="dev-back-button">
-          <ArrowLeft size={14} /> Retour
-        </button>
-        <span className="dev-section-title">Comptes de Test</span>
+    <section aria-labelledby="dev-login-title" className="flex flex-col gap-3 border-t border-dashed border-bb-border pt-4">
+      <div className="flex items-center gap-2">
+        <Button type="button" variant="quiet" size="tap" className="px-2" onClick={() => setShowSelector(false)}>
+          <ArrowLeft size={16} aria-hidden="true" /> Retour
+        </Button>
+        <h2 id="dev-login-title" className="m-0 flex-1 border-0 p-0 text-right text-sm font-bold text-bb-text-muted normal-case not-italic">
+          Comptes de test
+        </h2>
       </div>
 
-      <div className="dev-users-list">
+      <div className="flex flex-col gap-2">
         {users.length > 0 ? (
           users.map(u => (
-            <button
+            <Button
               key={u.id}
+              type="button"
+              variant="secondary"
+              size="tap"
               onClick={() => handleSignIn(u.id)}
-              className="dev-user-card"
+              className="w-full justify-start gap-3 py-2 text-left font-normal whitespace-normal"
             >
-              <div className="dev-user-info">
-                <div className="dev-user-avatar">
-                  {u.image ? (
-                    <img src={u.image} alt="" className="avatar-img" />
-                  ) : (
-                    <User size={16} />
-                  )}
-                </div>
-                <div className="dev-user-details">
-                  <p className="dev-user-name">{u.name}</p>
-                  <p className="dev-user-role">{u.role}</p>
-                </div>
-              </div>
-              <span className="dev-user-id">ID: {u.id.slice(0, 8)}...</span>
-            </button>
+              <Avatar src={u.image} name={u.name ?? "?"} size={32} />
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="truncate font-bold">{u.name}</span>
+                <span className="text-sm text-bb-text-muted">{u.role}</span>
+              </span>
+              <span className="shrink-0 text-xs text-bb-text-muted">ID: {u.id.slice(0, 8)}...</span>
+            </Button>
           ))
         ) : (
-          <div className="dev-no-users">
+          <p className="m-0 text-center text-sm text-bb-text-muted">
             Aucun compte de test disponible.
-          </div>
+          </p>
         )}
 
-        <div className="dev-actions">
-          <CTAButton 
-            onClick={handleCreateUser}
-            disabled={isCreating}
-            icon={isCreating ? null : <UserPlus size={16} />}
-            fullWidth
-          >
-            {isCreating ? "Création..." : "Créer un nouvel Admin de test"}
-          </CTAButton>
-        </div>
+        <Button type="button" variant="primary" size="tap" className="w-full" onClick={handleCreateUser} disabled={isCreating}>
+          {!isCreating && <UserPlus size={16} aria-hidden="true" />}
+          {isCreating ? "Création..." : "Créer un nouvel Admin de test"}
+        </Button>
       </div>
-    </div>
+    </section>
   );
 }

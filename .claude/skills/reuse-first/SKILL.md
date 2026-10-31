@@ -57,7 +57,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Pagination | `Pagination` |
 | Avatar + cadre de rang | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
-| Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch`, `MultiLigueSearch` |
+| Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch`, `MultiLigueSearch` (choix de plusieurs ligues, refait avec `packages/ui` par la carte 091) |
 | Rang / statut / tags | `RankSelect`, `StatusBadge`, `TagSelector` |
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
 | Smileys | `SmileyPicker`, `SmileyGrid` |

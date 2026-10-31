@@ -1,23 +1,26 @@
 "use client";
 
+/**
+ * Formulaire d'inscription (onboarding), refait par la carte 091 (ADR 0006) : une seule page découpée en blocs
+ * empilés (avatar, profil de coach, ligues, signature, thème), avec les composants de packages/ui. Les noms des
+ * champs envoyés à l'action serveur `finishOnboarding` et la suite (mise à jour de la session, cookie
+ * `onboarding_sync`, retour à l'accueil) n'ont pas changé.
+ */
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { toast } from "@bbfrance/ui";
+import {
+  Button, Card, CardBody, CardHeader, CardTitle, Field, Input, Label, Select, Sheet, SheetContent,
+  DESKTOP_QUERY, toast, useMediaQuery,
+} from "@bbfrance/ui";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { finishOnboarding } from "./actions";
-import { updateTheme, getReferenceDataAction } from "@/app/profile/actions";
-import Modal from "@/common/components/Modal/Modal";
-import RankSelect from "@/common/components/RankSelect/RankSelect";
+import { getReferenceDataAction } from "@/app/profile/actions";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import ThemePicker from "@/common/components/AppShell/ThemePicker";
 import { siteConfig } from "@/lib/siteConfig";
-import { SITE_THEMES } from "@/lib/themes";
-import { Dices, Loader2, Sparkles, Upload, ArrowRight, Palette } from "lucide-react";
-import CTAButton from "@/common/components/Button/CTAButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import { Dices, Loader2, Sparkles, Upload, ArrowRight } from "lucide-react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
@@ -34,14 +37,9 @@ const DICEBEAR_STYLES = [
 
 export default function OnboardingForm({ user }: { user: any }) {
   const { update } = useSession();
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
   const [isPending, startTransition] = useTransition();
-  const [isThemePending, startThemeUpdate] = useTransition();
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
   const [formData, setFormData] = useState({
     name: user.name || "",
@@ -101,19 +99,6 @@ export default function OnboardingForm({ user }: { user: any }) {
     setFormData(prev => ({ ...prev, image: url }));
   };
   
-  const handleThemeChange = (newTheme: string) => {
-    setTheme(newTheme);
-    startThemeUpdate(async () => {
-      try {
-        // Échec silencieux : le thème reste appliqué à l'écran et le membre pourra le changer depuis son profil.
-        const result = await updateTheme(newTheme);
-        if (result.success) await update({ theme: newTheme });
-      } catch {
-        // Silencieux, pour la même raison.
-      }
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -149,104 +134,133 @@ export default function OnboardingForm({ user }: { user: any }) {
   };
 
   return (
-    <PremiumCard className="onboarding-form-premium fade-in">
-      <form onSubmit={handleSubmit} className="profile-edit-form">
+    <>
+      <form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4">
         <input type="file" ref={fileInputRef} style={{ display: "none" }} accept="image/*" onChange={handleImageUpload} />
 
-        <div className="onboarding-sections-grid">
-          <div className="onboarding-section-box">
-             <div className="avatar-studio-inline">
-                <UserAvatar image={formData.image} selectedRank={formData.avatarFrame as Rank} size={100} postCount={0} />
-                <div className="studio-actions">
-                   <label>Votre Avatar</label>
-                   <div className="btn-group-avatar">
-                      <button type="button" className="upload-btn-icon" onClick={handleRandomAvatar} title="Aléatoire"><Dices size={16} /></button>
-                      <button type="button" className="upload-btn-icon" onClick={() => setIsGeneratorOpen(true)} title="Générer"><Sparkles size={16} /></button>
-                      <button type="button" className="upload-btn-icon" onClick={() => fileInputRef.current?.click()} title="Envoyer une image" aria-label="Envoyer une image">{isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}</button>
-                   </div>
-                </div>
-             </div>
+        {/* Avatar */}
+        <Card>
+          <CardHeader><CardTitle>Votre avatar</CardTitle></CardHeader>
+          <CardBody className="flex flex-col items-center gap-4 sm:flex-row">
+            <UserAvatar image={formData.image} selectedRank={formData.avatarFrame as Rank} size={96} postCount={0} />
+            <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={handleRandomAvatar}>
+                <Dices size={18} aria-hidden="true" /> Aléatoire
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={() => setIsGeneratorOpen(true)}>
+                <Sparkles size={18} aria-hidden="true" /> Générer
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                {isUploading ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Upload size={18} aria-hidden="true" />}
+                Envoyer une image
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
 
-             <div className="form-group">
-                <label>Pseudo (Coach Name)</label>
-                <input name="name" defaultValue={formData.name} required minLength={3} placeholder="Ex: Grumbly" />
-             </div>
-          </div>
+        {/* Profil de coach */}
+        <Card>
+          <CardHeader><CardTitle>Votre profil de coach</CardTitle></CardHeader>
+          <CardBody className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <Field label="Pseudo" htmlFor="onboarding-name" hint="3 caractères au moins. C'est le nom affiché sur le forum." className="lg:col-span-2">
+              <Input id="onboarding-name" name="name" defaultValue={formData.name} required minLength={3} placeholder="Ex : Grumbly" autoComplete="nickname" />
+            </Field>
+            <Field label="Numéro NAF" htmlFor="onboarding-naf" hint="Facultatif.">
+              <Input id="onboarding-naf" name="nafNumber" defaultValue={formData.nafNumber} placeholder="Ex : 12345" inputMode="numeric" />
+            </Field>
+            <Field label="Région" htmlFor="onboarding-region" hint="Facultatif.">
+              <Select id="onboarding-region" name="region" defaultValue={formData.region}>
+                <option value="">Choisissez...</option>
+                {regions.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
+              </Select>
+            </Field>
+            <Field label="Équipe fétiche" htmlFor="onboarding-equipe" hint="Facultatif." className="lg:col-span-2">
+              <Input id="onboarding-equipe" name="equipe" defaultValue={formData.equipe} placeholder="Ex : The Red Barons" />
+            </Field>
+          </CardBody>
+        </Card>
 
-          <div className="onboarding-section-box fields-grid">
-             <div className="form-group">
-                <label>Numéro NAF</label>
-                <input name="nafNumber" defaultValue={formData.nafNumber} placeholder="Ex: 12345" />
-             </div>
-              <ClassicSelect label="Région" name="region" defaultValue={formData.region}>
-                 <option value="">Choisissez...</option>
-                 {regions.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
-              </ClassicSelect>
-             <div className="form-group full-width">
-                <label>Équipe fétiche</label>
-                <input name="equipe" defaultValue={formData.equipe} placeholder="Ex: The Red Barons" />
-             </div>
-          </div>
+        {/* Ligues */}
+        <Card>
+          <CardHeader><CardTitle>Vos ligues</CardTitle></CardHeader>
+          <CardBody>
+            <MultiLigueSearch initialLigues={user.ligues} initialCustom={user.ligueCustom} />
+          </CardBody>
+        </Card>
 
-          <div className="onboarding-section-box">
-             <div className="form-group">
-                <label>Vos Ligues</label>
-                <MultiLigueSearch initialLigues={user.ligues} initialCustom={user.ligueCustom} />
-             </div>
-             <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label>Signature (BBCode)</label>
-                <BBCodeEditor name="signature" defaultValue={formData.signature} maxLength={250} rows={3} onChange={(v) => setFormData(p => ({ ...p, signature: v }))} />
-             </div>
-          </div>
+        {/* Signature */}
+        <Card>
+          <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
+          <CardBody className="flex flex-col gap-1.5">
+            <Label htmlFor="onboarding-signature">Signature (BBCode)</Label>
+            <p className="m-0 text-sm text-bb-text-muted">Facultatif. Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus.</p>
+            <BBCodeEditor id="onboarding-signature" name="signature" defaultValue={formData.signature} maxLength={250} rows={3} onChange={(v) => setFormData(p => ({ ...p, signature: v }))} />
+          </CardBody>
+        </Card>
 
-          {/* Thème */}
-          <div className="onboarding-section-box theme-section">
-             <label className="section-label-inner"><Palette size={16} /> Thème favori</label>
-             <div className="theme-grid-mini">
-                {/* Les 7 thèmes du site, lus dans la liste officielle (lib/themes.ts) */}
-                {SITE_THEMES.map(t => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    className={`theme-dot ${mounted && theme === t.id ? 'active' : ''} ${t.id}`}
-                    onClick={() => handleThemeChange(t.id)}
-                    title={t.label}
-                    aria-label={`Thème ${t.label}`}
-                  >
-                    {isThemePending && theme === t.id && <Loader2 size={10} className="animate-spin" />}
-                  </button>
-                ))}
-             </div>
-          </div>
-        </div>
+        {/* Thème : appliqué tout de suite et enregistré dans le profil (même sélecteur que le menu du compte) */}
+        <Card>
+          <CardHeader><CardTitle>Thème du site</CardTitle></CardHeader>
+          <CardBody className="flex flex-col gap-3">
+            <p className="m-0 text-sm text-bb-text-muted">Vous pourrez le changer à tout moment depuis le menu de votre compte.</p>
+            <ThemePicker isLoggedIn />
+          </CardBody>
+        </Card>
 
-        <CTAButton 
-          type="submit" 
-          isLoading={isPending}
-          icon={ArrowRight}
-          fullWidth
-        >
+        <Button type="submit" variant="primary" size="tap" className="min-h-12 w-full text-base" disabled={isPending}>
+          {isPending && <Loader2 size={18} className="animate-spin" aria-hidden="true" />}
           Valider mon profil et entrer
-        </CTAButton>
+          {!isPending && <ArrowRight size={18} aria-hidden="true" />}
+        </Button>
       </form>
 
-      <Modal isOpen={isGeneratorOpen} onClose={() => setIsGeneratorOpen(false)} onConfirm={() => {
-        const url = `https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`;
-        setFormData(prev => ({ ...prev, image: url }));
-        setIsGeneratorOpen(false);
-      }} title="Générateur d'Avatar">
-        <div className="avatar-gen-modal">
-          <div className="gen-preview"><img src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`} alt="" /></div>
-          <input type="text" value={genSeed} onChange={(e) => setGenSeed(e.target.value)} placeholder="Seed..." />
-          <div className="gen-styles-grid">
-            {DICEBEAR_STYLES.map(s => (
-              <button key={s.id} type="button" className={`style-item ${genStyle === s.id ? 'active' : ''}`} onClick={() => setGenStyle(s.id)}>
-                <span>{s.label}</span>
-              </button>
-            ))}
+      {/* Générateur d'avatar DiceBear : panneau du bas sur téléphone, fenêtre centrée sur ordinateur */}
+      <Sheet open={isGeneratorOpen} onOpenChange={setIsGeneratorOpen}>
+        <SheetContent title="Générateur d'avatar" side={isDesktop ? "center" : "bottom"}>
+          <div className="flex flex-col gap-4 pt-2 pb-2">
+            <div className="flex justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element -- image générée par le service DiceBear */}
+              <img
+                src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`}
+                alt="Aperçu de l'avatar"
+                width={120}
+                height={120}
+                className="size-[120px] rounded-bb-md bg-bb-surface-2"
+              />
+            </div>
+            <Field label="Graine" htmlFor="onboarding-seed" hint="Un mot ou un nom : la même graine donne toujours le même avatar.">
+              <Input id="onboarding-seed" type="text" value={genSeed} onChange={(e) => setGenSeed(e.target.value)} placeholder="Ex : Grumbly" />
+            </Field>
+            <div role="group" aria-label="Style de l'avatar" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {DICEBEAR_STYLES.map(s => (
+                <Button
+                  key={s.id}
+                  type="button"
+                  variant="secondary"
+                  size="tap"
+                  aria-pressed={genStyle === s.id}
+                  onClick={() => setGenStyle(s.id)}
+                  className={genStyle === s.id ? "border-bb-accent-text bg-bb-accent-soft" : ""}
+                >
+                  {s.label}
+                </Button>
+              ))}
+            </div>
+            <div className="flex flex-col gap-2 lg:flex-row-reverse">
+              <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" onClick={() => {
+                const url = `https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`;
+                setFormData(prev => ({ ...prev, image: url }));
+                setIsGeneratorOpen(false);
+              }}>
+                Confirmer
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={() => setIsGeneratorOpen(false)}>
+                Annuler
+              </Button>
+            </div>
           </div>
-        </div>
-      </Modal>
-    </PremiumCard>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

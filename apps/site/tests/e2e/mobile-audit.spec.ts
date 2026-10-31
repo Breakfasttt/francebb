@@ -89,6 +89,9 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/mentions-legales", connected: false },
   { path: "/auth/login", connected: false },
   { path: "/auth/onboarding", connected: true, as: "nouveau" },
+  // Carte 091 : la page « Vérifiez votre boîte mail » et la page d'erreur de la connexion, refaites avec elle
+  { path: "/auth/verify-request", connected: false },
+  { path: "/auth/error?error=Verification", connected: false },
   { path: "/banned", connected: true, as: "banni" },
   { path: "/moderation", connected: true },
   { path: "/administration", connected: true, as: "admin" },

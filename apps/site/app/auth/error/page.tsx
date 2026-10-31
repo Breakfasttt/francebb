@@ -1,9 +1,12 @@
 import Link from "next/link";
-import "./page.css";
 import { AlertCircle, ChevronLeft } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import ClassicButton from "@/common/components/Button/ClassicButton";
+import { Button, Card } from "@bbfrance/ui";
 
+/**
+ * Page d'erreur de la connexion, ouverte par Auth.js avec le code de l'erreur dans le paramètre `error`.
+ * Refonte (carte 091, ADR 0006) : une carte centrée, avec les composants et les couleurs v2 de packages/ui.
+ * Les messages et le code affiché sont ceux d'avant.
+ */
 export default async function AuthErrorPage(props: {
   searchParams: Promise<{ error?: string }>;
 }) {
@@ -24,24 +27,31 @@ export default async function AuthErrorPage(props: {
   };
 
   return (
-    <main className="login-container">
-      <PremiumCard className="login-card">
-        <div className="error-icon-wrapper">
-          <AlertCircle size={48} className="error-icon" />
-        </div>
-        <h1 className="login-title">Erreur d'authentification</h1>
-        
-        <div className="auth-error-details">
-          <p>{getErrorMessage(error)}</p>
-          {error && <code className="error-code">ID Erreur: {error}</code>}
-        </div>
+    <div className="flex justify-center px-3 py-8 font-bb-sans text-base text-bb-text lg:py-16">
+      <section aria-labelledby="auth-error-title" className="w-full max-w-md">
+        <Card className="flex flex-col items-center gap-4 p-6 text-center lg:p-8">
+          <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-full bg-bb-surface-2 text-bb-danger-text">
+            <AlertCircle size={36} />
+          </span>
 
-              <Link href="/auth/login" style={{ display: 'contents' }}>
-                <ClassicButton fullWidth icon={<ChevronLeft size={18} />}>
-                  Retour à la page de connexion
-                </ClassicButton>
-              </Link>
-      </PremiumCard>
-    </main>
+          <h1 id="auth-error-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+            Erreur d&apos;authentification
+          </h1>
+
+          <div className="flex w-full flex-col gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 p-4">
+            <p className="m-0 text-bb-text">{getErrorMessage(error)}</p>
+            {/* Code technique de l'erreur, utile si le membre la signale */}
+            {error && <code className="text-sm break-all text-bb-text-muted">ID Erreur: {error}</code>}
+          </div>
+
+          <Button asChild variant="primary" size="tap" className="w-full">
+            <Link href="/auth/login" className="no-underline">
+              <ChevronLeft size={18} aria-hidden="true" />
+              Retour à la page de connexion
+            </Link>
+          </Button>
+        </Card>
+      </section>
+    </div>
   );
 }

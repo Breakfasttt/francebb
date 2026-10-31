@@ -1,26 +1,34 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { Button, Card } from "@bbfrance/ui";
 
+/**
+ * Écran affiché quand l'inscription est déjà terminée. Refonte (carte 091) : carte et bouton de packages/ui ;
+ * la mise à jour de la session et le cookie `onboarding_sync` n'ont pas changé.
+ */
 export default function OnboardingSuccess() {
   const { update } = useSession();
 
   const handleEntry = async () => {
     // On force une mise à jour de la session pour être sûr que le JWT a le bon flag
     await update({ hasFinishedOnboarding: true });
-    
+
     // On pose un cookie temporaire pour aider le middleware à passer outre le JWT obsolète
     document.cookie = "onboarding_sync=true; path=/; max-age=60"; // 60 secondes suffisent
-    
+
     window.location.href = "/";
   };
 
   return (
-    <div className="onboarding-success-msg" style={{ textAlign: 'center', marginTop: '2rem' }}>
-      <p className="onboarding-subtitle">Votre profil est configuré avec succès.</p>
-      <button onClick={handleEntry} className="onboarding-submit-btn" style={{ width: 'auto', margin: '0 auto' }}>
-        Entrer sur le site <ArrowRight size={18} style={{ marginLeft: '0.5rem' }} />
-      </button>
-    </div>
+    <Card className="flex flex-col items-center gap-4 p-6 text-center lg:p-8">
+      <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-full bg-bb-accent-soft text-bb-success-text">
+        <CheckCircle2 size={36} />
+      </span>
+      <p className="m-0 text-bb-text">Votre profil est configuré avec succès.</p>
+      <Button type="button" variant="primary" size="tap" className="w-full sm:w-auto" onClick={handleEntry}>
+        Entrer sur le site <ArrowRight size={18} aria-hidden="true" />
+      </Button>
+    </Card>
   );
 }

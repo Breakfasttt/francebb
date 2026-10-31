@@ -2,19 +2,22 @@ import { signIn, isHubAuthMode } from "@/auth";
 import { getSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { safeCallbackUrl } from "@/lib/safeRedirect";
-import "./page.css";
-import "./page-mobile.css";
-import { Mail, LogIn } from "lucide-react";
+import { LogIn } from "lucide-react";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DevLoginSection from "./DevLoginSection";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
+import { Button, Card, Field, Input } from "@bbfrance/ui";
 import { DiscordIcon, GoogleIcon } from "@/common/components/Icons/SocialIcons";
 
 export const metadata = {
   title: "Connexion - BBFrance",
 };
+
+/*
+ * Page de connexion (refonte, carte 091, ADR 0006) : une carte centrée sur une colonne, avec les composants et les
+ * couleurs v2 de packages/ui. Seule la mise en page a changé : les actions des formulaires, le champ `email` et le
+ * paramètre `callbackUrl` sont ceux d'avant.
+ */
 
 /**
  * Mode hub (carte 073) : le hub reste invisible. Chaque bouton lance la connexion par le hub en lui indiquant
@@ -72,63 +75,80 @@ export default async function LoginPage(props: {
     : [];
 
   return (
-    <main className="login-container">
-      <PremiumCard className="login-card">
-        <h1 className="login-title">Connexion</h1>
-        
-        {error === "OAuthAccountNotLinked" && (
-          <div className="auth-error">
-            Cet email est déjà lié à un autre mode de connexion.
-          </div>
-        )}
+    <div className="flex justify-center px-3 py-8 font-bb-sans text-base text-bb-text lg:py-16">
+      <section aria-labelledby="login-title" className="w-full max-w-md">
+        <Card className="flex flex-col gap-5 p-5 lg:p-8">
+          <header className="flex flex-col gap-1 text-center">
+            <h1 id="login-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+              Connexion
+            </h1>
+            <p className="m-0 text-sm text-bb-text-muted">
+              Choisissez comment vous connecter. Un compte est créé automatiquement à la première connexion.
+            </p>
+          </header>
 
-        <div className="login-methods">
+          {error === "OAuthAccountNotLinked" && (
+            <p role="alert" className="m-0 rounded-bb-md border border-bb-danger bg-bb-surface-2 p-3 text-sm text-bb-danger-text">
+              Cet email est déjà lié à un autre mode de connexion.
+            </p>
+          )}
+
           {!hasAnyMethod && (
-            <div className="auth-error">
-              L'authentification n'est pas encore configurée sur ce serveur.
+            <p role="alert" className="m-0 rounded-bb-md border border-bb-danger bg-bb-surface-2 p-3 text-sm text-bb-danger-text">
+              L&apos;authentification n&apos;est pas encore configurée sur ce serveur.
+            </p>
+          )}
+
+          {(isDiscordEnabled || isGoogleEnabled) && (
+            <div className="flex flex-col gap-3">
+              {/* Discord */}
+              {isDiscordEnabled && (
+                <form
+                  className="m-0"
+                  action={async () => {
+                    "use server";
+                    if (isHubAuthMode) await signInThroughHub("discord", callbackUrl);
+                    else await signIn("discord", { redirectTo: callbackUrl });
+                  }}
+                >
+                  <Button type="submit" variant="secondary" size="tap" className="w-full">
+                    <DiscordIcon size={20} />
+                    Se connecter avec Discord
+                  </Button>
+                </form>
+              )}
+
+              {/* Google */}
+              {isGoogleEnabled && (
+                <form
+                  className="m-0"
+                  action={async () => {
+                    "use server";
+                    if (isHubAuthMode) await signInThroughHub("google", callbackUrl);
+                    else await signIn("google", { redirectTo: callbackUrl });
+                  }}
+                >
+                  <Button type="submit" variant="secondary" size="tap" className="w-full">
+                    <GoogleIcon size={20} />
+                    Se connecter avec Google
+                  </Button>
+                </form>
+              )}
             </div>
-          )}
-
-          {/* Discord */}
-          {isDiscordEnabled && (
-            <form
-              action={async () => {
-                "use server";
-                if (isHubAuthMode) await signInThroughHub("discord", callbackUrl);
-                else await signIn("discord", { redirectTo: callbackUrl });
-              }}
-            >
-              <ClassicButton type="submit" fullWidth className="discord-btn" icon={<DiscordIcon size={20} />}>
-                Se connecter avec Discord
-              </ClassicButton>
-            </form>
-          )}
-
-          {/* Google */}
-          {isGoogleEnabled && (
-            <form
-              action={async () => {
-                "use server";
-                if (isHubAuthMode) await signInThroughHub("google", callbackUrl);
-                else await signIn("google", { redirectTo: callbackUrl });
-              }}
-            >
-              <ClassicButton type="submit" fullWidth className="google-btn" icon={<GoogleIcon size={20} />}>
-                Se connecter avec Google
-              </ClassicButton>
-            </form>
           )}
 
           {hasAnyMethod && isEmailEnabled && (isDiscordEnabled || isGoogleEnabled) && (
-            <div className="login-divider">
-              <span>OU</span>
+            <div className="flex items-center gap-3 text-sm text-bb-text-muted" aria-hidden="true">
+              <span className="h-px flex-1 bg-bb-border" />
+              ou
+              <span className="h-px flex-1 bg-bb-border" />
             </div>
           )}
 
-          {/* Magic Link */}
+          {/* Lien magique : un lien de connexion envoyé par email */}
           {isEmailEnabled && (
             <form
-              className="magic-link-form"
+              className="m-0 flex flex-col gap-3"
               action={async (formData) => {
                 "use server";
                 const email = formData.get("email");
@@ -138,37 +158,30 @@ export default async function LoginPage(props: {
                 }
               }}
             >
-              <div className="input-with-icon-wrapper">
-                <div className="input-with-icon">
-                  <Mail size={18} />
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="nom@exemple.fr"
-                    required
-                  />
-                </div>
-              </div>
-              <CTAButton type="submit" fullWidth icon={<LogIn size={18} />}>
+              <Field label="Adresse email" htmlFor="email" hint="Vous recevrez un lien qui vous connecte sans mot de passe.">
+                <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.fr" required />
+              </Field>
+              <Button type="submit" variant="primary" size="tap" className="w-full">
+                <LogIn size={18} aria-hidden="true" />
                 Recevoir un lien magique
-              </CTAButton>
+              </Button>
             </form>
           )}
 
-          {/* Dev Login (Development Only) */}
+          {/* Comptes de test (développement uniquement) */}
           {process.env.NODE_ENV === "development" && (
-            <DevLoginSection 
-              initialUsers={devUsers} 
-              callbackUrl={callbackUrl} 
+            <DevLoginSection
+              initialUsers={devUsers}
+              callbackUrl={callbackUrl}
             />
           )}
-        </div>
 
-        <p className="login-footer">
-          En vous connectant, vous acceptez nos mentions légales.
-        </p>
-      </PremiumCard>
-    </main>
+          <p className="m-0 text-center text-sm text-bb-text-muted">
+            En vous connectant, vous acceptez nos{" "}
+            <Link href="/mentions-legales" className="inline-flex min-h-11 items-center text-bb-accent-text underline">mentions légales</Link>.
+          </p>
+        </Card>
+      </section>
+    </div>
   );
 }

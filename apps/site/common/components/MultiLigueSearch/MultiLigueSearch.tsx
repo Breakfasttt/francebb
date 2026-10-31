@@ -1,9 +1,17 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Search, X, Shield, Plus } from "lucide-react";
+/**
+ * Choix de plusieurs ligues : ligues référencées sur le site (recherche) et ligues en saisie libre.
+ * Utilisé par l'inscription (onboarding) et par l'édition du profil. Il n'envoie rien lui-même : il ajoute au
+ * formulaire qui l'entoure des champs cachés (`ligueIds`, un par ligue référencée, et `ligueCustom`, les ligues
+ * libres séparées par des virgules).
+ * Refonte (carte 091, ADR 0006) : composants et couleurs v2 de packages/ui, champs de 44 pixels de haut en
+ * 16 pixels de texte, les deux champs empilés sur téléphone. Le comportement n'a pas changé.
+ */
+import { useState, useRef, useEffect, useId } from "react";
+import { Search, X, Shield, Plus, Loader2 } from "lucide-react";
+import { Button, Input, Label } from "@bbfrance/ui";
 import { searchLiguesAction } from "@/app/ligues/actions";
-import "../LigueSearch/LigueSearch.css";
 
 interface Ligue {
   id: string;
@@ -21,8 +29,8 @@ interface MultiLigueSearchProps {
   nameCustom?: string;
 }
 
-export default function MultiLigueSearch({ 
-  initialLigues = [], 
+export default function MultiLigueSearch({
+  initialLigues = [],
   initialCustom = "",
   placeholder = "Ajouter une ligue...",
   nameIds = "ligueIds",
@@ -38,6 +46,7 @@ export default function MultiLigueSearch({
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const fieldId = useId();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -98,143 +107,110 @@ export default function MultiLigueSearch({
     }
   };
 
+  /** Pastille d'une ligue choisie, avec sa croix de retrait (44 pixels pour le pouce). */
+  const tag = "inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-full border border-bb-border bg-bb-surface-2 pl-3 text-sm text-bb-text";
+
   return (
-    <div className="multi-ligue-search-container" ref={containerRef}>
+    <div className="flex flex-col gap-4" ref={containerRef}>
       {/* Champs cachés pour le formulaire */}
       {selectedLigues.map(l => (
         <input key={l.id} type="hidden" name={nameIds} value={l.id} />
       ))}
       <input type="hidden" name={nameCustom} value={customLigues.join(", ")} />
 
-      {/* Liste des badges (tags) */}
-      <div className="selected-ligues-list" style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
-        {selectedLigues.map(ligue => (
-          <div key={ligue.id} className="selected-ligue-tag" style={{ margin: 0, padding: "0.4rem 0.8rem", height: "auto" }}>
-            <Shield size={14} className="ligue-icon" />
-            <span style={{ fontSize: "0.85rem" }}>{ligue.acronym || ligue.name}</span>
-            <button type="button" onClick={() => handleRemove(ligue.id)} className="remove-ligue-btn">
-              <X size={12} />
-            </button>
-          </div>
-        ))}
+      {/* Ligues choisies */}
+      {(selectedLigues.length > 0 || customLigues.length > 0) && (
+        <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+          {selectedLigues.map(ligue => (
+            <li key={ligue.id} className={tag}>
+              <Shield size={14} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
+              <span className="truncate font-semibold">{ligue.acronym || ligue.name}</span>
+              <Button type="button" variant="quiet" size="tap-icon" className="rounded-full" onClick={() => handleRemove(ligue.id)} aria-label={`Retirer ${ligue.acronym || ligue.name}`}>
+                <X size={16} aria-hidden="true" />
+              </Button>
+            </li>
+          ))}
+          {customLigues.map(custom => (
+            <li key={custom} className={`${tag} border-dashed`}>
+              <span className="truncate italic">{custom}</span>
+              <Button type="button" variant="quiet" size="tap-icon" className="rounded-full" onClick={() => handleRemoveCustom(custom)} aria-label={`Retirer ${custom}`}>
+                <X size={16} aria-hidden="true" />
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
 
-        {customLigues.map(custom => (
-          <div key={custom} className="selected-ligue-tag" style={{ 
-            margin: 0, 
-            padding: "0.4rem 0.8rem", 
-            height: "auto", 
-            background: "rgba(255, 255, 255, 0.05)",
-            borderStyle: "dashed",
-            borderColor: "var(--text-muted)"
-          }}>
-            <span style={{ fontSize: "0.85rem", fontStyle: "italic" }}>{custom}</span>
-            <button type="button" onClick={() => handleRemoveCustom(custom)} className="remove-ligue-btn">
-              <X size={12} />
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Grille de saisie côte à côte */}
-      <div className="ligue-inputs-grid" style={{ 
-        display: "grid", 
-        gridTemplateColumns: "1fr 1fr", 
-        gap: "1.5rem" 
-      }}>
-        {/* Colonne 1: Recherche référencée */}
-        <div className="form-group-sub">
-          <label style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", marginBottom: "6px", textTransform: "uppercase", fontWeight: 700 }}>
-            Ligue référencée
-          </label>
-          <div className="ligue-search-input-wrapper">
-            <Search size={18} className="search-icon" />
-            <input
+      {/* Les deux champs : côte à côte sur ordinateur, empilés sur téléphone */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        {/* Recherche dans les ligues référencées */}
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor={`${fieldId}-search`}>Ligue référencée</Label>
+          <div className="relative">
+            <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+            <Input
+              id={`${fieldId}-search`}
               type="text"
-              className="ligue-search-input"
+              className="pl-10"
+              aria-label="Rechercher une ligue référencée"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={placeholder}
               onFocus={() => query.length >= 2 && setShowResults(true)}
-              style={{ height: "42px", paddingLeft: "2.5rem" }}
             />
-            
-            {isLoading && (
-              <div className="ligue-search-results" style={{ top: "100%", marginTop: "5px" }}>
-                <div className="no-results">Recherche en cours...</div>
-              </div>
-            )}
 
-            {showResults && results.length > 0 && (
-              <div className="ligue-search-results" style={{ top: "100%", marginTop: "5px" }}>
-                {results.map(ligue => (
-                  <div key={ligue.id} className="ligue-result-item" onClick={() => handleSelect(ligue)}>
-                    <Shield size={16} />
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <span style={{ fontWeight: 600 }}>{ligue.name} ({ligue.acronym})</span>
-                      <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{ligue.geographicalZone}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {showResults && results.length === 0 && query.trim().length >= 2 && !isLoading && (
-              <div className="ligue-search-results" style={{ top: "100%", marginTop: "5px" }}>
-                <div className="no-results">
-                  Aucune ligue trouvée pour &quot;{query}&quot;.
-                </div>
+            {(isLoading || (showResults && query.trim().length >= 2)) && (
+              <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+                {isLoading ? (
+                  <p className="m-0 flex items-center gap-2 p-3 text-sm text-bb-text-muted">
+                    <Loader2 size={16} className="animate-spin" aria-hidden="true" /> Recherche en cours...
+                  </p>
+                ) : results.length > 0 ? (
+                  results.map(ligue => (
+                    <Button
+                      key={ligue.id}
+                      type="button"
+                      variant="quiet"
+                      size="tap"
+                      className="w-full justify-start gap-3 py-2 text-left font-normal whitespace-normal text-bb-text"
+                      onClick={() => handleSelect(ligue)}
+                    >
+                      <Shield size={16} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
+                      <span className="flex min-w-0 flex-col">
+                        <span className="font-semibold">{ligue.name} ({ligue.acronym})</span>
+                        {ligue.geographicalZone && <span className="text-sm text-bb-text-muted">{ligue.geographicalZone}</span>}
+                      </span>
+                    </Button>
+                  ))
+                ) : (
+                  <p className="m-0 p-3 text-sm text-bb-text-muted">
+                    Aucune ligue trouvée pour &quot;{query}&quot;.
+                  </p>
+                )}
               </div>
             )}
           </div>
         </div>
 
-        {/* Colonne 2: Saisie libre */}
-        <div className="form-group-sub">
-          <label style={{ fontSize: "0.7rem", color: "var(--text-muted)", display: "block", marginBottom: "6px", textTransform: "uppercase", fontWeight: 700 }}>
-            Autre (Saisie libre)
-          </label>
-          <div style={{ display: "flex", gap: "8px" }}>
-            <input 
-              type="text" 
-              className="ligue-search-input" 
-              style={{ paddingLeft: "1rem", height: "42px", fontSize: "0.85rem" }} 
-              value={inputValue} 
+        {/* Saisie libre, pour une ligue absente du site */}
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor={`${fieldId}-custom`}>Autre (saisie libre)</Label>
+          <div className="flex gap-2">
+            <Input
+              id={`${fieldId}-custom`}
+              type="text"
+              value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDownCustom}
-              placeholder="Ex: Ligue locale..."
+              aria-label="Autre ligue (saisie libre)"
+              placeholder="Ex : Ligue locale..."
             />
-            <button 
-              type="button" 
-              onClick={handleAddCustom}
-              className="add-custom-btn"
-              style={{
-                background: "var(--primary)",
-                border: "none",
-                borderRadius: "8px",
-                color: "white",
-                padding: "0 12px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0
-              }}
-            >
-              <Plus size={20} />
-            </button>
+            <Button type="button" variant="primary" size="tap-icon" className="shrink-0" onClick={handleAddCustom} aria-label="Ajouter cette ligue">
+              <Plus size={20} aria-hidden="true" />
+            </Button>
           </div>
         </div>
       </div>
-      
-      {/* Responsive adjustments needed in CSS for ligue-inputs-grid if on small screens */}
-      <style jsx>{`
-        @media (max-width: 600px) {
-          .ligue-inputs-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1rem !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }

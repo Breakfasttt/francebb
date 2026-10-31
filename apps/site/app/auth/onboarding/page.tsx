@@ -3,15 +3,15 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import OnboardingForm from "./OnboardingForm";
 import OnboardingSuccess from "./OnboardingSuccess";
-import "../login/page.css";
-import "../login/page-mobile.css";
-import "./onboarding.css";
-import "./onboarding-mobile.css";
 
 export const metadata = {
   title: "Bienvenue - BBFrance",
 };
 
+/**
+ * Page d'inscription (onboarding) d'un nouveau membre. Refonte (carte 091, ADR 0006) : une seule colonne de blocs,
+ * titre en tête, avec les composants et les couleurs v2 de packages/ui.
+ */
 export default async function OnboardingPage() {
   const session = await getActiveSession();
 
@@ -29,20 +29,20 @@ export default async function OnboardingPage() {
   }
 
   return (
-    <main className="login-container">
-      <div className="onboarding-wrapper">
-        <h1 className="login-title">Bienvenue Coach !</h1>
-        {user.hasFinishedOnboarding ? (
-          <OnboardingSuccess />
-        ) : (
-          <>
-            <p className="onboarding-subtitle">
-              Dernière étape avant de fouler le gazon : personnalisez votre profil complet.
+    <div className="flex justify-center px-3 py-6 font-bb-sans text-base text-bb-text lg:py-12">
+      <section aria-labelledby="onboarding-title" className="flex w-full max-w-2xl flex-col gap-4">
+        <header className="flex flex-col gap-1">
+          <h1 id="onboarding-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic lg:text-3xl">
+            Bienvenue Coach !
+          </h1>
+          {!user.hasFinishedOnboarding && (
+            <p className="m-0 text-bb-text-muted">
+              Dernière étape avant de fouler le gazon : personnalisez votre profil. Seul le pseudo est obligatoire.
             </p>
-            <OnboardingForm user={user} />
-          </>
-        )}
-      </div>
-    </main>
+          )}
+        </header>
+        {user.hasFinishedOnboarding ? <OnboardingSuccess /> : <OnboardingForm user={user} />}
+      </section>
+    </div>
   );
 }

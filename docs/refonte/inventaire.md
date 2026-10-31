@@ -226,9 +226,11 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 6. Connexion et compte
 
-- [ ] [visiteur] `/auth/login` : Discord, Google, adresse email avec « Recevoir un lien magique » ; en mode hub, « compte BBFrance » ; en développement, la section « Comptes de test ». Le paramètre `callbackUrl` est respecté.
-- [ ] [tous] `/auth/verify-request` (« Vérifiez votre boîte mail ») et `/auth/error` (message d'erreur lisible).
-- [ ] [membre] `/auth/onboarding` : pseudo ; avatar (adresse, aléatoire, générateur DiceBear avec graine et style, envoi d'image) ; NAF ; région ; équipe fétiche ; ligues ; signature BBCode ; thème. Puis écran de succès.
+- [x] [visiteur] `/auth/login` : Discord, Google, adresse email avec « Recevoir un lien magique » ; en mode hub, « compte BBFrance » ; en développement, la section « Comptes de test ». Le paramètre `callbackUrl` est respecté. *Le bouton « compte BBFrance » n'existe plus depuis la carte 073 : en mode hub, les boutons Discord, Google et lien magique passent par le hub sans le montrer. Le test tourne en mode hub et vérifie que ces boutons sont présents et utilisables, sans suivre la connexion jusqu'au service extérieur ; `callbackUrl` est vérifié avec un compte de test et pour un membre déjà connecté.*
+- [x] [tous] `/auth/verify-request` (« Vérifiez votre boîte mail ») et `/auth/error` (message d'erreur lisible).
+- [x] [membre] `/auth/onboarding` : pseudo ; avatar (adresse, aléatoire, générateur DiceBear avec graine et style, envoi d'image) ; NAF ; région ; équipe fétiche ; ligues ; signature BBCode ; thème. Puis écran de succès. *L'envoi d'image n'est vérifié que jusqu'à l'ouverture du choix de fichier (l'envoi passe par le service extérieur ImgBB). Le formulaire n'a pas de champ « adresse » de l'avatar : seuls les boutons le changent (avant comme après la refonte).*
+
+*Section vérifiée par `tests/e2e/inventaire/connexion.spec.ts` (carte 091), en taille ordinateur et en taille téléphone : le test remplit toute l'inscription d'un nouveau membre et contrôle ce qui est enregistré en base.*
 
 ## 7. Profil et membres
 
