@@ -6,13 +6,16 @@
 import { execSync } from "node:child_process";
 import { rmSync, existsSync } from "node:fs";
 import { freshLocalDatabase } from "../../../scripts/local-postgres.mjs";
+import { SSO_TEST_SECRET } from "../tests/api/secrets.mjs";
 
 const HUB_DB = freshLocalDatabase("hub-e2e");
-if (existsSync("tests/.sso-client.json")) rmSync("tests/.sso-client.json");
+for (const file of ["tests/.sso-client.json", "tests/.sso-hooks.json"]) if (existsSync(file)) rmSync(file);
 
-const env = { ...process.env, HUB_DATABASE_URL: HUB_DB, HUB_DEV_PASSWORD_LOGIN: "1", NODE_ENV: "test" };
+const env = { ...process.env, HUB_DATABASE_URL: HUB_DB, BETTER_AUTH_SECRET: SSO_TEST_SECRET, HUB_DEV_PASSWORD_LOGIN: "1", NODE_ENV: "test" };
 execSync("npx prisma migrate deploy", { env, stdio: "inherit" });
 execSync('node scripts/register-client.mjs "BBFrance site e2e" http://localhost:3200/api/auth/callback/hub tests/.sso-client.json', { env, stdio: "inherit" });
+// Adresses où le hub prévient le site et lui demande les données d'un membre (cartes 122 et 125)
+execSync('node scripts/client-hooks.mjs "BBFrance site e2e" http://localhost:3200/api/hub/events http://localhost:3200/api/hub/export tests/.sso-hooks.json', { env, stdio: "inherit" });
 
 process.env.HUB_DATABASE_URL = HUB_DB;
 const { prisma } = await import("../lib/prisma.mjs");

@@ -4,8 +4,11 @@
  */
 import { readFileSync } from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
+import { HUB_API_TEST_CRON_SECRET, SSO_TEST_SECRET } from "./tests/api/secrets.mjs";
 
 const client = JSON.parse(readFileSync("tests/.sso-client.json", "utf-8")) as { clientId: string; clientSecret: string };
+// Secret avec lequel le site vérifie les événements du hub (scripts/client-hooks.mjs, carte 122)
+const hooks = JSON.parse(readFileSync("tests/.sso-hooks.json", "utf-8")) as { eventsSecret: string };
 // Adresses des bases Postgres locales de test, enregistrées par scripts/local-postgres.mjs
 const databases = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8")) as Record<string, string>;
 
@@ -29,6 +32,8 @@ export default defineConfig({
       env: {
         HUB_DATABASE_URL: databases["hub-e2e"],
         BETTER_AUTH_URL: "http://localhost:4100",
+        BETTER_AUTH_SECRET: SSO_TEST_SECRET,
+        CRON_SECRET: HUB_API_TEST_CRON_SECRET,
         HUB_DEV_PASSWORD_LOGIN: "1",
         NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN: "1",
         // Le lien de connexion par email est écrit dans ce fichier : le test l'ouvre comme depuis une boîte mail
@@ -54,6 +59,7 @@ export default defineConfig({
         HUB_ISSUER: "http://localhost:4100/api/auth",
         HUB_CLIENT_ID: client.clientId,
         HUB_CLIENT_SECRET: client.clientSecret,
+        HUB_EVENTS_SECRET: hooks.eventsSecret,
       },
     },
   ],

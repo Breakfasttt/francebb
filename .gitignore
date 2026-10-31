@@ -35,6 +35,7 @@ backup.sql
 
 # Hub : identifiants du client de test, recréés par apps/hub/scripts/e2e-setup.mjs
 .sso-client.json
+.sso-hooks.json
 # Hub : identifiants et secret d'événements de l'application de test des tests d'API (apps/hub/scripts/api-test-setup.mjs)
 .api-client.json
 .api-hooks.json

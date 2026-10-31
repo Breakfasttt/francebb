@@ -5,6 +5,8 @@
  *
  * Refuse : une signature fausse, un envoi de plus de 5 minutes (rejeu d'un vieux message capturé), et un identifiant
  * d'événement déjà traité (l'application fournit `alreadySeen`, qui consulte sa propre mémoire des identifiants reçus).
+ * L'application n'enregistre un identifiant qu'APRÈS avoir traité l'événement avec succès : un traitement raté doit
+ * pouvoir être renvoyé par le hub sans être pris pour un doublon.
  */
 import { createHmac, timingSafeEqual } from "node:crypto";
 

@@ -2,12 +2,17 @@
  * Suppression d'un compte membre avec anonymisation : les contenus publics (sujets, messages du forum,
  * articles, ligues, résultats de tournoi…) sont rattachés au compte fantôme « Coach Inconnu » (`ghost_coach`)
  * au lieu d'être effacés ; les données privées (messages privés, réactions, inscriptions…) sont supprimées.
- * Utilisée par deleteAccount (le membre supprime son compte) et deleteUser (un modérateur supprime un membre).
+ * Utilisée par deleteAccount (le membre supprime son compte), deleteUser (un modérateur supprime un membre) et, en mode
+ * hub, par l'événement user.deleted du passeport (lib/hub/hubEvents.ts, carte 124).
+ * Résultats de tournoi : l'historique sportif est gardé (intérêt légitime), mais le nom et le numéro NAF sont remplacés
+ * par un pseudonyme. Aucune ligne du site ne garde ensuite l'email, le pseudo ni le NAF du membre.
  * Fichier volontairement PAS « use server » : fonction interne, l'appelant vérifie les droits.
  */
-import { prisma } from "@/lib/prisma";
+import { prisma, prismaWithEmail } from "@/lib/prisma";
 
 const GHOST_USER_ID = "ghost_coach";
+// Nom affiché à la place d'un coach supprimé dans les résultats et les matchs de tournoi
+export const ANONYMOUS_COACH_NAME = "Coach anonyme";
 
 /**
  * Anonymise puis supprime le membre `userId`. Si `keepUserRecord` vaut true (Super Admin qui supprime
@@ -17,6 +22,9 @@ const GHOST_USER_ID = "ghost_coach";
 export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boolean): Promise<boolean> {
   // Le compte fantôme lui-même ne se supprime jamais : il porte les contenus des comptes supprimés
   if (userId === GHOST_USER_ID) return false;
+
+  // Email, NAF et identifiant de l'ancien forum : le client `prisma` par défaut ne renvoie jamais l'email
+  const identity = await prismaWithEmail.user.findUnique({ where: { id: userId }, select: { email: true, nafNumber: true, legacyId: true } });
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -82,6 +90,15 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
         data: { authorId: ghostId }
       });
 
+      // Résultats et matchs de tournoi : historique gardé, nom et NAF remplacés par un pseudonyme (carte 124).
+      // Les résultats importés sans lien vers le compte sont retrouvés par le numéro NAF.
+      await tx.tournamentResult.updateMany({
+        where: { OR: [{ userId }, ...(identity?.nafNumber ? [{ nafNumber: identity.nafNumber }] : [])] },
+        data: { coachName: ANONYMOUS_COACH_NAME, nafNumber: null }
+      });
+      await tx.tournamentMatch.updateMany({ where: { coach1UserId: userId }, data: { coach1Name: ANONYMOUS_COACH_NAME } });
+      await tx.tournamentMatch.updateMany({ where: { coach2UserId: userId }, data: { coach2Name: ANONYMOUS_COACH_NAME } });
+
       await tx.tournamentResult.updateMany({
         where: { userId },
         data: { userId: ghostId }
@@ -129,6 +146,15 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
         data: { moderatorId: ghostId }
       });
 
+      // Schémas BBScheme : gardés, sans créateur
+      await tx.bBSchemeState.updateMany({ where: { creatorId: userId }, data: { creatorId: null } });
+      // Traces de l'email : journal des mails envoyés et fiche de l'ancien forum
+      if (identity?.email) {
+        await tx.mailLog.deleteMany({ where: { to: identity.email } });
+        await tx.legacyMember.deleteMany({ where: { email: identity.email.toLowerCase() } });
+      }
+      if (identity?.legacyId) await tx.legacyMember.deleteMany({ where: { id: identity.legacyId } });
+
       // 5. Supprimer l'utilisateur lui-même (ou seulement vider son profil si keepUserRecord)
       if (keepUserRecord) {
         await tx.user.update({
@@ -142,7 +168,18 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
             ownedLigues: { set: [] },
             commissaireLigues: { set: [] },
             ligueCustom: null,
-            avatarFrame: "auto"
+            avatarFrame: "auto",
+            // Plus aucune donnée personnelle sur la fiche gardée (carte 124)
+            name: "Compte supprimé",
+            email: null,
+            emailVerified: null,
+            equipe: null,
+            forumactifName: null,
+            legacyId: null,
+            quizTotalScore: 0,
+            quizBestScore: 0,
+            quizStreak: 0,
+            quizAttemptsCount: 0
           }
         });
       } else {

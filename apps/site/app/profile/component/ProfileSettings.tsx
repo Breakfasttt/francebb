@@ -1,6 +1,7 @@
 import { ShieldAlert, Trash2, Mail, LogOut, KeyRound, Bell, CheckCircle2, XCircle, Link, Unlink } from "lucide-react";
 import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured } from "../actions";
+import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured, getPassportUrl } from "../actions";
+import { Button } from "@bbfrance/ui";
 import Modal from "@/common/components/Modal/Modal";
 import { useEffect, useTransition, useState } from "react";
 import { toast } from "@bbfrance/ui";
@@ -20,8 +21,12 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
   const [showFinalModal, setShowFinalModal] = useState(false);
   const [emailServiceActive, setEmailServiceActive] = useState(false);
 
+  // Mode hub : adresse du passeport Blood Bowl (identité commune à toutes les applications), sinon null
+  const [passportUrl, setPassportUrl] = useState<string | null>(null);
+
   useEffect(() => {
     isEmailConfigured().then(setEmailServiceActive);
+    getPassportUrl().then(setPassportUrl);
   }, []);
 
   // Notifications state
@@ -98,6 +103,20 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         <ShieldAlert size={20} className="header-icon" />
         <h3 className="activity-box-title">Gestion du compte & Sécurité</h3>
       </div>
+
+      {passportUrl && (
+        <div className="settings-section">
+          <h4 className="settings-subtitle"><KeyRound size={16} /> Passeport Blood Bowl</h4>
+          <p className="passport-text">
+            Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications BBFrance. Les
+            appareils connectés, le téléchargement de tes données et la suppression de ton compte se gèrent sur ton
+            passeport.
+          </p>
+          <Button asChild variant="secondary" size="tap">
+            <a href={passportUrl}>Ouvrir mon passeport</a>
+          </Button>
+        </div>
+      )}
 
       {/* Authentication */}
       <div className="settings-section">
@@ -232,14 +251,21 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
              <p><strong>Suppression irréversible du compte</strong></p>
              <p>Cette action supprimera toutes vos données personnelles (messages privés, suivis, paramètres). Vos messages publics seront anonymisés.</p>
           </div>
-          <button 
-            className="delete-account-btn" 
+          {passportUrl ? (
+            // Mode hub : la suppression, avec ses 30 jours pour changer d'avis, se fait sur le passeport (carte 124)
+            <Button asChild variant="secondary" size="tap">
+              <a href={passportUrl}>Supprimer mon compte depuis mon passeport</a>
+            </Button>
+          ) : (
+          <button
+            className="delete-account-btn"
             onClick={() => setShowConfirmModal(true)}
             disabled={isDeleting}
           >
             <Trash2 size={18} />
             <span>Supprimer mon compte</span>
           </button>
+          )}
         </div>
       </div>
 
@@ -300,6 +326,11 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           color: var(--text-muted);
           margin-bottom: 1.5rem;
           font-weight: 800;
+        }
+        .passport-text {
+          margin: 0 0 1rem;
+          color: var(--text-muted);
+          line-height: 1.5;
         }
         .settings-subtitle.danger {
           color: var(--danger);

@@ -25,3 +25,12 @@ La suppression actuelle (`apps/site/lib/accountDeletion.ts`) laisse des traces :
 - Nettoyer `MailLog.to`, `LegacyMember`, `BBSchemeState.creatorId` et traiter le cas du Super Admin.
 - Faire pointer le bouton « Supprimer mon compte » du site vers la page de suppression du passeport.
 - Mettre à jour `docs/features/profil-membres/README.md`.
+
+## Avancement (31/10)
+
+- **Écrit** :
+  - `user.deleted` est traité (`lib/hub/hubEvents.ts`) par `anonymizeAndDeleteUser`. En cas d'échec, le site ne renvoie pas d'accusé de réception et le hub attend ;
+  - `anonymizeAndDeleteUser` remplace le nom et le NAF par « Coach anonyme » dans les résultats (y compris ceux importés et retrouvés par le NAF) et les matchs de tournoi, retire le créateur des schémas BBScheme, efface les traces de l'email (`MailLog`, `LegacyMember`) et vide entièrement la fiche gardée d'un Super Admin ;
+  - en mode hub, la suppression depuis le site renvoie vers le passeport (bouton et action serveur).
+- **Vérifié** : les types passent.
+- **Pas encore vérifié** : le test de bout en bout (« à l'échéance d'une suppression, le site efface le membre puis le hub efface le passeport », `sso.spec.ts`), pour la même raison que la carte 122.

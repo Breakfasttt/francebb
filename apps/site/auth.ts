@@ -47,6 +47,8 @@ const hubProviders = isHubAuthMode
         clientSecret: process.env.HUB_CLIENT_SECRET,
         checks: ["pkce", "state"] as ("pkce" | "state")[],
         allowDangerousEmailAccountLinking: true,
+        // Profil du passeport (lecture) et modification depuis le profil du site (ADR-0007, carte 122)
+        authorization: { params: { scope: "openid profile email offline_access bbfrance:profile bbfrance:profile:write" } },
       },
     ]
   : [];
@@ -184,6 +186,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   events: {
+    // Connexion par le hub (carte 122) : copie locale du passeport à jour, et jetons du hub gardés à jour pour
+    // pouvoir lui envoyer les modifications du profil (Auth.js ne les enregistre qu'à la première connexion)
+    async signIn({ user, account, profile }) {
+      if (account?.provider !== "hub" || !user.id) return;
+      const claims = (profile ?? {}) as { name?: string; picture?: string; naf?: string | null; region?: string | null };
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          ...(claims.name ? { name: claims.name } : {}),
+          ...(claims.picture !== undefined ? { image: claims.picture ?? null } : {}),
+          ...("naf" in claims ? { nafNumber: claims.naf ?? null } : {}),
+          ...("region" in claims ? { region: claims.region ?? null } : {}),
+        },
+      });
+      await prisma.account.updateMany({
+        where: { provider: "hub", providerAccountId: account.providerAccountId },
+        data: {
+          access_token: account.access_token,
+          refresh_token: account.refresh_token,
+          expires_at: account.expires_at,
+          scope: account.scope,
+          id_token: account.id_token,
+        },
+      });
+    },
     async createUser({ user }) {
       if (!user.email) return;
       const updates: any = {};

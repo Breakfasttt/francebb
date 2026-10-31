@@ -27,3 +27,16 @@ Le site garde une copie locale du profil et sa session dans un jeton. Il doit su
   - les réglages propres au site (ligues, thème, signature, notifications, équipe) restent enregistrés sur le site.
 - Le site demande les portées `bbfrance:profile` et `bbfrance:profile:write`, et garde le jeton d'accès et le jeton de rafraîchissement du hub.
 - Ajouter un lien « Mon passeport » dans le profil du site, pour l'export et la suppression.
+
+## Avancement (31/10)
+
+- **Écrit** :
+  - `app/api/hub/events/route.ts` et `lib/hub/verifyHubEvent.ts` (copie du code de référence du hub ; un identifiant n'est mémorisé qu'après un traitement réussi) ;
+  - `lib/hub/hubEvents.ts` : copie du profil, bannissement, accès coupé pendant une suppression. Un bannissement de la modération du site n'est jamais levé par le hub ;
+  - `lib/hub/hubAccount.ts` : rattachement par l'identifiant du hub, jeton d'accès renouvelé, `PATCH /api/v1/profile` ;
+  - `auth.ts` : portées du passeport demandées, copie du profil et des jetons du hub à chaque connexion ;
+  - `updateProfile` envoie pseudo, avatar, NAF et région au hub en mode hub ;
+  - section « Passeport Blood Bowl » dans les réglages du profil.
+- **Vérifié** : les types du site et du hub passent (`tsc`).
+- **Pas encore vérifié** : les tests de bout en bout ajoutés à `apps/hub/tests/sso.spec.ts` (pseudo du site vers le passeport et retour, bannissement puis levée). Ils n'ont pas pu tourner : l'autre session utilisait la base de test du site au même moment, et `test:sso` la recrée à vide.
+- **Reste** : lancer `pnpm --filter @bbfrance/hub test:sso` quand aucune autre session n'utilise les tests du site, puis la vérification en taille téléphone des réglages du profil.

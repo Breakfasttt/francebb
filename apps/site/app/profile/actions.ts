@@ -8,6 +8,8 @@ import { encrypt, decrypt } from "@/lib/crypto";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 import type { ActionResult } from "@/lib/actionResult";
 import { isSiteTheme } from "@/lib/themes";
+import { isHubAuthMode } from "@/auth";
+import { hubOrigin, updateHubProfile } from "@/lib/hub/hubAccount";
 
 export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
@@ -22,6 +24,18 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const ligueCustom = formData.get("ligueCustom") as string;
   const signature = formData.get("signature") as string;
   const avatarFrame = formData.get("avatarFrame") as string;
+
+  // Mode hub : pseudo, avatar, NAF et région appartiennent au passeport, qui les vérifie (pseudo unique…) et prévient
+  // les autres applications. Le site ne garde sa copie qu'une fois le hub d'accord (ADR-0007, carte 122)
+  if (isHubAuthMode) {
+    const hubError = await updateHubProfile(session.user.id, {
+      ...(name ? { name } : {}),
+      image: image || null,
+      naf: nafNumber || null,
+      region: region || null,
+    });
+    if (hubError) return { success: false, error: hubError };
+  }
 
   await prisma.user.update({
     where: { id: session.user.id },
@@ -42,6 +56,18 @@ export async function updateProfile(formData: FormData): Promise<ActionResult> {
 
   revalidatePath("/profile");
   return { success: true };
+}
+
+/**
+ * Adresse du passeport Blood Bowl du membre sur le hub, avec le retour vers les réglages du site (mode hub seulement,
+ * carte 122). Le hub n'affiche ce retour que si l'adresse appartient bien au site enregistré chez lui.
+ */
+export async function getPassportUrl(): Promise<string | null> {
+  const origin = hubOrigin();
+  if (!isHubAuthMode || !origin || !process.env.HUB_CLIENT_ID) return null;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.AUTH_URL || "";
+  const params = new URLSearchParams({ client_id: process.env.HUB_CLIENT_ID, return_to: `${siteUrl}/profile?tab=settings` });
+  return `${origin}/?${params}`;
 }
 
 export async function toggleBlockUser(blockedId: string): Promise<ActionResult & { isBlocked?: boolean }> {
@@ -149,6 +175,9 @@ export async function reportUser(userId: string, reason: string): Promise<Action
 export async function deleteAccount(): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non connecté" };
+
+  // Mode hub : la suppression passe par le passeport, qui prévient toutes les applications (carte 124)
+  if (isHubAuthMode) return { success: false, error: "La suppression du compte se fait depuis ton passeport Blood Bowl." };
 
   // Contenus publics rattachés au compte fantôme, données privées supprimées (lib/accountDeletion.ts)
   const ok = await anonymizeAndDeleteUser(session.user.id, session.user.role === "SUPERADMIN");
