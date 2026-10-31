@@ -1,28 +1,29 @@
+/**
+ * Page `/carte` (refonte, carte 094, ADR 0006) : les 100 prochains tournois et toutes les ligues placés sur une carte.
+ * Sur téléphone, le titre n'est lu que par les lecteurs d'écran et la carte occupe l'écran ; sur ordinateur, le titre
+ * est affiché au-dessus de la carte. Les données lues sont les mêmes qu'avant la refonte.
+ */
 import { prisma } from "@/lib/prisma";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { Map } from "lucide-react";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import CarteClient from "./component/CarteClient";
-import "./page.css";
-import "./page-mobile.css";
-
 
 export const dynamic = "force-dynamic";
 
 export default async function CartePage() {
   const [nextTournaments, ligues] = await Promise.all([
     prisma.tournament.findMany({
-      where: { 
+      where: {
         date: { gte: new Date() },
         isFinished: false,
         isCancelled: false
       },
-      take: 100, 
-      select: { 
-        id: true, 
-        name: true, 
-        location: true, 
-        lat: true, 
-        lng: true, 
+      take: 100,
+      select: {
+        id: true,
+        name: true,
+        location: true,
+        lat: true,
+        lng: true,
         date: true,
         topic: { select: { id: true } }
       }
@@ -33,19 +34,18 @@ export default async function CartePage() {
   ]);
 
   return (
-    <div className="carte-page-fixed">
-      <PageHeader 
-        title={<><Map className="icon-accent" size={24} /> La Carte du Blood Bowl</>}
-        subtitle="Localisez les tournois et les ligues à travers la France"
-        className="map-page-header"
-      />
-
-      <div className="carte-content-body">
-        <CarteClient 
-          initialTournaments={nextTournaments} 
-          initialLigues={ligues} 
+    // En bas, sur téléphone : la marge prévue pour la barre du bas est déjà comprise dans la hauteur de la carte
+    <div className="mx-auto w-full max-w-[1400px] px-3 font-bb-sans text-base text-bb-text max-lg:-mb-6 lg:px-6 lg:pb-12">
+      <div className="max-lg:sr-only">
+        <ForumListHeader
+          title="La carte du Blood Bowl"
+          subtitle="Les tournois à venir et les ligues de France"
+          backHref="/"
+          backTitle="Retour à l'accueil"
         />
       </div>
+
+      <CarteClient initialTournaments={nextTournaments} initialLigues={ligues} />
     </div>
   );
 }

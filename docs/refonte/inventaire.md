@@ -267,14 +267,16 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 9. Ligues et carte
 
-- [ ] [tous] `/ligues` : grille (12) ou liste (20) ; recherche par nom ou acronyme ; filtre par zone ; pagination ; « Créer une ligue ». Les filtres sont dans l'adresse (`?view&query&region`).
-- [ ] [membre] `/ligues/create` : nom, acronyme, blason (envoi), zone, région, département, ville, adresse avec choix sur la carte, description BBCode, commissaires.
-- [ ] [tous] `/ligue/[id]` : blason, « À propos », chef, commissaires, membres, 5 prochains tournois et « Voir tout ».
-- [ ] [membre] `/ligue/[id]` : signaler la ligue.
-- [ ] [chef, commissaire, modo] `/ligue/[id]` : « Modifier ».
-- [ ] [chef, modo] `/ligue/[id]` : « Transférer la propriété » et « Supprimer la ligue ».
-- [ ] [chef, commissaire, modo] `/ligue/edit/[id]` : même formulaire que la création.
-- [ ] [tous] `/carte` : carte Leaflet ; bascule entre Tournois et Ligues ; plein écran ; zoom ; bulle avec un lien « Détails ».
+- [x] [tous] `/ligues` : grille (12) ou liste (20) ; recherche par nom ou acronyme ; filtre par zone ; pagination ; « Créer une ligue ». Les filtres sont dans l'adresse (`?view&query&region`).
+- [x] [membre] `/ligues/create` : nom, acronyme, blason (envoi), zone, région, département, ville, adresse avec choix sur la carte, description BBCode, commissaires. *L'envoi du blason n'est vérifié que jusqu'à l'ouverture du choix de fichier (service extérieur ImgBB). Le lieu est choisi par un appui sur la carte ; la recherche d'adresse (service extérieur Nominatim) est seulement présente.*
+- [x] [tous] `/ligue/[id]` : blason, « À propos », chef, commissaires, membres, 5 prochains tournois et « Voir tout ». *La liste des membres n'est affichée qu'aux membres connectés, avant comme après la refonte : le test la vérifie avec un membre connecté.*
+- [x] [membre] `/ligue/[id]` : signaler la ligue.
+- [x] [chef, commissaire, modo] `/ligue/[id]` : « Modifier ».
+- [x] [chef, modo] `/ligue/[id]` : « Transférer la propriété » et « Supprimer la ligue ».
+- [x] [chef, commissaire, modo] `/ligue/edit/[id]` : même formulaire que la création.
+- [x] [tous] `/carte` : carte Leaflet ; bascule entre Tournois et Ligues ; plein écran ; zoom ; bulle avec un lien « Détails ». *Le fond de carte (tuiles d'OpenStreetMap) n'est pas vérifié, seulement les boutons, les repères et la bulle.*
+
+*Section vérifiée par `tests/e2e/inventaire/ligues.spec.ts` (carte 094), en taille ordinateur et en taille téléphone. Sur l'ancienne version en taille téléphone, le test attend que le champ en cours de saisie soit quitté avant d'appuyer sur « Enregistrer » : la barre du bas, qui réapparaît à ce moment, faisait rater l'appui (bug de la carte 113). Depuis la refonte, le formulaire n'a plus cette barre.*
 
 ## 10. Articles
 

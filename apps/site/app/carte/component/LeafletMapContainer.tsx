@@ -1,29 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+/**
+ * Carte OpenStreetMap de la page `/carte` (bibliothèque Leaflet, par react-leaflet), refaite à la carte 094.
+ * Chaque point est un repère ; un appui ouvre une bulle avec le nom, le lieu, la date (tournoi) et le lien « Détails »
+ * vers le sujet du tournoi ou la fiche de la ligue. Les boutons de zoom sont en bas à droite, à portée de pouce.
+ * Les couleurs de la bulle et des boutons de zoom suivent le thème (classes posées par `CarteClient`).
+ */
+import { useEffect, useMemo } from "react";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Calendar } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
+
+export interface MapPoint {
+  id: string;
+  name: string;
+  lat: number | null;
+  lng: number | null;
+  /** Tournoi : lieu, date et sujet du forum. */
+  location?: string | null;
+  date?: Date | string | null;
+  topic?: { id: string } | null;
+  /** Ligue : ville. */
+  ville?: string | null;
+}
 
 interface LeafletMapProps {
-  points: any[];
+  points: MapPoint[];
   viewType: "tournaments" | "ligues";
   isFullscreen?: boolean;
 }
 
-// Composant interne pour corriger le bug des zones grises au resize/fullscreen
+/** Recalcule la taille de la carte quand la fenêtre ou le plein écran change (sinon, des zones restent grises). */
 function MapResizer({ isFullscreen }: { isFullscreen: boolean }) {
   const map = useMap();
-  
+
   useEffect(() => {
     const handleResize = () => {
       map.invalidateSize();
     };
 
     window.addEventListener('resize', handleResize);
-    
-    // Petit délai pour laisser le CSS s'appliquer
+
+    // Petit délai pour laisser la nouvelle mise en page s'appliquer
     const timer = setTimeout(() => {
       map.invalidateSize();
     }, 300);
@@ -37,91 +56,61 @@ function MapResizer({ isFullscreen }: { isFullscreen: boolean }) {
   return null;
 }
 
+/** Repère de couleur (rouge pour un tournoi, doré pour une ligue). */
+const markerIcon = (color: "red" | "gold") =>
+  L.icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
 export default function LeafletMapContainer({ points, viewType, isFullscreen = false }: LeafletMapProps) {
-  const [icons, setIcons] = useState<any>(null);
-  const [mapReady, setMapReady] = useState(false);
-
-  useEffect(() => {
-    // Initialisation des icônes uniquement côté client
-    const red = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    const gold = L.icon({
-      iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
-
-    setIcons({ red, gold });
-    setMapReady(true);
-  }, []);
-
-  if (!mapReady) return null;
+  // Ce fichier n'est chargé que dans le navigateur (import dynamique sans rendu serveur) : Leaflet y est disponible
+  const icons = useMemo(() => ({ red: markerIcon("red"), gold: markerIcon("gold") }), []);
 
   return (
-    <div className="leaflet-map-outer-wrapper" style={{ 
-      height: "100%", 
-      width: "100%", 
-      borderRadius: isFullscreen ? "0" : "24px",
-      overflow: "hidden",
-      position: "relative"
-    }}>
-      <MapContainer 
-        center={[46.2276, 2.2137]} 
-        zoom={6} 
-        style={{ height: "100%", width: "100%" }}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+    <MapContainer center={[46.2276, 2.2137]} zoom={6} zoomControl={false} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <ZoomControl position="bottomright" zoomInTitle="Zoomer" zoomOutTitle="Dézoomer" />
 
-        <MapResizer isFullscreen={isFullscreen} />
-        
-        {points.map((p) => (
-          <Marker 
-            key={`${viewType}-${p.id}`} 
-            position={[p.lat, p.lng]} 
-            icon={icons ? (viewType === "tournaments" ? icons.red : icons.gold) : undefined}
-          >
-            <Popup>
-              <div className="leaflet-popup-content-inner">
-                <h4 style={{ margin: "0 0 0.5rem 0", color: "#333", fontWeight: 800 }}>{p.name}</h4>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#666", fontSize: "0.85rem", marginBottom: "0.3rem" }}>
-                  <MapPin size={14} /> {p.location || p.ville || "Lieu inconnu"}
-                </div>
-                {p.date && (
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#666", fontSize: "0.85rem" }}>
-                    <Calendar size={14} /> {new Date(p.date).toLocaleDateString("fr-FR")}
-                  </div>
-                )}
-                <div style={{ marginTop: "0.8rem" }}>
-                    <a 
-                      href={viewType === "tournaments" 
-                        ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : "/tournois") 
-                        : `/ligue/${p.id}`} 
-                      className="map-popup-link"
-                      style={{ background: "#c21d1d", color: "white", padding: "0.4rem 0.8rem", borderRadius: "8px", textDecoration: "none", fontSize: "0.75rem", fontWeight: 800, display: "inline-block" }}
-                    >
-                      Détails
-                    </a>
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </div>
+      <MapResizer isFullscreen={isFullscreen} />
+
+      {points.map((p) => (
+        <Marker
+          key={`${viewType}-${p.id}`}
+          position={[p.lat as number, p.lng as number]}
+          alt={p.name}
+          icon={viewType === "tournaments" ? icons.red : icons.gold}
+        >
+          {/* Marges du recentrage automatique : la bulle ne passe pas sous les boutons posés sur la carte
+              (choix Tournois ou Ligues en haut, zoom en bas à droite) */}
+          <Popup autoPanPaddingTopLeft={[12, 80]} autoPanPaddingBottomRight={[64, 56]}>
+            <div className="flex min-w-48 flex-col gap-1.5 font-bb-sans text-[0.95rem] text-bb-text">
+              <strong className="text-base leading-snug break-words">{p.name}</strong>
+              <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
+                <MapPin size={14} aria-hidden="true" className="shrink-0" /> {p.location || p.ville || "Lieu inconnu"}
+              </span>
+              {p.date && (
+                <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
+                  <Calendar size={14} aria-hidden="true" className="shrink-0" /> {new Date(p.date).toLocaleDateString("fr-FR")}
+                </span>
+              )}
+              <a
+                href={viewType === "tournaments" ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : "/tournois") : `/ligue/${p.id}`}
+                className="mt-1 inline-flex min-h-11 items-center justify-center self-start rounded-bb-md bg-bb-accent px-4 text-sm font-bold text-bb-on-accent! no-underline hover:opacity-90"
+              >
+                Détails
+              </a>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
   );
 }
-

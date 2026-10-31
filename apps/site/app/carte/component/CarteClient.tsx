@@ -1,245 +1,114 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
+/**
+ * Carte interactive de `/carte` (refonte, carte 094, ADR 0006).
+ * - Sur téléphone, la carte occupe tout l'écran entre la barre du haut et la barre de navigation du bas.
+ * - Sur ordinateur, elle remplit la page sous le titre.
+ * Par-dessus la carte : en haut à gauche, le choix entre les tournois à venir et les ligues ; en haut à droite, le
+ * bouton « Plein écran » ; en bas à gauche, le nombre de points affichés. En plein écran, la carte couvre tout l'écran
+ * (attribut `data-fullscreen`, qui retire aussi la barre du bas du téléphone, voir AppShell.css).
+ *
+ * La bibliothèque Leaflet a sa propre feuille de style (leaflet.css), qui l'emporte sur les classes du site : les
+ * réglages de ses éléments (bulle, boutons de zoom, repères) sont donc écrits plus bas avec le suffixe « ! »
+ * (priorité forcée).
+ */
+import { useMemo, useState, type ReactNode } from "react";
 import dynamic from "next/dynamic";
-import { Trophy, Shield, Info, Loader2, Maximize2, Minimize2 } from "lucide-react";
+import { Maximize2, Minimize2, Shield, Trophy } from "lucide-react";
+import { Button, Skeleton, cn } from "@bbfrance/ui";
+import type { MapPoint } from "./LeafletMapContainer";
 
-// Import dynamique pour éviter les erreurs SSR de Leaflet (nécessite 'window' objet)
-const LeafletMap = dynamic(
-  () => import("./LeafletMapContainer"),
-  { 
-    ssr: false,
-    loading: () => (
-      <div className="map-loading">
-        <Loader2 className="animate-spin" size={48} color="var(--primary)" />
-        <p>Chargement de la carte...</p>
-      </div>
-    )
-  }
-);
+// Import dynamique : Leaflet a besoin de l'objet `window` du navigateur
+const LeafletMap = dynamic(() => import("./LeafletMapContainer"), {
+  ssr: false,
+  loading: () => <Skeleton className="size-full rounded-none" />,
+});
 
 interface CarteProps {
-  initialTournaments: any[];
-  initialLigues: any[];
+  initialTournaments: MapPoint[];
+  initialLigues: MapPoint[];
 }
+
+/**
+ * Habillage des éléments de Leaflet aux couleurs du thème :
+ * - la bulle d'un repère et sa pointe ;
+ * - les boutons de zoom, et sur téléphone leur taille de 44 pixels ;
+ * - la croix de la bulle, à 44 pixels sur téléphone ;
+ * - sur téléphone, la zone qui réagit au toucher autour d'un repère : l'image ne mesure que 25 × 41 pixels, une marge
+ *   intérieure de 10 pixels l'agrandit et le décalage `translate` remet l'image exactement à sa place.
+ */
+const leafletTheme = cn(
+  "[&_.leaflet-container]:font-bb-sans! [&_.leaflet-container]:bg-bb-surface-2!",
+  "[&_.leaflet-popup-content-wrapper]:bg-bb-surface! [&_.leaflet-popup-content-wrapper]:text-bb-text! [&_.leaflet-popup-content-wrapper]:rounded-bb-md! [&_.leaflet-popup-tip]:bg-bb-surface!",
+  "[&_.leaflet-bar]:border-bb-border! [&_.leaflet-bar_a]:bg-bb-surface! [&_.leaflet-bar_a]:text-bb-text! [&_.leaflet-bar_a]:border-bb-border!",
+  "[&_a.leaflet-popup-close-button]:text-bb-text-muted!",
+  "max-lg:[&_.leaflet-bar_a]:size-11! max-lg:[&_.leaflet-bar_a]:text-2xl! max-lg:[&_.leaflet-bar_a]:leading-[44px]!",
+  "max-lg:[&_a.leaflet-popup-close-button]:size-11! max-lg:[&_a.leaflet-popup-close-button]:text-2xl! max-lg:[&_a.leaflet-popup-close-button]:leading-[44px]! max-lg:[&_.leaflet-popup-content]:mr-11!",
+  "max-lg:[&_img.leaflet-marker-icon]:box-content! max-lg:[&_img.leaflet-marker-icon]:p-2.5! max-lg:[&_img.leaflet-marker-icon]:[translate:-10px_-10px]"
+);
 
 export default function CarteClient({ initialTournaments, initialLigues }: CarteProps) {
   const [view, setView] = useState<"tournaments" | "ligues">("tournaments");
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const points = useMemo(() => {
-    const list = view === "tournaments" ? initialTournaments : initialLigues;
-    return list.filter(p => p.lat && p.lng);
-  }, [view, initialTournaments, initialLigues]);
+  const tournaments = useMemo(() => initialTournaments.filter((p) => p.lat && p.lng), [initialTournaments]);
+  const ligues = useMemo(() => initialLigues.filter((p) => p.lat && p.lng), [initialLigues]);
+  const points = view === "tournaments" ? tournaments : ligues;
+
+  const legend = view === "tournaments"
+    ? (points.length ? `${points.length} tournoi${points.length > 1 ? "s" : ""} à venir sur la carte` : "Aucun tournoi à venir placé sur la carte")
+    : (points.length ? `${points.length} ligue${points.length > 1 ? "s" : ""} sur la carte` : "Aucune ligue placée sur la carte");
+
+  const choice = (value: "tournaments" | "ligues", label: string, count: number, icon: ReactNode) => (
+    <Button
+      type="button"
+      variant="quiet"
+      size="tap"
+      aria-pressed={view === value}
+      onClick={() => setView(value)}
+      className={cn("rounded-full px-3 text-sm", view === value ? "bg-bb-accent text-bb-on-accent hover:bg-bb-accent" : "text-bb-text-muted")}
+    >
+      {icon}
+      {label} ({count})
+    </Button>
+  );
 
   return (
-    <div className={`carte-client-wrapper ${isFullscreen ? "is-fullscreen" : ""}`}>
-      <div className="map-view-leaflet">
-          {/* Sélecteur Coulissant & Fullscreen en Overlay */}
-          <div className="map-overlay-controls">
-            <div className="sliding-toggle">
-              <div className={`sliding-bg ${view}`} />
-              <button 
-                className={`toggle-option ${view === "tournaments" ? "active" : ""}`}
-                onClick={() => setView("tournaments")}
-              >
-                <Trophy size={16} />
-                <span>Tournois</span>
-              </button>
-              <button 
-                className={`toggle-option ${view === "ligues" ? "active" : ""}`}
-                onClick={() => setView("ligues")}
-              >
-                <Shield size={16} />
-                <span>Ligues</span>
-              </button>
-            </div>
+    <div
+      data-fullscreen={isFullscreen ? "" : undefined}
+      className={cn(
+        // isolate : les calques de Leaflet (jusqu'à 1000) restent sous la barre du haut et les panneaux du site
+        "relative isolate overflow-hidden bg-bb-surface-2",
+        isFullscreen
+          ? "fixed inset-0 z-[6500]"
+          : "max-lg:-mx-3 max-lg:h-[calc(100dvh-57px-var(--app-bottom-nav-space))] lg:h-[calc(100dvh-13.5rem)] lg:min-h-[460px] lg:rounded-bb-lg lg:border lg:border-bb-border",
+        leafletTheme
+      )}
+    >
+      <LeafletMap points={points} viewType={view} isFullscreen={isFullscreen} />
 
-            <button 
-                className="fullscreen-toggle-btn"
-                onClick={() => setIsFullscreen(!isFullscreen)}
-                title={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
-            >
-                {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
-            </button>
-          </div>
-
-          <LeafletMap points={points} viewType={view} isFullscreen={isFullscreen} />
+      {/* pointer-events-none : la bande des boutons ne bloque pas la carte entre eux */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1100] flex items-start justify-between gap-2 p-3">
+        <div role="group" aria-label="Points affichés" className="pointer-events-auto flex gap-0.5 rounded-full border border-bb-border bg-bb-surface p-0.5 shadow-bb">
+          {choice("tournaments", "Tournois", tournaments.length, <Trophy size={16} aria-hidden="true" />)}
+          {choice("ligues", "Ligues", ligues.length, <Shield size={16} aria-hidden="true" />)}
+        </div>
+        <Button
+          type="button"
+          variant="secondary"
+          size="tap-icon"
+          aria-label={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
+          title={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
+          onClick={() => setIsFullscreen(!isFullscreen)}
+          className="pointer-events-auto shrink-0 rounded-full shadow-bb"
+        >
+          {isFullscreen ? <Minimize2 size={20} aria-hidden="true" /> : <Maximize2 size={20} aria-hidden="true" />}
+        </Button>
       </div>
 
-      {points.length === 0 && (
-        <div className="map-legend">
-          <p className="no-points-msg">
-            Aucun point trouvé pour cette vue.
-          </p>
-        </div>
-      )}
-
-      <style jsx>{`
-        .carte-client-wrapper {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          min-height: 0;
-          position: relative;
-        }
-
-        .carte-client-wrapper.is-fullscreen {
-          position: fixed;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          z-index: 9999;
-          background: var(--background);
-          margin: 0 !important;
-          padding: 0 !important;
-        }
-        
-        .map-view-leaflet {
-          flex: 1;
-          width: 100%;
-          border-radius: 24px;
-          box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-          overflow: hidden;
-          background: var(--card-bg);
-          position: relative;
-          border: 1px solid var(--glass-border);
-        }
-
-        .is-fullscreen .map-view-leaflet {
-            border-radius: 0 !important;
-            border: none !important;
-            height: 100vh !important;
-            width: 100vw !important;
-        }
-
-        .map-overlay-controls {
-          position: absolute;
-          top: 1.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          pointer-events: auto; /* Changed to auto so buttons are clickable */
-          will-change: transform;
-        }
-
-        .sliding-toggle {
-          display: flex;
-          background: var(--card-bg);
-          padding: 4px;
-          border-radius: 50px;
-          border: 1px solid var(--glass-border);
-          position: relative;
-          pointer-events: auto;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-          /* Removed backdrop-filter to prevent text blur */
-          isolation: isolate;
-        }
-
-        .fullscreen-toggle-btn {
-            pointer-events: auto;
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--foreground);
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            /* Removed backdrop-filter to prevent icon blur */
-        }
-
-        .fullscreen-toggle-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1);
-            border-color: var(--primary);
-        }
-
-        .sliding-bg {
-          position: absolute;
-          top: 4px;
-          left: 4px;
-          width: calc(50% - 4px);
-          height: calc(100% - 8px);
-          background: var(--primary);
-          border-radius: 50px;
-          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.4);
-          z-index: 0;
-        }
-
-        .sliding-bg.ligues {
-          transform: translateX(100%);
-        }
-
-        .toggle-option {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          padding: 0.6rem 1.5rem;
-          border: none;
-          background: none;
-          color: var(--text-muted);
-          font-weight: 800;
-          font-size: 0.85rem;
-          cursor: pointer;
-          transition: color 0.3s;
-          white-space: nowrap;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        .toggle-option.active {
-          color: white; /* Active text on primary background always looks best white */
-        }
-
-        .map-loading {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100%;
-          gap: 1.5rem;
-          color: var(--text-muted);
-        }
-        .no-points-msg {
-           text-align: center;
-           color: var(--foreground); /* More visible */
-           font-weight: 700;
-           font-style: italic;
-           font-size: 0.95rem;
-           margin: 0;
-        }
-        .map-legend {
-          flex-shrink: 0;
-          position: absolute;
-          bottom: 1.5rem;
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 1000;
-          background: var(--card-bg);
-          padding: 0.8rem 1.5rem;
-          border-radius: 50px;
-          backdrop-filter: blur(12px);
-          border: 1px solid var(--glass-border);
-          box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-      `}</style>
+      <p aria-live="polite" className="pointer-events-none absolute bottom-3 left-3 z-[1100] m-0 max-w-[calc(100%-6rem)] rounded-full border border-bb-border bg-bb-surface px-3 py-1.5 text-sm font-semibold text-bb-text shadow-bb">
+        {legend}
+      </p>
     </div>
   );
 }
-
-
-

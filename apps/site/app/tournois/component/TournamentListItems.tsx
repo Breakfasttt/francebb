@@ -47,8 +47,8 @@ export function TournamentStatusBadge({ tournament, todayStart }: { tournament: 
   return null;
 }
 
-/** Pavé de la date : le jour en grand, le mois en dessous. */
-function DateBlock({ date, className }: { date: Date; className?: string }) {
+/** Pavé de la date : le jour en grand, le mois en dessous. Réutilisé par la fiche d'une ligue (carte 094). */
+export function DateBlock({ date, className }: { date: Date; className?: string }) {
   const value = new Date(date);
   return (
     <div

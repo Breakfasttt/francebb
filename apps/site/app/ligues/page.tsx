@@ -1,17 +1,18 @@
-import { prisma } from "@/lib/prisma";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import LigueCard from "./component/LigueCard";
-import LigueFilters from "./component/LigueFilters";
-import { Search, MapPin, Grid, List as ListIcon, Plus, Shield } from "lucide-react";
+/**
+ * Annuaire des ligues `/ligues` (refonte, carte 094, ADR 0006).
+ * En-tête compact « Ligues » avec le nombre de ligues et le bouton « Créer une ligue », puis la barre de recherche,
+ * de zone et d'affichage (`LigueFilters`), et les ligues en grille (12 par page) ou en liste (20 par page).
+ * Sur téléphone, une seule colonne ; le filtre de zone est rangé dans le panneau « Filtrer les ligues ».
+ * La recherche elle-même (paramètres `?view&query&region&page`, conditions, tri par nom) n'a pas changé.
+ */
 import Link from "next/link";
-import Pagination from "@/common/components/Pagination/Pagination";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import CTAButton from "@/common/components/Button/CTAButton";
-import "./page.css";
-import "./page-mobile.css";
-import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
-
+import { Plus, Shield } from "lucide-react";
+import { Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/prisma/generated-client";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import LigueFilters from "./component/LigueFilters";
+import { LigueCard, LigueRow } from "./component/LigueCard";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export default async function LiguesPage({
   const limit = view === "grid" ? 12 : 20;
   const skip = (page - 1) * limit;
 
-  const where: any = {};
+  const where: Prisma.LigueWhereInput = {};
   if (query) {
     where.OR = [
       { name: { contains: query, mode: "insensitive" } },
@@ -56,95 +57,74 @@ export default async function LiguesPage({
     where: { group: "COACH_REGION", isActive: true },
     orderBy: { order: "asc" }
   });
+  const zones = coachRegions.map((zone) => ({ key: zone.key, label: zone.label }));
+  const zoneLabels = new Map(zones.map((zone) => [zone.key, zone.label]));
+
+  // Pagination : l'adresse garde la recherche, la zone et l'affichage
+  const pageHref = (target: number) => {
+    const next = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (key !== "page" && typeof value === "string") next.set(key, value);
+    }
+    if (target > 1) next.set("page", String(target));
+    const text = next.toString();
+    return text ? `/ligues?${text}` : "/ligues";
+  };
+
+  const createButton = (
+    <Button asChild variant="primary" size="tap">
+      <Link href="/ligues/create" className="no-underline">
+        <Plus size={18} aria-hidden="true" />
+        {/* Un seul bloc de texte : l'écart entre l'icône et le texte ne s'ajoute pas avant « une ligue » */}
+        <span>Créer<span className="max-sm:sr-only"> une ligue</span></span>
+      </Link>
+    </Button>
+  );
 
   return (
-    <div className="ligues-page">
-      <PageHeader 
-        title="L'Annuaire des Ligues" 
-        subtitle="Trouvez votre club et rejoignez la communauté"
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
+        title="Ligues"
+        subtitle={`${total} ligue${total > 1 ? "s" : ""} référencée${total > 1 ? "s" : ""}`}
         backHref="/"
-      />
+        backTitle="Retour à l'accueil"
+      >
+        {createButton}
+      </ForumListHeader>
 
-      <main className="container">
+      <section aria-label="Ligues trouvées" className="flex min-w-0 flex-col gap-4">
+        <LigueFilters zones={zones} total={total} />
 
-      <PremiumCard className="ligues-top-bar desktop-only">
-        <LigueFilters 
-          initialQuery={query} 
-          initialRegion={region} 
-          coachRegions={coachRegions.map(r => ({ key: r.key, label: r.label }))} 
-        />
-
-        <div className="ligue-actions">
-            <div className="view-toggle">
-                <Link href={`/ligues?view=grid${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'grid' ? 'active' : ''}>
-                    <Grid size={20} />
-                </Link>
-                <Link href={`/ligues?view=list${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'list' ? 'active' : ''}>
-                    <ListIcon size={20} />
-                </Link>
-            </div>
-            <CTAButton href="/ligues/create" icon={<Plus size={18} />}>
-                Créer une Ligue
-            </CTAButton>
-        </div>
-      </PremiumCard>
-
-      {/* Téléphone et tablette : recherche, filtres et affichage derrière le bouton flottant (entonnoir) */}
-      <MobileFilterWrapper title="Filtrer les ligues" mobileOnly>
-          <div className="ligues-mobile-sidebar-content mobile-only">
-            <h3 className="sidebar-section-title">Recherche & Filtres</h3>
-            <LigueFilters 
-              initialQuery={query} 
-              initialRegion={region} 
-              coachRegions={coachRegions.map(r => ({ key: r.key, label: r.label }))} 
-            />
-            
-            <div className="sidebar-divider" />
-            
-            <h3 className="sidebar-section-title">Affichage & Actions</h3>
-            <div className="ligue-actions-mobile">
-                <div className="view-toggle-mobile">
-                    <Link href={`/ligues?view=grid${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'grid' ? 'active' : ''}>
-                        <Grid size={20} /> Mode Grille
-                    </Link>
-                    <Link href={`/ligues?view=list${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} className={view === 'list' ? 'active' : ''}>
-                        <ListIcon size={20} /> Mode Liste
-                    </Link>
-                </div>
-                
-                <CTAButton href="/ligues/create" icon={<Plus size={18} />} fullWidth>
-                    Créer une Ligue
-                </CTAButton>
-            </div>
-          </div>
-      </MobileFilterWrapper>
-
-      {ligues.length > 0 ? (
-        <>
-            <div className={view === 'grid' ? "ligues-grid" : "ligues-list"}>
-                {ligues.map(ligue => (
-                    <LigueCard key={ligue.id} ligue={ligue} view={view as any} />
+        {ligues.length > 0 ? (
+          <>
+            {view === "grid" ? (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {ligues.map((ligue) => (
+                  <LigueCard key={ligue.id} ligue={ligue} zoneLabel={zoneLabels.get(ligue.geographicalZone ?? "")} />
                 ))}
-            </div>
+              </div>
+            ) : (
+              <Card className="overflow-hidden">
+                {ligues.map((ligue) => (
+                  <LigueRow key={ligue.id} ligue={ligue} zoneLabel={zoneLabels.get(ligue.geographicalZone ?? "")} />
+                ))}
+              </Card>
+            )}
 
-            <div className="pagination-wrapper">
-                <Pagination 
-                    currentPage={page} 
-                    totalPages={totalPages} 
-                    baseUrl={`/ligues?view=${view}${query ? `&query=${query}` : ''}${region ? `&region=${region}` : ''}`} 
-                    queryParam="page"
-                />
-            </div>
-        </>
-      ) : (
-        <EmptyState 
-          icon={<Shield size={64} style={{ opacity: 0.2 }} />}
-          title="Aucune ligue trouvée"
-          description="Soyez le premier à référencer votre ligue dans cette zone !"
-          action={<CTAButton href="/ligues/create" icon={<Plus size={18} />}>Créer une Ligue</CTAButton>}
-        />
-      )}
-      </main>
+            {totalPages > 1 && (
+              <div className="flex justify-center">
+                <PageNav page={page} totalPages={totalPages} hrefFor={pageHref} linkComponent={Link} />
+              </div>
+            )}
+          </>
+        ) : (
+          <Card>
+            <EmptyState icon={<Shield size={40} />} title="Aucune ligue trouvée" action={createButton}>
+              Essayez une autre recherche, ou référencez votre ligue dans cette zone.
+            </EmptyState>
+          </Card>
+        )}
+      </section>
     </div>
   );
 }

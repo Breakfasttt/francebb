@@ -82,6 +82,11 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/ressources", connected: false },
   { path: "/media", connected: false },
   { path: "/ligues", connected: false },
+  // Carte 094 : la liste des ligues en lignes, le panneau des filtres, la fiche d'une ligue et son formulaire
+  { path: "/ligues?view=list", connected: false },
+  { path: "/ligues", connected: false, openFilters: true },
+  { path: "/ligue/e2e_audit_ligue", connected: true },
+  { path: "/ligue/edit/e2e_audit_ligue", connected: true },
   { path: "/carte", connected: false },
   { path: "/membres", connected: true },
   { path: "/messagerie", connected: true },
@@ -294,6 +299,19 @@ test.describe("audit mobile", () => {
           },
         });
       }
+    });
+    // Carte 094 : une ligue dirigée par le modérateur, avec un membre, une présentation et un tournoi à venir
+    await withTestDb(async (prisma) => {
+      if (await prisma.ligue.findUnique({ where: { id: "e2e_audit_ligue" } })) return;
+      await prisma.ligue.create({
+        data: {
+          id: "e2e_audit_ligue", name: "Ligue de l'audit mobile au nom assez long", acronym: "LAM", geographicalZone: "R2-NO",
+          ville: "Rennes", address: "1 place de la Mairie, Rennes", lat: 48.11, lng: -1.68, creatorId: E2E.modoId,
+          description: "[b]Présentation[/b] de la ligue de l'audit, avec un [url=https://example.com]lien[/url].",
+          members: { connect: { id: E2E.coachId } },
+          tournaments: { create: { name: "Tournoi à venir de la ligue de l'audit", date: new Date("2030-05-04T09:00:00Z"), location: "Gymnase", organizerId: E2E.modoId } },
+        },
+      });
     });
     // Carte 093 : conversation à deux avec quelques messages (texte en clair : le site affiche tel quel un texte non chiffré)
     await withTestDb(async (prisma) => {

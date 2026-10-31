@@ -143,7 +143,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
       </form>
 
       {/* isolate : les calques de Leaflet (z-index jusqu'à 1000) restent sous le reste du panneau */}
-      <div className="relative isolate h-[45dvh] min-h-60 overflow-hidden rounded-bb-md border border-bb-border lg:h-[420px]">
+      <div role="group" aria-label="Carte du lieu" className="relative isolate h-[45dvh] min-h-60 overflow-hidden rounded-bb-md border border-bb-border lg:h-[420px]">
         {isMounted && (
           <MapContainer
             center={center}

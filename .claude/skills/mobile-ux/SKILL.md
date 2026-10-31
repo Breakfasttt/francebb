@@ -59,9 +59,9 @@ Si une page a sa propre colonne latérale (onglets de l'administration, de la mo
 
 ## Filtres et longs formulaires
 
-Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/articles`, `/ressources`, `/ligues` (carte 054).
+Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/articles`, `/ressources` (carte 054).
 
-Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un `Sheet` (exemples : `/forum/search`, carte 088 ; `/tournois`, carte 089 ; `/membres`, carte 092). Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille au-dessus des résultats.
+Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un `Sheet` (exemples : `/forum/search`, carte 088 ; `/tournois`, carte 089 ; `/membres`, carte 092 ; `/ligues`, carte 094). Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille au-dessus des résultats.
 
 - Sur ordinateur, le composant affiche ses enfants dans une simple `<div className={className}>`. Avec `mobileOnly`, il n'affiche rien sur ordinateur : à utiliser quand la page a déjà sa colonne de filtres.
 - Le bouton flottant remplace les filtres jusqu'au seuil commun (1024 pixels), comme la classe `desktop-only` qui masque les colonnes de filtres. Le réglage `breakpoint` existe encore mais ne doit pas être utilisé : une autre valeur recréerait des largeurs où les filtres ne sont nulle part.
@@ -74,7 +74,7 @@ Utiliser `<PageHeader />`. Sur téléphone, le bouton retour (`BackButton`) est 
 
 ## Écrans plein écran
 
-Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois) retirent la barre de navigation du bas grâce à leur adresse (`isComposePath` dans `common/components/AppShell/navItems.ts`). Un écran plein écran qui n'a pas sa propre adresse, comme une conversation de la messagerie ouverte par `?id=` (carte 093), pose l'attribut `data-fullscreen` sur son cadre : `AppShell.css` retire alors la barre du bas et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
+Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois) et le formulaire d'une ligue (carte 094) retirent la barre de navigation du bas grâce à leur adresse (`isComposePath` dans `common/components/AppShell/navItems.ts`). Un écran plein écran qui n'a pas sa propre adresse, comme une conversation de la messagerie ouverte par `?id=` (carte 093), pose l'attribut `data-fullscreen` sur son cadre : `AppShell.css` retire alors la barre du bas et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
 
 ## Pages impossibles sur téléphone
 

@@ -16,7 +16,8 @@ import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { parseBBCode } from "@/lib/bbcode";
 
 interface ComposeScreenProps {
-  breadcrumbs: { label: string; href?: string; isCategory?: boolean }[];
+  /** Fil d'Ariane du forum (ordinateur) ; absent pour un écran hors du forum (formulaire de ligue, carte 094). */
+  breadcrumbs?: { label: string; href?: string; isCategory?: boolean }[];
   title: string;
   /** Ligne sous le titre (« Sujet : … », « Dans le forum : … »). */
   subtitle: ReactNode;
@@ -29,9 +30,11 @@ export default function ComposeScreen({ breadcrumbs, title, subtitle, backHref, 
   return (
     // En bas, sur téléphone : la place de la barre d'envoi collée en bas de l'écran
     <div className="mx-auto w-full max-w-[1232px] px-3 pb-[calc(5.5rem+env(safe-area-inset-bottom))] font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
-      <div className="hidden pt-4 lg:block">
-        <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
-      </div>
+      {breadcrumbs && (
+        <div className="hidden pt-4 lg:block">
+          <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
+        </div>
+      )}
 
       <header className="flex items-start gap-3 pt-3 pb-3 lg:pt-5 lg:pb-4">
         {/* Téléphone : le bouton retour va dans la barre du haut ; ordinateur : il reste à gauche du titre */}

@@ -33,8 +33,10 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}`) |
 | Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092) |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
-| Éditeur de message BBCode | `BBCodeEditor` (`common/components/BBCodeEditor`) ; `screen` pour un écran de rédaction plein écran sur téléphone. Mise en page de ces écrans : `ComposeScreen`, `ComposeActionBar`, `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) |
+| Éditeur de message BBCode | `BBCodeEditor` (`common/components/BBCodeEditor`) ; `screen` pour un écran de rédaction plein écran sur téléphone. Mise en page de ces écrans : `ComposeScreen` (fil d'Ariane du forum facultatif depuis la carte 094, pour le formulaire d'une ligue), `ComposeActionBar`, `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) |
 | Savoir si on est sur ordinateur | `useMediaQuery(DESKTOP_QUERY)` |
+| Pavé de date (jour en grand, mois dessous) | `DateBlock` de `app/tournois/component/TournamentListItems.tsx` (aussi sur la fiche d'une ligue, carte 094) |
+| Blason d'une ligue (ou bouclier s'il n'y en a pas) | `LigueBlason` (`app/ligues/component/LigueBlason.tsx`, carte 094) |
 
 ## Paquet BBScheme (`packages/bbscheme-player`, `@bbfrance/bbscheme-player`)
 | Besoin | Utiliser |

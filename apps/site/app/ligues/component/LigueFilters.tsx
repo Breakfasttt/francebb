@@ -1,80 +1,157 @@
 "use client";
 
-import React from "react";
-import { Search, MapPin } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
+/**
+ * Réglages de la liste des ligues `/ligues` (refonte, carte 094, ADR 0006), sur le modèle de `/tournois` (carte 089) :
+ * - la recherche par nom ou acronyme, toujours visible ;
+ * - le filtre par zone : liste visible sur ordinateur ; sur téléphone, dans le panneau « Filtrer les ligues », ouvert
+ *   par le bouton « Filtres » qui indique si un filtre est actif ;
+ * - le choix de l'affichage en grille ou en liste ;
+ * - la pastille du filtre actif, avec une croix qui le retire.
+ * Chaque réglage change l'adresse de la page (`?view&query&region`), que la page serveur relit : les paramètres sont
+ * les mêmes qu'avant la refonte. Changer la recherche ou la zone ramène à la première page des résultats.
+ */
+import { useEffect, useState, type ReactNode } from "react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
+import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import { useDebounce } from "@/common/hooks/useDebounce";
 
 interface LigueFiltersProps {
-  initialQuery?: string;
-  initialRegion?: string;
-  coachRegions: { key: string; label: string }[];
+  /** Zones géographiques (données de référence COACH_REGION). */
+  zones: { key: string; label: string }[];
+  /** Nombre de ligues trouvées, affiché sur le bouton qui ferme le panneau du téléphone. */
+  total: number;
 }
 
-export default function LigueFilters({ initialQuery = "", initialRegion = "", coachRegions }: LigueFiltersProps) {
+export default function LigueFilters({ zones, total }: LigueFiltersProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const handleRegionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  /** Adresse de la page avec les changements demandés ; revient à la première page sauf demande contraire. */
+  const hrefWith = (changes: Record<string, string>) => {
     const params = new URLSearchParams(searchParams.toString());
-    const val = e.target.value;
-    if (val) {
-      params.set("region", val);
-    } else {
-      params.delete("region");
+    for (const [name, value] of Object.entries(changes)) {
+      if (value) params.set(name, value);
+      else params.delete(name);
     }
-    params.set("page", "1"); // reset to page 1
-    router.push(`/ligues?${params.toString()}`);
+    if (!("page" in changes)) params.delete("page");
+    const query = params.toString();
+    return query ? `${pathname}?${query}` : pathname;
   };
+  const update = (changes: Record<string, string>) => router.push(hrefWith(changes), { scroll: false });
 
-  // État local pour l'input pour un rendu fluide
-  const [query, setQuery] = React.useState(initialQuery);
+  const region = searchParams.get("region") || "";
+  const currentView = searchParams.get("view") || "grid";
+  const zoneLabel = zones.find((zone) => zone.key === region)?.label ?? region;
 
-  // Debounce de la recherche
-  React.useEffect(() => {
-    // Évite la boucle infinie : on ne push que si la valeur a changée par rapport à l'URL
-    const currentQuery = searchParams.get("query") || "";
-    if (query === currentQuery) return;
+  // Recherche : l'adresse change 400 ms après la dernière touche, comme avant la refonte
+  const urlQuery = searchParams.get("query") || "";
+  const [query, setQuery] = useState(urlQuery);
+  const debouncedQuery = useDebounce(query, 400);
+  useEffect(() => {
+    if (debouncedQuery.trim() !== urlQuery) update({ query: debouncedQuery.trim() });
+    // `update` change à chaque rendu ; seule la saisie déclenche la recherche
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQuery]);
 
-    const timer = setTimeout(() => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (query) {
-          params.set("query", query);
-        } else {
-          params.delete("query");
-        }
-        params.set("page", "1");
-        router.push(`/ligues?${params.toString()}`, { scroll: false });
-    }, 400); // 400ms pour être plus safe sur les mobiles
+  const zoneOptions = (
+    <>
+      <option value="">Toutes les zones</option>
+      {zones.map((zone) => (
+        <option key={zone.key} value={zone.key}>{zone.label}</option>
+      ))}
+    </>
+  );
 
-    return () => clearTimeout(timer);
-  }, [query, router, searchParams]);
+  const viewButton = (view: "grid" | "list", label: string, icon: ReactNode) => (
+    <Button
+      type="button"
+      variant="quiet"
+      size="tap-icon"
+      aria-label={label}
+      aria-pressed={currentView === view}
+      title={label}
+      onClick={() => update({ view, page: searchParams.get("page") || "" })}
+      className={cn("rounded-[10px]", currentView === view && "bg-bb-surface-2 text-bb-text")}
+    >
+      {icon}
+    </Button>
+  );
 
   return (
-    <div className="search-filters">
-        <div className="search-wrapper">
-            <Search size={18} />
-            <input 
-                type="text" 
-                name="query" 
-                value={query} 
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Nom ou acronyme..." 
-            />
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+        <div className="relative min-w-0 flex-1">
+          <Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" />
+          <Input
+            type="text"
+            aria-label="Rechercher une ligue par nom ou acronyme"
+            placeholder="Rechercher par nom ou acronyme…"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            enterKeyHint="search"
+            className="pl-10"
+          />
         </div>
-        
-        <ClassicSelect 
-          name="region" 
-          onChange={handleRegionChange} 
-          defaultValue={initialRegion}
-          icon={MapPin}
-          className="filter-select"
-        >
-            <option value="">Toutes les zones</option>
-            {coachRegions.map(r => (
-                <option key={r.key} value={r.key}>{r.label}</option>
-            ))}
-        </ClassicSelect>
+        <div className="flex min-w-0 items-center gap-2">
+          {/* Téléphone : le filtre de zone est dans un panneau */}
+          <Button type="button" variant="secondary" size="tap" className="shrink-0 px-3 lg:hidden" onClick={() => setFiltersOpen(true)}>
+            <SlidersHorizontal size={18} aria-hidden="true" />
+            Filtres
+            <CountBadge count={region ? 1 : 0} aria-label="1 actif" />
+          </Button>
+          {/* Ordinateur : le filtre de zone reste visible */}
+          <div className="hidden lg:block lg:w-60">
+            <Select aria-label="Zone" value={region} onChange={(event) => update({ region: event.target.value })}>
+              {zoneOptions}
+            </Select>
+          </div>
+          <div className="flex-1 lg:hidden" />
+          <div role="group" aria-label="Affichage" className="flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
+            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
+            {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
+          </div>
+        </div>
+      </div>
+
+      {region && (
+        <ul aria-label="Filtres actifs" className="m-0 flex list-none flex-wrap gap-2 p-0">
+          <li className="min-w-0 max-w-full">
+            <Link
+              href={hrefWith({ region: "" })}
+              scroll={false}
+              aria-label={`Retirer le filtre Zone : ${zoneLabel}`}
+              className="inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-full border border-bb-border bg-bb-surface-2 py-1 pr-2 pl-3 text-sm font-semibold text-bb-text no-underline hover:border-bb-text-muted focus-visible:outline-2 focus-visible:outline-bb-focus lg:min-h-9"
+            >
+              <span className="min-w-0 truncate">Zone : {zoneLabel}</span>
+              <X size={16} aria-hidden="true" className="shrink-0 text-bb-text-muted" />
+            </Link>
+          </li>
+        </ul>
+      )}
+
+      <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
+        <SheetContent title="Filtrer les ligues">
+          <div className="flex flex-col gap-4 pt-2">
+            <Field label="Zone" htmlFor="sheet-zone">
+              <Select id="sheet-zone" value={region} onChange={(event) => update({ region: event.target.value })}>
+                {zoneOptions}
+              </Select>
+            </Field>
+            <div className="flex gap-2 border-t border-bb-border pt-3 pb-1">
+              <Button asChild variant="secondary" size="tap">
+                <Link href={hrefWith({ region: "" })} scroll={false}>Réinitialiser</Link>
+              </Button>
+              <Button type="button" variant="primary" size="tap" className="flex-1" onClick={() => setFiltersOpen(false)}>
+                Voir {total} ligue{total > 1 ? "s" : ""}
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

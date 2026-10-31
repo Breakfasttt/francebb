@@ -1,17 +1,21 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Upload, Loader2, Image as ImageIcon, X } from "lucide-react";
+/**
+ * Blason d'une ligue dans son formulaire (refonte, carte 094) : aperçu, bouton « Envoyer un blason » (ou « Changer le
+ * blason ») qui ouvre le choix d'une image, et « Retirer le blason ». L'image est envoyée au service d'hébergement
+ * d'images ImgBB ; son adresse est gardée dans le champ caché `image`, enregistré avec le reste du formulaire.
+ */
+import { useRef, useState } from "react";
+import { Loader2, Upload, X } from "lucide-react";
+import { Button, toast } from "@bbfrance/ui";
 import { siteConfig } from "@/lib/siteConfig";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { toast } from "@bbfrance/ui";
+import LigueBlason from "./LigueBlason";
 
 interface LigueBlasonUploadProps {
   initialImage?: string | null;
-  ligueName: string;
 }
 
-export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlasonUploadProps) {
+export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadProps) {
   const [image, setImage] = useState(initialImage || "");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +25,6 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validation basique
     if (!file.type.startsWith("image/")) {
       toast.error("Veuillez sélectionner une image valide.");
       return;
@@ -36,17 +39,15 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
         method: "POST",
         body: formData,
       });
-
       const data = await response.json();
-
       if (data.success) {
         setImage(data.data.url);
-        toast.success("Blason uploadé avec succès !");
+        toast.success("Blason envoyé. Pensez à enregistrer la ligue.");
       } else {
-        toast.error(`Erreur : ${data.error?.message || "Échec de l'upload"}`);
+        toast.error(`Erreur : ${data.error?.message || "l'envoi a échoué"}`);
       }
-    } catch (error) {
-      toast.error("Erreur lors de l'upload de l'image.");
+    } catch {
+      toast.error("Erreur lors de l'envoi de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -55,171 +56,28 @@ export default function LigueBlasonUpload({ initialImage, ligueName }: LigueBlas
 
   const removeImage = () => {
     setImage("");
-    toast.success("Blason supprimé (pensez à enregistrer)");
+    toast.success("Blason retiré. Pensez à enregistrer la ligue.");
   };
 
   return (
-    <PremiumCard className="blason-upload-card">
-      <div className="blason-header">
-        <ImageIcon size={20} className="text-primary" />
-        <h4>Blason de la Ligue</h4>
+    <div className="flex items-center gap-4">
+      <LigueBlason image={image || null} alt={image ? "Aperçu du blason" : ""} size={96} />
+      <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
+        <Button type="button" variant="secondary" size="tap" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+          {isUploading ? <Loader2 size={18} aria-hidden="true" className="animate-spin" /> : <Upload size={18} aria-hidden="true" />}
+          {image ? "Changer le blason" : "Envoyer un blason"}
+        </Button>
+        {image && (
+          <Button type="button" variant="quiet" size="tap" className="px-2 text-bb-danger-text" onClick={removeImage}>
+            <X size={18} aria-hidden="true" />
+            Retirer le blason
+          </Button>
+        )}
+        <p className="m-0 text-sm text-bb-text-muted">Format carré conseillé, PNG ou JPG.</p>
       </div>
 
-      <div className="blason-content">
-        <div className="blason-preview-container">
-          {image ? (
-            <div className="blason-preview">
-              <img src={image} alt={`Blason ${ligueName}`} />
-              <button type="button" className="remove-blason" onClick={removeImage}>
-                <X size={14} />
-              </button>
-            </div>
-          ) : (
-            <div className="blason-placeholder" onClick={() => fileInputRef.current?.click()}>
-              <Upload size={24} className="opacity-20" />
-              <span>Cliquer pour uploader</span>
-            </div>
-          )}
-        </div>
-
-        <div className="blason-actions">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            accept="image/*"
-            className="hidden"
-            id="blason-input"
-          />
-          <button 
-            type="button" 
-            className="btn-upload-blason"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-          >
-            {isUploading ? (
-              <Loader2 size={16} className="animate-spin" />
-            ) : (
-              <Upload size={16} />
-            )}
-            {image ? "Changer le blason" : "Uploader un blason"}
-          </button>
-          <p className="blason-hint">Format carré recommandé. PNG ou JPG.</p>
-        </div>
-      </div>
-
+      <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" aria-hidden="true" tabIndex={-1} />
       <input type="hidden" name="image" value={image} />
-
-
-      <style jsx>{`
-        .blason-upload-card {
-          padding: 1.5rem !important;
-        }
-        .blason-header {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          margin-bottom: 1.5rem;
-        }
-        .blason-header h4 {
-          margin: 0;
-          font-size: 0.9rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          font-weight: 800;
-        }
-        .blason-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1.5rem;
-        }
-        .blason-preview-container {
-          width: 150px;
-          height: 150px;
-          border-radius: 12px;
-          background: rgba(0, 0, 0, 0.2);
-          border: 2px dashed var(--glass-border);
-          overflow: hidden;
-          position: relative;
-          cursor: pointer;
-          transition: border-color 0.2s;
-        }
-        .blason-preview-container:hover {
-          border-color: var(--primary-transparent);
-        }
-        .blason-preview {
-          width: 100%;
-          height: 100%;
-          position: relative;
-        }
-        .blason-preview img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          padding: 0.5rem;
-        }
-        .remove-blason {
-          position: absolute;
-          top: 5px;
-          right: 5px;
-          background: var(--danger);
-          color: white;
-          border: none;
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          opacity: 0.8;
-          transition: opacity 0.2s;
-        }
-        .remove-blason:hover {
-          opacity: 1;
-        }
-        .blason-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 0.8rem;
-          color: var(--text-muted);
-          font-size: 0.7rem;
-          font-weight: 700;
-          text-transform: uppercase;
-        }
-        .btn-upload-blason {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 0.6rem 1.2rem;
-          background: var(--input-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          color: var(--foreground);
-          font-size: 0.85rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .btn-upload-blason:hover {
-          background: var(--glass-border);
-          border-color: var(--primary-transparent);
-        }
-        .blason-hint {
-          font-size: 0.7rem;
-          color: var(--text-muted);
-          margin-top: 0.8rem;
-          text-align: center;
-        }
-        .hidden { display: none; }
-        .animate-spin { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
-    </PremiumCard>
+    </div>
   );
 }
