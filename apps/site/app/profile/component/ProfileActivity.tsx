@@ -1,65 +1,66 @@
 "use client";
 
-import { parseInlineBBCode } from "@/lib/bbcode";
+/**
+ * Onglet « Activité du forum » d'un profil (refonte, carte 092), sur `/profile` et `/spy/[id]` : les derniers
+ * messages du membre sur le forum. Chaque ligne donne le titre du sujet, le début du message et sa date, et mène au
+ * message lui-même (ancre `#post-…`).
+ */
+import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ArrowRight, Clock, FileText, MessageSquare } from "lucide-react";
-import Link from "next/link";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
+import { MessageSquare } from "lucide-react";
+import { Card, CardHeader, CardTitle, EmptyState } from "@bbfrance/ui";
+import { parseInlineBBCode } from "@/lib/bbcode";
+
+interface ActivityPost {
+  id: string;
+  topicId: string;
+  content: string;
+  createdAt: string | Date;
+  topic: { title: string };
+}
 
 interface ProfileActivityProps {
-  activities: any[];
+  activities: ActivityPost[];
   userName: string;
 }
 
 export default function ProfileActivity({ activities, userName }: ProfileActivityProps) {
   return (
-    <PremiumCard className="profile-activity-card-global fade-in">
-      <div className="activity-box-header">
-        <MessageSquare size={20} className="header-icon" />
-        <h3 className="activity-box-title">Activité récente du forum</h3>
-      </div>
-
-      <div className="profile-activity-list">
-        {activities.length === 0 ? (
-          <EmptyState 
-            variant="ghost"
-            icon={<FileText size={32} />}
-            title="Aucune activité"
-            description={`Aucune activité récente trouvée pour ${userName}.`}
-          />
-        ) : activities.map((post) => (
-          <PremiumCard
-            as={Link}
-            key={post.id}
-            href={`/forum/topic/${post.topicId}#post-${post.id}`}
-            className="activity-item"
-          >
-            <div className="activity-header">
-              <div className="activity-icon-container">
-                <FileText size={16} />
-              </div>
-              <div className="activity-meta">
-                <div className="activity-type">A posté dans</div>
-                <h4 className="activity-topic" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }} />
-              </div>
-              <div className="activity-time">
-                <Clock size={12} />
-                <span>{formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: fr })}</span>
-              </div>
-            </div>
-
-            <div className="activity-content-preview">
-              {post.content.length > 200 ? post.content.substring(0, 200) + "..." : post.content}
-            </div>
-
-            <div className="view-more">
-              <span>Voir le sujet <ArrowRight size={14} /></span>
-            </div>
-          </PremiumCard>
-        ))}
-      </div>
-    </PremiumCard>
+    <Card className="overflow-hidden">
+      <CardHeader>
+        <MessageSquare size={18} className="text-bb-text-muted" aria-hidden="true" />
+        <CardTitle>Activité récente du forum</CardTitle>
+      </CardHeader>
+      {activities.length === 0 ? (
+        <EmptyState icon={<MessageSquare size={32} />} title="Aucune activité">
+          Aucune activité récente trouvée pour {userName}.
+        </EmptyState>
+      ) : (
+        <ul className="m-0 list-none p-0">
+          {activities.map((post) => (
+            <li key={post.id} className="border-b border-bb-border last:border-b-0">
+              <Link
+                href={`/forum/topic/${post.topicId}#post-${post.id}`}
+                className="flex flex-col gap-1 px-4 py-3 text-bb-text no-underline hover:bg-bb-surface-2"
+              >
+                <span className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                  <span
+                    className="min-w-0 text-[0.95rem] font-semibold break-words"
+                    dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }}
+                  />
+                  <span className="shrink-0 text-sm text-bb-text-muted">
+                    {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: fr })}
+                  </span>
+                </span>
+                <span className="line-clamp-2 text-sm break-words text-bb-text-muted">
+                  {post.content.length > 200 ? post.content.substring(0, 200) + "…" : post.content}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
   );
 }

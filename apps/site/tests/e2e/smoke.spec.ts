@@ -171,12 +171,14 @@ test("créer une ligue sans nom affiche une notification d'erreur", async ({ pag
 
 test("choisir le thème « Sombre » dans le profil enregistre l'identifiant default", async ({ page }) => {
   // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts).
+  // Depuis la carte 092, le profil utilise le sélecteur de thème du menu du compte : chaque thème y est un bouton
+  // radio (avant, un simple bouton).
   // Le test ne lit pas la base lui-même : la base de test n'accepte qu'une connexion, déjà tenue par le site
   // (carte 067). Il recharge la page, dont la balise <html> porte le thème lu en base par le serveur.
   await loginAs(page, E2E.coachId);
   try {
     await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });
-    await page.getByRole("button", { name: "Sombre" }).click();
+    await page.getByRole("radio", { name: "Sombre" }).or(page.getByRole("button", { name: "Sombre" })).first().click();
     await expect.poll(async () => {
       await page.reload({ waitUntil: "domcontentloaded" });
       return page.locator("html").getAttribute("data-theme");
@@ -184,7 +186,7 @@ test("choisir le thème « Sombre » dans le profil enregistre l'identifiant def
   } finally {
     // Le coach de test est créé avec le thème par défaut de la base, « saison3 » (globalSetup.ts)
     await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });
-    await page.getByRole("button", { name: "Saison 3" }).click();
+    await page.getByRole("radio", { name: "Saison 3" }).or(page.getByRole("button", { name: "Saison 3" })).first().click();
     await expect.poll(async () => {
       await page.reload({ waitUntil: "domcontentloaded" });
       return page.locator("html").getAttribute("data-theme");

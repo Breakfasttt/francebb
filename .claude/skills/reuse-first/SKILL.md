@@ -31,7 +31,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Champs de formulaire | `Field`, `Label`, `Input`, `Textarea`, `Select` |
 | Interrupteur, info-bulle | `Switch`, `Tooltip` |
 | Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}`) |
-| Pagination compacte | `PageNav` |
+| Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092) |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
 | Éditeur de message BBCode | `BBCodeEditor` (`common/components/BBCodeEditor`) ; `screen` pour un écran de rédaction plein écran sur téléphone. Mise en page de ces écrans : `ComposeScreen`, `ComposeActionBar`, `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) |
 | Savoir si on est sur ordinateur | `useMediaQuery(DESKTOP_QUERY)` |
@@ -57,8 +57,10 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Pagination | `Pagination` |
 | Avatar + cadre de rang | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
+| Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil (carte 092) |
+| Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` (carte 092) |
 | Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch`, `MultiLigueSearch` (choix de plusieurs ligues, refait avec `packages/ui` par la carte 091) |
-| Rang / statut / tags | `RankSelect`, `StatusBadge`, `TagSelector` |
+| Statut / tags | `StatusBadge`, `TagSelector` (le contour d'avatar se choisit dans une liste `Select`, carte 092) |
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
 | Smileys | `SmileyPicker`, `SmileyGrid` |
 | En-tête page / retour | `PageHeader`, `BackButton` |
@@ -79,6 +81,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Session serveur (connecté, non banni) | `lib/authGuard.ts` → `getActiveSession()` (jamais `auth()` direct, ni dans une action ni dans une page) |
 | Retour d'une action qui modifie des données | `lib/actionResult.ts` → type `ActionResult` (`{ success, error }`), affiché par `toast.error` |
 | Rôles / pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
+| Libellé lisible d'un rôle, rôles personnalisés compris | `getRoleLabel(role, labels)` de `lib/roles.ts`, avec `labels` lus par `getRoleLabelMap()` (`lib/roleLabels.ts`, serveur) ou l'action `getRoleLabels` (`app/profile/actions.ts`, composant client) |
 | Accès forum par rôle (`allowedRoles`) | `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`) — toute requête catégorie/forum/topic/post |
 | Client Prisma | `lib/prisma.ts` → `prisma` (sans `User.email`, omit global) ; `prismaWithEmail` réservé auth/mail |
 | BBCode → HTML | `lib/bbcode.ts` |

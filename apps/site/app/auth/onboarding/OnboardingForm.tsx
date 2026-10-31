@@ -9,8 +9,7 @@
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useSession } from "next-auth/react";
 import {
-  Button, Card, CardBody, CardHeader, CardTitle, Field, Input, Label, Select, Sheet, SheetContent,
-  DESKTOP_QUERY, toast, useMediaQuery,
+  Button, Card, CardBody, CardHeader, CardTitle, Field, Input, Label, Select, toast,
 } from "@bbfrance/ui";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
 import { finishOnboarding } from "./actions";
@@ -19,27 +18,16 @@ import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ThemePicker from "@/common/components/AppShell/ThemePicker";
+import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
 import { siteConfig } from "@/lib/siteConfig";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight } from "lucide-react";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
-const DICEBEAR_STYLES = [
-  { id: "adventurer", label: "Aventurier" },
-  { id: "avataaars", label: "Moderne" },
-  { id: "bottts", label: "Robot" },
-  { id: "fun-emoji", label: "Smiley" },
-  { id: "lorelei", label: "Lorelei" },
-  { id: "open-peeps", label: "Minimaliste" },
-  { id: "personas", label: "Humain" },
-  { id: "pixel-art", label: "Pixel Art" },
-];
-
 export default function OnboardingForm({ user }: { user: any }) {
   const { update } = useSession();
   const { theme } = useTheme();
   const [isPending, startTransition] = useTransition();
-  const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
   const [formData, setFormData] = useState({
     name: user.name || "",
@@ -53,8 +41,6 @@ export default function OnboardingForm({ user }: { user: any }) {
   });
 
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
-  const [genSeed, setGenSeed] = useState(user.name || "");
-  const [genStyle, setGenStyle] = useState("avataaars");
   const [regions, setRegions] = useState<{ key: string; label: string }[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -93,10 +79,7 @@ export default function OnboardingForm({ user }: { user: any }) {
   };
 
   const handleRandomAvatar = () => {
-    const style = DICEBEAR_STYLES[Math.floor(Math.random() * DICEBEAR_STYLES.length)].id;
-    const seed = Math.random().toString(36).substring(7);
-    const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
-    setFormData(prev => ({ ...prev, image: url }));
+    setFormData(prev => ({ ...prev, image: randomDicebearUrl() }));
   };
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -214,53 +197,15 @@ export default function OnboardingForm({ user }: { user: any }) {
         </Button>
       </form>
 
-      {/* Générateur d'avatar DiceBear : panneau du bas sur téléphone, fenêtre centrée sur ordinateur */}
-      <Sheet open={isGeneratorOpen} onOpenChange={setIsGeneratorOpen}>
-        <SheetContent title="Générateur d'avatar" side={isDesktop ? "center" : "bottom"}>
-          <div className="flex flex-col gap-4 pt-2 pb-2">
-            <div className="flex justify-center">
-              {/* eslint-disable-next-line @next/next/no-img-element -- image générée par le service DiceBear */}
-              <img
-                src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`}
-                alt="Aperçu de l'avatar"
-                width={120}
-                height={120}
-                className="size-[120px] rounded-bb-md bg-bb-surface-2"
-              />
-            </div>
-            <Field label="Graine" htmlFor="onboarding-seed" hint="Un mot ou un nom : la même graine donne toujours le même avatar.">
-              <Input id="onboarding-seed" type="text" value={genSeed} onChange={(e) => setGenSeed(e.target.value)} placeholder="Ex : Grumbly" />
-            </Field>
-            <div role="group" aria-label="Style de l'avatar" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {DICEBEAR_STYLES.map(s => (
-                <Button
-                  key={s.id}
-                  type="button"
-                  variant="secondary"
-                  size="tap"
-                  aria-pressed={genStyle === s.id}
-                  onClick={() => setGenStyle(s.id)}
-                  className={genStyle === s.id ? "border-bb-accent-text bg-bb-accent-soft" : ""}
-                >
-                  {s.label}
-                </Button>
-              ))}
-            </div>
-            <div className="flex flex-col gap-2 lg:flex-row-reverse">
-              <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" onClick={() => {
-                const url = `https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`;
-                setFormData(prev => ({ ...prev, image: url }));
-                setIsGeneratorOpen(false);
-              }}>
-                Confirmer
-              </Button>
-              <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={() => setIsGeneratorOpen(false)}>
-                Annuler
-              </Button>
-            </div>
-          </div>
-        </SheetContent>
-      </Sheet>
+      {/* Générateur d'avatar DiceBear : panneau du bas sur téléphone, fenêtre centrée sur ordinateur (composant partagé
+          avec l'édition du profil) */}
+      <AvatarGeneratorSheet
+        open={isGeneratorOpen}
+        onOpenChange={setIsGeneratorOpen}
+        initialSeed={user.name || ""}
+        seedInputId="onboarding-seed"
+        onApply={(url) => setFormData(prev => ({ ...prev, image: url }))}
+      />
     </>
   );
 }

@@ -52,15 +52,16 @@ Sur téléphone, la barre de navigation devient un bouton « hamburger » (trois
 
 ## Colonne latérale d'une page
 
-Si une page a sa propre colonne latérale (onglets du profil, de l'administration…) :
+Si une page a sa propre colonne latérale (onglets de l'administration, de la modération…) :
 - sur ordinateur, elle s'affiche normalement ;
 - sur téléphone, son contenu est déplacé dans l'emplacement libre du menu global, avec le composant `<MobilePortal target="mobile-page-sidebar-slot">` et le hook `useIsMobile`. La colonne d'origine est masquée en CSS mobile.
+- les écrans refaits (ADR 0006) mettent plutôt leurs onglets en haut de la page avec `LinkTabs` de `packages/ui`, une rangée qui défile de côté (exemple : `/profile`, carte 092).
 
 ## Filtres et longs formulaires
 
-Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/membres`, `/articles`, `/ressources`, `/ligues` (carte 054).
+Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Exemples : `/articles`, `/ressources`, `/ligues` (carte 054).
 
-Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un `Sheet` (exemples : `/forum/search`, carte 088 ; `/tournois`, carte 089). Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille au-dessus des résultats.
+Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un `Sheet` (exemples : `/forum/search`, carte 088 ; `/tournois`, carte 089 ; `/membres`, carte 092). Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille au-dessus des résultats.
 
 - Sur ordinateur, le composant affiche ses enfants dans une simple `<div className={className}>`. Avec `mobileOnly`, il n'affiche rien sur ordinateur : à utiliser quand la page a déjà sa colonne de filtres.
 - Le bouton flottant remplace les filtres jusqu'au seuil commun (1024 pixels), comme la classe `desktop-only` qui masque les colonnes de filtres. Le réglage `breakpoint` existe encore mais ne doit pas être utilisé : une autre valeur recréerait des largeurs où les filtres ne sont nulle part.

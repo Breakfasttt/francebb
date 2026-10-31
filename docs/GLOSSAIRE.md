@@ -35,6 +35,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **CSS** | Langage qui décrit l'apparence des pages (couleurs, tailles, positions). |
 | **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
+| **DiceBear** | Service en ligne qui dessine un avatar à partir d'un mot, la « graine », et d'un style (robot, pixel art…) : la même graine donne toujours le même dessin. Le site s'en sert pour les boutons « Aléatoire » et « Générer » de l'avatar (composant `AvatarGeneratorSheet`, carte 092). |
 | **E2E** (*end-to-end*, de bout en bout) | Test qui joue un vrai parcours dans un vrai navigateur, comme un visiteur (ex. ouvrir le forum puis répondre). |
 | **Écran de rédaction** | Page du forum où l'on écrit : répondre à un sujet, modifier un message, créer un sujet (carte 087). Sur téléphone, elle occupe tout l'écran : la barre de navigation du bas disparaît, la barre d'outils de l'éditeur reste collée en haut et la barre d'envoi (« Annuler », « Publier ») est collée en bas, à portée de pouce. Les adresses concernées sont reconnues par `isComposePath`. Depuis la carte 089, la création et la modification d'un tournoi et la saisie de ses résultats sont aussi des écrans de rédaction. |
 | **Épic** | Grand chantier qui regroupe plusieurs cartes du kanban (`kanban/epics/`). |
@@ -93,6 +94,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **React** | Bibliothèque qui construit l'interface des pages à partir de composants. |
 | **Rebase** | Replacer les commits d'une branche au-dessus de la dernière version d'une autre branche. |
 | **RGPD** | Loi européenne sur la protection des données personnelles (emails, comptes…). Elle impose notamment de prévenir les membres avant d'effacer leurs données. |
+| **RoleConfig** | Table de la base qui liste les rôles des membres : leur code (`MODERATOR`), leur libellé lisible (« Modérateur »), leur couleur et leur puissance. Les rôles personnalisés créés dans l'administration y sont aussi. Le site lit les libellés avec `getRoleLabelMap` (`lib/roleLabels.ts`) pour ne jamais afficher un code brut. |
 | **Rollback** (retour arrière) | Revenir à la version précédente quand une mise à jour pose problème. |
 | **Safe area (zone protégée)** | Partie de l'écran d'un iPhone que ne recouvrent ni l'encoche en haut ni la barre d'accueil en bas. Une barre fixée en bas doit ajouter cette marge (`env(safe-area-inset-bottom)`), sinon ses boutons passent sous la barre d'accueil. |
 | **Schéma** (base de données) | La liste des tables, de leurs colonnes et de leurs liens. |

@@ -1,17 +1,42 @@
-import { ShieldAlert, Trash2, Mail, LogOut, KeyRound, Bell, CheckCircle2, XCircle, Link, Unlink } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured, getPassportUrl } from "../actions";
-import { Button } from "@bbfrance/ui";
-import Modal from "@/common/components/Modal/Modal";
-import { useEffect, useTransition, useState } from "react";
-import { toast } from "@bbfrance/ui";
-import ExplainButton from "@/common/components/Button/ExplainButton";
+"use client";
+
+/**
+ * Onglet « Gérer mon compte » du profil (refonte, carte 092, ADR 0006), en blocs empilés :
+ * - « Passeport Blood Bowl » (mode hub seulement, ADR-0007) : lien vers le passeport, où se gèrent l'identité commune
+ *   aux applications, les appareils connectés et la suppression du compte ;
+ * - « Moyens de connexion » : l'adresse email (lien magique), Discord et Google, avec « Associer » ou « Délier »
+ *   (le dernier moyen de connexion ne peut pas être délié) ;
+ * - « Notifications par email » : un interrupteur par type de courriel, enregistré à chaque changement ; en
+ *   développement, l'envoi d'une newsletter de test ;
+ * - « Zone de danger » : « Supprimer mon compte », avec deux confirmations (hors mode hub).
+ * Les actions serveur sont inchangées.
+ */
+import { useEffect, useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
+import { Bell, CheckCircle2, KeyRound, Link as LinkIcon, Mail, ShieldAlert, Trash2, Unlink, XCircle } from "lucide-react";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Label, Switch, toast } from "@bbfrance/ui";
+import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured, getPassportUrl } from "../actions";
 
 interface ProfileSettingsProps {
-  user: any;
+  user: {
+    email?: string | null;
+    accounts?: { provider: string }[];
+    notifPm?: boolean;
+    notifMention?: boolean;
+    notifFollowedTopic?: boolean;
+    notifNewsletter?: boolean;
+  };
   onUpdate?: () => void;
 }
+
+type NotifKey = "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter";
+
+const NOTIFICATIONS: { id: NotifKey; label: string; desc: string }[] = [
+  { id: "notifPm", label: "Messages privés", desc: "Un nouveau message dans votre messagerie." },
+  { id: "notifMention", label: "Mentions", desc: "Quelqu'un vous cite dans un sujet." },
+  { id: "notifFollowedTopic", label: "Sujets suivis", desc: "Un nouveau message dans un sujet que vous suivez." },
+  { id: "notifNewsletter", label: "Newsletter et annonces", desc: "Les informations importantes sur le site." },
+];
 
 export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps) {
   const [isDeleting, startDeletion] = useTransition();
@@ -29,28 +54,25 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
     getPassportUrl().then(setPassportUrl);
   }, []);
 
-  // Notifications state
-  const [notifSettings, setNotifSettings] = useState({
+  const [notifSettings, setNotifSettings] = useState<Record<NotifKey, boolean>>({
     notifPm: user.notifPm ?? true,
     notifMention: user.notifMention ?? true,
     notifFollowedTopic: user.notifFollowedTopic ?? true,
     notifNewsletter: user.notifNewsletter ?? true,
   });
 
-  const handleUpdateNotif = (key: string, value: boolean) => {
+  const handleUpdateNotif = (key: NotifKey, value: boolean) => {
+    const previous = notifSettings;
     const newSettings = { ...notifSettings, [key]: value };
     setNotifSettings(newSettings);
 
     startSavingNotif(async () => {
       try {
         const result = await updateNotificationSettings(newSettings);
-        if (result.success) {
-          toast.success("Préférences de notification mises à jour");
-        }
-      } catch (err) {
+        if (result.success) toast.success("Préférences de notification mises à jour");
+      } catch {
         toast.error("Erreur lors de la mise à jour");
-        // Revert on error
-        setNotifSettings(notifSettings);
+        setNotifSettings(previous);
       }
     });
   };
@@ -69,22 +91,23 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
     });
   };
 
+  const accountCount = user.accounts?.length ?? 0;
+
   const handleUnlink = (provider: string) => {
-    if (user.accounts?.length <= 1) {
+    if (accountCount <= 1) {
       toast.error("Vous ne pouvez pas délier votre unique méthode de connexion.");
       return;
     }
-
     startUnlinking(async () => {
       try {
         const result = await unlinkAccount(provider);
         if (result.success) {
           toast.success(`Compte ${provider} délié avec succès.`);
-          if (onUpdate) onUpdate();
+          onUpdate?.();
         } else {
           toast.error(result.error || "Erreur lors du déliement.");
         }
-      } catch (err) {
+      } catch {
         toast.error("Erreur technique lors du déliement.");
       }
     });
@@ -94,461 +117,182 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
     signIn(provider, { callbackUrl: window.location.href });
   };
 
-  const hasDiscord = user.accounts?.some((a: any) => a.provider === "discord");
-  const hasGoogle = user.accounts?.some((a: any) => a.provider === "google");
+  const providers = [
+    { id: "discord", label: "Discord" },
+    { id: "google", label: "Google" },
+  ].map((p) => ({ ...p, linked: !!user.accounts?.some((a) => a.provider === p.id) }));
+
+  const row = "flex min-h-16 flex-wrap items-center gap-3 border-b border-bb-border px-4 py-3 last:border-b-0";
 
   return (
-    <PremiumCard className="profile-settings-view fade-in">
-      <div className="section-header-pm" style={{ marginBottom: '2rem' }}>
-        <ShieldAlert size={20} className="header-icon" />
-        <h3 className="activity-box-title">Gestion du compte & Sécurité</h3>
-      </div>
-
+    <div className="flex flex-col gap-4">
       {passportUrl && (
-        <div className="settings-section">
-          <h4 className="settings-subtitle"><KeyRound size={16} /> Passeport Blood Bowl</h4>
-          <p className="passport-text">
-            Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications BBFrance. Les
-            appareils connectés, le téléchargement de tes données et la suppression de ton compte se gèrent sur ton
-            passeport.
-          </p>
-          <Button asChild variant="secondary" size="tap">
-            <a href={passportUrl}>Ouvrir mon passeport</a>
-          </Button>
-        </div>
+        <Card>
+          <CardHeader>
+            <KeyRound size={18} className="text-bb-text-muted" aria-hidden="true" />
+            <CardTitle>Passeport Blood Bowl</CardTitle>
+          </CardHeader>
+          <CardBody className="flex flex-col items-start gap-3">
+            <p className="m-0 text-[0.95rem] leading-relaxed text-bb-text-muted">
+              Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications BBFrance. Les
+              appareils connectés, le téléchargement de tes données et la suppression de ton compte se gèrent sur ton
+              passeport.
+            </p>
+            <Button asChild variant="secondary" size="tap" className="w-full sm:w-auto">
+              <a href={passportUrl}>Ouvrir mon passeport</a>
+            </Button>
+          </CardBody>
+        </Card>
       )}
 
-      {/* Authentication */}
-      <div className="settings-section">
-        <h4 className="settings-subtitle"><KeyRound size={16} /> Authentification</h4>
-        <div className="auth-providers-list">
-          <div className={`auth-item ${emailServiceActive ? 'active' : 'disabled'}`}>
-            <Mail size={18} className={emailServiceActive ? "" : "inactive-icon"} />
-            <div className="auth-info">
-              <span className="auth-label">Connexion par Email (Magic Link)</span>
-              <span className="auth-value">{user.email || "Non renseigné"}</span>
-            </div>
+      {/* Moyens de connexion */}
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <ShieldAlert size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Moyens de connexion</CardTitle>
+        </CardHeader>
+        <ul className="m-0 list-none p-0">
+          <li className={row}>
+            <Mail size={18} className="shrink-0 text-bb-text-muted" aria-hidden="true" />
+            <span className="flex min-w-0 flex-1 flex-col">
+              <span className="text-sm font-semibold text-bb-text-muted">Email (lien magique)</span>
+              <span className="break-all text-bb-text">{user.email || "Non renseigné"}</span>
+            </span>
             {emailServiceActive ? (
-              <span className="auth-status"><CheckCircle2 size={12} /> Service actif</span>
+              <Badge variant="success"><CheckCircle2 size={12} aria-hidden="true" /> Service actif</Badge>
             ) : (
-              <span className="auth-status inactive"><XCircle size={12} /> Non configuré</span>
+              <Badge variant="neutral"><XCircle size={12} aria-hidden="true" /> Non configuré</Badge>
             )}
-          </div>
-
-          {/* Discord */}
-          <div className={`auth-item ${hasDiscord ? 'active' : 'disabled'}`}>
-             <div className="auth-info">
-              <span className="auth-label">Discord</span>
-              <span className="auth-value">{hasDiscord ? "Compte lié" : "Non lié"}</span>
-            </div>
-            {hasDiscord ? (
-              <button 
-                className="link-btn unlink" 
-                onClick={() => handleUnlink('discord')}
-                disabled={isUnlinking || user.accounts?.length <= 1}
-                title="Délier ce compte"
-              >
-                <Unlink size={16} />
-                <span>Délier</span>
-              </button>
-            ) : (
-              <button 
-                className="link-btn link" 
-                onClick={() => handleLink('discord')}
-                disabled={isUnlinking}
-              >
-                <Link size={16} />
-                <span>Associer</span>
-              </button>
-            )}
-          </div>
-
-          {/* Google */}
-          <div className={`auth-item ${hasGoogle ? 'active' : 'disabled'}`}>
-             <div className="auth-info">
-              <span className="auth-label">Google</span>
-              <span className="auth-value">{hasGoogle ? "Compte lié" : "Non lié"}</span>
-            </div>
-            {hasGoogle ? (
-              <button 
-                className="link-btn unlink" 
-                onClick={() => handleUnlink('google')}
-                disabled={isUnlinking || user.accounts?.length <= 1}
-                title="Délier ce compte"
-              >
-                <Unlink size={16} />
-                <span>Délier</span>
-              </button>
-            ) : (
-              <button 
-                className="link-btn link" 
-                onClick={() => handleLink('google')}
-                disabled={isUnlinking}
-              >
-                <Link size={16} />
-                <span>Associer</span>
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Email Notifications */}
-      <div className="settings-section">
-        <h4 className="settings-subtitle"><Bell size={16} /> Notifications par mail</h4>
-        <div className="notif-settings-list">
-          {[
-            { id: 'notifPm', label: 'Messages Privés', desc: "Nouveau message dans votre boîte de réception" },
-            { id: 'notifMention', label: 'Mentions', desc: "Quelqu'un vous cite dans un sujet" },
-            { id: 'notifFollowedTopic', label: 'Sujets suivis', desc: "Nouveau message dans un sujet que vous suivez" },
-            { id: 'notifNewsletter', label: 'Newsletter & Annonces', desc: "Informations importantes sur la plateforme" },
-          ].map((item) => (
-            <div key={item.id} className="notif-item">
-              <div className="notif-info">
-                <span className="notif-label-inner">{item.label}</span>
-                <span className="notif-desc">{item.desc}</span>
-              </div>
-              <label className="switch">
-                <input 
-                  type="checkbox" 
-                  checked={(notifSettings as any)[item.id]} 
-                  onChange={(e) => handleUpdateNotif(item.id, e.target.checked)}
-                  disabled={isSavingNotif}
-                />
-                <span className="slider round"></span>
-              </label>
-            </div>
+          </li>
+          {providers.map((p) => (
+            <li key={p.id} className={row}>
+              <KeyRound size={18} className="shrink-0 text-bb-text-muted" aria-hidden="true" />
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="font-semibold text-bb-text">{p.label}</span>
+                <span className="text-sm text-bb-text-muted">{p.linked ? "Compte lié" : "Non lié"}</span>
+              </span>
+              {p.linked ? (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="tap"
+                  aria-label={`Délier ${p.label}`}
+                  disabled={isUnlinking || accountCount <= 1}
+                  onClick={() => handleUnlink(p.id)}
+                >
+                  <Unlink size={16} aria-hidden="true" /> Délier
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="tap"
+                  aria-label={`Associer ${p.label}`}
+                  disabled={isUnlinking}
+                  onClick={() => handleLink(p.id)}
+                >
+                  <LinkIcon size={16} aria-hidden="true" /> Associer
+                </Button>
+              )}
+            </li>
           ))}
-          {process.env.NODE_ENV === "development" && (
-            <div style={{ marginTop: '1rem', paddingTop: '1.5rem', borderTop: '1px dashed var(--glass-border)' }}>
-              <p style={{ fontSize: '0.8rem', opacity: 0.6, marginBottom: '1rem' }}>
-                🔧 <strong>Zone de Test :</strong> Envoie une newsletter fictive pour tester le rendu.
-              </p>
-              <ExplainButton 
-                onClick={async () => {
-                  const { sendTestNewsletter } = await import("../actions");
-                  const res = await sendTestNewsletter();
-                  if (res.success) {
-                    toast.success("Mail de test envoyé ! Vérifie Mailtrap.");
-                  } else {
-                    toast.error("Échec de l'envoi.");
-                  }
-                }}
-                icon={<Mail size={16} />}
-              >
-                Envoyer une newsletter de test
-              </ExplainButton>
-            </div>
-          )}
-        </div>
-      </div>
+        </ul>
+      </Card>
 
-      {/* Danger Zone */}
-      <div className="settings-section danger-zone">
-        <h4 className="settings-subtitle danger"><Trash2 size={16} /> Zone de danger</h4>
-        <div className="danger-box">
-          <div className="danger-text">
-             <p><strong>Suppression irréversible du compte</strong></p>
-             <p>Cette action supprimera toutes vos données personnelles (messages privés, suivis, paramètres). Vos messages publics seront anonymisés.</p>
+      {/* Notifications par email */}
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <Bell size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Notifications par email</CardTitle>
+        </CardHeader>
+        <ul className="m-0 list-none p-0">
+          {NOTIFICATIONS.map((item) => (
+            <li key={item.id} className={`${row} flex-nowrap`}>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <Label htmlFor={`notif-${item.id}`} className="cursor-pointer text-[0.95rem]">{item.label}</Label>
+                <span className="text-sm text-bb-text-muted">{item.desc}</span>
+              </span>
+              <Switch
+                id={`notif-${item.id}`}
+                checked={notifSettings[item.id]}
+                onCheckedChange={(checked) => handleUpdateNotif(item.id, checked)}
+                disabled={isSavingNotif}
+              />
+            </li>
+          ))}
+        </ul>
+        {process.env.NODE_ENV === "development" && (
+          <CardBody className="flex flex-col items-start gap-3 border-t border-dashed border-bb-border">
+            <p className="m-0 text-sm text-bb-text-muted">
+              <strong>Développement :</strong> envoie une newsletter fictive à votre adresse pour vérifier son rendu.
+            </p>
+            <Button
+              type="button"
+              variant="secondary"
+              size="tap"
+              onClick={async () => {
+                const { sendTestNewsletter } = await import("../actions");
+                const res = await sendTestNewsletter();
+                if (res.success) toast.success("Mail de test envoyé ! Vérifie Mailtrap.");
+                else toast.error("Échec de l'envoi.");
+              }}
+            >
+              <Mail size={16} aria-hidden="true" /> Envoyer une newsletter de test
+            </Button>
+          </CardBody>
+        )}
+      </Card>
+
+      {/* Zone de danger */}
+      <Card className="border-bb-danger-text">
+        <CardHeader>
+          <Trash2 size={18} className="text-bb-danger-text" aria-hidden="true" />
+          <CardTitle className="text-bb-danger-text">Zone de danger</CardTitle>
+        </CardHeader>
+        <CardBody className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-1">
+            <p className="m-0 font-bold text-bb-text">Suppression irréversible du compte</p>
+            <p className="m-0 text-sm leading-relaxed text-bb-text-muted">
+              Vos données personnelles (messages privés, suivis, réglages) sont supprimées. Vos messages publics restent,
+              rattachés au compte « Coach Inconnu ».
+            </p>
           </div>
           {passportUrl ? (
             // Mode hub : la suppression, avec ses 30 jours pour changer d'avis, se fait sur le passeport (carte 124)
-            <Button asChild variant="secondary" size="tap">
+            <Button asChild variant="secondary" size="tap" className="w-full shrink-0 lg:w-auto">
               <a href={passportUrl}>Supprimer mon compte depuis mon passeport</a>
             </Button>
           ) : (
-          <button
-            className="delete-account-btn"
-            onClick={() => setShowConfirmModal(true)}
-            disabled={isDeleting}
-          >
-            <Trash2 size={18} />
-            <span>Supprimer mon compte</span>
-          </button>
+            <Button type="button" variant="danger" size="tap" className="w-full shrink-0 lg:w-auto" disabled={isDeleting} onClick={() => setShowConfirmModal(true)}>
+              <Trash2 size={18} aria-hidden="true" /> Supprimer mon compte
+            </Button>
           )}
-        </div>
-      </div>
+        </CardBody>
+      </Card>
 
-      <Modal
-        isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
+      <ConfirmDialog
+        open={showConfirmModal}
+        onOpenChange={setShowConfirmModal}
+        title="Supprimer mon compte (étape 1 sur 2)"
+        message="Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est irréversible et conforme à vos droits RGPD."
+        confirmLabel="Continuer"
+        danger
         onConfirm={() => {
           setShowConfirmModal(false);
           setShowFinalModal(true);
         }}
-        title="Clôture du compte - Étape 1/2"
-        message="Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est irréversible et conforme à vos droits RGPD."
-        confirmText="Continuer"
-        variant="danger"
       />
 
-      <Modal
-        isOpen={showFinalModal}
-        onClose={() => setShowFinalModal(false)}
+      <ConfirmDialog
+        open={showFinalModal}
+        onOpenChange={setShowFinalModal}
+        title="Supprimer mon compte (dernière étape)"
+        message="Toutes vos données personnelles seront effacées. Êtes-vous certain de vouloir continuer ?"
+        confirmLabel="Tout supprimer définitivement"
+        danger
+        pending={isDeleting}
         onConfirm={handleDeleteAccount}
-        title="Clôture du compte - Confirmation FINALE"
-        message="Dernière étape : toutes vos données seront effacées. Êtes-vous certain de vouloir procéder ?"
-        confirmText="Tout supprimer définitivement"
-        variant="danger"
       />
-
-      <style jsx>{`
-        :global(.profile-settings-view) {
-          padding: 2rem !important;
-        }
-        .section-header-pm {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          margin-bottom: 2rem;
-        }
-        .header-icon {
-          color: var(--primary);
-        }
-        .activity-box-title {
-          margin: 0;
-          font-size: 1.2rem;
-          color: var(--foreground);
-        }
-        .settings-section {
-          margin-bottom: 3.5rem;
-        }
-        .settings-section:last-of-type {
-          margin-bottom: 0;
-        }
-        .settings-subtitle {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          font-size: 0.9rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--text-muted);
-          margin-bottom: 1.5rem;
-          font-weight: 800;
-        }
-        .passport-text {
-          margin: 0 0 1rem;
-          color: var(--text-muted);
-          line-height: 1.5;
-        }
-        .settings-subtitle.danger {
-          color: var(--danger);
-        }
-        .auth-providers-list {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-        .auth-item {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 1rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          transition: all 0.2s;
-        }
-        .auth-item.active {
-          border-color: rgba(34, 197, 94, 0.3);
-          background: rgba(34, 197, 94, 0.05);
-        }
-        .auth-info {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-        }
-        .auth-label {
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          font-weight: 700;
-        }
-        .auth-value {
-          font-size: 0.95rem;
-          color: var(--foreground);
-        }
-        .auth-status {
-          font-size: 0.7rem;
-          background: #22c55e;
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-weight: 800;
-        }
-        .auth-status.inactive {
-          background: var(--text-muted);
-          opacity: 0.6;
-        }
-        .link-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          padding: 8px 16px;
-          border-radius: 8px;
-          font-size: 0.85rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .link-btn:hover:not(:disabled) {
-          background: var(--glass-border);
-          transform: translateY(-1px);
-        }
-        .link-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-        .link-btn.link {
-          color: var(--primary);
-          border-color: var(--primary-transparent);
-        }
-        .link-btn.link:hover {
-          background: var(--primary-transparent);
-        }
-        .link-btn.unlink {
-          color: var(--danger);
-          border-color: rgba(var(--danger-rgb), 0.2);
-        }
-        .link-btn.unlink:hover {
-          background: rgba(var(--danger-rgb), 0.1);
-        }
-        .notif-settings-list {
-          display: flex;
-          flex-direction: column;
-          gap: 1.2rem;
-        }
-        .notif-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.2rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          transition: all 0.2s;
-        }
-        .notif-item:hover {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--primary-transparent);
-        }
-        .notif-info {
-          display: flex;
-          flex-direction: column;
-          gap: 0.3rem;
-        }
-        .notif-label-inner {
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: var(--foreground);
-        }
-        .notif-desc {
-          font-size: 0.75rem;
-          color: var(--text-muted);
-        }
-        .inactive-icon {
-          color: var(--text-muted);
-          opacity: 0.3;
-        }
-
-        /* Toggle Switch UI */
-        .switch {
-          position: relative;
-          display: inline-block;
-          width: 44px;
-          height: 24px;
-          flex-shrink: 0;
-        }
-        .switch input { 
-          opacity: 0;
-          width: 0;
-          height: 0;
-        }
-        .slider {
-          position: absolute;
-          cursor: pointer;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: var(--glass-border);
-          transition: .4s;
-          border: 1px solid var(--glass-border);
-        }
-        .slider:before {
-          position: absolute;
-          content: "";
-          height: 18px;
-          width: 18px;
-          left: 2px;
-          bottom: 2px;
-          background-color: white;
-          transition: .4s;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        input:checked + .slider {
-          background-color: var(--primary);
-          border-color: var(--primary);
-        }
-        input:focus + .slider {
-          box-shadow: 0 0 1px var(--primary);
-        }
-        input:checked + .slider:before {
-          transform: translateX(20px);
-        }
-        .slider.round {
-          border-radius: 24px;
-        }
-        .slider.round:before {
-          border-radius: 50%;
-        }
-
-        .danger-box {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1.5rem;
-          background: rgba(var(--danger-rgb), 0.05);
-          border: 1px solid rgba(var(--danger-rgb), 0.2);
-          border-radius: 12px;
-        }
-        .danger-text p {
-          margin: 0;
-          font-size: 0.9rem;
-          color: var(--text-muted);
-        }
-        .danger-text strong {
-          color: var(--danger);
-          font-size: 1rem;
-          display: block;
-          margin-bottom: 4px;
-        }
-        .delete-account-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: var(--danger);
-          color: white;
-          border: none;
-          padding: 0.8rem 1.5rem;
-          border-radius: 8px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .delete-account-btn:hover:not(:disabled) {
-          filter: brightness(1.1);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(var(--danger-rgb), 0.2);
-        }
-        .delete-account-btn:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      `}</style>
-    </PremiumCard>
+    </div>
   );
 }

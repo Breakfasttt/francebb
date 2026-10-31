@@ -1,76 +1,83 @@
 "use client";
 
-import { ArrowLeft, Trophy } from "lucide-react";
+/**
+ * Profil d'un membre vu par un autre membre `/spy/[id]` (refonte, carte 092, ADR 0006) : même mise en page que
+ * `/profile` (carte du membre à gauche sur ordinateur, en haut sur téléphone), avec deux onglets gardés dans
+ * l'adresse (`?tab=activity|articles`) et les actions sur ce membre (message privé, signaler, bloquer, et bannir pour
+ * un modérateur). Son propre identifiant renvoie vers `/profile`. Un visiteur non connecté est envoyé vers la page de
+ * connexion, qui le ramène ici ensuite.
+ */
 import { useSession } from "next-auth/react";
-import { toast } from "@bbfrance/ui";
 import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, type ComponentProps } from "react";
+import { UserX } from "lucide-react";
+import { Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
 
-import { getUserActivity, getUserStats, getBlockedUsersIds } from "@/app/profile/actions";
-import { startConversation } from "@/app/messagerie/actions";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { getUserActivity, getUserStats, getBlockedUsersIds, getRoleLabels } from "@/app/profile/actions";
 import { isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
-import "./page.css";
-import "./page-mobile.css";
-
+import { PROFILE_LAYOUT_CLASS, PROFILE_PAGE_CLASS } from "@/app/profile/component/profileLayout";
 
 type ProfileTab = "activity" | "articles";
+
+const sanitizeTab = (tab: string | null): ProfileTab => (tab === "articles" ? "articles" : "activity");
+
+/** Lien d'onglet sans retour en haut de la page : le contenu change juste sous les onglets. */
+function TabLink(props: ComponentProps<typeof Link>) {
+  return <Link scroll={false} {...props} />;
+}
 
 export default function SpyProfilePage() {
   const { data: session, status } = useSession();
   const params = useParams();
   const id = params.id as string;
   const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab");
+  const activeTab = sanitizeTab(searchParams.get("tab"));
   const router = useRouter();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- fiche renvoyée par /api/users/[id], non typée
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ postCount: 0 });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- messages renvoyés par getUserActivity
   const [activities, setActivities] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<ProfileTab>("activity");
   const [isBlocked, setIsBlocked] = useState(false);
+  const [roleLabels, setRoleLabels] = useState<Record<string, string>>({});
 
-  const sanitizeTab = (tab: string | null): ProfileTab => {
-    if (tab === "articles") return "articles";
-    return "activity";
-  };
+  /** Charge la fiche du membre, ses chiffres, son activité et l'état du blocage. */
+  async function loadProfile() {
+    const response = await fetch(`/api/users/${id}`);
+    if (!response.ok) {
+      setUser(null);
+      return;
+    }
+    setUser(await response.json());
+    setStats(await getUserStats(id));
+    setActivities(await getUserActivity(id));
+    if (session?.user?.id) {
+      const blockedIds = await getBlockedUsersIds();
+      setIsBlocked(blockedIds.includes(id));
+    }
+  }
 
   useEffect(() => {
     async function fetchData() {
       if (!id) return;
 
+      // Son propre identifiant renvoie vers /profile. Avant, redirect() était appelé dans le bloc try : son erreur
+      // spéciale était attrapée par le catch, et la page affichait « Utilisateur introuvable » (carte 092).
+      if (session?.user?.id === id) {
+        router.replace("/profile");
+        return;
+      }
+
       try {
-        // Rediriger vers /profile si l'ID est celui de l'utilisateur connecté
-        if (session?.user?.id === id) {
-          redirect("/profile");
-        }
-
-        const response = await fetch(`/api/users/${id}`);
-        if (!response.ok) {
-          setUser(null);
-          return;
-        }
-        const userData = await response.json();
-        setUser(userData);
-
-        const userStats = await getUserStats(id);
-        setStats(userStats);
-        const userActivities = await getUserActivity(id);
-        setActivities(userActivities);
-
-        // Fetch block status if logged in
-        if (session?.user?.id) {
-          const blockedIds = await getBlockedUsersIds();
-          setIsBlocked(blockedIds.includes(id));
-        }
+        await loadProfile();
+        setRoleLabels(await getRoleLabels());
       } catch (error) {
         console.error("Error fetching spy profile data:", error);
       } finally {
@@ -85,97 +92,74 @@ export default function SpyProfilePage() {
       }
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé quand le membre ou la session change, comme avant la refonte
   }, [id, session, status]);
 
   const refreshData = async () => {
     if (!id) return;
     try {
-      const response = await fetch(`/api/users/${id}`);
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-      }
-      const userStats = await getUserStats(id);
-      setStats(userStats);
-      const userActivities = await getUserActivity(id);
-      setActivities(userActivities);
-      
-      if (session?.user?.id) {
-        const blockedIds = await getBlockedUsersIds();
-        setIsBlocked(blockedIds.includes(id));
-      }
+      await loadProfile();
     } catch (error) {
       console.error("Error refreshing spy profile data:", error);
     }
   };
 
-  useEffect(() => {
-    const tab = sanitizeTab(tabParam);
-    if (tab !== activeTab) {
-      setActiveTab(tab);
-    }
-  }, [tabParam]);
+  const header = (
+    <ForumListHeader
+      title={user ? <>Profil de {user.name}</> : "Profil d'un membre"}
+      subtitle={user ? `Consultez le profil de ${user.name}` : undefined}
+      backHref="/"
+      backTitle="Retour à l'accueil"
+    />
+  );
 
-  if (loading || status === "loading") return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Chargement...</div>;
-  if (!user) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Utilisateur introuvable.</div>;
+  if (loading || status === "loading") {
+    return (
+      <div className={PROFILE_PAGE_CLASS}>
+        {header}
+        <div className={PROFILE_LAYOUT_CLASS} aria-label="Chargement du profil">
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-96 w-full" />
+        </div>
+      </div>
+    );
+  }
+  if (!user) {
+    return (
+      <div className={PROFILE_PAGE_CLASS}>
+        {header}
+        <Card><EmptyState icon={<UserX size={32} />} title="Utilisateur introuvable." /></Card>
+      </div>
+    );
+  }
 
-  const userRole = (session?.user as any)?.role;
-  const isModerator = checkIsModerator(userRole);
-
-  const handleContact = async () => {
-    if (!session?.user) {
-      // Visiteur non connecté : page de connexion du site, qui le ramènera sur ce profil ensuite
-      redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/spy/${id}`)}`);
-      return;
-    }
-    try {
-      const res = await startConversation([user.id]);
-      if (res.success) {
-        router.push(`/messagerie?id=${res.conversationId}`);
-      } else {
-        toast.error(res.error || "Impossible de démarrer la conversation");
-      }
-    } catch {
-      toast.error("Impossible de démarrer la conversation");
-    }
-  };
+  const isModerator = checkIsModerator(session?.user?.role);
+  const tabs = [
+    { label: "Activité du forum", href: `/spy/${id}?tab=activity`, active: activeTab === "activity" },
+    { label: "Articles", href: `/spy/${id}?tab=articles`, active: activeTab === "articles" },
+  ];
 
   return (
-    <div className="spy-page-wrapper">
-      <PageHeader 
-        title={<>Profil de <span>{user.name}</span></>} 
-        subtitle={`Consultez le profil de ${user.name}`}
-        backHref="/"
-        backTitle="Retour à l'accueil"
-      />
+    <div className={PROFILE_PAGE_CLASS}>
+      {header}
 
-      <main className="container profile-page-container">
-
-      <div className="profile-content-layout">
+      <div className={PROFILE_LAYOUT_CLASS}>
         <ProfileSidebar
           user={user}
           postCount={stats.postCount}
           isOwnProfile={false}
-          activeTab={activeTab}
-          onTabChange={(tab) => setActiveTab(tab as ProfileTab)}
           isModerator={isModerator}
-          onContact={handleContact}
+          roleLabels={roleLabels}
           isBlockedInitial={isBlocked}
           onRefresh={refreshData}
         />
 
-        <div className="profile-main-content">
-          {activeTab === "activity" && (
-            <ProfileActivity activities={activities} userName={user.name} />
-          )}
-
-          {activeTab === "articles" && (
-            <ProfileArticles userId={user.id} isOwnProfile={false} />
-          )}
-
-        </div>
+        <section aria-label={activeTab === "articles" ? "Articles" : "Activité du forum"} className="flex min-w-0 flex-col gap-4">
+          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="-mx-3 px-3 lg:mx-0 lg:px-0" />
+          {activeTab === "activity" && <ProfileActivity activities={activities} userName={user.name} />}
+          {activeTab === "articles" && <ProfileArticles userId={user.id} isOwnProfile={false} />}
+        </section>
       </div>
-    </main>
     </div>
   );
 }

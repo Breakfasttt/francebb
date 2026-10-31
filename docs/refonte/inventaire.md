@@ -234,21 +234,23 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 7. Profil et membres
 
-- [ ] [membre] `/profile`, carte de profil : avatar avec cadre, pseudo, rôle, badge « Banni », lien NAF, nombre de messages, région, équipe, ligues.
-- [ ] [membre] Onglets gardés dans l'adresse (`?tab=`) : `followed`, `activity`, `articles`, `ressources`, `blocked`, `edit`, `settings`.
-- [ ] [membre] Onglet `followed` : sujets suivis, avec une pastille de non-lu et une pagination.
-- [ ] [membre] Onglet `activity` : activité récente sur le forum.
-- [ ] [membre] Onglet `articles` : mes articles, 6 par page.
-- [ ] [membre] Onglet `ressources` : mes ressources, avec Éditer et Supprimer (confirmation).
-- [ ] [membre] Onglet `blocked` : utilisateurs bloqués, avec « Débloquer ».
-- [ ] [membre] Onglet `edit` : avatar (4 façons), contour d'avatar, pseudo, NAF, région, équipe, ligues, signature (250 caractères), **choix du thème**.
-- [ ] [membre] Onglet `settings` : associer ou délier email, Discord et Google ; interrupteurs de notification par email (messages privés, mentions, sujets suivis, newsletter) ; « Supprimer mon compte » avec double confirmation. En développement : newsletter de test.
-- [ ] [membre] `/spy/[id]` : onglets Activité et Articles ; « Message privé » ; « Signaler » ; « Bloquer » ou « Débloquer » (pas sur un modérateur). Son propre identifiant renvoie vers `/profile`.
-- [ ] [modo] `/spy/[id]` : « Bannir » (raisons rapides plus détails) ou « Débannir ».
-- [ ] [membre] `/membres` : recherche par nom, filtres par ligue, région et rôle ; tri (A-Z, Z-A, en-têtes cliquables) ; 25 par page ; liens vers le profil, la NAF et le message privé.
-- [ ] [modo] `/membres` : voit les bannis, bannit ou débannit.
-- [ ] [rôle autorisé] `/membres` : « Changer le rôle ».
-- [ ] [SA] `/membres` : suppression définitive d'un membre.
+- [x] [membre] `/profile`, carte de profil : avatar avec cadre, pseudo, rôle, badge « Banni », lien NAF, nombre de messages, région, équipe, ligues. *Le badge « Banni » est vérifié sur le profil d'un banni vu par un modérateur (un banni ne peut pas ouvrir `/profile`). Le cadre de l'avatar n'est pas vérifié par le test (c'est un dessin, sans nom accessible).*
+- [x] [membre] Onglets gardés dans l'adresse (`?tab=`) : `followed`, `activity`, `articles`, `ressources`, `blocked`, `edit`, `settings`. *`?tab=activity` ouvrait les sujets suivis (valeur oubliée dans la page) : corrigé par la carte 092, avant l'écriture du test.*
+- [x] [membre] Onglet `followed` : sujets suivis, avec une pastille de non-lu et une pagination.
+- [x] [membre] Onglet `activity` : activité récente sur le forum.
+- [x] [membre] Onglet `articles` : mes articles, 6 par page.
+- [x] [membre] Onglet `ressources` : mes ressources, avec Éditer et Supprimer (confirmation).
+- [x] [membre] Onglet `blocked` : utilisateurs bloqués, avec « Débloquer ».
+- [x] [membre] Onglet `edit` : avatar (4 façons), contour d'avatar, pseudo, NAF, région, équipe, ligues, signature (250 caractères), **choix du thème**. *Les tests tournent en mode hub, sans hub lancé : « Sauvegarder le profil » est vérifié jusqu'au message affiché (le passeport refuse), pas jusqu'à l'enregistrement en base. Le thème, lui, est vérifié en base. L'envoi d'image n'est vérifié que jusqu'à l'ouverture du choix de fichier (service extérieur ImgBB).*
+- [x] [membre] Onglet `settings` : associer ou délier email, Discord et Google ; interrupteurs de notification par email (messages privés, mentions, sujets suivis, newsletter) ; « Supprimer mon compte » avec double confirmation. En développement : newsletter de test. *Délier est vérifié en base ; « Associer » est vérifié présent et utilisable, sans suivre la connexion jusqu'au fournisseur. En mode hub, la suppression du compte est un lien vers le passeport : c'est ce que le test vérifie ; la double confirmation (hors mode hub) n'est pas vérifiée. La newsletter de test est vérifiée présente, pas envoyée.*
+- [x] [membre] `/spy/[id]` : onglets Activité et Articles ; « Message privé » ; « Signaler » ; « Bloquer » ou « Débloquer » (pas sur un modérateur). Son propre identifiant renvoie vers `/profile`. *Ce renvoi ne marchait pas (la page affichait « Utilisateur introuvable ») : corrigé par la carte 092, avant l'écriture du test.*
+- [x] [modo] `/spy/[id]` : « Bannir » (raisons rapides plus détails) ou « Débannir ».
+- [x] [membre] `/membres` : recherche par nom, filtres par ligue, région et rôle ; tri (A-Z, Z-A, en-têtes cliquables) ; 25 par page ; liens vers le profil, la NAF et le message privé.
+- [x] [modo] `/membres` : voit les bannis, bannit ou débannit.
+- [x] [rôle autorisé] `/membres` : « Changer le rôle ».
+- [x] [SA] `/membres` : suppression définitive d'un membre.
+
+*Section vérifiée par `tests/e2e/inventaire/profil.spec.ts` (carte 092), en taille ordinateur et en taille téléphone. Sur l'ancienne version, en taille téléphone, la pagination des sujets suivis restait cachée sous la barre de navigation du bas (le test échouait pour cette raison) ; la refonte corrige ce défaut.*
 
 ## 8. Messagerie `/messagerie`
 
@@ -366,9 +368,9 @@ Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne d
   - une citation faite depuis `/reply` n'a pas de pseudo.
 - **Liens morts sur le site** :
   - `/profile/${id}` dans la messagerie ;
-  - `/profile?id=` sur la page d'un article ;
+  - `/profile?id=` sur la page d'un article ; *ces deux liens ont été corrigés par la carte 105 (vérifié par la carte 092). Il en reste un : le classement d'un tournoi (`TournamentResultWidget`) mène encore à `/profile/${id}`, une page qui n'existe pas* ;
   - `?ligueId=` n'est pas lu par `/tournois` ; *corrigé par la carte 105, vérifié par `tournois.spec.ts` (carte 089)* ;
   - `/media` n'a aucun lien d'entrée.
 - **Mauvais écran de connexion** : `/administration`, `/moderation`, `/profile` et `/spy` renvoient vers `/api/auth/signin` au lieu de `/auth/login`.
 - **Fenêtres du navigateur** : il reste des `alert()` à la place des notifications du site.
-- **Rôle affiché en code brut** : par exemple `MODERATOR`, au lieu de son libellé.
+- **Rôle affiché en code brut** : par exemple `MODERATOR`, au lieu de son libellé. *Corrigé dans le forum (carte 108), puis dans le profil, la liste des bloqués et l'annuaire (carte 092).*

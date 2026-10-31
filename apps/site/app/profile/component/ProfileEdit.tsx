@@ -1,44 +1,54 @@
 "use client";
 
-import { getReferenceDataAction, updateProfile, updateTheme } from "@/app/profile/actions";
-import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import Modal from "@/common/components/Modal/Modal";
-import RankSelect from "@/common/components/RankSelect/RankSelect";
-import { toast } from "@bbfrance/ui";
-import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
-import { siteConfig } from "@/lib/siteConfig";
-import { DEFAULT_SITE_THEME, SITE_THEMES, type SiteThemeId } from "@/lib/themes";
-import { Dices, Droplets, Loader2, Moon, Palette, Sparkles, Sun, Upload } from "lucide-react";
-import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
-import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
+/**
+ * Onglet « Éditer mon profil » (refonte, carte 092, ADR 0006) : des blocs empilés comme à l'inscription.
+ * - Avatar : aperçu avec le cadre de rang, adresse de l'image, et trois boutons (« Aléatoire », « Générer » qui ouvre
+ *   le générateur DiceBear partagé avec l'inscription, « Envoyer une image » vers le service ImgBB) ; contour
+ *   d'avatar (les contours pas encore débloqués sont grisés, avec le nombre de messages qui manquent).
+ * - Profil de coach : pseudo, numéro NAF, région, équipe ; ligues ; signature (250 caractères au plus).
+ * - Thème du site : le même sélecteur que l'inscription et le menu du compte (`AppShell/ThemePicker`), appliqué et
+ *   enregistré tout de suite.
+ * Les noms des champs envoyés à l'action `updateProfile` sont inchangés.
+ */
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useSession } from "next-auth/react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import { Dices, Loader2, Save, Sparkles, Upload } from "lucide-react";
+import { Button, Card, CardBody, CardHeader, CardTitle, Field, Input, Label, Select, toast } from "@bbfrance/ui";
+import { getReferenceDataAction, updateProfile } from "@/app/profile/actions";
+import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import UserAvatar, { RANK_REQUIREMENTS, type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import CTAButton from "@/common/components/Button/CTAButton";
+import ThemePicker from "@/common/components/AppShell/ThemePicker";
+import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
+import { siteConfig } from "@/lib/siteConfig";
 
 const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
-/** Icône affichée à côté du nom de certains thèmes ; les autres prennent l'icône d'étincelles. */
-const THEME_ICONS: Partial<Record<SiteThemeId, ReactNode>> = {
-  default: <Moon size={14} />,
-  light: <Sun size={14} />,
-  blood: <Droplets size={14} />,
-};
-
-const DICEBEAR_STYLES = [
-  { id: "adventurer", label: "Aventurier" },
-  { id: "avataaars", label: "Moderne" },
-  { id: "bottts", label: "Robot" },
-  { id: "fun-emoji", label: "Smiley" },
-  { id: "lorelei", label: "Lorelei" },
-  { id: "open-peeps", label: "Minimaliste" },
-  { id: "personas", label: "Humain" },
-  { id: "pixel-art", label: "Pixel Art" },
+/** Contours d'avatar proposés ; ceux qui ont un seuil se débloquent avec le nombre de messages. */
+const FRAMES: { id: Rank; label: string }[] = [
+  { id: "auto", label: "Automatique (par défaut)" },
+  { id: "none", label: "Aucun contour" },
+  { id: "bronze", label: "Bronze" },
+  { id: "silver", label: "Argent" },
+  { id: "gold", label: "Or" },
+  { id: "platinum", label: "Platine" },
+  { id: "diamond", label: "Diamant" },
+  { id: "master", label: "Master" },
+  { id: "grand-master", label: "Grand Master" },
 ];
 
 interface ProfileEditProps {
-  user: any;
+  user: {
+    name?: string | null;
+    image?: string | null;
+    nafNumber?: string | null;
+    region?: string | null;
+    equipe?: string | null;
+    ligues?: Parameters<typeof MultiLigueSearch>[0]["initialLigues"];
+    ligueCustom?: string | null;
+    signature?: string | null;
+    avatarFrame?: string | null;
+  };
   postCount: number;
   onUpdate?: () => void;
   isModerator?: boolean;
@@ -51,43 +61,24 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
     nafNumber: user.nafNumber || "",
     region: user.region || "",
     equipe: user.equipe || "",
-    ligueIds: user.ligues?.map((l: any) => l.id) || [],
-    ligueCustom: user.ligueCustom || "",
     signature: user.signature || "",
     avatarFrame: user.avatarFrame || "auto",
   });
 
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
-  const [genSeed, setGenSeed] = useState(user.name || "");
-  const [genStyle, setGenStyle] = useState("avataaars");
-
   const [isPending, startTransition] = useTransition();
-  const [isUpdatingTheme, startThemeUpdate] = useTransition();
-  const { theme, setTheme } = useTheme();
   // Après une modification, update() demande au serveur de relire le profil en base et de réécrire le cookie
-  // de session, pour que le pseudo et le thème soient à jour partout sans attendre la page suivante.
+  // de session, pour que le pseudo soit à jour partout sans attendre la page suivante.
   const { update: refreshSession } = useSession();
-  const [currentTheme, setCurrentTheme] = useState(theme || user.theme || DEFAULT_SITE_THEME);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [regions, setRegions] = useState<{ key: string; label: string }[]>([]);
 
   useEffect(() => {
-    async function loadRegions() {
-      const data = await getReferenceDataAction("COACH_REGION");
-      setRegions(data);
-    }
-    loadRegions();
+    getReferenceDataAction("COACH_REGION").then(setRegions);
   }, []);
 
-  useEffect(() => {
-    if (theme) setCurrentTheme(theme);
-  }, [theme]);
-
-  const showToast = (message: string, type: "success" | "error") => {
-    toast[type](message);
-  };
+  const setField = (name: keyof typeof formData, value: string) => setFormData((prev) => ({ ...prev, [name]: value }));
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -102,61 +93,27 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         method: "POST",
         body: formDataUpload,
       });
-
       const data = await response.json();
-
       if (data.success) {
-        setFormData(prev => ({ ...prev, image: data.data.url }));
-        showToast("Image uploadée avec succès !", "success");
+        setField("image", data.data.url);
+        toast.success("Image envoyée !");
       } else {
-        showToast(`Erreur ImgBB: ${data.error?.message || "Échec"}`, "error");
+        toast.error(`Erreur ImgBB : ${data.error?.message || "échec"}`);
       }
-    } catch (error) {
-      showToast("Erreur lors de l'upload de l'image.", "error");
+    } catch {
+      toast.error("Erreur lors de l'envoi de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
-  const handleRandomAvatar = () => {
-    const style = DICEBEAR_STYLES[Math.floor(Math.random() * DICEBEAR_STYLES.length)].id;
-    const seed = Math.random().toString(36).substring(7);
-    const url = `https://api.dicebear.com/7.x/${style}/svg?seed=${seed}`;
-    setFormData(prev => ({ ...prev, image: url }));
-    showToast("Avatar généré !", "success");
-  };
-
-  const handleGenerateApply = () => {
-    const url = `https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`;
-    setFormData(prev => ({ ...prev, image: url }));
-    setIsGeneratorOpen(false);
-  };
-
-  const handleThemeChange = (newTheme: string) => {
-    setCurrentTheme(newTheme);
-    setTheme(newTheme);
-    startThemeUpdate(async () => {
-      const result = await updateTheme(newTheme);
-      if (result.success) {
-        await refreshSession();
-        showToast("Thème mis à jour !", "success");
-      } else {
-        showToast("Erreur lors du changement de thème", "error");
-      }
-    });
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    
-    // On peut encore merger avec le state si certains champs n'ont pas d'input (mais normalement on en rajoute)
-    // Par exemple, la signature est dans le state via le BBCodeEditor
+    // La signature (éditeur BBCode), l'image et le contour viennent de l'état du formulaire
     data.set("signature", formData.signature);
-    // On s'assure que l'image est à jour
     data.set("image", formData.image);
-    // On s'assure que le contour est à jour
     data.set("avatarFrame", formData.avatarFrame);
 
     startTransition(async () => {
@@ -164,427 +121,140 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         const result = await updateProfile(data);
         if (result.success) {
           await refreshSession();
-          showToast("Profil mis à jour !", "success");
-          if (onUpdate) {
-            setTimeout(() => onUpdate(), 1000);
-          }
+          toast.success("Profil mis à jour !");
+          if (onUpdate) setTimeout(() => onUpdate(), 1000);
         } else {
-          showToast(result.error || "Erreur lors de la mise à jour", "error");
+          toast.error(result.error || "Erreur lors de la mise à jour");
         }
       } catch {
-        showToast("Erreur lors de la mise à jour", "error");
+        toast.error("Erreur lors de la mise à jour");
       }
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
   return (
-    <PremiumCard className="profile-edit-container fade-in">
-      <h3 className="section-title">Éditer mon profil</h3>
+    <form onSubmit={handleSubmit} className="m-0 flex flex-col gap-4">
+      <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleImageUpload} />
 
-      <form onSubmit={handleSubmit} className="profile-edit-form">
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
-
-        <div className="profile-edit-layout-rows">
-          {/* Avatar Section */}
-          <div className="avatar-studio-box">
-            <div className="studio-preview-pane">
-              <UserAvatar
-                key={`${formData.image}-${formData.avatarFrame}`}
-                image={formData.image}
-                selectedRank={formData.avatarFrame as Rank}
-                size={140}
-                postCount={postCount}
-                isModerator={isModerator}
-              />
-              <div className="preview-label">Aperçu</div>
-            </div>
-
-            <div className="studio-controls-pane">
-              <div className="form-group">
-                <label>URL de l'avatar</label>
-                <div className="avatar-input-group">
-                  <input
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                    style={{ flex: 1 }}
-                  />
-                  <div className="btn-group-avatar">
-                      <button type="button" className="upload-btn-icon" onClick={handleRandomAvatar} title="Aléatoire">
-                        <Dices size={16} />
-                      </button>
-                      <button type="button" className="upload-btn-icon sparkles" onClick={() => setIsGeneratorOpen(true)} title="Personnaliser">
-                        <Sparkles size={16} />
-                      </button>
-                      <button type="button" className="upload-btn-icon" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
-                        {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                      </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Contour d'avatar</label>
-                <RankSelect
-                  value={formData.avatarFrame}
-                  onSelect={(frame) => setFormData(prev => ({ ...prev, avatarFrame: frame }))}
-                  postCount={postCount}
-                  isModerator={isModerator}
-                />
-                <input type="hidden" name="avatarFrame" value={formData.avatarFrame} />
-              </div>
-            </div>
-          </div>
-
-          {/* Info Section */}
-          <div className="form-row-grid">
-            <div className="form-group">
-              <label>Pseudo</label>
-              <input name="name" value={formData.name} onChange={handleChange} placeholder="Pseudo" />
-            </div>
-
-            <div className="form-group">
-              <label>Numéro NAF</label>
-              <input name="nafNumber" value={formData.nafNumber} onChange={handleChange} placeholder="Ex: 12345" />
-            </div>
-
-            <ClassicSelect 
-              label="Région de tournoi" 
-              name="region" 
-              value={formData.region} 
-              onChange={handleChange}
-            >
-              <option value="">Sélectionnez une région</option>
-              {regions.map(r => (
-                <option key={r.key} value={r.key}>{r.label}</option>
-              ))}
-            </ClassicSelect>
-
-            <div className="form-group">
-              <label>Équipe Blood Bowl principale</label>
-              <input 
-                name="equipe" 
-                value={formData.equipe} 
-                onChange={handleChange} 
-                maxLength={100}
-                placeholder="Ex: The Greentide Raiders" 
-              />
-              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                Le nom de votre équipe fétiche (100 caractères max).
-              </p>
-            </div>
-
-            <div className="form-group full-width-group">
-              <label>Mes Ligues</label>
-              <MultiLigueSearch 
-                initialLigues={user.ligues}
-                initialCustom={user.ligueCustom}
-              />
-              <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                Associez-vous à une ou plusieurs ligues référencées.
-              </p>
-            </div>
-          </div>
-
-          {/* Signature Section */}
-          <div className="form-group full-width-group">
-            <label htmlFor="signature">Signature du forum (250 car. max)</label>
-            <BBCodeEditor
-              id="signature"
-              name="signature"
-              defaultValue={user.signature || ""}
-              maxLength={250}
-              rows={4}
-              onChange={(val) => setFormData(prev => ({ ...prev, signature: val }))}
+      {/* Avatar */}
+      <Card>
+        <CardHeader><CardTitle>Avatar</CardTitle></CardHeader>
+        <CardBody className="flex flex-col gap-4 sm:flex-row sm:items-start">
+          <div className="flex shrink-0 flex-col items-center gap-1 self-center sm:self-start">
+            <UserAvatar
+              key={`${formData.image}-${formData.avatarFrame}`}
+              image={formData.image}
+              selectedRank={formData.avatarFrame as Rank}
+              size={112}
+              postCount={postCount}
+              isModerator={isModerator}
             />
+            <span className="text-xs font-semibold text-bb-text-muted">Aperçu</span>
           </div>
-
-          {/* Appearance Section */}
-          <div className="appearance-box">
-             <label className="section-label-inner"><Palette size={16} /> Apparence du site</label>
-             <div className="theme-grid">
-               {/* Les 7 thèmes du site, lus dans la liste officielle (lib/themes.ts) */}
-               {SITE_THEMES.map(t => (
-                 <button
-                   key={t.id}
-                   type="button"
-                   className={`theme-card ${currentTheme === t.id ? 'active' : ''}`}
-                   onClick={() => handleThemeChange(t.id)}
-                   disabled={isUpdatingTheme}
-                 >
-                   <div className={`theme-preview ${t.id}`}></div>
-                   <div className="theme-info">
-                     {THEME_ICONS[t.id] ?? <Sparkles size={14} />}
-                     <span>{t.id === DEFAULT_SITE_THEME ? `${t.label} (défaut)` : t.label}</span>
-                   </div>
-                 </button>
-               ))}
-             </div>
+          <div className="flex min-w-0 flex-1 flex-col gap-4">
+            <Field label="URL de l'avatar" htmlFor="profile-image" hint="L'adresse d'une image en ligne, ou l'un des boutons ci-dessous.">
+              <Input id="profile-image" name="image" value={formData.image} onChange={(e) => setField("image", e.target.value)} placeholder="https://…" />
+            </Field>
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={() => setField("image", randomDicebearUrl())}>
+                <Dices size={18} aria-hidden="true" /> Aléatoire
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={() => setIsGeneratorOpen(true)}>
+                <Sparkles size={18} aria-hidden="true" /> Générer
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full sm:w-auto" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
+                {isUploading ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Upload size={18} aria-hidden="true" />}
+                Envoyer une image
+              </Button>
+            </div>
+            <Field label="Contour d'avatar" htmlFor="profile-frame" hint={isModerator ? undefined : `Les contours se débloquent avec vos messages (vous en avez ${postCount}).`}>
+              <Select id="profile-frame" name="avatarFrame" value={formData.avatarFrame} onChange={(e) => setField("avatarFrame", e.target.value)}>
+                {FRAMES.map((frame) => {
+                  const min = frame.id === "auto" || frame.id === "none" ? 0 : RANK_REQUIREMENTS[frame.id];
+                  const locked = !isModerator && postCount < min;
+                  return (
+                    <option key={frame.id} value={frame.id} disabled={locked}>
+                      {locked ? `${frame.label} (à ${min} messages)` : frame.label}
+                    </option>
+                  );
+                })}
+              </Select>
+            </Field>
           </div>
-        </div>
+        </CardBody>
+      </Card>
 
-        <div className="form-actions-edit">
-          <CTAButton type="submit" isLoading={isPending} style={{ padding: "1rem 2.5rem" }}>
-            Sauvegarder le profil
-          </CTAButton>
-        </div>
-      </form>
+      {/* Profil de coach */}
+      <Card>
+        <CardHeader><CardTitle>Profil de coach</CardTitle></CardHeader>
+        <CardBody className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <Field label="Pseudo" htmlFor="profile-name" hint="C'est le nom affiché sur le forum." className="lg:col-span-2">
+            <Input id="profile-name" name="name" value={formData.name} onChange={(e) => setField("name", e.target.value)} placeholder="Pseudo" autoComplete="nickname" />
+          </Field>
+          <Field label="Numéro NAF" htmlFor="profile-naf" hint="Facultatif.">
+            <Input id="profile-naf" name="nafNumber" value={formData.nafNumber} onChange={(e) => setField("nafNumber", e.target.value)} placeholder="Ex : 12345" inputMode="numeric" />
+          </Field>
+          <Field label="Région de tournoi" htmlFor="profile-region" hint="Facultatif.">
+            <Select id="profile-region" name="region" value={formData.region} onChange={(e) => setField("region", e.target.value)}>
+              <option value="">Sélectionnez une région</option>
+              {regions.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
+            </Select>
+          </Field>
+          <Field label="Équipe Blood Bowl principale" htmlFor="profile-equipe" hint="Le nom de votre équipe fétiche, 100 caractères au plus." className="lg:col-span-2">
+            <Input id="profile-equipe" name="equipe" value={formData.equipe} onChange={(e) => setField("equipe", e.target.value)} maxLength={100} placeholder="Ex : The Greentide Raiders" />
+          </Field>
+        </CardBody>
+      </Card>
 
-      <Modal
-        isOpen={isGeneratorOpen}
-        onClose={() => setIsGeneratorOpen(false)}
-        onConfirm={handleGenerateApply}
-        title="Générateur d'Avatar Dicebear"
-        confirmText="Appliquer"
-      >
-        <div className="avatar-gen-modal">
-          <div className="gen-preview">
-            <img src={`https://api.dicebear.com/7.x/${genStyle}/svg?seed=${genSeed}`} alt="Preview" />
-          </div>
-          <div className="gen-field">
-            <label>Seed (Texte de génération)</label>
-            <input type="text" value={genSeed} onChange={(e) => setGenSeed(e.target.value)} placeholder="Ex: votre pseudo" />
-          </div>
-          <div className="gen-styles-grid">
-            {DICEBEAR_STYLES.map(style => (
-              <button key={style.id} className={`style-item ${genStyle === style.id ? 'active' : ''}`} onClick={() => setGenStyle(style.id)}>
-                <img src={`https://api.dicebear.com/7.x/${style.id}/svg?seed=preview`} alt={style.label} />
-                <span>{style.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </Modal>
+      {/* Ligues */}
+      <Card>
+        <CardHeader><CardTitle>Mes ligues</CardTitle></CardHeader>
+        <CardBody className="flex flex-col gap-2">
+          <p className="m-0 text-sm text-bb-text-muted">Associez-vous à une ou plusieurs ligues référencées, ou ajoutez-en une librement.</p>
+          <MultiLigueSearch initialLigues={user.ligues} initialCustom={user.ligueCustom ?? undefined} />
+        </CardBody>
+      </Card>
 
+      {/* Signature */}
+      <Card>
+        <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
+        <CardBody className="flex flex-col gap-1.5">
+          <Label htmlFor="signature">Signature du forum (BBCode)</Label>
+          <p className="m-0 text-sm text-bb-text-muted">Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus.</p>
+          <BBCodeEditor
+            id="signature"
+            name="signature"
+            defaultValue={user.signature || ""}
+            maxLength={250}
+            rows={4}
+            onChange={(val) => setField("signature", val)}
+          />
+        </CardBody>
+      </Card>
 
-      <style jsx>{`
-        :global(.profile-edit-container) {
-          padding: 2rem !important;
-        }
-        .profile-name {
-          margin: 0;
-          font-size: 1.6rem;
-          font-weight: 800;
-          color: var(--foreground);
-          text-align: center;
-          line-height: 1.2;
-        }
-        .section-title {
-          margin: 0 0 2rem 0;
-          font-size: 1.2rem;
-          color: var(--foreground);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-        .profile-edit-form {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        .profile-edit-layout-rows {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        .avatar-studio-box {
-          display: grid;
-          grid-template-columns: 200px 1fr;
-          gap: 2rem;
-          padding-bottom: 2rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .studio-preview-pane {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1rem;
-          padding-right: 2rem;
-          border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .preview-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 800; }
-        .studio-controls-pane {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          justify-content: center;
-        }
-        .avatar-input-group {
-          display: flex;
-          gap: 0.5rem;
-        }
-        .btn-group-avatar { display: flex; gap: 0.4rem; }
-        .upload-btn-icon {
-          display: flex; align-items: center; justify-content: center;
-          width: 40px; height: 40px; border-radius: 8px;
-          background: var(--input-bg); border: 1px solid var(--glass-border);
-          color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-        }
-        .upload-btn-icon:hover { background: var(--glass-border); color: var(--foreground); }
-        .upload-btn-icon.sparkles { color: var(--accent); }
+      {/* Thème : appliqué tout de suite et enregistré dans le profil (même sélecteur que l'inscription) */}
+      <Card>
+        <CardHeader><CardTitle>Thème du site</CardTitle></CardHeader>
+        <CardBody className="flex flex-col gap-3">
+          <p className="m-0 text-sm text-bb-text-muted">Le thème change tout de suite et il est enregistré dans votre profil.</p>
+          <ThemePicker isLoggedIn />
+        </CardBody>
+      </Card>
 
-        .form-row-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-        .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
-        .form-group label {
-          font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-          color: var(--text-muted); letter-spacing: 0.05em;
-        }
-        .form-group.full-width-group {
-          grid-column: 1 / -1;
-        }
-        input, select {
-          padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--glass-border);
-          background: var(--input-bg); color: var(--foreground); font-size: 0.95rem;
-          transition: border-color 0.2s;
-        }
-        input:focus, select:focus { border-color: var(--primary); outline: none; }
+      <div className="flex lg:justify-end">
+        <Button type="submit" variant="primary" size="tap" className="min-h-12 w-full text-base lg:w-auto" disabled={isPending}>
+          {isPending ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Save size={18} aria-hidden="true" />}
+          Sauvegarder le profil
+        </Button>
+      </div>
 
-        .appearance-box {
-          padding-top: 1rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .section-label-inner {
-          display: flex; align-items: center; gap: 0.6rem;
-          font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-          color: var(--text-muted); margin-bottom: 1rem;
-        }
-        .theme-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-          gap: 1rem;
-        }
-        .theme-card {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px; padding: 0.8rem;
-          cursor: pointer; transition: all 0.2s ease;
-          display: flex; flex-direction: column; gap: 0.8rem;
-          color: var(--foreground); text-align: left;
-        }
-        .theme-card:hover { background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
-        .theme-card.active { border-color: var(--primary); background: rgba(194, 29, 29, 0.05); }
-        .theme-preview { height: 48px; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
-        .theme-preview.vestiaire { background: linear-gradient(135deg, #111215 0%, #252830 50%, #c8102e 100%); }
-        .theme-preview.default { background: linear-gradient(135deg, #0a0a0c 0%, #1a1a2e 50%, #c21d1d 100%); }
-        .theme-preview.light { background: linear-gradient(135deg, #f0f1f4 0%, #ffffff 50%, #c21d1d 100%); }
-        .theme-preview.blood { background: linear-gradient(135deg, #120000 0%, #4a0000 50%, #ff0000 100%); }
-        .theme-preview.malpierre { background: linear-gradient(135deg, #020a02 0%, #082508 50%, #39ff14 100%); }
-        .theme-preview.nehekhara { background: linear-gradient(135deg, #0b0e14 0%, #115e59 50%, #d97706 100%); }
-        .theme-preview.saison3 { background: linear-gradient(135deg, #efebdd 0%, #004175 50%, #9e1d1d 100%); }
-        .theme-preview.naf { background: linear-gradient(135deg, #011b33 0%, #024b8a 50%, #fac710 100%); }
-        .theme-info { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 0.85rem; }
-
-        .form-actions-edit { display: flex; justify-content: flex-end; margin-top: 1rem; }
-
-        .animate-spin { animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .avatar-gen-modal {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          align-items: center;
-        }
-
-        .gen-preview {
-          width: 180px;
-          height: 180px;
-          border-radius: 20px;
-          background: rgba(0, 0, 0, 0.2);
-          border: 2px solid var(--primary-transparent);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 1rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-          overflow: hidden;
-        }
-
-        .gen-preview img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-
-        .gen-field {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .gen-field label {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: var(--text-muted);
-          text-transform: uppercase;
-        }
-
-        .gen-styles-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 0.8rem;
-          width: 100%;
-          margin-top: 0.5rem;
-        }
-
-        .style-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          padding: 0.6rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          color: var(--foreground);
-          outline: none;
-        }
-
-        .style-item:hover {
-          background: rgba(255, 255, 255, 0.07);
-          border-color: var(--primary-transparent);
-          transform: translateY(-2px);
-        }
-
-        .style-item.active {
-          border-color: var(--primary);
-          background: var(--primary-transparent);
-          box-shadow: 0 0 15px var(--primary-transparent);
-        }
-
-        .style-item img {
-          width: 40px;
-          height: 40px;
-          border-radius: 6px;
-        }
-
-        .style-item span {
-          font-size: 0.65rem;
-          font-weight: 800;
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          width: 100%;
-        }
-      `}</style>
-    </PremiumCard>
+      <AvatarGeneratorSheet
+        open={isGeneratorOpen}
+        onOpenChange={setIsGeneratorOpen}
+        initialSeed={user.name || ""}
+        seedInputId="profile-seed"
+        onApply={(url) => setField("image", url)}
+      />
+    </form>
   );
 }

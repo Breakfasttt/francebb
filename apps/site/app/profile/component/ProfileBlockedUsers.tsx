@@ -1,29 +1,29 @@
 "use client";
 
+/**
+ * Onglet « Utilisateurs bloqués » du profil (refonte, carte 092) : les membres que l'on a bloqués, avec leur rôle
+ * (libellé lisible) et un bouton « Débloquer ». Les actions `getBlockedUsers` et `toggleBlockUser` sont inchangées.
+ */
 import { useEffect, useState, useTransition } from "react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import { Info, UserX } from "lucide-react";
+import { Button, Card, CardBody, CardHeader, CardTitle, EmptyState, Skeleton, toast } from "@bbfrance/ui";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import { UserX, Shield, Trash2, Loader2, Info } from "lucide-react";
 import { getBlockedUsers, toggleBlockUser } from "@/app/profile/actions";
-import { toast } from "@bbfrance/ui";
+import { getRoleLabel } from "@/lib/roles";
 
-export default function ProfileBlockedUsers() {
-  const [blockedUsers, setBlockedUsers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+type BlockedUser = { id: string; name: string | null; image: string | null; role: string };
+
+export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Record<string, string> }) {
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[] | null>(null);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    async function loadBlocked() {
-      try {
-        const users = await getBlockedUsers();
-        setBlockedUsers(users);
-      } catch (err) {
+    getBlockedUsers()
+      .then((users) => setBlockedUsers(users as BlockedUser[]))
+      .catch((err) => {
         console.error("Failed to load blocked users:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadBlocked();
+        setBlockedUsers([]);
+      });
   }, []);
 
   const handleUnblock = (userId: string) => {
@@ -34,7 +34,7 @@ export default function ProfileBlockedUsers() {
           toast.error(res.error || "Erreur lors du déblocage");
           return;
         }
-        setBlockedUsers(prev => prev.filter(u => u.id !== userId));
+        setBlockedUsers((prev) => (prev ?? []).filter((u) => u.id !== userId));
         toast.success("Utilisateur débloqué");
       } catch {
         toast.error("Erreur lors du déblocage");
@@ -42,87 +42,55 @@ export default function ProfileBlockedUsers() {
     });
   };
 
-  if (loading) {
-    return (
-      <PremiumCard className="fade-in">
-        <div style={{ padding: '3rem', textAlign: 'center' }}>
-          <Loader2 className="animate-spin" style={{ margin: '0 auto', color: 'var(--primary)' }} />
-          <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Chargement de la liste noire...</p>
-        </div>
-      </PremiumCard>
-    );
-  }
-
   return (
-    <div className="blocked-users-tab fade-in">
-      <PremiumCard className="section-header-card" style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem' }}>
-          <UserX size={24} style={{ color: 'var(--primary)' }} />
-          <div>
-            <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Utilisateurs bloqués</h3>
-            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>Gérez les personnes dont vous ne souhaitez plus voir le contenu.</p>
+    <div className="flex flex-col gap-4">
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <UserX size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Utilisateurs bloqués</CardTitle>
+        </CardHeader>
+        {blockedUsers === null ? (
+          <div className="flex flex-col gap-3 p-4">
+            {[0, 1].map((i) => <Skeleton key={i} className="h-12 w-full" />)}
           </div>
-        </div>
-      </PremiumCard>
-
-      {blockedUsers.length === 0 ? (
-        <PremiumCard className="empty-state">
-          <div style={{ padding: '4rem 2rem', textAlign: 'center', opacity: 0.6 }}>
-            <UserX size={48} style={{ marginBottom: '1rem' }} />
-            <h3>Aucun utilisateur bloqué</h3>
-            <p>Votre liste noire est vide. Vous pouvez bloquer un utilisateur depuis son profil.</p>
-          </div>
-        </PremiumCard>
-      ) : (
-        <div className="blocked-users-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-          {blockedUsers.map(user => (
-            <PremiumCard key={user.id} className="blocked-user-card hover-subtle">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.2rem' }}>
-                <UserAvatar image={user.image} name={user.name} size={50} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</h4>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.2rem' }}>
-                    <Shield size={12} style={{ color: 'var(--accent)' }} />
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>{user.role}</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleUnblock(user.id)}
-                  className="danger-hover shadow-hover"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid var(--glass-border)',
-                    color: 'var(--text-muted)',
-                    padding: '0.6rem',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                  title="Débloquer"
+        ) : blockedUsers.length === 0 ? (
+          <EmptyState icon={<UserX size={32} />} title="Aucun utilisateur bloqué">
+            Vous pouvez bloquer un membre depuis son profil.
+          </EmptyState>
+        ) : (
+          <ul className="m-0 list-none p-0">
+            {blockedUsers.map((user) => (
+              <li key={user.id} className="flex min-h-16 items-center gap-3 border-b border-bb-border px-4 py-2.5 last:border-b-0">
+                <UserAvatar image={user.image} name={user.name} size={40} />
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate font-semibold text-bb-text">{user.name}</span>
+                  <span className="text-sm text-bb-text-muted">{getRoleLabel(user.role || "COACH", roleLabels)}</span>
+                </span>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="tap"
                   disabled={isPending}
+                  aria-label={`Débloquer ${user.name ?? ""}`.trim()}
+                  onClick={() => handleUnblock(user.id)}
                 >
-                  {isPending ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
-                </button>
-              </div>
-            </PremiumCard>
-          ))}
-        </div>
-      )}
+                  Débloquer
+                </Button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
 
-      <div style={{ 
-        marginTop: '2rem', 
-        padding: '1.5rem', 
-        background: 'rgba(var(--primary-rgb), 0.05)', 
-        borderRadius: '16px', 
-        border: '1px solid var(--primary-transparent)',
-        display: 'flex',
-        gap: '1rem'
-      }}>
-        <Info size={20} style={{ color: 'var(--primary)', flexShrink: 0, marginTop: '2px' }} />
-        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          <strong>Note :</strong> Le blocage est à sens unique. Vous ne verrez plus les messages de ces utilisateurs et ils ne pourront plus vous contacter. Cependant, ils pourront toujours voir vos messages publics si vous ne les avez pas bloqués en retour (ou s'ils consultent le site sans être connectés).
-        </p>
-      </div>
+      <Card>
+        <CardBody className="flex gap-3">
+          <Info size={18} className="mt-0.5 shrink-0 text-bb-text-muted" aria-hidden="true" />
+          <p className="m-0 text-sm leading-relaxed text-bb-text-muted">
+            Le blocage est à sens unique : vous ne voyez plus les messages de ces membres et ils ne peuvent plus vous
+            contacter. Ils voient toujours vos messages publics, sauf s&apos;ils vous ont bloqué à leur tour.
+          </p>
+        </CardBody>
+      </Card>
     </div>
   );
 }

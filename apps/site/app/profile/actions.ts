@@ -10,6 +10,7 @@ import type { ActionResult } from "@/lib/actionResult";
 import { isSiteTheme } from "@/lib/themes";
 import { isHubAuthMode } from "@/auth";
 import { hubOrigin, updateHubProfile } from "@/lib/hub/hubAccount";
+import { getRoleLabelMap } from "@/lib/roleLabels";
 
 export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
@@ -183,6 +184,14 @@ export async function deleteAccount(): Promise<ActionResult> {
   const ok = await anonymizeAndDeleteUser(session.user.id, session.user.role === "SUPERADMIN");
   if (!ok) return { success: false, error: "Une erreur est survenue lors de la suppression." };
   return { success: true };
+}
+
+/**
+ * Libellés lisibles des rôles (table RoleConfig), pour afficher « Modérateur » au lieu de MODERATOR dans le profil
+ * et la liste des utilisateurs bloqués (carte 092). Lecture seule, sans donnée personnelle.
+ */
+export async function getRoleLabels(): Promise<Record<string, string>> {
+  return getRoleLabelMap();
 }
 
 export async function getReferenceDataAction(group: string) {

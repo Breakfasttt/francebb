@@ -83,6 +83,12 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/membres", connected: true },
   { path: "/messagerie", connected: true },
   { path: "/profile", connected: true },
+  // Carte 092 : les onglets du profil qui ont des formulaires, le profil vu par un autre membre, les filtres de l'annuaire
+  { path: "/profile?tab=edit", connected: true },
+  { path: "/profile?tab=settings", connected: true },
+  { path: "/profile?tab=ressources", connected: true },
+  { path: `/spy/${E2E.targetId}`, connected: true },
+  { path: "/membres", connected: true, openFilters: true },
   { path: "/bbscheme", connected: false },
   { path: "/bbquizz", connected: true },
   { path: "/jouer", connected: false },

@@ -1,44 +1,56 @@
 "use client";
 
+/**
+ * Carte d'identité d'un membre (refonte, carte 092, ADR 0006), affichée sur son propre profil `/profile` et sur le
+ * profil vu par un autre membre `/spy/[id]`. Colonne de gauche sur ordinateur, en haut de la page sur téléphone.
+ * - Avatar avec le cadre de son rang, pseudo, rôle (libellé lisible, rôles personnalisés compris), badge « Banni ».
+ * - Numéro NAF (lien vers sa fiche sur le site de la NAF) et nombre de messages, puis région, équipe et ligues.
+ * - Sur le profil d'un autre membre : « Message privé », « Signaler », « Bloquer » ou « Débloquer » (pas sur un
+ *   modérateur) et, pour un modérateur, « Bannir » ou « Débannir ». Chaque action demande une confirmation.
+ * Les onglets ne sont plus ici : chaque page les affiche au-dessus de son contenu (composant LinkTabs).
+ */
+import { useState, useTransition } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { AlertTriangle, Ban, MapPin, MessageSquare, Shield, Trophy, UserCheck, UserX } from "lucide-react";
+import { Badge, Button, Card, ConfirmDialog, toast } from "@bbfrance/ui";
 import { toggleBlockUser } from "@/app/profile/actions";
 import { toggleBanUser } from "@/app/membres/actions";
-import Modal from "@/common/components/Modal/Modal";
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
-import StatItem from "@/common/components/StatItem/StatItem";
-import TabSystem from "@/common/components/TabSystem/TabSystem";
-import { Activity, AlertTriangle, Ban, Bookmark, MapPin, MessageSquare, Shield, Trophy, UserCheck, User as UserIcon, FileText, UserX, Layout } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { useState, useTransition, useEffect } from "react";
-import { toast } from "@bbfrance/ui";
-import ProfileArticles from "@/app/profile/component/ProfileArticles";
+import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-import { isModerator as checkIsModerator } from "@/lib/roles";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
-import "../page.css";
+import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import { getRoleLabel, isModerator as checkIsModerator } from "@/lib/roles";
 
-const BAN_REASONS = [
-  "Spam / Publicité",
-  "Harcèlement / Insultes",
-  "Contenu inapproprié / NSFW",
-  "Bot",
-  "Autre (préciser ci-dessous)"
-];
+const REGION_LABELS: Record<string, string> = {
+  "IDF": "R1 - Île-de-France",
+  "Nord-Ouest": "R2 - Nord-Ouest",
+  "Nord-Est": "R3 - Nord-Est",
+  "Sud-Est": "R4 - Sud-Est",
+  "Sud-Ouest": "R5 - Sud-Ouest",
+};
+
+export interface ProfileUser {
+  id: string;
+  name: string;
+  image?: string | null;
+  role?: string | null;
+  isBanned?: boolean;
+  avatarFrame?: string | null;
+  nafNumber?: string | null;
+  region?: string | null;
+  equipe?: string | null;
+  ligueCustom?: string | null;
+  ligues?: { id: string; name: string; acronym?: string | null }[];
+}
 
 interface ProfileSidebarProps {
-  user: any;
+  user: ProfileUser;
   postCount: number;
   isOwnProfile: boolean;
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  /** Le visiteur est modérateur : il peut bannir ou débannir. */
   isModerator?: boolean;
-  onContact?: () => void;
+  /** Libellés des rôles lus dans la table RoleConfig (action getRoleLabels). */
+  roleLabels?: Record<string, string>;
   isBlockedInitial?: boolean;
   onRefresh?: () => void;
 }
@@ -47,57 +59,37 @@ export default function ProfileSidebar({
   user,
   postCount,
   isOwnProfile,
-  activeTab,
-  onTabChange,
   isModerator = false,
-  onContact,
+  roleLabels,
   isBlockedInitial = false,
-  onRefresh
+  onRefresh,
 }: ProfileSidebarProps) {
-  const isMobile = useIsMobile();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
-  const [banReason, setBanReason] = useState("");
-  const [banDetails, setBanDetails] = useState("");
   const [showReportModal, setShowReportModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(isBlockedInitial);
+  // État de blocage choisi ici ; tant que le membre n'a rien changé, on suit celui fourni par la page
+  const [blockedChoice, setIsBlocked] = useState<boolean | null>(null);
+  const isBlocked = blockedChoice ?? isBlockedInitial;
 
-  useEffect(() => {
-    setIsBlocked(isBlockedInitial);
-  }, [isBlockedInitial]);
+  const targetIsModerator = checkIsModerator(user.role);
+  const customLigues = (user.ligueCustom ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  const hasLigues = (user.ligues?.length ?? 0) > 0 || customLigues.length > 0;
 
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const handleTabClick = (id: string) => {
-    onTabChange(id);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", id);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  const handleToggleBan = () => {
-    if (!user.isBanned && !banReason.trim()) {
+  const handleToggleBan = (reason: string) => {
+    if (!user.isBanned && !reason.trim()) {
       toast.error("Une raison est obligatoire pour bannir un utilisateur.");
       return;
     }
-
     startTransition(async () => {
       try {
-        const fullReason = banDetails.trim() 
-          ? `[${banReason}] ${banDetails.trim()}` 
-          : banReason;
-          
-        const res = await toggleBanUser(user.id, !user.isBanned, fullReason);
+        const res = await toggleBanUser(user.id, !user.isBanned, reason);
         if (res.success) {
           toast.success(!user.isBanned ? "Utilisateur banni" : "Utilisateur débanni");
           setShowBanModal(false);
-          setBanReason("");
-          setBanDetails("");
           router.refresh();
-          if (onRefresh) onRefresh();
+          onRefresh?.();
         } else {
           toast.error(res.error || "Erreur de bannissement");
         }
@@ -118,7 +110,7 @@ export default function ProfileSidebar({
         }
         setIsBlocked(!!res.isBlocked);
         router.refresh();
-        if (onRefresh) onRefresh();
+        onRefresh?.();
       } catch {
         toast.error("Erreur de blocage");
         setShowBlockModal(false);
@@ -126,301 +118,170 @@ export default function ProfileSidebar({
     });
   };
 
-  const navItems = (isOwnProfile ? [
-    { id: "followed", label: "Sujets suivis", icon: <Bookmark size={18} /> },
-    { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
-    { id: "articles", label: "Mes articles", icon: <FileText size={18} /> },
-    { id: "ressources", label: "Mes ressources", icon: <Layout size={18} /> },
-    { id: "blocked", label: "Utilisateurs bloqués", icon: <UserX size={18} /> },
-    { id: "edit", label: "Éditer mon profil", icon: <UserIcon size={18} /> },
-    { id: "settings", label: "Gérer mon compte", icon: <Shield size={18} /> },
-  ] : [
-    { id: "activity", label: "Activité du forum", icon: <Activity size={18} /> },
-    { id: "articles", label: "Articles", icon: <FileText size={18} /> },
-  ]).map(item => ({ ...item }));
-
-  const regionLabels: Record<string, string> = {
-    "IDF": "R1 - Île-de-France",
-    "Nord-Ouest": "R2 - Nord-Ouest",
-    "Nord-Est": "R3 - Nord-Est",
-    "Sud-Est": "R4 - Sud-Est",
-    "Sud-Ouest": "R5 - Sud-Ouest",
-  };
+  const detailRow = "flex items-start gap-2.5 text-[0.95rem]";
+  const detailIcon = "mt-0.5 shrink-0 text-bb-text-muted";
 
   return (
-    <div className="profile-sidebar-wrapper">
-      {isMobile && (
-        <MobilePortal targetId="mobile-page-sidebar-slot">
-          <div className="profile-sidebar-mobile-nav">
-             <TabSystem 
-               items={navItems}
-               activeTab={activeTab}
-               onTabChange={handleTabClick}
-               variant="sidebar"
-               noPortal={true}
-             />
+    <aside aria-label={isOwnProfile ? "Ma carte de profil" : `Carte de profil de ${user.name}`}>
+      <Card className="flex flex-col gap-4 p-4 lg:p-5">
+        {/* Identité : avatar à gauche sur téléphone, au-dessus sur ordinateur */}
+        <div className="flex items-center gap-4 lg:flex-col lg:text-center">
+          <div className="shrink-0">
+            <UserAvatar
+              image={user.image}
+              name={user.name}
+              postCount={postCount}
+              size={96}
+              isBanned={user.isBanned}
+              selectedRank={user.avatarFrame as Rank}
+              isModerator={targetIsModerator}
+            />
           </div>
-        </MobilePortal>
-      )}
-
-      {/* Carte 063 : la boîte est la même sur téléphone et sur ordinateur. Les différences sont en CSS
-          (page-mobile.css), pour qu'elle ne change pas de taille quand le JavaScript a démarré. */}
-      <PremiumCard className="profile-summary-box" noOverflow>
-        {user.isBanned && (
-           <StatusBadge variant="banned" className="banned-badge" icon={<Ban size={12} />}>
-             Banni
-           </StatusBadge>
-        )}
-
-        {/* TabSystem DOCKÉ À DROITE - Uniquement sur Desktop */}
-        {!isMobile && (
-          <TabSystem 
-            items={navItems}
-            activeTab={activeTab}
-            onTabChange={handleTabClick}
-            variant="docked-sidebar"
-            showLabels={false}
-          />
-        )}
-
-        <div className="profile-avatar-container">
-          <UserAvatar 
-            image={user.image} 
-            name={user.name} 
-            postCount={postCount} 
-            size={120}
-            isBanned={user.isBanned}
-            selectedRank={user.avatarFrame}
-            isModerator={checkIsModerator(user.role)}
-          />
+          <div className="flex min-w-0 flex-col gap-1.5 lg:items-center">
+            <h2 className="m-0 border-0 p-0 text-xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic">
+              {user.name}
+            </h2>
+            <div className="flex flex-wrap gap-1.5 lg:justify-center">
+              <Badge variant={targetIsModerator ? "outline" : "neutral"}>{getRoleLabel(user.role || "COACH", roleLabels)}</Badge>
+              {user.isBanned && (
+                <Badge variant="danger"><Ban size={12} aria-hidden="true" /> Banni</Badge>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="profile-summary-header">
-          <h2 className="profile-name">{user.name}</h2>
-          <span className="profile-role-plain">
-            {user.role || "COACH"}
-          </span>
-        </div>
-
-        <div className="profile-stats-grid">
-           <StatItem 
-              variant="vertical"
-              label="NAF" 
-              value={user.nafNumber ? (
+        {/* Actions sur un autre membre, juste sous son nom */}
+        {!isOwnProfile && (
+          <div className="grid grid-cols-2 gap-2">
+            <Button asChild variant="primary" size="tap" className="col-span-2">
+              <Link href={`/messagerie?userId=${user.id}`}>
+                <MessageSquare size={18} aria-hidden="true" /> Message privé
+              </Link>
+            </Button>
+            <Button type="button" variant="secondary" size="tap" onClick={() => setShowReportModal(true)}>
+              <AlertTriangle size={18} aria-hidden="true" /> Signaler
+            </Button>
+            {!targetIsModerator && (
+              <Button type="button" variant="secondary" size="tap" disabled={isPending} onClick={() => setShowBlockModal(true)}>
+                {isBlocked ? <UserCheck size={18} aria-hidden="true" /> : <UserX size={18} aria-hidden="true" />}
+                {isBlocked ? "Débloquer" : "Bloquer"}
+              </Button>
+            )}
+            {isModerator && !targetIsModerator && (
+              <Button
+                type="button"
+                variant={user.isBanned ? "secondary" : "danger"}
+                size="tap"
+                className="col-span-2"
+                disabled={isPending}
+                onClick={() => setShowBanModal(true)}
+              >
+                {user.isBanned ? <UserCheck size={18} aria-hidden="true" /> : <Ban size={18} aria-hidden="true" />}
+                {user.isBanned ? "Débannir" : "Bannir"}
+              </Button>
+            )}
+          </div>
+        )}
+        {/* NAF et nombre de messages */}
+        <dl className="m-0 grid grid-cols-2 gap-2">
+          <div className="flex flex-col items-center gap-0.5 rounded-bb-md bg-bb-surface-2 px-2 py-2.5">
+            <dt className="text-xs font-semibold tracking-wide text-bb-text-muted uppercase">NAF</dt>
+            <dd className="m-0 text-base font-bold text-bb-text">
+              {user.nafNumber ? (
                 <a
                   href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="text-bb-accent-text underline-offset-2 hover:underline"
                 >
                   {user.nafNumber}
                 </a>
-              ) : "—"} 
-           />
-           <StatItem variant="vertical" label="Messages" value={postCount} />
-        </div>
-
-        {(user.region || user.equipe || (user.ligues && user.ligues.length > 0) || user.ligueCustom) && (
-          <div className="profile-info-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', width: '100%', marginTop: '1rem' }}>
-             {user.region && (
-               <StatItem variant="horizontal" label="Région" value={regionLabels[user.region] || user.region} icon={<MapPin size={16} />} />
-             )}
-             {user.equipe && (
-               <StatItem variant="horizontal" label="Équipe" value={user.equipe} icon={<Trophy size={16} />} />
-             )}
-             
-             {((user.ligues && user.ligues.length > 0) || user.ligueCustom) && (
-               <div className="stat-item-container horizontal" style={{ alignItems: 'flex-start' }}>
-                 <span className="stat-icon" style={{ marginTop: '2px' }}><Shield size={16} /></span>
-                 <div className="stat-content" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '6px' }}>
-                   <span className="stat-label">Ligues</span>
-                   <div className="multi-ligue-display" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                     {/* Ligues référencées */}
-                     {user.ligues?.map((ligue: any) => (
-                       <Link 
-                         key={ligue.id} 
-                         href={`/ligue/${ligue.id}`} 
-                         title={ligue.name}
-                         style={{ 
-                           fontSize: '0.7rem', 
-                           background: 'var(--primary-transparent)', 
-                           color: 'var(--primary)', 
-                           padding: '0.2rem 0.6rem', 
-                           borderRadius: '6px', 
-                           textDecoration: 'none',
-                           fontWeight: 800,
-                           border: '1px solid var(--primary)',
-                           whiteSpace: 'nowrap'
-                         }}
-                       >
-                         {ligue.acronym || ligue.name}
-                       </Link>
-                     ))}
-                     
-                     {/* Ligues personnalisées */}
-                     {user.ligueCustom?.split(',').map((s: string) => s.trim()).filter(Boolean).map((custom: string, idx: number) => (
-                       <span 
-                         key={`custom-${idx}`}
-                         style={{ 
-                           fontSize: '0.7rem', 
-                           background: 'rgba(255, 255, 255, 0.05)', 
-                           color: 'var(--text-muted)', 
-                           padding: '0.2rem 0.6rem', 
-                           borderRadius: '6px', 
-                           fontWeight: 700,
-                           border: '1px solid var(--glass-border)',
-                           fontStyle: 'italic',
-                           whiteSpace: 'nowrap'
-                         }}
-                       >
-                         {custom}
-                       </span>
-                     ))}
-                   </div>
-                 </div>
-               </div>
-             )}
+              ) : "—"}
+            </dd>
           </div>
-        )}
-
-        {!isOwnProfile && (
-          <div className="profile-actions-column">
-            {onContact && (
-              <Link href={`/messagerie?userId=${user.id}`} style={{ width: '100%' }}>
-                <ClassicButton icon={<MessageSquare size={18} />} fullWidth>
-                  Message privé
-                </ClassicButton>
-              </Link>
-            )}
-            <ClassicButton onClick={() => setShowReportModal(true)} icon={AlertTriangle} fullWidth>
-              Signaler
-            </ClassicButton>
-            {!checkIsModerator(user.role) && (
-              <ClassicButton 
-                onClick={() => setShowBlockModal(true)} 
-                isLoading={isPending}
-                icon={UserX}
-                fullWidth
-                style={{ 
-                  background: isBlocked ? "var(--success)" : undefined,
-                  color: isBlocked ? "white" : undefined,
-                  borderColor: isBlocked ? "var(--success)" : undefined
-                }}
-              >
-                {isBlocked ? "Débloquer" : "Bloquer"}
-              </ClassicButton>
-            )}
-            {isModerator && !checkIsModerator(user.role) && (
-              <AdminButton
-                onClick={() => setShowBanModal(true)}
-                isLoading={isPending}
-                icon={user.isBanned ? UserCheck : Ban}
-                fullWidth
-                style={{ 
-                  background: user.isBanned ? "#2E7D32" : "#ef4444", 
-                  color: "white",
-                  borderColor: user.isBanned ? "#2E7D32" : "#ef4444"
-                }}
-              >
-                {user.isBanned ? "Débannir" : "Bannir"}
-              </AdminButton>
-            )}
+          <div className="flex flex-col items-center gap-0.5 rounded-bb-md bg-bb-surface-2 px-2 py-2.5">
+            <dt className="text-xs font-semibold tracking-wide text-bb-text-muted uppercase">Messages</dt>
+            <dd className="m-0 text-base font-bold text-bb-text">{postCount}</dd>
           </div>
-        )}
-      </PremiumCard>
+        </dl>
 
-      <Modal
-        isOpen={showBanModal}
-        onClose={() => setShowBanModal(false)}
-        onConfirm={handleToggleBan}
-        title={user.isBanned ? "Débannir l'utilisateur" : "Bannir l'utilisateur"}
-        variant={!user.isBanned ? "admin" : "primary"}
-        confirmText={!user.isBanned ? "Confirmer le bannissement" : "Débannir l'utilisateur"}
-      >
-        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.6 }}>
-          {!user.isBanned 
-            ? `Vous êtes sur le point de bannir ${user.name}. Cette action restreindra son accès au forum et masquera ses messages.` 
-            : `Souhaitez-vous vraiment restaurer l'accès de ${user.name} ?`
-          }
-        </p>
-
-        {!user.isBanned && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            <div className="ban-reasons-group">
-              <label style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.8rem', display: 'block', opacity: 0.9 }}>
-                Raison du bannissement
-              </label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {BAN_REASONS.map(r => (
-                  <button 
-                    key={r}
-                    type="button"
-                    onClick={() => setBanReason(r)}
-                    style={{
-                      textAlign: 'left',
-                      padding: '0.8rem 1rem',
-                      background: banReason === r ? 'var(--primary-transparent)' : 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid',
-                      borderColor: banReason === r ? 'var(--primary)' : 'var(--glass-border)',
-                      borderRadius: '8px',
-                      color: banReason === r ? 'var(--primary)' : 'var(--foreground)',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem',
-                      fontWeight: banReason === r ? 700 : 400,
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    {r}
-                  </button>
-                ))}
+        {/* Région, équipe, ligues */}
+        {(user.region || user.equipe || hasLigues) && (
+          <dl className="m-0 flex flex-col gap-2.5">
+            {user.region && (
+              <div className={detailRow}>
+                <MapPin size={16} className={detailIcon} aria-hidden="true" />
+                <dt className="sr-only">Région</dt>
+                <dd className="m-0 min-w-0 text-bb-text">{REGION_LABELS[user.region] || user.region}</dd>
               </div>
-            </div>
-
-            <div className="ban-details-group">
-              <label style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.8rem', display: 'block', opacity: 0.9 }}>
-                Précisions additionnelles
-              </label>
-              <textarea 
-                value={banDetails}
-                onChange={(e) => setBanDetails(e.target.value)}
-                placeholder="Détaillez le motif ici..."
-                style={{
-                  width: '100%',
-                  background: 'var(--glass-bg)',
-                  border: '1px solid var(--glass-border)',
-                  borderRadius: '12px',
-                  padding: '1rem',
-                  color: 'var(--foreground)',
-                  minHeight: '100px',
-                  outline: 'none',
-                  resize: 'none',
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box'
-                }}
-              />
-            </div>
-          </div>
+            )}
+            {user.equipe && (
+              <div className={detailRow}>
+                <Trophy size={16} className={detailIcon} aria-hidden="true" />
+                <dt className="sr-only">Équipe</dt>
+                <dd className="m-0 min-w-0 break-words text-bb-text">{user.equipe}</dd>
+              </div>
+            )}
+            {hasLigues && (
+              <div className={detailRow}>
+                <Shield size={16} className={detailIcon} aria-hidden="true" />
+                <dt className="sr-only">Ligues</dt>
+                <dd className="m-0 flex min-w-0 flex-wrap gap-1.5">
+                  {user.ligues?.map((ligue) => (
+                    <Link
+                      key={ligue.id}
+                      href={`/ligue/${ligue.id}`}
+                      title={ligue.name}
+                      className="inline-flex min-h-8 items-center rounded-bb-sm border border-bb-accent-text px-2 text-sm font-bold text-bb-accent-text no-underline hover:bg-bb-accent-soft"
+                    >
+                      {ligue.acronym || ligue.name}
+                    </Link>
+                  ))}
+                  {customLigues.map((custom) => (
+                    <span key={custom} className="inline-flex min-h-8 items-center rounded-bb-sm border border-bb-border px-2 text-sm text-bb-text-muted italic">
+                      {custom}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            )}
+          </dl>
         )}
-      </Modal>
 
-      <ReportModal 
-        isOpen={showReportModal}
-        onClose={() => setShowReportModal(false)}
-        targetId={user.id}
-        targetType="USER"
-        itemTitle={user.name}
-      />
+      </Card>
 
-      <Modal
-        isOpen={showBlockModal}
-        onClose={() => setShowBlockModal(false)}
-        onConfirm={handleToggleBlock}
-        title={isBlocked ? "Débloquer l'utilisateur" : "Bloquer l'utilisateur"}
-        message={isBlocked 
-          ? `Voulez-vous vraiment débloquer ${user.name} ? Ses messages seront de nouveau visibles.` 
-          : `Voulez-vous vraiment bloquer ${user.name} ? Ses messages seront masqués et il ne pourra plus vous contacter.`}
-      />
+      {!isOwnProfile && (
+        <>
+          <BanUserDialog
+            open={showBanModal}
+            onOpenChange={setShowBanModal}
+            userName={user.name}
+            isBanned={!!user.isBanned}
+            pending={isPending}
+            onConfirm={handleToggleBan}
+          />
 
-      {/* Les styles sont maintenant dans app/profile/page.css pour garantir leur application globale */}
-    </div>
+          <ReportModal
+            isOpen={showReportModal}
+            onClose={() => setShowReportModal(false)}
+            targetId={user.id}
+            targetType="USER"
+            itemTitle={user.name}
+          />
+
+          <ConfirmDialog
+            open={showBlockModal}
+            onOpenChange={setShowBlockModal}
+            title={isBlocked ? `Débloquer ${user.name}` : `Bloquer ${user.name}`}
+            message={isBlocked
+              ? `Ses messages seront de nouveau visibles et ${user.name} pourra de nouveau vous contacter.`
+              : `Ses messages seront masqués et ${user.name} ne pourra plus vous contacter.`}
+            confirmLabel={isBlocked ? "Débloquer" : "Bloquer"}
+            pending={isPending}
+            onConfirm={handleToggleBlock}
+          />
+        </>
+      )}
+    </aside>
   );
 }

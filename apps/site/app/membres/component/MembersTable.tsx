@@ -1,121 +1,139 @@
 "use client";
 
-import React, { useTransition, useState, useEffect } from "react";
+/**
+ * Annuaire des membres `/membres` (refonte, carte 092, ADR 0006). Tout se passe dans le navigateur, comme avant la
+ * refonte : recherche par nom, filtres par rôle, région et ligue, tri, 25 membres par page.
+ * - Sur ordinateur : la recherche et les filtres au-dessus d'un tableau ; un clic sur un en-tête de colonne trie la
+ *   liste (de A à Z, puis de Z à A au second clic).
+ * - Sur téléphone : la recherche reste visible ; les filtres et le tri sont rangés dans le panneau « Filtrer les
+ *   membres », ouvert par le bouton « Filtres » (qui indique combien de filtres sont actifs). Un membre par carte.
+ * Les filtres actifs sont rappelés en pastilles, chacune avec une croix qui le retire.
+ * Pour un modérateur : les bannis sont affichés, « Bannir » ou « Débannir » et « Supprimer » (super administrateur)
+ * sont dans le menu « ⋯ » de chaque membre, et le rôle se change avec la liste « Changer le rôle ». Chaque action
+ * demande une confirmation. Les actions serveur sont inchangées.
+ */
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower } from "@/lib/roles";
-import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import Link from "next/link";
-import { Mail, Ban, Trash2, CheckCircle2, Search, Shield, Globe, Trophy, ArrowDownAz } from "lucide-react";
-import { toast } from "@bbfrance/ui";
-import Modal from "@/common/components/Modal/Modal";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
-import Pagination from "@/common/components/Pagination/Pagination";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import MobileFilterWrapper from "@/common/components/MobileFilterWrapper/MobileFilterWrapper";
-import "./MembersTable.css";
-import "./MembersTable-mobile.css";
+import { ArrowDown, ArrowUp, ArrowUpDown, Ban, Mail, Search, SearchX, SlidersHorizontal, Trash2, UserCheck, X } from "lucide-react";
+import {
+  ActionMenu, Badge, Button, Card, ConfirmDialog, CountBadge, DESKTOP_QUERY, EmptyState, Field, Input, PageNav, Select,
+  Sheet, SheetContent, toast, useMediaQuery,
+} from "@bbfrance/ui";
+import {
+  ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower,
+} from "@/lib/roles";
+import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
 
 const USERS_PER_PAGE = 25;
 
-const BAN_REASONS = [
-  "Spam / Publicité",
-  "Harcèlement / Insultes",
-  "Contenu inapproprié / NSFW",
-  "Bot",
-  "Autre (préciser ci-dessous)"
-];
+type SortKey = "name" | "role" | "naf" | "region" | "ligue";
+type SortConfig = { key: SortKey; direction: "asc" | "desc" } | null;
 
-interface Props {
-  users: any[];
-  currentUserRole: UserRole;
-  currentUserId: string;
-  allLigues: { id: string, name: string, acronym: string }[];
-  allRegions: { key: string, label: string }[];
+interface Member {
+  id: string;
+  name: string;
+  image?: string | null;
+  role: string;
+  isBanned: boolean;
+  nafNumber?: string | null;
+  region?: string | null;
+  ligues?: { id: string; name: string; acronym: string }[];
 }
 
-export default function MembersTable({ users, currentUserRole, currentUserId, allLigues, allRegions }: Props) {
+interface Props {
+  users: Member[];
+  currentUserRole: UserRole;
+  currentUserId: string;
+  allLigues: { id: string; name: string; acronym: string }[];
+  allRegions: { key: string; label: string }[];
+  /** Libellés des rôles lus dans la table RoleConfig (rôles personnalisés compris). */
+  roleLabels?: Record<string, string>;
+}
+
+const nafHref = (naf: string) => `https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${naf}`;
+
+/** Ordre de chaque tri (repris tel quel d'avant la refonte). */
+function compare(a: Member, b: Member, { key, direction }: { key: SortKey; direction: "asc" | "desc" }): number {
+  const sign = direction === "asc" ? 1 : -1;
+  const order = (x: string | number, y: string | number) => (x < y ? -sign : x > y ? sign : 0);
+  if (key === "name") return order(a.name.toLowerCase(), b.name.toLowerCase());
+  // Rôles : le plus puissant d'abord dans l'ordre croissant
+  if (key === "role") return -order(getRolePower(a.role), getRolePower(b.role));
+  if (key === "naf") {
+    const nafA = a.nafNumber ? parseInt(a.nafNumber, 10) : Infinity;
+    const nafB = b.nafNumber ? parseInt(b.nafNumber, 10) : Infinity;
+    if (nafA === Infinity && nafB === Infinity) return 0;
+    return order(nafA, nafB);
+  }
+  if (key === "region") return order(a.region || "", b.region || "");
+  return order(a.ligues?.[0]?.acronym || "", b.ligues?.[0]?.acronym || "");
+}
+
+export default function MembersTable({ users, currentUserRole, currentUserId, allLigues, allRegions, roleLabels }: Props) {
   const router = useRouter();
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRole, setSelectedRole] = useState<string>("");
-  const [selectedLigue, setSelectedLigue] = useState<string>("");
-  const [selectedRegion, setSelectedRegion] = useState<string>("");
-  const [banDetails, setBanDetails] = useState("");
-  
-  type SortKey = "name" | "role" | "naf" | "region" | "ligue";
-  type SortConfig = { key: SortKey; direction: "asc" | "desc" } | null;
+  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedLigue, setSelectedLigue] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
-
-  // Tri choisi dans la liste déroulante du téléphone (pas d'en-têtes de colonnes cliquables sur les cartes)
-  const handleMobileSort = (value: string) => {
-    if (!value) {
-      setSortConfig(null);
-      return;
-    }
-    const [key, direction] = value.split("_") as [SortKey, "asc" | "desc"];
-    setSortConfig({ key, direction });
-  };
-
-  const [roleModal, setRoleModal] = useState<{ isOpen: boolean, userId: string, newRole: UserRole | "", roleLabel: string }>({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
-  const [banModal, setBanModal] = useState<{ isOpen: boolean, userId: string, isBanning: boolean, userName: string }>({ isOpen: false, userId: "", isBanning: false, userName: "" });
-  const [banReason, setBanReason] = useState("");
-  const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean, userId: string, userName: string }>({ isOpen: false, userId: "", userName: "" });
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  // Reset page when filters change
-  useEffect(() => {
+  const [roleModal, setRoleModal] = useState<{ userId: string; userName: string; newRole: UserRole } | null>(null);
+  const [banModal, setBanModal] = useState<{ userId: string; userName: string; isBanned: boolean } | null>(null);
+  const [deleteModal, setDeleteModal] = useState<{ userId: string; userName: string } | null>(null);
+
+  /** Changer la recherche, un filtre ou le tri ramène à la première page. */
+  const change = <T,>(setter: (value: T) => void) => (value: T) => {
+    setter(value);
     setCurrentPage(1);
-  }, [searchTerm, selectedRole, selectedRegion, selectedLigue, sortConfig]);
+  };
+  const setSearch = change(setSearchTerm);
+  const setRole = change(setSelectedRole);
+  const setRegion = change(setSelectedRegion);
+  const setLigue = change(setSelectedLigue);
+  const setSort = change(setSortConfig);
 
-  const handleRoleSelect = (userId: string, newRole: UserRole) => {
-    setRoleModal({ isOpen: true, userId, newRole, roleLabel: ROLE_LABELS[newRole] });
+  const roleLabel = (role: string) => getRoleLabel(role, roleLabels);
+  const regionLabel = (key?: string | null) => allRegions.find((r) => r.key === key)?.label || key || "";
+  const ligueLabel = (id: string) => {
+    const ligue = allLigues.find((l) => l.id === id);
+    return ligue ? `[${ligue.acronym}] ${ligue.name}` : id;
   };
 
   const confirmRoleChange = () => {
-    if (!roleModal.userId || !roleModal.newRole) return;
+    if (!roleModal) return;
     startTransition(async () => {
       try {
-        const res = await updateUserRole(roleModal.userId, roleModal.newRole as UserRole);
+        const res = await updateUserRole(roleModal.userId, roleModal.newRole);
         if (res.success) toast.success("Rôle mis à jour");
         else toast.error(res.error || "Erreur lors du changement de rôle");
       } catch {
         toast.error("Erreur lors du changement de rôle");
       } finally {
-        setRoleModal({ isOpen: false, userId: "", newRole: "", roleLabel: "" });
+        setRoleModal(null);
       }
     });
   };
 
-  const handleToggleBanClick = (userId: string, currentBanStatus: boolean, userName: string) => {
-    setBanReason("");
-    setBanDetails("");
-    setBanModal({ isOpen: true, userId, isBanning: !currentBanStatus, userName });
-  };
-
-  async function confirmBanToggle() {
-    if (banModal.isBanning && !banReason.trim()) {
+  const confirmBanToggle = (reason: string) => {
+    if (!banModal) return;
+    const isBanning = !banModal.isBanned;
+    if (isBanning && !reason.trim()) {
       toast.error("Veuillez sélectionner une raison");
       return;
     }
-
     startTransition(async () => {
       try {
-        const fullReason = banDetails.trim() 
-          ? `[${banReason}] ${banDetails.trim()}` 
-          : banReason;
-
-        const res = await toggleBanUser(banModal.userId, banModal.isBanning, fullReason);
+        const res = await toggleBanUser(banModal.userId, isBanning, reason);
         if (res.success) {
-          toast.success(banModal.isBanning ? "Utilisateur banni" : "Utilisateur débanni");
-          setBanModal(v => ({...v, isOpen: false}));
-          setBanReason("");
-          setBanDetails("");
+          toast.success(isBanning ? "Utilisateur banni" : "Utilisateur débanni");
+          setBanModal(null);
           router.refresh();
         } else {
           toast.error(res.error || "Erreur lors de l'opération");
@@ -124,13 +142,10 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         toast.error("Erreur lors de l'opération");
       }
     });
-  }
-
-  const handleDeleteClick = (userId: string, userName: string) => {
-    setDeleteModal({ isOpen: true, userId, userName });
   };
 
   const confirmDelete = () => {
+    if (!deleteModal) return;
     startTransition(async () => {
       try {
         const res = await deleteUser(deleteModal.userId);
@@ -143,7 +158,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       } catch {
         toast.error("Erreur lors de la suppression du membre");
       } finally {
-        setDeleteModal({ isOpen: false, userId: "", userName: "" });
+        setDeleteModal(null);
       }
     });
   };
@@ -151,72 +166,23 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const showRoles = canManageRoles(currentUserRole);
   const showMod = isModerator(currentUserRole);
   const showDelete = currentUserRole === "SUPERADMIN";
+  const selectableRoles = getAllowedRolesToAssign(currentUserRole);
 
-  const filteredUsers = users.filter(u => {
+  const filteredUsers = users.filter((u) => {
     const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === "" || u.role === selectedRole;
     const matchesRegion = selectedRegion === "" || u.region === selectedRegion;
-    const matchesLigue = selectedLigue === "" || u.ligues?.some((l: any) => l.id === selectedLigue);
-    
+    const matchesLigue = selectedLigue === "" || u.ligues?.some((l) => l.id === selectedLigue);
     return matchesSearch && matchesRole && matchesRegion && matchesLigue;
   });
+  const sortedUsers = sortConfig ? [...filteredUsers].sort((a, b) => compare(a, b, sortConfig)) : filteredUsers;
+  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
+  const paginatedUsers = sortedUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE);
 
-  const handleSort = (key: "name" | "role" | "naf" | "region" | "ligue") => {
-    let direction: "asc" | "desc" = "asc";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
-    setSortConfig({ key, direction });
+  const handleSort = (key: SortKey) => {
+    const direction = sortConfig?.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+    setSort({ key, direction });
   };
-
-  const sortedUsers = [...filteredUsers].sort((a, b) => {
-    if (!sortConfig) return 0;
-    
-    if (sortConfig.key === "name") {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return sortConfig.direction === "asc" ? -1 : 1;
-      if (nameA > nameB) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    }
-    
-    if (sortConfig.key === "role") {
-      const powerA = getRolePower(a.role);
-      const powerB = getRolePower(b.role);
-      // For roles, higher power first when asc
-      if (powerA < powerB) return sortConfig.direction === "asc" ? 1 : -1;
-      if (powerA > powerB) return sortConfig.direction === "asc" ? -1 : 1;
-      return 0;
-    }
-    
-    if (sortConfig.key === "naf") {
-      const nafA = a.nafNumber ? parseInt(a.nafNumber, 10) : Infinity;
-      const nafB = b.nafNumber ? parseInt(b.nafNumber, 10) : Infinity;
-      
-      if (nafA === Infinity && nafB === Infinity) return 0;
-      if (nafA < nafB) return sortConfig.direction === "asc" ? -1 : 1;
-      if (nafA > nafB) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    }
-
-    if (sortConfig.key === "region") {
-      const regA = a.region || "";
-      const regB = b.region || "";
-      if (regA < regB) return sortConfig.direction === "asc" ? -1 : 1;
-      if (regA > regB) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    }
-
-    if (sortConfig.key === "ligue") {
-      const ligA = a.ligues?.[0]?.acronym || "";
-      const ligB = b.ligues?.[0]?.acronym || "";
-      if (ligA < ligB) return sortConfig.direction === "asc" ? -1 : 1;
-      if (ligA > ligB) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    }
-    
-    return 0;
-  });
 
   const resetFilters = () => {
     setSearchTerm("");
@@ -226,476 +192,362 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
-  const paginatedUsers = sortedUsers.slice((currentPage - 1) * USERS_PER_PAGE, currentPage * USERS_PER_PAGE);
+  const activeFilters = [
+    selectedRole && { label: `Rôle : ${roleLabel(selectedRole)}`, clear: () => setRole("") },
+    selectedRegion && { label: `Région : ${regionLabel(selectedRegion)}`, clear: () => setRegion("") },
+    selectedLigue && { label: `Ligue : ${ligueLabel(selectedLigue)}`, clear: () => setLigue("") },
+  ].filter(Boolean) as { label: string; clear: () => void }[];
+
+  const countText = `${sortedUsers.length} membre${sortedUsers.length > 1 ? "s" : ""}`;
+
+  /** Les trois filtres, dans la barre (ordinateur) ou dans le panneau (téléphone). */
+  const filterFields = (prefix: string) => (
+    <>
+      <Field label="Rôle" htmlFor={`${prefix}-role`}>
+        <Select id={`${prefix}-role`} value={selectedRole} onChange={(e) => setRole(e.target.value)}>
+          <option value="">Tous les rôles</option>
+          {Object.entries(ROLE_LABELS).map(([val, label]) => <option key={val} value={val}>{label}</option>)}
+        </Select>
+      </Field>
+      <Field label="Région" htmlFor={`${prefix}-region`}>
+        <Select id={`${prefix}-region`} value={selectedRegion} onChange={(e) => setRegion(e.target.value)}>
+          <option value="">Toutes les régions</option>
+          {allRegions.map((region) => <option key={region.key} value={region.key}>{region.label}</option>)}
+        </Select>
+      </Field>
+      <Field label="Ligue" htmlFor={`${prefix}-ligue`}>
+        <Select id={`${prefix}-ligue`} value={selectedLigue} onChange={(e) => setLigue(e.target.value)}>
+          <option value="">Toutes les ligues</option>
+          {allLigues.map((ligue) => <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>)}
+        </Select>
+      </Field>
+    </>
+  );
+
+  const roleBadge = (role: string) => {
+    const power = getRolePower(role);
+    return <Badge variant={power >= 90 ? "accent" : power >= 70 ? "outline" : "neutral"}>{roleLabel(role)}</Badge>;
+  };
+
+  /** Liste « Changer le rôle », ou « Verrouillé » quand ce membre est de rang égal ou supérieur. */
+  const roleSelect = (user: Member) =>
+    canEditTargetRole(currentUserRole, user.role as UserRole) ? (
+      <Select
+        aria-label={`Changer le rôle de ${user.name}`}
+        value={user.role}
+        disabled={isPending}
+        onChange={(e) => setRoleModal({ userId: user.id, userName: user.name, newRole: e.target.value as UserRole })}
+      >
+        <option value={user.role} disabled>Changer le rôle…</option>
+        {selectableRoles.map((role) => <option key={role} value={role}>{ROLE_LABELS[role]}</option>)}
+      </Select>
+    ) : (
+      <span className="text-sm text-bb-text-muted italic">Verrouillé</span>
+    );
+
+  /** Menu « ⋯ » d'un membre : bannir ou débannir, supprimer. */
+  const actionMenu = (user: Member) => {
+    const canModerate = canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN";
+    return (
+      <ActionMenu
+        label={`Actions pour ${user.name}`}
+        title={user.name}
+        items={[
+          {
+            label: user.isBanned ? "Débannir" : "Bannir",
+            icon: user.isBanned ? <UserCheck size={18} aria-hidden="true" /> : <Ban size={18} aria-hidden="true" />,
+            hidden: !showMod || !canModerate,
+            onSelect: () => setBanModal({ userId: user.id, userName: user.name, isBanned: user.isBanned }),
+          },
+          {
+            label: "Supprimer",
+            icon: <Trash2 size={18} aria-hidden="true" />,
+            danger: true,
+            hidden: !showDelete,
+            onSelect: () => setDeleteModal({ userId: user.id, userName: user.name }),
+          },
+        ]}
+      />
+    );
+  };
+
+  const nameLink = (user: Member) => (
+    <Link href={`/spy/${user.id}`} className="inline-flex min-h-11 min-w-0 items-center gap-2.5 font-semibold text-bb-text no-underline hover:underline">
+      <MemberAvatarImage image={user.image} className="size-8 shrink-0 rounded-full object-cover" />
+      <span className="min-w-0 break-words">{user.name}</span>
+    </Link>
+  );
+
+  const ligueBadges = (user: Member) =>
+    user.ligues && user.ligues.length > 0
+      ? user.ligues.map((l) => <Badge key={l.id} variant="neutral" title={l.name}>{l.acronym}</Badge>)
+      : <span className="text-bb-text-muted">—</span>;
+
+  const nafCell = (user: Member) =>
+    user.nafNumber ? (
+      <a href={nafHref(user.nafNumber)} target="_blank" rel="noopener noreferrer" className="font-semibold text-bb-accent-text">
+        {user.nafNumber}
+      </a>
+    ) : <span className="text-bb-text-muted">—</span>;
+
+  const canMessage = (user: Member) => user.id !== currentUserId && !user.isBanned;
+
+  const sortHeader = (key: SortKey, label: string) => {
+    const active = sortConfig?.key === key;
+    const direction = active ? sortConfig?.direction : undefined;
+    const Icon = !direction ? ArrowUpDown : direction === "asc" ? ArrowDown : ArrowUp;
+    return (
+      <th scope="col" className="p-0" aria-sort={direction ? (direction === "asc" ? "ascending" : "descending") : undefined}>
+        <Button
+          type="button"
+          variant="quiet"
+          onClick={() => handleSort(key)}
+          className="min-h-11 w-full justify-start gap-1.5 rounded-none px-3 text-xs font-bold tracking-wide uppercase"
+        >
+          {label}
+          <Icon size={14} aria-hidden="true" className={active ? "text-bb-accent-text" : "opacity-50"} />
+        </Button>
+      </th>
+    );
+  };
 
   return (
-    <PremiumCard className="members-table-card fade-in">
-      {/* Ordinateur : bloc de filtres au-dessus du tableau. Téléphone : bouton flottant (entonnoir). */}
-      <MobileFilterWrapper title="Filtrer les membres" className="members-filter-section">
-        <div className="members-search-wrapper">
-          <div className="search-input-group">
-            <Search size={18} className="search-icon" />
-            <input 
-              type="text" 
-              placeholder="Rechercher un coach par son nom..." 
+    <div className="flex flex-col gap-4">
+      {/* Recherche, bouton « Filtres » (téléphone) et filtres (ordinateur) */}
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
+        <div className="flex items-end gap-2 lg:w-80 lg:shrink-0">
+          <div className="relative min-w-0 flex-1">
+            <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+            <Input
+              type="text"
+              enterKeyHint="search"
+              aria-label="Rechercher un coach par son nom"
+              placeholder="Rechercher un coach…"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="premium-search-input"
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10"
             />
           </div>
+          <Button type="button" variant="secondary" size="tap" className="shrink-0 lg:hidden" onClick={() => setFiltersOpen(true)}>
+            <SlidersHorizontal size={18} aria-hidden="true" /> Filtres
+            <CountBadge count={activeFilters.length} />
+          </Button>
         </div>
-
-        <div className="members-filters-grid">
-          <ClassicSelect 
-            label="Rôle"
-            icon={<Shield size={14} />}
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value)}
-          >
-            <option value="">Tous les rôles</option>
-            {Object.entries(ROLE_LABELS).map(([val, label]) => (
-              <option key={val} value={val}>{label}</option>
-            ))}
-          </ClassicSelect>
-      
-          <ClassicSelect 
-            label="Région"
-            icon={<Globe size={14} />}
-            value={selectedRegion}
-            onChange={(e) => setSelectedRegion(e.target.value)}
-          >
-            <option value="">Toutes les régions</option>
-            {allRegions.map(region => (
-              <option key={region.key} value={region.key}>{region.label}</option>
-            ))}
-          </ClassicSelect>
-      
-          <ClassicSelect 
-            label="Ligue"
-            icon={<Trophy size={14} />}
-            value={selectedLigue}
-            onChange={(e) => setSelectedLigue(e.target.value)}
-          >
-            <option value="">Toutes les ligues</option>
-            {allLigues.map(ligue => (
-              <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>
-            ))}
-          </ClassicSelect>
-
-          {/* Tri : téléphone uniquement (masqué sur ordinateur par MembersTable-mobile.css) */}
-          <div className="members-mobile-sort">
-            <ClassicSelect
-              label="Trier par"
-              icon={<ArrowDownAz size={14} />}
-              value={sortConfig ? `${sortConfig.key}_${sortConfig.direction}` : ""}
-              onChange={(e) => handleMobileSort(e.target.value)}
-            >
-              <option value="">Ordre alphabétique</option>
-              <option value="name_desc">Nom (Z-A)</option>
-              <option value="role_asc">Rôle</option>
-              <option value="naf_asc">N° NAF</option>
-              <option value="region_asc">Région</option>
-              <option value="ligue_asc">Ligue</option>
-            </ClassicSelect>
-          </div>
-
-          <div className="filter-actions">
-            <ClassicButton 
-              onClick={resetFilters}
-              className="reset-btn-full"
-            >
-              Réinitialiser
-            </ClassicButton>
-          </div>
+        <div className="hidden flex-1 gap-3 lg:grid lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
+          {filterFields("members-filter")}
+          <Button type="button" variant="quiet" size="tap" onClick={resetFilters}>Réinitialiser</Button>
         </div>
-      </MobileFilterWrapper>
-
-      <div className="members-list-container">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th onClick={() => handleSort('name')} className="sortable">
-                Utilisateur {sortConfig?.key === 'name' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-              </th>
-              <th onClick={() => handleSort('role')} className="sortable">
-                Rôle {sortConfig?.key === 'role' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-              </th>
-              <th onClick={() => handleSort('naf')} className="sortable">
-                N°NAF {sortConfig?.key === 'naf' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-              </th>
-              <th onClick={() => handleSort('region')} className="sortable">
-                Région {sortConfig?.key === 'region' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-              </th>
-              <th onClick={() => handleSort('ligue')} className="sortable">
-                Ligue(s) {sortConfig?.key === 'ligue' ? (sortConfig.direction === 'asc' ? '↓' : '↑') : ''}
-              </th>
-              <th style={{ textAlign: 'center' }}>MP</th>
-              {showRoles && <th>Gestion des Rôles</th>}
-              {showMod && <th>Modération</th>}
-              {showDelete && <th>Gestion</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedUsers.length > 0 ? paginatedUsers.map(user => {
-              const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
-              const selectableRoles = getAllowedRolesToAssign(currentUserRole);
-
-              return (
-                <tr key={user.id} style={{ opacity: user.isBanned ? 0.5 : 1 }}>
-                  <td>
-                    <Link href={`/spy/${user.id}`} className="user-cell">
-                      {user.image && <img src={user.image} alt="" className="user-avatar-sm" />}
-                      <span className="user-name-wrapper">
-                        {user.name} {user.isBanned && <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>}
-                      </span>
-                    </Link>
-                  </td>
-                  <td>
-                    <StatusBadge 
-                      variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
-                    >
-                      {getRoleLabel(user.role)}
-                    </StatusBadge>
-                  </td>
-                  <td>
-                    {user.nafNumber ? (
-                      <a 
-                        href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="naf-link"
-                      >
-                        {user.nafNumber}
-                      </a>
-                    ) : "—"}
-                  </td>
-                  <td style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-                    {allRegions.find(r => r.key === user.region)?.label || user.region || "—"}
-                  </td>
-                  <td>
-                    <div className="ligues-list">
-                      {user.ligues && user.ligues.length > 0 ? user.ligues.map((l: any) => (
-                        <span key={l.id} className="ligue-mini-badge">
-                          {l.acronym}
-                        </span>
-                      )) : (
-                        <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.85rem' }}>—</span>
-                      )}
-                    </div>
-                  </td>
-                  <td style={{ textAlign: 'center' }}>
-                    {user.id !== currentUserId && !user.isBanned && (
-                      <ClassicButton 
-                        href={`/messagerie?userId=${user.id}`}
-                        icon={Mail}
-                        size="sm"
-                      >
-                        MP
-                      </ClassicButton>
-                    )}
-                  </td>
-                  {showRoles && (
-                    <td>
-                      {canEdit ? (
-                        <ClassicSelect 
-                          value={user.role}
-                          disabled={isPending}
-                          onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
-                          size="sm"
-                        >
-                          <option value={user.role} disabled>Changer le rôle...</option>
-                          {selectableRoles.map(role => (
-                            <option key={role} value={role}>{ROLE_LABELS[role]}</option>
-                          ))}
-                        </ClassicSelect>
-                      ) : (
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
-                      )}
-                    </td>
-                  )}
-                  {showMod && (
-                    <td>
-                      {canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN" ? (
-                        <AdminButton 
-                          onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
-                          isLoading={isPending}
-                          size="sm"
-                          variant={user.isBanned ? "classic" : "admin"}
-                        >
-                          {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
-                        </AdminButton>
-                      ) : (
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>Verrouillé</span>
-                      )}
-                    </td>
-                  )}
-                  {showDelete && (
-                    <td>
-                      <DangerButton 
-                        onClick={() => handleDeleteClick(user.id, user.name)}
-                        isLoading={isPending}
-                        icon={Trash2}
-                        size="sm"
-                      >
-                        Supprimer
-                      </DangerButton>
-                    </td>
-                  )}
-                </tr>
-              );
-            }) : (
-              <tr>
-                <td colSpan={9} style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                  Aucun membre ne correspond à vos critères de recherche.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
       </div>
 
-      {/* Téléphone : un membre par carte, empilées (le tableau est trop large pour l'écran) */}
-      <ul className="members-card-list">
-        {paginatedUsers.length > 0 ? paginatedUsers.map(user => {
-          const canEdit = canEditTargetRole(currentUserRole, user.role as UserRole);
-          const selectableRoles = getAllowedRolesToAssign(currentUserRole);
-          const canModerate = canEdit || currentUserRole === "SUPERADMIN";
-          const regionLabel = allRegions.find(r => r.key === user.region)?.label || user.region;
+      {/* Nombre de résultats et filtres actifs */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-sm text-bb-text-muted" aria-live="polite">{countText}</span>
+        {activeFilters.map((f) => (
+          <Button
+            key={f.label}
+            type="button"
+            variant="secondary"
+            size="sm"
+            aria-label={`Retirer le filtre ${f.label}`}
+            onClick={f.clear}
+            className="min-h-9 gap-1 rounded-full px-3 font-semibold"
+          >
+            {f.label} <X size={14} aria-hidden="true" />
+          </Button>
+        ))}
+      </div>
 
-          return (
-            <li key={user.id} className={`member-card ${user.isBanned ? "is-banned" : ""}`}>
-              <div className="member-card-header">
-                <Link href={`/spy/${user.id}`} className="member-card-name">
-                  {user.image && <img src={user.image} alt="" className="user-avatar-sm" />}
-                  <span>{user.name}</span>
-                </Link>
-                <StatusBadge
-                  variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
-                >
-                  {getRoleLabel(user.role)}
-                </StatusBadge>
-              </div>
+      {paginatedUsers.length === 0 ? (
+        <Card>
+          <EmptyState icon={<SearchX size={32} />} title="Aucun membre ne correspond à vos critères de recherche.">
+            Essayez un autre nom ou retirez un filtre.
+          </EmptyState>
+        </Card>
+      ) : (
+        <>
+          {/* Ordinateur : tableau */}
+          <Card className="hidden overflow-x-auto lg:block">
+            <table className="w-full border-collapse text-left text-[0.95rem]">
+              <thead className="border-b border-bb-border bg-bb-surface-2 text-bb-text-muted">
+                <tr>
+                  {sortHeader("name", "Utilisateur")}
+                  {sortHeader("role", "Rôle")}
+                  {sortHeader("naf", "N° NAF")}
+                  {sortHeader("region", "Région")}
+                  {sortHeader("ligue", "Ligue(s)")}
+                  <th scope="col" className="px-3 text-xs font-bold tracking-wide uppercase">Message</th>
+                  {showRoles && <th scope="col" className="px-3 text-xs font-bold tracking-wide uppercase">Gestion du rôle</th>}
+                  {(showMod || showDelete) && <th scope="col" className="px-3"><span className="sr-only">Actions</span></th>}
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedUsers.map((user) => (
+                  <tr key={user.id} className={`border-b border-bb-border last:border-b-0 ${user.isBanned ? "bg-bb-surface-2" : ""}`}>
+                    <td className="px-3 py-1.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {nameLink(user)}
+                        {user.isBanned && <Badge variant="danger"><Ban size={12} aria-hidden="true" /> Banni</Badge>}
+                      </div>
+                    </td>
+                    <td className="px-3 py-1.5">{roleBadge(user.role)}</td>
+                    <td className="px-3 py-1.5">{nafCell(user)}</td>
+                    <td className="px-3 py-1.5 text-bb-text-muted">{regionLabel(user.region) || "—"}</td>
+                    <td className="px-3 py-1.5"><div className="flex flex-wrap gap-1">{ligueBadges(user)}</div></td>
+                    <td className="px-3 py-1.5">
+                      {canMessage(user) && (
+                        <Button asChild variant="secondary" size="tap" className="px-3">
+                          <Link href={`/messagerie?userId=${user.id}`}><Mail size={16} aria-hidden="true" /> Message privé</Link>
+                        </Button>
+                      )}
+                    </td>
+                    {showRoles && <td className="min-w-48 px-3 py-1.5">{roleSelect(user)}</td>}
+                    {(showMod || showDelete) && <td className="px-1 py-1.5 text-right">{actionMenu(user)}</td>}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Card>
 
-              {user.isBanned && (
-                <StatusBadge variant="banned" icon={<Ban size={10} />}>Banni</StatusBadge>
-              )}
+          {/* Téléphone : un membre par carte */}
+          <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:hidden">
+            {paginatedUsers.map((user) => (
+              <li key={user.id}>
+                <Card className={`flex flex-col gap-3 p-4 ${user.isBanned ? "bg-bb-surface-2" : ""}`}>
+                  <div className="flex items-start gap-2">
+                    <div className="flex min-w-0 flex-1 flex-col gap-1">
+                      {nameLink(user)}
+                      <div className="flex flex-wrap gap-1.5">
+                        {roleBadge(user.role)}
+                        {user.isBanned && <Badge variant="danger"><Ban size={12} aria-hidden="true" /> Banni</Badge>}
+                      </div>
+                    </div>
+                    {(showMod || showDelete) && actionMenu(user)}
+                  </div>
 
-              <dl className="member-card-details">
-                <div>
-                  <dt>N° NAF</dt>
-                  <dd>
-                    {user.nafNumber ? (
-                      <a
-                        href={`https://member.thenaf.net/index.php?module=NAF&type=coachpage&coach=${user.nafNumber}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="naf-link"
-                      >
-                        {user.nafNumber}
-                      </a>
-                    ) : "—"}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Région</dt>
-                  <dd>{regionLabel || "—"}</dd>
-                </div>
-                <div>
-                  <dt>Ligue(s)</dt>
-                  <dd className="ligues-list">
-                    {user.ligues && user.ligues.length > 0 ? user.ligues.map((l: { id: string; acronym: string }) => (
-                      <span key={l.id} className="ligue-mini-badge">{l.acronym}</span>
-                    )) : "—"}
-                  </dd>
-                </div>
-              </dl>
+                  <dl className="m-0 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
+                    <div className="flex flex-col">
+                      <dt className="text-bb-text-muted">N° NAF</dt>
+                      <dd className="m-0">{nafCell(user)}</dd>
+                    </div>
+                    <div className="flex flex-col">
+                      <dt className="text-bb-text-muted">Région</dt>
+                      <dd className="m-0 break-words text-bb-text">{regionLabel(user.region) || "—"}</dd>
+                    </div>
+                    <div className="col-span-2 flex flex-col">
+                      <dt className="text-bb-text-muted">Ligue(s)</dt>
+                      <dd className="m-0 flex flex-wrap gap-1 pt-0.5">{ligueBadges(user)}</dd>
+                    </div>
+                  </dl>
 
-              <div className="member-card-actions">
-                {user.id !== currentUserId && !user.isBanned && (
-                  <ClassicButton href={`/messagerie?userId=${user.id}`} icon={Mail} fullWidth>
-                    Message privé
-                  </ClassicButton>
-                )}
-                {showRoles && canEdit && (
-                  <ClassicSelect
-                    label="Rôle"
-                    value={user.role}
-                    disabled={isPending}
-                    onChange={(e) => handleRoleSelect(user.id, e.target.value as UserRole)}
-                  >
-                    <option value={user.role} disabled>Changer le rôle...</option>
-                    {selectableRoles.map(role => (
-                      <option key={role} value={role}>{ROLE_LABELS[role]}</option>
-                    ))}
-                  </ClassicSelect>
-                )}
-                {showMod && canModerate && (
-                  <AdminButton
-                    onClick={() => handleToggleBanClick(user.id, user.isBanned, user.name)}
-                    isLoading={isPending}
-                    variant={user.isBanned ? "classic" : "admin"}
-                    fullWidth
-                  >
-                    {user.isBanned ? <><CheckCircle2 size={14} /> Débannir</> : <><Ban size={14} /> Bannir</>}
-                  </AdminButton>
-                )}
-                {showDelete && (
-                  <DangerButton
-                    onClick={() => handleDeleteClick(user.id, user.name)}
-                    isLoading={isPending}
-                    icon={Trash2}
-                    fullWidth
-                  >
-                    Supprimer
-                  </DangerButton>
-                )}
-              </div>
-            </li>
-          );
-        }) : (
-          <li className="member-card-empty">
-            Aucun membre ne correspond à vos critères de recherche.
-          </li>
-        )}
-      </ul>
+                  {canMessage(user) && (
+                    <Button asChild variant="secondary" size="tap" className="w-full">
+                      <Link href={`/messagerie?userId=${user.id}`}><Mail size={16} aria-hidden="true" /> Message privé</Link>
+                    </Button>
+                  )}
+                  {showRoles && canEditTargetRole(currentUserRole, user.role as UserRole) && (
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-sm font-semibold text-bb-text" aria-hidden="true">Rôle</span>
+                      {roleSelect(user)}
+                    </div>
+                  )}
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
-      <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-        <Pagination 
-          currentPage={currentPage}
+      <div className="flex justify-center">
+        <PageNav
+          page={currentPage}
           totalPages={totalPages}
           onPageChange={(p) => {
             setCurrentPage(p);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         />
       </div>
 
-      <Modal 
-        isOpen={roleModal.isOpen} 
-        onClose={() => setRoleModal(v => ({...v, isOpen: false}))}
-        onConfirm={confirmRoleChange}
-        title="Changement de rôle"
-        message={`Voulez-vous vraiment changer le rôle de cet utilisateur vers "${roleModal.roleLabel}" ?`}
-      />
-
-      <Modal
-        isOpen={banModal.isOpen}
-        onClose={() => setBanModal(v => ({...v, isOpen: false}))}
-        onConfirm={confirmBanToggle}
-        title={banModal.isBanning ? "Bannir l'utilisateur" : "Débannir l'utilisateur"}
-        confirmText={banModal.isBanning ? "Bannir" : "Débannir"}
-        variant={banModal.isBanning ? "admin" : "primary"}
-      >
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: 1.5 }}>
-          {banModal.isBanning 
-            ? `Vous êtes sur le point de bannir ${banModal.userName}. Veuillez indiquer la raison du bannissement.`
-            : `Voulez-vous vraiment débannir ${banModal.userName} ?`
-          }
-        </p>
-        
-        {banModal.isBanning && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-            <div className="ban-reasons-group">
-              <label style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block' }}>Raison du bannissement</label>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                {BAN_REASONS.map(r => (
-                  <button 
-                    key={r}
-                    type="button"
-                    onClick={() => setBanReason(r)}
-                    style={{
-                      textAlign: 'left',
-                      padding: '0.7rem 1rem',
-                      background: banReason === r ? 'var(--primary-transparent)' : 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid',
-                      borderColor: banReason === r ? 'var(--primary)' : 'var(--glass-border)',
-                      borderRadius: '8px',
-                      color: banReason === r ? 'var(--primary)' : 'var(--foreground)',
-                      cursor: 'pointer',
-                      fontSize: '0.9rem',
-                      fontWeight: banReason === r ? 700 : 400,
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="ban-details-group">
-              <label style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.5rem', display: 'block' }}>Précisions additionnelles</label>
-              <textarea 
-                value={banDetails}
-                onChange={(e) => setBanDetails(e.target.value)}
-                placeholder="Détaillez le motif si nécessaire..."
-                style={{
-                  background: 'var(--glass-bg)',
-                  border: '1px solid var(--glass-border)',
-                  borderRadius: '12px',
-                  padding: '1rem',
-                  color: 'var(--foreground)',
-                  outline: 'none',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  minHeight: '100px',
-                  fontFamily: 'inherit',
-                  resize: 'none'
+      {/* Téléphone : panneau des filtres et du tri */}
+      <Sheet open={filtersOpen && !isDesktop} onOpenChange={setFiltersOpen}>
+        <SheetContent title="Filtrer les membres">
+          <div className="flex flex-col gap-4 pt-1 pb-2">
+            {filterFields("members-sheet")}
+            <Field label="Trier par" htmlFor="members-sheet-sort">
+              <Select
+                id="members-sheet-sort"
+                value={sortConfig ? `${sortConfig.key}_${sortConfig.direction}` : ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (!value) return setSort(null);
+                  const [key, direction] = value.split("_") as [SortKey, "asc" | "desc"];
+                  setSort({ key, direction });
                 }}
-              />
+              >
+                <option value="">Ordre alphabétique</option>
+                <option value="name_desc">Nom (Z-A)</option>
+                <option value="role_asc">Rôle</option>
+                <option value="naf_asc">N° NAF</option>
+                <option value="region_asc">Région</option>
+                <option value="ligue_asc">Ligue</option>
+              </Select>
+            </Field>
+            <div className="flex gap-2">
+              <Button type="button" variant="secondary" size="tap" className="flex-1" onClick={resetFilters}>Réinitialiser</Button>
+              <Button type="button" variant="primary" size="tap" className="flex-1" onClick={() => setFiltersOpen(false)}>
+                Voir {countText}
+              </Button>
             </div>
           </div>
-        )}
-      </Modal>
+        </SheetContent>
+      </Sheet>
 
-      <Modal 
-        isOpen={deleteModal.isOpen} 
-        onClose={() => setDeleteModal(v => ({...v, isOpen: false}))}
-        onConfirm={confirmDelete}
-        title="Suppression définitive"
-      >
-        <p style={{ color: 'var(--danger)', lineHeight: 1.5 }}>
-          <strong>ATTENTION :</strong> Cette action est <strong>IRRÉVERSIBLE</strong>.
-        </p>
-        <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem', lineHeight: 1.5 }}>
-          Le compte de {deleteModal.userName} et ses données privées (messages privés, réactions, inscriptions)
-          seront supprimés. Ses sujets, messages du forum, articles et résultats seront rattachés au compte « Coach Inconnu ».
-        </p>
-        <p style={{ color: 'var(--accent)', marginTop: '1rem', lineHeight: 1.5, background: 'var(--primary-transparent)', padding: '0.8rem', borderRadius: '6px', border: '1px solid var(--glass-border)' }}>
-          <strong>RAPPEL SUPERADMIN :</strong> Cette option ne doit être utilisée <strong>QUE</strong> pour purger les faux comptes, les comptes buggés, ou vider les comptes abandonnés/fantômes. 
-          Pour les cas classiques de modération, privilégiez le bannissement.
-        </p>
-        
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '2rem' }}>
-          <ClassicButton onClick={() => setDeleteModal(v => ({...v, isOpen: false}))}>
-            Annuler
-          </ClassicButton>
-          <DangerButton 
-            onClick={confirmDelete} 
-            isLoading={isPending}
-          >
-            Confirmer la suppression
-          </DangerButton>
-        </div>
-      </Modal>
+      {/* Fenêtres de confirmation */}
+      <ConfirmDialog
+        open={!!roleModal}
+        onOpenChange={(open) => { if (!open) setRoleModal(null); }}
+        title={roleModal ? `Changer le rôle de ${roleModal.userName}` : "Changer le rôle"}
+        message={roleModal ? `Voulez-vous vraiment donner le rôle « ${ROLE_LABELS[roleModal.newRole]} » à ${roleModal.userName} ?` : ""}
+        pending={isPending}
+        onConfirm={confirmRoleChange}
+      />
 
-      <style jsx>{`
-        .role-badge {
-          padding: 0.3rem 0.6rem;
-          border-radius: 4px;
-          font-size: 0.75rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          background: rgba(255,255,255,0.1);
-        }
-        .role-superadmin { background: #9333ea; color: white; }
-        .role-admin { background: #ef4444; color: white; }
-        .role-conseil-orga { background: #f59e0b; color: black; }
-        .role-moderator { background: #3b82f6; color: white; }
-        .role-orga { background: #10b981; color: white; }
-        .role-coach { background: #4b5563; color: white; }
-      `}</style>
-    </PremiumCard>
+      <BanUserDialog
+        open={!!banModal}
+        onOpenChange={(open) => { if (!open) setBanModal(null); }}
+        userName={banModal?.userName ?? ""}
+        isBanned={banModal?.isBanned ?? false}
+        pending={isPending}
+        onConfirm={confirmBanToggle}
+      />
+
+      <Sheet open={!!deleteModal} onOpenChange={(open) => { if (!open) setDeleteModal(null); }}>
+        <SheetContent
+          title="Suppression définitive"
+          side={isDesktop ? "center" : "bottom"}
+          description={deleteModal ? `Supprimer le compte de ${deleteModal.userName}. Cette action est irréversible.` : undefined}
+          onInteractOutside={(event) => event.preventDefault()}
+        >
+          <div className="flex flex-col gap-3 pt-1 pb-2 text-[0.95rem] leading-relaxed">
+            <p className="m-0 text-bb-text-muted">
+              Le compte et ses données privées (messages privés, réactions, inscriptions) seront supprimés. Ses sujets,
+              messages du forum, articles et résultats seront rattachés au compte « Coach Inconnu ».
+            </p>
+            <p className="m-0 rounded-bb-md border border-bb-border bg-bb-surface-2 p-3 text-bb-text">
+              <strong>Rappel :</strong> cette suppression sert uniquement à retirer les faux comptes, les comptes en
+              erreur ou les comptes abandonnés. Pour la modération habituelle, préférez le bannissement.
+            </p>
+            <div className="flex flex-col gap-2 lg:flex-row-reverse lg:justify-start">
+              <Button type="button" variant="danger" size="tap" className="w-full lg:w-auto" disabled={isPending} onClick={confirmDelete}>
+                <Trash2 size={18} aria-hidden="true" /> Confirmer la suppression
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" disabled={isPending} onClick={() => setDeleteModal(null)}>
+                Annuler
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }

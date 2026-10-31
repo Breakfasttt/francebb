@@ -41,8 +41,13 @@ export function getRolePower(role: string): number {
   return ROLE_POWER[role] ?? ROLE_POWER.COACH;
 }
 
-export function getRoleLabel(role: string): string {
-  return ROLE_LABELS[role] ?? role;
+/**
+ * Libellé lisible d'un rôle (« Modérateur » plutôt que MODERATOR). `labels` contient les libellés lus dans la table
+ * RoleConfig (lib/roleLabels.ts), qui couvrent aussi les rôles personnalisés créés dans l'administration ; sans
+ * eux, seuls les rôles de base ont un libellé.
+ */
+export function getRoleLabel(role: string, labels?: Record<string, string>): string {
+  return labels?.[role] ?? ROLE_LABELS[role] ?? role;
 }
 
 /**

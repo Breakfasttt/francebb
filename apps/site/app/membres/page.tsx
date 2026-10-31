@@ -1,16 +1,17 @@
+/**
+ * Annuaire des membres `/membres` (refonte, carte 092, ADR 0006), réservé aux membres connectés. La page serveur lit
+ * les membres (bannis compris pour un modérateur), les ligues, les régions et les libellés des rôles ; la recherche,
+ * les filtres, le tri et la pagination se font dans le navigateur (`MembersTable`), comme avant la refonte.
+ */
 import MembersTable from "@/app/membres/component/MembersTable";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { getActiveSession } from "@/lib/authGuard";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
+import { getRoleLabelMap } from "@/lib/roleLabels";
 import { isModerator, UserRole } from "@/lib/roles";
 import { redirect } from "next/navigation";
-import "./page.css";
-import "./page-mobile.css";
 
 export const dynamic = "force-dynamic";
-
-
-//ce commentaire est juste un test
 
 export default async function MembersPage() {
   const session = await getActiveSession();
@@ -44,8 +45,8 @@ export default async function MembersPage() {
     orderBy: { name: 'asc' }
   });
 
-  // 5. Récupérer les données de filtrage
-  const [allLigues, allRegions] = await Promise.all([
+  // 5. Récupérer les données de filtrage et les libellés lisibles des rôles (rôles personnalisés compris)
+  const [allLigues, allRegions, roleLabels] = await Promise.all([
     prisma.ligue.findMany({
       select: { id: true, name: true, acronym: true },
       orderBy: { acronym: 'asc' }
@@ -53,26 +54,27 @@ export default async function MembersPage() {
     prisma.referenceData.findMany({
       where: { group: 'COACH_REGION', isActive: true },
       orderBy: { order: 'asc' }
-    })
+    }),
+    getRoleLabelMap(),
   ]);
 
   return (
-    <div className="members-page">
-      <PageHeader
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
         title="Membres"
-        subtitle="Annuaire des coachs de la communauté"
+        subtitle={`Annuaire des coachs de la communauté : ${allUsers.length} membre${allUsers.length > 1 ? "s" : ""}`}
+        backHref="/"
+        backTitle="Retour à l'accueil"
       />
 
-      <main className="container">
-
-        <MembersTable
-          users={allUsers}
-          currentUserRole={me.role as UserRole}
-          currentUserId={session.user.id}
-          allLigues={allLigues}
-          allRegions={allRegions}
-        />
-      </main>
+      <MembersTable
+        users={allUsers.map((u) => ({ ...u, name: u.name ?? "" }))}
+        currentUserRole={me.role as UserRole}
+        currentUserId={session.user.id}
+        allLigues={allLigues}
+        allRegions={allRegions}
+        roleLabels={roleLabels}
+      />
     </div>
   );
 }
