@@ -43,7 +43,8 @@ const ADMIN_ID = "e2e_audit_admin";
 
 /**
  * `openFilters` (carte 061) : la page est mesurée une seconde fois, panneau de filtres ouvert par son bouton
- * flottant (MobileFilterWrapper). Sans cela, les cases à cocher des filtres ne sont jamais mesurées.
+ * flottant (MobileFilterWrapper) ou, sur les pages refaites (carte 089, `/tournois`), par le bouton « Filtres ».
+ * Sans cela, les cases à cocher des filtres ne sont jamais mesurées.
  */
 const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boolean }[] = [
   { path: "/", connected: false },
@@ -63,6 +64,12 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/ligues/create", connected: true },
   { path: "/tournois", connected: false },
   { path: "/tournois", connected: false, openFilters: true },
+  // Carte 089 : liste des tournois en lignes, sujet d'un tournoi, création d'un tournoi, résultats
+  { path: "/tournois?view=list&history=true", connected: false },
+  { path: "/forum/new-tournament?forumId=e2e_audit_tournois", connected: true },
+  { path: "/forum/tournament/e2e_audit_tournoi/results", connected: true },
+  { path: "/forum/tournament/e2e_audit_tournoi/results/view", connected: false },
+  { path: "/forum/topic/e2e_audit_tournoi_topic", connected: true },
   { path: "/classement", connected: false },
   { path: "/statistiques", connected: false },
   { path: "/articles", connected: false },
@@ -240,6 +247,37 @@ test.describe("audit mobile", () => {
         create: { id: ADMIN_ID, name: "Admin E2E", email: "admin@e2e.test", role: "ADMIN", hasFinishedOnboarding: true },
       });
     });
+    // Carte 089 : forum de tournois, tournoi terminé (organisé par le modérateur) avec résultats, une ronde et un
+    // inscrit, pour mesurer la fiche du tournoi, le module d'inscription, la saisie et l'affichage des résultats
+    await withTestDb(async (prisma) => {
+      const category = await prisma.category.findUniqueOrThrow({ where: { name: E2E.categoryName } });
+      await prisma.forum.upsert({
+        where: { id: "e2e_audit_tournois" },
+        update: {},
+        create: { id: "e2e_audit_tournois", name: "E2E Audit Tournois", categoryId: category.id, isTournamentForum: true, order: 90 },
+      });
+      if (!(await prisma.tournament.findUnique({ where: { id: "e2e_audit_tournoi" } }))) {
+        await prisma.tournament.create({
+          data: {
+            id: "e2e_audit_tournoi", name: "Tournoi de l'audit mobile", date: new Date("2026-03-14T09:00:00Z"), location: "Salle des fêtes",
+            ville: "Rennes", region: "Bretagne", departement: "35", price: 12, maxParticipants: 24, isNAF: true, isFinished: true,
+            organizerId: E2E.modoId,
+            results: { create: [
+              { coachName: "Modo E2E", userId: E2E.modoId, roster: "Orc", wins: 3, draws: 1, losses: 1, casualties: 6, points: 10, rank: 1 },
+              { coachName: "Coach invité au long pseudonyme", roster: "Underworld Denizens", wins: 1, draws: 0, losses: 4, casualties: 2, points: 3, rank: 2 },
+            ] },
+            rounds: { create: { roundNumber: 1, matches: { create: { tableNumber: 1, coach1Name: "Modo E2E", coach2Name: "Coach invité au long pseudonyme", coach1TD: 2, coach2TD: 1 } } } },
+            registrations: { create: { userId: E2E.coachId, status: "REGISTERED", paymentStatus: "PAID" } },
+          },
+        });
+        await prisma.topic.create({
+          data: {
+            id: "e2e_audit_tournoi_topic", title: "Tournoi de l'audit mobile", forumId: "e2e_audit_tournois", authorId: E2E.modoId,
+            tournamentId: "e2e_audit_tournoi", posts: { create: { content: "Présentation du tournoi de l'audit.", authorId: E2E.modoId } },
+          },
+        });
+      }
+    });
     // Un navigateur par visiteur ; le modérateur voit toutes les pages réservées (modération et administration en lecture)
     const pages = new Map<Visitor, Page>();
     for (const visitor of new Set(SELECTED_PAGES.map(visitorOf))) pages.set(visitor, await openPageAs(browser, visitor));
@@ -249,7 +287,10 @@ test.describe("audit mobile", () => {
         await page.setViewportSize({ width: phone.width, height: phone.height });
         const response = await page.goto(target.path, { waitUntil: "networkidle" }).catch(() => null);
         if (target.openFilters) {
-          await page.locator(".mobile-filter-fab").click();
+          // Bouton flottant historique, ou bouton « Filtres » des pages refaites
+          const fab = page.locator(".mobile-filter-fab");
+          if (await fab.count()) await fab.click();
+          else await page.getByRole("button", { name: /^Filtres/ }).filter({ visible: true }).first().click();
           await page.waitForTimeout(600); // fin de l'animation du panneau qui monte du bas
         }
         const metrics = await measure(page);

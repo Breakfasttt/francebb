@@ -1,12 +1,17 @@
 "use client";
 
+/**
+ * Choix du lieu d'un tournoi sur une carte (refonte, carte 089) : recherche d'une adresse (géocodage, c'est-à-dire
+ * transformation d'une adresse en coordonnées, par une action serveur), appui sur la carte ou déplacement du repère
+ * pour corriger, puis « Valider ce lieu ». Affiché dans le panneau « Localisation du tournoi » du formulaire de
+ * tournoi : la carte prend la moitié de la hauteur de l'écran sur téléphone. Carte OpenStreetMap (Leaflet).
+ */
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { Search, MapPin, Check, X, Loader2 } from "lucide-react";
-import CTAButton from "@/common/components/Button/CTAButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
+import { Search, MapPin, Check, Loader2 } from "lucide-react";
+import { Button, Input } from "@bbfrance/ui";
 import { reverseGeocodeAction, searchAddressAction } from "@/app/ligues/actions";
 
 /**
@@ -74,9 +79,9 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
 
   const handleMapClick = useCallback(async (lat: number, lng: number) => {
     setPosition([lat, lng]);
-    
-    // Reverse geocoding
-    // Reverse geocoding via Server Action (bypass CORS)
+
+    // Adresse du point choisi, demandée par une action serveur (le navigateur ne peut pas interroger directement le
+    // service de géocodage)
     try {
       const displayName = await reverseGeocodeAction(lat, lng);
       if (displayName) {
@@ -91,7 +96,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
     if (!query.trim()) return;
 
     setIsSearching(true);
-    // Search geocoding via Server Action (bypass CORS)
+    // Coordonnées de l'adresse, demandées par une action serveur
     try {
       const data = await searchAddressAction(query);
       if (data) {
@@ -109,32 +114,40 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Le formulaire de recherche est affiché dans un panneau, hors du formulaire du tournoi dans la page, mais React
+    // remonterait l'envoi jusqu'à lui : on l'arrête ici
+    e.stopPropagation();
     handleSearchInternal(searchQuery);
   };
 
   return (
-    <div className="map-picker-container">
-      <form className="map-search-bar" onSubmit={handleSearch}>
-        <div className="search-input-wrapper">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            value={searchQuery} 
-            onChange={(e) => setSearchQuery(e.target.value)} 
-            placeholder="Rechercher une adresse..." 
-            className="search-input"
+    <div className="flex w-full flex-col gap-3 pt-1 pb-2">
+      <form role="search" aria-label="Rechercher une adresse" className="flex items-stretch gap-2" onSubmit={handleSearch}>
+        <div className="relative min-w-0 flex-1">
+          <Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" />
+          <Input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Rechercher une adresse..."
+            aria-label="Rechercher une adresse"
+            enterKeyHint="search"
+            className="pl-10"
           />
         </div>
-        <CTAButton type="submit" isLoading={isSearching} style={{ height: 'auto', minWidth: '120px' }}>
-          Rechercher
-        </CTAButton>
+        {/* Sur téléphone, seule la loupe est affichée ; le nom du bouton reste lu par les lecteurs d'écran */}
+        <Button type="submit" variant="primary" size="tap" disabled={isSearching} className="shrink-0 max-lg:w-11 max-lg:px-0">
+          {isSearching ? <Loader2 size={18} aria-hidden="true" className="animate-spin" /> : <Search size={18} aria-hidden="true" />}
+          <span className="max-lg:sr-only">Rechercher</span>
+        </Button>
       </form>
 
-      <div className="map-wrapper">
+      {/* isolate : les calques de Leaflet (z-index jusqu'à 1000) restent sous le reste du panneau */}
+      <div className="relative isolate h-[45dvh] min-h-60 overflow-hidden rounded-bb-md border border-bb-border lg:h-[420px]">
         {isMounted && (
-          <MapContainer 
-            center={center} 
-            zoom={initialCenter ? 16 : 6} 
+          <MapContainer
+            center={center}
+            zoom={initialCenter ? 16 : 6}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
@@ -154,148 +167,28 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
         )}
       </div>
 
-      <div className="map-picker-footer">
-        <div className="selected-address">
-          <MapPin size={16} />
-          <span className="address-text">{address || (position ? `${position[0].toFixed(5)}, ${position[1].toFixed(5)}` : "Cliquez sur la carte pour choisir un lieu")}</span>
-        </div>
-        <div className="picker-actions">
-          <ClassicButton onClick={onCancel} icon={X}>
-            Annuler
-          </ClassicButton>
-          <CTAButton 
-            onClick={() => position && onSelect(position[0], position[1], address)} 
-            disabled={!position}
-            icon={Check}
-          >
-            Valider ce lieu
-          </CTAButton>
-        </div>
+      <p className="m-0 flex items-start gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-2 text-sm text-bb-text-muted">
+        <MapPin size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+        <span className="min-w-0 break-words">
+          {address || (position ? `${position[0].toFixed(5)}, ${position[1].toFixed(5)}` : "Touchez la carte pour choisir un lieu")}
+        </span>
+      </p>
+
+      <div className="flex flex-col gap-2 lg:flex-row-reverse">
+        <Button
+          type="button"
+          variant="primary"
+          size="tap"
+          className="w-full lg:w-auto"
+          onClick={() => position && onSelect(position[0], position[1], address)}
+          disabled={!position}
+        >
+          <Check size={18} aria-hidden="true" /> Valider ce lieu
+        </Button>
+        <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={onCancel}>
+          Annuler
+        </Button>
       </div>
-
-      <style jsx>{`
-        .map-picker-container {
-          display: flex;
-          flex-direction: column;
-          gap: 1.2rem;
-          height: 550px;
-          width: 100%;
-          min-width: 600px;
-        }
-
-        .map-search-bar {
-          display: flex;
-          gap: 0.8rem;
-          align-items: stretch;
-        }
-
-        .search-input-wrapper {
-          position: relative;
-          flex: 1;
-          display: flex;
-          align-items: center;
-        }
-
-        .search-icon {
-          position: absolute;
-          left: 14px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: var(--text-muted);
-          z-index: 2;
-          pointer-events: none;
-        }
-
-        .search-input {
-          width: 100%;
-          padding: 0.8rem 1rem 0.8rem 2.8rem;
-          background: var(--input-bg);
-          border: var(--input-border);
-          border-radius: var(--input-radius);
-          color: var(--input-color, var(--foreground));
-          font-size: 1rem;
-          outline: none;
-          transition: all 0.2s;
-        }
-        
-        .search-input:focus {
-          border-color: var(--primary);
-          background: var(--background);
-          box-shadow: 0 0 0 3px var(--primary-transparent);
-        }
-
-        .map-wrapper {
-          flex: 1;
-          border-radius: 16px;
-          overflow: hidden;
-          border: 1px solid var(--glass-border);
-          position: relative;
-          z-index: 1;
-          box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-        }
-
-        /* Inversion intelligente pour les thèmes sombres */
-        :global([data-theme='dark']) .map-wrapper,
-        :global([data-theme='malpierre']) .map-wrapper,
-        :global([data-theme='naf']) .map-wrapper,
-        :global([data-theme='nehekhara']) .map-wrapper {
-           filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
-        }
-
-        /* On ré-inverse les marqueurs pour qu'ils gardent leur couleur d'origine */
-        :global([data-theme='dark']) :global(.leaflet-marker-icon),
-        :global([data-theme='malpierre']) :global(.leaflet-marker-icon),
-        :global([data-theme='naf']) :global(.leaflet-marker-icon),
-        :global([data-theme='nehekhara']) :global(.leaflet-marker-icon) {
-          filter: invert(100%) hue-rotate(180deg);
-        }
-
-        .map-picker-footer {
-          display: flex;
-          flex-direction: column;
-          gap: 1.2rem;
-          padding-top: 0.5rem;
-          border-top: 1px solid var(--glass-border);
-        }
-
-        .selected-address {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          font-size: 0.9rem;
-          color: var(--text-secondary);
-          background: var(--theme-overlay);
-          padding: 0.8rem 1rem;
-          border-radius: 10px;
-          border: 1px solid var(--glass-border);
-        }
-
-        .address-text {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-weight: 500;
-        }
-
-        .picker-actions {
-          display: flex;
-          justify-content: flex-end;
-          gap: 1rem;
-        }
-
-        @media (max-width: 1024px) {
-          .map-picker-container {
-             min-width: 100%;
-             height: 600px;
-          }
-          .picker-actions {
-            flex-direction: column-reverse;
-          }
-          .picker-actions :global(button) {
-            width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
 }

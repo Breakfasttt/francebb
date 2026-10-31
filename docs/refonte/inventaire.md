@@ -197,15 +197,17 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 4. Tournois
 
-- [ ] [tous] `/tournois` : affichage en grille (10) ou en liste (20), pagination, recherche par nom.
-- [ ] [tous] Filtres de `/tournois` : région et département ; mode individuel ou par équipe ; plateforme ; version ; structure ; circuits (NAF, CDF, CGO, TGE, TSC) ; logement, repas, arrivée le vendredi ; prix maximum ; places restantes minimum ; historique.
-- [ ] [tous] Les filtres actifs s'affichent en pastilles, chacune avec une croix pour la retirer. Tri par date, prix ou places, dans les deux sens. Badges Passé, Terminé, Annulé. Une carte de tournoi ouvre son sujet.
-- [ ] [membre] `/forum/new-tournament?forumId=` : formulaire de tournoi complet, avec choix du lieu sur une carte et recherche d'adresse (géocodage).
-- [ ] [orga] `/forum/edit-tournament/[id]` : modifier le tournoi.
-- [ ] [membre] Module d'inscription : s'inscrire, se désinscrire, se déclarer mercenaire, créer, modifier ou supprimer une équipe.
-- [ ] [orga] Module d'inscription : changer le statut d'inscription et de paiement, ouvrir ou fermer les inscriptions.
-- [ ] [orga] `/forum/tournament/[id]/results` : saisie du classement et des rondes, import d'un rapport NAF, terminer, annuler, réouvrir, effacer les résultats.
-- [ ] [tous] `/forum/tournament/[id]/results/view` : classement final.
+- [x] [tous] `/tournois` : affichage en grille (10) ou en liste (20), pagination, recherche par nom.
+- [x] [tous] Filtres de `/tournois` : région et département ; mode individuel ou par équipe ; plateforme ; version ; structure ; circuits (NAF, CDF, CGO, TGE, TSC) ; logement, repas, arrivée le vendredi ; prix maximum ; places restantes minimum ; historique.
+- [x] [tous] Les filtres actifs s'affichent en pastilles, chacune avec une croix pour la retirer. Tri par date, prix ou places, dans les deux sens. Badges Passé, Terminé, Annulé. Une carte de tournoi ouvre son sujet.
+- [x] [membre] `/forum/new-tournament?forumId=` : formulaire de tournoi complet, avec choix du lieu sur une carte et recherche d'adresse (géocodage).
+- [x] [orga] `/forum/edit-tournament/[id]` : modifier le tournoi.
+- [x] [membre] Module d'inscription : s'inscrire, se désinscrire, se déclarer mercenaire, créer, modifier ou supprimer une équipe.
+- [x] [orga] Module d'inscription : changer le statut d'inscription et de paiement, ouvrir ou fermer les inscriptions.
+- [x] [orga] `/forum/tournament/[id]/results` : saisie du classement et des rondes, import d'un rapport NAF, terminer, annuler, réouvrir, effacer les résultats.
+- [x] [tous] `/forum/tournament/[id]/results/view` : classement final.
+
+*Section vérifiée par `tests/e2e/inventaire/tournois.spec.ts` (carte 089), en taille ordinateur et en taille téléphone. Terminer, annuler et réouvrir un tournoi se font depuis les outils du sujet (`TopicTools.tsx`, carte 086) ; le test les exerce sur le sujet d'un tournoi. Le bug « `?ligueId=` n'est pas lu par `/tournois` » (section 18) n'existe plus : il a été corrigé par la carte 105, et le test le vérifie.*
 
 ## 5. Accueil et pages fixes
 
@@ -361,7 +363,7 @@ Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne d
 - **Liens morts sur le site** :
   - `/profile/${id}` dans la messagerie ;
   - `/profile?id=` sur la page d'un article ;
-  - `?ligueId=` n'est pas lu par `/tournois` ;
+  - `?ligueId=` n'est pas lu par `/tournois` ; *corrigé par la carte 105, vérifié par `tournois.spec.ts` (carte 089)* ;
   - `/media` n'a aucun lien d'entrée.
 - **Mauvais écran de connexion** : `/administration`, `/moderation`, `/profile` et `/spy` renvoient vers `/api/auth/signin` au lieu de `/auth/login`.
 - **Fenêtres du navigateur** : il reste des `alert()` à la place des notifications du site.

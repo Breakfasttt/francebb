@@ -22,6 +22,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 |---|---|
 | Bouton d'un écran refait | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
 | Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
+| Confirmer une action (à la place de `confirm()` ou de `ConfirmModal` sur un écran refait) | `ConfirmDialog` (carte 089) : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
 | Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent` (carte 087) ; sur téléphone, utiliser `Sheet` |
 | Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |

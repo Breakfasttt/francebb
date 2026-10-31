@@ -1,19 +1,24 @@
-import { prisma } from "@/lib/prisma";
+/**
+ * Classement final d'un tournoi, visible par tous (refonte, carte 089, ADR 0006) : une ligne par coach, du premier au
+ * dernier (rang, coach avec lien vers son profil s'il est membre du site, numéro NAF, roster, victoires, nuls et
+ * défaites, sorties, points). Sans résultat publié, la page est introuvable (404), comme avant la refonte.
+ */
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Trophy, User as UserIcon, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
-import "@/app/forum/component/TournamentResultWidget.css"; // Réutiliser le CSS existant
-import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import { ArrowLeft } from "lucide-react";
+import { Button, Card } from "@bbfrance/ui";
+import { prisma } from "@/lib/prisma";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { ResultsRanking } from "@/app/forum/component/TournamentResultWidget";
 
-export default async function TournamentResultsViewPage({ params }: { params: { id: string } }) {
+export default async function TournamentResultsViewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const tournament = await prisma.tournament.findUnique({
     where: { id },
     include: {
       topic: { select: { id: true, title: true } },
-      results: { 
+      results: {
         include: { user: { select: { id: true, name: true, image: true } } },
         orderBy: { rank: 'asc' }
       }
@@ -24,62 +29,21 @@ export default async function TournamentResultsViewPage({ params }: { params: { 
     notFound();
   }
 
-  return (
-    <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
-      <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: '1.8rem', fontWeight: 900 }}>Classement Final</h1>
-          <p style={{ margin: 0, color: 'var(--accent)', fontWeight: 600 }}>{tournament.topic?.title || tournament.name}</p>
-        </div>
-        <Link href={`/forum/topic/${tournament.topic?.id}`} className="edit-results-btn">
-          <ArrowLeft size={16} /> Retour au sujet
-        </Link>
-      </div>
+  const topicHref = `/forum/topic/${tournament.topic?.id}`;
 
-      <PremiumCard style={{ padding: '2rem' }}>
-        <div className="results-table-container">
-          <table className="results-table" style={{ fontSize: '1rem' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '15px 10px' }}>#</th>
-                <th style={{ padding: '15px 10px' }}>Coach</th>
-                <th style={{ padding: '15px 10px' }}>Roster</th>
-                <th style={{ padding: '15px 10px' }} className="stats-cell">V/N/D</th>
-                <th style={{ padding: '15px 10px' }} className="stats-cell">CAS</th>
-                <th style={{ padding: '15px 10px' }} className="points-cell">Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tournament.results.map((res: any) => (
-                <tr key={res.id}>
-                  <td className="rank-cell" style={{ fontSize: '1.2rem' }}>{res.rank || '-'}</td>
-                  <td style={{ padding: '15px 10px' }}>
-                    <div className="coach-cell">
-                      {res.user ? (
-                        <Link href={`/profile/${res.user.id}`} className="coach-link" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                          <MemberAvatarImage image={res.user.image} className="coach-avatar" style={{ width: '32px', height: '32px' }} />
-                          <span className="coach-name" style={{ fontSize: '1.1rem' }}>{res.coachName}</span>
-                        </Link>
-                      ) : (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                          <div className="coach-avatar" style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#555' }}>
-                            <UserIcon size={18} />
-                          </div>
-                          <span className="coach-name" style={{ fontSize: '1.1rem' }}>{res.coachName}</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td style={{ padding: '15px 10px' }} className="roster-cell">{res.roster || '-'}</td>
-                  <td style={{ padding: '15px 10px' }} className="stats-cell">{res.wins}/{res.draws}/{res.losses}</td>
-                  <td style={{ padding: '15px 10px' }} className="stats-cell">{res.casualties}</td>
-                  <td style={{ padding: '15px 10px', fontSize: '1.1rem' }} className="points-cell">{res.points}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </PremiumCard>
+  return (
+    <div className="mx-auto w-full max-w-[960px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader title="Classement final" subtitle={tournament.topic?.title || tournament.name} backHref={topicHref} backTitle="Retour au sujet">
+        <Button asChild variant="secondary" size="tap" className="max-lg:w-full">
+          <Link href={topicHref}>
+            <ArrowLeft size={16} aria-hidden="true" /> Retour au sujet
+          </Link>
+        </Button>
+      </ForumListHeader>
+
+      <Card className="p-3 lg:p-4">
+        <ResultsRanking results={tournament.results} />
+      </Card>
     </div>
   );
 }

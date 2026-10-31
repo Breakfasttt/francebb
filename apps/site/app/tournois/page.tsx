@@ -1,17 +1,19 @@
-import "./page.css";
-import "./page-mobile.css";
-
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { prisma } from "@/lib/prisma";
-import TournamentFilterSidebar from "@/app/tournois/component/TournamentFilterSidebar";
+/**
+ * Liste des tournois `/tournois` (refonte, carte 089, ADR 0006).
+ * - Sur ordinateur : la colonne des filtres à gauche, la barre de recherche, de tri et d'affichage au-dessus des
+ *   résultats, puis les tournois en grille (10 par page) ou en liste (20 par page).
+ * - Sur téléphone : une seule colonne ; les filtres sont rangés dans le panneau « Filtrer les tournois », ouvert par
+ *   le bouton « Filtres » qui indique combien de filtres sont actifs.
+ * Les filtres actifs sont rappelés en pastilles au-dessus des résultats. La recherche elle-même (lecture des
+ * paramètres de l'adresse, conditions, tri) est la même qu'avant la refonte ; seul l'affichage change.
+ */
 import Link from "next/link";
-import ActiveFilters from "@/app/tournois/component/ActiveFilters";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
-import { Search, MapPin, Calendar, Users, Trophy, Sparkles, GitBranch, Clock } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import Pagination from "@/common/components/Pagination/Pagination";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import { redirect } from "next/navigation";
+import { SearchX } from "lucide-react";
+import { Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { prisma } from "@/lib/prisma";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { TournamentFilterAside, TournamentListControls } from "@/app/tournois/component/TournamentFilters";
+import { TournamentCard, TournamentRow } from "@/app/tournois/component/TournamentListItems";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +33,7 @@ export default async function TournamentsPage({
   const ruleset = params.ruleset as string | undefined;
   const days = params.days as string | undefined;
   const minPlaces = params.minPlaces ? parseInt(params.minPlaces as string) : undefined;
-  
+
   const lodging = params.lodging === "true";
   const meals = params.meals === "true";
   const friday = params.friday === "true";
@@ -44,18 +46,18 @@ export default async function TournamentsPage({
   const isCGO = params.isCGO === "true";
   const isTGE = params.isTGE === "true";
   const isTSC = params.isTSC === "true";
-  
+
   // Identifiant de la ligue, envoyé par le bouton « Voir tout » de la fiche d'une ligue
   const ligueId = params.ligueId as string | undefined;
 
   const sort = (params.sort as string) || "date_asc";
   const view = (params.view as string) || "grid";
   const showHistory = params.history === "true";
-  
+
   const page = parseInt(params.page as string) || 1;
   const limit = view === "grid" ? 10 : 20;
   const skip = (page - 1) * limit;
-  
+
   // Build where clause
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
@@ -106,215 +108,76 @@ export default async function TournamentsPage({
     orderBy,
     skip,
     take: limit,
-    include: { 
+    include: {
       organizer: true,
       topic: { select: { id: true } }
     }
   });
 
+  // Pagination : l'adresse garde tous les filtres, le tri et l'affichage (avant, seul ?page= restait)
+  const pageHref = (target: number) => {
+    const next = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (key !== "page" && typeof value === "string") next.set(key, value);
+    }
+    if (target > 1) next.set("page", String(target));
+    const text = next.toString();
+    return text ? `/tournois?${text}` : "/tournois";
+  };
+
   return (
-    <div className="tournois-page">
-      <PageHeader 
-        title="Tous les Tournois" 
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
+        title="Tournois"
+        subtitle={`${total} tournoi${total > 1 ? "s" : ""}${showHistory ? ", passés compris" : " à venir"}`}
         backHref="/"
+        backTitle="Retour à l'accueil"
       />
 
-      <main className="container tournois-container">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[272px_minmax(0,1fr)] lg:items-start lg:gap-6">
+        <TournamentFilterAside />
 
-      <div className="search-layout">
-        <aside className="sidebar-wrapper">
-          <TournamentFilterSidebar />
-        </aside>
+        <section aria-label="Tournois trouvés" className="flex min-w-0 flex-col gap-4">
+          <TournamentListControls total={total} />
 
-        <section className="results-wrapper">
-          <div className="active-filters-wrapper">
-            <ActiveFilters currentSort={sort} />
-          </div>
-          
           {tournaments.length > 0 ? (
             <>
               {view === "grid" ? (
-                <div className="tournois-grid">
-                  {tournaments.map((t: any) => (
-                    <Link 
-                      key={t.id} 
-                      href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"}
-                      style={{ display: 'contents' }}
-                      className="tournament-card-link"
-                    >
-                      <PremiumCard 
-                        className={`tournament-card clickable ${t.isCancelled ? 'cancelled' : t.isFinished ? 'finished' : ''}`} 
-                        hoverEffect={true}
-                      >
-                        {/* Status Badges */}
-                        <div className="t-status-row">
-                          {t.isCancelled ? (
-                            <span className="status-badge cancelled">ANNULÉ</span>
-                          ) : t.isFinished ? (
-                            <span className="status-badge finished">TERMINÉ</span>
-                          ) : new Date(t.date) < todayStart ? (
-                            <span className="status-badge past">PASSÉ</span>
-                          ) : null}
-                        </div>
-
-                        <div>
-                          <div className="t-header">
-                            <div className="t-badge-main">{t.gameEdition || "BB20"}</div>
-                            <div className="t-badge-outline"><Sparkles size={12} /> {t.ruleset || "NAF"}</div>
-                            {t.structure && <div className="t-badge-outline"><GitBranch size={12} /> {t.structure}</div>}
-                          </div>
-
-                          <div className="t-title-area">
-                            <div className="t-title-header">
-                              <h3>{t.name}</h3>
-                              <div className="t-logistic-badges">
-                                {t.mealsIncluded && <span className="log-badge meals">Repas Inclus</span>}
-                                {t.lodgingAtVenue && <span className="log-badge lodging">Dodo sur place</span>}
-                                {t.fridayArrival && <span className="log-badge friday">Vendredi</span>}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="t-info">
-                            <div className="t-info-item">
-                              <MapPin size={16} /> 
-                              <span>{t.ville || t.location}, {t.region} ({t.departement})</span>
-                            </div>
-                            <div className="t-info-item">
-                              <Calendar size={16} /> 
-                              <span>{new Date(t.date).toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                            </div>
-                            <div className="t-info-item">
-                              <Clock size={16} />
-                              <span>Durée : {t.days} jour(s)</span>
-                            </div>
-                            {t.ruleset && (
-                              <div className="t-info-item">
-                                <Trophy size={16} />
-                                <span>Règles : {t.ruleset}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="t-footer">
-                          <div className="t-stats-box">
-                            <div className="t-participants" title="Inscriptions">
-                              <Users size={18} />
-                              <span>{t.currentParticipants} / {t.maxParticipants || "∞"}</span>
-                            </div>
-                            <div className="t-price">
-                              {t.price === 0 ? "GRATUIT" : `${t.price}€`}
-                            </div>
-                          </div>
-                          
-                          <ClassicButton as="div" size="sm">
-                            Détails
-                          </ClassicButton>
-                        </div>
-                      </PremiumCard>
-                    </Link>
+                <div className="grid gap-3 md:grid-cols-2">
+                  {tournaments.map((tournament) => (
+                    <TournamentCard key={tournament.id} tournament={tournament} todayStart={todayStart} />
                   ))}
                 </div>
               ) : (
-                <div className="tournois-list-view">
-                  <div className="list-header-row">
+                <Card className="overflow-hidden">
+                  {/* En-tête des colonnes (ordinateur) */}
+                  <div aria-hidden="true" className="hidden border-b border-bb-border bg-bb-surface-2 px-4 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase lg:grid lg:grid-cols-[48px_minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_7rem_5.5rem] lg:gap-4">
                     <span>Date</span>
                     <span>Tournoi</span>
                     <span>Lieu</span>
                     <span>Format</span>
                     <span>Statut</span>
-                    <span>Prix</span>
-                    <span></span>
+                    <span className="text-right">Prix</span>
                   </div>
-                  {tournaments.map((t: any) => {
-                    const isPast = new Date(t.date) < todayStart;
-                    return (
-                      <div key={t.id} className={`tournament-list-item ${t.isCancelled ? 'cancelled' : t.isFinished ? 'finished' : ''} ${isPast ? 'past' : ''}`}>
-                        <div className="list-col-date">
-                          <div className="date-day">{new Date(t.date).getDate()}</div>
-                          <div className="date-month">{new Date(t.date).toLocaleDateString("fr-FR", { month: 'short' })}</div>
-                        </div>
-                        
-                        <div className="list-col-name">
-                          <Link href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"} className="tournament-link">
-                            {t.name}
-                          </Link>
-                          <div className="organizer-small">Par {t.organizer.name}</div>
-                          {/* Carte 061 : lieu, format et prix, affichés ici quand leurs colonnes sont masquées (écran étroit) */}
-                          <div className="list-mobile-details">
-                            <span>{t.ville || t.location}</span>
-                            <span>{t.gameEdition || "BB20"} · {t.ruleset || "NAF"}</span>
-                            <span className="price-val">{t.price === 0 ? "OFFERT" : `${t.price}€`}</span>
-                          </div>
-                        </div>
-
-                        <div className="list-col-location">
-                          <div className="location-main">{t.ville || t.location}</div>
-                          <div className="location-dept">{t.region} ({t.departement})</div>
-                        </div>
-
-                        <div className="list-col-format">
-                          <div className="format-badges">
-                            <span className="f-badge">{t.gameEdition || "BB20"}</span>
-                            <span className="f-badge is-outline">{t.ruleset || "NAF"}</span>
-                          </div>
-                        </div>
-
-                        <div className="list-col-status">
-                          <div className="status-pill-box">
-                            {t.isCancelled ? (
-                              <span className="status-pill cancelled">Annulé</span>
-                            ) : t.isFinished ? (
-                              <span className="status-pill finished">Terminé</span>
-                            ) : isPast ? (
-                              <span className="status-pill past">Passé</span>
-                            ) : (
-                              <div className="participants-pill">
-                                <Users size={12} />
-                                <span>{t.currentParticipants}/{t.maxParticipants || "∞"}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="list-col-price">
-                          <span className="price-val">{t.price === 0 ? "OFFERT" : `${t.price}€`}</span>
-                        </div>
-
-                        <div className="list-col-action">
-                          <ClassicButton 
-                            href={t.topic?.id ? `/forum/topic/${t.topic.id}` : "/tournois"} 
-                            size="sm"
-                          >
-                            Voir
-                          </ClassicButton>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                  {tournaments.map((tournament) => (
+                    <TournamentRow key={tournament.id} tournament={tournament} todayStart={todayStart} />
+                  ))}
+                </Card>
               )}
 
-              <div className="pagination-wrapper" style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
-                <Pagination 
-                  currentPage={page} 
-                  totalPages={totalPages} 
-                  queryParam="page"
-                  baseUrl="/tournois"
-                />
+              <div className="flex justify-center">
+                <PageNav page={page} totalPages={totalPages} hrefFor={pageHref} linkComponent={Link} />
               </div>
             </>
           ) : (
-            <EmptyState 
-              icon={<Search size={48} />}
-              title="Aucun tournoi trouvé"
-              description="Essayez de modifier vos filtres ou de réinitialiser la recherche."
-            />
+            <Card>
+              <EmptyState icon={<SearchX size={40} />} title="Aucun tournoi trouvé">
+                Essayez de modifier vos filtres ou de réinitialiser la recherche.
+              </EmptyState>
+            </Card>
           )}
         </section>
       </div>
-    </main>
     </div>
   );
 }

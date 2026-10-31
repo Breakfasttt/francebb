@@ -32,3 +32,6 @@ export { EmptyState, Skeleton } from "./feedback";
 
 // Refonte de l'éditeur de message (carte 087)
 export { Popover, PopoverTrigger, PopoverClose, PopoverContent } from "./popover";
+
+// Refonte des tournois (carte 089) : fenêtre de confirmation
+export { ConfirmDialog } from "./confirm-dialog";

@@ -1,19 +1,16 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+// Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
 import "../../page.css";
-import "../../page-mobile.css";
-import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import TournamentForm from "@/app/forum/component/TournamentForm";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
 
 /**
- * Page d'édition d'un tournoi existant.
+ * Page de modification d'un tournoi existant (refonte, carte 089) : même écran de rédaction que la création
+ * (`ComposeScreen`), réservé à l'organisateur, à ses commissaires et aux modérateurs.
  */
 
 export default async function EditTournamentPage({ params }: { params: Promise<{ id: string }> }) {
@@ -83,16 +80,13 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
   breadcrumbs.push({ label: "Modifier le tournoi" });
 
   return (
-    <main className="container forum-container">
-      <PageHeader
-        title={<>Modifier le <span>tournoi</span></>}
-        subtitle={<>Sujet : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.topic.title) }} /></>}
-        backHref={`/forum/topic/${tournament.topic.id}`}
-        backTitle="Retour au sujet"
-      />
- 
-      <ForumBreadcrumbs items={breadcrumbs} />
-
+    <ComposeScreen
+      breadcrumbs={breadcrumbs}
+      title="Modifier le tournoi"
+      subtitle={<>Sujet : <strong className="text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.topic.title) }} /></>}
+      backHref={`/forum/topic/${tournament.topic.id}`}
+      backTitle="Retour au sujet"
+    >
       <TournamentForm 
         forumId={forum.id}
         userCanStick={isMod}
@@ -113,6 +107,6 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
           isOrganizer: isOrganizer // Pour restreindre l'édition des commissaires
         }}
       />
-   </main>
+    </ComposeScreen>
   );
 }

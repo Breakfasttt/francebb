@@ -56,7 +56,8 @@ export function isActive(pathname: string, href: string): boolean {
 /**
  * Écrans de rédaction du forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran sur
  * téléphone : la barre basse n'y est pas affichée, pour laisser la place à l'éditeur et à la barre d'envoi (carte 087).
+ * Depuis la carte 089, les écrans de création et de modification d'un tournoi et la saisie de ses résultats aussi.
  */
 export function isComposePath(pathname: string): boolean {
-  return /^\/forum\/(topic\/[^/]+\/reply|post\/[^/]+\/edit|new-topic)\/?$/.test(pathname);
+  return /^\/forum\/(topic\/[^/]+\/reply|post\/[^/]+\/edit|new-topic|new-tournament|edit-tournament\/[^/]+|tournament\/[^/]+\/results)\/?$/.test(pathname);
 }

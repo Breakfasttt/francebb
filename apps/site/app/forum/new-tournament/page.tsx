@@ -1,23 +1,17 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
-import { ArrowLeft, Trophy, Calendar, MapPin, Users, Coins, Monitor, Shield, Home, Utensils, BedDouble, Sun } from "lucide-react";
-import Link from "next/link";
-import BackButton from "@/common/components/BackButton/BackButton";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+// Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
 import "../page.css";
-import "../page-mobile.css";
-import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
-import { createTopic } from "../actions";
 import { prisma } from "@/lib/prisma";
-import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import TournamentForm from "@/app/forum/component/TournamentForm";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
 
 /**
- * Page de création d'un sujet de tournoi.
+ * Page de création d'un sujet de tournoi (refonte, carte 089) : écran de rédaction plein écran sur téléphone
+ * (`ComposeScreen`, sans la barre de navigation du bas), avec la barre d'envoi collée en bas de l'écran.
  */
 
 export default async function NewTournamentPage({ searchParams }: { searchParams: Promise<{ forumId?: string }> }) {
@@ -67,16 +61,13 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
   breadcrumbs.push({ label: "Annoncer un tournoi" });
 
   return (
-    <main className="container forum-container">
-      <PageHeader
-        title={<>Annoncer un <span>tournoi</span></>}
-        subtitle={<>Dans le forum : <strong dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></>}
-        backHref={`/forum/${forumId}`}
-        backTitle="Retour au forum"
-      />
- 
-      <ForumBreadcrumbs items={breadcrumbs} />
-
+    <ComposeScreen
+      breadcrumbs={breadcrumbs}
+      title="Annoncer un tournoi"
+      subtitle={<>Dans le forum : <strong className="text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(forum.name) }} /></>}
+      backHref={`/forum/${forumId}`}
+      backTitle="Retour au forum"
+    >
       <TournamentForm 
         forumId={forumId}
         userCanStick={userCanStick}
@@ -90,6 +81,6 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
           coachRegions
         }}
       />
-   </main>
+    </ComposeScreen>
   );
 }

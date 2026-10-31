@@ -1,16 +1,15 @@
 "use client";
 
+/**
+ * Bloc « Résultats du tournoi » du sujet d'un tournoi terminé (refonte, carte 089, ADR 0006). Replié par défaut ; une
+ * fois déplié, il montre le classement et, si des rondes ont été saisies, les matchs ronde par ronde (onglets
+ * « Classement » et « Matchs »). Sans résultat publié, il n'apparaît que pour qui peut les publier, avec le lien
+ * « Publier les résultats ». Le classement est en lignes : sur téléphone, le roster passe sous le nom du coach.
+ */
 import React, { useState } from 'react';
-import { Trophy, ChevronLeft, ChevronRight, Edit2, Swords, User as UserIcon, ChevronDown, ChevronUp } from 'lucide-react';
 import Link from 'next/link';
-import './TournamentResultWidget.css';
-import './TournamentResultWidget-mobile.css';
-import AdminButton from '@/common/components/Button/AdminButton';
-import CTAButton from '@/common/components/Button/CTAButton';
-import ClassicButton from '@/common/components/Button/ClassicButton';
-import ToggleButton from '@/common/components/Button/ToggleButton';
-import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
-
+import { ChevronDown, ChevronLeft, ChevronRight, Edit2, Swords, Trophy } from 'lucide-react';
+import { Avatar, Button, Card, Tabs, TabsContent, TabsList, TabsTrigger, cn } from "@bbfrance/ui";
 
 interface TournamentMatch {
   id: string;
@@ -53,189 +52,170 @@ interface TournamentResultWidgetProps {
   canEdit: boolean;
 }
 
+/**
+ * Classement : une ligne par coach (rang, coach, numéro NAF, roster, V/N/D, sorties, points), partagé avec
+ * /results/view. Sur ordinateur, une colonne par information. Sur téléphone, quatre colonnes : le roster passe sous
+ * le nom du coach et les sorties sous V/N/D (chaque information n'est écrite qu'une fois dans la page).
+ */
+export function ResultsRanking({ results }: { results: TournamentResult[] }) {
+  const columns = "grid grid-cols-[2rem_minmax(0,1fr)_4.25rem_3.25rem] gap-x-2 lg:grid-cols-[2.5rem_minmax(0,1.6fr)_6rem_minmax(0,1fr)_5rem_4rem_4.5rem]";
+  return (
+    <div className="overflow-hidden rounded-bb-md border border-bb-border">
+      <div aria-hidden="true" className={cn(columns, "bg-bb-surface-2 px-3 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase")}>
+        <span>#</span>
+        <span>Coach</span>
+        <span className="hidden lg:block">NAF</span>
+        <span className="hidden lg:block">Roster</span>
+        <span className="text-center">V/N/D</span>
+        <span className="hidden text-center lg:block">CAS</span>
+        <span className="text-right">Points</span>
+      </div>
+      <ol className="m-0 list-none p-0">
+        {results.map((res) => (
+          <li key={res.id} className={cn(columns, "items-center gap-y-0.5 border-t border-bb-border px-3 py-2 text-[0.95rem]")}>
+            <span className={cn("font-bold max-lg:row-span-2 max-lg:self-start max-lg:pt-1", res.rank === 1 ? "text-bb-rank" : "text-bb-text-muted")}>{res.rank || '-'}</span>
+            <span className="min-w-0">
+              {res.user ? (
+                <Link href={`/profile/${res.user.id}`} className="inline-flex min-h-11 min-w-0 items-center gap-2 font-semibold text-bb-text hover:underline lg:min-h-0">
+                  <Avatar name={res.coachName} src={res.user.image} size={28} className="max-lg:hidden" />
+                  <span className="min-w-0 break-words">{res.coachName}</span>
+                </Link>
+              ) : (
+                <span className="flex min-w-0 items-center gap-2 font-semibold text-bb-text">
+                  <Avatar name={res.coachName} size={28} className="max-lg:hidden" />
+                  <span className="min-w-0 break-words">{res.coachName}</span>
+                </span>
+              )}
+            </span>
+            <span className="hidden text-sm text-bb-text-muted lg:block">{res.nafNumber || '-'}</span>
+            <span className="min-w-0 text-sm break-words text-bb-text-muted max-lg:col-start-2 max-lg:row-start-2 lg:truncate lg:text-[0.95rem]">{res.roster || '-'}</span>
+            <span className="text-center tabular-nums max-lg:col-start-3 max-lg:row-start-1">{res.wins}/{res.draws}/{res.losses}</span>
+            <span className="text-center text-sm text-bb-text-muted tabular-nums max-lg:col-start-3 max-lg:row-start-2 lg:text-[0.95rem] lg:text-bb-text">
+              {res.casualties}<span className="lg:hidden"> CAS</span>
+            </span>
+            <span className="text-right font-bold text-bb-accent-text tabular-nums max-lg:col-start-4 max-lg:row-span-2 max-lg:row-start-1">{res.points}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 export default function TournamentResultWidget({ tournamentId, results, rounds, canEdit }: TournamentResultWidgetProps) {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<'ranking' | 'matches'>('ranking');
 
   const hasResults = results && results.length > 0;
   const hasRounds = rounds && rounds.length > 0;
-  
+
   if (!hasResults && !canEdit) return null;
 
   const sortedResults = hasResults ? [...results].sort((a, b) => (a.rank || 999) - (b.rank || 999)) : [];
   const currentRound = (rounds && rounds.length > 0) ? rounds[currentRoundIndex] : null;
+  const resultsHref = `/forum/tournament/${tournamentId}/results`;
 
-  const handlePrevRound = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentRoundIndex((prev: number) => (prev === 0 ? rounds.length - 1 : prev - 1));
-  };
+  const handlePrevRound = () => setCurrentRoundIndex((prev: number) => (prev === 0 ? rounds.length - 1 : prev - 1));
+  const handleNextRound = () => setCurrentRoundIndex((prev: number) => (prev === rounds.length - 1 ? 0 : prev + 1));
 
-  const handleNextRound = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCurrentRoundIndex((prev: number) => (prev === rounds.length - 1 ? 0 : prev + 1));
-  };
+  const ranking = <ResultsRanking results={sortedResults} />;
+
+  const matches = currentRound && (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center justify-between gap-2">
+        <Button type="button" variant="secondary" size="tap-icon" onClick={handlePrevRound} disabled={rounds.length <= 1} aria-label="Ronde précédente">
+          <ChevronLeft size={18} aria-hidden="true" />
+        </Button>
+        <p className="m-0 text-center">
+          <span className="block font-bold text-bb-text">Ronde {currentRound.roundNumber}</span>
+          <span className="text-sm text-bb-text-muted">{currentRound.matches.length} matchs</span>
+        </p>
+        <Button type="button" variant="secondary" size="tap-icon" onClick={handleNextRound} disabled={rounds.length <= 1} aria-label="Ronde suivante">
+          <ChevronRight size={18} aria-hidden="true" />
+        </Button>
+      </div>
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {currentRound.matches.map((match: TournamentMatch) => {
+          const first = match.coach1TD > match.coach2TD;
+          const second = match.coach2TD > match.coach1TD;
+          return (
+            <li key={match.id} className="grid grid-cols-[2rem_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-bb-md border border-bb-border px-2 py-2 text-sm">
+              <span className="text-xs font-bold text-bb-text-muted">T{match.tableNumber || '-'}</span>
+              <span className="min-w-0 text-right">
+                <span className={cn("block break-words", first ? "font-bold text-bb-text" : "text-bb-text-muted")}>
+                  {first && <Trophy size={13} aria-label="Vainqueur" className="mr-1 inline text-bb-rank" />}
+                  {match.coach1Name}
+                </span>
+                <span className="text-xs text-bb-text-muted">{match.coach1Casualties} CAS</span>
+              </span>
+              <span className="rounded-bb-sm bg-bb-surface-2 px-2 py-1 font-bold tabular-nums text-bb-text">
+                {match.coach1TD} - {match.coach2TD}
+              </span>
+              <span className="min-w-0">
+                <span className={cn("block break-words", second ? "font-bold text-bb-text" : "text-bb-text-muted")}>
+                  {match.coach2Name}
+                  {second && <Trophy size={13} aria-label="Vainqueur" className="ml-1 inline text-bb-rank" />}
+                </span>
+                <span className="text-xs text-bb-text-muted">{match.coach2Casualties} CAS</span>
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 
   return (
-    <div className={`tournament-result-widget ${isExpanded ? 'active' : ''}`}>
-      <div className="widget-header" onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: 'pointer' }}>
-        <div className="widget-title">
-          <Trophy size={18} color="var(--accent)" />
-          <span>Résultats du Tournoi</span>
-          {hasResults && <span className="participant-count">({results.length} participants)</span>}
-          {!hasResults && <span className="participant-count" style={{ opacity: 0.5 }}>(En attente)</span>}
-        </div>
-        <div className="header-right">
-          {canEdit && hasResults && (
-            <div onClick={(e) => e.stopPropagation()}>
-              <AdminButton 
-                size="sm" 
-                icon={<Edit2 size={14} />} 
-                onClick={() => window.location.href = `/forum/tournament/${tournamentId}/results`}
-              >
-                Modifier
-              </AdminButton>
-            </div>
-          )}
-          <div className="toggle-expand-btn" style={{ opacity: 0.6 }}>
-            {isExpanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-          </div>
-        </div>
+    <Card className="overflow-hidden">
+      <div className="flex items-center gap-2 p-3 lg:p-4">
+        <Button
+          type="button"
+          variant="quiet"
+          className="min-h-11 min-w-0 flex-1 flex-wrap justify-start gap-x-2 gap-y-0 rounded-bb-md px-1 text-left text-base whitespace-normal text-bb-text hover:bg-transparent"
+          aria-expanded={isExpanded}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <Trophy size={18} aria-hidden="true" className="text-bb-rank" />
+          <span>Résultats du tournoi</span>
+          <span className="text-sm font-normal text-bb-text-muted">{hasResults ? `(${results.length} participants)` : "(en attente)"}</span>
+          <ChevronDown size={18} aria-hidden="true" className={cn("ml-auto shrink-0 text-bb-text-muted transition-transform", isExpanded && "rotate-180")} />
+        </Button>
+        {canEdit && hasResults && (
+          <Button asChild variant="secondary" size="tap" className="shrink-0 px-3 max-lg:w-11 max-lg:px-0">
+            <Link href={resultsHref} title="Modifier les résultats">
+              <Edit2 size={16} aria-hidden="true" /> <span className="max-lg:sr-only">Modifier</span>
+            </Link>
+          </Button>
+        )}
       </div>
 
       {isExpanded && (
-        <div className="widget-content-expandable">
+        <div className="border-t border-bb-border p-3 lg:p-4">
           {!hasResults ? (
-            <div className="empty-state-inner">
-               <Trophy size={40} className="empty-icon-small" />
-               <p className="empty-desc-small">Le tournoi est terminé ! Les résultats n&apos;ont pas encore été publiés.</p>
-               {canEdit && (
-                 <CTAButton 
-                   size="sm" 
-                   onClick={() => window.location.href = `/forum/tournament/${tournamentId}/results`}
-                   icon={<Edit2 size={14} />}
-                 >
-                   Publier les résultats
-                 </CTAButton>
-               )}
+            <div className="flex flex-col items-center gap-3 py-4 text-center">
+              <Trophy size={36} aria-hidden="true" className="text-bb-text-muted" />
+              <p className="m-0 text-[0.95rem] text-bb-text-muted">Le tournoi est terminé ! Les résultats n&apos;ont pas encore été publiés.</p>
+              {canEdit && (
+                <Button asChild variant="primary" size="tap">
+                  <Link href={resultsHref}>
+                    <Edit2 size={16} aria-hidden="true" /> Publier les résultats
+                  </Link>
+                </Button>
+              )}
             </div>
+          ) : hasRounds ? (
+            <Tabs defaultValue="ranking" className="flex flex-col gap-3">
+              <TabsList aria-label="Résultats">
+                <TabsTrigger value="ranking"><Trophy size={16} aria-hidden="true" /> Classement</TabsTrigger>
+                <TabsTrigger value="matches"><Swords size={16} aria-hidden="true" /> Matchs</TabsTrigger>
+              </TabsList>
+              <TabsContent value="ranking">{ranking}</TabsContent>
+              <TabsContent value="matches">{matches}</TabsContent>
+            </Tabs>
           ) : (
-            <>
-              {hasRounds && (
-                <div className="widget-view-toggle">
-                  <ToggleButton 
-                    active={activeTab === 'ranking'} 
-                    onClick={() => setActiveTab('ranking')}
-                    icon={<Trophy size={14} />}
-                    size="sm"
-                    fullWidth
-                  >
-                    Classement
-                  </ToggleButton>
-                  <ToggleButton 
-                    active={activeTab === 'matches'} 
-                    onClick={() => setActiveTab('matches')}
-                    icon={<Swords size={14} />}
-                    size="sm"
-                    fullWidth
-                  >
-                    Matchs
-                  </ToggleButton>
-                </div>
-              )}
-
-              {activeTab === 'ranking' ? (
-                <div className="results-table-container">
-                  <table className="results-table">
-                    <thead>
-                      <tr>
-                        <th className="rank-th">#</th>
-                        <th className="naf-th">NAF #</th>
-                        <th>Coach</th>
-                        <th className="roster-th">Roster</th>
-                        <th className="stats-cell-th">V/N/D</th>
-                        <th className="stats-cell-th">CAS</th>
-                        <th className="points-cell-th">Points</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedResults.map((res: any) => (
-                        <tr key={res.id}>
-                          <td className="rank-cell">{res.rank || '-'}</td>
-                          <td className="naf-cell">{res.nafNumber || '-'}</td>
-                          <td className="coach-cell-wrapper">
-                            <div className="coach-cell">
-                              {res.user ? (
-                                <Link href={`/profile/${res.user.id}`} className="coach-link">
-                                  <MemberAvatarImage image={res.user.image} className="coach-avatar" />
-                                  <span className="coach-name">{res.coachName}</span>
-                                </Link>
-                              ) : (
-                                <div className="coach-no-user">
-                                  <div className="coach-avatar-placeholder">
-                                    <UserIcon size={12} />
-                                  </div>
-                                  <span className="coach-name">{res.coachName}</span>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="roster-cell">{res.roster || '-'}</td>
-                          <td className="stats-cell">{res.wins}/{res.draws}/{res.losses}</td>
-                          <td className="stats-cell">{res.casualties}</td>
-                          <td className="points-cell">{res.points}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="matches-view-container">
-                  {currentRound && (
-                    <div className="matches-toggle-inner">
-                      <div className="round-navigation">
-                        <ClassicButton size="sm" onClick={handlePrevRound} disabled={rounds.length <= 1} icon={<ChevronLeft size={18} />} />
-                        <div className="round-info">
-                          <span className="current-round-label">Ronde {currentRound.roundNumber}</span>
-                          <span className="round-matches-count">{currentRound.matches.length} matchs</span>
-                        </div>
-                        <ClassicButton size="sm" onClick={handleNextRound} disabled={rounds.length <= 1} icon={<ChevronRight size={18} />} />
-                      </div>
-
-                      <div className="matches-linear-list">
-                        {currentRound.matches.map((match: TournamentMatch) => (
-                          <div key={match.id} className="match-linear-row">
-                            <div className="match-table-num">T{match.tableNumber || '-'}</div>
-                            <div className="match-participant left">
-                              <div className="participant-header">
-                                {match.coach1TD > match.coach2TD && <Trophy size={14} color="var(--accent)" />}
-                                <span className="participant-name">{match.coach1Name}</span>
-                              </div>
-                              <span className="participant-cas">{match.coach1Casualties} CAS</span>
-                            </div>
-                            <div className="match-score-pill">
-                              <span className={`score-val ${match.coach1TD > match.coach2TD ? 'bold' : ''}`}>{match.coach1TD}</span>
-                              <span className="score-sep">-</span>
-                              <span className={`score-val ${match.coach2TD > match.coach1TD ? 'bold' : ''}`}>{match.coach2TD}</span>
-                            </div>
-                            <div className="match-participant right">
-                              <div className="participant-header">
-                                <span className="participant-name">{match.coach2Name}</span>
-                                {match.coach2TD > match.coach1TD && <Trophy size={14} color="var(--accent)" />}
-                              </div>
-                              <span className="participant-cas">{match.coach2Casualties} CAS</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
+            ranking
           )}
         </div>
       )}
-    </div>
+    </Card>
   );
 }

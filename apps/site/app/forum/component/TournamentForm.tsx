@@ -1,29 +1,33 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * Formulaire de création et de modification d'un tournoi (refonte, carte 089, ADR 0006).
+ * Le formulaire est découpé en blocs lisibles sur téléphone : le tournoi (titre, ligue), les dates, le lieu (avec le
+ * choix sur une carte et la recherche d'adresse), les participants et commissaires, les championnats, le jeu, les prix
+ * et la logistique, puis la présentation détaillée (éditeur BBCode).
+ * Sur ordinateur, la colonne « Publication » à droite porte les cases de modération et les boutons. Sur téléphone, les
+ * cases passent sous la présentation et les boutons dans la barre collée en bas de l'écran (`ComposeActionBar`).
+ * Les noms des champs envoyés et les actions serveur (`createTopic`, `updateTournament`) sont ceux d'avant la refonte.
+ */
+import { useState, type ReactNode } from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import {
+  BedDouble, Calendar, Check, Coins, FileText, Globe, Lock, Map, MapPin, Monitor, Pin, Save, Shield, Sun, Trophy, Users, Utensils
+} from "lucide-react";
+import { Button, Card, Field, Input, Label, Select, Sheet, SheetContent, Skeleton, cn, toast, DESKTOP_QUERY, useMediaQuery } from "@bbfrance/ui";
 import { createTopic, updateTournament } from "../actions";
-import { toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
-import { 
-  Trophy, Calendar, MapPin, Users, Coins, Monitor, 
-  Shield, Utensils, BedDouble, Sun, Map, Save, Globe, Check
-} from "lucide-react";
-import CreateTopicSidebar from "@/app/forum/component/CreateTopicSidebar";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
-import dynamic from "next/dynamic";
-import Modal from "@/common/components/Modal/Modal";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
+import { REGION_BY_DEPARTMENT } from "@/lib/france";
 
-const MapPicker = dynamic(() => import("./MapPicker"), { 
+const MapPicker = dynamic(() => import("./MapPicker"), {
   ssr: false,
-  loading: () => <div style={{ height: '300px', display: 'flex', alignItems: 'center', justifyItems: 'center', background: 'rgba(0,0,0,0.1)', borderRadius: '12px' }}>Chargement de la carte...</div>
+  loading: () => <Skeleton className="h-[50dvh] w-full lg:h-[420px]" />,
 });
-
-
-import { DEPARTMENTS_BY_REGION, REGION_BY_DEPARTMENT } from "@/lib/france";
 
 interface TournamentFormProps {
   forumId: string;
@@ -82,19 +86,60 @@ interface TournamentFormProps {
   };
 }
 
+/** Un bloc du formulaire : carte avec un titre et son icône. */
+function Block({ icon, title, children, className }: { icon: ReactNode; title: string; children: ReactNode; className?: string }) {
+  return (
+    <Card className={cn("flex flex-col gap-4 p-4 lg:p-5", className)}>
+      <h2 className="m-0 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+        <span aria-hidden="true" className="text-bb-accent-text">{icon}</span>
+        {title}
+      </h2>
+      {children}
+    </Card>
+  );
+}
+
+/** Case à cocher sur une ligne de 44 pixels (libellé à droite). */
+function CheckRow({ name, label, icon, checked, defaultChecked, onChange }: {
+  name: string;
+  label: string;
+  icon?: ReactNode;
+  checked?: boolean;
+  defaultChecked?: boolean;
+  onChange?: (checked: boolean) => void;
+}) {
+  return (
+    <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 text-[0.95rem] text-bb-text has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft">
+      <input
+        type="checkbox"
+        name={name}
+        className="size-5 shrink-0 cursor-pointer accent-[var(--bb-accent)]"
+        checked={checked}
+        defaultChecked={defaultChecked}
+        onChange={onChange ? (event) => onChange(event.target.checked) : undefined}
+      />
+      {icon && <span aria-hidden="true" className="text-bb-text-muted">{icon}</span>}
+      <span>{label}</span>
+    </label>
+  );
+}
+
+const hint = "m-0 text-sm text-bb-text-muted";
+
 export default function TournamentForm({ forumId, userCanStick, referenceData, initialData }: TournamentFormProps) {
   const isEdit = !!initialData;
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isTeam, setIsTeam] = useState(initialData?.isTeam ?? false);
   const [isCDF, setIsCDF] = useState(initialData?.isCDF ?? false);
   const [commissaires, setCommissaires] = useState<any[]>(initialData?.commissaires ?? []);
   const [startDate, setStartDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "");
   const [endDate, setEndDate] = useState(initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "");
-  
+
   const [lat, setLat] = useState<number | null>(initialData?.lat ?? null);
   const [lng, setLng] = useState<number | null>(initialData?.lng ?? null);
   const [address, setAddress] = useState(initialData?.address ?? "");
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-  
+
   const [pairingType, setPairingType] = useState<"INDIVIDUEL" | "EQUIPE">(
     initialData?.typeCDF === "EQUIPE_TOTALE" ? "EQUIPE" : "INDIVIDUEL"
   );
@@ -102,7 +147,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
   const [selectedRegion, setSelectedRegion] = useState<string>(initialData?.region || "");
   const [selectedDept, setSelectedDept] = useState<string>(initialData?.departement || "");
 
-  const filteredDepartments = selectedRegion 
+  const filteredDepartments = selectedRegion
     ? referenceData.departments.filter(d => REGION_BY_DEPARTMENT[d.key] === selectedRegion)
     : referenceData.departments;
 
@@ -112,7 +157,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
     if (allowDecimal) {
       allowedKeys.push('.', ',');
     }
-    
+
     // Autoriser les raccourcis Ctrl/Cmd + A, C, V, X
     if (e.ctrlKey || e.metaKey) return;
 
@@ -120,19 +165,11 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
     if (!/^[0-9]$/.test(e.key) && !allowedKeys.includes(e.key)) {
       e.preventDefault();
     }
-    
+
     // Bloquer les virgules/points multiples
     if ((e.key === '.' || e.key === ',') && (e.currentTarget.value.includes('.') || e.currentTarget.value.includes(','))) {
       e.preventDefault();
     }
-  };
-
-  const handleSelectUser = (user: any) => {
-    setCommissaires(prev => [...prev, user]);
-  };
-
-  const handleRemoveUser = (userId: string) => {
-    setCommissaires(prev => prev.filter(u => u.id !== userId));
   };
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,11 +193,17 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
     }
   };
 
-  const SectionSeparator = ({ icon, title }: { icon: any, title: string }) => (
-    <div className="section-separator">
-      <div className="section-icon">{icon}</div>
-      <h4>{title}</h4>
-      <div className="section-line"></div>
+  const submitLabel = isEdit ? "Enregistrer les modifications" : "Publier le tournoi";
+  const submitIcon = isEdit ? <Save size={18} aria-hidden="true" /> : <Trophy size={18} aria-hidden="true" />;
+  const cancelHref = isEdit && initialData ? `/forum/topic/${initialData.topicId}` : `/forum/${forumId}`;
+  const grid2 = "grid gap-4 sm:grid-cols-2";
+  const numeric = { inputMode: "numeric" as const, onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => handleNumericKeyDown(e) };
+  const decimal = { inputMode: "decimal" as const, onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => handleNumericKeyDown(e, true) };
+
+  const moderationBoxes = userCanStick && (
+    <div className="flex flex-col gap-2">
+      <CheckRow name="isSticky" label="Épingler (Post-it)" icon={<Pin size={16} />} />
+      <CheckRow name="isLocked" label="Verrouiller le sujet" icon={<Lock size={16} />} />
     </div>
   );
 
@@ -169,375 +212,255 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
       <input type="hidden" name="forumId" value={forumId} />
       <input type="hidden" name="tLat" value={lat ?? ""} />
       <input type="hidden" name="tLng" value={lng ?? ""} />
-      
-      <div className="forum-layout">
-        <div className="forum-main-content">
-          <PremiumCard className="form-main-card">
-            
-            <div className="form-group">
-              <label htmlFor="title" style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
-                Titre de l&apos;annonce (Nom du tournoi) *
-              </label>
-              <TitleInputWithSmiley name="title" initialValue={initialData?.name} />
+      <input type="hidden" name="commissaireIds" value={commissaires.map(u => u.id).join(',')} />
+      <input type="hidden" name="typeCDF" value={!isTeam ? "INDIVIDUEL" : (pairingType === "EQUIPE" ? "EQUIPE_TOTALE" : "EQUIPE_PARTIELLE")} />
+
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
+        <div className="flex min-w-0 flex-col gap-4">
+          <Block icon={<Trophy size={18} />} title="Le tournoi">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="title">Titre de l&apos;annonce (nom du tournoi)</Label>
+              <TitleInputWithSmiley name="title" initialValue={initialData?.name} placeholder="Ex : Open de Bretagne 2027" />
             </div>
-
-            <div className="form-group">
-              <label style={{ display: 'block', marginBottom: '0.8rem', fontWeight: 800, fontSize: '1.1rem' }}>
-                Ligue Organisatrice (Optionnel)
-              </label>
-              <div style={{ padding: '1rem', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '12px' }}>
-                <LigueSearch 
-                  initialCustom={initialData?.ligueCustom}
-                  placeholder="Rechercher une ligue ou saisir un nom personnalisé..."
-                />
-                <p style={{ marginTop: '0.8rem', fontSize: '0.8rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                   Laissez vide si le tournoi n&apos;est rattaché à aucune ligue spécifique.
-                </p>
-              </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="m-0 text-sm font-semibold text-bb-text">Ligue organisatrice (facultatif)</p>
+              <LigueSearch initialCustom={initialData?.ligueCustom} placeholder="Rechercher une ligue ou saisir un nom personnalisé..." />
+              <p className={hint}>Laissez vide si le tournoi n&apos;est rattaché à aucune ligue.</p>
             </div>
+          </Block>
 
-            <div className="form-inner-container">
-              <div className="form-inner-header">
-                <div style={{ background: 'var(--accent)', color: 'var(--header-foreground)', padding: '10px', borderRadius: '10px' }}>
-                    <Trophy size={28} />
-                </div>
-                <div>
-                    <h3 style={{ margin: 0, fontSize: '1.4rem' }}>{isEdit ? "Modification du Tournoi" : "Configuration du Tournoi"}</h3>
-                    <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>Les filtres permettent aux coachs de trouver facilement votre évènement.</p>
-                </div>
-              </div>
+          <Block icon={<Calendar size={18} />} title="Dates">
+            <div className={grid2}>
+              <Field label="Date de début" htmlFor="tDate">
+                <Input id="tDate" type="date" name="tDate" required value={startDate} onChange={handleStartDateChange} />
+              </Field>
+              <Field label="Date de fin" htmlFor="tEndDate" hint="Laissez vide pour un tournoi d'un jour.">
+                <Input id="tEndDate" type="date" name="tEndDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} min={startDate} />
+              </Field>
+            </div>
+          </Block>
 
-              <SectionSeparator icon={<Calendar size={18} />} title="Dates" />
-              <div className="grid-2col">
-                <div className="form-group">
-                  <label>Date de début *</label>
-                  <input 
-                    type="date" 
-                    name="tDate" 
-                    required 
-                    className="admin-input" 
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Date de fin</label>
-                  <input 
-                    type="date" 
-                    name="tEndDate" 
-                    className="admin-input" 
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    min={startDate}
-                  />
-                </div>
-              </div>
-
-              <SectionSeparator icon={<MapPin size={18} />} title="Lieu / Localisation" />
-              <div className="grid-2col">
-                <ClassicSelect 
-                  label="Région de tournoi (NAF)" 
-                  name="tRegionNAF" 
-                  defaultValue={initialData?.regionNAF || ""}
-                >
+          <Block icon={<MapPin size={18} />} title="Lieu">
+            <div className={grid2}>
+              <Field label="Région de tournoi (NAF)" htmlFor="tRegionNAF">
+                <Select id="tRegionNAF" name="tRegionNAF" defaultValue={initialData?.regionNAF || ""}>
                   <option value="">Sélectionner</option>
                   {referenceData.coachRegions.map(r => (
                     <option key={r.key} value={r.key}>{r.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <ClassicSelect 
-                  label="Région (France)" 
-                  name="tRegion" 
+                </Select>
+              </Field>
+              <Field label="Région (France)" htmlFor="tRegion">
+                <Select
+                  id="tRegion"
+                  name="tRegion"
                   value={selectedRegion}
                   onChange={(e) => {
-                      setSelectedRegion(e.target.value);
-                      setSelectedDept("");
+                    setSelectedRegion(e.target.value);
+                    setSelectedDept("");
                   }}
                 >
                   <option value="">Sélectionner</option>
                   {referenceData.franceRegions.map(r => (
-                      <option key={r.key} value={r.key}>{r.label}</option>
+                    <option key={r.key} value={r.key}>{r.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <ClassicSelect 
-                  label="Département" 
-                  name="tDept" 
-                  value={selectedDept}
-                  onChange={(e) => setSelectedDept(e.target.value)}
-                >
+                </Select>
+              </Field>
+              <Field label="Département" htmlFor="tDept">
+                <Select id="tDept" name="tDept" value={selectedDept} onChange={(e) => setSelectedDept(e.target.value)}>
                   <option value="">Sélectionner</option>
                   {filteredDepartments.map(d => (
-                      <option key={d.key} value={d.key}>{d.label}</option>
+                    <option key={d.key} value={d.key}>{d.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <div className="form-group">
-                  <label>Ville</label>
-                  <input type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex: Lyon" className="admin-input" />
-                </div>
-                <div className="form-group" style={{ gridColumn: 'span 1' }}>
-                  <label>Lieu / Adresse exacte</label>
-                  <div className="address-group-flex" style={{ display: 'flex', gap: '0.8rem' }}>
-                    <div style={{ position: 'relative', flex: 1 }}>
-                      <input 
-                        type="text" 
-                        name="tAddress" 
-                        value={address} 
-                        onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Ex: 5 rue de la Paix, Paris" 
-                        className="admin-input" 
-                        style={{ paddingLeft: '2.8rem' }} 
-                      />
-                      <Map size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#555' }} />
-                    </div>
-                    <button 
-                      type="button" 
-                      onClick={() => setIsMapModalOpen(true)}
-                      className="map-open-btn"
-                      title="Choisir sur la carte"
-                    >
-                      <Globe size={20} />
-                      <span>Choisir sur la carte</span>
-                    </button>
-                  </div>
-                  {(lat && lng) && (
-                    <p style={{ fontSize: '0.75rem', color: 'var(--success, #22c55e)', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                       <Check size={14} /> Localisation précise définie ({lat.toFixed(5)}, {lng.toFixed(5)})
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <SectionSeparator icon={<Users size={18} />} title="Participants" />
-              <div className="grid-2col grid-participants">
-                <div className="form-group">
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', cursor: 'pointer', background: 'var(--glass-bg)', padding: '0.8rem', borderRadius: '8px', border: isTeam ? '1px solid var(--accent)' : '1px solid var(--glass-border)' }}>
-                    <input type="checkbox" name="isTeam" checked={isTeam} onChange={e => setIsTeam(e.target.checked)} style={{ width: '18px', height: '18px' }} />
-                    <span>En équipe</span>
-                  </label>
-                </div>
-
-                <div className="form-group">
-                  <label>{isTeam ? "Nombre d'équipes max" : "Nombre de coachs max"}</label>
-                  <input 
-                    type="number" 
-                    name="tMax" 
-                    defaultValue={initialData?.maxParticipants || ""} 
-                    placeholder="Ex: 40" 
-                    min={1} 
-                    className="admin-input" 
-                    onKeyDown={(e) => handleNumericKeyDown(e)}
-                    onBlur={(e) => {
-                      if (e.target.value && parseInt(e.target.value) < 1) e.target.value = "1";
-                    }}
+                </Select>
+              </Field>
+              <Field label="Ville" htmlFor="tVille">
+                <Input id="tVille" type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex : Lyon" autoComplete="address-level2" />
+              </Field>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="tAddress">Adresse exacte du lieu</Label>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <div className="relative min-w-0 flex-1">
+                  <Map size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" />
+                  <Input
+                    id="tAddress"
+                    type="text"
+                    name="tAddress"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Ex : 5 rue de la Paix, Paris"
+                    className="pl-10"
+                    autoComplete="street-address"
                   />
                 </div>
+                <Button type="button" variant="secondary" size="tap" className="shrink-0" onClick={() => setIsMapModalOpen(true)}>
+                  <Globe size={18} aria-hidden="true" /> Choisir sur la carte
+                </Button>
               </div>
+              {lat != null && lng != null && (
+                <p className="m-0 flex items-center gap-1.5 text-sm text-bb-success-text">
+                  <Check size={16} aria-hidden="true" /> Localisation précise définie ({lat.toFixed(5)}, {lng.toFixed(5)})
+                </p>
+              )}
+            </div>
+          </Block>
 
-              {isTeam && (
-                <div className="grid-2col team-settings-box">
-                  <div className="form-group">
-                    <label>Coachs par équipe</label>
-                    <input 
-                      type="number" 
-                      name="tCoachsPerTeam" 
-                      defaultValue={Math.max(2, initialData?.coachsPerTeam || 2)} 
-                      min={2} 
-                      className="admin-input" 
-                      onKeyDown={(e) => handleNumericKeyDown(e)}
-                      onBlur={(e) => {
-                        if (parseInt(e.target.value) < 2 || !e.target.value) e.target.value = "2";
-                      }}
-                    />
-                  </div>
-                  
-                  <ClassicSelect 
-                    label="Système d'appariement"
-                    value={pairingType} 
-                    onChange={(e) => setPairingType(e.target.value as any)}
-                  >
+          <Block icon={<Users size={18} />} title="Participants">
+            <div className={cn(grid2, "sm:items-end")}>
+              <CheckRow name="isTeam" label="En équipe" icon={<Users size={16} />} checked={isTeam} onChange={setIsTeam} />
+              <Field label={isTeam ? "Nombre d'équipes max" : "Nombre de coachs max"} htmlFor="tMax">
+                <Input
+                  id="tMax"
+                  type="number"
+                  name="tMax"
+                  defaultValue={initialData?.maxParticipants || ""}
+                  placeholder="Ex : 40"
+                  min={1}
+                  {...numeric}
+                  onBlur={(e) => {
+                    if (e.target.value && parseInt(e.target.value) < 1) e.target.value = "1";
+                  }}
+                />
+              </Field>
+            </div>
+
+            {isTeam && (
+              <div className={cn(grid2, "rounded-bb-md border border-dashed border-bb-border p-3")}>
+                <Field label="Coachs par équipe" htmlFor="tCoachsPerTeam">
+                  <Input
+                    id="tCoachsPerTeam"
+                    type="number"
+                    name="tCoachsPerTeam"
+                    defaultValue={Math.max(2, initialData?.coachsPerTeam || 2)}
+                    min={2}
+                    {...numeric}
+                    onBlur={(e) => {
+                      if (parseInt(e.target.value) < 2 || !e.target.value) e.target.value = "2";
+                    }}
+                  />
+                </Field>
+                <Field label="Système d'appariement" htmlFor="pairingType">
+                  <Select id="pairingType" value={pairingType} onChange={(e) => setPairingType(e.target.value as "INDIVIDUEL" | "EQUIPE")}>
                     <option value="INDIVIDUEL">Individuel (Partiel)</option>
                     <option value="EQUIPE">Par équipe (Total)</option>
-                  </ClassicSelect>
-                </div>
-              )}
+                  </Select>
+                </Field>
+              </div>
+            )}
 
-              {(initialData?.isOrganizer ?? true) && (
-                <>
-                  <SectionSeparator icon={<Users size={18} />} title="Commissaires" />
-                  <div className="form-group">
-                    <label style={{ display: 'block', marginBottom: '0.8rem' }}>
-                      Utilisateurs pouvant gérer ce tournoi (en plus de vous)
-                    </label>
-                    <UserSearch 
-                      selectedUsers={commissaires}
-                      onSelect={handleSelectUser}
-                      onRemove={handleRemoveUser}
-                      placeholder="Chercher un commissaire..."
-                      maxSelections={10}
-                    />
-                    <input type="hidden" name="commissaireIds" value={commissaires.map(u => u.id).join(',')} />
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                      Les commissaires pourront modifier les infos du tournoi et gérer les inscriptions.
-                    </p>
-                  </div>
-                </>
-              )}
+            {(initialData?.isOrganizer ?? true) && (
+              <div className="flex flex-col gap-1.5">
+                <p className="m-0 text-sm font-semibold text-bb-text">Commissaires (en plus de vous)</p>
+                <UserSearch
+                  selectedUsers={commissaires}
+                  onSelect={(user) => setCommissaires(prev => [...prev, user])}
+                  onRemove={(userId) => setCommissaires(prev => prev.filter(u => u.id !== userId))}
+                  placeholder="Chercher un commissaire..."
+                  maxSelections={10}
+                />
+                <p className={hint}>Les commissaires pourront modifier les infos du tournoi et gérer les inscriptions.</p>
+              </div>
+            )}
+          </Block>
 
-              <SectionSeparator icon={<Shield size={18} />} title="Championnats / Points" />
-              <div className="grid-badges">
+          <Block icon={<Shield size={18} />} title="Championnats et points">
+            <fieldset className="m-0 border-0 p-0">
+              <legend className="mb-2 p-0 text-sm font-semibold text-bb-text">Le tournoi compte pour</legend>
+              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
                 {['NAF', 'CDF', 'CGO', 'TGE', 'TSC'].map(c => (
-                  <label key={c} className="checkbox-box-admin">
-                    <input 
-                      type="checkbox" 
-                      name={`is${c}`} 
-                      defaultChecked={(initialData as any)?.[`is${c}`] ?? (c === 'CDF' ? isCDF : false)} 
+                  <label
+                    key={c}
+                    className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 px-2 font-bold text-bb-text has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft has-[:checked]:text-bb-accent-text"
+                  >
+                    <input
+                      type="checkbox"
+                      name={`is${c}`}
+                      className="size-5 shrink-0 cursor-pointer accent-[var(--bb-accent)]"
+                      defaultChecked={(initialData as any)?.[`is${c}`] ?? (c === 'CDF' ? isCDF : false)}
                       onChange={(e) => {
                         if (c === 'CDF') setIsCDF(e.target.checked);
                       }}
                     />
-                    <div className="box-content" style={{ padding: '1rem' }}>
-                      <span style={{ fontWeight: 800 }}>{c}</span>
-                    </div>
+                    <span>{c}</span>
                   </label>
                 ))}
               </div>
+            </fieldset>
 
-              <input 
-                type="hidden" 
-                name="typeCDF" 
-                value={!isTeam ? "INDIVIDUEL" : (pairingType === "EQUIPE" ? "EQUIPE_TOTALE" : "EQUIPE_PARTIELLE")} 
-              />
-
-              {isCDF && (
-                <div className="form-group" style={{ marginTop: '0.5rem', padding: '0.8rem', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', borderLeft: '3px solid var(--accent)' }}>
-                  <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600 }}>
-                    Type de classement CDF : <span style={{ color: 'var(--accent)' }}>
-                      {!isTeam ? "Individuel" : (pairingType === "EQUIPE" ? "Équipe Totale" : "Équipe Partielle")}
-                    </span>
-                  </p>
-                  <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.3rem', marginBottom: 0 }}>
-                    Le calcul des points s&apos;adaptera automatiquement à ce format.
-                  </p>
-                </div>
-              )}
-
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label>Nombre de rondes (total)</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <input 
-                    type="number" 
-                    name="tTotalMatches" 
-                    defaultValue={initialData?.totalMatches ?? ""} 
-                    placeholder="Ex: 5" 
-                    min={1} 
-                    className="admin-input" 
-                    style={{ width: '100px' }}
-                    onKeyDown={(e) => handleNumericKeyDown(e)}
-                  />
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>
-                    Par défaut : 3 rondes par jour. Saisissez une valeur pour forcer le calcul CDF.
-                  </p>
-                </div>
+            {isCDF && (
+              <div className="rounded-bb-md border-l-4 border-bb-accent bg-bb-surface-2 px-3 py-2">
+                <p className="m-0 text-sm font-semibold text-bb-text">
+                  Type de classement CDF :{" "}
+                  <span className="text-bb-accent-text">{!isTeam ? "Individuel" : (pairingType === "EQUIPE" ? "Équipe Totale" : "Équipe Partielle")}</span>
+                </p>
+                <p className={hint}>Le calcul des points s&apos;adaptera automatiquement à ce format.</p>
               </div>
+            )}
 
-              <SectionSeparator icon={<Monitor size={18} />} title="Plateforme & Édition" />
-              <div className="grid-refdata">
-                <ClassicSelect 
-                  label="Plateforme" 
-                  name="tPlatform" 
-                  defaultValue={initialData?.platform || "Tabletop"}
-                >
+            <Field label="Nombre de rondes (total)" htmlFor="tTotalMatches" hint="Par défaut : 3 rondes par jour. Saisissez une valeur pour forcer le calcul CDF.">
+              <Input id="tTotalMatches" type="number" name="tTotalMatches" defaultValue={initialData?.totalMatches ?? ""} placeholder="Ex : 5" min={1} className="sm:max-w-40" {...numeric} />
+            </Field>
+          </Block>
+
+          <Block icon={<Monitor size={18} />} title="Jeu">
+            <div className={grid2}>
+              <Field label="Plateforme" htmlFor="tPlatform">
+                <Select id="tPlatform" name="tPlatform" defaultValue={initialData?.platform || "Tabletop"}>
                   {referenceData.platforms.map(p => (
-                      <option key={p.key} value={p.key}>{p.label}</option>
+                    <option key={p.key} value={p.key}>{p.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <ClassicSelect 
-                  label="Édition du jeu" 
-                  name="tGame" 
-                  defaultValue={initialData?.gameEdition || "BB2025"}
-                >
+                </Select>
+              </Field>
+              <Field label="Édition du jeu" htmlFor="tGame">
+                <Select id="tGame" name="tGame" defaultValue={initialData?.gameEdition || "BB2025"}>
                   {referenceData.gameEditions.map(g => (
-                      <option key={g.key} value={g.key}>{g.label}</option>
+                    <option key={g.key} value={g.key}>{g.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <ClassicSelect 
-                  label="Format de tournoi" 
-                  name="tStructure" 
-                  defaultValue={initialData?.structure || "Resurrection"}
-                >
+                </Select>
+              </Field>
+              <Field label="Format de tournoi" htmlFor="tStructure">
+                <Select id="tStructure" name="tStructure" defaultValue={initialData?.structure || "Resurrection"}>
                   {referenceData.tournamentFormats.map(s => (
-                      <option key={s.key} value={s.key}>{s.label}</option>
+                    <option key={s.key} value={s.key}>{s.label}</option>
                   ))}
-                </ClassicSelect>
-
-                <ClassicSelect 
-                  label="Type de tournoi" 
-                  name="tournamentType" 
-                  defaultValue={initialData?.tournamentType || "SWISS"}
-                >
+                </Select>
+              </Field>
+              <Field label="Type de tournoi" htmlFor="tournamentType">
+                <Select id="tournamentType" name="tournamentType" defaultValue={initialData?.tournamentType || "SWISS"}>
                   {referenceData.tournamentTypes.map(t => (
-                      <option key={t.key} value={t.key}>{t.label}</option>
+                    <option key={t.key} value={t.key}>{t.label}</option>
                   ))}
-                </ClassicSelect>
-              </div>
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label>Ruleset (Pack de règles)</label>
-                <input type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex: Eurobowl 2024" className="admin-input" />
-              </div>
-
-              <SectionSeparator icon={<Coins size={18} />} title="Logistique & Prix" />
-              <div className="grid-prices">
-                <div className="form-group">
-                  <label>Prix Inscription (€)</label>
-                  <input type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex: 15" className="admin-input" 
-                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
-                </div>
-                <div className="form-group">
-                  <label>Prix Repas (€ optionnel)</label>
-                  <input type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex: 5" className="admin-input" 
-                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
-                </div>
-                <div className="form-group">
-                  <label>Prix Logement (€ optionnel)</label>
-                  <input type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex: 10" className="admin-input" 
-                         onKeyDown={(e) => handleNumericKeyDown(e, true)} />
-                </div>
-              </div>
-
-              <div className="grid-logistic">
-                <label className="checkbox-box-admin">
-                  <input type="checkbox" name="tMeals" defaultChecked={initialData?.mealsIncluded} />
-                  <div className="box-content">
-                    <Utensils size={18} />
-                    <span>Repas inclus</span>
-                  </div>
-                </label>
-                <label className="checkbox-box-admin">
-                  <input type="checkbox" name="tLodging" defaultChecked={initialData?.lodgingAtVenue} />
-                  <div className="box-content">
-                    <BedDouble size={18} />
-                    <span>Dodo sur place</span>
-                  </div>
-                </label>
-                <label className="checkbox-box-admin">
-                  <input type="checkbox" name="tFriday" defaultChecked={initialData?.fridayArrival} />
-                  <div className="box-content">
-                    <Sun size={18} />
-                    <span>Accueil vendredi</span>
-                  </div>
-                </label>
-              </div>
+                </Select>
+              </Field>
             </div>
+            <Field label="Ruleset (pack de règles)" htmlFor="tRuleset">
+              <Input id="tRuleset" type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex : Eurobowl 2024" />
+            </Field>
+          </Block>
 
-            <div className="form-group">
-              <label htmlFor="content" style={{ display: 'block', marginBottom: '1rem', fontWeight: 800, fontSize: '1.1rem' }}>
-                Présentation complète / Règlement détaillé *
-              </label>
+          <Block icon={<Coins size={18} />} title="Prix et logistique">
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Field label="Prix d'inscription (€)" htmlFor="tPrice">
+                <Input id="tPrice" type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex : 15" {...decimal} />
+              </Field>
+              <Field label="Prix du repas (€, facultatif)" htmlFor="tPriceMeals">
+                <Input id="tPriceMeals" type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex : 5" {...decimal} />
+              </Field>
+              <Field label="Prix du logement (€, facultatif)" htmlFor="tPriceLodging">
+                <Input id="tPriceLodging" type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex : 10" {...decimal} />
+              </Field>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-3">
+              <CheckRow name="tMeals" label="Repas inclus" icon={<Utensils size={16} />} defaultChecked={initialData?.mealsIncluded} />
+              <CheckRow name="tLodging" label="Dodo sur place" icon={<BedDouble size={16} />} defaultChecked={initialData?.lodgingAtVenue} />
+              <CheckRow name="tFriday" label="Accueil vendredi" icon={<Sun size={16} />} defaultChecked={initialData?.fridayArrival} />
+            </div>
+          </Block>
+
+          <Block icon={<FileText size={18} />} title="Présentation">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="content">Présentation complète et règlement détaillé</Label>
               <BBCodeEditor
                 id="content"
                 name="content"
@@ -547,232 +470,59 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                 rows={18}
               />
             </div>
-          </PremiumCard>
+          </Block>
+
+          {/* Téléphone : cases de modération sous la présentation */}
+          {userCanStick && <div className="lg:hidden">{moderationBoxes}</div>}
         </div>
 
-        <CreateTopicSidebar 
-          forumId={forumId}
-          userRole={userCanStick ? "ADMIN" : "COACH"}
-          submitLabel={isEdit ? "Enregistrer les modifications" : "Publier le tournoi"}
-          icon={isEdit ? <Save size={18} /> : <Trophy size={18} />}
-          isTournament={true}
-        />
+        {/* Colonne « Publication » (ordinateur) */}
+        <aside aria-label="Publication" className="hidden lg:block">
+          <Card className="flex flex-col gap-3 p-4 lg:sticky lg:top-20">
+            <h2 className="m-0 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+              <span aria-hidden="true" className="text-bb-accent-text">{submitIcon}</span>
+              Publication
+            </h2>
+            {moderationBoxes}
+            <Button type="submit" variant="primary" size="tap" className="w-full">
+              {submitLabel}
+            </Button>
+            <Button asChild variant="secondary" size="tap" className="w-full">
+              <Link href={cancelHref}>Annuler</Link>
+            </Button>
+          </Card>
+        </aside>
       </div>
 
-      <Modal
-        isOpen={isMapModalOpen}
-        onClose={() => setIsMapModalOpen(false)}
-        title="Localisation du tournoi"
-        maxWidth="850px"
-      >
-        <MapPicker 
-          initialCenter={lat && lng ? [lat, lng] : undefined}
-          initialSearch={address}
-          onSelect={(newLat, newLng, newAddress) => {
-            setLat(newLat);
-            setLng(newLng);
-            if (newAddress) {
-              // On nettoie un peu l'adresse de Nominatim qui est souvent trop longue
-              const parts = newAddress.split(',');
-              const shortAddress = parts.slice(0, 3).join(',').trim();
-              setAddress(shortAddress);
-            }
-            setIsMapModalOpen(false);
-          }}
-          onCancel={() => setIsMapModalOpen(false)}
-        />
-      </Modal>
+      <ComposeActionBar className="lg:hidden">
+        <Button asChild variant="secondary" size="tap">
+          <Link href={cancelHref}>Annuler</Link>
+        </Button>
+        <Button type="submit" variant="primary" size="tap" className="flex-1">
+          {submitIcon} {submitLabel}
+        </Button>
+      </ComposeActionBar>
 
-      <style jsx>{`
-        :global(.premium-card.form-main-card) {
-          padding: 2.5rem !important;
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 2rem !important;
-        }
-
-        :global(.form-inner-container) {
-          padding: 2rem !important;
-          background: var(--glass-bg);
-          border-radius: 16px;
-          border: 1px solid var(--glass-border);
-        }
-
-        :global(.form-inner-header) {
-          display: flex !important;
-          align-items: center !important;
-          gap: 1rem !important;
-          margin-bottom: 2rem !important;
-        }
-
-        :global(.grid-2col) {
-          display: grid !important;
-          grid-template-columns: 1fr 1fr !important;
-          gap: 1.5rem !important;
-        }
-
-        :global(.grid-badges) {
-          display: grid !important;
-          grid-template-columns: repeat(5, 1fr) !important;
-          gap: 1rem !important;
-        }
-
-        :global(.grid-refdata) {
-          display: grid !important;
-          grid-template-columns: repeat(4, 1fr) !important;
-          gap: 1.5rem !important;
-        }
-
-        :global(.grid-prices) {
-          display: grid !important;
-          grid-template-columns: repeat(3, 1fr) !important;
-          gap: 1.5rem !important;
-          margin-bottom: 1.5rem !important;
-        }
-
-        :global(.grid-logistic) {
-          display: grid !important;
-          grid-template-columns: repeat(3, 1fr) !important;
-          gap: 1rem !important;
-        }
-
-        :global(.grid-participants) {
-          align-items: end !important;
-          margin-bottom: 1.5rem !important;
-        }
-
-        .team-settings-box {
-          padding: 1.2rem;
-          background: rgba(255, 255, 255, 0.02);
-          border-radius: 12px;
-          border: 1px dashed var(--glass-border);
-          margin-bottom: 1rem;
-        }
-
-        .section-separator {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 1rem 0;
-          border-bottom: 1px solid var(--glass-border);
-          margin-top: 1.5rem;
-          margin-bottom: 1rem;
-        }
-
-        .section-icon { color: var(--accent); }
-        .section-separator h4 { margin: 0; font-size: 0.9rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; }
-        .section-line { flex: 1; height: 1px; background: var(--glass-border); margin-left: 1rem; }
-
-        .admin-input {
-          width: 100%;
-          padding: 0.9rem 1rem;
-          background: rgba(0, 0, 0, 0.03);
-          border: 1px solid var(--glass-border);
-          border-radius: 10px;
-          color: var(--foreground);
-          font-size: 1rem;
-          outline: none;
-          transition: all 0.2s;
-        }
-
-        [data-theme='nehekhara'] .admin-input, 
-        [data-theme='naf'] .admin-input { 
-          background: rgba(255, 255, 255, 0.05); 
-        }
-
-        .admin-input:focus { border-color: var(--primary); background: var(--background); }
-        .admin-input option { background-color: var(--background); color: var(--foreground); }
-
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.03em; }
-        
-        .checkbox-box-admin { cursor: pointer; }
-        .checkbox-box-admin input { display: none; }
-        .box-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 1.2rem;
-          background: var(--glass-bg);
-          border-radius: 12px;
-          border: 1px solid var(--glass-border);
-          color: var(--text-muted);
-          transition: all 0.2s;
-          text-align: center;
-        }
-        
-        .checkbox-box-admin input:checked + .box-content {
-           background: var(--primary-transparent);
-           border-color: var(--primary);
-           color: var(--foreground);
-           transform: translateY(-2px);
-           box-shadow: 0 4px 15px var(--btn-shadow);
-        }
-
-        .map-open-btn {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          padding: 0 1.2rem;
-          border-radius: 10px;
-          cursor: pointer;
-          font-weight: 700;
-          transition: all 0.2s;
-          white-space: nowrap;
-        }
-
-        .map-open-btn:hover {
-          background: var(--primary-transparent);
-          border-color: var(--primary);
-          color: var(--primary);
-        }
-
-        @media (max-width: 1024px) {
-          :global(.premium-card.form-main-card) { padding: 1.2rem !important; gap: 1.5rem !important; }
-          :global(.form-inner-container) { padding: 1rem !important; border-radius: 12px !important; }
-          
-          :global(.grid-2col), :global(.grid-badges), :global(.grid-refdata), :global(.grid-prices), :global(.grid-logistic) {
-            grid-template-columns: 1fr !important;
-            gap: 1.2rem !important;
-          }
-
-          :global(.address-group-flex) {
-            flex-direction: column !important;
-          }
-
-          :global(.map-open-btn) {
-            width: 100% !important;
-            justify-content: center !important;
-            padding: 0.8rem !important;
-          }
-
-          :global(.grid-badges) {
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) !important;
-            gap: 0.8rem !important;
-          }
-
-          :global(.box-content) { padding: 0.8rem !important; }
-          :global(.section-line) { display: none !important; }
-          :global(.form-inner-header) { flex-direction: column !important; text-align: center !important; margin-bottom: 1.5rem !important; }
-        }
-
-        @media (max-width: 600px) {
-          :global(.map-open-btn) span { display: none !important; }
-          :global(.map-open-btn) { padding: 1rem !important; }
-          :global(.grid-badges) {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-          :global(.section-separator) {
-            gap: 0.5rem !important;
-          }
-          :global(.section-separator h4) {
-            font-size: 0.8rem !important;
-          }
-        }
-      `}</style>
+      <Sheet open={isMapModalOpen} onOpenChange={setIsMapModalOpen}>
+        <SheetContent title="Localisation du tournoi" side={isDesktop ? "center" : "bottom"} className="lg:w-[min(860px,calc(100vw-2rem))]">
+          <MapPicker
+            initialCenter={lat && lng ? [lat, lng] : undefined}
+            initialSearch={address}
+            onSelect={(newLat, newLng, newAddress) => {
+              setLat(newLat);
+              setLng(newLng);
+              if (newAddress) {
+                // On nettoie un peu l'adresse de Nominatim qui est souvent trop longue
+                const parts = newAddress.split(',');
+                const shortAddress = parts.slice(0, 3).join(',').trim();
+                setAddress(shortAddress);
+              }
+              setIsMapModalOpen(false);
+            }}
+            onCancel={() => setIsMapModalOpen(false)}
+          />
+        </SheetContent>
+      </Sheet>
     </form>
   );
 }

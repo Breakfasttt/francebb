@@ -8,26 +8,27 @@ Les coachs trouvent les tournois de Blood Bowl en France, s'y inscrivent seuls o
 
 ## Ce que voit le coach
 
-- `/tournois` : la recherche des tournois à venir, en grille (10 par page) ou en liste (20 par page), avec filtres (région, édition, durée, prix, logement, homologations NAF, CDF…) et tri. L'option « historique » montre aussi les tournois passés, terminés ou annulés. Une carte ouvre le sujet du forum du tournoi.
-- `/forum/new-tournament?forumId=…` : créer un tournoi (formulaire `TournamentForm`, carte pour placer le lieu). Réservé aux membres connectés, dans un forum de tournoi auquel ils ont accès.
-- `/forum/topic/[id]` : le sujet du tournoi, avec son résumé, le module d'inscription (inscription, désinscription, mercenaire, équipes) et le widget de résultats.
-- `/forum/edit-tournament/[id]` : modifier le tournoi (organisateur, commissaire ou modérateur).
-- `/forum/tournament/[id]/results` : saisir les résultats (classement et rondes), à la main ou par import d'un rapport NAF. Réservé à l'organisateur, aux commissaires et aux modérateurs.
+- `/tournois` : la recherche des tournois à venir, en grille (10 par page) ou en liste (20 par page), avec recherche par nom, filtres (région, département, mode, plateforme, version, structure, circuits NAF, CDF, CGO, TGE, TSC, logement, repas, arrivée le vendredi, prix maximum, places, historique) et tri par date, prix ou places. Les filtres actifs sont rappelés en pastilles au-dessus des résultats ; la croix d'une pastille retire ce filtre. Badges « Passé », « Terminé », « Annulé ». Une carte (ou une ligne) ouvre le sujet du forum du tournoi. La pagination garde les filtres, le tri et l'affichage.
+- `/forum/new-tournament?forumId=…` : créer un tournoi. Le formulaire (`TournamentForm`) est découpé en blocs : le tournoi, les dates, le lieu (avec le choix sur une carte et la recherche d'adresse, `MapPicker`), les participants et commissaires, les championnats, le jeu, les prix et la logistique, la présentation. Réservé aux membres connectés, dans un forum de tournoi auquel ils ont accès.
+- `/forum/topic/[id]` : le sujet du tournoi, avec sa fiche (`TournamentSummary`), le bloc « Résultats du tournoi » quand il est terminé, et le module d'inscription (inscription, désinscription, mercenaire, équipes ; statut d'inscription et de paiement pour l'organisateur). Terminer, annuler, réouvrir le tournoi et ouvrir ou fermer les inscriptions sont dans les outils du sujet (`TopicTools.tsx`, carte 086).
+- `/forum/edit-tournament/[id]` : modifier le tournoi (organisateur, commissaire ou modérateur), même formulaire.
+- `/forum/tournament/[id]/results` : saisir les résultats (classement et rondes), à la main ou par import d'un rapport NAF, ou les effacer. Réservé à l'organisateur, aux commissaires et aux modérateurs.
 - `/forum/tournament/[id]/results/view` : le classement final, visible par tous.
-- **Sur téléphone** (`app/tournois/page-mobile.css`) : en dessous de 1024 pixels, la colonne de filtres est masquée et s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054). En haut du panneau, le choix grille/liste et le tri, envoyés par `ActiveFilters.tsx` dans l'emplacement `#tournois-mobile-sort-slot` ; en dessous, la recherche et tous les filtres. Chaque case à cocher est dans une ligne touchable de 44 pixels de haut ; les champs « nombre » et les listes déroulantes sont en 16 pixels (pas de zoom automatique sur iPhone). Jusqu'à 1024 pixels (seuil unique, carte 055), la croix qui retire un filtre actif mesure 44 pixels et la grille passe sur une colonne. En vue liste (sous 900 pixels), les colonnes lieu, format et prix sont masquées ; depuis la carte 061, leur contenu est repris sur une ligne sous le nom du tournoi (`list-mobile-details`), pour que rien ne disparaisse. Le formulaire de tournoi passe sur une colonne sous 1024 pixels. Le module d'inscription empile ses entrées sous 480 pixels. Dans l'éditeur de résultats, la liste des matchs défile dans son propre cadre (largeur minimale 600 pixels).
-- **Problèmes possibles** : les cases à cocher elles-mêmes mesurent 22 pixels (c'est toute la ligne, de 44 pixels, qui réagit au toucher) : l'audit automatique les compte donc comme cibles trop petites dans le panneau ouvert. Chaque changement de filtre relance la recherche aussitôt. L'éditeur de résultats reste lourd à utiliser sur petit écran (à vérifier, carte 049).
+- **Refonte (carte 089, ADR 0006)** : tous ces écrans utilisent les composants de `packages/ui` et les couleurs v2 ; leurs anciens fichiers CSS ont été supprimés.
+- **Sur téléphone** : sur `/tournois`, une seule colonne ; le bouton « Filtres » (avec le nombre de filtres actifs) ouvre le panneau « Filtrer les tournois » qui monte du bas, avec « Réinitialiser » et « Voir N tournois » en bas du panneau. La recherche, le tri et le choix grille ou liste restent dans la barre au-dessus des résultats. En liste, le lieu, le format et le prix passent sous le nom du tournoi. La création, la modification et la saisie des résultats sont des écrans de rédaction plein écran (pas de barre de navigation du bas, barre d'envoi collée en bas). Le choix du lieu, l'équipe, ses détails et les confirmations s'ouvrent dans des panneaux qui montent du bas. Dans la saisie des résultats, chaque coach est une carte avec des champs libellés ; chaque match aussi. Tous les boutons font au moins 44 pixels.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/tournois/page.tsx` | Recherche des tournois (lecture des filtres dans l'adresse, requête paginée). |
-| `apps/site/app/tournois/component/TournamentFilterSidebar.tsx`, `ActiveFilters.tsx` | Filtres, filtres actifs, vue et tri. |
+| `apps/site/app/tournois/component/TournamentFilters.tsx`, `TournamentListItems.tsx` | Filtres (colonne et panneau du téléphone), barre de recherche, tri et affichage, pastilles ; carte et ligne d'un tournoi. |
 | `apps/site/app/tournois/actions.ts` | Clôture, annulation, réouverture, sauvegarde et effacement des résultats, lecture d'un rapport NAF. |
 | `apps/site/app/forum/new-tournament/page.tsx`, `apps/site/app/forum/edit-tournament/[id]/page.tsx` | Création et modification. |
 | `apps/site/app/forum/component/TournamentForm.tsx`, `MapPicker.tsx` | Formulaire du tournoi et choix du lieu sur une carte. |
 | `apps/site/app/forum/component/TournamentSummary.tsx`, `RegistrationModule.tsx`, `TournamentResultWidget.tsx` | Blocs affichés dans le sujet du tournoi. |
 | `apps/site/app/forum/tournament/[id]/results/TournamentResultsEditor.tsx` | Saisie des résultats et calcul des points CDF. |
+| `ConfirmDialog` (`packages/ui`) | Confirmations du module d'inscription et de l'effacement des résultats. |
 
 Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi quand le forum est un forum de tournoi), `updateTournament`, `joinTournament`, `leaveTournament`, `toggleMercenary`, `createTeam`, `updateTeam`, `deleteTeam`, `updateRegistrationStatus`, `toggleTournamentRegistrations` ; dans `app/tournois/actions.ts`, `finishTournament`, `cancelTournament`, `unfinishTournament`, `saveTournamentResults`, `clearTournamentResults`, `parseNafReport`.
 
@@ -39,7 +40,8 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - Un tournoi est toujours créé avec son sujet du forum, qui lui sert de fiche. Si ce sujet a été supprimé, les liens (liste `/tournois`, fiche d'une ligue, carte) mènent à la liste des tournois, faute de page dédiée. Avant la carte 051, ils menaient à `/tournois/[id]`, page inexistante.
 - Dans les inscriptions (`RegistrationModule.tsx`) et les résultats (`TournamentResultWidget.tsx`, `/results/view`), un coach sans avatar est affiché avec l'avatar par défaut du site, le composant commun `MemberAvatarImage` (carte 065). Avant, ces écrans demandaient l'image `/default-avatar.png`, qui n'existe pas (erreur 404, image cassée).
 - `app/tournois/page.tsx` et les actions utilisent encore des types `any`.
-- Sur téléphone, le tri et l'affichage (`ActiveFilters.tsx`) sont envoyés par `GlobalPortal` dans l'emplacement `#tournois-mobile-sort-slot`, créé par `TournamentFilterSidebar.tsx` à l'intérieur du panneau de filtres. Depuis la carte 055, ce portail n'existe qu'en mode téléphone : à chaque passage sous 1024 pixels (fenêtre rétrécie, tablette tournée), il est recréé et retrouve l'emplacement. Avant, si l'on agrandissait puis rétrécissait la fenêtre, le tri disparaissait du panneau jusqu'au rechargement.
+- Changer un filtre ramène à la première page des résultats ; la recherche par nom change l'adresse 400 millisecondes après la dernière touche (carte 089).
+- Les régions du filtre de `/tournois` sont écrites sans accent (« Ile-de-France ») alors que le formulaire enregistre celles des données de référence, avec accent (« Île-de-France ») : un tournoi d'une région accentuée n'est pas trouvé par ce filtre (à corriger dans une carte à part).
 
 ## Les mots expliqués
 
@@ -59,5 +61,5 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - Marche : recherche, création, inscriptions individuelles et par équipes, saisie et affichage des résultats, import NAF.
 - Marche aussi depuis la carte 051 : règles de droits identiques pour les résultats, points CDF recalculés par le serveur, page `/results` réservée aux membres non bannis (`getActiveSession()`) avec renvoi vers `/auth/login`.
 - Manque : page dédiée `/tournois/[id]` pour un tournoi dont le sujet a été supprimé.
-- Sur téléphone : filtres, tri et affichage derrière le bouton flottant ; aucun contenu coupé sur `/tournois` à 360, 390 et 430 pixels (carte 054).
-- Cartes : 049 (audit mobile), 054 (filtres sur téléphone), 019 (images), 065 (avatar par défaut), 061 (lieu, format et prix en vue liste ; panneau de filtres mesuré par l'audit mobile).
+- Sur téléphone : filtres dans un panneau ouvert par le bouton « Filtres » (carte 089) ; écrans refaits vérifiés à 360 et 390 pixels.
+- Cartes : 049 (audit mobile), 054 (filtres sur téléphone), 019 (images), 065 (avatar par défaut), 061 (lieu, format et prix en vue liste ; panneau de filtres mesuré par l'audit mobile), 089 (refonte des écrans, test d'inventaire `tests/e2e/inventaire/tournois.spec.ts`).
