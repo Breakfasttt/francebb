@@ -59,14 +59,6 @@
   }
 }
 
-/* Accueil : le grand logo était posé au milieu de l'ancienne barre ; la nouvelle barre y a ses liens,
-   il descend donc juste dessous, dans la page (la refonte de l'accueil, carte 090, le remplacera). */
-.refonte-shell .logo-overlay-container {
-  position: absolute;
-  top: 4.5rem;
-  z-index: 10;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .app-bottom-nav {
     transition: none;

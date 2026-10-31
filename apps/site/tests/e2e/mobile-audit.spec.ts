@@ -72,6 +72,9 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/forum/topic/e2e_audit_tournoi_topic", connected: true },
   { path: "/classement", connected: false },
   { path: "/statistiques", connected: false },
+  // Carte 090 : les statistiques réservées à l'administrateur et la page introuvable (404)
+  { path: "/statistiques?admin", connected: true, as: "admin" },
+  { path: "/page-introuvable-audit", connected: false },
   { path: "/articles", connected: false },
   { path: "/ressources", connected: false },
   { path: "/media", connected: false },

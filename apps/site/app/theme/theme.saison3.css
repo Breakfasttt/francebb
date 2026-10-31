@@ -337,11 +337,3 @@
 [data-theme='saison3'] h2 {
   color: var(--secondary);
 }
-
-[data-theme='saison3'] .footer-link:hover {
-  color: var(--highlight) !important;
-}
-
-[data-theme='saison3'] .footer-link:hover {
-  color: var(--highlight) !important;
-}

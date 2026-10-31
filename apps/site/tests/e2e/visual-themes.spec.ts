@@ -57,7 +57,8 @@ test.describe("rendu des thèmes", () => {
       await loginAs(page, themedBannedId(theme));
       await page.goto("/banned", { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
-      await expect(page.locator(".banned-card")).toHaveScreenshot(`banni-telephone-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001 });
+      // Carte 090 : la carte de la page est repérée par son rôle et son titre (plus par la classe .banned-card)
+      await expect(page.getByRole("region", { name: "Compte banni" })).toHaveScreenshot(`banni-telephone-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001 });
     });
   }
 });

@@ -1,15 +1,14 @@
 {
-  "maxErrors": 689,
+  "maxErrors": 648,
   "rules": {
-    "@next/next/no-html-link-for-pages": 1,
     "@typescript-eslint/ban-ts-comment": 8,
-    "@typescript-eslint/no-explicit-any": 348,
+    "@typescript-eslint/no-explicit-any": 346,
     "no-restricted-syntax": 63,
     "prefer-const": 8,
     "react-hooks/immutability": 5,
-    "react-hooks/purity": 2,
+    "react-hooks/purity": 1,
     "react-hooks/set-state-in-effect": 20,
     "react/forbid-elements": 147,
-    "react/no-unescaped-entities": 87
+    "react/no-unescaped-entities": 50
   }
 }

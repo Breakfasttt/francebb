@@ -211,16 +211,18 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 5. Accueil et pages fixes
 
-- [ ] [tous] `/` : grand logo. Tuiles Jouer, Forum, Ligues (avec « Créer »), Tournois (avec « Créer »), La Carte, Championnat de France, Articles, Ressources, BBScheme, Quizz, Discord (lien réglé dans l'administration).
-- [ ] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
-- [ ] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
-- [ ] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
-- [ ] [tous] `/mentions-legales`.
-- [ ] [tous] `/media` : lecteurs Twitch avec le lien « Suivez… » et listes de lecture YouTube.
-- [ ] [tous] `/statistiques` : utilisateurs, ligues, articles, sujets du forum, vues totales, personnes en ligne.
-- [ ] [admin] `/statistiques` : courriels du mois, quota restant, quota de stockage, taille de la base, signalements, ressources.
-- [ ] [banni] `/banned` : raison du bannissement, bouton de retour.
-- [ ] [tous] Page 404 « Terrain impraticable ! », avec un bouton vers l'accueil.
+- [x] [tous] `/` : grand logo. Tuiles Jouer, Forum, Ligues (avec « Créer »), Tournois (avec « Créer »), La Carte, Championnat de France, Articles, Ressources, BBScheme, Quizz, Discord (lien réglé dans l'administration). *Le test vérifie le logo en taille ordinateur seulement : avant la refonte, l'accueil n'avait pas de logo sur téléphone (il en a un depuis la carte 090). Pour Discord, il vérifie la tuile et son ouverture dans un nouvel onglet, pas l'adresse réglée (gardée en cache une heure par le site).*
+- [x] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
+- [x] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
+- [x] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
+- [ ] [tous] `/mentions-legales`. *Non traitée par la carte 090 : le texte de la page était réécrit au même moment (carte 126, RGPD). Sa mise en forme est reportée à la carte 101.*
+- [x] [tous] `/media` : lecteurs Twitch avec le lien « Suivez… » et listes de lecture YouTube. *Le lien s'appelle « Voir sur Twitch » (avant comme après la refonte).*
+- [x] [tous] `/statistiques` : utilisateurs, ligues, articles, sujets du forum, vues totales, personnes en ligne.
+- [x] [admin] `/statistiques` : courriels du mois, quota restant, quota de stockage, taille de la base, signalements, ressources.
+- [x] [banni] `/banned` : raison du bannissement, bouton de retour.
+- [x] [tous] Page 404 « Terrain impraticable ! », avec un bouton vers l'accueil.
+
+*Section vérifiée par `tests/e2e/inventaire/accueil.spec.ts` (carte 090), en taille ordinateur et en taille téléphone, sauf les mentions légales. Le test vérifie aussi qu'un membre voit les liens « Créer » mener directement aux formulaires, et qu'un modérateur ne voit pas la partie des statistiques réservée aux administrateurs.*
 
 ## 6. Connexion et compte
 

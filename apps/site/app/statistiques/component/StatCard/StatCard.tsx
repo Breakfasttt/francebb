@@ -1,52 +1,28 @@
 /**
- * Composant de carte de statistique pour le dashboard.
+ * Un chiffre du tableau des statistiques (refonte, carte 090) : icône, nom, valeur en grand et courte explication.
+ * Chaque chiffre est une paire nom et valeur d'une liste de définitions (`<dt>` et `<dd>`) : le parent fournit
+ * l'élément `<dl>`.
  */
 import React from 'react';
-import './StatCard.css';
 
 interface StatCardProps {
   label: string;
   value: string | number;
   icon: React.ReactNode;
-  trend?: {
-    value: number;
-    isUp: boolean;
-  };
   description?: string;
-  variant?: 'primary' | 'secondary' | 'accent' | 'admin';
 }
 
-export default function StatCard({ 
-  label, 
-  value, 
-  icon, 
-  trend, 
-  description,
-  variant = 'primary'
-}: StatCardProps) {
+export default function StatCard({ label, value, icon, description }: StatCardProps) {
   return (
-    <div className={`stat-card ${variant}`}>
-      <div className="stat-card-header">
-        <div className="stat-card-icon">
+    <div className="flex flex-col gap-1 rounded-bb-lg border border-bb-border bg-bb-surface p-3 lg:p-4">
+      <dt className="flex items-center gap-2 text-sm font-semibold text-bb-text-muted">
+        <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-bb-md bg-bb-accent-soft text-bb-accent-text">
           {icon}
-        </div>
-        {trend && (
-          <div className={`stat-card-trend ${trend.isUp ? 'up' : 'down'}`}>
-            {trend.isUp ? '↑' : '↓'} {trend.value}%
-          </div>
-        )}
-      </div>
-      
-      <div className="stat-card-body">
-        <h3 className="stat-card-value">{value}</h3>
-        <p className="stat-card-label">{label}</p>
-      </div>
-
-      {description && (
-        <div className="stat-card-footer">
-          <p className="stat-card-desc">{description}</p>
-        </div>
-      )}
+        </span>
+        <span className="min-w-0 break-words">{label}</span>
+      </dt>
+      <dd className="m-0 text-2xl leading-tight font-bold break-words text-bb-text lg:text-3xl">{value}</dd>
+      {description && <dd className="m-0 text-sm text-bb-text-muted">{description}</dd>}
     </div>
   );
 }

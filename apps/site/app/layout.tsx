@@ -31,6 +31,9 @@ const interFont = localFont({
   variable: "--font-bb",
 });
 
+/** Lien du pied de page : discret, souligné au survol. */
+const footerLinkClass = "inline-flex items-center gap-1.5 py-1 text-bb-nav-text no-underline opacity-85 hover:text-bb-nav-active hover:underline hover:opacity-100";
+
 export const metadata: Metadata = {
   title: "BBFrance - Tournois de Blood Bowl en France",
   description: "La plateforme de référence pour les tournois de Blood Bowl en France.",
@@ -84,26 +87,28 @@ export default async function RootLayout({
             {children}
           </main>
           
-          <footer className="global-footer desktop-only">
-            <Link href="/mentions-legales" className="footer-link">
+          {/* Pied de page, sur ordinateur seulement (sur téléphone, ces liens sont dans le panneau « Plus »).
+              Fixé en bas de l'écran ; restylé avec les variables v2 par la carte 090. */}
+          <footer className="fixed inset-x-0 bottom-0 z-[5000] hidden items-center justify-center gap-6 border-t border-bb-nav-border bg-bb-nav-bg px-4 py-1.5 font-bb-sans text-[0.8rem] text-bb-nav-text lg:flex">
+            <Link href="/mentions-legales" className={footerLinkClass}>
               Mentions légales
             </Link>
-            <span className="footer-text">
-              Conçu avec l'aide de l'IA
+            <span className="italic opacity-75">
+              Conçu avec l’aide de l’IA
             </span>
             <a 
               href="https://github.com/Breakfasttt/francebb" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="footer-link"
+              className={footerLinkClass}
             >
-              <Github size={14} /> GitHub
+              <Github size={14} aria-hidden="true" /> GitHub
             </a>
-            <Link href="/statistiques" className="footer-link">
-              <BarChart3 size={14} /> Statistiques
+            <Link href="/statistiques" className={footerLinkClass}>
+              <BarChart3 size={14} aria-hidden="true" /> Statistiques
             </Link>
-            <Link href="/media" className="footer-link">
-              <ImageIcon size={14} /> Médias
+            <Link href="/media" className={footerLinkClass}>
+              <ImageIcon size={14} aria-hidden="true" /> Médias
             </Link>
           </footer>
 

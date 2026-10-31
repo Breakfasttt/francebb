@@ -34,3 +34,8 @@
 
 /* RESPONSIVE DESIGN (MOBILE) Déplacé dans page-mobile.css */
 
+/* Couleur de l'icône du titre de la page. Cette règle venait du CSS de l'accueil (app/page.css), supprimé par la
+   carte 090 : elle ne s'appliquait donc qu'après un passage par l'accueil. */
+.icon-accent {
+  color: var(--accent);
+}
