@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import Modal from "@/common/components/Modal/Modal";
+/**
+ * Fenêtre « Modifier le titre du sujet » (auteur ou modérateur), refaite à la carte 088 : champ du titre avec ses
+ * smileys et son aperçu (TitleInputWithSmiley), puis « Enregistrer ». Fenêtre centrée sur ordinateur, panneau qui
+ * monte du bas sur téléphone (composant Sheet de @bbfrance/ui), au-dessus de la barre de navigation du bas.
+ */
+import { useTransition } from "react";
+import { Check } from "lucide-react";
 import { updateTopicTitle } from "@/app/forum/actions";
-import { toast } from "@bbfrance/ui";
+import { Button, DESKTOP_QUERY, Label, Sheet, SheetContent, toast, useMediaQuery } from "@bbfrance/ui";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
 
 interface EditTopicTitleModalProps {
   isOpen: boolean;
@@ -16,6 +19,7 @@ interface EditTopicTitleModalProps {
 }
 
 export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialTitle }: EditTopicTitleModalProps) {
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,26 +44,25 @@ export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialT
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Modifier le titre du sujet" hideFooter={true}>
-      <form onSubmit={handleSubmit} style={{ padding: '0.5rem 0' }}>
-        <p style={{ marginBottom: '1.2rem', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-          Entrez le nouveau titre pour ce sujet :
-        </p>
-        
-        <TitleInputWithSmiley initialValue={initialTitle} name="title" />
+    <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <SheetContent title="Modifier le titre du sujet" side={isDesktop ? "center" : "bottom"}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-1 pb-2">
+          <div className="flex flex-col gap-1.5">
+            {/* Le champ du titre porte l'identifiant « title » (TitleInputWithSmiley) */}
+            <Label htmlFor="title">Nouveau titre</Label>
+            <TitleInputWithSmiley initialValue={initialTitle} name="title" />
+          </div>
 
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '2rem' }}>
-          <ClassicButton type="button" onClick={onClose}>
-            Annuler
-          </ClassicButton>
-          <AdminButton 
-            type="submit"
-            isLoading={isPending}
-          >
-            Enregistrer
-          </AdminButton>
-        </div>
-      </form>
-    </Modal>
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button type="button" variant="secondary" size="tap" onClick={onClose}>
+              Annuler
+            </Button>
+            <Button type="submit" variant="primary" size="tap" disabled={isPending}>
+              <Check size={18} aria-hidden="true" /> Enregistrer
+            </Button>
+          </div>
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 }

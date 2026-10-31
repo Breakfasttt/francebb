@@ -37,7 +37,8 @@ test.describe("rendu des thèmes", () => {
       await loginAs(page, themedModoId(theme));
       await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
       await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
-      const modal = page.locator(".report-modal");
+      // Carte 088 : la fenêtre est construite avec le composant Sheet ; elle est repérée par son rôle et son titre
+      const modal = page.getByRole("dialog", { name: "Signaler un contenu" });
       await expect(modal).toBeVisible();
       // La modale est translucide : attendre que la page derrière (images, polices) soit stable
       await page.waitForLoadState("networkidle");

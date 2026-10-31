@@ -55,6 +55,8 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: `/forum/topic/${E2E.topicId}/reply`, connected: true },
   { path: `/forum/topic/${BBSCHEME_TOPIC_ID}`, connected: true },
   { path: "/forum/search", connected: true },
+  // Carte 088 : la recherche avec des résultats (lignes, extrait surligné, pastilles des filtres actifs)
+  { path: `/forum/search?q=E2E&forumId=${E2E.forumId}&date=1y`, connected: true },
   // Carte 064 : les trois formulaires de création
   { path: "/forum/new-forum", connected: true },
   { path: `/forum/new-topic?forumId=${E2E.forumId}`, connected: true },

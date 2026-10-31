@@ -44,9 +44,10 @@ export function SheetContent({ title, hideTitle, description, side = "bottom", c
         {side === "bottom" && <div aria-hidden="true" className="mx-auto mt-2 mb-1 h-1.5 w-10 shrink-0 rounded-full bg-bb-border" />}
         <div className={cn("flex shrink-0 items-center gap-2 px-4 pt-2 pb-1", hideTitle && "sr-only")}>
           <DialogPrimitive.Title className="m-0 flex-1 text-lg font-bold text-bb-text normal-case not-italic">{title}</DialogPrimitive.Title>
+          {/* border-0 et bg-transparent remplacent la remise à zéro du navigateur (preflight), absente pour l'instant */}
           <DialogPrimitive.Close
             aria-label="Fermer"
-            className="inline-flex size-11 cursor-pointer items-center justify-center rounded-bb-md text-bb-text-muted hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:outline-bb-focus"
+            className="inline-flex size-11 cursor-pointer items-center justify-center rounded-bb-md border-0 bg-transparent text-bb-text-muted hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:outline-bb-focus"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
               <path d="M6 6l12 12M18 6 6 18" />

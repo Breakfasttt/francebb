@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { X, ShieldAlert, Loader2 } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { toast } from "@bbfrance/ui";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
+/**
+ * Fenêtre « Modérer le message » (forum et articles), refaite à la carte 088 : le modérateur écrit la raison
+ * (obligatoire) puis confirme. Fenêtre centrée sur ordinateur, panneau qui monte du bas sur téléphone (composant
+ * Sheet de @bbfrance/ui), au-dessus de la barre de navigation du bas. L'action elle-même est fournie par le parent
+ * (`onConfirm`).
+ */
+import { useState } from "react";
+import { ShieldAlert } from "lucide-react";
+import { Button, DESKTOP_QUERY, Field, Sheet, SheetContent, Textarea, toast, useMediaQuery } from "@bbfrance/ui";
 
 interface ModerationModalProps {
   isOpen: boolean;
@@ -16,102 +18,55 @@ interface ModerationModalProps {
 }
 
 export default function ModerationModal({ isOpen, onClose, onConfirm, authorName }: ModerationModalProps) {
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!isOpen || !mounted) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reason.trim()) return;
-    
+
     setIsSubmitting(true);
     try {
       await onConfirm(reason);
       onClose();
-    } catch (error) {
+    } catch {
       toast.error("Erreur lors de la modération.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  return createPortal(
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0,0,0,0.8)',
-      backdropFilter: 'blur(8px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 2500, // Augmenté pour être au-dessus de tout
-      padding: '2rem'
-    }}>
-      <PremiumCard style={{ maxWidth: '500px', width: '100%', padding: '2rem', position: 'relative' }}>
-        <button 
-          onClick={onClose}
-          style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#888', cursor: 'pointer' }}
-        >
-          <X size={24} />
-        </button>
-
-        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem', color: '#ff6666' }}>
-          <ShieldAlert size={24} />
-          Modérer le message de {authorName}
-        </h3>
-
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div className="form-group">
-            <label htmlFor="reason" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600, color: '#eee' }}>Raison de la modération</label>
-            <textarea
-              id="reason"
+  return (
+    <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <SheetContent
+        title={`Modérer le message de ${authorName}`}
+        side={isDesktop ? "center" : "bottom"}
+        description="Le contenu du message sera masqué pour les membres, mais restera visible pour vous et pour son auteur."
+      >
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-1 pb-2">
+          <Field label="Raison de la modération" htmlFor="moderation-reason">
+            <Textarea
+              id="moderation-reason"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Ex: Contenu inapproprié, irrespectueux, spam..."
+              placeholder="Ex : contenu inapproprié, irrespectueux, spam…"
               required
               rows={4}
-              style={{
-                width: '100%',
-                background: 'rgba(0,0,0,0.3)',
-                border: '1px solid var(--glass-border)',
-                borderRadius: '8px',
-                padding: '1rem',
-                color: 'white',
-                outline: 'none',
-                resize: 'none'
-              }}
+              className="resize-none [font-family:inherit]"
             />
-          </div>
+          </Field>
 
-          <p style={{ fontSize: '0.85rem', color: '#888', margin: 0 }}>
-            Le contenu original du message sera masqué pour les membres réguliers, mais restera visible pour vous et l'auteur.
-          </p>
-
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-            <ClassicButton type="button" onClick={onClose}>
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button type="button" variant="secondary" size="tap" onClick={onClose}>
               Annuler
-            </ClassicButton>
-            <AdminButton 
-              type="submit" 
-              isLoading={isSubmitting}
-              disabled={!reason.trim()}
-            >
-              Confirmer la modération
-            </AdminButton>
+            </Button>
+            <Button type="submit" variant="danger" size="tap" disabled={isSubmitting || !reason.trim()}>
+              <ShieldAlert size={18} aria-hidden="true" /> Confirmer la modération
+            </Button>
           </div>
         </form>
-      </PremiumCard>
-    </div>,
-    document.body
+      </SheetContent>
+    </Sheet>
   );
 }

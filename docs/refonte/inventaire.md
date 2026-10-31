@@ -179,12 +179,12 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [membre] La création est refusée dans un forum verrouillé, sauf pour un modo.
 
 ### 3.7 `/forum/new-forum` : créer un forum
-- [ ] [modo] Champs : nom (obligatoire), description, catégorie, forum parent, « Insérer après ». Les erreurs sont affichées : nom vide, nom déjà pris, plus de 5 sous-forums.
+- [x] [modo] Champs : nom (obligatoire), description, catégorie, forum parent, « Insérer après ». Les erreurs sont affichées : nom vide, nom déjà pris, plus de 5 sous-forums. *(Carte 088 : vérifié par `forum-recherche.spec.ts`, y compris le renvoi d'un membre vers `/forum` et la création réussie d'un sous-forum.)*
 
 ### 3.8 `/forum/search` : recherche avancée
-- [ ] [tous] Filtres : mots-clés, auteur, forum (arborescence, sous-forums inclus), période (tout, 7 jours, 30 jours, 1 an), tri (récents ou anciens).
-- [ ] [tous] Résultats : trophée, titre du sujet, forum, auteur, ancienneté, vues, date du dernier message, bouton « Voir », extrait avec les mots surlignés.
-- [ ] [tous] 20 résultats par page. Message dédié si la recherche ne donne rien.
+- [x] [tous] Filtres : mots-clés, auteur, forum (arborescence, sous-forums inclus), période (tout, 7 jours, 30 jours, 1 an), tri (récents ou anciens).
+- [x] [tous] Résultats : trophée, titre du sujet, forum, auteur, ancienneté, vues, date du dernier message, bouton « Voir », extrait avec les mots surlignés. *(Carte 088 : sans mot-clé (recherche par auteur ou par forum seul), l'extrait est désormais le début du message en texte simple, et non plus le message entier mis en forme.)*
+- [x] [tous] 20 résultats par page. Message dédié si la recherche ne donne rien.
 
 ### 3.9 `/forum/unread` : sujets non lus
 - [ ] [membre] Liste des sujets : trophée, titre, forum, auteur, nombre de messages, date du dernier message.
@@ -356,7 +356,7 @@ Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne d
   - `updatePost`, `deletePost`, `togglePostReaction` et `markTopicAsRead` ignorent `forumAccess` et le verrouillage ;
   - `markAllTopicsAsRead` ignore les filtres (sujets archivés et inaccessibles).
 - **Liens cassés dans le forum** :
-  - le lien d'un résultat de `/forum/search` n'atteint pas le message (il manque `post-` et `?page=`) ;
+  - le lien d'un résultat de `/forum/search` n'atteint pas le message (il manque `post-` et `?page=`) ; *corrigé par la carte 104, vérifié par `forum-recherche.spec.ts` (carte 088)* ;
   - une citation faite depuis `/reply` n'a pas de pseudo.
 - **Liens morts sur le site** :
   - `/profile/${id}` dans la messagerie ;

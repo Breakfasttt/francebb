@@ -1,14 +1,16 @@
 "use client";
 
+/**
+ * Fenêtre de signalement d'un contenu (message ou sujet du forum, article, ligue), refaite à la carte 088.
+ * Fenêtre centrée sur ordinateur, panneau qui monte du bas sur téléphone (composant Sheet de @bbfrance/ui), affichée
+ * au-dessus de la barre de navigation du bas et du panneau « Plus ». Le membre choisit une raison (obligatoire),
+ * ajoute des précisions s'il le souhaite, puis envoie : l'équipe de modération retrouve le signalement dans
+ * /moderation. Un appui à côté de la fenêtre ne la ferme pas, pour ne pas perdre les précisions déjà saisies.
+ */
 import { useState, useTransition } from "react";
-import { X, ShieldAlert } from "lucide-react";
-import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogClose } from "@bbfrance/ui";
+import { Check, Send } from "lucide-react";
+import { Button, cn, DESKTOP_QUERY, Field, Sheet, SheetContent, Textarea, toast, useMediaQuery } from "@bbfrance/ui";
 import { createReportAction } from "@/app/moderation/actions";
-import { toast } from "@bbfrance/ui";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-import "./ReportModal-mobile.css";
 
 interface ReportModalProps {
   isOpen: boolean;
@@ -27,6 +29,7 @@ const REPORT_REASONS = [
 ];
 
 export default function ReportModal({ isOpen, onClose, targetId, targetType, itemTitle }: ReportModalProps) {
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -56,152 +59,59 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogPortal>
-        <DialogOverlay asChild>
-          <div className="modal-overlay">
-            <DialogContent asChild aria-describedby={undefined} onInteractOutside={(event) => event.preventDefault()}>
-              <PremiumCard className="report-modal">
-                <div className="modal-header">
-                  <div className="title-with-icon">
-                    <ShieldAlert size={20} color="var(--primary)" />
-                    <DialogTitle asChild><h3>Signaler un contenu</h3></DialogTitle>
-                  </div>
-                  <DialogClose asChild>
-                    <button className="close-btn" title="Fermer">
-                      <X size={20} />
-                    </button>
-                  </DialogClose>
-                </div>
+    <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <SheetContent
+        title="Signaler un contenu"
+        side={isDesktop ? "center" : "bottom"}
+        onInteractOutside={(event) => event.preventDefault()}
+      >
+        <div className="flex flex-col gap-4 pt-1 pb-2">
+          <p className="m-0 text-[0.95rem] text-bb-text-muted">
+            Vous signalez : <strong className="font-semibold break-words text-bb-text">{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
+          </p>
 
-                <div className="modal-body">
-                  <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem', opacity: 0.8 }}>
-                    Vous signalez : <strong style={{ color: 'var(--primary)' }}>{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
-                  </p>
-
-                  <div className="form-group">
-                    <label>Raison du signalement</label>
-                    <div className="reasons-grid">
-                      {REPORT_REASONS.map((r) => (
-                        <button 
-                          key={r} 
-                          className={`reason-btn ${reason === r ? 'active' : ''}`}
-                          onClick={() => setReason(r)}
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="form-group" style={{ marginTop: '1.5rem' }}>
-                    <label>Précisions optionnelles</label>
-                    <textarea 
-                      value={details}
-                      onChange={(e) => setDetails(e.target.value)}
-                      placeholder="Détaillez votre signalement si nécessaire..."
-                      rows={3}
-                      className="report-textarea"
-                    />
-                  </div>
-                </div>
-
-                <div className="modal-actions" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                  <ClassicButton onClick={onClose} disabled={isPending}>
-                    Annuler
-                  </ClassicButton>
-                  <DangerButton onClick={handleSubmit} isLoading={isPending}>
-                    Envoyer le signalement
-                  </DangerButton>
-                </div>
-              </PremiumCard>
-            </DialogContent>
-
-            <style jsx>{`
-              .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.85);
-                backdrop-filter: blur(10px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: var(--z-index-modal-bottom, 8000);
-                padding: 1.5rem;
-              }
-              :global(.report-modal) {
-                width: 100%;
-                max-width: 550px;
-                padding: 2rem !important;
-              }
-              .modal-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 2rem;
-              }
-              .title-with-icon {
-                display: flex;
-                align-items: center;
-                gap: 0.8rem;
-              }
-              .close-btn {
-                background: none;
-                border: none;
-                color: var(--text-muted);
-                cursor: pointer;
-                transition: 0.2s;
-              }
-              .close-btn:hover { color: var(--text); transform: rotate(90deg); }
-              h3 { margin: 0; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
-              label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-bottom: 0.8rem; opacity: 0.9; }
-              
-              .reasons-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 0.6rem;
-              }
-              .reason-btn {
-                text-align: left;
-                padding: 0.8rem 1rem;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid var(--glass-border);
-                border-radius: 8px;
-                color: var(--text);
-                cursor: pointer;
-                transition: 0.2s;
-                font-size: 0.95rem;
-              }
-              .reason-btn:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--primary); }
-              .reason-btn.active { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); font-weight: 700; }
-              
-              .report-textarea {
-                width: 100%;
-                background: rgba(0, 0, 0, 0.3);
-                border: 1px solid var(--glass-border);
-                border-radius: 8px;
-                padding: 0.8rem;
-                color: var(--text);
-                font-family: inherit;
-                resize: none;
-              }
-              .report-textarea:focus { outline: none; border-color: var(--primary); background: rgba(0, 0, 0, 0.4); }
-
-              :global(.danger-btn) {
-                background: var(--danger) !important;
-                color: white !important;
-              }
-              :global(.danger-btn:hover) {
-                filter: brightness(1.2) !important;
-                box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4) !important;
-              }
-            `}</style>
+          <div role="group" aria-labelledby="report-reason-label" className="flex flex-col gap-2">
+            <p id="report-reason-label" className="m-0 text-sm font-semibold text-bb-text">Raison du signalement</p>
+            {REPORT_REASONS.map((r) => {
+              const selected = reason === r;
+              return (
+                <Button
+                  key={r}
+                  type="button"
+                  variant="secondary"
+                  size="tap"
+                  aria-pressed={selected}
+                  onClick={() => setReason(r)}
+                  className={cn("w-full justify-between text-left font-semibold whitespace-normal", selected && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
+                >
+                  {r}
+                  {selected && <Check size={18} aria-hidden="true" className="shrink-0" />}
+                </Button>
+              );
+            })}
           </div>
-        </DialogOverlay>
-      </DialogPortal>
-    </Dialog>
+
+          <Field label="Précisions (facultatif)" htmlFor="report-details">
+            <Textarea
+              id="report-details"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Détaillez votre signalement si nécessaire..."
+              rows={3}
+              className="min-h-24 resize-none [font-family:inherit]"
+            />
+          </Field>
+
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button type="button" variant="secondary" size="tap" onClick={onClose} disabled={isPending}>
+              Annuler
+            </Button>
+            <Button type="button" variant="danger" size="tap" onClick={handleSubmit} disabled={isPending}>
+              <Send size={18} aria-hidden="true" /> Envoyer le signalement
+            </Button>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }
