@@ -73,7 +73,9 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/forum/tournament/e2e_audit_tournoi/results", connected: true },
   { path: "/forum/tournament/e2e_audit_tournoi/results/view", connected: false },
   { path: "/forum/topic/e2e_audit_tournoi_topic", connected: true },
+  // Carte 097 : le classement (une archive de l'audit, voir plus bas) et l'éditeur d'archives
   { path: "/classement", connected: false },
+  { path: "/classement/edit-archive?year=1990", connected: true },
   { path: "/statistiques", connected: false },
   // Carte 090 : les statistiques réservées à l'administrateur et la page introuvable (404)
   { path: "/statistiques?admin", connected: true, as: "admin" },
@@ -344,6 +346,24 @@ test.describe("audit mobile", () => {
           description: "Description de la ressource de l'audit, assez longue pour remplir plusieurs lignes de la carte sur un petit téléphone.",
           link: "https://example.com/ressource-audit", status: "APPROVED",
           tags: { connectOrCreate: [{ where: { name: "Audit" }, create: { name: "Audit" } }, { where: { name: "Outil" }, create: { name: "Outil" } }] },
+        },
+      });
+    });
+    // Carte 097 : une archive du classement CDF (la seule année du classement de la base de test, donc affichée à
+    // l'ouverture de /classement), avec un coach au long pseudonyme et le détail de ses tournois
+    await withTestDb(async (prisma) => {
+      if (await prisma.rankingArchive.findUnique({ where: { year: 1990 } })) return;
+      const bestResults = [
+        { name: "Tournoi de l'audit mobile", tournamentName: "Tournoi de l'audit mobile", points: 87.5, rank: 1, totalParticipants: 24, topicId: "e2e_audit_tournoi_topic" },
+        { name: "Un autre tournoi au nom assez long pour passer à la ligne", points: 61.25, rank: 3, totalParticipants: 40 },
+      ];
+      await prisma.rankingArchive.create({
+        data: {
+          year: 1990, name: "Archive de l'audit mobile", archivedById: E2E.modoId,
+          data: JSON.stringify([
+            { id: "NAF-1", name: "Modo E2E", nafNumber: "12345", userId: E2E.modoId, totalPoints: 148.75, count: 5, bestResults },
+            { id: "NAME-long", name: "Coach invité au très long pseudonyme de l'audit", nafNumber: null, userId: null, totalPoints: 42.1234, count: 1, bestResults: [] },
+          ]),
         },
       });
     });

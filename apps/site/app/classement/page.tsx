@@ -1,77 +1,101 @@
 "use client";
 
-import AdminButton from "@/common/components/Button/AdminButton";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-import ExplainButton from "@/common/components/Button/ExplainButton";
-import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import Modal from "@/common/components/Modal/Modal";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
-import { isAdmin, isModerator } from "@/lib/roles";
+/**
+ * Classement du Championnat de France (CDF) `/classement` (refonte, carte 097, ADR 0006).
+ * En-tête compact « Championnat de France » avec le bouton d'aide « Comment sont calculés les points ? » et, pour la
+ * modération, le menu « Gestion du classement ». Puis cinq onglets : l'année en cours (calcul direct), le classement
+ * glissant sur 12 mois, le meilleur coach par roster, le Hall of Fame (podium de chaque année) et les archives
+ * (classements figés). Une liste déroulante permet de choisir une autre année calculée ou une autre archive.
+ * Les lignes du classement se déplient (`RankingList`) pour montrer les meilleurs tournois retenus.
+ *
+ * Actions de la modération (menu « Gestion du classement », panneau du bas sur téléphone) :
+ * - sur une année calculée : « Archiver l'année », après confirmation ;
+ * - sur une archive : « Modifier l'archive » et, pour un administrateur, « Supprimer l'archive » (deux confirmations) ;
+ * - sur l'onglet Archives : « Importer des archives » depuis l'ancien site (teamfrancebb.fr) et « Créer une archive ».
+ * Les données, les droits et les actions serveur (`app/classement/actions.ts`) sont ceux d'avant la refonte.
+ */
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Download, HelpCircle, History, Info, Medal, Pencil, Plus, Settings2, Shield, Trash2, Trophy, Users } from "lucide-react";
 import {
-  ChevronRight,
-  HelpCircle,
-  History,
-  Info,
-  Medal,
-  Shield,
-  Trophy,
-  Users
-} from "lucide-react";
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from "@bbfrance/ui";
+  ActionMenu,
+  Button,
+  ConfirmDialog,
+  DESKTOP_QUERY,
+  EmptyState,
+  Field,
+  Input,
+  Label,
+  Select,
+  Sheet,
+  SheetContent,
+  Skeleton,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  toast,
+  useMediaQuery,
+} from "@bbfrance/ui";
+import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { isAdmin, isModerator } from "@/lib/roles";
 import {
   archiveYear,
   deleteArchive,
+  fetchLegacyRanking,
   getHallOfFame,
   getRanking,
   getRankingYears,
-  fetchLegacyRanking,
-  RankingFilter
+  type RankingFilter,
 } from "./actions";
-import "./page-mobile.css";
-import "./page.css";
+import { HallOfFame, RankingList, RosterList, type HallOfFameYear, type RankingEntry } from "./component/RankingViews";
 
+type RankingYear = { year: number; isArchived: boolean };
+type TabValue = "year" | "rolling" | "roster" | "hof" | "archives";
 
 export default function ClassementPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [filter, setFilter] = useState<RankingFilter>("ROLLING");
   const [loading, setLoading] = useState(true);
-  const [ranking, setRanking] = useState<any[]>([]);
-  const [hof, setHof] = useState<any[]>([]);
-  const [availableYears, setAvailableYears] = useState<any[]>([]);
+  const [ranking, setRanking] = useState<RankingEntry[]>([]);
+  const [hof, setHof] = useState<HallOfFameYear[]>([]);
+  const [availableYears, setAvailableYears] = useState<RankingYear[]>([]);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isArchiveConfirmOpen, setIsArchiveConfirmOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeleteConfirmLevel2Open, setIsDeleteConfirmLevel2Open] = useState(false);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const [isOverwriteConfirmOpen, setIsOverwriteConfirmOpen] = useState(false);
   const [importYear, setImportYear] = useState(new Date().getFullYear() - 1);
   const [isImportLoading, setIsImportLoading] = useState(false);
+  const [pending, setPending] = useState(false);
 
-  const user = session?.user as any;
+  const user = session?.user as { role?: string } | undefined;
   const isMod = isModerator(user?.role);
   const isAdminUser = isAdmin(user?.role);
 
-  const currentYearData = availableYears.find(y => `CDF_${y.year}` === filter);
+  const currentYearData = availableYears.find((y) => `CDF_${y.year}` === filter);
   const isSelectedYearArchived = currentYearData?.isArchived || false;
+  const isYearView = filter.startsWith("CDF_") && !isSelectedYearArchived;
+  const isArchiveView = filter === "ARCHIVES" || (filter.startsWith("CDF_") && isSelectedYearArchived);
+  const liveYears = availableYears.filter((y) => !y.isArchived);
+  const archivedYears = availableYears.filter((y) => y.isArchived);
+  const latestLiveYear = liveYears[0]?.year || new Date().getFullYear();
 
   useEffect(() => {
     async function loadYears() {
       const years = await getRankingYears();
       setAvailableYears(years);
-      // Si une année est dispo et qu'on est au chargement initial, on peut choisir la plus récente
+      // Au premier chargement, la plus récente des années disponibles est affichée
       if (years.length > 0 && filter === "ROLLING") {
         setFilter(`CDF_${years[0].year}`);
       }
     }
     loadYears();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -79,11 +103,9 @@ export default function ClassementPage() {
       setLoading(true);
       try {
         if (filter === "HOF") {
-          const data = await getHallOfFame();
-          setHof(data);
+          setHof(await getHallOfFame());
         } else {
-          const data = await getRanking(filter);
-          setRanking(data);
+          setRanking(await getRanking(filter));
         }
       } catch (error) {
         console.error("Error fetching ranking:", error);
@@ -94,37 +116,53 @@ export default function ClassementPage() {
     fetchData();
   }, [filter]);
 
+  const activeTab: TabValue = isYearView ? "year" : isArchiveView ? "archives" : filter === "ROSTER" ? "roster" : filter === "HOF" ? "hof" : "rolling";
+
+  const changeTab = (value: string) => {
+    if (value === "year") {
+      const latest = availableYears.find((y) => !y.isArchived);
+      setFilter(`CDF_${latest ? latest.year : new Date().getFullYear()}`);
+    } else if (value === "archives") {
+      const firstArchive = availableYears.find((y) => y.isArchived);
+      setFilter(firstArchive ? `CDF_${firstArchive.year}` : "ARCHIVES");
+    } else {
+      setFilter(value === "rolling" ? "ROLLING" : value === "roster" ? "ROSTER" : "HOF");
+    }
+  };
+
+  async function reloadYears() {
+    setAvailableYears(await getRankingYears());
+  }
+
   async function handleImport() {
     setIsImportLoading(true);
     try {
       const res = await fetchLegacyRanking(importYear);
       if (res.error) {
         toast.error(res.error);
+      } else if (availableYears.some((y) => y.year === importYear)) {
+        // Année déjà présente : on demande avant d'ouvrir l'éditeur avec les données importées
+        setIsOverwriteConfirmOpen(true);
       } else {
-        const exists = availableYears.some(y => y.year === importYear);
-        if (exists) {
-          if (!confirm(`L'année ${importYear} est déjà présente. L'importer écrasera les données actuelles dans l'éditeur. Continuer ?`)) {
-            return;
-          }
-        }
         router.push(`/classement/edit-archive?importYear=${importYear}`);
       }
-    } catch (e) {
+    } catch {
       toast.error("Erreur lors de l'import");
     } finally {
       setIsImportLoading(false);
-      setIsImportModalOpen(false);
+      setIsImportOpen(false);
     }
   }
 
   async function handleArchive() {
     if (!currentYearData) return;
+    setPending(true);
     const res = await archiveYear(currentYearData.year);
+    setPending(false);
+    setIsArchiveConfirmOpen(false);
     if (res.success) {
       toast.success("Classement archivé avec succès !");
-      // Recharger les années
-      const years = await getRankingYears();
-      setAvailableYears(years);
+      await reloadYears();
     } else {
       toast.error(res.error || "Une erreur est survenue");
     }
@@ -132,410 +170,278 @@ export default function ClassementPage() {
 
   async function handleDeleteArchive() {
     if (!currentYearData) return;
+    setPending(true);
     const res = await deleteArchive(currentYearData.year);
+    setPending(false);
+    setIsDeleteConfirmLevel2Open(false);
     if (res.success) {
       toast.success("Archive supprimée.");
-      const years = await getRankingYears();
-      setAvailableYears(years);
+      await reloadYears();
     } else {
       toast.error(res.error || "Une erreur est survenue");
     }
   }
 
+  const managementMenu = isMod && (
+    <ActionMenu
+      label="Gestion du classement"
+      title="Gestion du classement"
+      linkComponent={Link}
+      trigger={
+        <span className="inline-flex items-center gap-2 px-3 text-[0.95rem] font-semibold">
+          <Settings2 size={18} aria-hidden="true" /> Gestion
+        </span>
+      }
+      triggerClassName="border border-solid border-bb-border bg-bb-surface-2 text-bb-text"
+      items={[
+        {
+          label: `Archiver l'année ${currentYearData?.year ?? ""}`.trim(),
+          icon: <Shield size={18} aria-hidden="true" />,
+          onSelect: () => setIsArchiveConfirmOpen(true),
+          hidden: !isYearView || !currentYearData,
+        },
+        {
+          label: "Modifier l'archive",
+          icon: <Pencil size={18} aria-hidden="true" />,
+          href: `/classement/edit-archive?year=${currentYearData?.year}`,
+          hidden: !(filter.startsWith("CDF_") && isSelectedYearArchived),
+        },
+        {
+          label: "Supprimer l'archive",
+          icon: <Trash2 size={18} aria-hidden="true" />,
+          onSelect: () => setIsDeleteConfirmOpen(true),
+          danger: true,
+          hidden: !(filter.startsWith("CDF_") && isSelectedYearArchived && isAdminUser),
+        },
+        {
+          label: "Importer des archives",
+          icon: <Download size={18} aria-hidden="true" />,
+          onSelect: () => setIsImportOpen(true),
+          hidden: !isArchiveView,
+        },
+        {
+          label: "Créer une archive",
+          icon: <Plus size={18} aria-hidden="true" />,
+          href: "/classement/edit-archive",
+          hidden: !isArchiveView,
+        },
+      ]}
+    />
+  );
 
-  const years = [2026, 2025, 2024, 2023];
+  // Phrase au-dessus du classement : ce que montre la liste affichée
+  const periodNote =
+    filter === "ROLLING"
+      ? "Les 4 meilleurs résultats de chaque coach sur les 12 derniers mois."
+      : filter === "ROSTER"
+        ? `Le meilleur coach de chaque roster en ${new Date().getFullYear()} (ses 2 meilleurs résultats avec ce roster).`
+        : filter === "HOF"
+          ? "Le podium de chaque année du Championnat de France."
+          : isArchiveView
+            ? "Classement figé par la modération à la fin de la saison."
+            : "Les 4 meilleurs résultats de chaque coach sur l'année, calculés en direct.";
 
   return (
-    <div className="rankings-wrapper">
-      <PageHeader
+    <div className="mx-auto w-full max-w-[1100px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+      <ForumListHeader
         title="Championnat de France"
-        subtitle="Le Panthéon des meilleurs coachs et de la communauté Blood Bowl France"
-      />
-
-      <main className="container classement-page">
-
-        <div className="ranking-tabs-container">
-          <div className="ranking-main-tabs">
-            <button 
-              className={`ranking-tab ${filter.startsWith('CDF_') && !isSelectedYearArchived ? 'active' : ''}`}
-              onClick={() => {
-                const latest = availableYears.find(y => !y.isArchived);
-                if (latest) {
-                  setFilter(`CDF_${latest.year}`);
-                } else {
-                  setFilter(`CDF_${new Date().getFullYear()}`);
-                }
-              }}
-            >
-              <Trophy size={18} />
-              <span>Classement {availableYears.find(y => !y.isArchived)?.year || new Date().getFullYear()}</span>
-            </button>
-            <button 
-              className={`ranking-tab ${filter === 'ROLLING' ? 'active' : ''}`}
-              onClick={() => setFilter('ROLLING')}
-            >
-              <History size={18} />
-              <span>Classement Glissant</span>
-            </button>
-            <button 
-              className={`ranking-tab ${filter === 'ROSTER' ? 'active' : ''}`}
-              onClick={() => setFilter('ROSTER')}
-            >
-              <Users size={18} />
-              <span>Par Roster</span>
-            </button>
-            <button 
-              className={`ranking-tab ${filter === 'HOF' ? 'active' : ''}`}
-              onClick={() => setFilter('HOF')}
-            >
-              <Medal size={18} />
-              <span>Hall of Fame</span>
-            </button>
-            <button 
-              className={`ranking-tab ${filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived) ? 'active' : ''}`}
-              onClick={() => {
-                const firstArchive = availableYears.find(y => y.isArchived);
-                if (firstArchive) {
-                  setFilter(`CDF_${firstArchive.year}`);
-                } else {
-                  setFilter('ARCHIVES');
-                }
-              }}
-            >
-              <History size={18} />
-              <span>Archives</span>
-            </button>
-          </div>
+        subtitle="Le classement des coachs de la communauté Blood Bowl France"
+        backHref="/"
+        backTitle="Retour à l'accueil"
+      >
+        <div className="flex w-full items-center gap-2 lg:w-auto">
+          {/* Sur un petit téléphone, le libellé passe sur deux lignes plutôt que de pousser « Gestion » hors de l'écran */}
+          <Button type="button" variant="secondary" size="tap" className="min-w-0 py-1.5 text-left whitespace-normal max-lg:flex-1" onClick={() => setIsHelpOpen(true)}>
+            <HelpCircle size={18} aria-hidden="true" /> Comment sont calculés les points ?
+          </Button>
+          {managementMenu}
         </div>
+      </ForumListHeader>
 
-        {(filter.startsWith('CDF_') && !isSelectedYearArchived) && availableYears.filter(y => !y.isArchived).length > 1 && (
-          <div className="archive-selector-wrapper anim-fade-in" style={{ marginBottom: '2.5rem' }}>
-            <ClassicSelect
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as RankingFilter)}
-              containerStyle={{ minWidth: "300px" }}
-            >
-              {availableYears.filter(y => !y.isArchived).map(y => (
+      <Tabs value={activeTab} onValueChange={changeTab}>
+        <TabsList aria-label="Vues du classement" className="max-lg:-mx-3 max-lg:px-3">
+          <TabsTrigger value="year">
+            <Trophy size={18} aria-hidden="true" /> Année {latestLiveYear}
+          </TabsTrigger>
+          <TabsTrigger value="rolling">
+            <History size={18} aria-hidden="true" /> Glissant
+          </TabsTrigger>
+          <TabsTrigger value="roster">
+            <Users size={18} aria-hidden="true" /> Par roster
+          </TabsTrigger>
+          <TabsTrigger value="hof">
+            <Medal size={18} aria-hidden="true" /> Hall of Fame
+          </TabsTrigger>
+          <TabsTrigger value="archives">
+            <History size={18} aria-hidden="true" /> Archives
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      <div className="flex flex-col gap-3 py-4 lg:flex-row lg:items-end lg:justify-between">
+        <p className="m-0 flex items-start gap-1.5 text-sm text-bb-text-muted">
+          <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+          {periodNote}
+        </p>
+        {isYearView && liveYears.length > 1 && (
+          <div className="flex flex-col gap-1.5 lg:w-64">
+            <Label htmlFor="cdf-year">Année</Label>
+            <Select id="cdf-year" aria-label="Choisir l'année" value={filter} onChange={(e) => setFilter(e.target.value as RankingFilter)}>
+              {liveYears.map((y) => (
                 <option key={y.year} value={`CDF_${y.year}`}>
-                  🏆 Année {y.year} (Calcul direct)
+                  Année {y.year} (calcul direct)
                 </option>
               ))}
-            </ClassicSelect>
+            </Select>
           </div>
         )}
-
-        <div className="ranking-actions-bar">
-          <ExplainButton
-            icon={<HelpCircle size={16} />}
-            onClick={() => setIsHelpOpen(true)}
-          >
-            Comment sont calculés les points ?
-          </ExplainButton>
-
-          <div className="filter-controls">
-            {isMod && filter.startsWith("CDF_") && !isSelectedYearArchived && (
-              <Tooltip text="Prendre un instantané définitif du classement pour cette année" position="bottom">
-                <AdminButton
-                  icon={<Shield size={16} />}
-                  onClick={() => setIsArchiveConfirmOpen(true)}
-                >
-                  Archiver
-                </AdminButton>
-              </Tooltip>
-            )}
-
-            {isMod && filter.startsWith("CDF_") && isSelectedYearArchived && (
-              <div className="admin-actions-group">
-                <ClassicButton
-                  onClick={() => router.push(`/classement/edit-archive?year=${currentYearData?.year}`)}
-                >
-                  Modifier l'archive
-                </ClassicButton>
-                {isAdminUser && (
-                  <DangerButton onClick={() => setIsDeleteConfirmOpen(true)}>
-                    Supprimer
-                  </DangerButton>
-                )}
-              </div>
-            )}
-
-            {isMod && (filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
-              <div className="admin-actions-group">
-                <Tooltip text="Importer des données depuis teamfrancebb.fr" position="bottom">
-                  <AdminButton
-                    icon={<History size={16} />}
-                    onClick={() => setIsImportModalOpen(true)}
-                  >
-                    Importer
-                  </AdminButton>
-                </Tooltip>
-                <Tooltip text="Créer une nouvelle archive historique manuellement" position="bottom">
-                  <AdminButton
-                    onClick={() => router.push('/classement/edit-archive')}
-                  >
-                    + Manuel
-                  </AdminButton>
-                </Tooltip>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {(filter === 'ARCHIVES' || (filter.startsWith('CDF_') && isSelectedYearArchived)) && (
-          <div className="archive-selector-wrapper anim-fade-in" style={{ marginBottom: '2.5rem' }}>
-            <ClassicSelect
-              value={filter.startsWith('CDF_') ? filter : ""}
-              onChange={(e) => setFilter(e.target.value as RankingFilter)}
-              containerStyle={{ minWidth: "300px" }}
-            >
-              <option value="" disabled>Choisir une année...</option>
-              {availableYears.filter(y => y.isArchived).map(y => (
+        {isArchiveView && archivedYears.length > 0 && (
+          <div className="flex flex-col gap-1.5 lg:w-64">
+            <Label htmlFor="cdf-archive">Archive</Label>
+            <Select id="cdf-archive" aria-label="Choisir une archive" value={filter.startsWith("CDF_") ? filter : ""} onChange={(e) => setFilter(e.target.value as RankingFilter)}>
+              <option value="" disabled>Choisir une année…</option>
+              {archivedYears.map((y) => (
                 <option key={y.year} value={`CDF_${y.year}`}>
-                  📜 Archive {y.year}
+                  Archive {y.year}
                 </option>
               ))}
-            </ClassicSelect>
+            </Select>
           </div>
         )}
+      </div>
 
-        {loading ? (
-          <div className="loader-container">
-            <div className="spinner"></div>
-            <p>Récupération des tablettes sacrées...</p>
-          </div>
-        ) : filter === "HOF" ? (
-          <div className="hof-grid">
-            {hof.map((h, i) => (
-              <PremiumCard key={i} className="hof-card">
-                <div className="hof-header">
-                  <div className="hof-year">{h.year}</div>
-                  <Trophy size={24} color="var(--accent)" />
-                </div>
+      {loading ? (
+        <div className="flex flex-col gap-2" aria-busy="true" aria-label="Chargement du classement">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-14" />
+          ))}
+        </div>
+      ) : filter === "HOF" ? (
+        hof.length > 0 ? <HallOfFame years={hof} /> : <EmptyState icon={<Medal size={40} />} title="Aucune année terminée pour l'instant." />
+      ) : filter === "ARCHIVES" ? (
+        <EmptyState icon={<History size={40} />} title="Aucune archive pour l'instant.">
+          Les classements figés par la modération à la fin de chaque saison apparaîtront ici.
+        </EmptyState>
+      ) : ranking.length === 0 ? (
+        <EmptyState icon={<History size={40} />} title="Aucun résultat enregistré pour cette période.">
+          Les tournois terminés et validés par les commissaires apparaîtront ici.
+        </EmptyState>
+      ) : filter === "ROSTER" ? (
+        <RosterList entries={ranking} />
+      ) : (
+        <RankingList entries={ranking} />
+      )}
 
-                <div className="podium-list">
-                  {h.podium.map((p: any) => (
-                    <div key={p.rank} className={`podium-item rank-${p.rank}`}>
-                      <div className="podium-rank">
-                        {p.rank === 1 ? <Medal size={20} color="#FFD700" /> :
-                          p.rank === 2 ? <Medal size={20} color="#C0C0C0" /> :
-                            <Medal size={20} color="#CD7F32" />}
-                      </div>
-                      <div className="podium-info">
-                        <div className="podium-name">{p.name}</div>
-                        <div className="podium-points">{p.totalPoints} pts</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </PremiumCard>
-            ))}
-          </div>
-        ) : filter === "ROSTER" ? (
-          <div className="roster-ranking-grid">
-            {ranking.map((res, idx) => (
-              <PremiumCard key={idx} className="roster-top-card">
-                <div className="roster-card-inner">
-                  <div className="roster-icon-section">
-                    <div className="roster-medal">
-                      {idx < 3 ? <Trophy size={20} color={idx === 0 ? "#FFD700" : idx === 1 ? "#C0C0C0" : "#CD7F32"} /> : <Shield size={20} />}
-                    </div>
-                  </div>
+      <p className="m-0 mt-8 text-center text-sm text-bb-text-muted">
+        Le Championnat de France est régi par les règles de la Team France Blood Bowl.
+      </p>
 
-                  <div className="roster-main-section">
-                    <div className="roster-header-row">
-                      <h3 className="roster-title">{res.roster}</h3>
-                      <div className="roster-score">{res.totalPoints} <small>pts</small></div>
-                    </div>
-
-                    <div className="roster-coach-row">
-                      <div className="coach-avatar-circle">
-                        {res.name?.[0] || "?"}
-                      </div>
-                      <div className="coach-text">
-                        <span className="coach-label">Meilleur Coach :</span>
-                        <span className="coach-value">{res.name}</span>
-                      </div>
-                      {res.userId && (
-                        <Link href={`/spy/${res.userId}`} className="roster-spy-link" title="Profil du coach">
-                          <ChevronRight size={18} />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </PremiumCard>
-            ))}
-          </div>
-        ) : ranking.length === 0 ? (
-          <div className="no-results">
-            <History size={64} style={{ opacity: 0.2, marginBottom: '1rem' }} />
-            <h3>Aucun résultat enregistré pour cette période.</h3>
-            <p>Les tournois terminés et validés par les commissaires apparaîtront ici.</p>
-          </div>
-        ) : (
-          <div className="ranking-cards-grid">
-            {ranking.map((res, idx) => (
-              <PremiumCard key={idx} className={`ranking-item-card rank-${idx + 1}`}>
-                <div className="ranking-card-body">
-                  <div className="rank-side-section">
-                    <div className="card-rank-badge">{idx + 1}</div>
-                  </div>
-
-                  <div className="rank-main-section">
-                    <div className="card-main-info">
-                      <div className="coach-identity">
-                        <div className="coach-display">
-                          <span className="coach-name">{res.name}</span>
-                          {res.nafNumber && <span className="naf-tag">NAF #{res.nafNumber}</span>}
-                        </div>
-                        <div className="user-link-row">
-                          {res.userId ? (
-                            <Link href={`/spy/${res.userId}`} className="spy-link">
-                              <Users size={14} /> Voir le profil
-                            </Link>
-                          ) : (
-                            <span className="no-user-tag">Non associé</span>
-                          )}
-                          {filter === "ROSTER" && <span className="roster-badge">{res.roster}</span>}
-                        </div>
-                      </div>
-
-                      <div className="score-summary">
-                        <div className="score-value">{res.totalPoints}</div>
-                        <div className="score-label">Points CDF</div>
-                        <div className="tournaments-count">{res.count} tournois joués</div>
-                      </div>
-                    </div>
-
-                    {res.bestResults && (
-                      <div className="tournament-details-grid">
-                        {res.bestResults.map((t: any, tIdx: number) => (
-                          <div key={tIdx} className="mini-tournament-card">
-                            <div className="mini-t-header">
-                              <span className="mini-t-points">{t.points} pts</span>
-                              {(t.rank > 0) && (
-                                <span className="mini-t-rank">#{t.rank}{t.totalParticipants ? `/${t.totalParticipants}` : ''}</span>
-                              )}
-                            </div>
-                            <div className="mini-t-name">
-                              {t.topicId ? (
-                                <Link href={`/forum/topic/${t.topicId}`} className="t-link">
-                                  {t.tournamentName || t.name}
-                                </Link>
-                              ) : (
-                                t.tournamentName || t.name
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                        {/* Remplissage si moins de 4 résultats pour garder l'alignement */}
-                        {Array.from({ length: Math.max(0, 4 - (res.bestResults?.length || 0)) }).map((_, i) => (
-                          <div key={`empty-${i}`} className="mini-tournament-card empty">
-                            <div className="mini-t-header">
-                              <span className="mini-t-points">-</span>
-                            </div>
-                            <div className="mini-t-name">N/A</div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </PremiumCard>
-            ))}
-          </div>
-        )}
-
-        <footer style={{ marginTop: '4rem', textAlign: 'center', opacity: 0.6, fontSize: '0.9rem' }}>
-          <p>Le Championnat de France est régi par les règles de la Team France Blood Bowl.</p>
-        </footer>
-        <Modal
-          isOpen={isHelpOpen}
-          onClose={() => setIsHelpOpen(false)}
-          title="Calcul des Points CDF"
-        >
-          <div className="cdf-help-content">
-            <p>Le <strong>Championnat de France</strong> utilise une formule pondérée pour valoriser la performance et l&apos;ampleur des tournois :</p>
-
-            <ul className="help-rules-list">
-              <li><strong>Sélection des scores :</strong> Seuls vos 4 meilleurs résultats sur la période (12 mois glissants ou année civile) sont cumulés pour votre score total.</li>
-              <li><strong>La Formule :</strong> <code>Score = R * (Nc - Pl) / (Nc + Pl - 2)</code>
-                <br /><small>Nc = Nb participants, Pl = Votre place, R = Valeur de référence du tournoi.</small>
+      <Sheet open={isHelpOpen} onOpenChange={setIsHelpOpen}>
+        <SheetContent title="Calcul des points CDF" side={isDesktop ? "center" : "bottom"}>
+          <div className="flex flex-col gap-3 pb-2 text-[0.95rem] text-bb-text">
+            <p className="m-0">
+              Le <strong>Championnat de France</strong> utilise une formule pondérée pour valoriser la performance et
+              l&apos;ampleur des tournois :
+            </p>
+            <ul className="m-0 flex flex-col gap-2 pl-5">
+              <li>
+                <strong>Sélection des scores :</strong> seuls vos 4 meilleurs résultats sur la période (12 mois glissants
+                ou année civile) sont cumulés pour votre score total.
               </li>
-              <li><strong>Poids du tournoi (R) :</strong> Le score maximum (R) dépend du type de tournoi (100 en individuel), boosté par le nombre de rondes et de participants.</li>
-              <li><strong>Équité :</strong> Le vainqueur d&apos;un tournoi reçoit toujours le score R maximum calculé pour cet événement.</li>
+              <li>
+                <strong>La formule :</strong> <code className="rounded-bb-sm bg-bb-surface-2 px-1">Score = R × (Nc − Pl) / (Nc + Pl − 2)</code>
+                <br />
+                <span className="text-sm text-bb-text-muted">Nc = nombre de participants, Pl = votre place, R = valeur de référence du tournoi.</span>
+              </li>
+              <li>
+                <strong>Poids du tournoi (R) :</strong> le score maximum (R) dépend du type de tournoi (100 en individuel),
+                augmenté selon le nombre de rondes et de participants.
+              </li>
+              <li>
+                <strong>Équité :</strong> le vainqueur d&apos;un tournoi reçoit toujours le score R maximum calculé pour cet
+                événement.
+              </li>
             </ul>
-
-            <div className="help-roster-note">
-              <Info size={14} />
-              <span>Pour le classement par Roster, seuls les 2 meilleurs scores avec la même race sont retenus.</span>
-            </div>
+            <p className="m-0 flex items-start gap-1.5 text-sm text-bb-text-muted">
+              <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+              Pour le classement par roster, seuls les 2 meilleurs scores avec la même race sont retenus.
+            </p>
           </div>
-        </Modal>
+        </SheetContent>
+      </Sheet>
 
-        <ConfirmModal
-          isOpen={isArchiveConfirmOpen}
-          onClose={() => setIsArchiveConfirmOpen(false)}
-          onConfirm={async () => handleArchive()}
-          title="Confirmer l'archivage"
-          message={`Voulez-vous figer le classement pour l'année ${currentYearData?.year} ? Un instantanné sera pris et affiché à la place du calcul dynamique.`}
-        />
-
-        <ConfirmModal
-          isOpen={isDeleteConfirmOpen}
-          onClose={() => setIsDeleteConfirmOpen(false)}
-          onConfirm={async () => {
-            setIsDeleteConfirmOpen(false);
-            setIsDeleteConfirmLevel2Open(true);
-          }}
-          title="Supprimer l'archive (1/2)"
-          message="Êtes-vous sûr de vouloir supprimer cette archive ? Les données seront à nouveau calculées en temps réel."
-          confirmLabel="Continuer"
-          isDanger
-        />
-
-        <ConfirmModal
-          isOpen={isDeleteConfirmLevel2Open}
-          onClose={() => setIsDeleteConfirmLevel2Open(false)}
-          onConfirm={async () => {
-            setIsDeleteConfirmLevel2Open(false);
-            await handleDeleteArchive();
-          }}
-          title="CONFIRMATION FINALE (2/2)"
-          message="CETTE ACTION EST IRRÉVERSIBLE. Vous confirmez la suppression définitive de l'instantané ?"
-          confirmLabel="SUPPRIMER DÉFINITIVEMENT"
-          isDanger
-        />
-
-        <Modal
-          isOpen={isImportModalOpen}
-          onClose={() => setIsImportModalOpen(false)}
-          title="Importer des archives"
-          onConfirm={handleImport}
-          confirmText={isImportLoading ? "Importation..." : "Lancer l'import"}
-          variant="admin"
-        >
-          <div className="import-modal-content" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <p>Indiquez l'année à récupérer depuis l'ancien site (teamfrancebb.fr).</p>
-            <div className="form-group">
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 700 }}>Année cible</label>
-              <input 
-                type="number" 
-                className="admin-input" 
-                value={importYear} 
+      <Sheet open={isImportOpen} onOpenChange={setIsImportOpen}>
+        <SheetContent title="Importer des archives" side={isDesktop ? "center" : "bottom"}>
+          <div className="flex flex-col gap-4 pb-2">
+            <p className="m-0 text-[0.95rem] text-bb-text">Indiquez l&apos;année à récupérer depuis l&apos;ancien site (teamfrancebb.fr).</p>
+            <Field label="Année cible" htmlFor="import-year" hint="L'import récupère les noms, les numéros NAF et les points totaux, puis ouvre l'éditeur d'archives.">
+              <Input
+                id="import-year"
+                type="number"
+                inputMode="numeric"
+                value={Number.isNaN(importYear) ? "" : importYear}
                 onChange={(e) => setImportYear(parseInt(e.target.value))}
                 min={2000}
                 max={new Date().getFullYear()}
-                style={{ width: '100%', padding: '0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--glass-border)', borderRadius: '10px', color: 'white' }}
               />
-            </div>
-            <div className="help-roster-note">
-              <Info size={14} />
-              <span>L'importation récupère les noms, numéros NAF et points totaux.</span>
+            </Field>
+            <div className="flex flex-col gap-2 lg:flex-row-reverse">
+              <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" disabled={isImportLoading} onClick={handleImport}>
+                <Download size={18} aria-hidden="true" /> {isImportLoading ? "Importation…" : "Lancer l'import"}
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={() => setIsImportOpen(false)}>
+                Annuler
+              </Button>
             </div>
           </div>
-        </Modal>
-      </main>
+        </SheetContent>
+      </Sheet>
+
+      <ConfirmDialog
+        open={isArchiveConfirmOpen}
+        onOpenChange={setIsArchiveConfirmOpen}
+        title="Confirmer l'archivage"
+        message={`Voulez-vous figer le classement de l'année ${currentYearData?.year ?? ""} ? Un instantané sera pris et affiché à la place du calcul en direct.`}
+        confirmLabel="Archiver"
+        pending={pending}
+        onConfirm={handleArchive}
+      />
+
+      <ConfirmDialog
+        open={isDeleteConfirmOpen}
+        onOpenChange={setIsDeleteConfirmOpen}
+        title="Supprimer l'archive (1/2)"
+        message="Êtes-vous sûr de vouloir supprimer cette archive ? Le classement de cette année sera de nouveau calculé en direct."
+        confirmLabel="Continuer"
+        danger
+        onConfirm={() => {
+          setIsDeleteConfirmOpen(false);
+          setIsDeleteConfirmLevel2Open(true);
+        }}
+      />
+
+      <ConfirmDialog
+        open={isDeleteConfirmLevel2Open}
+        onOpenChange={setIsDeleteConfirmLevel2Open}
+        title="Confirmation finale (2/2)"
+        message="Cette action est irréversible. Confirmez-vous la suppression définitive de l'archive ?"
+        confirmLabel="Supprimer définitivement"
+        danger
+        pending={pending}
+        onConfirm={handleDeleteArchive}
+      />
+
+      <ConfirmDialog
+        open={isOverwriteConfirmOpen}
+        onOpenChange={setIsOverwriteConfirmOpen}
+        title={`L'année ${importYear} existe déjà`}
+        message={`L'année ${importYear} est déjà présente. L'importer écrasera les données actuelles dans l'éditeur. Continuer ?`}
+        confirmLabel="Continuer"
+        onConfirm={() => {
+          setIsOverwriteConfirmOpen(false);
+          router.push(`/classement/edit-archive?importYear=${importYear}`);
+        }}
+      />
     </div>
   );
 }

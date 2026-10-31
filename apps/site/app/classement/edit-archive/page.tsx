@@ -1,12 +1,16 @@
+/**
+ * Éditeur d'archives du classement CDF `/classement/edit-archive` (refonte, carte 097, ADR 0006), réservé à la
+ * modération : `?year=` ouvre une archive existante, `?importYear=` reprend un import de l'ancien site
+ * (teamfrancebb.fr), sans paramètre l'éditeur crée une archive. Écran de saisie plein écran sur téléphone
+ * (`ComposeScreen`, sans la barre de navigation du bas : voir `isComposePath`).
+ */
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
-import { notFound, redirect } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
+import { redirect } from "next/navigation";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
 import ArchiveEditor from "./ArchiveEditor";
 import { fetchLegacyRanking } from "../actions";
-import "./page.css";
-import "./page-mobile.css";
 
 
 export default async function EditArchivePage({ searchParams }: { searchParams: Promise<{ year?: string, importYear?: string }> }) {
@@ -52,20 +56,13 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
   });
 
   return (
-    <main className="container ranking-edit-archive">
-      <PageHeader 
-        title={yearStr ? "Modifier l'archive" : "Nouvelle archive manuelle"}
-        subtitle={yearStr ? `Année ${yearStr}` : "Saisie manuelle des résultats CDF"}
-        backHref="/classement"
-        backTitle="Retour au classement"
-      />
-
-      <div style={{ marginTop: '2rem' }}>
-        <ArchiveEditor 
-          initialData={initialData}
-          allUsers={allUsers}
-        />
-      </div>
-    </main>
+    <ComposeScreen
+      title={yearStr ? "Modifier l'archive" : "Nouvelle archive"}
+      subtitle={yearStr ? `Classement du Championnat de France ${yearStr}` : importYearStr ? `Import de l'année ${importYearStr} depuis l'ancien site` : "Saisie à la main des résultats du Championnat de France"}
+      backHref="/classement"
+      backTitle="Retour au classement"
+    >
+      <ArchiveEditor initialData={initialData} allUsers={allUsers} />
+    </ComposeScreen>
   );
 }

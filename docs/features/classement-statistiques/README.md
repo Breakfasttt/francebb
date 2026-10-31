@@ -11,14 +11,16 @@ Le classement national de la Coupe de France (CDF) est calculé à partir des r�
 - `/classement` : visible par tous. Onglets : l'année CDF en cours (ou une autre année au choix), « glissant » (les 12 derniers mois), « par roster » (le meilleur coach de chaque roster sur l'année), « Hall of Fame » (le podium de chaque année) et « archives ». Chaque ligne déplie les meilleurs tournois du coach, avec un lien vers son profil (`/spy/[id]`) et vers le sujet du tournoi. Les modérateurs archivent une année ; seuls les admins suppriment une archive.
 - `/classement/edit-archive` : réservé aux modérateurs. Créer ou corriger une archive à la main, ou importer le classement d'une année depuis l'ancien site teamfrancebb.fr.
 - `/statistiques` : visible par tous. Compteurs : membres, ligues, articles, sujets, vues, membres en ligne. Pour un admin, une « console » en plus : courriels envoyés ce mois-ci, quota de courriels restant, taille de la base, signalements et ressources en attente, quota de stockage.
-- **Sur téléphone** (`app/classement/page-mobile.css`) : jusqu'à 1024 pixels (seuil unique, carte 055), les onglets et la barre d'actions s'empilent sur une colonne (onglets de 48 pixels de haut depuis la carte 061 : ils mesuraient 43,8 pixels), les boutons d'admin se rangent en grille de deux ; sous 850 et 640 pixels, les détails des tournois et le résumé du score passent sur une colonne. L'éditeur d'archives passe sur une colonne sous 1024 pixels et son tableau défile dans son cadre (`overflow-x: auto`). `/statistiques` (refait par la carte 090) : deux chiffres par ligne sur téléphone, trois sur ordinateur ; chaque chiffre est une carte avec son nom, sa valeur en grand et une courte explication.
-- **À vérifier** : la lisibilité du tableau de l'éditeur d'archives au pouce (outil de modération, peu utilisé sur téléphone).
+- **Refonte (carte 097)** : `/classement` utilise les composants de `packages/ui`. En-tête compact avec le bouton « Comment sont calculés les points ? » (fenêtre d'aide) et, pour la modération, le menu « Gestion du classement » (archiver l'année, modifier ou supprimer l'archive, importer des archives, créer une archive ; panneau qui monte du bas sur téléphone). Les cinq vues sont des onglets ; une liste déroulante choisit une autre année calculée ou une autre archive. Chaque ligne du classement montre le rang, le coach et les points ; sur ordinateur, le numéro NAF et le nombre de tournois ont aussi leur colonne. Le bouton « Détails de … » (flèche, 44 pixels) déplie la ligne : numéro NAF, tournois joués, lien « Voir le profil » et les meilleurs tournois retenus (nom, place, points). Les confirmations passent par `ConfirmDialog`, y compris celle de l'import d'une année déjà présente (avant : la fenêtre `confirm()` du navigateur).
+- **Sur téléphone** : une seule colonne, rien ne déborde ; la rangée d'onglets défile de côté si elle ne tient pas. `/classement/edit-archive` est un écran de saisie plein écran (`ComposeScreen`, sans la barre du bas, voir `isComposePath`) : un bloc « L'archive » (année, nom), un bloc « Classement » avec une carte par coach (nom, membre lié, NAF, points total, nombre de tournois, détail des 4 tournois retenus), et « Annuler » et « Enregistrer » collés en bas de l'écran. Sur ordinateur, une ligne par coach et une colonne « Publication » à droite. `/statistiques` (refait par la carte 090) : deux chiffres par ligne sur téléphone, trois sur ordinateur ; chaque chiffre est une carte avec son nom, sa valeur en grand et une courte explication.
+- **À vérifier** : la saisie d'une archive au pouce sur un vrai téléphone (outil de modération, peu utilisé sur téléphone).
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/classement/page.tsx` | Page client du classement (onglets, choix de l'année, actions de modération). |
+| `apps/site/app/classement/component/RankingViews.tsx` | Affichages du classement : lignes dépliables des coachs, meilleur coach par roster, Hall of Fame. |
 | `apps/site/app/classement/actions.ts` | Calcul du classement, Hall of Fame, archives, import depuis l'ancien site. |
 | `apps/site/app/classement/edit-archive/page.tsx`, `ArchiveEditor.tsx` | Édition manuelle d'une archive. |
 | `apps/site/common/utils/cdf.ts` | `calculateCdfPoints` : formule officielle des points CDF. |
@@ -35,6 +37,8 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 - Une année archivée est lue depuis l'archive (JSON dans `RankingArchive.data`), plus jamais recalculée. Une archive par année au plus.
 - `getHallOfFame` recalcule le classement de chaque année l'une après l'autre : une série de requêtes par année, qui grandit avec le temps.
 - `fetchLegacyRanking` lit les pages HTML de l'ancien site avec deux analyseurs (format 2012 et format 2016+) : si l'ancien site change ou disparaît, l'import casse.
+- Après l'enregistrement d'une archive, l'éditeur revient au classement par un simple changement de page : la page du classement recharge ses données à l'ouverture. Avant la carte 097, l'appel supplémentaire `router.refresh()` empêchait ce retour.
+- Dans l'éditeur, une ligne est modifiée par une fonction de mise à jour (`setEntries((prev) => …)`) : lier un membre change plusieurs champs d'un coup (membre, nom, numéro NAF). Avant la carte 097, ces changements s'écrasaient et le membre lié n'était jamais enregistré.
 - `app/classement/actions.ts` redéfinit sa propre fonction `isAdmin` au lieu d'utiliser celle de `lib/roles.ts`.
 - Statistiques : le compteur « En ligne » (appelé « Connectés » avant la carte 051) compte les membres qui ont lu un sujet du forum ces 15 dernières minutes (table `TopicView`). Il comptait la table `Session`, toujours vide parce que les sessions sont des jetons JWT rangés dans un cookie (`auth.ts`). Un membre qui navigue sans ouvrir de sujet n'est pas compté. « Taille BDD » est demandée à Postgres (`pg_database_size`). Le quota d'emails (3000) et de stockage (500 Mo) sont écrits en dur.
 
@@ -55,4 +59,4 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 - Marche : classement annuel, glissant, par roster, Hall of Fame, archives et import de l'ancien site, statistiques publiques.
 - Marche aussi depuis la carte 051 : points recalculés côté serveur, compteur « En ligne » basé sur une vraie activité.
 - Manque : taille de base fiable, Hall of Fame sans recalcul année par année.
-- Cartes : 049 (audit mobile) ; 046 et 047 (passage à Postgres) concernent la « Taille BDD ».
+- Cartes : 097 (refonte du classement et de l'éditeur d'archives, test `tests/e2e/inventaire/classement.spec.ts`) ; 049 (audit mobile) ; 046 et 047 (passage à Postgres) concernent la « Taille BDD ».

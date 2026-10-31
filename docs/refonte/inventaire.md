@@ -301,10 +301,12 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 12. Classement du Championnat de France (CDF)
 
-- [ ] [tous] `/classement` : onglets Année, Glissant, Par roster, Hall of Fame, Archives ; choix de l'année et de l'archive ; lignes dépliables (4 meilleurs tournois, liens vers le profil et vers le tournoi) ; fenêtre d'aide « Calcul des points CDF ».
-- [ ] [modo] `/classement` : archiver l'année (confirmation en 2 étapes), éditer une archive, importer des archives depuis l'ancien site, créer une archive.
-- [ ] [admin] `/classement` : supprimer une archive.
-- [ ] [modo] `/classement/edit-archive[?year=]` : année, nom, tableau de lignes (coach, lien vers un membre, NAF, points, nombre de tournois, détails) ; ajouter ou supprimer une ligne ; enregistrer.
+- [x] [tous] `/classement` : onglets Année, Glissant, Par roster, Hall of Fame, Archives ; choix de l'année et de l'archive ; lignes dépliables (4 meilleurs tournois, liens vers le profil et vers le tournoi) ; fenêtre d'aide « Calcul des points CDF ». *Avant la refonte, le détail des tournois était toujours affiché ; il est maintenant derrière le bouton « Détails de … » de chaque ligne.*
+- [x] [modo] `/classement` : archiver l'année (avec confirmation), éditer une archive, importer des archives depuis l'ancien site, créer une archive. *Depuis la refonte, ces actions sont dans le menu « Gestion du classement ». L'archivage demande une seule confirmation (la ligne parlait de deux étapes : c'est la suppression qui en demande deux). L'import est vérifié jusqu'à la fenêtre qui demande l'année : l'import lui-même interroge l'ancien site depuis le serveur, ce que le test ne fait pas, et la confirmation d'une année déjà présente (`ConfirmDialog` depuis la refonte) n'est donc pas vérifiée automatiquement.*
+- [x] [admin] `/classement` : supprimer une archive (deux confirmations).
+- [x] [modo] `/classement/edit-archive[?year=]` : année, nom, tableau de lignes (coach, lien vers un membre, NAF, points, nombre de tournois, détails) ; ajouter ou supprimer une ligne ; enregistrer. *Le test vérifie l'enregistrement dans la base. Avant la refonte, le membre lié n'était pas enregistré et la page ne revenait pas au classement après l'enregistrement : les deux sont corrigés (voir la fiche `docs/features/classement-statistiques/README.md`).*
+
+*Section vérifiée par `tests/e2e/inventaire/classement.spec.ts` (carte 097), en taille ordinateur et en taille téléphone.*
 
 ## 13. BBScheme `/bbscheme`
 
