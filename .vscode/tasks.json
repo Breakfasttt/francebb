@@ -26,6 +26,34 @@
         "showReuseMessage": true,
         "clear": false
       }
+    },
+    {
+      // Hub de connexion en local (port 4000) : démarre sa base Postgres locale, puis le serveur
+      "label": "Hub (port 4000)",
+      "type": "shell",
+      "command": "corepack pnpm db:start; corepack pnpm db:generate; corepack pnpm dev",
+      "options": { "cwd": "${workspaceFolder}/apps/hub" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated", "reveal": "always", "group": "hub-site" }
+    },
+    {
+      // Site en local (port 3000) : démarre sa base Postgres locale, puis le serveur.
+      // La connexion passe par le hub si AUTH_MODE="hub" dans apps/site/.env.
+      "label": "Site (port 3000)",
+      "type": "shell",
+      "command": "corepack pnpm db:start; corepack pnpm dev",
+      "options": { "cwd": "${workspaceFolder}/apps/site" },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated", "reveal": "always", "group": "hub-site" }
+    },
+    {
+      // Lance le hub et le site ensemble, chacun dans son propre terminal
+      "label": "Hub + site",
+      "dependsOn": ["Hub (port 4000)", "Site (port 3000)"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
     }
   ],
   "inputs": [
