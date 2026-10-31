@@ -79,6 +79,12 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/statistiques?admin", connected: true, as: "admin" },
   { path: "/page-introuvable-audit", connected: false },
   { path: "/articles", connected: false },
+  // Carte 095 : la liste en lignes, le panneau des filtres, la page d'un article (actions, réactions) et son formulaire
+  { path: "/articles?view=list", connected: false },
+  { path: "/articles", connected: false, openFilters: true },
+  { path: "/articles/e2e_audit_article", connected: true },
+  { path: "/articles/edit/e2e_audit_article", connected: true },
+  { path: "/articles/create", connected: true },
   { path: "/ressources", connected: false },
   { path: "/media", connected: false },
   { path: "/ligues", connected: false },
@@ -310,6 +316,18 @@ test.describe("audit mobile", () => {
           description: "[b]Présentation[/b] de la ligue de l'audit, avec un [url=https://example.com]lien[/url].",
           members: { connect: { id: E2E.coachId } },
           tournaments: { create: { name: "Tournoi à venir de la ligue de l'audit", date: new Date("2030-05-04T09:00:00Z"), location: "Gymnase", organizerId: E2E.modoId } },
+        },
+      });
+    });
+    // Carte 095 : un article du modérateur, avec des tags, un texte en BBCode et une réaction
+    await withTestDb(async (prisma) => {
+      if (await prisma.article.findUnique({ where: { id: "e2e_audit_article" } })) return;
+      await prisma.article.create({
+        data: {
+          id: "e2e_audit_article", title: "Article de l'audit mobile au titre assez long pour passer à la ligne", authorId: E2E.modoId,
+          content: "[b]Introduction[/b] de l'article de l'audit, avec un [url=https://example.com]lien[/url] et un texte assez long pour remplir plusieurs lignes de la colonne de lecture sur un téléphone.",
+          tags: { connectOrCreate: [{ where: { name: "Audit" }, create: { name: "Audit" } }, { where: { name: "Stratégie" }, create: { name: "Stratégie" } }] },
+          reactions: { create: { userId: E2E.coachId, emoji: "👍" } },
         },
       });
     });

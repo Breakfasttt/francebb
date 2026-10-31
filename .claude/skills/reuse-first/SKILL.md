@@ -61,8 +61,8 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
 | Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil (carte 092) |
 | Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` (carte 092) |
-| Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch`, `MultiLigueSearch` (choix de plusieurs ligues, refait avec `packages/ui` par la carte 091) |
-| Statut / tags | `StatusBadge`, `TagSelector` (le contour d'avatar se choisit dans une liste `Select`, carte 092) |
+| Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch` (prop `inputId` pour un libellé, carte 095), `MultiLigueSearch` (choix de plusieurs ligues, refait avec `packages/ui` par la carte 091) |
+| Statut / tags | `StatusBadge`, `TagSelector` (saisie de tags avec suggestions, refaite avec `packages/ui` par la carte 095 ; props `id` et `aria-label` pour le relier à un libellé) (le contour d'avatar se choisit dans une liste `Select`, carte 092) |
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
 | Smileys | `SmileyPicker`, `SmileyGrid` |
 | En-tête page / retour | `PageHeader`, `BackButton` |

@@ -1,28 +1,42 @@
-import React from "react";
-import { prisma } from "@/lib/prisma";
-import { getActiveSession } from "@/lib/authGuard";
-import { notFound, redirect } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import { parseBBCode } from "@/lib/bbcode";
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+/**
+ * Page d'un article `/articles/[id]` (refonte, carte 095, ADR 0006).
+ * Une seule colonne de lecture, centrée, sur ordinateur comme sur téléphone :
+ * - en tête, les tags, le titre qui domine, puis l'auteur (avatar et lien vers son profil), la date de publication et
+ *   le nombre de vues, et les actions (« Modifier » et le menu « ⋯ » de `ArticleActions`) ;
+ * - l'avis de modération, s'il y a lieu ;
+ * - le texte, limité à environ 70 caractères par ligne avec un interligne de 1,6 pour un confort de lecture ;
+ * - les réactions émoji.
+ * Un article modéré n'est lisible que par son auteur et par la modération ; les autres lecteurs voient seulement
+ * l'avis de modération. Le compteur de vues (`ViewCounter`) est inchangé.
+ * Avant la refonte, l'auteur, les informations et les actions étaient dans une colonne à gauche du texte.
+ */
+import Link from "next/link";
+import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Edit3, ShieldAlert, Flag, Clock, Calendar, Tag as TagIcon, Eye } from "lucide-react";
-import ArticleReactions from "@/app/articles/[id]/component/ArticleReactions";
-import DeleteArticleButton from "@/app/articles/[id]/component/DeleteArticleButton";
-import ModerateArticleButton from "@/app/articles/[id]/component/ModerateArticleButton";
-import ReportArticleButton from "@/app/articles/[id]/component/ReportArticleButton";
-import ViewCounter from "@/app/articles/[id]/component/ViewCounter";
-import Link from "next/link";
+import { ChevronLeft, EyeOff, ShieldAlert } from "lucide-react";
+import { Badge, Card } from "@bbfrance/ui";
+import { prisma } from "@/lib/prisma";
+import { getActiveSession } from "@/lib/authGuard";
+import { parseBBCode } from "@/lib/bbcode";
 import { isModerator } from "@/lib/roles";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-import "./page.css";
-import "./page-mobile.css";
-
+import BackButton from "@/common/components/BackButton/BackButton";
+import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
+import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
+import ArticleActions from "./component/ArticleActions";
+import ArticleReactions from "./component/ArticleReactions";
+import ViewCounter from "./component/ViewCounter";
+// Styles des blocs BBCode (accordéons, spoilers, galeries) du texte, comme dans les sujets du forum
+import "@/app/forum/page.css";
 
 export const dynamic = "force-dynamic";
+
+/**
+ * Mise en forme du texte converti depuis le BBCode : liens soulignés, gras, images à la largeur de la colonne,
+ * paragraphes et listes aérés. Les blocs particuliers (citations, spoilers…) gardent leurs propres styles.
+ */
+const proseClass =
+  "text-[1.0625rem] leading-[1.6] break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_strong]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_p]:my-3 [&_ul]:my-3 [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:pl-6";
 
 export default async function ArticleDetailPage({
   params,
@@ -31,7 +45,7 @@ export default async function ArticleDetailPage({
 }) {
   const { id } = await params;
   const session = await getActiveSession();
-  const sessionUser = session?.user as any;
+  const sessionUser = session?.user;
 
   const article = await prisma.article.findUnique({
     where: { id },
@@ -54,157 +68,113 @@ export default async function ArticleDetailPage({
   const isAuthor = sessionUser?.id === article.authorId;
   const isMod = isModerator(sessionUser?.role);
   const canEdit = isAuthor || isMod;
+  const canRead = !article.isModerated || isMod || isAuthor;
 
   const createdAt = new Date(article.createdAt);
   const formattedDate = format(createdAt, "d MMMM yyyy 'à' HH:mm", { locale: fr });
 
   return (
-    <main className="container article-detail-container">
-      <PageHeader 
-        title={article.title} 
-        backHref="/articles" 
-        backTitle="Retour aux articles"
-      />
-
+    <div className="mx-auto w-full max-w-[860px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ViewCounter articleId={id} />
 
-      <div className="article-layout">
-        <aside className="article-sidebar">
-          <div className="sidebar-section author-card">
-            <UserAvatar 
-              image={article.author.image} 
-              name={article.author.name} 
-              size={80} 
-              postCount={article.author._count?.posts || 0}
-              selectedRank={article.author.avatarFrame as any}
-              isModerator={isModerator(article.author.role)}
-            />
-            <div className="author-details">
-              <span className="author-label">Écrit par</span>
-              <Link href={`/spy/${article.authorId}`} className="author-name">
-                {article.author.name}
-              </Link>
-              <div className="author-meta">
-                <Calendar size={14} /> Membre depuis 2024
-              </div>
-            </div>
-          </div>
-
-          <div className="sidebar-section article-info">
-            <div className="info-item">
-              <Clock size={16} />
-              <span>Publié le {formattedDate}</span>
-            </div>
-            <div className="info-item">
-              <Eye size={16} />
-              <span>Vu {article.views} fois</span>
-            </div>
-            {article.tags.length > 0 && (
-              <div className="info-item tags-list">
-                <TagIcon size={16} />
-                <div className="tags-container">
-                  {article.tags.map((tag: any) => (
-                    <span key={tag.id} className="detail-tag">{tag.name}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="sidebar-section article-actions">
-            {canEdit && (
-              <>
-                <ClassicButton href={`/articles/edit/${article.id}`} icon={<Edit3 size={18} />} fullWidth>
-                  Modifier
-                </ClassicButton>
-                <DeleteArticleButton articleId={article.id} />
-              </>
-            )}
-            
-            {isMod && (
-              <ModerateArticleButton 
-                articleId={article.id} 
-                isModerated={article.isModerated} 
-                authorName={article.author.name || "Inconnu"} 
-              />
-            )}
-
-            {sessionUser && !isAuthor && (
-              <ReportArticleButton articleId={article.id} articleTitle={article.title} />
-            )}
-          </div>
-        </aside>
-
-        <article className="article-content-wrapper">
-          {article.isModerated && (
-            <div className="moderation-notice" style={{ 
-              background: 'rgba(var(--danger-rgb, 194, 29, 29), 0.1)', 
-              border: '1px solid var(--danger)', 
-              borderRadius: '12px', 
-              padding: '1.5rem', 
-              marginBottom: '2rem',
-              color: 'var(--danger)'
-            }}>
-              <div className="notice-header" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontWeight: 800, marginBottom: '0.5rem', textTransform: 'uppercase', fontSize: '0.9rem' }}>
-                <ShieldAlert size={20} />
-                <span>Article modéré par l'équipe</span>
-              </div>
-              <div className="notice-body" style={{ fontSize: '1rem', fontStyle: 'italic', fontVariant: 'normal' }}>
-                Raison : {article.moderationReason || "Cet article a été modéré par un membre de l'équipe."}
-                {article.moderator && <div className="moderator-sig" style={{ marginTop: '0.5rem', fontSize: '0.8rem', opacity: 0.8 }}>Par {article.moderator.name}</div>}
-              </div>
-            </div>
-          )}
-
-          {(!article.isModerated || isMod || isAuthor) ? (
-            <div style={{ position: 'relative' }}>
-              {article.isModerated && (
-                <div style={{ 
-                  fontSize: '0.75rem', 
-                  color: 'var(--primary)', 
-                  marginBottom: '1rem', 
-                  textTransform: 'uppercase', 
-                  fontWeight: 700, 
-                  background: 'rgba(var(--primary-rgb), 0.1)', 
-                  padding: '4px 12px', 
-                  borderRadius: '4px',
-                  display: 'inline-block'
-                }}>
-                  [Contenu original visible par vous seul et les modérateurs]
-                </div>
-              )}
-              <div 
-                className="article-body bbcode-content" 
-                style={{ 
-                  opacity: article.isModerated ? 0.6 : 1,
-                  filter: article.isModerated ? 'grayscale(0.5)' : 'none',
-                  transition: 'all 0.3s'
-                }}
-                dangerouslySetInnerHTML={{ __html: parseBBCode(article.content, undefined, sessionUser?.id) }} 
-              />
-            </div>
-          ) : (
-            <div style={{ 
-              background: 'rgba(0,0,0,0.2)', 
-              border: '1px dashed var(--glass-border)', 
-              borderRadius: '12px', 
-              padding: '4rem 2rem', 
-              textAlign: 'center', 
-              color: 'var(--text-muted)', 
-              fontStyle: 'italic',
-              fontSize: '1.1rem'
-            }}>
-              Le contenu de cet article a été masqué par la modération.
-            </div>
-          )}
-
-          <ArticleReactions 
-            articleId={article.id} 
-            reactions={article.reactions} 
-            currentUserId={sessionUser?.id} 
-          />
-        </article>
+      {/* Téléphone : bouton retour dans la barre du haut ; ordinateur : lien vers la liste au-dessus de l'article */}
+      <MobilePortal targetId="mobile-back-button-slot">
+        <span className="lg:hidden">
+          <BackButton href="/articles" title="Retour aux articles" style={{ width: 44, height: 44 }} />
+        </span>
+      </MobilePortal>
+      <div className="hidden pt-4 lg:block">
+        <Link href="/articles" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-bb-accent-text no-underline hover:underline">
+          <ChevronLeft size={16} aria-hidden="true" />
+          Tous les articles
+        </Link>
       </div>
-    </main>
+
+      <article className="flex flex-col gap-4 pt-3 lg:pt-1">
+        <header className="flex flex-col gap-3">
+          {article.tags.length > 0 && (
+            <ul aria-label="Tags" className="m-0 flex list-none flex-wrap gap-1.5 p-0">
+              {article.tags.map((tag) => (
+                <li key={tag.id}>
+                  <Badge variant="outline">{tag.name}</Badge>
+                </li>
+              ))}
+            </ul>
+          )}
+          <h1 className="m-0 border-0 p-0 text-[1.75rem] leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-4xl">
+            {article.title}
+          </h1>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-bb-border pb-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <UserAvatar
+                image={article.author.image}
+                name={article.author.name}
+                size={44}
+                postCount={article.author._count?.posts || 0}
+                selectedRank={article.author.avatarFrame as Rank}
+                isModerator={isModerator(article.author.role)}
+              />
+              <div className="flex min-w-0 flex-col">
+                <Link
+                  href={`/spy/${article.authorId}`}
+                  className="flex min-h-11 min-w-0 items-center self-start font-semibold text-bb-text no-underline hover:text-bb-accent-text hover:underline focus-visible:outline-2 focus-visible:outline-bb-focus"
+                >
+                  <span className="min-w-0 truncate">{article.author.name}</span>
+                </Link>
+                <p className="m-0 -mt-1.5 text-sm text-bb-text-muted">
+                  <span>Publié le {formattedDate}</span>
+                  <span aria-hidden="true"> · </span>
+                  <span>{article.views} vue{article.views > 1 ? "s" : ""}</span>
+                </p>
+              </div>
+            </div>
+            <ArticleActions
+              articleId={article.id}
+              articleTitle={article.title}
+              authorName={article.author.name || "Inconnu"}
+              isModerated={article.isModerated}
+              canEdit={canEdit}
+              canModerate={isMod}
+              canReport={!!sessionUser && !isAuthor}
+            />
+          </div>
+        </header>
+
+        {article.isModerated && (
+          <Card role="note" className="flex flex-col gap-2 border-bb-danger-text p-4">
+            <p className="m-0 flex items-center gap-2 font-bold text-bb-danger-text">
+              <ShieldAlert size={20} aria-hidden="true" />
+              Article modéré par l&apos;équipe
+            </p>
+            <p className="m-0 text-[0.95rem] text-bb-text">
+              Raison : {article.moderationReason || "Cet article a été modéré par un membre de l'équipe."}
+            </p>
+            {article.moderator && <p className="m-0 text-sm text-bb-text-muted">Par {article.moderator.name}</p>}
+            {canRead && (
+              <p className="m-0 flex items-center gap-1.5 text-sm font-semibold text-bb-text-muted">
+                <EyeOff size={16} aria-hidden="true" />
+                Contenu original visible par vous seul et les modérateurs.
+              </p>
+            )}
+          </Card>
+        )}
+
+        {canRead ? (
+          // Texte de l'article (BBCode converti en HTML) ; atténué quand il est modéré
+          <div
+            className={`${proseClass} max-w-[70ch] ${article.isModerated ? "opacity-60" : ""}`}
+            dangerouslySetInnerHTML={{ __html: parseBBCode(article.content, undefined, sessionUser?.id) }}
+          />
+        ) : (
+          <Card className="px-4 py-10 text-center text-bb-text-muted italic">
+            Le contenu de cet article a été masqué par la modération.
+          </Card>
+        )}
+
+        <div className="border-t border-bb-border pt-4">
+          <ArticleReactions articleId={article.id} reactions={article.reactions} currentUserId={sessionUser?.id} />
+        </div>
+      </article>
+    </div>
   );
 }

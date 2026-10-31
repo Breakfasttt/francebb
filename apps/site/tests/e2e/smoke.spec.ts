@@ -175,6 +175,8 @@ test("choisir le thème « Sombre » dans le profil enregistre l'identifiant def
   // radio (avant, un simple bouton).
   // Le test ne lit pas la base lui-même : la base de test n'accepte qu'une connexion, déjà tenue par le site
   // (carte 067). Il recharge la page, dont la balise <html> porte le thème lu en base par le serveur.
+  // Bandeau des cookies masqué : sur téléphone, il couvre le bas du profil, où se trouve le choix du thème.
+  await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
   await loginAs(page, E2E.coachId);
   try {
     await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });

@@ -1,8 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { X, Tag as TagIcon, Plus } from "lucide-react";
-import "./TagSelector.css";
+/**
+ * Saisie d'étiquettes (tags), refaite avec les composants de `packages/ui` par la carte 095 (articles, seuls
+ * utilisateurs de ce composant). Le coach tape un tag puis appuie sur Entrée (ou sur le bouton « + ») pour l'ajouter ;
+ * jusqu'à cinq tags existants qui contiennent la saisie sont proposés sous le champ et s'ajoutent d'un appui. Les tags
+ * choisis sont affichés au-dessus du champ, chacun avec une croix pour le retirer ; la touche d'effacement, dans le
+ * champ vide, retire le dernier.
+ * Toutes les cibles font au moins 44 pixels de haut sur téléphone et le champ est en 16 pixels (pas de zoom
+ * automatique de l'iPhone).
+ */
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { Plus, Tag as TagIcon, X } from "lucide-react";
+import { Button, Input, cn } from "@bbfrance/ui";
 
 interface TagSelectorProps {
   value: string[];
@@ -10,136 +19,139 @@ interface TagSelectorProps {
   suggestions?: string[];
   placeholder?: string;
   className?: string;
+  /** Identifiant du champ, pour le relier à un libellé (`<Label htmlFor>`). */
+  id?: string;
+  /** Nom du champ lu par les lecteurs d'écran quand il n'a pas de libellé visible. */
+  "aria-label"?: string;
 }
 
 const EMPTY_ARRAY: string[] = [];
 
-const TagSelector: React.FC<TagSelectorProps> = ({
+export default function TagSelector({
   value,
   onChange,
   suggestions = EMPTY_ARRAY,
   placeholder = "Ajouter un tag...",
-  className = ""
-}) => {
+  className,
+  id,
+  "aria-label": ariaLabel,
+}: TagSelectorProps) {
   const [inputValue, setInputValue] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Filtrer les suggestions en fonction de la saisie
-  useEffect(() => {
-    if (inputValue.trim()) {
-      const filtered = suggestions.filter(
-        s => s.toLowerCase().includes(inputValue.toLowerCase()) && !value.includes(s)
-      ).slice(0, 5); // Max 5 suggestions pour rester propre
-      setFilteredSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
-    } else {
-      setShowSuggestions(false);
-    }
-  }, [inputValue, suggestions, value]);
+  // Suggestions : tags existants qui contiennent la saisie et ne sont pas déjà choisis (cinq au plus)
+  const typed = inputValue.trim().toLowerCase();
+  const filtered = typed
+    ? suggestions.filter((tag) => tag.toLowerCase().includes(typed) && !value.includes(tag)).slice(0, 5)
+    : [];
+  const showSuggestions = open && filtered.length > 0;
 
-  // Fermer les suggestions si on clique ailleurs
+  // Un appui ailleurs ferme la liste des suggestions
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
+    const handlePointerDown = (event: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) setOpen(false);
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
   }, []);
 
   const addTag = (tag: string) => {
     const trimmed = tag.trim();
-    if (trimmed && !value.includes(trimmed)) {
-      onChange([...value, trimmed]);
-    }
+    if (trimmed && !value.includes(trimmed)) onChange([...value, trimmed]);
     setInputValue("");
-    setShowSuggestions(false);
+    setOpen(false);
   };
 
-  const removeTag = (tagToRemove: string) => {
-    onChange(value.filter(t => t !== tagToRemove));
-  };
+  const removeTag = (tag: string) => onChange(value.filter((item) => item !== tag));
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
       addTag(inputValue);
-    } else if (e.key === "Backspace" && !inputValue && value.length > 0) {
+    } else if (event.key === "Escape") {
+      setOpen(false);
+    } else if (event.key === "Backspace" && !inputValue && value.length > 0) {
       removeTag(value[value.length - 1]);
     }
   };
 
   return (
-    <div className={`tag-selector-container ${className}`} ref={dropdownRef}>
-      <div className="tag-selector-input-area">
-        {/* Affichage des badges avant l'input ou au dessus ? 
-            L'utilisateur demande "au dessus (ou en dessous)", 
-            je vais le mettre au dessus pour plus de visibilité. */}
-        {value.length > 0 && (
-          <div className="selected-tags-badge-list">
-            {value.map(tag => (
-              <span key={tag} className="tag-badge-removable">
-                <TagIcon size={12} strokeWidth={3} />
-                {tag}
-                <button 
-                  type="button" 
+    <div ref={containerRef} className={cn("relative flex w-full flex-col gap-2", className)}>
+      {value.length > 0 && (
+        <ul aria-label="Tags choisis" className="m-0 flex list-none flex-wrap gap-2 p-0">
+          {value.map((tag) => (
+            <li key={tag} className="min-w-0 max-w-full">
+              <span className="inline-flex max-w-full items-center gap-1 rounded-full border border-bb-accent-text bg-bb-accent-soft py-0.5 pr-0.5 pl-3 text-sm font-semibold text-bb-accent-text">
+                <span className="min-w-0 truncate">{tag}</span>
+                <Button
+                  type="button"
+                  variant="quiet"
+                  size="tap-icon"
+                  aria-label={`Retirer le tag ${tag}`}
+                  title="Retirer le tag"
                   onClick={() => removeTag(tag)}
-                  className="remove-tag-btn"
-                  title="Supprimer le tag"
+                  className="size-11 shrink-0 rounded-full text-bb-accent-text lg:size-8 lg:min-h-8 lg:min-w-8"
                 >
-                  <X size={12} strokeWidth={3} />
-                </button>
+                  <X size={16} aria-hidden="true" />
+                </Button>
               </span>
-            ))}
-          </div>
-        )}
+            </li>
+          ))}
+        </ul>
+      )}
 
-        <div className="tag-input-wrapper">
-          <TagIcon className="tag-field-icon" size={18} />
-          <input
-            type="text"
-            className="tag-main-input"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => inputValue.trim() && filteredSuggestions.length > 0 && setShowSuggestions(true)}
-            placeholder={placeholder}
-          />
-          {inputValue.trim() && (
-             <button 
-                type="button" 
-                className="add-quick-tag-btn" 
-                onClick={() => addTag(inputValue)}
-                title="Ajouter ce tag"
-             >
-                <Plus size={16} />
-             </button>
-          )}
-        </div>
-
-        {/* Liste des suggestions */}
-        {showSuggestions && (
-          <div className="tag-suggestions-dropdown">
-            <div className="suggestions-header">Tags existants suggérés :</div>
-            {filteredSuggestions.map(tag => (
-              <button
-                key={tag}
-                type="button"
-                className="suggestion-item"
-                onClick={() => addTag(tag)}
-              >
-                <TagIcon size={14} className="suggestion-icon" />
-                {tag}
-              </button>
-            ))}
-          </div>
+      <div className="relative">
+        <TagIcon size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" />
+        <Input
+          id={id}
+          type="text"
+          aria-label={ariaLabel}
+          value={inputValue}
+          onChange={(event) => {
+            setInputValue(event.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          enterKeyHint="done"
+          autoComplete="off"
+          className={cn("pl-10", inputValue.trim() && "pr-12")}
+        />
+        {inputValue.trim() && (
+          <Button
+            type="button"
+            variant="quiet"
+            size="tap-icon"
+            aria-label="Ajouter ce tag"
+            title="Ajouter ce tag"
+            onClick={() => addTag(inputValue)}
+            className="absolute top-0 right-0 text-bb-accent-text"
+          >
+            <Plus size={18} aria-hidden="true" />
+          </Button>
         )}
       </div>
+
+      {showSuggestions && (
+        <div className="absolute top-full right-0 left-0 z-50 mt-1 rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+          <p className="m-0 px-3 pt-1 pb-1 text-xs font-semibold text-bb-text-muted">Tags existants</p>
+          {filtered.map((tag) => (
+            <Button
+              key={tag}
+              type="button"
+              variant="quiet"
+              size="tap"
+              onClick={() => addTag(tag)}
+              className="w-full justify-start px-3 font-normal text-bb-text"
+            >
+              <TagIcon size={16} aria-hidden="true" className="text-bb-text-muted" />
+              {tag}
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   );
-};
-
-export default TagSelector;
+}

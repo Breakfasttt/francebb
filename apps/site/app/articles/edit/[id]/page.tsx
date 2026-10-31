@@ -1,10 +1,16 @@
-import React from "react";
+/**
+ * Modification d'un article `/articles/edit/[id]` (refonte, carte 095) : le même formulaire que la création
+ * (`ArticleForm`), prérempli, dans un écran de rédaction plein écran sur téléphone.
+ * Ouvert à l'auteur et à la modération ; un autre membre est renvoyé vers l'article, un visiteur vers la connexion.
+ */
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
-import { notFound, redirect } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import ArticleForm from "@/app/articles/component/ArticleForm";
 import { isModerator } from "@/lib/roles";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
+import ArticleForm from "@/app/articles/component/ArticleForm";
+// Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
+import "@/app/forum/page.css";
 
 export default async function EditArticlePage({
   params,
@@ -22,8 +28,7 @@ export default async function EditArticlePage({
 
   if (!article) notFound();
 
-  const sessionUser = session.user as any;
-  if (article.authorId !== sessionUser.id && !isModerator(sessionUser.role)) {
+  if (article.authorId !== session.user.id && !isModerator(session.user.role)) {
     redirect(`/articles/${id}`);
   }
 
@@ -35,14 +40,13 @@ export default async function EditArticlePage({
   };
 
   return (
-    <main className="container">
-      <PageHeader 
-        title="Modifier l'article" 
-        subtitle={`Édition de : ${article.title}`}
-        backHref={`/articles/${id}`}
-      />
-      
+    <ComposeScreen
+      title="Modifier l'article"
+      subtitle={article.title}
+      backHref={`/articles/${id}`}
+      backTitle="Retour à l'article"
+    >
       <ArticleForm initialData={initialData} isEdit={true} />
-    </main>
+    </ComposeScreen>
   );
 }

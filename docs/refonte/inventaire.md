@@ -280,13 +280,15 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 10. Articles
 
-- [ ] [tous] `/articles` : grille (12) ou liste (20) ; pagination ; filtres `query`, `tag`, `author`, `sort` (récents, anciens, titre A-Z, populaires) et `view` ; « Réinitialiser ».
-- [ ] [membre] « Créer un article ».
-- [ ] [tous] `/articles/[id]` : contenu, auteur, date, vues, tags, réactions émoji.
-- [ ] [auteur, modo] `/articles/[id]` : Modifier, Supprimer.
-- [ ] [modo] `/articles/[id]` : modérer, annuler la modération. Un article modéré n'est visible que par son auteur et les modos.
-- [ ] [membre, pas l'auteur] `/articles/[id]` : signaler.
-- [ ] [membre / auteur, modo] `/articles/create`, `/articles/edit/[id]` : titre, tags avec suggestions, ligue liée, contenu BBCode.
+- [x] [tous] `/articles` : grille (12) ou liste (20) ; pagination ; filtres `query`, `tag`, `author`, `sort` (récents, anciens, titre A-Z, populaires) et `view` ; « Réinitialiser ».
+- [x] [membre] « Créer un article ». *Le bouton n'est montré qu'aux membres connectés, avant comme après la refonte.*
+- [x] [tous] `/articles/[id]` : contenu, auteur, date, vues, tags, réactions émoji. *La mention « Membre depuis 2024 », écrite en dur sous le nom de l'auteur et fausse pour la plupart des membres, n'a pas été reprise.*
+- [x] [auteur, modo] `/articles/[id]` : Modifier, Supprimer.
+- [x] [modo] `/articles/[id]` : modérer, annuler la modération. Un article modéré n'est visible que par son auteur et les modos.
+- [x] [membre, pas l'auteur] `/articles/[id]` : signaler.
+- [x] [membre / auteur, modo] `/articles/create`, `/articles/edit/[id]` : titre, tags avec suggestions, ligue liée, contenu BBCode.
+
+*Section vérifiée par `tests/e2e/inventaire/articles.spec.ts` (carte 095), en taille ordinateur et en taille téléphone. Le test masque la pastille des outils de développement de Next.js, absente du site en ligne : sur téléphone, elle recouvrait les boutons placés en bas à gauche d'un panneau. Défauts connus gardés tels quels : la liste montre aussi les articles modérés (avec la mention « Modéré »), et la modification d'un article efface sa ligue rattachée.*
 
 ## 11. Ressources
 

@@ -19,6 +19,8 @@ interface LigueSearchProps {
   placeholder?: string;
   nameId?: string;
   nameCustom?: string;
+  /** Identifiant du champ de recherche, pour le relier à un libellé (`<Label htmlFor>`, carte 095). */
+  inputId?: string;
   onChange?: (ligueId: string | null, ligueCustom: string | null) => void;
 }
 
@@ -28,6 +30,7 @@ export default function LigueSearch({
   placeholder = "Rechercher une ligue...",
   nameId = "ligueId",
   nameCustom = "ligueCustom",
+  inputId,
   onChange
 }: LigueSearchProps) {
   const [query, setQuery] = useState(initialCustom || "");
@@ -103,6 +106,7 @@ export default function LigueSearch({
         <div className="ligue-search-input-wrapper">
           <Search size={18} className="search-icon" />
           <input
+            id={inputId}
             type="text"
             className="ligue-search-input"
             value={query}

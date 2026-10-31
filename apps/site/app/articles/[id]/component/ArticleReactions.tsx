@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useState, useTransition, useEffect } from "react";
+/**
+ * Réactions émoji d'un article (refonte, carte 095, ADR 0006).
+ * Chaque émoji déjà utilisé est une pastille avec son nombre ; la pastille est mise en avant quand le membre connecté
+ * a choisi cet émoji, et un appui l'ajoute ou la retire. Le bouton « Ajouter une réaction » ouvre le choix parmi dix
+ * émojis : petit panneau sous le bouton sur ordinateur, panneau qui monte du bas sur téléphone. Un membre n'a qu'une
+ * réaction par article : en choisir une autre remplace la première (règle de `toggleArticleReaction`).
+ * Un visiteur voit les réactions sans pouvoir réagir. L'affichage change tout de suite, avant la réponse du serveur ;
+ * en cas d'erreur, il revient à l'état précédent.
+ */
+import { useEffect, useState, useTransition } from "react";
 import { SmilePlus } from "lucide-react";
+import { Button, DESKTOP_QUERY, Popover, PopoverContent, PopoverTrigger, Sheet, SheetContent, cn, toast, useMediaQuery } from "@bbfrance/ui";
 import { toggleArticleReaction } from "@/app/articles/actions";
-import { toast } from "@bbfrance/ui";
-import "./ArticleReactions.css";
 
 interface Reaction {
   emoji: string;
@@ -21,18 +29,17 @@ interface ArticleReactionsProps {
 const COMMON_EMOJIS = ["👍", "❤️", "😂", "😢", "😡", "🔥", "👀", "🎉", "👎", "🍻"];
 
 export default function ArticleReactions({ articleId, reactions, currentUserId }: ArticleReactionsProps) {
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
-  const [showPicker, setShowPicker] = useState(false);
-  
-  // Optimistic UI state
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [optimisticReactions, setOptimisticReactions] = useState(reactions);
 
-  // Sync state if server data changes (e.g. from revalidatePath)
+  // Les données du serveur (après revalidatePath) remplacent l'affichage anticipé
   useEffect(() => {
     setOptimisticReactions(reactions);
   }, [reactions]);
 
-  // Group reactions locally
+  // Regroupement par émoji : nombre, réaction du membre, noms des membres
   const grouped = optimisticReactions.reduce((acc, curr) => {
     if (!acc[curr.emoji]) acc[curr.emoji] = { count: 0, hasReacted: false, users: [] as string[] };
     acc[curr.emoji].count++;
@@ -47,26 +54,18 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
       return;
     }
 
-    // Optimistic internal apply
-    setOptimisticReactions(prev => {
-      const existingIdx = prev.findIndex(r => r.userId === currentUserId);
+    setOptimisticReactions((prev) => {
+      const existingIdx = prev.findIndex((r) => r.userId === currentUserId);
       if (existingIdx >= 0) {
-        if (prev[existingIdx].emoji === emoji) {
-          // Toggle off
-          return prev.filter((_, i) => i !== existingIdx);
-        } else {
-          // Replace with new emoji
-          const next = [...prev];
-          next[existingIdx] = { ...next[existingIdx], emoji };
-          return next;
-        }
-      } else {
-        // Add new
-        return [...prev, { emoji, userId: currentUserId }];
+        // Même émoji : la réaction est retirée ; autre émoji : il remplace le premier
+        if (prev[existingIdx].emoji === emoji) return prev.filter((_, i) => i !== existingIdx);
+        const next = [...prev];
+        next[existingIdx] = { ...next[existingIdx], emoji };
+        return next;
       }
+      return [...prev, { emoji, userId: currentUserId }];
     });
-
-    setShowPicker(false);
+    setPickerOpen(false);
 
     startTransition(async () => {
       try {
@@ -74,68 +73,69 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
         if (result.error) throw new Error(result.error);
       } catch (error) {
         console.error("Failed to toggle reaction:", error);
-        // Rollback on error
         setOptimisticReactions(reactions);
         toast.error("Erreur lors de l'ajout de la réaction");
       }
     });
   };
 
-  if (Object.keys(grouped).length === 0 && !currentUserId) {
-    return null;
-  }
+  const entries = Object.entries(grouped);
+  if (entries.length === 0 && !currentUserId) return null;
+
+  // Sur ordinateur, le déclencheur du petit panneau lui passe son propre `onClick`
+  const addButton = (onClick?: () => void) => (
+    <Button type="button" variant="secondary" size="tap" onClick={onClick} aria-label="Ajouter une réaction" title="Ajouter une réaction" className="px-3">
+      <SmilePlus size={20} aria-hidden="true" />
+      <span aria-hidden="true" className="text-sm font-semibold">Réagir</span>
+    </Button>
+  );
+
+  const emojiGrid = (
+    <div className="grid grid-cols-5 gap-1">
+      {COMMON_EMOJIS.map((emoji) => (
+        <Button key={emoji} type="button" variant="quiet" size="tap-icon" onClick={() => handleToggle(emoji)} className="text-2xl">
+          {emoji}
+        </Button>
+      ))}
+    </div>
+  );
 
   return (
-    <div className="article-reactions-container">
-      <div className="reactions-list">
-        {Object.entries(grouped).map(([emoji, { count, hasReacted, users }]) => (
-          <button
-            key={emoji}
-            className={`reaction-pill ${hasReacted ? "active" : ""}`}
-            title={users.length > 0 ? users.join(", ") : (hasReacted ? "Retirer votre réaction" : "Réagir")}
-            onClick={() => handleToggle(emoji)}
-            disabled={isPending || !currentUserId}
-          >
-            <span className="reaction-emoji">{emoji}</span>
-            <span className="reaction-count">{count}</span>
-          </button>
-        ))}
-        
-        {currentUserId && (
-          <div className="add-reaction-wrapper">
-            <div className="tooltip-wrapper">
-              <button 
-                className="add-reaction-btn" 
-                onClick={() => setShowPicker(!showPicker)}
-                title="Ajouter une réaction"
-              >
-                <SmilePlus size={18} />
-              </button>
-              <span className="tooltip-text">Réagir</span>
-            </div>
-            
-            {showPicker && (
-              <>
-                <div 
-                  className="picker-backdrop" 
-                  onClick={() => setShowPicker(false)}
-                />
-                <div className="picker-popover-grid">
-                  {COMMON_EMOJIS.map(emoji => (
-                    <button
-                      key={emoji}
-                      onClick={() => handleToggle(emoji)}
-                      className="picker-emoji-btn"
-                    >
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
+    <section aria-label="Réactions" className="flex flex-wrap items-center gap-2">
+      {entries.map(([emoji, { count, hasReacted, users }]) => (
+        <Button
+          key={emoji}
+          type="button"
+          variant="secondary"
+          size="tap"
+          aria-pressed={currentUserId ? hasReacted : undefined}
+          title={users.length > 0 ? users.join(", ") : hasReacted ? "Retirer votre réaction" : "Réagir"}
+          onClick={() => handleToggle(emoji)}
+          disabled={isPending || !currentUserId}
+          className={cn("gap-1.5 rounded-full px-3 disabled:opacity-100", hasReacted && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
+        >
+          <span className="text-lg leading-none">{emoji}</span>
+          <span className="text-sm font-bold">{count}</span>
+        </Button>
+      ))}
+
+      {currentUserId && (isDesktop ? (
+        <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+          <PopoverTrigger asChild>{addButton()}</PopoverTrigger>
+          <PopoverContent aria-label="Choisir une réaction" className="w-auto p-2">
+            {emojiGrid}
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <>
+          {addButton(() => setPickerOpen(true))}
+          <Sheet open={pickerOpen} onOpenChange={setPickerOpen}>
+            <SheetContent title="Choisir une réaction">
+              <div className="pt-2 pb-2">{emojiGrid}</div>
+            </SheetContent>
+          </Sheet>
+        </>
+      ))}
+    </section>
   );
 }
