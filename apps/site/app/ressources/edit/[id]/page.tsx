@@ -1,116 +1,64 @@
-"use client";
+/**
+ * Modification d'une ressource `/ressources/edit/[id]` (refonte, carte 096) : le même formulaire que la proposition
+ * (`ResourceForm`), prérempli, dans un écran de rédaction plein écran sur téléphone.
+ * Droits inchangés depuis avant la refonte : l'auteur et la modération modifient une ressource, qui repasse alors en
+ * attente de validation ; un outil officiel (ou bbscheme) n'est modifiable que par un administrateur. Quelqu'un d'autre
+ * voit le message « Action non autorisée ». Une ressource introuvable renvoie à la liste.
+ * L'action serveur `updateResourceAction` vérifie de nouveau ces droits à l'enregistrement.
+ */
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { AlertTriangle } from "lucide-react";
+import { Button, Card, EmptyState } from "@bbfrance/ui";
+import { getActiveSession } from "@/lib/authGuard";
+import { isAdmin, isModerator } from "@/lib/roles";
+import ComposeScreen from "@/app/forum/component/ComposeScreen";
+import ResourceForm from "@/app/ressources/component/ResourceForm";
+import { getResource } from "@/app/ressources/actions";
 
-import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
-import PageHeader from "@/common/components/PageHeader/PageHeader";
-import ResourceForm from "@/app/ressources/component/ResourceForm/ResourceForm";
-import { getResource, updateResourceAction } from "@/app/ressources/actions";
-import { Loader2, AlertTriangle } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { useSession } from "next-auth/react";
-import { isModerator, isAdmin } from "@/lib/roles";
-import { toast } from "@bbfrance/ui";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
+export default async function EditResourcePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const [resource, session] = await Promise.all([getResource(id), getActiveSession()]);
+  if (!resource) redirect("/ressources");
 
-interface EditResourcePageProps {
-  params: Promise<{ id: string }>;
-}
-
-export default function EditResourcePage({ params }: EditResourcePageProps) {
-  const { id } = use(params);
-  const router = useRouter();
-  const { data: session } = useSession();
-  const [resource, setResource] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    async function loadResource() {
-      const data = await getResource(id);
-      if (!data) {
-        toast.error("Ressource introuvable");
-        router.push("/ressources");
-        return;
-      }
-      setResource(data);
-      setLoading(false);
-    }
-    loadResource();
-  }, [id, router]);
-
-  const handleSubmit = async (formData: FormData) => {
-    setIsSubmitting(true);
-    const res = await updateResourceAction(id, formData);
-    setIsSubmitting(false);
-    
-    if (res.success) {
-      toast.success(resource.isSystem ? "Outil système mis à jour" : "Ressource mise à jour (repasse en modération)");
-      router.push("/ressources");
-      return { success: true };
-    } else {
-      toast.error(res.error || "Erreur lors de la mise à jour");
-      return { error: res.error || "Erreur" };
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="container" style={{ padding: '5rem 0', textAlign: 'center' }}>
-        <Loader2 className="animate-spin" size={48} color="var(--primary)" style={{ margin: '0 auto' }} />
-        <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Chargement de la ressource...</p>
-      </div>
-    );
-  }
-
-  // Vérification des permissions
-  const user = session?.user as any;
-  const isAuthor = user?.id === resource.authorId;
-  const isMod = isModerator(user?.role);
-  const isSys = resource.isSystem || resource.id === 'bbscheme';
-
-  const canEdit = isSys ? isAdmin(user?.role) : (isMod || isAuthor);
-
-  if (!canEdit) {
-    return (
-      <div className="container" style={{ padding: '5rem 2rem' }}>
-        <PremiumCard style={{ padding: '3rem', textAlign: 'center' }}>
-          <AlertTriangle size={48} color="var(--danger)" style={{ margin: '0 auto 1.5rem' }} />
-          <h3>Action non autorisée</h3>
-          <p>Vous n'avez pas les permissions nécessaires pour modifier cette ressource.</p>
-          <ClassicButton onClick={() => router.push("/ressources")} style={{ marginTop: '1.5rem' }}>
-            Retour aux ressources
-          </ClassicButton>
-        </PremiumCard>
-      </div>
-    );
-  }
+  const user = session?.user;
+  const isSystem = resource.isSystem || resource.id === "bbscheme";
+  const canEdit = isSystem ? isAdmin(user?.role) : isModerator(user?.role) || (!!user?.id && user.id === resource.authorId);
 
   return (
-    <main className="container">
-      <PageHeader 
-        title="Éditer la ressource"
-        subtitle={`Modification de "${resource.title}"`}
-        backHref="/ressources"
-        backTitle="Retour aux ressources"
-      />
-
-      <div style={{ maxWidth: '800px', margin: '0 auto', paddingBottom: '5rem' }}>
-        <ResourceForm 
+    <ComposeScreen
+      title="Éditer la ressource"
+      subtitle={resource.title}
+      backHref="/ressources"
+      backTitle="Retour aux ressources"
+    >
+      {canEdit ? (
+        <ResourceForm
           initialData={{
+            id: resource.id,
             title: resource.title,
             description: resource.description,
             imageUrl: resource.imageUrl,
             link: resource.link,
-            tags: resource.tags.map((t: any) => t.name)
+            tags: resource.tags.map((tag) => tag.name),
+            isSystem,
           }}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-          submitLabel="Mettre à jour"
-          onCancel={() => router.back()}
-          isSystem={isSys}
         />
-      </div>
-    </main>
+      ) : (
+        <Card>
+          <EmptyState
+            icon={<AlertTriangle size={40} className="text-bb-danger-text" />}
+            title="Action non autorisée"
+            action={
+              <Button asChild variant="secondary" size="tap">
+                <Link href="/ressources">Retour aux ressources</Link>
+              </Button>
+            }
+          >
+            Vous n&apos;avez pas les droits nécessaires pour modifier cette ressource.
+          </EmptyState>
+        </Card>
+      )}
+    </ComposeScreen>
   );
 }

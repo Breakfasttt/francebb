@@ -32,7 +32,7 @@ Vérification : tests automatiques en taille téléphone, plus un contrôle à l
 
 Le site passe de l'affichage ordinateur à l'affichage téléphone à **1024 pixels de large** (carte 055). Les tablettes reçoivent donc l'affichage téléphone. Ce seuil est le même partout :
 
-- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()`, `MobilePortal`, `MobileFilterWrapper`, `TabSystem` et `PageHeader`. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
+- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()`, `MobilePortal`, `TabSystem` et `PageHeader`. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
 - en CSS : `@media (max-width: 1024px)` pour les règles téléphone, `@media (min-width: 1025px)` pour les règles réservées à l'ordinateur. Le CSS ne sait pas lire une variable dans un `@media`, d'où la valeur écrite en clair ;
 - les classes `.mobile-only` et `.desktop-only` (`globals.css`, `globals-mobile.css`) basculent à la même largeur.
 
@@ -59,14 +59,10 @@ Si une page a sa propre colonne latérale (onglets de l'administration, de la mo
 
 ## Filtres et longs formulaires
 
-Sur téléphone, les colonnes de filtres disparaissent. À la place, un **bouton flottant** (icône entonnoir, en bas à droite) ouvre un panneau qui monte du bas de l'écran, avec tous les filtres et un bouton « Appliquer les filtres » (composant `MobileFilterWrapper`). Depuis la carte 095, seule `/ressources` l'utilise encore (carte 054).
+Sur ordinateur, les filtres d'une liste sont dans une colonne « Filtres » à gauche des résultats. Sur téléphone, cette colonne disparaît : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un panneau qui monte du bas de l'écran (`Sheet` de `packages/ui`) avec les mêmes filtres, « Réinitialiser » et « Voir N résultats ». Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille, avec une croix pour le retirer, au-dessus des résultats. Exemples : `/forum/search` (carte 088), `/tournois` (carte 089), `/membres` (carte 092), `/ligues` (carte 094), `/articles` (carte 095), `/ressources` (carte 096). Le modèle le plus simple à copier : `app/articles/component/ArticleFilters.tsx` (filtres écrits dans l'adresse) ou `app/ressources/component/ResourceFilters.tsx` (filtres gardés dans la page).
 
-Les écrans refaits (ADR 0006) n'utilisent plus ce bouton flottant : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un `Sheet` (exemples : `/forum/search`, carte 088 ; `/tournois`, carte 089 ; `/membres`, carte 092 ; `/ligues`, carte 094 ; `/articles`, carte 095). Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille au-dessus des résultats.
-
-- Sur ordinateur, le composant affiche ses enfants dans une simple `<div className={className}>`. Avec `mobileOnly`, il n'affiche rien sur ordinateur : à utiliser quand la page a déjà sa colonne de filtres.
-- Le bouton flottant remplace les filtres jusqu'au seuil commun (1024 pixels), comme la classe `desktop-only` qui masque les colonnes de filtres. Le réglage `breakpoint` existe encore mais ne doit pas être utilisé : une autre valeur recréerait des largeurs où les filtres ne sont nulle part.
-- Le bouton et le panneau sont affichés directement dans `<body>` (portail React) : un parent masqué ou en verre dépoli ne peut pas les cacher ni les décaler.
-- Ne plus envoyer les filtres dans le menu latéral global (`#mobile-page-sidebar-slot`) : ce menu est réservé à la navigation et aux onglets des pages (profil, administration…).
+- L'ancien bouton flottant en forme d'entonnoir (`MobileFilterWrapper`, carte 054) a été supprimé par la carte 096, quand `/ressources`, sa dernière page, est passée au bouton « Filtres ». Ne pas le recréer.
+- Ne pas envoyer les filtres dans le menu latéral global (`#mobile-page-sidebar-slot`) : ce menu est réservé à la navigation et aux onglets des pages (profil, administration…).
 
 ## Titre de page et bouton retour
 

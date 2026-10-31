@@ -292,10 +292,12 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 11. Ressources
 
-- [ ] [tous] `/ressources` : outils officiels en premier (badge « Officiel ») ; grille ou liste ; 20 par page ; recherche par texte et par tags ; un clic ouvre le lien.
-- [ ] [auteur, modo] Éditer, et supprimer avec confirmation (une ressource officielle ne peut pas être supprimée).
-- [ ] [membre] `/ressources/submit` : titre, description (200 caractères), adresse, image (adresse ou envoi), tags ; puis attente de validation.
-- [ ] [auteur, modo ; admin pour une ressource officielle] `/ressources/edit/[id]` : la ressource modifiée repasse en attente de validation.
+- [x] [tous] `/ressources` : outils officiels en premier (badge « Officiel ») ; grille ou liste ; 20 par page ; recherche par texte et par tags ; un clic ouvre le lien.
+- [x] [auteur, modo] Éditer, et supprimer avec confirmation (une ressource officielle ne peut pas être supprimée). *Depuis la refonte, ces deux actions sont dans le menu « ⋯ » de chaque ressource ; avant, elles n'apparaissaient qu'au survol de la souris.*
+- [x] [membre] `/ressources/submit` : titre, description (200 caractères), adresse, image (adresse ou envoi), tags ; puis attente de validation. *L'envoi d'un fichier image est vérifié jusqu'à l'ouverture du choix du fichier : l'envoi lui-même passe par le service externe ImgBB, que le test n'appelle pas.*
+- [x] [auteur, modo ; admin pour une ressource officielle] `/ressources/edit/[id]` : la ressource modifiée repasse en attente de validation.
+
+*Section vérifiée par `tests/e2e/inventaire/ressources.spec.ts` (carte 096), en taille ordinateur et en taille téléphone. Défaut connu gardé tel quel : la page `/ressources/submit` et le bouton « Soumettre une ressource » sont ouverts aux visiteurs, dont l'envoi est refusé seulement à la fin.*
 
 ## 12. Classement du Championnat de France (CDF)
 

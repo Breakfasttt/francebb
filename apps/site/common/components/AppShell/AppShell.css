@@ -36,10 +36,6 @@
     bottom: var(--app-bottom-nav-space) !important;
   }
 
-  .refonte-shell .mobile-filter-fab {
-    bottom: calc(var(--app-bottom-nav-space) + 1rem) !important;
-  }
-
   /* --app-page-bar-space : hauteur d'une barre d'actions collée en bas par la page elle-même (par exemple
      « Répondre » et la pagination d'un sujet, carte 086), repérée par l'attribut data-page-bottom-bar. Les éléments
      flottants (notifications, widgets de développement) montent d'autant pour ne pas la couvrir. La barre s'efface

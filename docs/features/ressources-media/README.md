@@ -8,22 +8,23 @@
 
 ## Ce que voit le coach
 
-- `/ressources` : la liste des ressources validées, en grille ou en liste, 20 par page, avec recherche par texte et par tags. Les outils du site (« ressources système », comme bbscheme) passent en premier. Un clic ouvre le lien, dans un nouvel onglet s'il pointe hors du site.
-- `/ressources/submit` : un membre connecté propose une ressource (titre, description de 200 caractères au plus, lien, image, tags). Elle reste invisible jusqu'à sa validation dans l'onglet ressources de `/moderation`.
-- `/ressources/edit/[id]` : l'auteur ou un modérateur modifie une ressource, qui **repasse alors en attente de validation**. Une ressource système n'est modifiable que par un admin, et seulement sa description et son image.
+- `/ressources` (refaite par la carte 096) : la liste des ressources validées. En-tête « Ressources » avec le nombre de ressources trouvées et le bouton « Soumettre une ressource ». Au-dessus des résultats : la recherche dans le titre et la description (lancée 300 millisecondes après la dernière touche) et l'affichage en grille ou en liste. Le filtre par tags (avec les suggestions des tags existants) est dans la colonne « Filtres » sur ordinateur et dans le panneau « Filtrer les ressources » sur téléphone ; chaque tag choisi est rappelé en pastille avec une croix. 20 ressources par page, pagination `PageNav`. Les outils du site (« ressources système », comme bbscheme) passent en premier, avec le badge « Officiel ». Chaque carte ou ligne est entièrement cliquable : un lien hors du site s'ouvre dans un nouvel onglet, un lien du site dans le même onglet. L'auteur et la modération trouvent « Éditer » et « Supprimer » dans le menu « ⋯ » de la ressource ; la suppression passe par une fenêtre de confirmation (`ConfirmDialog`). La recherche, les tags, l'affichage et la page ne sont pas écrits dans l'adresse.
+- `/ressources/submit` : un membre propose une ressource (titre, description de 200 caractères au plus avec un compteur, lien, image par adresse ou par envoi d'un fichier vers ImgBB, avec aperçu, tags). Elle reste invisible jusqu'à sa validation dans l'onglet ressources de `/moderation`.
+- `/ressources/edit/[id]` : l'auteur ou un modérateur modifie une ressource, qui **repasse alors en attente de validation**. Une ressource système n'est modifiable que par un admin, et seulement sa description et son image (titre, lien et tags affichés mais fixes). Quelqu'un d'autre voit « Action non autorisée ».
+- Ces deux formulaires sont un seul composant en blocs (la ressource, l'image, le classement) dans `ComposeScreen` : plein écran sur téléphone, sans barre du bas, avec « Annuler » et « Soumettre » ou « Mettre à jour » collés en bas ; colonne « Publication » sur ordinateur.
 - `/media` : un lecteur Twitch par chaîne et la playlist des vidéos de chaque chaîne YouTube. Visible par tous.
-- **Sur téléphone** (en dessous de 1024 pixels) : la colonne de filtres des ressources est masquée ; son contenu (bouton « Soumettre une ressource », recherche, tags, choix grille ou liste en boutons de 44 pixels) s'ouvre avec le bouton flottant de filtres en forme d'entonnoir (`MobileFilterWrapper`, carte 054). `ressources/page-mobile.css` est maintenant importé par la page (il ne l'était nulle part avant la carte 054) : grille sur une colonne et liste sans cadre jusqu'à 1024 pixels (carte 055). En liste, les tags sont cachés. Les boutons modifier et supprimer d'une carte ont une icône de 12 pixels : sans doute sous les 44 pixels conseillés (à vérifier). `/media` (refait par la carte 090) : une section « Directs Twitch » (chaque lecteur avec le nom de la chaîne et un bouton « Voir sur Twitch ») puis « Dernières vidéos » (YouTube) ; deux lecteurs par ligne sur ordinateur, un sur téléphone, toujours au format 16/9. Les lecteurs ne se chargent qu'à l'approche de l'écran. On y accède par le panneau « Plus » sur téléphone, et par le pied de page ou le menu « Plus » sur ordinateur.
+- **Sur téléphone** (1024 pixels et moins) : une seule colonne ; sur un petit téléphone, la carte d'une ressource met son image en vignette à gauche, pour voir plusieurs ressources par écran. `/media` (refait par la carte 090) : une section « Directs Twitch » (chaque lecteur avec le nom de la chaîne et un bouton « Voir sur Twitch ») puis « Dernières vidéos » (YouTube) ; deux lecteurs par ligne sur ordinateur, un sur téléphone, toujours au format 16/9. Les lecteurs ne se chargent qu'à l'approche de l'écran. On y accède par le panneau « Plus » sur téléphone, et par le pied de page ou le menu « Plus » sur ordinateur.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `apps/site/app/ressources/page.tsx` | Liste (composant client qui appelle `getResources`), suppression avec `ConfirmModal` |
-| `apps/site/app/ressources/submit/page.tsx` | Proposition d'une ressource |
-| `apps/site/app/ressources/edit/[id]/page.tsx` | Modification, droits vérifiés côté page et côté action |
-| `apps/site/app/ressources/component/ResourceCard/ResourceCard.tsx` | Carte d'une ressource (grille ou ligne) |
-| `apps/site/app/ressources/component/ResourceFilterSidebar/ResourceFilterSidebar.tsx` | Recherche, tags, choix grille/liste ; sur téléphone, le même contenu dans le panneau du bouton flottant de filtres |
-| `apps/site/app/ressources/component/ResourceForm/ResourceForm.tsx` | Formulaire, envoi d'image vers ImgBB |
+| `apps/site/app/ressources/page.tsx` | Liste (composant client qui appelle `getResources`), droits d'édition et de suppression, suppression avec `ConfirmDialog` |
+| `apps/site/app/ressources/submit/page.tsx` | Proposition d'une ressource (`ComposeScreen`) |
+| `apps/site/app/ressources/edit/[id]/page.tsx` | Modification (page serveur), droits vérifiés par la page et par l'action |
+| `apps/site/app/ressources/component/ResourceCard.tsx` | Carte (grille) ou ligne (liste) d'une ressource, menu « ⋯ » |
+| `apps/site/app/ressources/component/ResourceFilters.tsx` | Colonne « Filtres », barre de recherche et d'affichage, pastilles, panneau « Filtrer les ressources » |
+| `apps/site/app/ressources/component/ResourceForm.tsx` | Formulaire en blocs, envoi d'image vers ImgBB, envoi aux actions serveur |
 | `apps/site/app/ressources/actions.ts` | Actions serveur |
 | `apps/site/app/moderation/component/ResourceModerationTab.tsx` | Validation des propositions (feature modération) |
 | `apps/site/app/media/page.tsx` | Page vidéos, lit les réglages `twitch_channels` et `youtube_channels` |
@@ -35,10 +36,9 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 - Une ressource système ne doit jamais être supprimée : `deleteResourceAction` et `moderateResource` le refusent ; la page cache aussi le bouton pour l'id `bbscheme`.
 - `getResource` et `getUserResources` ne montrent les ressources en attente ou refusées qu'à leur auteur et aux modérateurs ; `getUserResources` limite la page à 20 (carte 050).
 - La clé ImgBB est publique (`NEXT_PUBLIC_IMGBB_API_KEY` dans `lib/siteConfig.ts`) : n'importe qui peut la lire et l'utiliser.
-- Le lien n'est pas contrôlé côté serveur ; pour un lien interne la carte fait `window.location.href = lien`. Un lien `javascript:` serait-il bloqué ? À vérifier ; la validation par un modérateur est le seul filet.
-- La liste des tags proposés dans les filtres est vide (`availableTags={[]}`), alors que `getResourceTags` existe.
+- Le lien n'est pas contrôlé côté serveur : la validation par un modérateur est le seul filet. La carte traite comme externe un lien qui commence par `http://` ou `https://`, et comme une page du site tout le reste.
 - `/media` : aucun écran d'administration ne semble modifier `twitch_channels` et `youtube_channels` (à vérifier) ; le lecteur Twitch exige `NEXT_PUBLIC_DOMAIN` égal au domaine réel, sinon il refuse de s'afficher.
-- Les erreurs d'envoi d'image utilisent `alert()` au lieu de `Toast`.
+- La page `/ressources/submit` s'ouvre sans connexion, et le bouton « Soumettre une ressource » est montré aux visiteurs : c'est l'action serveur qui refuse leur envoi (« Non authentifié »), après qu'ils ont rempli le formulaire.
 
 ## Les mots expliqués
 
@@ -53,6 +53,6 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 ## État
 
 - Marche : proposition, validation, modification, suppression, recherche, pages vidéo.
-- Sur téléphone : filtres derrière le bouton flottant ; aucun contenu coupé ni cible trop petite sur `/ressources` à 360, 390 et 430 pixels (carte 054).
-- Manque : tags proposés dans les filtres, clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
+- Refonte (carte 096) : écrans refaits avec `packages/ui`, vérifiés par `tests/e2e/inventaire/ressources.spec.ts` en taille ordinateur et téléphone ; audit mobile sans défaut propre à ces écrans à 360 et 390 pixels.
+- Manque : clé ImgBB côté serveur, écran pour gérer les chaînes de `/media`.
 - Cartes ouvertes : 049 (audit mobile). Aucune carte dédiée.

@@ -58,11 +58,12 @@ export function isActive(pathname: string, href: string): boolean {
  * téléphone : la barre basse n'y est pas affichée, pour laisser la place à l'éditeur et à la barre d'envoi (carte 087).
  * Depuis la carte 089, les écrans de création et de modification d'un tournoi et la saisie de ses résultats aussi.
  * Depuis la carte 094, les écrans de création (`/ligues/create`) et de modification (`/ligue/edit/[id]`) d'une ligue ;
- * depuis la carte 095, ceux d'un article (`/articles/create`, `/articles/edit/[id]`).
+ * depuis la carte 095, ceux d'un article (`/articles/create`, `/articles/edit/[id]`) ; depuis la carte 096, ceux d'une
+ * ressource (`/ressources/submit`, `/ressources/edit/[id]`).
  * Un écran plein écran qui n'a pas sa propre adresse (une conversation de la messagerie, ouverte par `?id=`, carte 093)
  * pose plutôt l'attribut `data-fullscreen`, qui retire la barre basse par le CSS (AppShell.css).
  */
 export function isComposePath(pathname: string): boolean {
   return /^\/forum\/(topic\/[^/]+\/reply|post\/[^/]+\/edit|new-topic|new-tournament|edit-tournament\/[^/]+|tournament\/[^/]+\/results)\/?$/.test(pathname)
-    || /^\/(ligues\/create|ligue\/edit\/[^/]+|articles\/create|articles\/edit\/[^/]+)\/?$/.test(pathname);
+    || /^\/(ligues\/create|ligue\/edit\/[^/]+|articles\/create|articles\/edit\/[^/]+|ressources\/submit|ressources\/edit\/[^/]+)\/?$/.test(pathname);
 }

@@ -67,7 +67,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Smileys | `SmileyPicker`, `SmileyGrid` |
 | En-tête page / retour | `PageHeader`, `BackButton` |
 | Vide / stat | `EmptyState`, `StatItem` |
-| Mobile | `MobilePortal`, `MobileSidebar`, `MobileFilterWrapper`, `DesktopOnlyFallback`, `GlobalPortal` |
+| Mobile | `MobilePortal`, `MobileSidebar`, `DesktopOnlyFallback`, `GlobalPortal` (filtres d'une liste sur téléphone : bouton « Filtres » et `Sheet`, voir le skill `mobile-ux`) |
 | Icônes | `lucide-react` uniquement (`Icons/` = icônes custom existantes) |
 
 ## Hooks / utils / lib

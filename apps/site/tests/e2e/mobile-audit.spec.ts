@@ -45,8 +45,8 @@ const AUDIT_CONVERSATION_ID = "e2e_audit_conversation";
 const ADMIN_ID = "e2e_audit_admin";
 
 /**
- * `openFilters` (carte 061) : la page est mesurée une seconde fois, panneau de filtres ouvert par son bouton
- * flottant (MobileFilterWrapper) ou, sur les pages refaites (carte 089, `/tournois`), par le bouton « Filtres ».
+ * `openFilters` (carte 061) : la page est mesurée une seconde fois, panneau de filtres ouvert par le bouton
+ * « Filtres » (avant les cartes 089 à 096, par un bouton flottant en forme d'entonnoir).
  * Sans cela, les cases à cocher des filtres ne sont jamais mesurées.
  */
 const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boolean }[] = [
@@ -86,6 +86,10 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/articles/edit/e2e_audit_article", connected: true },
   { path: "/articles/create", connected: true },
   { path: "/ressources", connected: false },
+  // Carte 096 : le panneau des filtres des ressources et les formulaires de proposition et de modification
+  { path: "/ressources", connected: false, openFilters: true },
+  { path: "/ressources/submit", connected: true },
+  { path: "/ressources/edit/e2e_audit_ressource", connected: true },
   { path: "/media", connected: false },
   { path: "/ligues", connected: false },
   // Carte 094 : la liste des ligues en lignes, le panneau des filtres, la fiche d'une ligue et son formulaire
@@ -331,6 +335,18 @@ test.describe("audit mobile", () => {
         },
       });
     });
+    // Carte 096 : une ressource validée du modérateur, avec des tags et une description longue (liste, menu « ⋯ », formulaire)
+    await withTestDb(async (prisma) => {
+      if (await prisma.resource.findUnique({ where: { id: "e2e_audit_ressource" } })) return;
+      await prisma.resource.create({
+        data: {
+          id: "e2e_audit_ressource", title: "Ressource de l'audit mobile au titre assez long pour passer à la ligne", authorId: E2E.modoId,
+          description: "Description de la ressource de l'audit, assez longue pour remplir plusieurs lignes de la carte sur un petit téléphone.",
+          link: "https://example.com/ressource-audit", status: "APPROVED",
+          tags: { connectOrCreate: [{ where: { name: "Audit" }, create: { name: "Audit" } }, { where: { name: "Outil" }, create: { name: "Outil" } }] },
+        },
+      });
+    });
     // Carte 093 : conversation à deux avec quelques messages (texte en clair : le site affiche tel quel un texte non chiffré)
     await withTestDb(async (prisma) => {
       if (await prisma.conversation.findUnique({ where: { id: AUDIT_CONVERSATION_ID } })) return;
@@ -354,10 +370,8 @@ test.describe("audit mobile", () => {
         await page.setViewportSize({ width: phone.width, height: phone.height });
         const response = await page.goto(target.path, { waitUntil: "networkidle" }).catch(() => null);
         if (target.openFilters) {
-          // Bouton flottant historique, ou bouton « Filtres » des pages refaites
-          const fab = page.locator(".mobile-filter-fab");
-          if (await fab.count()) await fab.click();
-          else await page.getByRole("button", { name: /^Filtres/ }).filter({ visible: true }).first().click();
+          // Bouton « Filtres » des pages refaites (le bouton flottant historique a disparu avec la carte 096)
+          await page.getByRole("button", { name: /^Filtres/ }).filter({ visible: true }).first().click();
           await page.waitForTimeout(600); // fin de l'animation du panneau qui monte du bas
         }
         const metrics = await measure(page);
