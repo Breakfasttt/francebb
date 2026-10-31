@@ -129,6 +129,8 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` (même service d'envoi de mails que le site), pour les liens de connexion par email ;
    - `CRON_SECRET` (`openssl rand -base64 32`) : secret de la purge nocturne (carte 118). Vercel lance chaque nuit à 3 h l'adresse `/api/cron/daily`, déclarée dans `apps/hub/vercel.json`, avec ce secret. Elle efface le journal d'audit de plus d'un an, les sessions et les liens de connexion expirés, et renvoie les événements que les applications n'ont pas encore reçus (carte 121). Sans `CRON_SECRET`, elle refuse de tourner.
 
+   - `HUB_THIRD_PARTY_APPS` : laisser vide tant qu'aucune application tierce n'est validée ; `1` pour ouvrir le hub aux applications tierces (carte 127). `HUB_THIRD_PARTY_QUOTA` : demandes par heure et par application tierce (1000 si vide).
+
    `BETTER_AUTH_SECRET` sert aussi à chiffrer les jetons Discord et Google en base et à calculer les empreintes du journal d'audit : **ne jamais le changer** une fois le hub en ligne, sinon ces jetons deviennent illisibles (les coachs devront se reconnecter avec Discord ou Google).
 4. **Enregistrer le site comme application cliente**, depuis `apps/hub` :
    ```bash

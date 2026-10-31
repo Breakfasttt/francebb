@@ -34,6 +34,9 @@ export default defineConfig({
       // Limite de requêtes active comme en production, pour la tester
       HUB_RATE_LIMIT: "1",
       CRON_SECRET: HUB_API_TEST_CRON_SECRET,
+      // Applications tierces ouvertes, avec un petit quota pour pouvoir le dépasser dans un test
+      HUB_THIRD_PARTY_APPS: "1",
+      HUB_THIRD_PARTY_QUOTA: "3",
     },
   },
 });

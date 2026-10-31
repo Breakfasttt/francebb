@@ -21,6 +21,7 @@ import { isNameAvailable, nameKeyOf, publicProfile, validateProfileUpdate } from
 import { listUserApplications, revokeUserApplication } from "./applications";
 import { writeAudit } from "./audit.mjs";
 import { cancelDeletion, requestDeletion } from "./accountDeletion";
+import { consumeThirdPartyQuota, isThirdPartyClient, thirdPartyAppsEnabled } from "./thirdParty";
 
 type EndpointContext = Parameters<typeof getSessionFromCtx>[0];
 type OAuthProviderOptions = Parameters<typeof getOAuthProviderApi>[1];
@@ -39,6 +40,11 @@ async function resolveCoach(ctx: EndpointContext, requiredScope: string) {
       throw new APIError("FORBIDDEN", { message: `Le jeton n'a pas la portée ${requiredScope}.`, code: "INSUFFICIENT_SCOPE" });
     }
     userId = typeof payload.sub === "string" ? payload.sub : undefined;
+    // Application tierce : quota de demandes par heure (carte 127)
+    const clientId = typeof payload.client_id === "string" ? payload.client_id : typeof payload.azp === "string" ? payload.azp : undefined;
+    if (clientId && (await isThirdPartyClient(clientId)) && !(await consumeThirdPartyQuota(clientId))) {
+      throw new APIError("TOO_MANY_REQUESTS", { message: "Quota de demandes de l'application dépassé, réessayer dans une heure.", code: "QUOTA_EXCEEDED" });
+    }
   } else {
     userId = (await getSessionFromCtx(ctx))?.user.id;
   }
@@ -59,6 +65,11 @@ export const passportPlugin = () =>
           // Compte en cours de suppression : plus de connexion aux applications, retour au passeport pour annuler
           matcher: (ctx) => ctx.path === "/oauth2/authorize",
           handler: createAuthMiddleware(async (ctx) => {
+            // Applications tierces refusées tant que le réglage d'ouverture n'est pas activé (carte 127)
+            const clientId = (ctx.query as Record<string, unknown> | undefined)?.client_id;
+            if (typeof clientId === "string" && !thirdPartyAppsEnabled() && (await isThirdPartyClient(clientId))) {
+              throw new APIError("FORBIDDEN", { message: "Les applications tierces ne sont pas encore ouvertes sur le passeport BBFrance." });
+            }
             const session = await getSessionFromCtx(ctx);
             if ((session?.user as Record<string, unknown> | undefined)?.deletionScheduledAt) throw ctx.redirect("/?suppression=en-cours");
           }),

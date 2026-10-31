@@ -1,6 +1,9 @@
 /**
- * Enregistre (une fois) une app BBFrance comme cliente OIDC de confiance du hub et affiche ses identifiants.
- * Usage : node --env-file=.env scripts/register-client.mjs <nom> <redirect_uri> [sortie.json]
+ * Enregistre (une fois) une application cliente OIDC du hub et affiche ses identifiants.
+ * Usage : node --env-file=.env scripts/register-client.mjs <nom> <redirect_uri> [sortie.json] [--tiers]
+ * - Sans --tiers : application BBFrance de confiance, sans écran de consentement, active tout de suite.
+ * - Avec --tiers : application tierce (carte 127). Écran de consentement, jamais l'email, et créée DÉSACTIVÉE :
+ *   l'activer avec scripts/validate-client.mjs après l'avoir examinée (procédure : docs/features/hub/README.md).
  * Écriture directe en base : l'API admin du plugin exige une session admin, inexistante au premier démarrage.
  * Le secret n'est affiché qu'à la création (stocké haché) : le copier dans le .env de l'app cliente
  * (HUB_CLIENT_ID / HUB_CLIENT_SECRET). Relancé avec un nom existant : ne recrée rien.
@@ -10,9 +13,10 @@ import { writeFileSync } from "node:fs";
 import { prisma } from "../lib/prisma.mjs";
 import { hashClientSecret } from "../lib/clientSecret.mjs";
 
-const [name, redirectUri, outputFile] = process.argv.slice(2);
+const thirdParty = process.argv.includes("--tiers");
+const [name, redirectUri, outputFile] = process.argv.slice(2).filter((arg) => arg !== "--tiers");
 if (!name || !redirectUri) {
-  console.error("Usage : register-client.mjs <nom> <redirect_uri> [sortie.json]");
+  console.error("Usage : register-client.mjs <nom> <redirect_uri> [sortie.json] [--tiers]");
   process.exit(1);
 }
 
@@ -38,15 +42,19 @@ await prisma.oauthClient.create({
     grantTypes: ["authorization_code", "refresh_token"],
     responseTypes: ["code"],
     // Droits demandables par l'application : à lister explicitement (une liste vide n'en autorise aucun)
-    scopes: ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"],
-    // App BBFrance : pas d'écran de consentement, déconnexion globale autorisée
-    skipConsent: true,
+    // Une application tierce ne peut jamais demander l'email du coach
+    scopes: thirdParty
+      ? ["openid", "profile", "offline_access", "bbfrance:profile", "bbfrance:profile:write"]
+      : ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"],
+    // Application BBFrance : pas d'écran de consentement ; application tierce : consentement du coach obligatoire
+    skipConsent: !thirdParty,
     enableEndSession: true,
     requirePKCE: true,
-    disabled: false,
+    disabled: thirdParty,
     createdAt: now,
     updatedAt: now,
   },
 });
 console.log(`Client "${name}" créé.\nHUB_CLIENT_ID=${clientId}\nHUB_CLIENT_SECRET=${clientSecret}`);
+if (thirdParty) console.log("Application tierce créée désactivée : l'activer avec scripts/validate-client.mjs après validation.");
 if (outputFile) writeFileSync(outputFile, JSON.stringify({ clientId, clientSecret }));

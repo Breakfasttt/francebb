@@ -10,7 +10,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 
 - **Le hub est invisible** (carte 073). Sur le site, en mode hub, `/auth/login` garde ses boutons habituels : Discord, Google et lien par email. Chacun passe par le hub, qui enchaîne directement sur Discord, Google ou l'envoi du lien : le coach ne voit du hub qu'un court « Redirection… », ou, pour l'email, « Vérifie ta boîte mail ». Le lien reçu ramène le coach connecté sur le site, à condition de l'ouvrir dans le même navigateur. Un coach déjà connecté au hub revient sur le site sans aucun écran.
 - `/sign-in` (sur le hub), formulaire complet : boutons « Continuer avec Discord » et « Continuer avec Google », puis un champ email et « Recevoir un lien de connexion ». En dev/test seulement, un formulaire de mot de passe. Il ne s'affiche que si l'application n'indique pas de moyen de connexion, ou si le moyen indiqué échoue (avec le message d'erreur), ou si le lien par email a expiré.
-- `/consent` : écran « Autoriser l'accès » (Autoriser / Refuser), affiché seulement pour une application tierce. Les applications BBFrance sont enregistrées sans écran de consentement.
+- `/consent` : écran « Autoriser <application> ? », affiché seulement pour une application tierce (carte 127). Il liste les droits demandés en phrases simples (`lib/scopes.ts`), et « Refuser » a la même taille qu'« Autoriser ». Les applications BBFrance sont enregistrées sans écran de consentement.
 - `/` (accueil du hub) = **le passeport Blood Bowl** (carte 120). Sans session : le formulaire de connexion, qui ramène ici. Avec session, en une colonne :
   - **Profil** : pseudo, NAF, région, avatar, langue, fuseau, enregistrés par `PATCH /api/v1/profile` ;
   - **Moyens de connexion** : Discord, Google, email ;
@@ -44,6 +44,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 | `apps/hub/lib/verifyEvent.mjs` | Code de référence, sans dépendance, à recopier dans chaque application pour vérifier un événement : signature, envoi de moins de 5 minutes, identifiant pas encore reçu. |
 | `apps/hub/app/page.tsx`, `app/passport/`, `lib/applications.ts`, `app/api/v1/applications/` | Pages du passeport (carte 120) : `ProfileForm`, `Applications` (droits expliqués en français), `Sessions` (routes de sessions de Better Auth), `SignOutButton`. `listUserApplications()` et `revokeUserApplication()` : applications qui ont accès au compte (jeton valable ou consentement) ; `validReturnLink()` : bouton de retour. Couleurs recopiées du thème par défaut dans `app/globals.css`. |
 | `apps/hub/lib/accountDeletion.ts`, `app/passport/DeleteAccount.tsx`, `app/api/v1/account/delete/` | Suppression du compte (carte 123). `requestDeletion()` : date d'effacement à 30 jours, autres appareils déconnectés, accès des applications retiré, `user.deletion_scheduled`, email. `cancelDeletion()` : `user.deletion_cancelled`. `processDeletions()` (tâche quotidienne) : rappel 7 jours avant, `user.deleted` à l'échéance, puis effacement au hub quand toutes les applications ont accusé réception. Restent seulement l'empreinte du pseudo (table `reservedName`), celle de l'email d'un compte banni (`bannedEmail`, refusé à l'inscription) et le journal d'audit sous forme d'empreinte. |
+| `apps/hub/lib/thirdParty.ts`, `scripts/validate-client.mjs`, `app/consent/` | Applications tierces (carte 127) : refusées tant que `HUB_THIRD_PARTY_APPS` n'est pas `1` ; créées désactivées par `register-client.mjs --tiers` (jamais l'email) ; activées après validation par `validate-client.mjs` ; quota de `HUB_THIRD_PARTY_QUOTA` demandes par heure sur `/api/v1/profile` (1000 par défaut, réponse 429 au-delà). |
 | `apps/hub/lib/audit.mjs` | `writeAudit()` : journal d'audit (table `auditLog`) des inscriptions, connexions, modifications, bannissements et suppressions. Identifiant et adresse IP remplacés par une empreinte HMAC (`auditHash`). Appelé par les `databaseHooks` de `lib/auth.ts` et par `scripts/ban-user.mjs`. |
 | `apps/hub/lib/purge.ts`, `app/api/cron/daily/route.ts`, `vercel.json` | Tâche nocturne (3 h, tâche planifiée Vercel, secret `CRON_SECRET`) : purge du journal de plus d'un an, des sessions et vérifications expirées et des compteurs de limite inactifs ; nouvel essai des événements non reçus. |
 | `apps/hub/next.config.ts` | En-têtes de sécurité de toutes les réponses : CSP, HSTS, nosniff, Referrer-Policy, Permissions-Policy. |
@@ -59,6 +60,13 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 | `apps/site/app/auth/logout/route.ts` | Déconnexion du site (POST seulement) : lit l'id_token côté serveur (`getToken`), puis redirection vers la page de déconnexion du hub (`/oauth2/end-session`). Appelée par `SignInButton` quand `hubLogout` est vrai. |
 
 Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi indiquée par le champ `service_documentation` de la découverte `<BETTER_AUTH_URL>/api/auth/.well-known/openid-configuration` (issuer `<BETTER_AUTH_URL>/api/auth`). Scopes `openid profile email offline_access bbfrance:profile bbfrance:profile:write`. L'id_token contient `name`, `picture`, `email`, `email_verified` et, avec `bbfrance:profile`, `naf`, `region`, `locale`, `zoneinfo`, `member_since` (aussi renvoyés par userinfo).
+
+## Valider une application tierce
+
+1. La personne qui la propose envoie : nom de l'application, adresse de retour (https), droits voulus et pourquoi, contact, politique de confidentialité.
+2. Vérifier que les droits demandés servent vraiment l'application (jamais l'email), que l'adresse appartient bien au demandeur et que la politique de confidentialité existe.
+3. Enregistrer l'application : `node scripts/register-client.mjs "<nom>" <adresse de retour> --tiers`. Transmettre l'identifiant et le secret par un canal privé.
+4. L'activer : `node scripts/validate-client.mjs "<nom>"` (`--disable` pour la couper). Le réglage `HUB_THIRD_PARTY_APPS=1` doit être actif sur le hub.
 
 ## Les pièges
 
@@ -105,5 +113,5 @@ Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi i
 ## État
 
 - Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`), hub invisible derrière les boutons du site (073 : parcours email testé sans aucun écran du hub, départ vers Discord et Google vérifié sans le suivre).
-- Fait aussi : documentation de l'API en JSON (117), durcissement de la sécurité (118), profil du coach lu et modifié par l'API (119), événements signés vers les applications (121), pages du passeport (120), suppression de compte orchestrée (123).
+- Fait aussi : documentation de l'API en JSON (117), durcissement de la sécurité (118), profil du coach lu et modifié par l'API (119), événements signés vers les applications (121), pages du passeport (120), suppression de compte orchestrée (123), applications tierces (127).
 - À faire : passeport Blood Bowl (épic E09, ADR-0007, cartes 118 à 127), domaine et déploiement (035), widget `<BBAccount/>` (039). La migration des comptes (036) est annulée par l'ADR-0004 : les membres se réinscriront via le hub. La base du hub est en Postgres (carte 046) ; `generate-schema.mjs` produit de vraies colonnes de listes (`String[]`, `Json`).

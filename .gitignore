@@ -38,6 +38,8 @@ backup.sql
 # Hub : identifiants et secret d'événements de l'application de test des tests d'API (apps/hub/scripts/api-test-setup.mjs)
 .api-client.json
 .api-hooks.json
+.api-third-party.json
+.api-third-party-pending.json
 # Hub : dernier lien de connexion par email écrit pendant les tests (apps/hub/lib/mail.ts, HUB_DEV_MAIL_FILE)
 .last-magic-link.json
 # Hub : client Prisma généré par `pnpm db:generate` (le site, lui, versionne le sien)
