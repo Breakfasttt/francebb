@@ -168,6 +168,21 @@ export default async function LoginPage(props: {
             </form>
           )}
 
+          {/* Mode hub, développement uniquement (carte 153) : sans moyen indiqué, le hub affiche son formulaire
+              complet, avec ses comptes de test. La connexion passe alors par le vrai chemin, hub compris. */}
+          {process.env.NODE_ENV === "development" && isHubAuthMode && (
+            <form
+              action={async () => {
+                "use server";
+                await signIn("hub", { redirectTo: callbackUrl });
+              }}
+            >
+              <Button type="submit" variant="secondary" size="tap" className="w-full">
+                Comptes de test du hub
+              </Button>
+            </form>
+          )}
+
           {/* Comptes de test (développement uniquement) */}
           {process.env.NODE_ENV === "development" && (
             <DevLoginSection

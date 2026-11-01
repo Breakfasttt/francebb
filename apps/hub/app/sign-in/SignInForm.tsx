@@ -11,6 +11,7 @@ import { authClient } from "@/lib/authClient";
 import { magicLinkCallbacks } from "@/lib/oauthResume";
 import { Button, Input } from "@bbfrance/ui";
 import CenteredCard from "../components/CenteredCard";
+import DevAccounts from "./DevAccounts";
 import { ErrorMessage, Muted } from "../components/Messages";
 
 const DEV_PASSWORD_LOGIN = process.env.NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN === "1";
@@ -73,6 +74,8 @@ export default function SignInForm({ errorCode, errorMessage, initialEmail }: { 
           <Button variant="secondary" size="tap" type="submit">Connexion mot de passe (dev)</Button>
         </form>
       )}
+      {/* Comptes de test : le navigateur ne les demande jamais en production (carte 153) */}
+      {process.env.NODE_ENV !== "production" && <DevAccounts />}
       {message && <Muted role="status">{message}</Muted>}
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </CenteredCard>

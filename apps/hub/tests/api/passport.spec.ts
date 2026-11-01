@@ -48,6 +48,24 @@ test("la page de connexion tient sur un téléphone, avec des cibles de 44 pixel
   }
 });
 
+test("en développement, un compte de test se crée et se connecte d'un clic (carte 153)", async ({ page }) => {
+  await page.goto("/");
+  const section = page.getByRole("region", { name: "Comptes de test (développement)" });
+  await section.getByRole("button", { name: "Créer un compte de test" }).click();
+  const account = section.getByRole("button", { name: /Coach test [0-9a-f]{4}/ }).first();
+  await expect(account).toBeVisible();
+  const name = (await account.locator("span").first().textContent()) ?? "";
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
+  for (const button of await section.getByRole("button").all()) {
+    expect((await button.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+  }
+  await page.screenshot({ path: "test-results/carte-153-comptes-de-test.png" });
+  await account.click();
+  await expect(page.getByRole("heading", { name: "Mon passeport Blood Bowl" })).toBeVisible();
+  await expect(page.getByLabel("Pseudo")).toHaveValue(name);
+});
+
 test("le coach modifie son profil depuis le passeport", async ({ page }) => {
   await signUpInPage(page);
   await page.goto("/");
