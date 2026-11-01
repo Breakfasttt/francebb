@@ -290,8 +290,16 @@ test.describe("Inventaire 12 : classement du Championnat de France", () => {
     await tab(page, TABS.rolling).click();
     await expect(visible(page.getByText(COACH.name, { exact: true }))).toBeVisible();
 
-    // Par roster : le meilleur coach de chaque roster
+    // Par roster : le meilleur coach de chaque roster. La vue reprend l'année choisie dans l'onglet « Année » (ici
+    // l'année précédente, où seul le roster « InvOrc » a joué), puis sa propre liste permet de changer d'année (carte 142).
     await tab(page, TABS.roster).click();
+    const rosterYearSelect = visible(page.getByRole("combobox", { name: "Choisir l'année du classement par roster" }));
+    await expect(rosterYearSelect).toHaveValue(`ROSTER_${PREVIOUS_YEAR}`);
+    await expect(visible(page.getByText(new RegExp(`roster en ${PREVIOUS_YEAR}`)))).toBeVisible();
+    await expect(visible(page.getByText("InvOrc", { exact: true }))).toBeVisible();
+    await expect(page.getByText("InvElf", { exact: true }).filter({ visible: true })).toHaveCount(0);
+    await rosterYearSelect.selectOption(`ROSTER_${YEAR}`);
+    await expect(visible(page.getByText(new RegExp(`roster en ${YEAR}`)))).toBeVisible();
     await expect(visible(page.getByText("InvOrc", { exact: true }))).toBeVisible();
     await expect(visible(page.getByText("InvElf", { exact: true }))).toBeVisible();
     await expect(visible(page.getByText(OTHER_COACH, { exact: true }))).toBeVisible();

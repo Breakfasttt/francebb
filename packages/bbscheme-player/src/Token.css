@@ -228,6 +228,9 @@
   pointer-events: none;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 215, 0, 0.2);
   white-space: nowrap;
+  /* Jamais plus large que l'écran (marge de 8 pixels de chaque côté) : un nom très long passe à la ligne */
+  max-width: calc(100vw - 16px);
+  box-sizing: border-box;
 }
 
 .tooltip-header {
@@ -242,6 +245,8 @@
 }
 
 .player-name-full {
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 0.85rem;
   font-weight: 800;
   color: #fff;

@@ -10,7 +10,9 @@
  *   bouton « + » sur ordinateur, un panneau qui monte du bas sur téléphone. Aucun outil n'a disparu ;
  * - un outil à options (lien, image, couleur…) ouvre son formulaire sous la barre sur ordinateur, et dans le panneau
  *   du bas sur téléphone, où il reste visible quel que soit l'endroit de la page ;
- * - taper « @ » dans la zone de texte ouvre la recherche d'un membre à mentionner ; Échap ferme l'outil ouvert ;
+ * - « @ » tapé en début de mot (au début du texte, après une espace ou un retour à la ligne) ouvre la recherche d'un
+ *   membre à mentionner ; ailleurs (par exemple dans une adresse électronique) il s'écrit simplement (carte 112).
+ *   Le caractère est toujours écrit : Échap ferme l'outil ouvert et le « @ » reste dans le texte ;
  * - « Aperçu » affiche le rendu sous la zone de texte sur ordinateur, et à sa place sur téléphone ;
  * - `screen` : sur téléphone, la barre d'outils reste collée en haut de l'écran pendant que la zone de texte grandit
  *   avec le message (pages de réponse, de modification et de nouveau sujet, qui occupent tout l'écran).
@@ -20,7 +22,7 @@
  */
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
-import { siteConfig } from "@/lib/siteConfig";
+import { uploadImageFile } from "@/common/utils/imageUpload";
 import {
   Avatar,
   Button,
@@ -39,7 +41,7 @@ import {
   DESKTOP_QUERY,
 } from "@bbfrance/ui";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Eye, List, ListOrdered, Loader2, Plus, Subscript, Superscript, Upload, X } from "lucide-react";
-import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import AIAssistantSheet from "./AIAssistantSheet";
 import { buildAIPrompt } from "./aiPrompt";
 import {
@@ -66,7 +68,6 @@ interface BBCodeEditorProps {
   screen?: boolean;
 }
 
-const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 const MORE_TOOLS_LABEL = "Plus d'outils de mise en forme";
 
 type Align = "center" | "left" | "right";
@@ -171,20 +172,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     return () => clearTimeout(timer);
   }, [mentionQuery]);
 
-  // « @ » dans la zone de texte ouvre la recherche d'un membre ; Échap ferme l'outil ouvert
+  // Échap ferme l'outil ouvert (la recherche de membre ouverte par « @ » est gérée dans handleTextareaChange)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "@" && !isPreview && activeTool !== "mention") {
-        const textarea = textareaRef.current;
-        if (textarea && document.activeElement === textarea) {
-          e.preventDefault();
-          setMoreOpen(false);
-          setActiveTool("mention");
-          setMentionQuery("");
-          setMentionResults([]);
-        }
-      }
-
       if (e.key === "Escape" && activeTool) {
         setActiveTool(null);
         textareaRef.current?.focus();
@@ -193,7 +183,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isPreview, activeTool]);
+  }, [activeTool]);
 
   // À l'ouverture d'un outil, le premier champ de son formulaire reçoit le focus (sur téléphone, le clavier s'ouvre)
   useEffect(() => {
@@ -226,6 +216,27 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
     setContent(newContent);
     if (onChange) onChange(newContent);
+  };
+
+  /**
+   * Saisie dans la zone de texte. Le « @ » s'écrit toujours ; s'il vient d'être tapé en début de mot (au tout début du
+   * texte, après une espace ou un retour à la ligne), la recherche d'un membre à mentionner s'ouvre en plus. Le test
+   * se fait sur le texte, et non sur la touche appuyée, parce que les claviers de téléphone Android n'indiquent
+   * souvent pas la touche (« Unidentified »). submitMention retire ce « @ » quand un membre est choisi.
+   */
+  const handleTextareaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const pos = e.target.selectionStart;
+    const typedOneChar = value.length === content.length + 1;
+    handleContentChange(value);
+    if (!typedOneChar || isPreview || activeTool === "mention") return;
+    const atWordStart = pos === 1 || (pos > 1 && /\s/.test(value[pos - 2]));
+    if (value[pos - 1] === "@" && atWordStart) {
+      setMoreOpen(false);
+      setActiveTool("mention");
+      setMentionQuery("");
+      setMentionResults([]);
+    }
   };
 
   const insertTag = (startTag: string, endTag: string = "") => {
@@ -470,23 +481,15 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     const file = e.target.files?.[0];
     if (!file) return;
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
     try {
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data.success) {
-        insertTag(mediaTag("img", data.data.url), "");
+      const result = await uploadImageFile(file);
+      if (result.success && result.url) {
+        insertTag(mediaTag("img", result.url), "");
         resetMediaOptions();
-        showToast("Image uploadée avec succès !", "success");
+        showToast("Image envoyée avec succès !", "success");
       } else {
-        showToast(`Erreur ImgBB: ${data.error?.message || "Requête rejetée"}`, "error");
+        showToast(result.error || "L'envoi de l'image a échoué.", "error");
       }
-    } catch {
-      showToast("Une erreur réseau est survenue lors de l'upload.", "error");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -977,7 +980,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         name={name}
         ref={textareaRef}
         value={content}
-        onChange={(e) => handleContentChange(e.target.value)}
+        onChange={handleTextareaChange}
         placeholder={placeholder}
         rows={rows}
         required={required}

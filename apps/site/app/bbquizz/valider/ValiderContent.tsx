@@ -35,11 +35,11 @@ export default function ValiderContent({ initialSuggestions }: { initialSuggesti
     const res = await handleQuizSuggestion(id, approve);
     setIsProcessing(null);
 
-    if (res) {
+    if (res.success) {
       toast.success(approve ? "Question approuvée et publiée" : "Question rejetée");
       setSuggestions(prev => prev.filter(s => s.id !== id));
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(res.error || "Une erreur est survenue");
     }
   };
 

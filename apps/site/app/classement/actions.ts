@@ -6,11 +6,11 @@
  
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
-import { isModerator } from "@/lib/roles";
+import { isAdmin, isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
 
 export type RankingFilter = 
-  | string // CDF_2026, CDF_2025, ROLLING, ROSTER, HOF, ARCHIVES
+  | string // CDF_2026, CDF_2025, ROLLING, ROSTER (année en cours), ROSTER_2025, HOF, ARCHIVES
   | "ROLLING" 
   | "ROSTER" 
   | "HOF"
@@ -60,9 +60,12 @@ export async function getRanking(filter: RankingFilter) {
   if (filter === "ROLLING") {
     startDate = new Date();
     startDate.setFullYear(now.getFullYear() - 1);
-  } else if (filter === "ROSTER") {
-    startDate = new Date(now.getFullYear(), 0, 1);
-    endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+  } else if (filter === "ROSTER" || filter.startsWith("ROSTER_")) {
+    // « ROSTER_2025 » : meilleur coach par roster sur l'année 2025 ; « ROSTER » seul : l'année civile en cours
+    const rosterYear = filter === "ROSTER" ? now.getFullYear() : parseInt(filter.split("_")[1]);
+    if (isNaN(rosterYear)) return [];
+    startDate = new Date(rosterYear, 0, 1);
+    endDate = new Date(rosterYear, 11, 31, 23, 59, 59);
     useTopX = 2;
     groupByRoster = true;
   } else if (filter === "HOF") {
@@ -81,7 +84,6 @@ export async function getRanking(filter: RankingFilter) {
     });
     
     if (archive) {
-      console.log(`[getRanking] Loading from archive for year ${year}`);
       return JSON.parse(archive.data);
     }
 
@@ -125,11 +127,6 @@ export async function getRanking(filter: RankingFilter) {
       }
     }
   });
-
-  console.log(`[getRanking] Filter: ${filter}, Results found: ${results.length}`);
-  if (results.length > 0) {
-    console.log(`[getRanking] First tournament type: ${results[0].tournament.typeCDF}`);
-  }
 
   if (groupByRoster) {
     return calculateRosterRanking(results);
@@ -599,7 +596,3 @@ function parseCustomRanking(html: string, year: number) {
   return { year, name: `CdF ${year} (Import Custom)`, rankingData: Array.from(coachMap.values()) };
 }
 
-// Helper pour vérifier le grade admin (à adapter selon vos rôles)
-function isAdmin(role: string) {
-  return role === "ADMIN" || role === "SUPERADMIN";
-}

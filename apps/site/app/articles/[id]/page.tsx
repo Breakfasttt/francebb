@@ -2,7 +2,7 @@
  * Page d'un article `/articles/[id]` (refonte, carte 095, ADR 0006).
  * Une seule colonne de lecture, centrée, sur ordinateur comme sur téléphone :
  * - en tête, les tags, le titre qui domine, puis l'auteur (avatar et lien vers son profil), la date de publication et
- *   le nombre de vues, et les actions (« Modifier » et le menu « ⋯ » de `ArticleActions`) ;
+ *   le nombre de vues, la ligue rattachée s'il y en a une (carte 140), et les actions (« Modifier » et le menu « ⋯ » de `ArticleActions`) ;
  * - l'avis de modération, s'il y a lieu ;
  * - le texte, limité à environ 70 caractères par ligne avec un interligne de 1,6 pour un confort de lecture ;
  * - les réactions émoji.
@@ -14,13 +14,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, EyeOff, ShieldAlert } from "lucide-react";
+import { ChevronLeft, EyeOff, Shield, ShieldAlert } from "lucide-react";
 import { Badge, Card } from "@bbfrance/ui";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
-import { parseBBCode } from "@/lib/bbcode";
 import { isModerator } from "@/lib/roles";
 import BackButton from "@/common/components/BackButton/BackButton";
+import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import ArticleActions from "./component/ArticleActions";
@@ -58,7 +58,8 @@ export default async function ArticleDetailPage({
       reactions: {
         include: { user: { select: { name: true } } }
       },
-      moderator: { select: { name: true } }
+      moderator: { select: { name: true } },
+      ligue: { select: { id: true, name: true, acronym: true } }
     }
   });
 
@@ -125,6 +126,23 @@ export default async function ArticleDetailPage({
                   <span aria-hidden="true"> · </span>
                   <span>{article.views} vue{article.views > 1 ? "s" : ""}</span>
                 </p>
+                {/* Ligue rattachée (carte 140) : lien vers sa fiche, ou nom saisi librement */}
+                {(article.ligue || article.ligueCustom) && (
+                  <p className="m-0 flex flex-wrap items-center gap-1.5 text-sm text-bb-text-muted">
+                    <Shield size={16} aria-hidden="true" className="shrink-0 text-bb-accent-text" />
+                    <span>Ligue :</span>
+                    {article.ligue ? (
+                      <Link
+                        href={`/ligue/${article.ligue.id}`}
+                        className="inline-flex min-h-11 items-center font-semibold break-words text-bb-accent-text underline focus-visible:outline-2 focus-visible:outline-bb-focus"
+                      >
+                        {article.ligue.name} ({article.ligue.acronym})
+                      </Link>
+                    ) : (
+                      <span className="font-semibold break-words text-bb-text">{article.ligueCustom}</span>
+                    )}
+                  </p>
+                )}
               </div>
             </div>
             <ArticleActions
@@ -159,11 +177,12 @@ export default async function ArticleDetailPage({
         )}
 
         {canRead ? (
-          // Texte de l'article (BBCode converti en HTML) ; atténué quand il est modéré
-          <div
-            className={`${proseClass} max-w-[70ch] ${article.isModerated ? "opacity-60" : ""}`}
-            dangerouslySetInnerHTML={{ __html: parseBBCode(article.content, undefined, sessionUser?.id) }}
-          />
+          // Texte de l'article (BBCode converti en HTML) ; atténué quand il est modéré. BBCodeContent, comme dans le
+          // forum, lance aussi le lecteur des schémas BBScheme insérés dans le texte (carte 140). La largeur de
+          // lecture est portée par un bloc autour : BBCodeContent impose sa propre largeur maximale (100 %).
+          <div className={`max-w-[70ch] ${article.isModerated ? "opacity-60" : ""}`}>
+            <BBCodeContent content={article.content} currentUserId={sessionUser?.id} className={proseClass} />
+          </div>
         ) : (
           <Card className="px-4 py-10 text-center text-bb-text-muted italic">
             Le contenu de cet article a été masqué par la modération.

@@ -63,7 +63,9 @@ export async function getDashboardStats() {
     try {
       // Taille de la base Postgres, en octets (fonction intégrée à Postgres)
       const [{ size }] = await prisma.$queryRaw<{ size: bigint }[]>`SELECT pg_database_size(current_database()) AS size`;
-      dbSize = `${(Number(size) / (1024 * 1024)).toFixed(2)} Mo`;
+      // Nombre écrit à la française : virgule décimale, deux chiffres après la virgule (« 9,50 Mo »)
+      const sizeInMb = (Number(size) / (1024 * 1024)).toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      dbSize = `${sizeInMb} Mo`;
     } catch (e) {
       console.error("Erreur lecture taille BDD:", e);
     }

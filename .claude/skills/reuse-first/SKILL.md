@@ -69,6 +69,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 |---|---|
 | Détection mobile | `common/hooks/useIsMobile.ts` (`useIsMobile()` et la constante `MOBILE_BREAKPOINT`, seuil unique de 1024 pixels) |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
+| Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur (carte 141) |
 | Zoom au pincement à deux doigts sur un cadre qui défile | `common/hooks/usePinchZoom.ts` (`usePinchZoom(ref, { zoom, min, max, onZoomChange })`) |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
 | Supprimer un compte membre (contenus publics rattachés au compte fantôme) | `lib/accountDeletion.ts` (`anonymizeAndDeleteUser`), interne au serveur ; l'appelant vérifie les droits |

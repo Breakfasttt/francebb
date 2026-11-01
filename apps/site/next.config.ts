@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
   // Paquets du monorepo consommés en sources TypeScript (pas d'étape de build)
   transpilePackages: ["@bbfrance/ui", "@bbfrance/bbscheme-player"],
   allowedDevOrigins: (process.env.ALLOWED_DEV_ORIGINS || 'localhost:3000').split(','),
+  // Carte 141 : les images des membres passent par l'action serveur `uploadImage` (app/imageUploadActions.ts).
+  // Une action serveur refuse par défaut un envoi de plus de 1 mégaoctet, trop peu pour une photo de téléphone.
+  // On monte à 4,5 mégaoctets, la limite de Vercel ; l'image elle-même est bornée à 4 Mo
+  // (common/utils/imageUploadLimits.ts).
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "4.5mb",
+    },
+  },
   // Images (carte 019) : pas de section « images », les réglages par défaut suffisent.
   // next/image n'optimise que les images du dossier public/ (converties en WebP, au format
   // affiché). Aucun site extérieur n'est autorisé (pas de « remotePatterns ») : les avatars

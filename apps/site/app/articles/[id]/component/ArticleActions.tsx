@@ -120,7 +120,7 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
 
       {canModerate && (
         <>
-          <ModerationModal isOpen={moderateOpen} onClose={() => setModerateOpen(false)} onConfirm={handleModerate} authorName={authorName} />
+          <ModerationModal isOpen={moderateOpen} onClose={() => setModerateOpen(false)} onConfirm={handleModerate} authorName={authorName} contentType="article" />
           <ConfirmDialog
             open={restoreOpen}
             onOpenChange={setRestoreOpen}

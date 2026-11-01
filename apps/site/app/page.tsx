@@ -11,6 +11,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import { TournamentCard } from "@/app/tournois/component/TournamentListItems";
 import { prisma } from "@/lib/prisma";
+import { TAKEN_PLACES_COUNT } from "@/lib/tournamentPlaces";
 import { Card, EmptyState } from "@bbfrance/ui";
 import {
   Award, BookOpen, ChevronRight, Dices, ExternalLink, FileText, HelpCircle, Layout, Map, MessageSquare, Plus, Shield, Trophy,
@@ -21,18 +22,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 // Cache pour les tournois (60 s). La clé a changé avec la carte 090 (champs de l'organisateur ajoutés), pour qu'un
-// ancien résultat gardé en cache, sans ces champs, ne soit jamais servi après la mise en ligne.
+// ancien résultat gardé en cache, sans ces champs, ne soit jamais servi après la mise en ligne. L'étiquette
+// « home-tournaments » permet de retrouver ce cache (le vider, ou le renouveler par `revalidateTag`) : le test
+// tests/e2e/inventaire/accueil.spec.ts s'en sert pour effacer la liste gardée d'un lancement précédent (carte 148).
 const getCachedTournaments = unstable_cache(
   async () => {
     return prisma.tournament.findMany({
       where: { date: { gte: new Date() }, isFinished: false, isCancelled: false },
       orderBy: { date: 'asc' },
       take: 3,
-      include: { organizer: { select: { name: true } }, topic: { select: { id: true } } }
+      include: { organizer: { select: { name: true } }, topic: { select: { id: true } }, _count: TAKEN_PLACES_COUNT }
     });
   },
-  ["next-tournaments-v2"],
-  { revalidate: 60 }
+  // Clé passée en v3 avec la carte 150 (comptage des inscriptions ajouté pour « x / y places »), pour la même raison
+  ["next-tournaments-v3"],
+  { revalidate: 60, tags: ["home-tournaments"] }
 );
 
 // Cache pour les settings (1h)
@@ -101,12 +105,14 @@ function DiscordIcon() {
 }
 
 /**
- * Tire un article au hasard parmi les `count` articles de la base (aucun s'il n'y en a pas). Le tirage est hors du
- * composant : React demande qu'un composant donne le même résultat à chaque rendu.
+ * Tire un article au hasard parmi les `count` articles visibles (non modérés) de la base, aucun s'il n'y en a pas.
+ * Le tirage est hors du composant : React demande qu'un composant donne le même résultat à chaque rendu.
  */
 async function pickRandomArticle(count: number) {
   if (count === 0) return null;
   const randomArticles = await prisma.article.findMany({
+    // Jamais un article masqué par la modération (carte 139), comme dans le compte de l'appelant
+    where: { isModerated: false },
     take: 1,
     skip: Math.floor(Math.random() * count),
     include: { author: true, tags: true }
@@ -134,7 +140,7 @@ export default async function Home() {
       where: { isTournamentForum: true },
       select: { id: true }
     }),
-    prisma.article.count()
+    prisma.article.count({ where: { isModerated: false } })
   ]);
 
   // 2. Sélection d'un article (on reste dynamique ici pour le hasard)

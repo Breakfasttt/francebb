@@ -13,6 +13,10 @@
  * administrateur (pour « Purger »), deux membres qui signalent un sujet, un membre banni, un sujet signalé deux fois,
  * deux ressources en attente et 25 lignes du journal (20 par page). Les lignes du journal sont datées du lendemain :
  * elles restent ainsi en tête du journal, devant les actions faites par les autres tests.
+ *
+ * Carte 144 : trois tests de plus, chacun avec ses propres données (nommées « Inv Mod … » elles aussi) : « Ignorer »
+ * un signalement depuis le menu « ⋯ », l'ouverture du journal qui n'écrit plus de ligne de purge vide, et l'ordre
+ * stable de la liste des bannis d'une page à l'autre (11 bannis datés du lendemain, à la même seconde).
  */
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { E2E, loginAs, withTestDb } from "../fixtures";
@@ -51,16 +55,32 @@ const logDetail = (n: number) => `Inv Mod détail ${String(n).padStart(2, "0")}`
 
 const USER_IDS = [MODO.id, ADMIN.id, REPORTER_1.id, REPORTER_2.id, BANNED.id];
 
+/** Sujet signalé puis ignoré (carte 144). */
+const IGNORED_TOPIC = { id: "e2e_invmod_topic_ign", title: "Inv Mod Sujet à ignorer" };
+const IGNORED_REASON = "Inv Mod raison d'un signalement abusif";
+
+/** Lot de 11 bannis datés du lendemain à la même seconde : seul l'identifiant les départage (carte 144). */
+const BANNED_LOT = Array.from({ length: 11 }, (_, i) => {
+  const n = String(i + 1).padStart(2, "0");
+  return { id: `e2e_invmod_lot${n}`, name: `Inv Mod Banni Lot ${n}` };
+});
+
 async function cleanUp() {
   await db(async (prisma) => {
-    await prisma.moderationReport.deleteMany({ where: { OR: [{ targetId: TOPIC.id }, { reporterId: { in: USER_IDS } }] } });
+    const lotIds = BANNED_LOT.map((user) => user.id);
+    await prisma.moderationReport.deleteMany({ where: { OR: [{ targetId: { in: [TOPIC.id, IGNORED_TOPIC.id] } }, { reporterId: { in: USER_IDS } }] } });
     await prisma.moderationLog.deleteMany({
-      where: { OR: [{ moderatorId: { in: USER_IDS } }, { targetId: { in: [TOPIC.id, BANNED.id, RESOURCE_A.id, RESOURCE_B.id] } }] },
+      where: {
+        OR: [
+          { moderatorId: { in: USER_IDS } },
+          { targetId: { in: [TOPIC.id, IGNORED_TOPIC.id, BANNED.id, RESOURCE_A.id, RESOURCE_B.id, ...lotIds] } },
+        ],
+      },
     });
     await prisma.resource.deleteMany({ where: { id: { in: [RESOURCE_A.id, RESOURCE_B.id] } } });
-    await prisma.post.deleteMany({ where: { topicId: TOPIC.id } });
-    await prisma.topic.deleteMany({ where: { id: TOPIC.id } });
-    await prisma.user.deleteMany({ where: { id: { in: USER_IDS } } });
+    await prisma.post.deleteMany({ where: { topicId: { in: [TOPIC.id, IGNORED_TOPIC.id] } } });
+    await prisma.topic.deleteMany({ where: { id: { in: [TOPIC.id, IGNORED_TOPIC.id] } } });
+    await prisma.user.deleteMany({ where: { id: { in: [...USER_IDS, ...lotIds] } } });
   });
 }
 
@@ -324,4 +344,96 @@ test("ressources : « Éditer », « Approuver » et « Refuser » une ressource
     expect((await prisma.resource.findUnique({ where: { id: RESOURCE_A.id } }))?.status).toBe("APPROVED");
     expect((await prisma.resource.findUnique({ where: { id: RESOURCE_B.id } }))?.status).toBe("REJECTED");
   });
+});
+
+test("« Ignorer » un signalement depuis le menu « ⋯ » : il est classé comme ignoré et inscrit au journal (carte 144)", async ({ page }) => {
+  // Données propres à ce test, recréées à chaque lancement (ordinateur puis téléphone)
+  await db(async (prisma) => {
+    await prisma.moderationReport.deleteMany({ where: { targetId: IGNORED_TOPIC.id } });
+    await prisma.moderationLog.deleteMany({ where: { targetId: IGNORED_TOPIC.id } });
+    await prisma.topic.upsert({
+      where: { id: IGNORED_TOPIC.id },
+      update: {},
+      create: { id: IGNORED_TOPIC.id, title: IGNORED_TOPIC.title, forumId: E2E.forumId, authorId: REPORTER_1.id },
+    });
+    await prisma.moderationReport.create({ data: { reason: IGNORED_REASON, reporterId: REPORTER_2.id, targetId: IGNORED_TOPIC.id, targetType: "TOPIC" } });
+  });
+
+  await loginAs(page, MODO.id);
+  await page.goto("/moderation?tab=reports_topic", { waitUntil: "networkidle" });
+  const card = entry(page, IGNORED_REASON);
+  await expect(card).toBeVisible();
+
+  await entryAction(page, card, /^Ignorer/);
+  const dialog = page.getByRole("dialog", { name: "Ignorer le signalement" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("textbox", { name: /Détails de l'action/ }).fill("Inv Mod signalement sans fondement");
+  await dialog.getByRole("button", { name: "Ignorer", exact: true }).click();
+  await expect(page.getByText("Signalement ignoré", { exact: true }).first()).toBeVisible();
+  await expect(entry(page, IGNORED_REASON)).toHaveCount(0);
+
+  await db(async (prisma) => {
+    const reports = await prisma.moderationReport.findMany({ where: { targetId: IGNORED_TOPIC.id } });
+    expect(reports.map((report) => report.status)).toEqual(["IGNORED"]);
+    const log = await prisma.moderationLog.findFirst({ where: { action: "REPORT_IGNORED", targetId: IGNORED_TOPIC.id, moderatorId: MODO.id } });
+    expect(log?.details).toBe("Inv Mod signalement sans fondement");
+  });
+});
+
+test("journal : l'ouvrir n'écrit pas de ligne « Nettoyage automatique » quand rien n'a été supprimé (carte 144)", async ({ page }) => {
+  const emptyPurges = () =>
+    db((prisma) => prisma.moderationLog.count({ where: { moderatorId: ADMIN.id, details: { contains: "(0 entrées supprimées)" } } }));
+  const before = await emptyPurges();
+
+  await loginAs(page, ADMIN.id);
+  await page.goto("/moderation?tab=logs", { waitUntil: "networkidle" });
+  await expect(page.getByRole("main").first().getByText(logDetail(1), { exact: true })).toBeVisible();
+  // La purge est lancée sans être attendue par la page : on lui laisse le temps de finir avant de compter
+  await page.waitForTimeout(2000);
+  await page.reload({ waitUntil: "networkidle" });
+  await page.waitForTimeout(2000);
+  expect(await emptyPurges()).toBe(before);
+});
+
+test("bannis : l'ordre reste le même d'une page à l'autre, chaque banni n'apparaît qu'une fois (carte 144)", async ({ page }) => {
+  // 11 bannis à la même date (le lendemain, pour passer devant les autres) : seul l'identifiant fixe leur ordre
+  const banDate = new Date(Date.now() + 24 * 3600 * 1000);
+  banDate.setMilliseconds(0);
+  const lotIds = BANNED_LOT.map((user) => user.id);
+  await db(async (prisma) => {
+    await prisma.moderationLog.deleteMany({ where: { targetId: { in: lotIds } } });
+    await prisma.user.deleteMany({ where: { id: { in: lotIds } } });
+    for (const user of BANNED_LOT) {
+      await prisma.user.create({
+        data: { id: user.id, name: user.name, email: `${user.id}@e2e.test`, hasFinishedOnboarding: true, isBanned: true, banReason: "Inv Mod lot" },
+      });
+      await prisma.moderationLog.create({ data: { action: "USER_BANNED", moderatorId: MODO.id, targetId: user.id, targetType: "USER", createdAt: banDate } });
+    }
+  });
+
+  try {
+    await loginAs(page, MODO.id);
+    const list = page.getByRole("list", { name: "Coachs bannis" });
+    /** Noms du lot affichés sur la page en cours, dans l'ordre de la liste. */
+    const shownLot = async () => {
+      const texts = await list.getByRole("listitem").allTextContents();
+      return texts.flatMap((text) => BANNED_LOT.filter((user) => text.includes(user.name)).map((user) => user.name));
+    };
+
+    for (let round = 0; round < 2; round++) {
+      await page.goto("/moderation?tab=reports_user_banned", { waitUntil: "networkidle" });
+      await expect(list.getByText(BANNED_LOT[0].name, { exact: true })).toBeVisible();
+      // Page 1 : les 10 premiers du lot, dans l'ordre de leur identifiant
+      await expect.poll(shownLot).toEqual(BANNED_LOT.slice(0, 10).map((user) => user.name));
+      // Page 2 : le onzième, et lui seul
+      await nextPage(page).click();
+      await expect(list.getByText(BANNED_LOT[10].name, { exact: true })).toBeVisible();
+      await expect.poll(shownLot).toEqual([BANNED_LOT[10].name]);
+    }
+  } finally {
+    await db(async (prisma) => {
+      await prisma.moderationLog.deleteMany({ where: { targetId: { in: lotIds } } });
+      await prisma.user.deleteMany({ where: { id: { in: lotIds } } });
+    });
+  }
 });

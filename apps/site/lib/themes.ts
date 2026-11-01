@@ -26,3 +26,11 @@ export const DEFAULT_SITE_THEME: SiteThemeId = "vestiaire";
 export function isSiteTheme(value: string): value is SiteThemeId {
   return SITE_THEMES.some((theme) => theme.id === value);
 }
+
+/**
+ * Nom du cookie qui garde le thème choisi sur cet appareil (carte 147). `ThemeProvider` l'écrit à chaque changement
+ * de thème ; la mise en page générale (`app/layout.tsx`) le lit pour un visiteur non connecté, afin que le serveur
+ * envoie la page directement dans ce thème (ADR 0005 : le thème est posé par le serveur). Pour un membre connecté,
+ * c'est le thème de son profil qui compte.
+ */
+export const THEME_COOKIE = "bbfrance_theme";

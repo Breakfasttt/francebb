@@ -13,6 +13,10 @@
  * - sur une archive : « Modifier l'archive » et, pour un administrateur, « Supprimer l'archive » (deux confirmations) ;
  * - sur l'onglet Archives : « Importer des archives » depuis l'ancien site (teamfrancebb.fr) et « Créer une archive ».
  * Les données, les droits et les actions serveur (`app/classement/actions.ts`) sont ceux d'avant la refonte.
+ *
+ * L'onglet « Par roster » porte sur une année : par défaut celle choisie dans l'onglet « Année », et une liste
+ * déroulante permet d'en choisir une autre (carte 142). L'import d'archives ouvre directement l'éditeur, qui interroge
+ * l'ancien site une seule fois et affiche lui-même l'erreur éventuelle.
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -43,7 +47,6 @@ import { isAdmin, isModerator } from "@/lib/roles";
 import {
   archiveYear,
   deleteArchive,
-  fetchLegacyRanking,
   getHallOfFame,
   getRanking,
   getRankingYears,
@@ -71,6 +74,8 @@ export default function ClassementPage() {
   const [isOverwriteConfirmOpen, setIsOverwriteConfirmOpen] = useState(false);
   const [importYear, setImportYear] = useState(new Date().getFullYear() - 1);
   const [isImportLoading, setIsImportLoading] = useState(false);
+  // Dernière année choisie dans l'onglet « Année » : l'onglet « Par roster » la reprend
+  const [chosenYear, setChosenYear] = useState<number | null>(null);
   const [pending, setPending] = useState(false);
 
   const user = session?.user as { role?: string } | undefined;
@@ -84,6 +89,10 @@ export default function ClassementPage() {
   const liveYears = availableYears.filter((y) => !y.isArchived);
   const archivedYears = availableYears.filter((y) => y.isArchived);
   const latestLiveYear = liveYears[0]?.year || new Date().getFullYear();
+  const isRosterView = filter === "ROSTER" || filter.startsWith("ROSTER_");
+  const rosterYear = filter.startsWith("ROSTER_") ? parseInt(filter.split("_")[1]) : new Date().getFullYear();
+  // Années proposées dans l'onglet « Par roster » : celles qui ont des résultats, et toujours celle affichée
+  const rosterYears = Array.from(new Set([rosterYear, ...availableYears.map((y) => y.year)])).sort((a, b) => b - a);
 
   useEffect(() => {
     async function loadYears() {
@@ -116,17 +125,20 @@ export default function ClassementPage() {
     fetchData();
   }, [filter]);
 
-  const activeTab: TabValue = isYearView ? "year" : isArchiveView ? "archives" : filter === "ROSTER" ? "roster" : filter === "HOF" ? "hof" : "rolling";
+  const activeTab: TabValue = isYearView ? "year" : isArchiveView ? "archives" : isRosterView ? "roster" : filter === "HOF" ? "hof" : "rolling";
 
   const changeTab = (value: string) => {
     if (value === "year") {
       const latest = availableYears.find((y) => !y.isArchived);
       setFilter(`CDF_${latest ? latest.year : new Date().getFullYear()}`);
+      setChosenYear(null);
     } else if (value === "archives") {
       const firstArchive = availableYears.find((y) => y.isArchived);
       setFilter(firstArchive ? `CDF_${firstArchive.year}` : "ARCHIVES");
+    } else if (value === "roster") {
+      setFilter(`ROSTER_${chosenYear ?? latestLiveYear}`);
     } else {
-      setFilter(value === "rolling" ? "ROLLING" : value === "roster" ? "ROSTER" : "HOF");
+      setFilter(value === "rolling" ? "ROLLING" : "HOF");
     }
   };
 
@@ -134,23 +146,21 @@ export default function ClassementPage() {
     setAvailableYears(await getRankingYears());
   }
 
-  async function handleImport() {
-    setIsImportLoading(true);
-    try {
-      const res = await fetchLegacyRanking(importYear);
-      if (res.error) {
-        toast.error(res.error);
-      } else if (availableYears.some((y) => y.year === importYear)) {
-        // Année déjà présente : on demande avant d'ouvrir l'éditeur avec les données importées
-        setIsOverwriteConfirmOpen(true);
-      } else {
-        router.push(`/classement/edit-archive?importYear=${importYear}`);
-      }
-    } catch {
-      toast.error("Erreur lors de l'import");
-    } finally {
-      setIsImportLoading(false);
+  // L'ancien site est interrogé une seule fois, par l'éditeur d'archives (`edit-archive/page.tsx`), qui affiche
+  // lui-même l'erreur si l'import échoue.
+  function handleImport() {
+    if (Number.isNaN(importYear)) {
+      toast.error("Indiquez l'année à importer.");
+      return;
+    }
+    if (availableYears.some((y) => y.year === importYear)) {
+      // Année déjà présente : on demande avant d'ouvrir l'éditeur avec les données importées
       setIsImportOpen(false);
+      setIsOverwriteConfirmOpen(true);
+    } else {
+      // La fenêtre reste ouverte (« Importation… ») pendant que l'éditeur interroge l'ancien site
+      setIsImportLoading(true);
+      router.push(`/classement/edit-archive?importYear=${importYear}`);
     }
   }
 
@@ -233,8 +243,8 @@ export default function ClassementPage() {
   const periodNote =
     filter === "ROLLING"
       ? "Les 4 meilleurs résultats de chaque coach sur les 12 derniers mois."
-      : filter === "ROSTER"
-        ? `Le meilleur coach de chaque roster en ${new Date().getFullYear()} (ses 2 meilleurs résultats avec ce roster).`
+      : isRosterView
+        ? `Le meilleur coach de chaque roster en ${rosterYear} (ses 2 meilleurs résultats avec ce roster).`
         : filter === "HOF"
           ? "Le podium de chaque année du Championnat de France."
           : isArchiveView
@@ -286,10 +296,30 @@ export default function ClassementPage() {
         {isYearView && liveYears.length > 1 && (
           <div className="flex flex-col gap-1.5 lg:w-64">
             <Label htmlFor="cdf-year">Année</Label>
-            <Select id="cdf-year" aria-label="Choisir l'année" value={filter} onChange={(e) => setFilter(e.target.value as RankingFilter)}>
+            <Select
+              id="cdf-year"
+              aria-label="Choisir l'année"
+              value={filter}
+              onChange={(e) => {
+                setFilter(e.target.value as RankingFilter);
+                setChosenYear(parseInt(e.target.value.split("_")[1]));
+              }}
+            >
               {liveYears.map((y) => (
                 <option key={y.year} value={`CDF_${y.year}`}>
                   Année {y.year} (calcul direct)
+                </option>
+              ))}
+            </Select>
+          </div>
+        )}
+        {isRosterView && (
+          <div className="flex flex-col gap-1.5 lg:w-64">
+            <Label htmlFor="cdf-roster-year">Année</Label>
+            <Select id="cdf-roster-year" aria-label="Choisir l'année du classement par roster" value={`ROSTER_${rosterYear}`} onChange={(e) => setFilter(e.target.value as RankingFilter)}>
+              {rosterYears.map((year) => (
+                <option key={year} value={`ROSTER_${year}`}>
+                  Année {year}
                 </option>
               ))}
             </Select>
@@ -326,7 +356,7 @@ export default function ClassementPage() {
         <EmptyState icon={<History size={40} />} title="Aucun résultat enregistré pour cette période.">
           Les tournois terminés et validés par les commissaires apparaîtront ici.
         </EmptyState>
-      ) : filter === "ROSTER" ? (
+      ) : isRosterView ? (
         <RosterList entries={ranking} />
       ) : (
         <RankingList entries={ranking} />
@@ -439,6 +469,7 @@ export default function ClassementPage() {
         confirmLabel="Continuer"
         onConfirm={() => {
           setIsOverwriteConfirmOpen(false);
+          setIsImportLoading(true);
           router.push(`/classement/edit-archive?importYear=${importYear}`);
         }}
       />

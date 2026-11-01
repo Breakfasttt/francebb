@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="41" height="41" viewBox="0 0 41 41">
+  <defs>
+    <filter id="flou" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="1.5"/>
+    </filter>
+  </defs>
+  <ellipse cx="20" cy="37" rx="12" ry="3.5" transform="skewX(-35) translate(26 0)" fill="#000000" fill-opacity="0.3" filter="url(#flou)"/>
+</svg>

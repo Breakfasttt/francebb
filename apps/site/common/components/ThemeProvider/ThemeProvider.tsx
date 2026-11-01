@@ -8,9 +8,13 @@
  * - un visiteur (`preferStoredTheme`) : le dernier thème mémorisé sur cet appareil, s'il y en a un.
  * Un thème choisi à l'instant (`setTheme`) s'affiche tout de suite, en attendant que le serveur renvoie le profil à jour.
  * L'accès au localStorage est protégé : il peut être bloqué (navigation privée, réglages du navigateur).
+ *
+ * Le thème affiché est aussi recopié dans le cookie `bbfrance_theme` (carte 147). Pour un visiteur, la mise en page
+ * générale (`app/layout.tsx`) lit ce cookie et le passe en `defaultTheme` : la page arrive du serveur déjà dans le bon
+ * thème, sans passer un instant par le thème par défaut (ADR 0005).
  */
 import React, { createContext, useContext, useEffect, useState, useSyncExternalStore } from 'react';
-import { DEFAULT_SITE_THEME, SITE_THEMES } from '@/lib/themes';
+import { DEFAULT_SITE_THEME, SITE_THEMES, THEME_COOKIE } from '@/lib/themes';
 
 type Theme = string;
 
@@ -35,6 +39,19 @@ function storeTheme(storageKey: string, theme: string) {
     localStorage.setItem(storageKey, theme);
   } catch {
     // Mémoire du navigateur indisponible : le thème reste appliqué pour cette page seulement
+  }
+}
+
+/**
+ * Écrit le thème dans un cookie gardé un an, envoyé au serveur avec chaque page de ce site (`path=/`). Ce n'est
+ * qu'une préférence d'affichage : aucune donnée personnelle, aucun suivi.
+ */
+function storeThemeCookie(theme: string) {
+  try {
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie = `${THEME_COOKIE}=${encodeURIComponent(theme)}; path=/; max-age=31536000; SameSite=Lax${secure}`;
+  } catch {
+    // Cookies refusés : le thème sera de nouveau posé après le chargement, comme avant la carte 147
   }
 }
 
@@ -67,9 +84,10 @@ export function ThemeProvider({
   const baseTheme = preferStoredTheme ? (storedTheme || defaultTheme) : defaultTheme;
   const theme = picked && picked.profileTheme === defaultTheme ? picked.theme : baseTheme;
 
-  // Synchronise la page (attribut data-theme) et, pour un membre, la mémoire du navigateur
+  // Synchronise la page (attribut data-theme), le cookie lu par le serveur et, pour un membre, la mémoire du navigateur
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    storeThemeCookie(theme);
     if (!preferStoredTheme) storeTheme(storageKey, theme);
   }, [theme, preferStoredTheme, storageKey]);
 

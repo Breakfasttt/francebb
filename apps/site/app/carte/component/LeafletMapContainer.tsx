@@ -56,11 +56,15 @@ function MapResizer({ isFullscreen }: { isFullscreen: boolean }) {
   return null;
 }
 
-/** Repère de couleur (rouge pour un tournoi, doré pour une ligue). */
+/**
+ * Repère de couleur (rouge pour un tournoi, doré pour une ligue). Les images sont dessinées pour le site et servies
+ * par lui (`public/images/carte/`) : avant la carte 138, elles venaient de deux sites extérieurs, et les repères
+ * disparaissaient si l'un d'eux ne répondait plus.
+ */
 const markerIcon = (color: "red" | "gold") =>
   L.icon({
-    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconUrl: `/images/carte/marker-${color}.svg`,
+    shadowUrl: "/images/carte/marker-shadow.svg",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],

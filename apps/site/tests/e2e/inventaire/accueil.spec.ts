@@ -17,9 +17,39 @@
  *
  * Le lien Discord de l'accueil vient d'un réglage de l'administration gardé en cache une heure par le site : le test
  * vérifie seulement que la tuile existe et s'ouvre dans un nouvel onglet, sans changer ce réglage.
+ *
+ * La liste des prochains tournois est gardée en cache 60 secondes par le site (`unstable_cache`, étiquette
+ * « home-tournaments »). Ce cache est enregistré sur le disque dans `.next` et survit au redémarrage du serveur de test,
+ * alors que la base de test est recréée : avant de préparer ses données, le test efface donc ce cache du disque
+ * (`clearHomeTournamentsCache`), puis recharge l'accueil jusqu'à voir ses tournois (carte 148).
  */
+import fs from "node:fs";
+import path from "node:path";
 import { test, expect, type Page } from "@playwright/test";
 import { E2E, loginAs, withTestDb } from "../fixtures";
+
+/**
+ * Efface du disque la liste des prochains tournois gardée en cache par l'accueil (`app/page.tsx`, étiquette
+ * « home-tournaments »). Next.js range ce cache dans `.next/dev/cache/fetch-cache` (serveur de développement, celui
+ * des tests) ou `.next/cache/fetch-cache` : un fichier JSON par entrée, avec ses étiquettes (`tags`). Les autres
+ * entrées ne sont pas touchées. Un fichier illisible ou déjà supprimé est ignoré.
+ */
+function clearHomeTournamentsCache() {
+  // Dossier .next de l'application, à partir de ce fichier (tests/e2e/inventaire/)
+  const nextDir = path.join(__dirname, "..", "..", "..", ".next");
+  for (const dir of [path.join(nextDir, "dev", "cache", "fetch-cache"), path.join(nextDir, "cache", "fetch-cache")]) {
+    if (!fs.existsSync(dir)) continue;
+    for (const file of fs.readdirSync(dir)) {
+      const full = path.join(dir, file);
+      try {
+        const entry = JSON.parse(fs.readFileSync(full, "utf-8")) as { tags?: string[] };
+        if (entry.tags?.includes("home-tournaments")) fs.rmSync(full, { force: true });
+      } catch {
+        // Fichier qui n'est pas une entrée du cache, ou supprimé entre-temps
+      }
+    }
+  }
+}
 
 /**
  * Accès à la base de test. La petite base locale coupe parfois une connexion pendant que le site garde la sienne
@@ -56,6 +86,7 @@ const SETTINGS: Record<string, string | null> = {
 const previousSettings = new Map<string, string | null>();
 
 test.beforeAll(async () => {
+  clearHomeTournamentsCache();
   await db(async (prisma) => {
     const category = await prisma.category.findUniqueOrThrow({ where: { name: E2E.categoryName } });
     await prisma.forum.upsert({
@@ -63,7 +94,10 @@ test.beforeAll(async () => {
       update: {},
       create: { id: FORUM_ID, name: "Inv Accueil Forum", categoryId: category.id, isTournamentForum: true, order: 95 },
     });
-    // Quatre tournois dans les heures qui viennent : ils passent avant tout autre tournoi à venir de la base
+    // Quatre tournois dans les heures qui viennent : ils passent avant tout autre tournoi à venir de la base.
+    // Restes d'un lancement interrompu : les messages d'abord, sinon la suppression des sujets échoue sur la
+    // contrainte Post_topicId_fkey (un message doit appartenir à un sujet existant).
+    await prisma.post.deleteMany({ where: { topicId: { in: TOURNAMENTS.map((t) => t.topicId) } } });
     await prisma.topic.deleteMany({ where: { id: { in: TOURNAMENTS.map((t) => t.topicId) } } });
     await prisma.tournament.deleteMany({ where: { id: { in: TOURNAMENTS.map((t) => t.id) } } });
     for (const [index, t] of TOURNAMENTS.entries()) {

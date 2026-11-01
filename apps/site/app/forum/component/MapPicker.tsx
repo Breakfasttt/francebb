@@ -66,16 +66,16 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
     }
   }, [initialCenter, initialSearch]);
 
-  // Correction icône par défaut
-  useEffect(() => {
-    const DefaultIcon = L.icon({
-      iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-      shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41]
-    });
-    L.Marker.prototype.options.icon = DefaultIcon;
-  }, []);
+  // Repère du lieu choisi : le dessin rouge servi par le site (`public/images/carte/`), le même que sur la carte
+  // /carte. Avant la carte 150, l'image venait d'un site extérieur (unpkg.com) et le repère disparaissait si ce site
+  // ne répondait plus.
+  const markerIcon = useMemo(() => L.icon({
+    iconUrl: "/images/carte/marker-red.svg",
+    shadowUrl: "/images/carte/marker-shadow.svg",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    shadowSize: [41, 41],
+  }), []);
 
   const handleMapClick = useCallback(async (lat: number, lng: number) => {
     setPosition([lat, lng]);
@@ -155,7 +155,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <MapEvents onClick={handleMapClick} />
-            {position && <Marker position={position} draggable={true} eventHandlers={{
+            {position && <Marker position={position} icon={markerIcon} draggable={true} eventHandlers={{
               dragend: (e) => {
                 const marker = e.target;
                 const pos = marker.getLatLng();

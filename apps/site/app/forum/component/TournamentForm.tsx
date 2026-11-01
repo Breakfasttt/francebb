@@ -74,6 +74,8 @@ interface TournamentFormProps {
     typeCDF: string | null;
     ligueId: string | null;
     ligueCustom: string | null;
+    /** Ligue du site déjà rattachée : affichée choisie dans `LigueSearch`, sinon elle serait perdue à l'enregistrement. */
+    ligue?: { id: string; name: string; acronym: string; region: string | null; geographicalZone: string | null } | null;
     commissaires: any[];
     topicId: string;
     firstPostId: string;
@@ -224,7 +226,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
             </div>
             <div className="flex flex-col gap-1.5">
               <p className="m-0 text-sm font-semibold text-bb-text">Ligue organisatrice (facultatif)</p>
-              <LigueSearch initialCustom={initialData?.ligueCustom} placeholder="Rechercher une ligue ou saisir un nom personnalisé..." />
+              <LigueSearch initialLigue={initialData?.ligue} initialCustom={initialData?.ligueCustom} placeholder="Rechercher une ligue ou saisir un nom personnalisé..." />
               <p className={hint}>Laissez vide si le tournoi n&apos;est rattaché à aucune ligue.</p>
             </div>
           </Block>

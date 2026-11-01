@@ -78,12 +78,18 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     }
   }
 
-  const currentPage = Math.max(1, parseInt(pageStr || '1', 10));
-  const skip = (currentPage - 1) * POSTS_PER_PAGE;
+  // Le nombre de messages est lu d'abord : le numéro de page demandé est ramené entre 1 et la
+  // dernière page AVANT la lecture des messages, sinon une adresse comme « ?page=99 » (lien ancien
+  // ou mal recopié) affichait une liste vide sous une pagination pointant sur la dernière page.
+  const totalPostCount = await prisma.post.count({ where: { topicId: id } });
+  const totalPages = Math.max(1, Math.ceil(totalPostCount / POSTS_PER_PAGE));
+  const requestedPage = parseInt(pageStr || '1', 10) || 1;
+  const safeCurrentPage = Math.min(Math.max(1, requestedPage), totalPages);
+  const skip = (safeCurrentPage - 1) * POSTS_PER_PAGE;
 
   const isUserModerator = isModerator(session?.user?.role);
 
-  const [topic, totalPostCount, lastPost, allForums] = await Promise.all([
+  const [topic, lastPost, allForums] = await Promise.all([
     prisma.topic.findUnique({
       where: { id },
       include: {
@@ -129,7 +135,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         }
       }
     }),
-    prisma.post.count({ where: { topicId: id } }),
     prisma.post.findFirst({
       where: { topicId: id },
       orderBy: [{ createdAt: "desc" }, { id: "desc" }],
@@ -156,7 +161,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   // Si c'est un tournoi et qu'on n'est pas sur la page 1, on récupère le premier message
   let firstPostForTournament = null;
-  if (topic.tournament && currentPage > 1) {
+  if (topic.tournament && safeCurrentPage > 1) {
     firstPostForTournament = await prisma.post.findFirst({
       where: { topicId: id },
       orderBy: [{ createdAt: "asc" }, { id: "asc" }],
@@ -174,9 +179,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   }
 
   const displayViews = topic.views || 0;
-
-  const totalPages = Math.max(1, Math.ceil(totalPostCount / POSTS_PER_PAGE));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
 
   const isTournamentOrganizer = topic.tournament?.organizerId === currentUserId;
   const isTournamentCommissaire = topic.tournament?.commissaires.some((c: any) => c.id === currentUserId);
@@ -315,6 +317,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 roleLabels={roleLabels}
                 isFirstPostAlwaysVisible={true}
                 isBlocked={blockedUserIds.includes(firstPostForTournament.authorId)}
+                canReply={canReply}
               />
             )}
 
@@ -335,6 +338,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 tournamentId={topic.tournament?.id}
                 firstPostId={topic.posts[0]?.id}
                 isBlocked={blockedUserIds.includes(post.authorId)}
+                canReply={canReply}
               />
             ))}
 
@@ -346,7 +350,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             {canReply ? (
               <QuickReply topicId={id} />
             ) : !currentUserId ? null : (
-              <Card id="quick-reply-area" className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">
+              // Pas d'ancre « quick-reply-area » ici : « Citer » et « Répondre » la cherchent pour y écrire une
+              // réponse, et la trouver sur cet encart les faisait seulement défiler jusqu'à lui (carte 111)
+              <Card className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">
                 <LockIcon size={32} aria-hidden="true" className="text-bb-danger-text" />
                 <h2 className="m-0 border-0 p-0 text-lg font-bold text-bb-danger-text normal-case not-italic">Sujet verrouillé</h2>
                 <p className="m-0 max-w-[50ch] text-sm text-bb-text-muted">

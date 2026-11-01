@@ -10,7 +10,10 @@
 import Link from "next/link";
 import { SearchX } from "lucide-react";
 import { Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { canonicalRegion, DEPARTMENTS_BY_REGION, withoutAccents } from "@/lib/france";
+import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { TournamentFilterAside, TournamentListControls } from "@/app/tournois/component/TournamentFilters";
 import { TournamentCard, TournamentRow } from "@/app/tournois/component/TournamentListItems";
@@ -25,6 +28,19 @@ export default async function TournamentsPage({
   // La page est accessible à tous
 
   const params = await searchParams;
+
+  // Ancienne adresse avec un nom de région sans accents (« ?region=Ile-de-France », avant la carte 129) : on renvoie
+  // vers la même adresse avec le nom officiel, pour que la liste des régions et la pastille affichent le bon choix.
+  if (typeof params.region === "string") {
+    const official = canonicalRegion(params.region);
+    if (official && official !== params.region) {
+      const next = new URLSearchParams();
+      for (const [key, value] of Object.entries(params)) {
+        if (typeof value === "string") next.set(key, key === "region" ? official : value);
+      }
+      redirect(`/tournois?${next.toString()}`);
+    }
+  }
 
   const query = params.query as string | undefined;
   const region = params.region as string | undefined;
@@ -72,13 +88,14 @@ export default async function TournamentsPage({
 
   if (query) where.name = { contains: query, mode: "insensitive" };
   if (ligueId) where.ligueId = ligueId;
-  if (region) where.region = region;
+  // Le formulaire de tournoi enregistre le nom accentué (« Île-de-France ») ; d'anciens tournois peuvent porter le
+  // nom sans accents : les deux écritures sont acceptées.
+  if (region) where.region = { in: [...new Set([region, withoutAccents(region)])] };
   if (dept) where.departement = dept;
   if (edition) where.gameEdition = edition;
   if (ruleset) where.ruleset = ruleset;
   if (days) where.days = days;
   if (structure) where.structure = structure;
-  if (minPlaces) where.maxParticipants = { gte: minPlaces };
   if (lodging) where.lodgingAtVenue = true;
   if (meals) where.mealsIncluded = true;
   if (friday) where.fridayArrival = true;
@@ -100,6 +117,42 @@ export default async function TournamentsPage({
   else if (sort === "participants_asc") orderBy = { maxParticipants: "asc" };
   else if (sort === "participants_desc") orderBy = { maxParticipants: "desc" };
 
+  // « Places restantes min. » (carte 130) : places restantes = places maximales moins places prises. La base ne sait
+  // pas faire ce calcul dans un filtre : on lit d'abord les tournois qui passent les autres filtres (peu nombreux),
+  // on garde ceux qui ont assez de places, puis la requête paginée ne cherche que parmi eux.
+  if (minPlaces && minPlaces > 0) {
+    const candidates = await prisma.tournament.findMany({
+      where,
+      select: {
+        id: true,
+        maxParticipants: true,
+        currentParticipants: true,
+        isTeam: true,
+        _count: TAKEN_PLACES_COUNT,
+      },
+    });
+    const withEnoughPlaces = candidates.filter((tournament) => {
+      // Pas de nombre maximal : places illimitées
+      if (tournament.maxParticipants == null) return true;
+      // Places prises : calcul partagé avec l'affichage « x / y places » (lib/tournamentPlaces.ts, carte 150)
+      return tournament.maxParticipants - takenPlaces(tournament) >= minPlaces;
+    });
+    where.id = { in: withEnoughPlaces.map((tournament) => tournament.id) };
+  }
+
+  // Régions et départements de la liste de référence, la même que celle du formulaire de tournoi (carte 129)
+  const [regionRows, departmentRows] = await Promise.all([
+    prisma.referenceData.findMany({ where: { group: "REGION_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
+    prisma.referenceData.findMany({ where: { group: "DEPARTEMENT_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
+  ]);
+  // Liste de référence vide (base neuve) : on se rabat sur la liste des régions de lib/france.ts
+  const places = {
+    regions: regionRows.length > 0 ? regionRows : Object.keys(DEPARTMENTS_BY_REGION).map((key) => ({ key, label: key })),
+    departments: departmentRows.length > 0
+      ? departmentRows
+      : Object.values(DEPARTMENTS_BY_REGION).flat().sort().map((key) => ({ key, label: key })),
+  };
+
   const total = await prisma.tournament.count({ where });
   const totalPages = Math.ceil(total / limit);
 
@@ -110,7 +163,9 @@ export default async function TournamentsPage({
     take: limit,
     include: {
       organizer: true,
-      topic: { select: { id: true } }
+      topic: { select: { id: true } },
+      // Comptage des inscriptions pour l'affichage « x / y places » (carte 150)
+      _count: TAKEN_PLACES_COUNT,
     }
   });
 
@@ -135,10 +190,10 @@ export default async function TournamentsPage({
       />
 
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[272px_minmax(0,1fr)] lg:items-start lg:gap-6">
-        <TournamentFilterAside />
+        <TournamentFilterAside places={places} />
 
         <section aria-label="Tournois trouvés" className="flex min-w-0 flex-col gap-4">
-          <TournamentListControls total={total} />
+          <TournamentListControls total={total} places={places} />
 
           {tournaments.length > 0 ? (
             <>

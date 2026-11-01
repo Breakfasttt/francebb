@@ -29,6 +29,8 @@ interface ArticleFormProps {
     tags: string[];
     ligueId?: string | null;
     ligueCustom?: string | null;
+    /** Ligue déjà rattachée (modification), affichée comme choisie dans la recherche de ligue (carte 140). */
+    ligue?: { id: string; name: string; acronym: string; region: string | null; geographicalZone: string | null } | null;
   };
   isEdit?: boolean;
 }
@@ -155,6 +157,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
               <Label htmlFor="article-ligue">Ligue rattachée (facultatif)</Label>
               <LigueSearch
                 inputId="article-ligue"
+                initialLigue={initialData?.ligue}
                 initialCustom={initialData?.ligueCustom}
                 placeholder="Rechercher une ligue…"
                 onChange={(lid, lcustom) => {

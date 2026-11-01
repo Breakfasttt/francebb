@@ -56,6 +56,11 @@ export default async function HowToPlayPage() {
     }
   ];
 
+  // Sections réellement affichées : une section vide est masquée, sauf la première (carte 132). Les étapes sont
+  // numérotées parmi les sections affichées ; le lien « Prochaine étape » vise la section affichée suivante, et
+  // n'apparaît pas sur la dernière section affichée (il ne mènerait nulle part).
+  const visibleSections = sections.filter((section, index) => index === 0 || Boolean(settings[section.key]));
+
   return (
     <div className="mx-auto w-full max-w-[880px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
@@ -66,9 +71,9 @@ export default async function HowToPlayPage() {
       />
 
       <div className="flex flex-col gap-4 lg:gap-6">
-        {sections.map((section, index) => {
+        {visibleSections.map((section, index) => {
           const content = settings[section.key];
-          if (!content && index !== 0) return null;
+          const nextSection = visibleSections[index + 1];
           const Icon = section.icon;
 
           return (
@@ -103,10 +108,10 @@ export default async function HowToPlayPage() {
                     dangerouslySetInnerHTML={{ __html: parseBBCode(content || "Contenu en cours de rédaction...") }}
                   />
 
-                  {index < sections.length - 1 && (
+                  {nextSection && (
                     <div className="flex justify-end border-t border-bb-border pt-4">
                       <Button asChild variant="secondary" size="tap">
-                        <a href={`#${sections[index + 1].key}`} className="no-underline">
+                        <a href={`#${nextSection.key}`} className="no-underline">
                           Prochaine étape <ChevronRight size={18} aria-hidden="true" />
                         </a>
                       </Button>

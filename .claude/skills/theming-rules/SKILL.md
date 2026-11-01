@@ -54,7 +54,7 @@ Désactivé par défaut, parce qu'il ralentit les téléphones modestes. Un thè
 - `apps/site/app/tailwind.css` : point d'entrée (preflight de Tailwind actif, variables, utilitaires).
 - `apps/site/app/globals.css` : fond de page, échelle des superpositions, animation commune.
 - `apps/site/common/components/BBCodeContent/bbcode.css` : la seule feuille du rendu BBCode (spoiler, accordéon, galerie).
-- Un composant garde un fichier CSS seulement pour ce que Tailwind exprime mal (sélecteurs `:has()`, animations, cadres de rang) : `AppShell.css`, `MorePanel.css`, `ThemePicker.css`, `UserAvatar.css`, `app/bbscheme/component/Dugout.css`, et les feuilles du lecteur `packages/bbscheme-player`. Ces fichiers n'utilisent que des `var(--bb-…)`.
+- Un composant garde un fichier CSS seulement pour ce que Tailwind exprime mal (sélecteurs `:has()`, animations, cadres de rang) : `AppShell.css`, `MorePanel.css`, `ThemePicker.css`, `UserAvatar.css`, et les feuilles du lecteur `packages/bbscheme-player`. Ces fichiers n'utilisent que des `var(--bb-…)`.
 - Le preflight de Tailwind (remise à zéro des styles du navigateur) est actif : un titre, une liste ou un paragraphe n'a ni taille ni marge tant qu'on ne lui en donne pas par des classes.
 
 **Piège du cache de Turbopack.** Après un changement des `@import` ou des couches de `tailwind.css` (ou de `tokens.css`), le serveur de développement peut continuer à servir l'ancienne feuille compilée. Arrêter le serveur, supprimer le dossier `apps/site/.next/dev`, puis relancer. Turbopack est l'outil qui compile le site pendant le développement ; `.next/dev` est son cache.

@@ -51,7 +51,13 @@ export const authConfig = {
         const onboardingSync = request.cookies.get("onboarding_sync")?.value === "true";
 
         if (!hasFinishedOnboarding && !onboardingSync && !isOnboardingPage && !nextUrl.pathname.startsWith("/auth/login") && !nextUrl.pathname.startsWith("/api")) {
-          return Response.redirect(new URL("/auth/onboarding", nextUrl));
+          // La page demandée part avec la redirection (?callbackUrl=), pour y revenir à la fin de l'inscription
+          // (carte 133). Ce chemin vient de l'adresse demandée sur le site lui-même ; la page d'inscription le
+          // repasse quand même par safeCallbackUrl avant de s'en servir.
+          const onboardingUrl = new URL("/auth/onboarding", nextUrl);
+          const requestedPage = `${nextUrl.pathname}${nextUrl.search}`;
+          if (requestedPage !== "/") onboardingUrl.searchParams.set("callbackUrl", requestedPage);
+          return Response.redirect(onboardingUrl);
         }
       }
       return true;

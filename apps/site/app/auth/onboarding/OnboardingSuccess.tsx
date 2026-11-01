@@ -6,8 +6,9 @@ import { Button, Card } from "@bbfrance/ui";
 /**
  * Écran affiché quand l'inscription est déjà terminée. Refonte (carte 091) : carte et bouton de packages/ui ;
  * la mise à jour de la session et le cookie `onboarding_sync` n'ont pas changé.
+ * `callbackUrl` : page où envoyer le membre, déjà vérifiée par la page (adresse du site uniquement, carte 133).
  */
-export default function OnboardingSuccess() {
+export default function OnboardingSuccess({ callbackUrl }: { callbackUrl: string }) {
   const { update } = useSession();
 
   const handleEntry = async () => {
@@ -17,7 +18,7 @@ export default function OnboardingSuccess() {
     // On pose un cookie temporaire pour aider le middleware à passer outre le JWT obsolète
     document.cookie = "onboarding_sync=true; path=/; max-age=60"; // 60 secondes suffisent
 
-    window.location.href = "/";
+    window.location.href = callbackUrl;
   };
 
   return (

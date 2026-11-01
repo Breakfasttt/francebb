@@ -9,7 +9,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
-import { DEFAULT_SITE_THEME } from "@/lib/themes";
+import { cookies } from "next/headers";
+import { DEFAULT_SITE_THEME, THEME_COOKIE, isSiteTheme } from "@/lib/themes";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import AppShell from "@/common/components/AppShell/AppShell";
 import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
@@ -48,7 +49,11 @@ export default async function RootLayout({
   const user = session?.user;
   const userRole = (user?.role as UserRole | undefined) ?? "COACH";
   const isBanned = user?.isBanned ?? false;
-  const userTheme = user?.theme || DEFAULT_SITE_THEME;
+  // Visiteur non connecté : thème gardé dans le cookie `bbfrance_theme` (écrit par ThemeProvider), pour que la page
+  // arrive déjà dans ce thème au lieu de passer un instant par le thème par défaut (carte 147, ADR 0005). La mise en
+  // page lit déjà le cookie de session : lire ce cookie-là ne change rien à la façon dont les pages sont calculées.
+  const visitorTheme = user ? undefined : (await cookies()).get(THEME_COOKIE)?.value;
+  const userTheme = user?.theme || (visitorTheme && isSiteTheme(visitorTheme) ? visitorTheme : DEFAULT_SITE_THEME);
 
   const isMod = isModerator(userRole);
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;

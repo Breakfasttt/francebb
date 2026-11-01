@@ -722,8 +722,8 @@ test.describe("4 tournois : résultats", () => {
       await expect(page.getByText(result.roster).first()).toBeVisible();
       await expect(page.getByText(`${result.wins}/${result.draws}/${result.losses}`).first()).toBeVisible();
     }
-    // Le coach membre du site mène à son profil ; le lien de retour mène au sujet
-    await expect(page.getByRole("link", { name: ORGA.name })).toHaveAttribute("href", `/profile/${ORGA.id}`);
+    // Le coach membre du site mène à sa fiche publique (carte 134) ; le lien de retour mène au sujet
+    await expect(page.getByRole("link", { name: ORGA.name })).toHaveAttribute("href", `/spy/${ORGA.id}`);
     await expect(page.getByRole("link", { name: /Retour au sujet/ }).first()).toHaveAttribute("href", `/forum/topic/${DONE.topic}`);
     await page.screenshot({ path: testInfo.outputPath("classement-final.png"), fullPage: true });
     // Sans résultat publié : page introuvable

@@ -52,7 +52,6 @@ import {
   type TokenStatus,
   type ToolType,
 } from "@bbfrance/bbscheme-player";
-// import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
 import GifExportSheet from "./component/GifExportSheet";
 import HelpSheet from "./component/HelpSheet";
@@ -871,27 +870,6 @@ export default function BBSchemePage() {
     });
   };
 
-  const handleZoneClick = (team: 'blue' | 'red', zone: TokenLocation) => {
-    if (!selectedId) return;
-    const selectedToken = tokens.find(t => t.id === selectedId);
-    if (!selectedToken || selectedToken.type === 'ball') return;
-
-    if (selectedToken.type !== team) {
-      toast.error(`C'est la zone adverse !`);
-      return;
-    }
-
-    // Constraint: 16 total per team
-    const teamTokens = tokens.filter(t => t.type === team);
-    const playersInAction = teamTokens.filter(t => t.location !== 'box');
-    if (selectedToken.location === 'box' && playersInAction.length >= 16) {
-      toast.error("Capacité maximale de l'équipe (16) atteinte !");
-      return;
-    }
-
-    movePlayerToZone(selectedId, zone);
-  };
-
   const handleBoxClick = (team: 'blue' | 'red') => {
     if (!selectedId) return;
     const selectedToken = tokens.find(t => t.id === selectedId);
@@ -1134,7 +1112,8 @@ export default function BBSchemePage() {
         const pitchElement = document.querySelector(".pitch-resizer") as HTMLElement;
         if (pitchElement) {
           const canvas = await html2canvas(pitchElement, {
-            backgroundColor: "#0c0c14",
+            // Fond de l'image : la couleur de fond du thème choisi (variable --bb-bg), comme à l'écran (carte 146)
+            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue("--bb-bg").trim() || null,
             scale: 1, // On garde une taille raisonnable pour le GIF
             logging: false,
             useCORS: true
@@ -1307,7 +1286,7 @@ export default function BBSchemePage() {
 
       {/* ===== Ordinateur : barre d'outils ===== */}
       <header className="hidden shrink-0 items-center gap-2 border-b border-bb-border bg-bb-surface px-3 py-1.5 lg:flex">
-        <BackButton href="/" title="Retour à l'accueil" style={{ width: 40, height: 40 }} />
+        <BackButton href="/" title="Retour à l'accueil" style={{ width: 44, height: 44 }} />
         <h1 className="m-0 border-0 p-0 text-lg font-bold whitespace-nowrap text-bb-text normal-case not-italic">BBScheme</h1>
         <span aria-hidden="true" className="mx-1 h-6 w-px bg-bb-border" />
         <div role="toolbar" aria-label="Outils" className="flex items-center gap-1">

@@ -42,6 +42,8 @@ interface PostItemProps {
   tournamentId?: string;
   firstPostId?: string;
   isBlocked?: boolean;
+  // Faux quand le membre ne peut pas répondre (sujet ou forum verrouillé) : le bouton « Citer » est alors masqué
+  canReply?: boolean;
 }
 
 /** Date et heure à la française, comme avant la refonte (« 12 mars 2026 à 10:00 »). */
@@ -70,6 +72,7 @@ const PostItem: React.FC<PostItemProps> = ({
   tournamentId,
   firstPostId,
   isBlocked = false,
+  canReply = true,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [authorOpen, setAuthorOpen] = useState(false);
@@ -235,6 +238,7 @@ const PostItem: React.FC<PostItemProps> = ({
               initialReactions={post.reactions}
               currentUserId={currentUserId}
               topicId={topicId}
+              canQuote={canReply}
             />
           </>
         )}

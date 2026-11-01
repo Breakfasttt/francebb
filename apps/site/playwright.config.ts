@@ -37,6 +37,8 @@ export default defineConfig({
       DATABASE_URL: E2E_DATABASE_URL,
       AUTH_URL: `http://localhost:${PORT}`,
       NEXT_PUBLIC_SITE_URL: `http://localhost:${PORT}`,
+      // Carte 141 : l'envoi d'images passe par le serveur ; en test, il renvoie une adresse factice sans appeler ImgBB
+      E2E_FAKE_IMAGE_UPLOAD: "1",
     },
   },
 });

@@ -1,5 +1,5 @@
 /**
- * Déconnexion du membre, partagée par le bouton historique (SignInButton) et la nouvelle coquille (carte 081).
+ * Déconnexion du membre, partagée par les boutons de déconnexion de la coquille de l'application (carte 081).
  * Membre connecté via le hub : formulaire POST vers /auth/logout, pour fermer aussi la session du hub.
  * Sinon : déconnexion Auth.js, puis retour à l'accueil.
  */

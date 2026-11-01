@@ -1,4 +1,5 @@
 import { getActiveSession } from "@/lib/authGuard";
+import { isModerator } from "@/lib/roles";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
@@ -46,6 +47,12 @@ export default async function ReplyPage({
   if (!topic) notFound();
   const { roles } = await getForumAccess();
   if (!canAccessForum(topic.forum, roles)) notFound();
+
+  // Carte 149 : un sujet verrouillé (ou un sujet d'un forum verrouillé) n'accepte que les réponses des modérateurs.
+  // Un membre ordinaire est renvoyé vers le sujet avant d'écrire, au lieu d'être refusé à l'envoi.
+  if ((topic.isLocked || topic.forum.isLocked) && !isModerator(session.user.role)) {
+    redirect(`/forum/topic/${id}`);
+  }
 
   // Citation demandée
   let quoteData = null;

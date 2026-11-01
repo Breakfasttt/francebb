@@ -4,7 +4,8 @@
  * Formulaire d'inscription (onboarding), refait par la carte 091 (ADR 0006) : une seule page découpée en blocs
  * empilés (avatar, profil de coach, ligues, signature, thème), avec les composants de packages/ui. Les noms des
  * champs envoyés à l'action serveur `finishOnboarding` et la suite (mise à jour de la session, cookie
- * `onboarding_sync`, retour à l'accueil) n'ont pas changé.
+ * `onboarding_sync`) n'ont pas changé. À la fin, le membre revient sur la page qu'il voulait ouvrir, ou à l'accueil
+ * (carte 133).
  */
 import { useState, useEffect, useTransition, useRef } from "react";
 import { useSession } from "next-auth/react";
@@ -19,12 +20,14 @@ import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSea
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ThemePicker from "@/common/components/AppShell/ThemePicker";
 import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
-import { siteConfig } from "@/lib/siteConfig";
+import { uploadImageFile } from "@/common/utils/imageUpload";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight } from "lucide-react";
 
-const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
-
-export default function OnboardingForm({ user }: { user: any }) {
+/**
+ * `callbackUrl` : page que le membre voulait ouvrir avant d'être envoyé vers l'inscription, déjà vérifiée par la
+ * page (adresse du site uniquement). Il y est envoyé une fois l'inscription terminée (carte 133).
+ */
+export default function OnboardingForm({ user, callbackUrl }: { user: any; callbackUrl: string }) {
   const { update } = useSession();
   const { theme } = useTheme();
   const [isPending, startTransition] = useTransition();
@@ -58,23 +61,18 @@ export default function OnboardingForm({ user }: { user: any }) {
     if (!file) return;
 
     setIsUploading(true);
-    const fd = new FormData();
-    fd.append("image", file);
-
     try {
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-        method: "POST",
-        body: fd,
-      });
-      const data = await res.json();
-      if (data.success) {
-        setFormData(prev => ({ ...prev, image: data.data.url }));
-        toast.success("Avatar téléchargé !");
+      const result = await uploadImageFile(file);
+      if (result.success && result.url) {
+        const url = result.url;
+        setFormData(prev => ({ ...prev, image: url }));
+        toast.success("Avatar envoyé !");
+      } else {
+        toast.error(result.error || "L'envoi de l'image a échoué.");
       }
-    } catch (error) {
-      toast.error("Erreur d'upload");
     } finally {
       setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -106,7 +104,7 @@ export default function OnboardingForm({ user }: { user: any }) {
           document.cookie = "onboarding_sync=true; path=/; max-age=60";
           toast.success("Bienvenue sur BBFrance !");
           // Redirection forcée pour s'assurer que le middleware capte le nouveau cookie
-          window.location.href = "/";
+          window.location.href = callbackUrl;
         } else {
           toast.error(result.error || "Erreur de configuration");
         }

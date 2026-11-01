@@ -3,6 +3,8 @@
  * modération : `?year=` ouvre une archive existante, `?importYear=` reprend un import de l'ancien site
  * (teamfrancebb.fr), sans paramètre l'éditeur crée une archive. Écran de saisie plein écran sur téléphone
  * (`ComposeScreen`, sans la barre de navigation du bas : voir `isComposePath`).
+ * L'import interroge l'ancien site une seule fois, ici (la page `/classement` ne fait qu'ouvrir cet écran) : en cas
+ * d'échec, le message d'erreur est affiché au-dessus d'un éditeur vide (carte 142).
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
@@ -26,6 +28,7 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
     name: yearStr ? `Championnat de France ${yearStr}` : (importYearStr ? `Championnat de France ${importYearStr}` : `Championnat de France ${new Date().getFullYear()}`),
     rankingData: [] as any[]
   };
+  let importError: string | null = null;
 
   if (yearStr) {
     const archive = await prisma.rankingArchive.findUnique({
@@ -47,6 +50,8 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
         name: res.data.name,
         rankingData: res.data.rankingData
       };
+    } else {
+      importError = res.error ?? "Erreur lors de la récupération des données.";
     }
   }
 
@@ -62,6 +67,11 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
       backHref="/classement"
       backTitle="Retour au classement"
     >
+      {importError && (
+        <p role="alert" className="m-0 mb-4 rounded-bb-md border border-solid border-bb-danger bg-bb-surface-2 p-3 text-[0.95rem] text-bb-text">
+          Import impossible : {importError} Vous pouvez saisir l&apos;archive à la main ci-dessous.
+        </p>
+      )}
       <ArchiveEditor initialData={initialData} allUsers={allUsers} />
     </ComposeScreen>
   );

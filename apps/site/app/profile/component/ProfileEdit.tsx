@@ -20,9 +20,7 @@ import UserAvatar, { RANK_REQUIREMENTS, type Rank } from "@/common/components/Us
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import ThemePicker from "@/common/components/AppShell/ThemePicker";
 import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
-import { siteConfig } from "@/lib/siteConfig";
-
-const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
+import { uploadImageFile } from "@/common/utils/imageUpload";
 
 /** Contours d'avatar proposés ; ceux qui ont un seuil se débloquent avec le nombre de messages. */
 const FRAMES: { id: Rank; label: string }[] = [
@@ -85,23 +83,14 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
     if (!file) return;
 
     setIsUploading(true);
-    const formDataUpload = new FormData();
-    formDataUpload.append("image", file);
-
     try {
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-        method: "POST",
-        body: formDataUpload,
-      });
-      const data = await response.json();
-      if (data.success) {
-        setField("image", data.data.url);
+      const result = await uploadImageFile(file);
+      if (result.success && result.url) {
+        setField("image", result.url);
         toast.success("Image envoyée !");
       } else {
-        toast.error(`Erreur ImgBB : ${data.error?.message || "échec"}`);
+        toast.error(result.error || "L'envoi de l'image a échoué.");
       }
-    } catch {
-      toast.error("Erreur lors de l'envoi de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

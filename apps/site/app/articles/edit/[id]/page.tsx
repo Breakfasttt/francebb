@@ -22,7 +22,11 @@ export default async function EditArticlePage({
 
   const article = await prisma.article.findUnique({
     where: { id },
-    include: { tags: true }
+    include: {
+      tags: true,
+      // Ligue rattachée, pour la montrer déjà choisie dans le formulaire (sinon l'enregistrer l'effaçait, carte 140)
+      ligue: { select: { id: true, name: true, acronym: true, region: true, geographicalZone: true } }
+    }
   });
 
   if (!article) notFound();
@@ -35,7 +39,10 @@ export default async function EditArticlePage({
     id: article.id,
     title: article.title,
     content: article.content,
-    tags: article.tags.map(t => t.name)
+    tags: article.tags.map(t => t.name),
+    ligueId: article.ligueId,
+    ligueCustom: article.ligueCustom,
+    ligue: article.ligue
   };
 
   return (

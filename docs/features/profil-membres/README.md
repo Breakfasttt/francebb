@@ -42,7 +42,8 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 
 - Le bannissement depuis `/spy/[id]` utilise le `toggleBanUser` de `app/membres/actions.ts` (seule version) : il vérifie la hiérarchie des rôles (`canEditTargetRole`) et trace l'action au journal (carte 050). La raison envoyée garde le format « [raison rapide] précisions ».
 - `deleteAccount` (le coach supprime son compte) et `deleteUser` (un modérateur supprime un membre) passent par la même fonction, `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`, carte 051) : ses sujets, messages, articles, ligues, tournois organisés et résultats passent au compte fantôme `ghost_coach` ; ses données privées (messages privés, réactions, inscriptions, parties de quiz) sont supprimées. Toute nouvelle table liée à un membre doit être ajoutée à cette fonction, sinon la base refusera de supprimer le membre.
-- `/membres` charge tous les membres d'un coup (`include` sans `select`) et les envoie entiers au composant client. Cela contredit la règle « jamais un `User` complet vers un composant client » et ralentira avec le nombre de membres.
+- `/membres` charge tous les membres d'un coup, mais seulement les champs que l'annuaire affiche ou dont ses actions ont besoin (identifiant, pseudo, avatar, rôle, bannissement, NAF, région, ligues), grâce à un `select` (carte 135). Tout ce qui est lu part dans la page envoyée au navigateur : un champ ajouté à ce `select` devient visible par tout membre connecté. Le test `tests/e2e/bugs/articles-membres.spec.ts` vérifie qu'aucun champ non affiché n'y arrive. Charger tous les membres ralentira avec leur nombre.
+- Le filtre « Rôle » de l'annuaire propose les rôles de base et les rôles personnalisés de la table `RoleConfig` (carte 135), du plus puissant au moins puissant.
 - L'annuaire existe en deux versions dans `MembersTable.tsx` : le tableau (ordinateur) et la liste de cartes (téléphone), choisies par les classes `hidden lg:block` et `lg:hidden`. Une colonne ou un bouton ajouté au tableau doit aussi être ajouté aux cartes.
 - En mode hub (ADR-0007), le pseudo, l'avatar, le NAF et la région appartiennent au passeport : « Sauvegarder le profil » les envoie d'abord au hub, qui peut refuser. La suppression du compte se fait aussi sur le passeport.
 - Les pages de profil sont des composants client : un visiteur non connecté est renvoyé vers `/auth/login` par le JavaScript (carte 106).
@@ -64,5 +65,5 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 ## État
 
 - Marche : modification du profil, réglages, blocages, suppression de compte anonymisée (par le membre ou par un modérateur, carte 051), annuaire avec modération ; refonte des trois écrans (carte 092), vérifiée par `tests/e2e/inventaire/profil.spec.ts` en taille ordinateur et téléphone.
-- Manque : pagination côté serveur de `/membres` ; le filtre « Rôle » de l'annuaire ne propose que les rôles de base (pas les rôles personnalisés).
+- Manque : pagination côté serveur de `/membres`.
 - Cartes : 049 (audit mobile), 054 (annuaire sur téléphone), 019 (avatars en `next/image`), 062 (identifiant du thème « Sombre »), 063 (fluidité du profil), 061 (textes de 12 pixels), 092 (refonte).

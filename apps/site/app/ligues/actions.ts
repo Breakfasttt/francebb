@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
 import type { ActionResult } from "@/lib/actionResult";
+import { departmentNumber } from "@/lib/france";
 
 async function geocode(ville: string, address: string) {
   try {
@@ -92,10 +93,12 @@ export async function createLigue(formData: FormData): Promise<ActionResult> {
   const geographicalZone = formData.get("geographicalZone") as string;
   const description = formData.get("description") as string;
   const region = formData.get("region") as string;
-  const departement = formData.get("departement") as string;
+  // Département enregistré par son numéro (« 35 »), comme pour un tournoi (carte 137)
+  const departement = departmentNumber(formData.get("departement") as string | null);
   const ville = formData.get("ville") as string;
   const address = formData.get("address") as string;
-  const gmapsUrl = formData.get("gmapsUrl") as string;
+  // Le formulaire n'a pas de champ « lien Google Maps » : rien n'est enregistré s'il n'est pas envoyé
+  const gmapsUrl = (formData.get("gmapsUrl") as string | null) || null;
   const image = formData.get("image") as string;
 
   if (!name || !acronym) {
@@ -174,10 +177,11 @@ export async function updateLigue(id: string, formData: FormData): Promise<Actio
   const geographicalZone = formData.get("geographicalZone") as string;
   const description = formData.get("description") as string;
   const region = formData.get("region") as string;
-  const departement = formData.get("departement") as string;
+  // Département enregistré par son numéro (« 35 »), comme pour un tournoi ; un ancien libellé
+  // (« 35 - Ille-et-Vilaine ») est ramené à son numéro au premier enregistrement (carte 137)
+  const departement = departmentNumber(formData.get("departement") as string | null);
   const ville = formData.get("ville") as string;
   const address = formData.get("address") as string;
-  const gmapsUrl = formData.get("gmapsUrl") as string;
   const image = formData.get("image") as string;
 
   // Utiliser les coordonnées manuelles si fournies
@@ -199,11 +203,16 @@ export async function updateLigue(id: string, formData: FormData): Promise<Actio
     departement,
     ville,
     address,
-    gmapsUrl,
     lat,
     lng,
     image: image || null,
   };
+
+  // Lien Google Maps : le formulaire n'a pas ce champ. Il n'est donc changé que s'il est envoyé ; sinon, le lien
+  // déjà enregistré est gardé (avant la carte 137, chaque modification l'effaçait).
+  if (formData.has("gmapsUrl")) {
+    data.gmapsUrl = (formData.get("gmapsUrl") as string) || null;
+  }
 
   // Seul le créateur peut modifier les commissaires
   if (isCreator || isMod) {

@@ -329,8 +329,15 @@ export async function createForum(formData: FormData): Promise<ActionResult> {
   redirect(parentForumId ? `/forum/${parentForumId}` : "/forum");
 }
 
+/**
+ * Indique, pour chaque message cité dans les textes donnés, s'il a été supprimé ou modéré, afin que la citation
+ * soit remplacée par un encart (voir parseBBCode dans lib/bbcode.ts). Deux formes de balise existent :
+ * la forme courte [quote=membre|message] et la forme en trois parties [quote=membre|message|nom], celle que
+ * crée le bouton « Citer ». L'expression reconnaît les deux, avec la même règle que parseBBCode, pour qu'une
+ * citation d'un message modéré ne laisse jamais voir son texte.
+ */
 export async function getQuoteStatusMap(contents: string[]) {
-  const quoteRegex = /\[quote=([a-zA-Z0-9_-]+)\|?([a-zA-Z0-9_-]*)\]/gi;
+  const quoteRegex = /\[quote=([^|\]]+)\|([a-zA-Z0-9_-]*)(?:\|[^\]]*)?\]/gi;
   const postIds = new Set<string>();
   
   for (const content of contents) {

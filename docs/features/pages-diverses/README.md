@@ -55,10 +55,10 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 
 ## Les pièges
 
-- Thème : pour un membre connecté, le thème enregistré dans son profil gagne toujours ; `ThemeProvider` le recopie dans le `localStorage` (carte 051). Le `localStorage` ne sert plus qu'aux visiteurs, qui retrouvent le dernier thème utilisé sur l'appareil. Un thème choisi à l'instant s'affiche tout de suite, en attendant que le serveur renvoie le profil à jour. L'accès au `localStorage` est protégé par `try/catch` (il peut être bloqué en navigation privée).
+- Thème : pour un membre connecté, le thème enregistré dans son profil gagne toujours ; `ThemeProvider` le recopie dans le `localStorage` (carte 051). Le `localStorage` ne sert plus qu'aux visiteurs, qui retrouvent le dernier thème utilisé sur l'appareil. Un thème choisi à l'instant s'affiche tout de suite, en attendant que le serveur renvoie le profil à jour. L'accès au `localStorage` est protégé par `try/catch` (il peut être bloqué en navigation privée). Depuis la carte 147, `ThemeProvider` recopie aussi le thème affiché dans le cookie `bbfrance_theme` (constante `THEME_COOKIE` de `lib/themes.ts`, gardé un an) ; pour un visiteur non connecté, `app/layout.tsx` lit ce cookie et l'envoie dans l'attribut `data-theme` de la page : la page arrive directement dans le bon thème, sans passer un instant par le thème par défaut (ADR 0005). Une valeur qui n'est pas un des thèmes du site est ignorée. Test : `tests/e2e/bugs/divers.spec.ts`.
 - `/spy` envoie vers `/auth/login?callback=…` ; ailleurs le paramètre est `callbackUrl` (retour après connexion à vérifier). L'accueil utilise bien `callbackUrl`.
-- `/jouer` : le bouton « Prochaine étape » de la dernière section affichée peut viser une section masquée (vide), et ne mène alors nulle part.
-- Accueil : l'article au hasard peut être un article masqué par la modération ; le lien Discord vaut `#` si le réglage est vide.
+- `/jouer` : une section vide est masquée (sauf la première). Les étapes sont numérotées parmi les sections affichées, et « Prochaine étape » vise la section affichée suivante ; la dernière section affichée n'a pas ce bouton (carte 132, testé par `tests/e2e/bugs/articles-membres.spec.ts`).
+- Accueil : l'article au hasard n'est jamais un article masqué par la modération (carte 139) ; le lien Discord vaut `#` si le réglage est vide.
 - `/spy` : le renvoi vers `/profile` quand on ouvre son propre profil appelle `redirect()` dans un `useEffect`, à l'intérieur d'un `try/catch` qui intercepte la redirection (à vérifier). « Contacter » affiche les erreurs avec `alert()`.
 - Mentions légales : seul Vercel est cité comme hébergeur ; l'hébergeur de la base (Neon, ADR-0004) n'apparaît pas.
 

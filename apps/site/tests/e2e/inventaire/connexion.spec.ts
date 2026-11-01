@@ -158,7 +158,7 @@ test.describe("inscription (onboarding)", () => {
     await loginAs(page, NEWCOMER_ID);
     // Un membre qui n'a pas fini son inscription est renvoyé vers elle
     await page.goto("/forum");
-    await expect(page).toHaveURL(/\/auth\/onboarding$/);
+    await expect(page).toHaveURL(/\/auth\/onboarding(\?|$)/);
     await page.waitForLoadState("networkidle");
     const main = content(page);
     await expect(main.getByRole("heading", { name: "Bienvenue Coach !", level: 1 })).toBeVisible();
@@ -203,7 +203,8 @@ test.describe("inscription (onboarding)", () => {
     await page.screenshot({ path: testInfo.outputPath("inscription.png"), fullPage: true });
 
     await main.getByRole("button", { name: "Valider mon profil et entrer" }).click();
-    await expect(page).toHaveURL(/localhost:\d+\/$/, { timeout: 30_000 });
+    // Fin d'inscription : retour à la page demandée au départ (carte 133)
+    await expect(page).toHaveURL(/\/forum$/, { timeout: 30_000 });
 
     const saved = await db((prisma) => prisma.user.findUniqueOrThrow({ where: { id: NEWCOMER_ID }, include: { ligues: true } }));
     expect(saved).toMatchObject({

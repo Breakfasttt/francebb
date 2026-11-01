@@ -31,6 +31,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Conseil** (`/council`) | Réunion de 5 agents IA aux rôles différents, qui donnent leur avis avant une décision importante. Voir `.claude/commands/council.md`. |
 | **Contraste AA** | Niveau d'accessibilité de la norme WCAG : l'écart de luminosité entre un texte et son fond doit être d'au moins 4,5 pour 1 (3 pour 1 pour un grand texte). En dessous, le texte devient difficile à lire, surtout en plein soleil ou avec une vue faible. |
 | **Coquille** | Ce qui entoure chaque page du site : barre du haut, barre de navigation basse et panneau « Plus » sur téléphone, pied de page sur ordinateur (`apps/site/common/components/AppShell/`, ADR 0006). |
+| **Cookie** | Petite donnée gardée par le navigateur pour un site et renvoyée au serveur avec chaque page demandée. Le site s'en sert pour la session d'un membre et, depuis la carte 147, pour le thème choisi par un visiteur (`bbfrance_theme`) : le serveur peut ainsi afficher la page directement dans le bon thème. |
 | **Couche CSS (`@layer`)** | Groupe de règles CSS dont on fixe la priorité. Une règle d'une couche de faible priorité perd toujours face à une règle d'une couche plus forte, quel que soit l'ordre des fichiers. Pendant la refonte, l'ancien CSS était rangé dans une couche faible pour que les nouveaux styles l'emportent ; aujourd'hui, `apps/site/app/tailwind.css` déclare les couches de Tailwind (`theme`, `base`, `components`, `utilities`). |
 | **CSS** | Langage qui décrit l'apparence des pages (couleurs, tailles, positions). |
 | **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
@@ -113,15 +114,18 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **SQL** | Langage pour interroger une base de données. |
 | **SQLite** | Base de données qui tient dans un seul fichier. Pratique en local, mais limitée pour un site en ligne. |
 | **SSO** (*Single Sign-On*) | Connexion unique : un seul compte et une seule connexion pour plusieurs applications. |
+| **SVG** (*Scalable Vector Graphics*) | Format d'image décrite par des formes (traits, cercles, couleurs) plutôt que par des points : elle reste nette à toutes les tailles et pèse peu. Les repères de `/carte` sont des images SVG du site (carte 138). |
 | **Tailwind** | Système de mise en forme par petites classes (`p-4` = marge intérieure de 16 pixels). Toute la mise en forme du site et de `packages/ui` s'écrit ainsi ; le préfixe `max-lg:` applique une classe seulement sur téléphone, `lg:` seulement sur ordinateur. |
 | **TBT** (*Total Blocking Time*, temps de blocage total) | Mesure de Lighthouse : pendant le chargement, temps total où le téléphone est trop occupé à exécuter le JavaScript de la page pour réagir à un toucher. Plus il est court, plus la page répond vite. Bon en dessous de 200 millisecondes. |
 | **Thème** | Jeu de couleurs du site. Il y en a 8, au choix du coach : « Vestiaire » (par défaut) et les 7 thèmes historiques. Liste dans `apps/site/lib/themes.ts`, couleurs (variables v2) dans `packages/ui/src/themes/`. |
 | **Token** (jeton) | Mot de passe technique qui donne accès à un service (GitHub, base de données). S'il fuite, il faut le révoquer. |
 | **Tokens de thème** | Noms de couleurs (`primary`, `card`…) qui pointent vers les couleurs du thème actif. |
+| **Transaction** (base de données) | Groupe d'opérations sur la base qui réussissent toutes ou n'ont aucun effet (« tout ou rien »). Exemple : valider une question proposée au BBQuizz change son statut et crée la question en une seule transaction (carte 143). |
 | **Turbo** (Turborepo) | Outil qui lance les commandes (build, tests) sur toutes les applications du monorepo. |
 | **Turso** | Hébergeur de bases SQLite utilisé jusqu'ici, abandonné pour Postgres (ADR-0004). |
 | **TypeScript** / **typecheck** | TypeScript ajoute des types au code JavaScript ; le *typecheck* vérifie qu'il n'y a pas d'incohérence avant d'exécuter. |
 | **UX** (*User eXperience*) | Le confort d'utilisation : clarté, fluidité, facilité à faire ce qu'on veut. |
+| **Variable d'environnement** | Réglage donné au site au moment où il démarre (adresse de la base, clés des services extérieurs), en dehors du code : dans le fichier `.env` en local, dans les réglages de Vercel en ligne. Une variable dont le nom commence par `NEXT_PUBLIC_` est recopiée dans le code envoyé au navigateur, donc lisible par tous : jamais pour une clé secrète (carte 141). |
 | **Variable CSS** | Valeur nommée dans une feuille de style (par exemple `--mobile-nav-height: 64px`), réutilisée ailleurs avec `var(--mobile-nav-height)`. Changer la valeur à un seul endroit la change partout. Les couleurs des thèmes sont aussi des variables CSS. |
 | **Vercel** | Hébergeur du site : il le met en ligne automatiquement quand le code est envoyé sur GitHub. |
 | **Verre dépoli** | Effet de fond flou et légèrement transparent (`backdrop-filter: blur`). Joli, mais coûteux pour les téléphones modestes. Depuis l'ADR 0006, il est désactivé par défaut et chaque thème peut l'activer. |

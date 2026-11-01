@@ -76,7 +76,8 @@ export function ResultsRanking({ results }: { results: TournamentResult[] }) {
             <span className={cn("font-bold max-lg:row-span-2 max-lg:self-start max-lg:pt-1", res.rank === 1 ? "text-bb-rank" : "text-bb-text-muted")}>{res.rank || '-'}</span>
             <span className="min-w-0">
               {res.user ? (
-                <Link href={`/profile/${res.user.id}`} className="inline-flex min-h-11 min-w-0 items-center gap-2 font-semibold text-bb-text hover:underline lg:min-h-0">
+                // Fiche d'un autre membre : /spy/<id> (la page /profile/<id> n'existe pas, carte 134)
+                <Link href={`/spy/${res.user.id}`} className="inline-flex min-h-11 min-w-0 items-center gap-2 font-semibold text-bb-text hover:underline lg:min-h-0">
                   <Avatar name={res.coachName} src={res.user.image} size={28} className="max-lg:hidden" />
                   <span className="min-w-0 break-words">{res.coachName}</span>
                 </Link>

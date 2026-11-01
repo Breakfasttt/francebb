@@ -57,7 +57,8 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
 
   const [logs, total] = await Promise.all([
     prisma.moderationLog.findMany({
-      orderBy: { createdAt: "desc" },
+      // L'identifiant départage les lignes créées à la même date, pour que l'ordre reste identique d'une page à l'autre
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
       include: {
         moderator: { select: { id: true, name: true, image: true, role: true } }
       },
@@ -174,13 +175,16 @@ export async function cleanupModerationLogs(months = 3) {
       }
     });
     
-    // On loggue aussi l'action de nettoyage
-    await logModerationAction(
-      "REPORT_RESOLVED", // On utilise une action existante ou on en crée une, ici RESOLVED car c'est une maintenance
-      undefined,
-      "SYSTEM",
-      `Nettoyage automatique des logs supérieurs à ${months} mois (${deleted.count} entrées supprimées)`
-    );
+    // Le nettoyage n'est inscrit au journal que s'il a réellement supprimé des entrées : la purge est lancée à chaque
+    // ouverture de la première page du journal, et une ligne « 0 entrées supprimées » l'encombrerait (carte 144).
+    if (deleted.count > 0) {
+      await logModerationAction(
+        "REPORT_RESOLVED", // On utilise une action existante ou on en crée une, ici RESOLVED car c'est une maintenance
+        undefined,
+        "SYSTEM",
+        `Nettoyage automatique des logs supérieurs à ${months} mois (${deleted.count} entrées supprimées)`
+      );
+    }
 
     revalidatePath("/moderation");
     return { success: true, count: deleted.count };
@@ -192,54 +196,58 @@ export async function cleanupModerationLogs(months = 3) {
 
 /**
  * Récupère la liste des utilisateurs bannis avec les détails du ban et pagination.
+ *
+ * La date du bannissement n'est pas une colonne du membre : elle vient de la ligne « USER_BANNED » du journal de
+ * modération. On charge donc tous les bannis (ils sont peu nombreux) et leurs lignes de bannissement en deux requêtes
+ * fixes (au lieu d'une requête par banni), puis on trie par date du bannissement, la plus récente d'abord, et par
+ * identifiant à date égale, avant de découper la page. Cet ordre stable garantit qu'un banni apparaît sur une seule
+ * page (carte 144).
  */
 export async function getBannedUsers(page = 1, pageSize = 10) {
   const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { users: [], total: 0 };
 
+  const bannedUsers = await prisma.user.findMany({
+    where: { isBanned: true },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      banReason: true,
+      role: true
+    }
+  });
+
+  // Lignes de bannissement de ces membres, les plus récentes d'abord : la première rencontrée par membre est la bonne
+  const banLogs = bannedUsers.length === 0 ? [] : await prisma.moderationLog.findMany({
+    where: {
+      action: "USER_BANNED",
+      targetId: { in: bannedUsers.map((user) => user.id) }
+    },
+    orderBy: { createdAt: "desc" },
+    select: { targetId: true, createdAt: true, moderator: { select: { name: true } } }
+  });
+  const lastBanLog = new Map<string, (typeof banLogs)[number]>();
+  for (const log of banLogs) {
+    if (log.targetId && !lastBanLog.has(log.targetId)) lastBanLog.set(log.targetId, log);
+  }
+
+  const usersWithLogs = bannedUsers
+    .map((user) => {
+      const log = lastBanLog.get(user.id);
+      return {
+        ...user,
+        bannedBy: log?.moderator?.name || "Système",
+        bannedAt: log?.createdAt || new Date(0)
+      };
+    })
+    .sort((a, b) => b.bannedAt.getTime() - a.bannedAt.getTime() || a.id.localeCompare(b.id));
+
   const skip = (page - 1) * pageSize;
-
-  // On récupère les users bannis avec pagination
-  const [bannedUsers, total] = await Promise.all([
-    prisma.user.findMany({
-      where: { isBanned: true },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        banReason: true,
-        role: true
-      },
-      take: pageSize,
-      skip
-    }),
-    prisma.user.count({ where: { isBanned: true } })
-  ]);
-
-  // Pour chaque user, on cherche le log de ban le plus récent
-  const usersWithLogs = await Promise.all(bannedUsers.map(async (user) => {
-    const lastBanLog = await prisma.moderationLog.findFirst({
-      where: {
-        action: "USER_BANNED",
-        targetId: user.id
-      },
-      orderBy: { createdAt: "desc" },
-      include: {
-        moderator: { select: { name: true } }
-      }
-    });
-
-    return {
-      ...user,
-      bannedBy: lastBanLog?.moderator?.name || "Système",
-      bannedAt: lastBanLog?.createdAt || new Date(0)
-    };
-  }));
-
   return {
-    users: usersWithLogs.sort((a, b) => b.bannedAt.getTime() - a.bannedAt.getTime()),
-    total
+    users: usersWithLogs.slice(skip, skip + pageSize),
+    total: usersWithLogs.length
   };
 }
 

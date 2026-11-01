@@ -30,6 +30,15 @@ interface AppShellProps {
   counts?: Promise<NavCounts>;
 }
 
+/**
+ * Délai entre la sortie d'un champ et le retour de la barre basse (carte 113). Sur téléphone, quand on appuie sur un
+ * bouton juste après avoir écrit, le champ perd le focus au milieu de l'appui : le navigateur envoie « doigt posé »
+ * (qui retire le focus du champ), puis « doigt levé » et le clic, et il recherche l'élément sous le doigt à chacune
+ * de ces étapes. Si la barre basse revenait aussitôt, la mise en page changerait entre ces étapes et le clic pourrait
+ * tomber à côté du bouton. Avec ce délai, l'appui entier se termine avant que la barre ne revienne.
+ */
+const TYPING_RELEASE_DELAY_MS = 350;
+
 /** Marque la page pendant la saisie dans un champ : la barre basse s'efface pour laisser la place au clavier. */
 function useTypingFlag() {
   useEffect(() => {
@@ -37,13 +46,23 @@ function useTypingFlag() {
       el instanceof HTMLElement &&
       (el.isContentEditable || el.tagName === "TEXTAREA" || el.tagName === "SELECT" ||
         (el.tagName === "INPUT" && !["checkbox", "radio", "button", "submit", "range", "file", "color"].includes((el as HTMLInputElement).type)));
+    let releaseTimer: number | undefined;
     const onIn = (event: FocusEvent) => {
-      if (isField(event.target)) document.documentElement.dataset.typing = "true";
+      if (!isField(event.target)) return;
+      window.clearTimeout(releaseTimer);
+      document.documentElement.dataset.typing = "true";
     };
-    const onOut = () => delete document.documentElement.dataset.typing;
+    // Retrait différé ; s'il est passé directement dans un autre champ entre-temps, la barre reste cachée
+    const onOut = () => {
+      window.clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(() => {
+        if (!isField(document.activeElement)) delete document.documentElement.dataset.typing;
+      }, TYPING_RELEASE_DELAY_MS);
+    };
     document.addEventListener("focusin", onIn);
     document.addEventListener("focusout", onOut);
     return () => {
+      window.clearTimeout(releaseTimer);
       document.removeEventListener("focusin", onIn);
       document.removeEventListener("focusout", onOut);
       delete document.documentElement.dataset.typing;

@@ -28,7 +28,7 @@ Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, éq
 | `apps/site/tests/e2e/inventaire/bbquizz.spec.ts` | Test d'inventaire de la refonte (carte 098), en taille ordinateur et téléphone |
 | `apps/site/app/bbquizz/actions.ts` | Actions serveur |
 | `apps/site/app/bbquizz/data/questions.ts` | Questions de départ : insérées par `prisma/firstSetup.ts`, et utilisées si la base est vide |
-| `apps/site/app/bbquizz/utils.ts` | `translateCategory` : nom français d'une catégorie |
+| `apps/site/app/bbquizz/utils.ts` | `translateCategory` : nom français d'une catégorie ; `startOfQuizDay` et `startOfQuizWeek` : début du jour et de la semaine, heure de Paris |
 
 Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`, `answerQuizQuestion`, `skipQuizQuestion`, `applyQuizFiftyFifty`, `applyQuizCommunity` (une partie), `getQuizLeaderboard`, `suggestQuizQuestion` (membres) ; `getQuizSuggestions`, `handleQuizSuggestion`, `getAllQuizQuestions`, `updateQuizQuestion`, `deleteQuizQuestion` (modérateurs).
 
@@ -38,8 +38,10 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 - La partie en cours est une ligne de la table `QuizGame` (une seule par membre, supprimée quand le résultat passe dans `QuizAttempt`). Chaque réponse fait avancer la partie seulement si elle en est encore à la question attendue : répondre deux fois ou rejouer une ancienne réponse ne compte pas.
 - Le chronomètre affiché dans le navigateur n'est qu'un affichage : c'est l'heure du serveur qui compte, avec 3 secondes de marge pour le trajet réseau. Une réponse arrivée trop tard compte comme fausse.
 - Le joker « appel à la communauté » lit les compteurs `timesOption0` à `3` de la question, augmentés à chaque réponse depuis la carte 051. Sans aucune réponse enregistrée (ou pour les questions de départ hors base), il affiche 25 % partout.
-- La série (`quizStreak`) est affichée dans le classement mais jamais mise à jour.
-- `updateQuizQuestion` reçoit `data: any`.
+- La série (`quizStreak`) est affichée dans le classement mais jamais mise à jour (la colonne est gardée : calculer la série ou la retirer reste à décider, carte 143).
+- **Les propositions et les modifications sont contrôlées par le serveur** (carte 143), car une action serveur est appelable directement avec n'importe quelles données : catégorie, question et quatre réponses non vides, bonne réponse entre 0 et 3, longueurs maximales (question 500 caractères, réponse 200, explication 1 000). `updateQuizQuestion` ne recopie que ces champs : un compteur ou une autre colonne glissés dans la requête sont ignorés. Ces actions renvoient `{ success, error }`, et le message s'affiche dans une notification.
+- `handleQuizSuggestion` ne traite qu'une proposition encore en attente : le statut change dans une transaction (une opération tout ou rien) seulement s'il vaut encore `PENDING`. Approuver deux fois, ou deux modérateurs en même temps, ne crée donc jamais la question en double. Une proposition inconnue donne « Proposition introuvable ».
+- Les classements « Du jour » et « Semaine » commencent à minuit, **heure de Paris**, et la semaine **le lundi** (carte 143), quelle que soit l'heure réglée sur le serveur (Vercel tourne en heure universelle).
 - Les pages `/bbquizz/valider` et `/bbquizz/editer` obtiennent la session par `getActiveSession()` (carte 052).
 
 ## Les mots expliqués
@@ -58,5 +60,6 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 - Marche : partie complète, classements, proposition, validation, édition.
 - Marche aussi depuis la carte 051 : score calculé par le serveur, réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté.
 - Refonte visuelle (carte 098, ADR 0006) : composants de `packages/ui`, plus aucun fichier CSS propre au quizz. L'audit mobile mesure `/bbquizz`, `/bbquizz/proposer`, `/bbquizz/valider` et `/bbquizz/editer` : rien à signaler en dehors de la coquille.
+- Carte 143 : contrôles côté serveur des propositions, des modifications et des validations, semaine du lundi à l'heure de Paris ; tests dans `tests/e2e/security.spec.ts`.
 - Manque : série (`quizStreak`).
 - Cartes ouvertes : 049 (audit mobile), 098 (refonte visuelle, en attente de validation sur téléphone).

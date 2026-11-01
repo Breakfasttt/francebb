@@ -100,13 +100,19 @@ export default function UserSearch({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={isFull ? "Limite atteinte" : placeholder}
+          // Nom lu par les lecteurs d'écran : le texte d'exemple disparaît dès la première lettre (carte 138)
+          aria-label={placeholder}
           disabled={isFull}
           onFocus={() => query.length >= 2 && setShowResults(true)}
+          // Échap ferme la liste des résultats
+          onKeyDown={(e) => { if (e.key === "Escape") setShowResults(false); }}
         />
         {isLoading && <Loader2 size={16} className="absolute top-1/2 right-3 -translate-y-1/2 animate-spin text-bb-text-muted" aria-label="Recherche en cours" />}
 
         {showResults && query.length >= 2 && !isLoading && (
-          <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+          // Les résultats sont des boutons (choix au clavier par Tab puis Entrée, annoncés comme boutons), réunis dans
+          // un groupe nommé
+          <div role="group" aria-label="Membres trouvés" className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
             {results.length > 0 ? (
               results.map(user => (
                 <Button

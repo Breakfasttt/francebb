@@ -91,7 +91,8 @@ export default function RessourcesPage() {
   const total = data?.total ?? 0;
   const resources = data?.resources ?? [];
 
-  const submitButton = (
+  // Carte 141 : le bouton n'est montré qu'aux membres connectés (un visiteur serait renvoyé vers la connexion)
+  const submitButton = user?.id ? (
     <Button asChild variant="primary" size="tap">
       <Link href="/ressources/submit" className="no-underline">
         <Plus size={18} aria-hidden="true" />
@@ -99,7 +100,7 @@ export default function RessourcesPage() {
         <span>Soumettre<span className="max-sm:sr-only"> une ressource</span></span>
       </Link>
     </Button>
-  );
+  ) : null;
 
   return (
     <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">

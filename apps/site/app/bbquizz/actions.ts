@@ -10,7 +10,8 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { isModerator } from "@/lib/roles";
-import { translateCategory, QUIZ_LENGTH } from "./utils";
+import { translateCategory, QUIZ_LENGTH, startOfQuizDay, startOfQuizWeek } from "./utils";
+import type { ActionResult } from "@/lib/actionResult";
 import {
   computeTimeLeft,
   correctAnswerPoints,
@@ -268,15 +269,9 @@ export async function getQuizLeaderboard(type: "daily" | "weekly" | "alltime" = 
     });
   }
 
-  let where = {};
-  if (type === "daily") {
-    const startOfDay = new Date(now.setHours(0, 0, 0, 0));
-    where = { createdAt: { gte: startOfDay } };
-  } else if (type === "weekly") {
-    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
-    startOfWeek.setHours(0, 0, 0, 0);
-    where = { createdAt: { gte: startOfWeek } };
-  }
+  // Carte 143 : la journée et la semaine (du lundi au dimanche) sont comptées à l'heure de Paris, pas à celle du serveur
+  const since = type === "daily" ? startOfQuizDay(now) : startOfQuizWeek(now);
+  const where = { createdAt: { gte: since } };
 
   const attempts = await prisma.quizAttempt.findMany({
     where,
@@ -294,9 +289,10 @@ export async function getQuizLeaderboard(type: "daily" | "weekly" | "alltime" = 
     take: 100,
   });
 
-  const uniqueUsers = new Map();
+  const uniqueUsers = new Map<string, (typeof attempts)[number]>();
   for (const attempt of attempts) {
-    if (!uniqueUsers.has(attempt.userId) || uniqueUsers.get(attempt.userId).score < attempt.score) {
+    const best = uniqueUsers.get(attempt.userId);
+    if (!best || best.score < attempt.score) {
       uniqueUsers.set(attempt.userId, attempt);
     }
   }
@@ -308,29 +304,85 @@ export async function getQuizLeaderboard(type: "daily" | "weekly" | "alltime" = 
 
 // --- Nouvelles fonctionnalités de gestion ---
 
-/**
- * Propose une nouvelle question
- */
-export async function suggestQuizQuestion(data: {
+/** Longueurs maximales des textes d'une question (carte 143), pour refuser un texte démesuré. */
+const QUIZ_LIMITS = { category: 60, question: 500, option: 200, explanation: 1000 };
+
+/** Champs d'une question proposée ou modifiée, une fois contrôlés par le serveur. */
+interface QuizQuestionInput {
   category: string;
   question: string;
-  options: string[];
+  options: [string, string, string, string];
   correctIndex: number;
-  explanation?: string;
-}) {
-  const session = await getActiveSession();
-  if (!session?.user?.id) return null;
+  explanation: string | null;
+}
 
-  return prisma.quizQuestionSuggestion.create({
-    data: {
-      category: data.category,
-      question: data.question,
-      options: JSON.stringify(data.options),
-      correctIndex: data.correctIndex,
-      explanation: data.explanation,
-      authorId: session.user.id,
-    }
-  });
+/**
+ * Contrôle, côté serveur, une question envoyée par le navigateur (carte 143). Une action serveur est appelable
+ * directement par n'importe qui, avec n'importe quelles données : on ne se fie donc pas au formulaire. On exige une
+ * catégorie, une question et quatre réponses non vides, une bonne réponse entre 0 et 3, des textes de longueur
+ * raisonnable, et on ne garde que ces champs (un champ en plus, comme un compteur de réponses, est ignoré).
+ * Renvoie les champs nettoyés, ou le message d'erreur à afficher.
+ */
+function parseQuizQuestionInput(data: unknown): { value: QuizQuestionInput } | { error: string } {
+  if (typeof data !== "object" || data === null) return { error: "Question invalide." };
+  const raw = data as Record<string, unknown>;
+  const text = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+
+  const category = text(raw.category);
+  const question = text(raw.question);
+  const explanation = text(raw.explanation);
+  const options = Array.isArray(raw.options) ? raw.options.map(text) : [];
+  const correctIndex = raw.correctIndex;
+
+  if (!category || category.length > QUIZ_LIMITS.category) return { error: "Choisissez une catégorie." };
+  if (!question) return { error: "La question est obligatoire." };
+  if (question.length > QUIZ_LIMITS.question) {
+    return { error: `La question ne doit pas dépasser ${QUIZ_LIMITS.question} caractères.` };
+  }
+  if (options.length !== 4 || options.some((option) => !option)) {
+    return { error: "Remplissez les quatre réponses." };
+  }
+  if (options.some((option) => option.length > QUIZ_LIMITS.option)) {
+    return { error: `Une réponse ne doit pas dépasser ${QUIZ_LIMITS.option} caractères.` };
+  }
+  if (typeof correctIndex !== "number" || !Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex > 3) {
+    return { error: "Indiquez laquelle des quatre réponses est la bonne." };
+  }
+  if (explanation.length > QUIZ_LIMITS.explanation) {
+    return { error: `L'explication ne doit pas dépasser ${QUIZ_LIMITS.explanation} caractères.` };
+  }
+
+  return {
+    value: {
+      category,
+      question,
+      options: [options[0], options[1], options[2], options[3]],
+      correctIndex,
+      explanation: explanation || null,
+    },
+  };
+}
+
+/**
+ * Propose une nouvelle question (membre connecté). Elle attend la validation d'un modérateur.
+ */
+export async function suggestQuizQuestion(data: unknown): Promise<ActionResult> {
+  const session = await getActiveSession();
+  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté pour proposer une question." };
+
+  const parsed = parseQuizQuestionInput(data);
+  if ("error" in parsed) return { success: false, error: parsed.error };
+  const { options, ...fields } = parsed.value;
+
+  try {
+    await prisma.quizQuestionSuggestion.create({
+      data: { ...fields, options: JSON.stringify(options), authorId: session.user.id },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Proposition de question impossible :", error);
+    return { success: false, error: "Une erreur est survenue lors de l'envoi de votre proposition." };
+  }
 }
 
 /**
@@ -353,36 +405,46 @@ export async function getQuizSuggestions() {
 }
 
 /**
- * Valide ou rejette une suggestion
+ * Valide ou rejette une suggestion (modérateur).
+ * Carte 143 : seule une proposition encore « en attente » peut être traitée. Le changement de statut et la création
+ * de la question se font dans une même transaction (une opération tout ou rien), et le statut n'est changé que s'il
+ * vaut encore « PENDING » : deux clics, ou deux modérateurs en même temps, ne créent jamais la question en double.
  */
-export async function handleQuizSuggestion(id: string, approve: boolean) {
+export async function handleQuizSuggestion(id: string, approve: boolean): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) return null;
+  if (!isModerator(session?.user?.role)) return { success: false, error: "Action réservée à la modération." };
+  if (typeof id !== "string" || !id) return { success: false, error: "Proposition introuvable." };
 
-  if (approve) {
-    const suggestion = await prisma.quizQuestionSuggestion.findUnique({ where: { id } });
-    if (!suggestion) return null;
+  const suggestion = await prisma.quizQuestionSuggestion.findUnique({ where: { id } });
+  if (!suggestion) return { success: false, error: "Proposition introuvable : elle a peut-être été supprimée." };
+  if (suggestion.status !== "PENDING") {
+    return { success: false, error: "Cette proposition a déjà été traitée par un modérateur." };
+  }
 
-    // Créer la question réelle
-    await prisma.quizQuestion.create({
-      data: {
-        category: suggestion.category,
-        question: suggestion.question,
-        options: suggestion.options,
-        correctIndex: suggestion.correctIndex,
-        explanation: suggestion.explanation,
+  try {
+    const handled = await prisma.$transaction(async (tx) => {
+      const updated = await tx.quizQuestionSuggestion.updateMany({
+        where: { id, status: "PENDING" },
+        data: { status: approve ? "APPROVED" : "REJECTED" },
+      });
+      if (updated.count !== 1) return false;
+      if (approve) {
+        await tx.quizQuestion.create({
+          data: {
+            category: suggestion.category,
+            question: suggestion.question,
+            options: suggestion.options,
+            correctIndex: suggestion.correctIndex,
+            explanation: suggestion.explanation,
+          },
+        });
       }
+      return true;
     });
-
-    await prisma.quizQuestionSuggestion.update({
-      where: { id },
-      data: { status: "APPROVED" }
-    });
-  } else {
-    await prisma.quizQuestionSuggestion.update({
-      where: { id },
-      data: { status: "REJECTED" }
-    });
+    if (!handled) return { success: false, error: "Cette proposition a déjà été traitée par un modérateur." };
+  } catch (error) {
+    console.error("Traitement d'une proposition de question impossible :", error);
+    return { success: false, error: "Une erreur est survenue." };
   }
 
   revalidatePath("/bbquizz");
@@ -407,19 +469,24 @@ export async function getAllQuizQuestions() {
 }
 
 /**
- * Met à jour une question existante
+ * Met à jour une question existante (modérateur).
+ * Carte 143 : seuls les champs prévus (catégorie, question, réponses, bonne réponse, explication) sont recopiés,
+ * après les mêmes contrôles qu'une proposition ; les compteurs de réponses et les autres colonnes ne bougent pas.
  */
-export async function updateQuizQuestion(id: string, data: any) {
+export async function updateQuizQuestion(id: string, data: unknown): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) return null;
+  if (!isModerator(session?.user?.role)) return { success: false, error: "Action réservée à la modération." };
+  if (typeof id !== "string" || !id) return { success: false, error: "Question introuvable." };
 
-  await prisma.quizQuestion.update({
+  const parsed = parseQuizQuestionInput(data);
+  if ("error" in parsed) return { success: false, error: parsed.error };
+  const { options, ...fields } = parsed.value;
+
+  const updated = await prisma.quizQuestion.updateMany({
     where: { id },
-    data: {
-      ...data,
-      options: JSON.stringify(data.options)
-    }
+    data: { ...fields, options: JSON.stringify(options) },
   });
+  if (updated.count !== 1) return { success: false, error: "Question introuvable : elle a peut-être été supprimée." };
 
   revalidatePath("/bbquizz");
   return { success: true };

@@ -19,6 +19,8 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
     where: { id },
     include: {
       commissaires: true,
+      // Ligue rattachée, pour que le champ de recherche de ligue l'affiche déjà choisie (carte 131)
+      ligue: { select: { id: true, name: true, acronym: true, region: true, geographicalZone: true } },
       topic: {
         include: {
           forum: {

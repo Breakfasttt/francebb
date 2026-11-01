@@ -1,6 +1,7 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { safeCallbackUrl } from "@/lib/safeRedirect";
 import OnboardingForm from "./OnboardingForm";
 import OnboardingSuccess from "./OnboardingSuccess";
 
@@ -11,9 +12,13 @@ export const metadata = {
 /**
  * Page d'inscription (onboarding) d'un nouveau membre. Refonte (carte 091, ADR 0006) : une seule colonne de blocs,
  * titre en tête, avec les composants et les couleurs v2 de packages/ui.
+ * Carte 133 : la page que le membre voulait ouvrir arrive dans `?callbackUrl=` (posé par auth.config.ts). Seule une
+ * adresse du site est gardée (safeCallbackUrl), et le membre y est envoyé à la fin de l'inscription.
  */
-export default async function OnboardingPage() {
+export default async function OnboardingPage(props: { searchParams: Promise<{ callbackUrl?: string }> }) {
   const session = await getActiveSession();
+  const { callbackUrl: requestedUrl } = await props.searchParams;
+  const callbackUrl = safeCallbackUrl(requestedUrl);
 
   if (!session?.user?.id) {
     redirect("/auth/login");
@@ -41,7 +46,7 @@ export default async function OnboardingPage() {
             </p>
           )}
         </header>
-        {user.hasFinishedOnboarding ? <OnboardingSuccess /> : <OnboardingForm user={user} />}
+        {user.hasFinishedOnboarding ? <OnboardingSuccess callbackUrl={callbackUrl} /> : <OnboardingForm user={user} callbackUrl={callbackUrl} />}
       </section>
     </div>
   );

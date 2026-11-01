@@ -317,7 +317,7 @@ test.describe("Inventaire 9 : ligues et carte", () => {
     await page.waitForURL(/\/ligue\/(?!edit)[^/?]+$/);
     const created = await db((prisma) => prisma.ligue.findFirst({ where: { name: CREATED_NAME }, include: { commissaires: { select: { id: true } } } }));
     expect(created).toMatchObject({
-      acronym: "ILC", geographicalZone: "R2-NO", region: "Bretagne", departement: "35 - Ille-et-Vilaine", ville: "Vannes",
+      acronym: "ILC", geographicalZone: "R2-NO", region: "Bretagne", departement: "35", ville: "Vannes",
       description: "[b]Ligue créée par le test[/b]", creatorId: MEMBER.id,
     });
     expect(created?.lat).not.toBeNull();
@@ -441,7 +441,7 @@ test.describe("Inventaire 9 : ligues et carte", () => {
     await expect(field("textbox", /^Acronyme/)).toHaveValue(ALPHA.acronym);
     await expect(field("combobox", /^Zone/)).toHaveValue(ALPHA.geographicalZone);
     await expect(field("combobox", /^Région/)).toHaveValue(ALPHA.region);
-    await expect(field("combobox", /^Département/)).toHaveValue(ALPHA.departement);
+    await expect(field("combobox", /^Département/)).toHaveValue("35");
     await expect(field("textbox", /^Ville/)).toHaveValue(ALPHA.ville);
     await expect(field("textbox", /^Adresse/)).toHaveValue(ALPHA.address);
     await expect(field("textbox", /Description|Présentation/)).toHaveValue(ALPHA.description);

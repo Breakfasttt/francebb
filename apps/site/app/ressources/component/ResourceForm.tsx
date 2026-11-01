@@ -21,7 +21,7 @@ import { BookOpen, ImageIcon, Info, Loader2, Save, Send, Tags, Upload, X } from 
 import { Badge, Button, Card, Field, Input, Label, Textarea, cn, toast } from "@bbfrance/ui";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
-import { siteConfig } from "@/lib/siteConfig";
+import { uploadImageFile } from "@/common/utils/imageUpload";
 import { getResourceTags, submitResource, updateResourceAction } from "@/app/ressources/actions";
 
 const DESCRIPTION_MAX = 200;
@@ -79,22 +79,14 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
     const file = event.target.files?.[0];
     if (!file) return;
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
     try {
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${siteConfig.api.imgbb.apiKey}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data.success) {
-        setImageUrl(data.data.url);
+      const result = await uploadImageFile(file);
+      if (result.success && result.url) {
+        setImageUrl(result.url);
         toast.success("Image envoyée. Pensez à enregistrer la ressource.");
       } else {
-        toast.error("Erreur lors de l'envoi de l'image : " + (data.error?.message || "cause inconnue"));
+        toast.error(result.error || "L'envoi de l'image a échoué.");
       }
-    } catch {
-      toast.error("Erreur réseau lors de l'envoi de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

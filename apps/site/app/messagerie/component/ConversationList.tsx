@@ -76,7 +76,8 @@ export default function ConversationList({ activeId, version }: ConversationList
         const lastMsg = conv.messages[0];
         const unreadCount = conv._count?.messages || 0;
         const others = conv.participants.filter((p) => String(p.user.id) !== String(currentUserId));
-        const isOneOnOne = conv.participants.length === 2;
+        // Un groupe réduit à deux membres (les autres l'ont quitté, carte 136) reste affiché comme un groupe
+        const isOneOnOne = !conv.isGroup && conv.participants.length === 2;
         const title = conversationTitle(conv, currentUserId);
         const isActive = conv.id === activeId;
 

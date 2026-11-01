@@ -6,6 +6,7 @@
 import Link from "next/link";
 import { CalendarDays, MapPin, Users } from "lucide-react";
 import { Badge, Card, cn } from "@bbfrance/ui";
+import { takenPlaces } from "@/lib/tournamentPlaces";
 
 /** Champs du tournoi utilisés par la liste. */
 export interface TournamentListItem {
@@ -22,7 +23,10 @@ export interface TournamentListItem {
   structure: string | null;
   price: number | null;
   maxParticipants: number | null;
+  // Places prises : calculées par takenPlaces (lib/tournamentPlaces.ts, carte 150) à partir des trois champs suivants
   currentParticipants: number;
+  isTeam: boolean;
+  _count: { registrations: number; teams: number };
   mealsIncluded: boolean;
   lodgingAtVenue: boolean;
   fridayArrival: boolean;
@@ -108,7 +112,7 @@ export function TournamentCard({ tournament, todayStart }: { tournament: Tournam
           <span className={cn("flex items-center gap-1.5", muted)} title="Inscriptions">
             <Users size={16} aria-hidden="true" />
             <span>
-              {tournament.currentParticipants} / {tournament.maxParticipants || "∞"} places
+              {takenPlaces(tournament)} / {tournament.maxParticipants || "∞"} places
             </span>
           </span>
           <span className="font-bold text-bb-text">{priceText(tournament.price)}</span>
@@ -137,7 +141,7 @@ export function TournamentRow({ tournament, todayStart }: { tournament: Tourname
         <p className={cn("m-0 mt-0.5 text-sm break-words lg:hidden", muted)}>
           {placeText(tournament)} · {tournament.gameEdition || "BB20"} · {tournament.ruleset || "NAF"} ·{" "}
           <span className="font-semibold text-bb-text">{priceText(tournament.price)}</span>
-          {isActive && ` · ${tournament.currentParticipants}/${tournament.maxParticipants || "∞"} places`}
+          {isActive && ` · ${takenPlaces(tournament)}/${tournament.maxParticipants || "∞"} places`}
         </p>
       </div>
       <div className="hidden min-w-0 text-sm lg:block">
@@ -154,7 +158,7 @@ export function TournamentRow({ tournament, todayStart }: { tournament: Tourname
         {isActive ? (
           <span className={cn("inline-flex items-center gap-1", muted)}>
             <Users size={14} aria-hidden="true" />
-            {tournament.currentParticipants}/{tournament.maxParticipants || "∞"}
+            {takenPlaces(tournament)}/{tournament.maxParticipants || "∞"}
           </span>
         ) : (
           status

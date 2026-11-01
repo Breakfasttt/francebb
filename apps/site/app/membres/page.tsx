@@ -36,10 +36,19 @@ export default async function MembersPage() {
   // 3. Vérification des permissions
   const showBanned = isModerator(me.role as UserRole);
 
-  // 4. Récupérer tous les utilisateurs avec leurs ligues et région
+  // 4. Récupérer tous les utilisateurs, avec seulement les champs affichés par l'annuaire et utilisés par ses actions
+  // (bannir, changer le rôle, supprimer). Tout ce qui est lu ici part dans la page envoyée au navigateur : un champ
+  // privé ajouté un jour à la fiche d'un membre n'y apparaîtra donc pas sans être ajouté ici (carte 135).
   const allUsers = await prisma.user.findMany({
     where: showBanned ? undefined : { isBanned: false },
-    include: {
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      role: true,
+      isBanned: true,
+      nafNumber: true,
+      region: true,
       ligues: { select: { id: true, name: true, acronym: true } }
     },
     orderBy: { name: 'asc' }
@@ -53,6 +62,7 @@ export default async function MembersPage() {
     }),
     prisma.referenceData.findMany({
       where: { group: 'COACH_REGION', isActive: true },
+      select: { key: true, label: true },
       orderBy: { order: 'asc' }
     }),
     getRoleLabelMap(),

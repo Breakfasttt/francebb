@@ -1,6 +1,8 @@
 /**
  * Actions serveur pour la gestion des ressources et outils
  * Gère la soumission, la récupération et la modération
+ * Carte 141 : le lien et l'image d'une ressource sont contrôlés ici, côté serveur (voir `checkResourceUrls`), pour
+ * qu'une adresse dangereuse comme `javascript:…` ne puisse jamais être enregistrée.
  */
 "use server";
 
@@ -9,8 +11,51 @@ import { prisma } from "@/lib/prisma";
 import { isModerator, isAdmin } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
+import type { Prisma } from "@/prisma/generated-client";
 
 export type ResourceStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+/** Longueur maximale d'une adresse (lien ou image), pour refuser un texte démesuré. */
+const URL_MAX_LENGTH = 2000;
+
+/**
+ * Vrai si `value` est une adresse web complète en `http://` ou `https://`, ou, quand `allowInternal` est vrai, une
+ * adresse interne du site qui commence par une seule barre oblique (`/bbscheme`). Une adresse comme
+ * `javascript:alert(1)` exécuterait du code au clic : elle est toujours refusée. `//autre-site.fr` et `/\autre-site.fr`
+ * aussi, car le navigateur les comprend comme des liens vers un autre site.
+ */
+function isSafeUrl(value: string, allowInternal: boolean): boolean {
+  if (value.length > URL_MAX_LENGTH) return false;
+  if (allowInternal && /^\/(?![/\\])/.test(value)) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Contrôle le lien et l'image d'une ressource avant de l'enregistrer. Le lien (`null` quand il ne change pas) doit
+ * être une adresse web ; l'image est facultative (chaîne vide). Les adresses internes du site ne sont acceptées pour
+ * le lien que pour un outil officiel (`isSystem`), dont le lien mène à une page du site ; elles le sont toujours pour
+ * l'image (images du dossier public du site). Renvoie le message d'erreur à afficher, ou `null`.
+ */
+function checkResourceUrls(link: string | null, imageUrl: string | null, isSystem: boolean): string | null {
+  if (link !== null && !isSafeUrl(link, isSystem)) {
+    return "Le lien doit être une adresse web complète, qui commence par http:// ou https://.";
+  }
+  if (imageUrl && !isSafeUrl(imageUrl, true)) {
+    return "L'adresse de l'image doit commencer par http:// ou https://.";
+  }
+  return null;
+}
+
+/** Lit un champ texte du formulaire, sans espaces autour ; chaîne vide s'il est absent. */
+function textField(formData: FormData, name: string): string {
+  const value = formData.get(name);
+  return typeof value === "string" ? value.trim() : "";
+}
 
 /**
  * Soumet une nouvelle ressource (par un utilisateur)
@@ -19,11 +64,11 @@ export async function submitResource(formData: FormData) {
   const session = await getActiveSession();
   if (!session?.user?.id) return { error: "Non authentifié" };
 
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const imageUrl = formData.get("imageUrl") as string;
-  const link = formData.get("link") as string;
-  const tagsString = formData.get("tags") as string;
+  const title = textField(formData, "title");
+  const description = textField(formData, "description");
+  const imageUrl = textField(formData, "imageUrl");
+  const link = textField(formData, "link");
+  const tagsString = textField(formData, "tags");
 
   if (!title || !description || !link) {
     return { error: "Les champs Titre, Description et Lien sont obligatoires" };
@@ -32,6 +77,9 @@ export async function submitResource(formData: FormData) {
   if (description.length > 200) {
     return { error: "La description ne doit pas dépasser 200 caractères" };
   }
+
+  const urlError = checkResourceUrls(link, imageUrl, false);
+  if (urlError) return { error: urlError };
 
   const tagNames = tagsString
     ? tagsString.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
@@ -78,7 +126,7 @@ export async function getResources(params: {
   const skip = (page - 1) * pageSize;
 
   try {
-    const where: any = {
+    const where: Prisma.ResourceWhereInput = {
       status: "APPROVED",
     };
 
@@ -202,7 +250,7 @@ export async function getUserResources(userId: string, page = 1, pageSize = 10) 
  */
 export async function updateResourceAction(id: string, formData: FormData) {
   const session = await getActiveSession();
-  const user = session?.user as any;
+  const user = session?.user;
   if (!user?.id) return { error: "Non authentifié" };
 
   const resource = await prisma.resource.findUnique({ where: { id } });
@@ -218,11 +266,17 @@ export async function updateResourceAction(id: string, formData: FormData) {
       return { error: "Seuls les administrateurs peuvent modifier les outils système" };
     }
     // Pour une ressource système, on ne modifie que description et image
+    const systemDescription = textField(formData, "description");
+    const systemImageUrl = textField(formData, "imageUrl");
+    if (!systemDescription) return { error: "La description est obligatoire" };
+    if (systemDescription.length > 200) return { error: "La description ne doit pas dépasser 200 caractères" };
+    const systemUrlError = checkResourceUrls(null, systemImageUrl, true);
+    if (systemUrlError) return { error: systemUrlError };
     await prisma.resource.update({
       where: { id },
       data: {
-        description: formData.get("description") as string,
-        imageUrl: formData.get("imageUrl") as string,
+        description: systemDescription,
+        imageUrl: systemImageUrl || null,
         // Les ressources système restent approuvées
       }
     });
@@ -232,15 +286,22 @@ export async function updateResourceAction(id: string, formData: FormData) {
     return { success: true };
   }
 
-  const title = formData.get("title") as string;
-  const description = formData.get("description") as string;
-  const imageUrl = formData.get("imageUrl") as string;
-  const link = formData.get("link") as string;
-  const tagsString = formData.get("tags") as string;
+  const title = textField(formData, "title");
+  const description = textField(formData, "description");
+  const imageUrl = textField(formData, "imageUrl");
+  const link = textField(formData, "link");
+  const tagsString = textField(formData, "tags");
 
   if (!title || !description || !link) {
     return { error: "Les champs Titre, Description et Lien sont obligatoires" };
   }
+
+  if (description.length > 200) {
+    return { error: "La description ne doit pas dépasser 200 caractères" };
+  }
+
+  const urlError = checkResourceUrls(link, imageUrl, false);
+  if (urlError) return { error: urlError };
 
   const tagNames = tagsString
     ? tagsString.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
@@ -288,7 +349,7 @@ export async function updateResourceAction(id: string, formData: FormData) {
  */
 export async function deleteResourceAction(id: string) {
   const session = await getActiveSession();
-  const user = session?.user as any;
+  const user = session?.user;
   if (!user?.id) return { error: "Non authentifié" };
 
   const resource = await prisma.resource.findUnique({ where: { id } });
@@ -328,8 +389,7 @@ export async function deleteResourceAction(id: string) {
  */
 export async function getPendingResources(page = 1, pageSize = 10) {
   const session = await getActiveSession();
-  const sessionUser = session?.user as any;
-  if (!isModerator(sessionUser?.role)) return { resources: [], total: 0 };
+  if (!isModerator(session?.user?.role)) return { resources: [], total: 0 };
 
   const skip = (page - 1) * pageSize;
 
@@ -362,8 +422,7 @@ export async function moderateResource(
   data?: { title?: string; description?: string; link?: string; imageUrl?: string; tags?: string }
 ) {
   const session = await getActiveSession();
-  const sessionUser = session?.user as any;
-  if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
+  if (!isModerator(session?.user?.role)) return { error: "Action non autorisée" };
 
   try {
     if (action === "DELETE") {
@@ -385,6 +444,13 @@ export async function moderateResource(
       });
       await logModerationAction("RESOURCE_REJECTED", id, "RESOURCE", "Ressource rejetée");
     } else if (action === "UPDATE" && data) {
+      // Mêmes contrôles d'adresse que pour un membre ; une adresse interne n'est permise que pour un outil officiel
+      const current = await prisma.resource.findUnique({ where: { id }, select: { isSystem: true } });
+      if (!current) return { error: "Ressource introuvable" };
+      const newLink = data.link?.trim();
+      const newImageUrl = data.imageUrl?.trim();
+      const urlError = checkResourceUrls(newLink ?? null, newImageUrl || null, current.isSystem);
+      if (urlError) return { error: urlError };
       const tagNames = data.tags
         ? data.tags.split(",").map((t) => t.trim()).filter((t) => t.length > 0)
         : [];
@@ -394,8 +460,8 @@ export async function moderateResource(
         data: {
           title: data.title,
           description: data.description,
-          link: data.link,
-          imageUrl: data.imageUrl,
+          link: newLink,
+          imageUrl: newImageUrl === undefined ? undefined : newImageUrl || null,
           tags: {
             set: [],
             connectOrCreate: tagNames.map((name) => ({

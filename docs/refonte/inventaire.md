@@ -55,7 +55,7 @@ Fichier actuel : `common/components/BBCodeEditor/BBCodeEditor.tsx`. Le BBCode es
 - [x] Image par adresse, ou par envoi de fichier vers ImgBB. Options : alignement gauche, centre ou droite ; habillage du texte ; taille réduite.
 - [x] Galerie (liste d'adresses d'images).
 - [x] Vidéo YouTube, avec les mêmes options d'alignement, d'habillage et de taille.
-- [x] Mention d'un membre par un bouton, **et en tapant `@`** dans la zone de texte. La recherche passe par `GET /api/users/search`.
+- [x] Mention d'un membre par un bouton, **et en tapant `@`** dans la zone de texte. La recherche passe par `GET /api/users/search`. *(Carte 112 : le « @ » s'écrit toujours ; la recherche ne s'ouvre que s'il est tapé en début de mot, au début du texte ou après une espace ou un retour à la ligne. Une adresse comme « jean@exemple.fr » s'écrit donc normalement, et Échap ferme la recherche en gardant le « @ ».)*
 - [x] Spoiler (texte caché), avec un titre facultatif.
 - [x] Accordéon (bloc repliable, avec un titre).
 - [x] Bloc de code.
@@ -111,7 +111,7 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [membre] Sans `?page=`, la page saute au premier message non lu (`?page=N#post-<id>`).
 - [x] [membre] Le sujet est marqué comme lu et le compteur de vues augmente.
 - [x] [tous] La page défile jusqu'à l'ancre `#post-<id>`.
-- [ ] [tous] Pagination de 20 messages par page. Une page trop grande est ramenée à la dernière.
+- [x] [tous] Pagination de 20 messages par page. Une page trop grande est ramenée à la dernière. *(Carte 109 : les messages affichés sont bien ceux de la dernière page, et non une liste vide ; vérifié par `tests/e2e/bugs/forum.spec.ts`.)*
 - [x] [tous] Titre, badge « ARCHIVÉ », nom du forum, retour au forum, fil d'Ariane (chemin cliquable : Accueil Forum › catégorie › forum parent › forum › sujet).
 - [x] [visiteur / membre sans le rôle] Même règle d'accès réservé que pour un forum.
 - [x] [membre] Les messages des membres qu'on a bloqués sont masqués.
@@ -382,7 +382,7 @@ Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne d
   - une citation faite depuis `/reply` n'a pas de pseudo.
 - **Liens morts sur le site** :
   - `/profile/${id}` dans la messagerie ;
-  - `/profile?id=` sur la page d'un article ; *ces deux liens ont été corrigés par la carte 105 (vérifié par la carte 092). Il en reste un : le classement d'un tournoi (`TournamentResultWidget`) mène encore à `/profile/${id}`, une page qui n'existe pas* ;
+  - `/profile?id=` sur la page d'un article ; *ces deux liens ont été corrigés par la carte 105 (vérifié par la carte 092). Il en restait un : le classement d'un tournoi (`TournamentResultWidget`) menait à `/profile/${id}`, une page qui n'existe pas ; corrigé par la carte 134, il mène maintenant à `/spy/${id}`, et plus aucun lien `/profile/` suivi d'un identifiant ne reste dans le site* ;
   - `?ligueId=` n'est pas lu par `/tournois` ; *corrigé par la carte 105, vérifié par `tournois.spec.ts` (carte 089)* ;
   - `/media` n'a aucun lien d'entrée.
 - **Mauvais écran de connexion** : `/administration`, `/moderation`, `/profile` et `/spy` renvoient vers `/api/auth/signin` au lieu de `/auth/login`.

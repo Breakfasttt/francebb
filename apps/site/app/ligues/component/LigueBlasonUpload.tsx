@@ -8,7 +8,7 @@
 import { useRef, useState } from "react";
 import { Loader2, Upload, X } from "lucide-react";
 import { Button, toast } from "@bbfrance/ui";
-import { siteConfig } from "@/lib/siteConfig";
+import { uploadImageFile } from "@/common/utils/imageUpload";
 import LigueBlason from "./LigueBlason";
 
 interface LigueBlasonUploadProps {
@@ -19,7 +19,6 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
   const [image, setImage] = useState(initialImage || "");
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const IMGBB_API_KEY = siteConfig.api.imgbb.apiKey;
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,23 +30,14 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
     }
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append("image", file);
-
     try {
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data.success) {
-        setImage(data.data.url);
+      const result = await uploadImageFile(file);
+      if (result.success && result.url) {
+        setImage(result.url);
         toast.success("Blason envoyé. Pensez à enregistrer la ligue.");
       } else {
-        toast.error(`Erreur : ${data.error?.message || "l'envoi a échoué"}`);
+        toast.error(result.error || "L'envoi du blason a échoué.");
       }
-    } catch {
-      toast.error("Erreur lors de l'envoi de l'image.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

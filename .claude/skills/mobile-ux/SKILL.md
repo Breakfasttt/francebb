@@ -36,7 +36,7 @@ D'autres largeurs restent permises **seulement pour ajuster une grille à la pla
 La coquille est ce qui entoure chaque page : `common/components/AppShell/` (`AppShell.tsx`, `MorePanel.tsx`, `navItems.ts`, `AppShell.css`).
 
 - **Barre du haut** : l'emplacement du bouton retour de la page (`#mobile-back-button-slot`), le logo (sauf sur l'accueil) et, pour un visiteur, « Connexion ».
-- **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier.
+- **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier. Quand le champ perd le focus, l'attribut n'est retiré qu'après 350 millisecondes (carte 113) : un appui sur un bouton juste après la saisie se termine ainsi avant que la barre ne revienne et ne décale la page sous le doigt.
 - **Panneau « Plus »** : il monte du bas et contient le profil ou la connexion, le choix du thème, les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier), la rubrique « Cette page », la modération et l'administration pour l'équipe, les mentions légales et la déconnexion.
 - **« Cette page »** : une page peut y envoyer des outils secondaires (actions de la colonne latérale du forum, outils d'un sujet) par un portail vers `#mobile-page-sidebar-slot` (`GlobalPortal` ou `MobilePortal`). La rubrique disparaît quand la page n'y envoie rien. Le panneau reste monté en permanence, caché quand il est fermé, pour que cet emplacement existe toujours.
 

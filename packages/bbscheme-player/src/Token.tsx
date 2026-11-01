@@ -7,6 +7,31 @@ import {
 import { createPortal } from "react-dom";
 import "./Token.css";
 
+/** Marge entre la bulle d'infos et le bord visible de l'écran, et écart entre la bulle et le pion (en pixels). */
+const TOOLTIP_MARGIN = 8;
+const TOOLTIP_GAP = 12;
+
+/**
+ * Position de la bulle d'infos d'un pion (carte 146). La bulle est placée au-dessus du pion, centrée sur lui, puis
+ * ramenée dans la partie visible de l'écran : décalée vers la droite près de la réserve de gauche, vers la gauche près
+ * du bord droit, et passée sous le pion s'il n'y a pas la place au-dessus. La partie visible est donnée par
+ * `window.visualViewport` (la zone réellement affichée, qui diffère de la fenêtre quand l'utilisateur a zoomé du doigt
+ * sur téléphone) ; `anchor` et le résultat sont mesurés par rapport à la fenêtre, comme `position: fixed`.
+ */
+function placeTooltip(anchor: DOMRect, width: number, height: number) {
+  const view = window.visualViewport;
+  const minX = (view?.offsetLeft ?? 0) + TOOLTIP_MARGIN;
+  const minY = (view?.offsetTop ?? 0) + TOOLTIP_MARGIN;
+  const maxX = (view ? view.offsetLeft + view.width : window.innerWidth) - TOOLTIP_MARGIN;
+  const maxY = (view ? view.offsetTop + view.height : window.innerHeight) - TOOLTIP_MARGIN;
+
+  const centered = anchor.left + anchor.width / 2 - width / 2;
+  const left = Math.min(Math.max(centered, minX), Math.max(minX, maxX - width));
+  let top = anchor.top - TOOLTIP_GAP - height;
+  if (top < minY) top = Math.min(anchor.bottom + TOOLTIP_GAP, Math.max(minY, maxY - height));
+  return { left, top };
+}
+
 interface TokenProps {
   token: TokenData;
   isOverlay?: boolean;
@@ -76,20 +101,28 @@ const Token: React.FC<TokenProps> = ({
   const isGenericStar = token.playerInfo?.name === "Star Player";
   const initial = isGenericStar ? "" : (token.playerInfo?.acronym || (token.playerInfo ? getInitials(token.playerInfo.name, token.playerInfo.parentRoster?.name) : (token.number?.toString() || "")));
   
-  // Tooltip position state
-  const [tooltipPos, setTooltipPos] = React.useState<{ x: number, y: number } | null>(null);
+  // Bulle d'infos : rectangle du pion survolé. La bulle est d'abord affichée invisible, mesurée, puis placée dans la
+  // partie visible de l'écran par `placeTooltip` (directement sur l'élément, avant que le navigateur ne la dessine).
+  const [tooltipAnchor, setTooltipAnchor] = React.useState<DOMRect | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
+
+  React.useLayoutEffect(() => {
+    const bubble = tooltipRef.current;
+    if (!tooltipAnchor || !bubble) return;
+    const { width, height } = bubble.getBoundingClientRect();
+    const { left, top } = placeTooltip(tooltipAnchor, width, height);
+    bubble.style.left = `${left}px`;
+    bubble.style.top = `${top}px`;
+    bubble.style.visibility = "visible";
+  }, [tooltipAnchor]);
 
   const handleMouseEnter = (e: React.MouseEvent) => {
     if (isOverlay || !token.playerInfo) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    setTooltipPos({ 
-      x: rect.left + rect.width / 2, 
-      y: rect.top 
-    });
+    setTooltipAnchor(e.currentTarget.getBoundingClientRect());
   };
 
-  const handleMouseLeave = () => setTooltipPos(null);
+  const handleMouseLeave = () => setTooltipAnchor(null);
 
   // Formatter pour le prix
   const formatCost = (cost: any) => {
@@ -132,14 +165,12 @@ const Token: React.FC<TokenProps> = ({
                )}
             </div>
 
-            {showTooltip && tooltipPos && token.playerInfo && createPortal(
-              <div 
-                className="token-stats-hover portal-tooltip" 
-                style={{ 
-                  left: `${tooltipPos.x}px`, 
-                  top: `${tooltipPos.y - 12}px`,
-                  transform: 'translateX(-50%) translateY(-100%)'
-                }}
+            {showTooltip && tooltipAnchor && token.playerInfo && createPortal(
+              <div
+                ref={tooltipRef}
+                role="tooltip"
+                className="token-stats-hover portal-tooltip"
+                style={{ left: 0, top: 0, visibility: "hidden" }}
               >
                 <div className="tooltip-header">
                   <span className="player-name-full">{token.playerInfo.name}</span>

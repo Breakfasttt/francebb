@@ -29,3 +29,30 @@ for (const [region, depts] of Object.entries(DEPARTMENTS_BY_REGION)) {
     REGION_BY_DEPARTMENT[dept] = region;
   }
 }
+
+/** Retire les accents d'un texte (« Île-de-France » devient « Ile-de-France »), pour comparer deux écritures. */
+export function withoutAccents(text: string): string {
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+/**
+ * Nom officiel (accentué) d'une région écrite avec ou sans accents, ou `null` si le nom ne correspond à aucune région.
+ * Sert à garder valables les anciennes adresses de `/tournois` (carte 129), dont le filtre utilisait des noms sans
+ * accents (« ?region=Ile-de-France »).
+ */
+export function canonicalRegion(name: string): string | null {
+  if (DEPARTMENTS_BY_REGION[name]) return name;
+  const plain = withoutAccents(name).toLowerCase();
+  return Object.keys(DEPARTMENTS_BY_REGION).find((region) => withoutAccents(region).toLowerCase() === plain) ?? null;
+}
+
+/**
+ * Numéro d'un département (« 35 ») à partir de ce qui a été enregistré : le numéro lui-même, ou le libellé
+ * « 35 - Ille-et-Vilaine » que le formulaire des ligues enregistrait avant la carte 137. Une valeur vide donne `null`.
+ */
+export function departmentNumber(value: string | null | undefined): string | null {
+  const text = (value ?? "").trim();
+  if (!text) return null;
+  const match = text.match(/^([0-9]{2,3}|2[AB])\s*-\s/i);
+  return match ? match[1].toUpperCase() : text;
+}

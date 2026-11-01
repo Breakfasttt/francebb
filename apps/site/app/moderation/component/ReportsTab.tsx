@@ -5,6 +5,9 @@
  * ligues signalés. Les signalements sont regroupés par contenu visé (une fiche par contenu, avec le nombre de
  * signalements). « Détails » montre chaque signalement l'un après l'autre (auteur, date, raison, précision) ;
  * « Marquer comme traité » ferme tous les signalements du contenu, avec un commentaire facultatif écrit au journal.
+ * Le menu « ⋯ » (« Plus d'actions sur ce signalement ») propose « Ignorer le signalement » : les signalements sont
+ * fermés comme ignorés (statut IGNORED, ligne « Signalement ignoré » au journal), par exemple pour un signalement
+ * abusif ; la même fenêtre de confirmation demande un commentaire facultatif (carte 144).
  * Les actions `getPendingReportsByType` et `resolveReportsAction` sont inchangées.
  */
 import { useEffect, useState } from "react";
@@ -13,9 +16,9 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
   AlertTriangle, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, ExternalLink, Hash,
-  MessageSquare, ShieldAlert, Trophy, Users,
+  EyeOff, MessageSquare, ShieldAlert, Trophy, Users,
 } from "lucide-react";
-import { Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
+import { ActionMenu, Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { getPendingReportsByType, resolveReportsAction } from "../actions";
 
@@ -48,6 +51,8 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
   const [resolving, setResolving] = useState(false);
   // Contenu dont on confirme le traitement (fenêtre de confirmation ouverte)
   const [confirmTargetId, setConfirmTargetId] = useState<string | null>(null);
+  // Action confirmée : « Marquer comme traité » (RESOLVE) ou « Ignorer » (IGNORE)
+  const [confirmAction, setConfirmAction] = useState<"RESOLVE" | "IGNORE">("RESOLVE");
 
   const fetchReports = async () => {
     setLoading(true);
@@ -72,19 +77,20 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     }
   };
 
-  const openConfirm = (targetId: string) => {
+  const openConfirm = (targetId: string, action: "RESOLVE" | "IGNORE" = "RESOLVE") => {
     setReportComment("");
+    setConfirmAction(action);
     setConfirmTargetId(targetId);
   };
 
   const onConfirmAction = async () => {
     if (!confirmTargetId) return;
     setResolving(true);
-    // « Traité » ferme les signalements du contenu (RESOLVE), avec le commentaire facultatif
-    const res = await resolveReportsAction(confirmTargetId, type, "RESOLVE", reportComment);
+    // « Traité » (RESOLVE) ou « Ignorer » (IGNORE) ferme les signalements du contenu, avec le commentaire facultatif
+    const res = await resolveReportsAction(confirmTargetId, type, confirmAction, reportComment);
     setResolving(false);
     if (res.success) {
-      toast.success("Signalement marqué comme traité");
+      toast.success(confirmAction === "IGNORE" ? "Signalement ignoré" : "Signalement marqué comme traité");
       fetchReports();
       onActionSuccess?.();
       setConfirmTargetId(null);
@@ -173,6 +179,17 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                         {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
                         Détails
                       </Button>
+                      <ActionMenu
+                        label="Plus d'actions sur ce signalement"
+                        title="Actions sur le signalement"
+                        items={[
+                          {
+                            label: "Ignorer le signalement",
+                            icon: <EyeOff size={18} aria-hidden="true" />,
+                            onSelect: () => openConfirm(group.targetId, "IGNORE"),
+                          },
+                        ]}
+                      />
                       <Button type="button" variant="primary" size="tap" className="w-full lg:ml-auto lg:w-auto" onClick={() => openConfirm(group.targetId)}>
                         <Check size={16} aria-hidden="true" />
                         Marquer comme traité
@@ -245,9 +262,13 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
       <ConfirmDialog
         open={confirmTargetId !== null}
         onOpenChange={(open) => { if (!open) setConfirmTargetId(null); }}
-        title="Marquer comme traité"
-        message="Tous les signalements de cet élément seront marqués comme traités. Il n'apparaîtra plus dans cette liste."
-        confirmLabel="Confirmer"
+        title={confirmAction === "IGNORE" ? "Ignorer le signalement" : "Marquer comme traité"}
+        message={
+          confirmAction === "IGNORE"
+            ? "Tous les signalements de cet élément seront classés comme ignorés, sans action sur le contenu. Il n'apparaîtra plus dans cette liste."
+            : "Tous les signalements de cet élément seront marqués comme traités. Il n'apparaîtra plus dans cette liste."
+        }
+        confirmLabel={confirmAction === "IGNORE" ? "Ignorer" : "Confirmer"}
         pending={resolving}
         onConfirm={onConfirmAction}
       >
@@ -255,7 +276,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
           <Label htmlFor="moderation-comment">Détails de l&apos;action (optionnel)</Label>
           <Textarea
             id="moderation-comment"
-            placeholder="Ex. : contenu supprimé après avertissement…"
+            placeholder={confirmAction === "IGNORE" ? "Ex. : signalement sans fondement…" : "Ex. : contenu supprimé après avertissement…"}
             maxLength={200}
             value={reportComment}
             onChange={(e) => setReportComment(e.target.value)}

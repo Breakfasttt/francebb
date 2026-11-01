@@ -15,7 +15,8 @@
  * - un sujet de 4 messages (le rappel n'en montre que les 3 derniers), un sujet à lier par l'outil « sujet du
  *   forum », un petit sujet pour la réponse rapide et un sous-forum verrouillé.
  *
- * Aucun appel réseau vers l'extérieur : l'envoi d'image vers ImgBB est simulé (page.route), et les boutons qui
+ * Aucun appel réseau vers l'extérieur : l'envoi d'image passe par le serveur du site, qui renvoie en test une adresse
+ * factice sans appeler ImgBB (variable E2E_FAKE_IMAGE_UPLOAD de playwright.config.ts, carte 141), et les boutons qui
  * ouvrent Gemini, Claude ou ChatGPT sont seulement vérifiés, pas cliqués.
  * Des captures sont enregistrées dans test-results/ pour la relecture humaine (pas de comparaison au pixel).
  */
@@ -247,10 +248,7 @@ test.describe("2 éditeur BBCode : outils", () => {
   });
 
   test("[membre] image (adresse, options, envoi de fichier), galerie, vidéo YouTube, schéma BBScheme", async ({ page }, testInfo) => {
-    // Envoi vers ImgBB simulé : aucune image ne part vraiment
-    await page.route("https://api.imgbb.com/**", (route) =>
-      route.fulfill({ contentType: "application/json", body: JSON.stringify({ success: true, data: { url: "https://i.ibb.co/inv/envoi.png" } }) })
-    );
+    // Envoi d'image simulé par le serveur en test (carte 141) : aucune image ne part vraiment
     const textarea = await openReply(page);
 
     // Image par adresse, centrée en taille réduite : pas d'option dans la balise
@@ -278,7 +276,7 @@ test.describe("2 éditeur BBCode : outils", () => {
     const chooser = page.waitForEvent("filechooser");
     await visibleButton(page, "Envoyer une image depuis l'appareil").click();
     await (await chooser).setFiles({ name: "envoi.png", mimeType: "image/png", buffer: Buffer.from([137, 80, 78, 71]) });
-    await expect(textarea).toHaveValue("[img align=right wrap=no]https://i.ibb.co/inv/envoi.png[/img]");
+    await expect(textarea).toHaveValue("[img align=right wrap=no]https://i.ibb.co/e2e/envoi.png[/img]");
 
     // Galerie
     await textarea.fill("");

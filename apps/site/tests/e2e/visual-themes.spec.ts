@@ -27,7 +27,10 @@ test.describe("rendu des thèmes", () => {
       await useTheme(page, theme);
       for (const [name, path] of [["accueil", "/"], ["forum", "/forum"]]) {
         await page.goto(path, { waitUntil: "networkidle" });
-        await expect(page).toHaveScreenshot(`${name}-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001 });
+        // Carte 148 : la liste des prochains tournois de l'accueil dépend des tournois laissés par les autres tests et
+        // du cache de l'accueil (60 secondes) ; elle est masquée (rectangle uni) pour que la capture n'en dépende pas.
+        const mask = name === "accueil" ? [page.getByRole("region", { name: "Prochains tournois" })] : [];
+        await expect(page).toHaveScreenshot(`${name}-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001, mask });
       }
     });
 

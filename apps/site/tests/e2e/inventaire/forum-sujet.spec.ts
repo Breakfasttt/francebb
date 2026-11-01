@@ -618,12 +618,10 @@ test.describe("3.3 un message", () => {
     await expect(editor).toHaveValue(new RegExp(`\\[quote=${AUTHOR.id}\\|${postId(1)}\\|${AUTHOR.name}\\]Premier message`));
     await expect(page.locator("#quick-reply-area")).toBeInViewport();
 
-    // Sujet verrouillé : l'encart « Sujet verrouillé » porte l'ancre de la réponse rapide et « Citer » y fait défiler
-    // (le renvoi vers /reply?quotePostId= ne sert que s'il n'y a aucune zone de réponse dans la page)
+    // Sujet verrouillé : un membre qui ne peut pas répondre ne voit plus « Citer » (carte 111)
     await page.goto(topicUrl(LOCKED_TOPIC), { waitUntil: "networkidle" });
-    await postCard(page, "e2e_suj_v01").getByRole("button", { name: "Citer" }).click();
-    await expect(page.locator("#quick-reply-area")).toBeInViewport();
-    await expect(page).toHaveURL(new RegExp(`/forum/topic/${LOCKED_TOPIC}\\?page=1$`));
+    await expect(postCard(page, "e2e_suj_v01")).toBeVisible();
+    await expect(postCard(page, "e2e_suj_v01").getByRole("button", { name: "Citer" })).toHaveCount(0);
   });
 
   test("[auteur, modo] « Modifier » (tournoi : page du tournoi) ; [auteur] « Supprimer » avec confirmation", async ({ page }) => {

@@ -11,6 +11,7 @@ import { FileText, Plus } from "lucide-react";
 import { Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
+import { isModerator } from "@/lib/roles";
 import type { Prisma } from "@/prisma/generated-client";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import ArticleCard from "@/app/articles/component/ArticleCard";
@@ -35,8 +36,9 @@ export default async function ArticlesPage({
   const limit = view === "grid" ? 12 : 20;
   const skip = (page - 1) * limit;
 
-  // Construction de la clause WHERE
-  const where: Prisma.ArticleWhereInput = {};
+  // Construction de la clause WHERE. Un article masqué par la modération n'est listé que pour un modérateur, qui le
+  // voit avec la mention « Modéré » ; les visiteurs et les membres ne le voient pas (carte 139).
+  const where: Prisma.ArticleWhereInput = isModerator(session?.user?.role) ? {} : { isModerated: false };
   if (query) {
     where.OR = [
       { title: { contains: query, mode: "insensitive" } },

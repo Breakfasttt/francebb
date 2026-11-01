@@ -19,11 +19,11 @@ export default function ProposerContent() {
     const res = await suggestQuizQuestion(formData);
     setIsLoading(false);
 
-    if (res) {
+    if (res.success) {
       toast.success("Question proposée avec succès ! Merci de votre contribution.");
       router.push("/bbquizz");
     } else {
-      toast.error("Une erreur est survenue lors de l'envoi de votre proposition.");
+      toast.error(res.error || "Une erreur est survenue lors de l'envoi de votre proposition.");
     }
   };
 

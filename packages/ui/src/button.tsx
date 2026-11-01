@@ -1,6 +1,6 @@
 /**
- * Bouton shadcn pour le nouveau code (variantes sur les tokens de thème). Les wrappers historiques
- * (`ClassicButton`, `CTAButton`…) du site restent la référence tant que leurs usages ne sont pas migrés.
+ * Bouton shadcn de l'application (variantes sur les tokens de thème). Il remplace les anciens boutons
+ * historiques du site, supprimés avec l'ancien CSS (carte 101).
  */
 import * as React from "react";
 import { Slot } from "radix-ui";
@@ -8,7 +8,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 export const buttonVariants = cva(
-  // border-0, bg-transparent et la police héritée remplacent le reset (preflight) absent tant que le CSS historique existe
+  // border-0, bg-transparent et la police héritée remplacent une partie du reset (preflight, la remise à zéro des styles du navigateur de Tailwind), qui est actif mais ne couvre pas tous les cas
   "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-0 bg-transparent [font-family:inherit] font-bold whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
   {
     variants: {

@@ -88,7 +88,7 @@ Vercel récupère le code sur GitHub. Le dépôt du projet est `github.com/Break
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Service d'envoi de mails |
 | `CONTACT_EMAIL` | Adresse de contact affichée dans les mentions légales : demandes sur les données personnelles (RGPD) et signalements. Une modification demande un nouveau déploiement. |
 | `ENCRYPTION_KEY` | 64 caractères hexadécimaux : `openssl rand -hex 32` |
-| `NEXT_PUBLIC_IMGBB_API_KEY` | Clé gratuite sur [imgbb.com](https://imgbb.com) (envoi d'images) |
+| `IMGBB_API_KEY` | Clé gratuite sur [imgbb.com](https://imgbb.com), pour l'envoi d'images (avatars, blasons, images des messages, des articles et des ressources). Elle est secrète : seul le serveur la lit (`app/imageUploadActions.ts`, carte 141). Ne jamais l'écrire avec le préfixe `NEXT_PUBLIC_`, qui la recopierait dans le code envoyé au navigateur, lisible par tous. L'ancienne variable `NEXT_PUBLIC_IMGBB_API_KEY` est à supprimer. |
 
 5. **Deploy**. Pendant la construction, Vercel lance `vercel-build`, qui crée les tables dans la base Neon.
 
@@ -158,6 +158,21 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
    HUB_DATABASE_URL="postgresql://…(base du hub)…" pnpm ban coach@exemple.fr --unban
    ```
    Le compte ne peut plus se connecter, ses connexions au hub sont fermées et les accès donnés aux applications sont retirés. Une application où le coach est déjà connecté le garde connecté jusqu'à la fin de sa session : pour un effet immédiat sur le site, le bannir aussi depuis la modération du site.
+
+---
+
+## Clé ImgBB gardée par le serveur (carte 141)
+
+Jusqu'à la carte 141, la clé du service d'hébergement d'images ImgBB s'appelait `NEXT_PUBLIC_IMGBB_API_KEY`. Le préfixe `NEXT_PUBLIC_` la recopiait dans le code envoyé au navigateur : n'importe qui pouvait la lire et envoyer des images sur le compte du site. Désormais, les images passent par une action serveur (`apps/site/app/imageUploadActions.ts`), qui est seule à connaître la clé. L'ancienne clé a été publique : il faut la remplacer.
+
+1. **Sur imgbb.com**, avec le compte du site : créer une nouvelle clé (page « API »), puis supprimer l'ancienne.
+2. **Sur Vercel** (**Settings** > **Environment Variables**) : ajouter `IMGBB_API_KEY` avec la nouvelle clé, puis supprimer `NEXT_PUBLIC_IMGBB_API_KEY`.
+3. Redéployer. Vérifier ensuite un envoi d'image, par exemple « Envoyer une image » dans son profil.
+4. **En local**, dans `apps/site/.env` : renommer `NEXT_PUBLIC_IMGBB_API_KEY` en `IMGBB_API_KEY` (avec la nouvelle clé).
+
+Sans cette variable, le site fonctionne, mais tout envoi d'image affiche « L'envoi d'images n'est pas configuré sur le site ».
+
+Une image envoyée est limitée à 4 Mo et doit être un vrai fichier PNG, JPEG, GIF ou WebP. La limite des actions serveur est relevée à 4,5 Mo dans `apps/site/next.config.ts` (`serverActions.bodySizeLimit`), la taille maximale d'une requête acceptée par Vercel.
 
 ---
 

@@ -30,12 +30,12 @@ export default function EditQuestion({ question }: EditQuestionProps) {
     const res = await updateQuizQuestion(question.id, formData);
     setIsLoading(false);
 
-    if (res) {
+    if (res.success) {
       toast.success("Question mise à jour");
       router.push("/bbquizz/editer");
       router.refresh();
     } else {
-      toast.error("Une erreur est survenue");
+      toast.error(res.error || "Une erreur est survenue");
     }
   };
 

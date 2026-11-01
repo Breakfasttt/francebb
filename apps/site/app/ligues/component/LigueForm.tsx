@@ -20,7 +20,7 @@ import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 import type { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
-import { REGION_BY_DEPARTMENT } from "@/lib/france";
+import { REGION_BY_DEPARTMENT, departmentNumber } from "@/lib/france";
 import { createLigue, updateLigue } from "@/app/ligues/actions";
 import LigueBlasonUpload from "./LigueBlasonUpload";
 
@@ -75,7 +75,8 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [commissaires, setCommissaires] = useState<Member[]>(initialCommissaires);
   const [selectedRegion, setSelectedRegion] = useState(initialData?.region || "");
-  const [selectedDept, setSelectedDept] = useState(initialData?.departement || "");
+  // Une ligue enregistrée avant la carte 137 porte le libellé (« 35 - Ille-et-Vilaine ») : on le ramène au numéro
+  const [selectedDept, setSelectedDept] = useState(departmentNumber(initialData?.departement) || "");
   const [lat, setLat] = useState<number | null>(initialData?.lat ?? null);
   const [lng, setLng] = useState<number | null>(initialData?.lng ?? null);
   const [address, setAddress] = useState(initialData?.address || "");
@@ -155,8 +156,8 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
                 <Select id="ligueDept" name="departement" value={selectedDept} onChange={(e) => setSelectedDept(e.target.value)}>
                   <option value="">Choisir</option>
                   {departments.map((d) => (
-                    // La valeur enregistrée est le libellé (« 35 - Ille-et-Vilaine »), comme avant la refonte
-                    <option key={d.key} value={d.label}>{d.label}</option>
+                    // La valeur enregistrée est le numéro (« 35 »), comme pour un tournoi (carte 137)
+                    <option key={d.key} value={d.key}>{d.label}</option>
                   ))}
                 </Select>
               </Field>

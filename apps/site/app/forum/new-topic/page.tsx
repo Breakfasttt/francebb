@@ -40,7 +40,8 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
 
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    redirect("/forum");
+    // Carte 149 : un visiteur passe par la page de connexion, qui le ramène ensuite sur cet écran (callbackUrl).
+    redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-topic?forumId=${forumId}`)}`);
   }
 
   const userCanStick = isModerator(session.user.role);

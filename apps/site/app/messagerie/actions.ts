@@ -33,6 +33,17 @@ const MESSAGES_PER_PAGE = 30;
  * Récupère les conversations paginées pour l'utilisateur actuel.
  * Renvoie null si le visiteur n'est pas connecté (ou est banni).
  */
+/**
+ * Retire d'un groupe les membres qui l'ont quitté (participation marquée supprimée, champ `deletedAt`), pour qu'ils
+ * ne soient plus affichés ni comptés parmi les participants (carte 136). Une conversation à deux garde ses deux
+ * membres : son en-tête affiche le nom de l'autre membre, même si celui-ci l'a retirée de sa propre liste.
+ * Ce tri ne change pas qui peut lire la conversation : ce droit est vérifié à part, sur la participation du lecteur.
+ */
+function withoutLeftMembers<T extends { isGroup: boolean; participants: { deletedAt: Date | null }[] }>(conversation: T): T {
+  if (!conversation.isGroup) return conversation;
+  return { ...conversation, participants: conversation.participants.filter((participant) => !participant.deletedAt) };
+}
+
 export async function getConversations(page = 1) {
   const session = await getActiveSession();
   const userId = session?.user?.id;
@@ -85,7 +96,7 @@ export async function getConversations(page = 1) {
   });
 
   const conversations = participants.map(p => {
-    const conv = p.conversation;
+    const conv = withoutLeftMembers(p.conversation);
     // Déchiffrer le dernier message
     if (conv.messages.length > 0) {
       conv.messages[0].content = decrypt(conv.messages[0].content);
@@ -165,7 +176,7 @@ export async function getConversationMessages(conversationId: string, page = 1) 
 
   return {
     messages: messages.map(m => ({ ...m, content: decrypt(m.content) })),
-    conversation,
+    conversation: conversation ? withoutLeftMembers(conversation) : null,
     totalPages: Math.ceil(total / MESSAGES_PER_PAGE),
     currentPage: page
   };
@@ -190,6 +201,8 @@ export async function sendMessage(conversationId: string, content: string): Prom
     where: { id: conversationId },
     select: { isGroup: true, participants: { where: { userId: { not: userId } }, select: { userId: true } } }
   });
+  // Un membre qui a quitté un groupe ne peut plus y écrire
+  if (conversation?.isGroup && participant.deletedAt) return { success: false, error: "Accès refusé" };
   if (!conversation?.isGroup && await hasBlockBetween(userId, conversation?.participants.map(p => p.userId) ?? [])) {
     return { success: false, error: "Impossible d'envoyer un message à ce membre." };
   }
@@ -210,17 +223,22 @@ export async function sendMessage(conversationId: string, content: string): Prom
     data: { updatedAt: new Date() }
   });
 
-  // Restaurer pour tout le monde (optionnel, selon choix UX, ici on restaure si nouveau message)
-  await prisma.conversationParticipant.updateMany({
-    where: { conversationId },
-    data: { deletedAt: null }
-  });
+  // Conversation à deux : un nouveau message la fait réapparaître chez celui qui l'avait retirée de sa liste.
+  // Dans un groupe, en revanche, un membre parti ne revient pas tout seul (carte 136) : il faut l'inviter à nouveau.
+  if (!conversation?.isGroup) {
+    await prisma.conversationParticipant.updateMany({
+      where: { conversationId },
+      data: { deletedAt: null }
+    });
+  }
 
   // Notification par mail aux autres participants (si notif active)
   const others = await prisma.conversationParticipant.findMany({
     where: { 
         conversationId, 
-        userId: { not: userId } 
+        userId: { not: userId },
+        // Pas de mail aux membres qui ont quitté le groupe
+        deletedAt: null
     },
     include: { user: { select: { email: true, notifPm: true, name: true } } }
   });
@@ -273,7 +291,6 @@ export async function startConversation(userIds: string[], name?: string): Promi
 
     // Si c'est un 1v1, vérifier si elle existe déjà
     if (!isGroup && allParticipants.length === 2) {
-        const otherId = userIds[0];
         const existing = await prisma.conversation.findFirst({
             where: {
                 isGroup: false,
@@ -400,9 +417,19 @@ export async function inviteToGroup(conversationId: string, userIds: string[]): 
     // Filtrer pour ne pas ajouter des personnes déjà présentes
     const existing = await prisma.conversationParticipant.findMany({
         where: { conversationId, userId: { in: userIds } },
-        select: { userId: true }
+        select: { userId: true, deletedAt: true }
     });
     const existingIds = new Set(existing.map(e => e.userId));
+
+    // Un membre qui avait quitté le groupe et qu'on invite à nouveau y revient (carte 136 : les membres partis ne sont
+    // plus affichés, la fenêtre d'invitation les propose donc de nouveau)
+    const leftIds = existing.filter(e => e.deletedAt).map(e => e.userId);
+    if (leftIds.length > 0) {
+        await prisma.conversationParticipant.updateMany({
+            where: { conversationId, userId: { in: leftIds } },
+            data: { deletedAt: null }
+        });
+    }
     const toAdd = [...new Set(userIds.filter(uid => !existingIds.has(uid)))];
 
     if (toAdd.length > 0) {

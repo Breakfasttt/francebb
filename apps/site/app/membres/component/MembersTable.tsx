@@ -100,6 +100,11 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const setSort = change(setSortConfig);
 
   const roleLabel = (role: string) => getRoleLabel(role, roleLabels);
+  // Choix du filtre « Rôle » : rôles de base et rôles personnalisés de la table RoleConfig (carte 135), du plus
+  // puissant au moins puissant, puis par ordre alphabétique du libellé.
+  const roleFilterOptions = Object.keys({ ...ROLE_LABELS, ...roleLabels })
+    .map((role) => ({ value: role, label: roleLabel(role) }))
+    .sort((a, b) => getRolePower(b.value) - getRolePower(a.value) || a.label.localeCompare(b.label, "fr"));
   const regionLabel = (key?: string | null) => allRegions.find((r) => r.key === key)?.label || key || "";
   const ligueLabel = (id: string) => {
     const ligue = allLigues.find((l) => l.id === id);
@@ -206,7 +211,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       <Field label="Rôle" htmlFor={`${prefix}-role`}>
         <Select id={`${prefix}-role`} value={selectedRole} onChange={(e) => setRole(e.target.value)}>
           <option value="">Tous les rôles</option>
-          {Object.entries(ROLE_LABELS).map(([val, label]) => <option key={val} value={val}>{label}</option>)}
+          {roleFilterOptions.map((role) => <option key={role.value} value={role.value}>{role.label}</option>)}
         </Select>
       </Field>
       <Field label="Région" htmlFor={`${prefix}-region`}>
