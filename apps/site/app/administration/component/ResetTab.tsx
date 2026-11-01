@@ -1,25 +1,40 @@
 "use client";
 
+/**
+ * Onglet « Zone de danger » de l'administration (refonte, carte 099), réservé au super administrateur : la remise à
+ * zéro du site, qui efface tout le contenu. Elle reste protégée comme avant la refonte : trois cases à cocher et la
+ * phrase « JE COMPRENDS LES RISQUES » à recopier exactement ; tant que ce n'est pas fait, le bouton reste désactivé.
+ * Le serveur vérifie de nouveau le rôle et la phrase. L'action `resetDatabase` est inchangée.
+ */
 import { useState, useTransition } from "react";
-import { OctagonAlert, Trash2, TriangleAlert } from "lucide-react";
+import { OctagonAlert, Trash2 } from "lucide-react";
+import { Button, Card, CardBody, CardHeader, CardTitle, DESKTOP_QUERY, Field, Input, Sheet, SheetContent, toast, useMediaQuery } from "@bbfrance/ui";
 import { resetDatabase } from "../actions";
-import Modal from "@/common/components/Modal/Modal";
-import { toast } from "@bbfrance/ui";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+
+const CONFIRM_PHRASE = "JE COMPRENDS LES RISQUES";
+
+const CHECKS = [
+  "Je comprends que tous les messages, sujets et conversations privées seront détruits.",
+  "Je comprends que les données des coachs seront perdues.",
+  "J'ai fait une sauvegarde de la base.",
+];
 
 export default function ResetTab() {
   const [showModal, setShowModal] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const isMobile = useIsMobile();
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
-  // Les 4 confirmations
-  const [check1, setCheck1] = useState(false);
-  const [check2, setCheck2] = useState(false);
-  const [check3, setCheck3] = useState(false);
+  // Les trois cases et la phrase de confirmation
+  const [checks, setChecks] = useState([false, false, false]);
   const [confirmText, setConfirmText] = useState("");
 
-  const isNukeReady = check1 && check2 && check3 && confirmText === "JE COMPRENDS LES RISQUES";
+  const isNukeReady = checks.every(Boolean) && confirmText === CONFIRM_PHRASE;
+
+  const openModal = () => {
+    setChecks([false, false, false]);
+    setConfirmText("");
+    setShowModal(true);
+  };
 
   const handleNuke = () => {
     startTransition(async () => {
@@ -37,176 +52,71 @@ export default function ResetTab() {
   };
 
   return (
-    <PremiumCard className="fade-in nuke-container" style={{ padding: isMobile ? '1.5rem' : '2.5rem', border: '1px solid var(--danger-transparent)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', marginBottom: '1.5rem', color: 'var(--danger)', flexDirection: isMobile ? 'column' : 'row', textAlign: isMobile ? 'center' : 'left' }}>
-        <div style={{ background: 'var(--danger-transparent)', padding: '0.8rem', borderRadius: '12px', display: 'flex' }}>
-          <OctagonAlert size={isMobile ? 24 : 32} />
-        </div>
-        <div>
-          <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.5rem', fontWeight: 800 }}>Zone de Danger</h3>
-          <p style={{ color: 'var(--danger)', margin: '0.2rem 0 0', fontSize: '0.85rem', opacity: 0.8 }}>Actions irréversibles.</p>
-        </div>
-      </div>
-      
-      <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: '2.5rem', fontSize: isMobile ? '0.9rem' : '1rem' }}>
-        Vous allez <strong style={{color:"var(--danger)"}}>Remettre à Zéro</strong> le site. 
-        Suppression de <strong style={{color:"var(--foreground)"}}>tout le contenu</strong>.
-      </p>
+    <Card className="overflow-hidden border-bb-danger-text">
+      <CardHeader>
+        <OctagonAlert size={18} className="text-bb-danger-text" aria-hidden="true" />
+        <CardTitle className="text-bb-danger-text">Zone de danger</CardTitle>
+      </CardHeader>
+      <CardBody className="flex flex-col gap-4">
+        <p className="m-0 text-[0.95rem] leading-relaxed text-bb-text">
+          La remise à zéro <strong className="text-bb-danger-text">supprime tout le contenu du site</strong> : messages, sujets,
+          forums, tournois, conversations privées et comptes des membres (sauf les super administrateurs). Elle ne peut pas
+          être annulée.
+        </p>
+        <Button type="button" variant="danger" size="tap" className="w-full lg:w-auto lg:self-start" onClick={openModal}>
+          <Trash2 size={18} aria-hidden="true" />
+          Remise à zéro du site
+        </Button>
+      </CardBody>
 
-      <button 
-        onClick={() => {
-          setCheck1(false); setCheck2(false); setCheck3(false); setConfirmText("");
-          setShowModal(true);
-        }}
-        className="action-button nuke-btn"
-        style={{ width: isMobile ? '100%' : 'auto', justifyContent: 'center' }}
-      >
-        <Trash2 size={20} />
-        {isMobile ? "PURGE TOTALE" : "INITIALISER LE PROTOCOLE DE PURGE"}
-      </button>
+      <Sheet open={showModal} onOpenChange={(open) => { if (!isPending) setShowModal(open); }}>
+        <SheetContent
+          title="Remise à zéro du site"
+          description="Cochez les trois cases puis recopiez la phrase de confirmation."
+          side={isDesktop ? "center" : "bottom"}
+          onInteractOutside={(event) => event.preventDefault()}
+        >
+          <div className="flex flex-col gap-4 pt-2 pb-2">
+            <fieldset className="m-0 flex flex-col gap-1 border-0 p-0">
+              <legend className="sr-only">Confirmations</legend>
+              {CHECKS.map((text, i) => (
+                <label key={text} className="flex min-h-11 cursor-pointer items-center gap-3 text-[0.95rem] text-bb-text">
+                  <input
+                    type="checkbox"
+                    checked={checks[i]}
+                    onChange={(e) => setChecks((prev) => prev.map((value, j) => (j === i ? e.target.checked : value)))}
+                    className="size-5 shrink-0 cursor-pointer accent-[var(--bb-danger)]"
+                  />
+                  {text}
+                </label>
+              ))}
+            </fieldset>
 
-      {/* MODAL GEANTE DE CONFIRMATION */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content nuke-modal" style={{ padding: isMobile ? '1.5rem' : '3rem' }}>
-            <h2 className="nuke-title" style={{ fontSize: isMobile ? '1.2rem' : '1.6rem' }}><TriangleAlert size={isMobile ? 20 : 28} /> PURGE</h2>
-            <div className="nuke-checklist" style={{ gap: isMobile ? '1rem' : '1.5rem' }}>
-              <label className="checkbox-container" style={{ fontSize: isMobile ? '0.85rem' : '1.05rem' }}>
-                <input type="checkbox" checked={check1} onChange={e => setCheck1(e.target.checked)} />
-                <span className="checkmark"></span>
-                Destruction Messages/MP.
-              </label>
-              <label className="checkbox-container" style={{ fontSize: isMobile ? '0.85rem' : '1.05rem' }}>
-                <input type="checkbox" checked={check2} onChange={e => setCheck2(e.target.checked)} />
-                <span className="checkmark"></span>
-                Perte données Coachs.
-              </label>
-              <label className="checkbox-container" style={{ fontSize: isMobile ? '0.85rem' : '1.05rem' }}>
-                <input type="checkbox" checked={check3} onChange={e => setCheck3(e.target.checked)} />
-                <span className="checkmark"></span>
-                Backup effectué.
-              </label>
+            <div className="rounded-bb-md border border-dashed border-bb-danger-text p-3">
+              <Field label="Phrase de confirmation" htmlFor="reset-phrase" hint={`Recopiez exactement : ${CONFIRM_PHRASE}`}>
+                <Input
+                  id="reset-phrase"
+                  value={confirmText}
+                  onChange={(e) => setConfirmText(e.target.value)}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  className="font-bold"
+                />
+              </Field>
             </div>
 
-            <div className="nuke-input-group" style={{ padding: isMobile ? '1rem' : '1.8rem' }}>
-              <p style={{ fontSize: isMobile ? '0.8rem' : '0.95rem' }}>Tapez exactement : <br/><strong>JE COMPRENDS LES RISQUES</strong></p>
-              <input 
-                type="text" 
-                value={confirmText}
-                onChange={e => setConfirmText(e.target.value)}
-                placeholder="..."
-                className="nuke-input"
-                style={{ fontSize: isMobile ? '1rem' : '1.3rem', padding: isMobile ? '0.8rem' : '1.2rem' }}
-              />
-            </div>
-
-            <div className="nuke-actions" style={{ flexDirection: isMobile ? 'column' : 'row' }}>
-              <button 
-                onClick={() => setShowModal(false)}
-                className="cancel-btn"
-                disabled={isPending}
-              >
-                ANNULER
-              </button>
-              <button 
-                onClick={handleNuke}
-                className="confirm-nuke-btn"
-                disabled={!isNukeReady || isPending}
-              >
-                {isPending ? "PURGE..." : isMobile ? "DÉTRUIRE" : "💥 TOUT DÉTRUIRE"}
-              </button>
+            <div className="flex flex-col gap-2 lg:flex-row-reverse">
+              <Button type="button" variant="danger" size="tap" className="w-full lg:w-auto" disabled={!isNukeReady || isPending} onClick={handleNuke}>
+                {isPending ? "Remise à zéro…" : "Remettre le site à zéro"}
+              </Button>
+              <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" disabled={isPending} onClick={() => setShowModal(false)}>
+                Annuler
+              </Button>
             </div>
           </div>
-        </div>
-      )}
-
-      <style jsx>{`
-        .nuke-container { position: relative; overflow: hidden; }
-        .nuke-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 1.2rem 2.5rem;
-          background: var(--danger, #ef4444);
-          color: white;
-          border: none;
-          border-radius: 12px;
-          cursor: pointer;
-          font-weight: 800;
-          font-size: 1rem;
-          text-transform: uppercase;
-          transition: all 0.3s;
-          box-shadow: 0 10px 20px var(--danger-transparent);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .nuke-btn:hover { background: var(--danger-hover, #dc2626); transform: translateY(-4px); }
-
-        .modal-overlay {
-          position: fixed;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(12px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 9999;
-          animation: fadeIn 0.3s ease;
-          padding: 1rem;
-        }
-
-        .nuke-modal {
-          background: var(--card-bg, var(--background));
-          border: 2px solid var(--danger);
-          border-radius: 20px;
-          padding: 3rem;
-          width: 100%;
-          max-width: 650px;
-          box-shadow: 0 0 60px var(--danger-transparent);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .nuke-title {
-          color: var(--danger);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          margin-bottom: 2rem;
-          font-weight: 900;
-        }
-
-        .nuke-checklist { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2.5rem; }
-        .checkbox-container { display: flex; align-items: center; gap: 1.2rem; color: var(--text-secondary); font-weight: 600; cursor: pointer; }
-        .checkbox-container input { width: 22px; height: 22px; accent-color: var(--danger); cursor: pointer; }
-
-        .nuke-input-group {
-          background: var(--danger-transparent);
-          padding: 1.8rem;
-          border-radius: 16px;
-          border: 1px dashed var(--danger);
-          margin-bottom: 2rem;
-        }
-        .nuke-input-group p { margin-top: 0; color: var(--text-secondary); line-height: 1.5; }
-
-        .nuke-input {
-          width: 100%;
-          background: var(--glass-bg);
-          border: 2px solid var(--danger);
-          color: var(--danger);
-          font-weight: 900;
-          border-radius: 12px;
-          text-align: center;
-          outline: none;
-          transition: all 0.2s;
-        }
-
-        .nuke-actions { display: flex; gap: 1rem; }
-        .cancel-btn { flex: 1; padding: 1.2rem; background: var(--glass-bg); color: var(--foreground); border: 1px solid var(--glass-border); border-radius: 12px; font-weight: 800; cursor: pointer; }
-        .confirm-nuke-btn { flex: 2; padding: 1.2rem; background: var(--danger); color: white; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; transition: all 0.3s; }
-        .confirm-nuke-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-      `}</style>
-    </PremiumCard>
+        </SheetContent>
+      </Sheet>
+    </Card>
   );
 }

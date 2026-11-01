@@ -1,14 +1,17 @@
 "use client";
 
+/**
+ * Onglet « Gestion des rôles » de l'administration (refonte, carte 099) : créer un rôle personnalisé (identifiant,
+ * libellé, couleur), le supprimer (ses membres redeviennent coachs) et régler la hiérarchie en faisant glisser les
+ * rôles (poignée à gauche ; au clavier : Espace pour prendre, flèches pour déplacer, Espace pour poser). Les rôles de
+ * base ne bougent pas et un rôle personnalisé reste sous Modérateur. Les actions `getAllRoles`, `createCustomRole`,
+ * `deleteCustomRole` et `reorderRoles` sont inchangées.
+ */
 import { useEffect, useState, useTransition } from "react";
-import { ShieldCheck, Plus, Trash2, ShieldAlert, GripVertical } from "lucide-react";
-import { getAllRoles, createCustomRole, deleteCustomRole, reorderRoles } from "../actions";
-import { getRolePower, UserRole } from "@/lib/roles";
-import { toast } from "@bbfrance/ui";
-import Modal from "@/common/components/Modal/Modal";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import CTAButton from "@/common/components/Button/CTAButton";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { GripVertical, Lock, Plus, ShieldCheck, Trash2 } from "lucide-react";
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Field, Input, Label, Skeleton, toast } from "@bbfrance/ui";
+import { getRolePower } from "@/lib/roles";
+import { createCustomRole, deleteCustomRole, getAllRoles, reorderRoles } from "../actions";
 
 import {
   DndContext,
@@ -18,173 +21,117 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
   useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface RolesTabProps {
-  currentUserRole: UserRole;
+  currentUserRole: string;
   isSuperAdmin: boolean;
 }
 
-// ------ Composant Item triable interne ------
-function SortableRoleItem({ role, myPower, isSuperAdmin, onDelete, disabled, isMobile }: any) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: role.name, disabled: role.isBaseRole || disabled });
+/**
+ * Couleur proposée pour un nouveau rôle (gris neutre), comme avant la refonte. C'est une donnée enregistrée avec le
+ * rôle, pas une couleur du thème, et le sélecteur de couleur du navigateur n'accepte que ce format.
+ */
+// eslint-disable-next-line no-restricted-syntax -- valeur d'un champ de couleur, pas une couleur d'interface
+const DEFAULT_ROLE_COLOR = "#888888";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- rôle renvoyé par getAllRoles (RoleConfig + nombre de membres)
+type Role = any;
+
+/** Une ligne de la hiérarchie, déplaçable par sa poignée (sauf les rôles de base). */
+function SortableRoleItem({ role, myPower, isSuperAdmin, onDelete, disabled }: {
+  role: Role;
+  myPower: number;
+  isSuperAdmin: boolean;
+  onDelete: (role: Role) => void;
+  disabled: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: role.name,
+    disabled: role.isBaseRole || disabled,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
-    zIndex: isDragging ? 999 : "auto",
+    zIndex: isDragging ? 10 : undefined,
   };
 
   const canDelete = !role.isBaseRole && (isSuperAdmin || role.power < myPower);
+  const count = role._count?.users || 0;
 
   return (
-    <div 
-      ref={setNodeRef} 
-      style={style} 
-      className={`role-card ${role.isBaseRole ? 'base-role' : 'custom-role'}`}
+    <li
+      ref={setNodeRef}
+      style={style}
+      className={`flex min-h-14 items-center gap-2 border-b border-bb-border bg-bb-surface px-2 py-2 last:border-b-0 ${isDragging ? "opacity-60 shadow-bb" : ""}`}
     >
-      <div className="role-info" style={{ gap: isMobile ? "0.4rem" : "0.8rem" }}>
-        {!role.isBaseRole && !disabled ? (
-          <div {...attributes} {...listeners} className="drag-handle" title="Glisser pour modifier la hiérarchie">
-            <GripVertical size={20} style={{ color: "var(--text-muted)" }} />
-          </div>
-        ) : (
-          <div className="drag-handle disabled">
-             <div style={{width: 20}}></div>
-          </div>
-        )}
+      {!role.isBaseRole && !disabled ? (
+        <span
+          {...attributes}
+          {...listeners}
+          aria-label={`Déplacer le rôle ${role.label}`}
+          title="Glisser pour modifier la hiérarchie"
+          className="inline-flex size-11 shrink-0 cursor-grab touch-none items-center justify-center rounded-bb-md text-bb-text-muted hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus active:cursor-grabbing"
+        >
+          <GripVertical size={20} aria-hidden="true" />
+        </span>
+      ) : (
+        <span className="size-11 shrink-0" aria-hidden="true" />
+      )}
 
-        <div className="role-main-info" style={{ gap: isMobile ? "0.5rem" : "1rem" }}>
-          <strong style={{ color: role.color || "var(--foreground)", fontSize: isMobile ? "0.9rem" : "1rem" }}>
-            {role.label} 
-            <code className="role-name" style={{ fontSize: isMobile ? "0.65rem" : "0.75rem" }}>{role.name}</code>
-          </strong>
-          <span className="count-badge" style={{ fontSize: isMobile ? "0.65rem" : "0.75rem" }}>{role._count?.users || 0} coachs</span>
-        </div>
-      </div>
-      
-      <div className="role-actions">
-        {role.isBaseRole ? (
-          <span className="locked-badge"><ShieldAlert size={14} /> <span className={isMobile ? "sr-only" : ""}>Base</span></span>
-        ) : canDelete ? (
-          <button 
-            onClick={() => onDelete(role.name)} 
-            disabled={disabled} 
-            className="delete-role-btn"
-            title="Supprimer ce rôle"
-            type="button"
-          >
-            <Trash2 size={16} />
-          </button>
-        ) : (
-           <span className="locked-badge">{isMobile ? <ShieldAlert size={14} /> : "Hiérarchie bloquée"}</span>
-        )}
-      </div>
+      <span className="size-3 shrink-0 rounded-full border border-bb-border" style={{ background: role.color || undefined }} aria-hidden="true" />
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate font-semibold text-bb-text">{role.label}</span>
+        <span className="truncate font-mono text-sm text-bb-text-muted">{role.name}</span>
+      </span>
+      <Badge variant="neutral" className="hidden lg:inline-flex">{count} coach{count > 1 ? "s" : ""}</Badge>
 
-      <style jsx>{`
-        .role-card {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0.8rem 1rem 0.8rem 0.5rem;
-          border-radius: 12px;
-          border: 1px solid var(--glass-border);
-          background: var(--glass-bg);
-          margin-bottom: 0.6rem;
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .role-card:hover {
-          border-color: var(--primary-transparent);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .base-role { background: var(--glass-bg-accent); }
-        .custom-role { background: var(--glass-bg); }
-        
-        .drag-handle { cursor: grab; display: flex; align-items: center; padding: 0.5rem; }
-        .drag-handle:active { cursor: grabbing; }
-        .drag-handle.disabled { cursor: not-allowed; opacity: 0.3; }
-        
-        .role-info { display: flex; align-items: center; gap: 0.8rem; flex: 1; min-width: 0; }
-        .role-main-info { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; min-width: 0; }
-        .role-main-info strong { color: var(--foreground); display: flex; align-items: center; gap: 0.6rem; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; }
-        .role-name { background: var(--glass-bg-accent); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
-        .count-badge { background: var(--primary-transparent); color: var(--primary); padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
-        
-        .locked-badge { 
-          display: flex; 
-          align-items: center; 
-          gap: 0.4rem; 
-          font-size: 0.75rem; 
-          color: var(--text-muted); 
-          background: var(--glass-bg-accent); 
-          padding: 4px 10px; 
-          border-radius: 8px; 
-          font-weight: 600;
-          white-space: nowrap;
-        }
-        
-        .delete-role-btn { 
-          background: rgba(239, 68, 68, 0.1); 
-          border: 1px solid rgba(239, 68, 68, 0.2); 
-          color: #ef4444; 
-          cursor: pointer; 
-          padding: 0.5rem; 
-          border-radius: 8px; 
-          transition: all 0.2s; 
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .delete-role-btn:hover:not(:disabled) { 
-          background: #ef4444; 
-          color: white; 
-          box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
-        }
-        .delete-role-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
-        }
-      `}</style>
-    </div>
+      {role.isBaseRole ? (
+        <Badge variant="neutral" title="Rôle de base : il ne peut être ni déplacé ni supprimé">
+          <Lock size={12} aria-hidden="true" />
+          Base
+        </Badge>
+      ) : canDelete ? (
+        <Button
+          type="button"
+          variant="quiet"
+          size="tap-icon"
+          className="text-bb-danger-text"
+          aria-label={`Supprimer le rôle ${role.label}`}
+          title="Supprimer ce rôle"
+          disabled={disabled}
+          onClick={() => onDelete(role)}
+        >
+          <Trash2 size={18} aria-hidden="true" />
+        </Button>
+      ) : (
+        <Badge variant="neutral" title="Hiérarchie bloquée : rôle de rang égal ou supérieur au vôtre">
+          <Lock size={12} aria-hidden="true" />
+          Bloqué
+        </Badge>
+      )}
+    </li>
   );
 }
 
-// ------ Composant principal ------
 export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProps) {
-  const [roles, setRoles] = useState<any[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const isMobile = useIsMobile();
 
   const [newName, setNewName] = useState("");
   const [newLabel, setNewLabel] = useState("");
-  const [newColor, setNewColor] = useState("#888888");
-  const [roleToDelete, setRoleToDelete] = useState<string | null>(null);
+  const [newColor, setNewColor] = useState(DEFAULT_ROLE_COLOR);
+  const [roleToDelete, setRoleToDelete] = useState<Role | null>(null);
 
   const myPower = getRolePower(currentUserRole);
 
@@ -195,46 +142,46 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
     })
   );
 
-  useEffect(() => {
-    loadRoles(false);
-  }, []);
-
-  const loadRoles = async (silent = false) => {
-    if (!silent) setIsLoading(true);
-    const data = await getAllRoles();
-    setRoles(data);
-    if (!silent) setIsLoading(false);
+  /** Recharge la liste après une modification, sans effacer celle qui est affichée. */
+  const loadRoles = async () => {
+    setRoles(await getAllRoles());
   };
+
+  // Premier chargement : la liste arrive, puis l'attente s'arrête
+  useEffect(() => {
+    getAllRoles().then((data) => {
+      setRoles(data);
+      setIsLoading(false);
+    });
+  }, []);
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName || !newLabel) return toast.error("Champs requis");
-    
+
     startTransition(async () => {
       const res = await createCustomRole({ name: newName, label: newLabel, color: newColor, power: 5 });
       if (res.success) {
         toast.success("Rôle créé !");
-        setNewName(""); setNewLabel(""); setNewColor("#888888");
-        loadRoles(true);
+        setNewName("");
+        setNewLabel("");
+        setNewColor(DEFAULT_ROLE_COLOR);
+        loadRoles();
       } else {
         toast.error(res.error || "Erreur lors de la création");
       }
     });
   };
 
-  const handleDeleteClick = (roleName: string) => {
-    setRoleToDelete(roleName);
-  };
-
   const confirmDelete = () => {
     if (!roleToDelete) return;
 
     startTransition(async () => {
-      const res = await deleteCustomRole(roleToDelete);
+      const res = await deleteCustomRole(roleToDelete.name);
       if (res.success) {
         toast.success("Rôle supprimé !");
         setRoleToDelete(null);
-        loadRoles(true);
+        loadRoles();
       } else {
         toast.error(res.error || "Erreur de suppression");
       }
@@ -245,15 +192,15 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
     const { active, over } = event;
 
     if (active.id !== over?.id && over) {
-      const oldIndex = roles.findIndex(item => item.name === active.id);
-      const newIndex = roles.findIndex(item => item.name === over.id);
-      
+      const oldIndex = roles.findIndex((item) => item.name === active.id);
+      const newIndex = roles.findIndex((item) => item.name === over.id);
+
       const newArray = arrayMove(roles, oldIndex, newIndex);
 
-      // Validation front-end sur le MODERATOR
-      const modIndex = newArray.findIndex(r => r.name === "MODERATOR");
+      // Vérification avant l'envoi : aucun rôle personnalisé au-dessus de Modérateur
+      const modIndex = newArray.findIndex((r) => r.name === "MODERATOR");
       const movedItem = newArray[newIndex];
-      
+
       if (modIndex !== -1 && newIndex < modIndex && !movedItem.isBaseRole) {
         toast.error("Impossible de placer un grade personnalisé au dessus de Modérateur.");
         return;
@@ -261,156 +208,103 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
 
       setRoles(newArray);
 
-      const namesInOrder = newArray.map(r => r.name);
+      const namesInOrder = newArray.map((r) => r.name);
       startTransition(async () => {
         const res = await reorderRoles(namesInOrder);
         if (res.success) {
           toast.success("Hiérarchie mise à jour !");
-          loadRoles(true);
+          loadRoles();
         } else {
           toast.error(res.error || "Erreur lors de la sauvegarde.");
-          loadRoles(true);
+          loadRoles();
         }
       });
     }
   };
 
   return (
-    <PremiumCard className="fade-in" style={{ padding: isMobile ? '1.2rem' : '2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', flexDirection: isMobile ? 'column' : 'row' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', alignSelf: isMobile ? 'flex-start' : 'center' }}>
-          <div style={{ background: 'var(--primary-transparent)', padding: '0.8rem', borderRadius: '12px', color: 'var(--primary)' }}>
-            <ShieldCheck size={28} />
-          </div>
-          <div>
-            <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.4rem', fontWeight: 800, color: 'var(--foreground)' }}>Rôles</h3>
-            <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>Membres & Hiérarchie.</p>
-          </div>
-        </div>
-      </div>
-      
-      {/* CREATION FORM */}
-      <form onSubmit={handleCreate} className="create-role-box" style={{ padding: isMobile ? '1.2rem' : '1.8rem' }}>
-        <h4 style={{ margin: '0 0 1.2rem 0', color: 'var(--foreground)', fontSize: '1rem', fontWeight: 700 }}>Nouveau rôle</h4>
-        <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row' }}>
-            <input 
-              type="text" 
-              placeholder="ID (ex: ARBITRE)" 
-              value={newName} 
-              onChange={e => setNewName(e.target.value)} 
-              disabled={isPending}
-              required
-              className="premium-input-field flex-1"
-            />
-            <input 
-              type="text" 
-              placeholder="Label (ex: Arbitre Principal)" 
-              value={newLabel} 
-              onChange={e => setNewLabel(e.target.value)} 
-              disabled={isPending}
-              required
-              className="premium-input-field flex-2"
-            />
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', flexDirection: isMobile ? 'column' : 'row' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.8rem', background: 'var(--card-bg)', padding: '0.6rem 1rem', borderRadius: '10px', border: '1px solid var(--glass-border)', flex: 1 }}>
-              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>Couleur:</label>
-              <input 
-                type="color"
-                value={newColor}
-                onChange={e => setNewColor(e.target.value)}
-                disabled={isPending}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, height: '32px', width: '32px' }}
-              />
+    <div className="flex flex-col gap-4">
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <Plus size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Nouveau rôle</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <form onSubmit={handleCreate} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2">
+              <Field label="Identifiant du rôle" htmlFor="role-name" hint="En majuscules, sans espace. Exemple : ARBITRE.">
+                <Input id="role-name" value={newName} onChange={(e) => setNewName(e.target.value)} disabled={isPending} required placeholder="ARBITRE" autoCapitalize="characters" />
+              </Field>
+              <Field label="Libellé du rôle" htmlFor="role-label" hint="Le nom affiché aux membres. Exemple : Arbitre principal.">
+                <Input id="role-label" value={newLabel} onChange={(e) => setNewLabel(e.target.value)} disabled={isPending} required placeholder="Arbitre principal" />
+              </Field>
             </div>
-            <CTAButton type="submit" isLoading={isPending} icon={<Plus size={18} />} fullWidth={isMobile}>
-              CRÉER
-            </CTAButton>
-          </div>
-        </div>
-      </form>
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+              <div className="flex items-center gap-3">
+                <Label htmlFor="role-color">Couleur du rôle</Label>
+                <input
+                  id="role-color"
+                  type="color"
+                  value={newColor}
+                  onChange={(e) => setNewColor(e.target.value)}
+                  disabled={isPending}
+                  className="h-11 w-14 cursor-pointer rounded-bb-md border border-bb-border bg-bb-surface-2 p-1 text-base"
+                />
+              </div>
+              <Button type="submit" variant="primary" size="tap" className="w-full lg:w-auto" disabled={isPending}>
+                <Plus size={18} aria-hidden="true" />
+                Créer le rôle
+              </Button>
+            </div>
+          </form>
+        </CardBody>
+      </Card>
 
-      {/* ROLES LIST DND */}
-      <div style={{ marginTop: isMobile ? '2rem' : '3rem' }}>
-        <h4 style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--foreground)', fontWeight: 700 }}>
-          Hiérarchie
-          {isPending && <span style={{fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 'normal'}}>...</span>}
-        </h4>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '2rem', lineHeight: 1.5 }}>
-          L'ordre détermine le pouvoir. Glissez <GripVertical size={14} style={{verticalAlign:'middle', color: 'var(--primary)'}}/> pour déplacer.
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <ShieldCheck size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Hiérarchie</CardTitle>
+          {isPending && <span className="text-sm text-bb-text-muted">Enregistrement…</span>}
+        </CardHeader>
+        <p className="m-0 px-4 pt-3 text-[0.95rem] text-bb-text-muted">
+          L&apos;ordre donne le pouvoir : le rôle le plus haut est le plus puissant. Faites glisser la poignée
+          <GripVertical size={14} className="mx-1 inline align-middle" aria-hidden="true" />
+          d&apos;un rôle personnalisé pour le déplacer.
         </p>
-
-        {isLoading ? <p style={{ color: 'var(--text-muted)' }}>Chargement...</p> : (
-          <DndContext 
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext 
-              items={roles.map(r => r.name)}
-              strategy={verticalListSortingStrategy}
-            >
-              <div className="roles-list">
-                {roles.map(r => (
-                  <SortableRoleItem 
-                    key={r.name} 
-                    role={r} 
+        {isLoading ? (
+          <div className="flex flex-col gap-2 p-4">
+            {[0, 1, 2].map((i) => <Skeleton key={i} className="h-12 w-full" />)}
+          </div>
+        ) : (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={roles.map((r) => r.name)} strategy={verticalListSortingStrategy}>
+              <ul aria-label="Hiérarchie des rôles" className="m-0 mt-2 list-none border-t border-bb-border p-0">
+                {roles.map((r) => (
+                  <SortableRoleItem
+                    key={r.name}
+                    role={r}
                     myPower={myPower}
                     isSuperAdmin={isSuperAdmin}
-                    onDelete={handleDeleteClick}
+                    onDelete={setRoleToDelete}
                     disabled={isPending}
-                    isMobile={isMobile}
                   />
                 ))}
-              </div>
+              </ul>
             </SortableContext>
           </DndContext>
         )}
-      </div>
+      </Card>
 
-      <style jsx>{`
-        .create-role-box {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          padding: 1.8rem;
-          border-radius: 16px;
-        }
-        .premium-input-field {
-          background: var(--card-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--foreground);
-          padding: 0.8rem 1.2rem;
-          border-radius: 10px;
-          font-size: 0.95rem;
-          transition: all 0.2s;
-        }
-        .premium-input-field:focus { 
-          outline: none; 
-          border-color: var(--primary); 
-          box-shadow: 0 0 0 3px var(--primary-transparent);
-        }
-        .flex-1 { flex: 1; }
-        .flex-2 { flex: 2; }
-        .roles-list { display: flex; flex-direction: column; }
-      `}</style>
-
-      {/* MODALE DE SUPPRESSION */}
-      {roleToDelete && (
-        <Modal 
-          isOpen={true} 
-          onClose={() => setRoleToDelete(null)}
-          onConfirm={confirmDelete}
-          confirmText={isPending ? "..." : "Supprimer"}
-          variant="danger"
-          title="Supprimer le rôle ?"
-        >
-          <div style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
-            <p>Supprimer <strong>{roleToDelete}</strong> ?</p>
-            <p style={{ color: 'var(--danger)', fontSize: '0.85rem' }}>Les membres seront rétrogradés.</p>
-          </div>
-        </Modal>
-      )}
-    </PremiumCard>
+      <ConfirmDialog
+        open={roleToDelete !== null}
+        onOpenChange={(open) => { if (!open) setRoleToDelete(null); }}
+        title="Supprimer le rôle ?"
+        message={`Supprimer le rôle « ${roleToDelete?.label ?? ""} » ? Les membres qui l'ont redeviendront coachs.`}
+        confirmLabel="Supprimer"
+        danger
+        pending={isPending}
+        onConfirm={confirmDelete}
+      />
+    </div>
   );
 }

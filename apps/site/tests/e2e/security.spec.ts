@@ -114,16 +114,19 @@ test("un modérateur ne peut pas débannir un membre de rang égal, mais débann
 
   // La liste des bannis est paginée par 10 et sans ordre fixe ; globalSetup y ajoute un banni par thème :
   // on repart de la première page et on avance jusqu'à trouver la ligne du membre voulu.
+  // Depuis la carte 099, la liste est une liste de fiches (« Coachs bannis ») et non plus un tableau : chaque banni est
+  // un élément de cette liste, repéré par son rôle et son nom accessible comme le reste du test.
   const bannedRow = async (name: string) => {
     await page.goto("/moderation?tab=reports_user_banned", { waitUntil: "networkidle" });
     // La liste est chargée par le navigateur après l'affichage : on attend sa première ligne de données
-    const firstDataRow = page.getByRole("row").filter({ has: page.getByRole("button", { name: "Débannir" }) }).first();
+    const bannedList = page.getByRole("list", { name: "Coachs bannis" });
+    const firstDataRow = bannedList.getByRole("listitem").filter({ has: page.getByRole("button", { name: "Débannir" }) }).first();
     for (let tries = 0; tries < 5; tries++) {
       await expect(firstDataRow).toBeVisible();
-      const row = page.getByRole("row").filter({ hasText: name });
+      const row = bannedList.getByRole("listitem").filter({ hasText: name });
       if (await row.count()) return row;
       const shownFirst = await firstDataRow.textContent();
-      await page.locator("button[title='next']").first().click();
+      await page.getByRole("navigation", { name: "Pagination" }).getByRole("button", { name: "Page suivante" }).click();
       await expect(firstDataRow).not.toHaveText(shownFirst ?? "");
     }
     throw new Error(`Banni introuvable dans la liste : ${name}`);

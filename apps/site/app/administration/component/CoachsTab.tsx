@@ -1,74 +1,66 @@
 "use client";
 
-import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
-import { getRolePower, UserRole, isModerator } from "@/lib/roles";
-import { Search, Users, ShieldAlert, Loader2 } from "lucide-react";
-import Pagination from "@/common/components/Pagination/Pagination";
+/**
+ * Onglet « Membres & accès » de l'administration (refonte, carte 099) : chercher un coach par son pseudo et changer son
+ * rôle. On ne peut donner qu'un rôle inférieur au sien (sauf le super administrateur), et jamais le rôle de super
+ * administrateur. Les rôles sont affichés par leur libellé (« Modérateur »), lu dans la table RoleConfig. Les actions
+ * `getAllRoles`, `searchCoaches` et `updateCoachRole` sont inchangées.
+ */
 import { useEffect, useState, useTransition } from "react";
-import { toast } from "@bbfrance/ui";
+import { Loader2, Lock, Search, Users } from "lucide-react";
+import { Badge, Card, CardBody, CardHeader, CardTitle, EmptyState, Field, Input, PageNav, Select, toast } from "@bbfrance/ui";
+import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
+import { useDebounce } from "@/common/hooks/useDebounce";
+import { getRoleLabel, getRolePower, isModerator } from "@/lib/roles";
 import { getAllRoles, searchCoaches, updateCoachRole } from "../actions";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import StatusBadge from "@/common/components/StatusBadge/StatusBadge";
-import EmptyState from "@/common/components/EmptyState/EmptyState";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 interface CoachsTabProps {
-  currentUserRole: UserRole;
+  currentUserRole: string;
   isSuperAdmin: boolean;
 }
 
+const USERS_PER_PAGE = 10;
+
 export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabProps) {
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 500);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- membres renvoyés par searchCoaches
   const [users, setUsers] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const isMobile = useIsMobile();
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- rôles renvoyés par getAllRoles
   const [dbRoles, setDbRoles] = useState<any[]>([]);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const usersPerPage = 10;
 
   const myPower = getRolePower(currentUserRole);
+  const roleLabels = Object.fromEntries(dbRoles.map((role) => [role.name, role.label]));
 
   const availableRoles = dbRoles
-    .filter(role => role.name !== "SUPERADMIN")
-    .filter(role => isSuperAdmin || role.power < myPower)
+    .filter((role) => role.name !== "SUPERADMIN")
+    .filter((role) => isSuperAdmin || role.power < myPower)
     .sort((a, b) => b.power - a.power);
 
-  useEffect(() => {
-    loadUsers("");
-    loadRoles();
-  }, []);
-
-  const loadRoles = async () => {
-    const rolesData = await getAllRoles();
-    setDbRoles(rolesData);
-  };
-
-  const loadUsers = async (searchQuery: string, page: number = 1) => {
-    setIsLoading(true);
-    const data = await searchCoaches(searchQuery, page, usersPerPage);
+  /** Affiche une page de résultats de searchCoaches. */
+  const showPage = (data: Awaited<ReturnType<typeof searchCoaches>>, page: number) => {
     setUsers(data.users);
     setTotalPages(data.totalPages);
     setCurrentPage(page);
     setIsLoading(false);
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-    setQuery(newQuery);
-    const timeout = setTimeout(() => {
-      loadUsers(newQuery, 1);
-    }, 500);
-    return () => clearTimeout(timeout);
+  const loadUsers = async (searchQuery: string, page: number = 1) => {
+    showPage(await searchCoaches(searchQuery, page, USERS_PER_PAGE), page);
   };
 
-  const handlePageChange = (page: number) => {
-    loadUsers(query, page);
-  };
+  useEffect(() => {
+    getAllRoles().then(setDbRoles);
+  }, []);
+
+  // Recherche relancée une demi-seconde après la dernière frappe, en repartant de la première page
+  useEffect(() => {
+    searchCoaches(debouncedQuery, 1, USERS_PER_PAGE).then((data) => showPage(data, 1));
+  }, [debouncedQuery]);
 
   const handleRoleChange = (userId: string, newRole: string) => {
     startTransition(async () => {
@@ -83,191 +75,96 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   };
 
   return (
-    <PremiumCard className="fade-in" style={{ padding: isMobile ? '1.2rem' : '2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', flexDirection: isMobile ? 'column' : 'row' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', alignSelf: isMobile ? 'flex-start' : 'center' }}>
-          <Users size={28} color="var(--primary)" />
-          <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.4rem' }}>Rôles des Membres</h3>
-        </div>
-      </div>
+    <Card className="overflow-hidden">
+      <CardHeader>
+        <Users size={18} className="text-bb-text-muted" aria-hidden="true" />
+        <CardTitle>Rôles des membres</CardTitle>
+      </CardHeader>
+      <CardBody className="flex flex-col gap-3">
+        <p className="m-0 text-[0.95rem] text-bb-text-muted">
+          Recherchez un coach pour lui donner un nouveau rôle. Vous ne pouvez donner que des rôles{" "}
+          <strong className="text-bb-text">inférieurs au vôtre</strong>.
+        </p>
+        <Field label="Rechercher un coach" htmlFor="coach-search">
+          <div className="relative">
+            <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+            <Input
+              id="coach-search"
+              type="text"
+              enterKeyHint="search"
+              placeholder="Pseudo du coach"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setIsLoading(true);
+              }}
+              className="pr-10 pl-10"
+            />
+            {isLoading && (
+              <Loader2 size={18} className="absolute top-1/2 right-3 -translate-y-1/2 animate-spin text-bb-text-muted" aria-label="Recherche en cours" />
+            )}
+          </div>
+        </Field>
+      </CardBody>
 
-      <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-        Recherchez un utilisateur pour lui attribuer un nouveau rôle.
-        Vous ne pouvez affecter que des rôles <strong style={{ color: 'var(--foreground)' }}>inférieurs au vôtre</strong>.
-      </p>
+      {!isLoading && users.length === 0 ? (
+        <EmptyState icon={<Users size={32} />} title="Aucun utilisateur trouvé">
+          Essayez une autre recherche.
+        </EmptyState>
+      ) : (
+        <ul aria-label="Membres" className={`m-0 list-none border-t border-bb-border p-0 ${isLoading ? "opacity-60" : ""}`}>
+          {users.map((user) => {
+            const power = getRolePower(user.role);
+            const isSuper = user.role === "SUPERADMIN";
+            const canManage = isSuperAdmin || (myPower > power && !isSuper);
+            const label = getRoleLabel(user.role, roleLabels);
 
-      <div className="search-bar-container">
-        <Search size={20} className="search-icon" />
-        <input
-          type="text"
-          placeholder="Rechercher par pseudo..."
-          value={query}
-          onChange={handleSearch}
-          className="search-input"
-        />
-        {isLoading && <div className="loading-indicator"><Loader2 size={20} className="animate-spin" color="var(--primary)" /></div>}
-      </div>
-
-      <div className="users-list">
-        {!isLoading && users.length === 0 && (
-          <EmptyState 
-            variant="ghost" 
-            title="Aucun utilisateur trouvé" 
-            description="Essayez une autre recherche." 
-          />
-        )}
-
-        {users.map((user) => {
-          const power = getRolePower(user.role);
-          const isSuper = user.role === "SUPERADMIN";
-          const canManage = isSuperAdmin || (myPower > power && !isSuper);
-
-          return (
-            <div key={user.id} className={`user-item ${isSuper ? 'super-item' : ''} ${isMobile ? 'user-item-mobile' : ''}`}>
-              <div className="user-info">
-                <UserAvatar 
-                  image={user.image} 
-                  name={user.name} 
-                  size={isMobile ? 32 : 40} 
-                  postCount={user._count?.posts || 0} 
-                  selectedRank={user.avatarFrame} 
-                  isModerator={isModerator(user.role)}
-                />
-                <div className="user-text">
-                  <strong style={{ fontSize: isMobile ? '0.95rem' : '1.1rem' }}>{user.name}</strong>
-                  <StatusBadge 
-                    variant={user.role?.toLowerCase().includes('admin') ? 'admin' : user.role?.toLowerCase().includes('modo') ? 'moderator' : 'coach'}
-                  >
-                    {user.role}
-                  </StatusBadge>
+            return (
+              <li key={user.id} className="flex flex-col gap-3 border-b border-bb-border px-4 py-3 last:border-b-0 lg:flex-row lg:items-center">
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <UserAvatar
+                    image={user.image}
+                    name={user.name}
+                    size={40}
+                    postCount={user._count?.posts || 0}
+                    selectedRank={user.avatarFrame}
+                    isModerator={isModerator(user.role)}
+                  />
+                  <span className="flex min-w-0 flex-col items-start gap-1">
+                    <span className="max-w-full truncate font-semibold text-bb-text">{user.name}</span>
+                    <Badge variant={isModerator(user.role) ? "outline" : "neutral"}>{label}</Badge>
+                  </span>
                 </div>
-              </div>
-
-              <div className="user-actions" style={{ marginTop: isMobile ? '1rem' : '0', width: isMobile ? '100%' : 'auto' }}>
                 {canManage ? (
-                  <ClassicSelect
+                  <Select
+                    aria-label={`Rôle de ${user.name}`}
                     value={user.role}
                     onChange={(e) => handleRoleChange(user.id, e.target.value)}
                     disabled={isPending}
-                    size="sm"
-                    containerStyle={{ width: isMobile ? "100%" : "150px" }}
+                    className="lg:w-56"
                   >
-                    <option value={user.role} disabled>{user.role} (Actuel)</option>
-                    {availableRoles.map(role => (
-                      <option key={role.name} value={role.name}>{role.name}</option>
+                    <option value={user.role} disabled>{label} (actuel)</option>
+                    {availableRoles.filter((role) => role.name !== user.role).map((role) => (
+                      <option key={role.name} value={role.name}>{role.label}</option>
                     ))}
-                  </ClassicSelect>
+                  </Select>
                 ) : (
-                  <div className="locked-badge" style={{ width: isMobile ? "100%" : "auto", justifyContent: isMobile ? "center" : "flex-start" }}>
-                    <ShieldAlert size={16} />
-                    <span>Action restreinte</span>
-                  </div>
+                  <span className="inline-flex min-h-11 items-center justify-center gap-2 rounded-bb-md border border-bb-border px-3 text-sm text-bb-text-muted lg:w-56">
+                    <Lock size={14} aria-hidden="true" />
+                    Action restreinte
+                  </span>
                 )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
-      <div style={{ marginTop: '2rem' }}>
-         <Pagination 
-           currentPage={currentPage}
-           totalPages={totalPages}
-           onPageChange={handlePageChange}
-         />
-      </div>
-
-      <style jsx>{`
-        .search-bar-container {
-          position: relative;
-          margin-bottom: 2rem;
-          display: flex;
-          align-items: center;
-        }
-        .search-icon {
-          position: absolute;
-          left: 1rem;
-          color: var(--text-muted);
-        }
-        .search-input {
-          width: 100%;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          padding: 0.8rem 1rem 0.8rem 3rem;
-          border-radius: 12px;
-          color: var(--foreground);
-          font-size: 0.95rem;
-          transition: all 0.2s;
-        }
-        .search-input:focus {
-          outline: none;
-          border-color: var(--primary);
-          box-shadow: 0 0 0 3px var(--primary-transparent);
-        }
-        .loading-indicator {
-          position: absolute;
-          right: 1.5rem;
-        }
-        .users-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-        }
-        .user-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 1rem 1.2rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 16px;
-          transition: all 0.2s;
-        }
-        .user-item-mobile {
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 1.2rem;
-        }
-        .user-item:hover {
-          border-color: var(--primary-transparent);
-          transform: translateX(4px);
-        }
-        .user-item.super-item {
-          border-color: rgba(255, 215, 0, 0.4);
-          background: rgba(255, 215, 0, 0.05);
-        }
-        .user-info {
-          display: flex;
-          align-items: center;
-          gap: 1.2rem;
-        }
-        .user-text {
-          display: flex;
-          flex-direction: column;
-          gap: 0.3rem;
-        }
-        .user-text strong {
-          color: var(--foreground);
-        }
-        .locked-badge {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          color: var(--text-muted);
-          font-size: 0.8rem;
-          background: rgba(255,255,255,0.05);
-          padding: 0.5rem 1rem;
-          border-radius: 8px;
-          border: 1px solid var(--glass-border);
-        }
-        .animate-spin {
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-    </PremiumCard>
+      {totalPages > 1 && (
+        <div className="flex justify-center border-t border-bb-border p-3">
+          <PageNav page={currentPage} totalPages={totalPages} onPageChange={(page) => loadUsers(query, page)} />
+        </div>
+      )}
+    </Card>
   );
 }

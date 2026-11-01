@@ -5,6 +5,8 @@
  * - `Tabs*` : onglets dans la page (Radix Tabs, navigation au clavier par les flèches).
  * - `LinkTabs` : onglets qui sont des liens (paramètre `?tab=` gardé dans l'adresse, comme Profil, Modération,
  *   Administration). Sur téléphone, la rangée défile horizontalement au lieu de déborder de l'écran.
+ *   `orientation="vertical"` (carte 099) les empile en colonne, pour une colonne latérale d'ordinateur quand les
+ *   onglets sont trop nombreux pour tenir sur une ligne (modération, administration).
  */
 import * as React from "react";
 import { Tabs as TabsPrimitive } from "radix-ui";
@@ -20,6 +22,11 @@ const tabClass =
   // absente pour l'instant : sans eux, l'onglet-bouton garde le fond et la bordure gris du navigateur (carte 089)
   "inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-2 border-x-0 border-t-0 border-b-2 border-transparent bg-transparent [font-family:inherit] px-3 text-[0.95rem] font-semibold whitespace-nowrap text-bb-text-muted hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus";
 const activeClass = "border-bb-accent-text text-bb-text";
+// Colonne d'onglets : chaque onglet prend toute la largeur, l'onglet ouvert est marqué par un trait à gauche et un fond
+const columnClass = "flex flex-col gap-0.5";
+const columnTabClass =
+  "flex min-h-11 w-full items-center gap-2.5 rounded-bb-md border-0 border-l-[3px] border-transparent px-3 text-[0.95rem] font-semibold text-bb-text-muted no-underline hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus";
+const columnActiveClass = "border-bb-accent-text bg-bb-surface-2 text-bb-text";
 
 export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
   return <TabsPrimitive.List className={cn(rowClass, className)} {...props} />;
@@ -40,23 +47,25 @@ export interface LinkTab {
 /**
  * `linkComponent` permet au site de passer `next/link` (navigation sans rechargement) ; par défaut, un simple <a>.
  */
-export function LinkTabs({ tabs, label, className, linkComponent: LinkComponent = "a" }: {
+export function LinkTabs({ tabs, label, className, orientation = "horizontal", linkComponent: LinkComponent = "a" }: {
   tabs: LinkTab[];
   label: string;
   className?: string;
+  orientation?: "horizontal" | "vertical";
   linkComponent?: React.ElementType;
 }) {
+  const vertical = orientation === "vertical";
   return (
-    <nav aria-label={label} className={cn(rowClass, className)}>
+    <nav aria-label={label} className={cn(vertical ? columnClass : rowClass, className)}>
       {tabs.map((tab) => (
         <LinkComponent
           key={tab.href}
           href={tab.href}
           aria-current={tab.active ? "page" : undefined}
-          className={cn(tabClass, tab.active && activeClass)}
+          className={vertical ? cn(columnTabClass, tab.active && columnActiveClass) : cn(tabClass, tab.active && activeClass)}
         >
           {tab.icon}
-          {tab.label}
+          <span className={vertical ? "min-w-0 flex-1 truncate" : undefined}>{tab.label}</span>
           {tab.count ? <CountBadge count={tab.count} /> : null}
         </LinkComponent>
       ))}

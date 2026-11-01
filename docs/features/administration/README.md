@@ -4,26 +4,25 @@
 
 ## À quoi ça sert
 
-La page d'administration permet aux administrateurs de régler le site sans toucher au code : rôles des membres, structure du forum, listes de référence (régions…), textes du guide du débutant, lien Discord, annonces par email à tous les coachs. Le Super Admin y trouve en plus la sauvegarde de la base et la remise à zéro complète du site.
+La page d'administration permet aux administrateurs de régler le site sans toucher au code : rôles des membres, structure du forum, listes de référence (régions…), textes du guide du débutant, lien Discord, annonces par email à tous les coachs. Le Super Admin y trouve en plus la remise à zéro complète du site.
 
 ## Ce que voit le coach
 
-- `/administration` : un titre, une colonne d'onglets à gauche et le contenu de l'onglet à droite. L'onglet ouvert est gardé dans l'adresse (`?tab=roles`), ce qui permet de partager un lien direct.
-- Onglets : « Configuration » (lien d'invitation Discord), « Gestion des Rôles » (créer, supprimer, réordonner des rôles personnalisés par glisser-déposer), « Membres & Accès » (chercher un coach par pseudo et changer son rôle), « Structure Forum » (catégories, forums, sous-forums, rôles autorisés, ordre par glisser-déposer), « Données de Référence » (listes comme les régions), « Guide du Débutant » (textes de la page `/jouer`, lus sans connexion par `getHowToPlaySettings`), « Annonces Email » (mail envoyé à tous les membres non bannis).
-- Super Admin seulement : « Sauvegardes (BDD) » (téléchargement de la base) et « Zone de Danger » (remise à zéro, protégée par la phrase « JE COMPRENDS LES RISQUES »).
+- `/administration` (refaite par la carte 099, ADR 0006) : un titre, les onglets et le contenu de l'onglet ouvert. Chaque onglet est un lien : l'onglet ouvert est gardé dans l'adresse (`?tab=roles`) ; une valeur inconnue ouvre « Configuration ».
+- Onglets : « Configuration » (lien d'invitation Discord), « Gestion des rôles » (créer un rôle personnalisé avec identifiant, libellé et couleur, le supprimer, régler la hiérarchie en faisant glisser sa poignée), « Membres & accès » (chercher un coach par pseudo et changer son rôle, rôles affichés par leur libellé), « Structure du forum » (catégories, forums, sous-forums ; poignée pour l'ordre, menu « ⋯ » pour indenter, désindenter ou changer de catégorie, panneau « Modifier » pour le nom, la description, le rôle minimum d'accès et la suppression), « Données de référence » (listes comme les régions), « Guide du débutant » (textes des six sections de la page `/jouer`, lus sans connexion par `getHowToPlaySettings`), « Annonces par e-mail » (mail envoyé à tous les membres non bannis, confirmé par « Oui, diffuser », puis écran « Diffusion terminée »).
+- Super Admin seulement : « Zone de danger » (remise à zéro, protégée par trois cases à cocher et la phrase « JE COMPRENDS LES RISQUES » : le bouton reste désactivé tant que la phrase n'est pas exacte).
 - Accès : administrateur et Super Admin. Un visiteur est envoyé vers la connexion, un membre sans le rôle vers l'accueil. Cette vérification de la page se fait dans le navigateur ; la vraie protection est dans chaque action serveur.
-- **Sur téléphone** : la colonne d'onglets est déplacée dans le menu latéral global (`AdminSidebar` + `MobilePortal` + `useIsMobile`), avec un séparateur avant les onglets Super Admin. `page-mobile.css` empile le contenu en une colonne jusqu'à 1024 pixels, le seuil unique téléphone/ordinateur (carte 055). Les onglets s'adaptent par des styles en ligne qui dépendent de `useIsMobile` ; comme ce hook renvoie « ordinateur » au premier affichage, la mise en page peut sauter juste après le chargement (à vérifier). Le tableau des données de référence défile dans son propre cadre. Le glisser-déposer des rôles et de la structure utilise `PointerSensor` sans réglage tactile : il peut gêner le défilement au doigt (à vérifier). Depuis la carte 055, le menu global, le déplacement des onglets et les styles téléphone basculent tous à 1024 pixels : plus de largeur intermédiaire où la colonne reste en version ordinateur.
+- **Sur téléphone** : une seule colonne ; les onglets forment une rangée en haut de la page qui défile de côté et se place sur l'onglet ouvert (avant la carte 099, ils étaient dans le panneau « Plus »). Sur ordinateur, une colonne d'onglets à gauche. Mise en page commune avec la modération : `StaffPageLayout`. Les listes (rôles, membres, données de référence, structure) sont des fiches, plus de tableau qui défile de côté. Les poignées de glisser-déposer font 44 pixels et suivent le doigt sans faire défiler la page (`touch-action: none`) ; au clavier, Espace prend la poignée, les flèches déplacent, Espace pose. Les panneaux (modification d'un forum, remise à zéro) et les confirmations montent du bas de l'écran.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/administration/page.tsx` | Page (composant navigateur) : contrôle du rôle, onglet actif lié à `?tab=`. |
-| `apps/site/app/administration/page.css`, `page-mobile.css` | Mise en page ordinateur et règles jusqu'à 1024 pixels. |
+| `apps/site/common/components/StaffPageLayout/StaffPageLayout.tsx` | Mise en page commune de l'administration et de la modération (titre, onglets, contenu). |
 | `apps/site/app/administration/actions.ts` | Actions serveur : `resetDatabase`, `searchCoaches`, `updateCoachRole`, `getAllRoles`, `createCustomRole`, `deleteCustomRole`, `reorderRoles`, `getForumStructure`, `createReferenceData`, `updateReferenceData`, `deleteReferenceData`, `getAllReferenceDataAdmin`, `getSiteSetting`, `updateSiteSetting`, `getHowToPlaySettings`, `updateHowToPlaySettings`, `sendGlobalInfoMail`. |
 | `apps/site/app/administration/actionsStructure.ts` | Actions de la structure du forum : `getForumStructure`, `createCategory`, `updateCategory`, `deleteCategory`, `reorderCategories`, `createForum`, `updateForum`, `deleteForum`, `reorderForums`. |
-| `apps/site/app/administration/component/AdminSidebar.tsx` | Colonne d'onglets (version ordinateur, ou portail vers le menu mobile). |
-| `apps/site/app/administration/component/*Tab.tsx` | Un fichier par onglet : `GeneralTab`, `RolesTab`, `CoachsTab`, `StructureTab`, `ReferenceDataTab`, `HowToPlayTab`, `InfoMailsTab`, `ResetTab`. |
+| `apps/site/app/administration/component/*Tab.tsx` | Un fichier par onglet : `GeneralTab`, `RolesTab`, `CoachsTab`, `StructureTab`, `ReferenceDataTab`, `HowToPlayTab`, `InfoMailsTab`, `ResetTab`. Composants de `packages/ui`, plus de fichier CSS depuis la carte 099. |
 
 Les changements de rôle sont tracés dans le journal de modération par `logModerationAction` (`lib/moderationLog.ts`).
 
@@ -42,7 +41,7 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 | Mot | Sens |
 |---|---|
 | Puissance (*power*) | Nombre qui classe les rôles (Super Admin 100, Admin 90, Modérateur 70, RTC 50, Chef de ligue 40, Coach 10). On ne peut agir que sur un rôle plus faible que le sien. |
-| Rôle personnalisé | Rôle créé dans l'onglet « Gestion des Rôles » (table `RoleConfig`), placé entre les rôles de base, jamais au-dessus de Modérateur. |
+| Rôle personnalisé | Rôle créé dans l'onglet « Gestion des rôles » (table `RoleConfig`), placé entre les rôles de base, jamais au-dessus de Modérateur. |
 | Données de référence | Listes de valeurs utilisées dans les formulaires (ex. les régions des coachs), modifiables sans code. |
 | Réglage du site (`SiteSetting`) | Valeur stockée en base sous une clé (`discord_invite`, textes `how_to_play_*`). |
 | Glisser-déposer | Réordonner des éléments en les faisant glisser (bibliothèque `@dnd-kit`). |
@@ -51,4 +50,4 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 
 - Fonctionne : tous les onglets, avec contrôle du rôle côté serveur dans chaque action.
 - Manque : une sauvegarde qui marche en production depuis la page ; la prise en compte des rôles personnalisés dans `lib/roles.ts` ; une protection plus forte de la remise à zéro en production. Aucune carte ouverte ne porte sur ces points.
-- Téléphone : mesurée par l'audit mobile depuis la carte 061, avec un compte administrateur créé par l'audit (avant, l'audit visitait la page en modérateur, renvoyé vers l'accueil). Premier onglet propre à 360 et 390 pixels ; tous les champs de saisie de l'administration passent en 16 pixels sur téléphone (`page-mobile.css`). Restent à contrôler à la main : les autres onglets, le glisser-déposer et les sauts de mise en page.
+- Téléphone : refaite par la carte 099 ; tous les onglets sont vérifiés par `tests/e2e/inventaire/administration.spec.ts` (ordinateur et téléphone, glisser-déposer au clavier compris) et mesurés par l'audit mobile. Le glisser-déposer au doigt reste à essayer sur un vrai téléphone.

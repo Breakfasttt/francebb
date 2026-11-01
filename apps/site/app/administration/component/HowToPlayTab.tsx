@@ -1,12 +1,27 @@
 "use client";
 
+/**
+ * Onglet « Guide du débutant » de l'administration (refonte, carte 099) : les textes des six sections de la page
+ * `/jouer`, écrits en BBCode. Chaque section porte le titre qu'elle a sur `/jouer`. Le bouton « Enregistrer le guide »
+ * reste visible en bas de l'écran pendant qu'on fait défiler les six éditeurs. Les actions `getHowToPlaySettings` et
+ * `updateHowToPlaySettings` sont inchangées.
+ */
 import { useEffect, useState, useTransition } from "react";
-import { getHowToPlaySettings, updateHowToPlaySettings } from "../actions";
-import { Save, Loader2, BookOpen, Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map } from "lucide-react";
-import { toast } from "@bbfrance/ui";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+import Link from "next/link";
+import { BookOpen, Gamepad2, Map, MonitorSmartphone, Save, ShieldCheck, Trophy, Users } from "lucide-react";
+import { Button, Card, CardBody, CardHeader, CardTitle, Skeleton, toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { getHowToPlaySettings, updateHowToPlaySettings } from "../actions";
+
+/** Les six sections de /jouer : clé du réglage, titre affiché sur /jouer, rôle de la section. */
+const SECTIONS = [
+  { key: "how_to_play_what_is_bb", title: "C'est quoi Blood Bowl ?", icon: Gamepad2, desc: "Présentation du jeu." },
+  { key: "how_to_play_platforms", title: "Comment y jouer ?", icon: MonitorSmartphone, desc: "Plateformes : sur table ou en ligne." },
+  { key: "how_to_play_community", title: "Communauté & Ligues", icon: Users, desc: "Discord et ligues." },
+  { key: "how_to_play_tournaments", title: "Rejoindre un Tournoi", icon: Trophy, desc: "Calendrier et inscriptions." },
+  { key: "how_to_play_naf_cdf_rtc", title: "NAF, CdF & RTC", icon: ShieldCheck, desc: "Les instances officielles." },
+  { key: "how_to_play_challenges", title: "Challenges Régionaux", icon: Map, desc: "Circuits régionaux." },
+];
 
 export default function HowToPlayTab() {
   const [settings, setSettings] = useState<Record<string, string>>({
@@ -17,10 +32,8 @@ export default function HowToPlayTab() {
     how_to_play_naf_cdf_rtc: "",
     how_to_play_challenges: ""
   });
-  
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function loadSettings() {
@@ -45,142 +58,72 @@ export default function HowToPlayTab() {
         } else {
           toast.error(res.error || "Erreur lors de la mise à jour");
         }
-      } catch (err) {
+      } catch {
         toast.error("Erreur réseau");
       }
     });
   };
 
   const updateSection = (key: string, value: string) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
-  if (isLoading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
-        <Loader2 className="animate-spin" size={32} color="var(--primary)" />
-      </div>
-    );
-  }
-
-  const sections = [
-    { key: "how_to_play_what_is_bb", label: "Jouer ?", icon: <Gamepad2 size={18} />, desc: "Introduction." },
-    { key: "how_to_play_platforms", label: "Comment ?", icon: <MonitorSmartphone size={18} />, desc: "Plateformes." },
-    { key: "how_to_play_community", label: "Commu ?", icon: <Users size={18} />, desc: "Discord & Ligues." },
-    { key: "how_to_play_tournaments", label: "Tournois ?", icon: <Trophy size={18} />, desc: "Calendrier." },
-    { key: "how_to_play_naf_cdf_rtc", label: "NAF/CdF", icon: <ShieldCheck size={18} />, desc: "Officiel." },
-    { key: "how_to_play_challenges", label: "Régional ?", icon: <Map size={18} />, desc: "Circuits." }
-  ];
-
   return (
-    <div className="how-to-play-tab">
-      <PremiumCard style={{ padding: isMobile ? "1.2rem" : "2.5rem", marginBottom: "2rem" }}>
-        <header style={{ marginBottom: "2.5rem", borderBottom: "1px solid var(--glass-border)", paddingBottom: "1.5rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", flexDirection: isMobile ? "column" : "row", textAlign: isMobile ? "center" : "left" }}>
-            <div style={{ background: "var(--primary-transparent)", color: "var(--primary)", padding: "0.8rem", borderRadius: "12px" }}>
-              <BookOpen size={24} />
-            </div>
-            <div>
-              <h3 style={{ fontSize: isMobile ? "1.2rem" : "1.4rem", color: "var(--foreground)", margin: 0, fontWeight: 800 }}>
-                Guide "Jouer"
-              </h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: "0.2rem" }}>
-                Gérez le contenu pour les débutants.
-              </p>
-            </div>
-          </div>
-        </header>
+    <div className="flex flex-col gap-4">
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <BookOpen size={18} className="text-bb-text-muted" aria-hidden="true" />
+          <CardTitle>Guide « Jouer »</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <p className="m-0 text-[0.95rem] text-bb-text-muted">
+            Les textes des six sections de la page <Link href="/jouer" className="font-semibold text-bb-accent-text">Guide du coach</Link>,
+            pour les débutants. Une section laissée vide n&apos;est pas affichée.
+          </p>
+        </CardBody>
+      </Card>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "1.5rem" : "3rem" }}>
-          {sections.map((section) => (
-            <section key={section.key} className="settings-section" style={{ padding: isMobile ? "1rem" : "1.5rem" }}>
-              <div className="section-header">
-                <div className="icon-badge">
-                  {section.icon}
-                </div>
-                <div>
-                  <h4 className="section-title" style={{ fontSize: isMobile ? "1rem" : "1.1rem" }}>{section.label}</h4>
-                  {!isMobile && <p className="section-desc">{section.desc}</p>}
-                </div>
-              </div>
-              <div className="editor-wrapper">
-                <BBCodeEditor 
-                  name={section.key}
-                  defaultValue={settings[section.key]}
-                  onChange={(val) => updateSection(section.key, val)}
-                  rows={isMobile ? 6 : 8}
-                />
-              </div>
-            </section>
-          ))}
-
-          <div style={{ 
-            display: "flex", 
-            justifyContent: isMobile ? "stretch" : "flex-end", 
-            marginTop: "1rem", 
-            position: "sticky", 
-            bottom: isMobile ? "1rem" : "2rem", 
-            zIndex: 100 
-          }}>
-            <button
-              onClick={handleSave}
-              disabled={isPending}
-              className={`action-btn-save ${isPending ? 'pending' : ''}`}
-              style={{ width: isMobile ? "100%" : "auto", justifyContent: "center" }}
-            >
-              {isPending ? <Loader2 className="animate-spin" size={18} /> : <Save size={18} />}
-              <span>{isMobile ? "ENREGISTRER" : "Enregistrer le Guide"}</span>
-            </button>
-          </div>
+      {isLoading ? (
+        <div className="flex flex-col gap-4">
+          {[0, 1, 2].map((i) => <Skeleton key={i} className="h-48 w-full" />)}
         </div>
-      </PremiumCard>
+      ) : (
+        <>
+          {SECTIONS.map((section) => {
+            const Icon = section.icon;
+            return (
+              <Card key={section.key} className="overflow-hidden">
+                <section aria-label={section.title}>
+                  <CardHeader>
+                    <Icon size={18} className="text-bb-text-muted" aria-hidden="true" />
+                    <CardTitle as="h3">
+                      <label htmlFor={section.key}>{section.title}</label>
+                    </CardTitle>
+                    <span className="hidden text-sm text-bb-text-muted lg:inline">{section.desc}</span>
+                  </CardHeader>
+                  <CardBody>
+                    <BBCodeEditor
+                      name={section.key}
+                      id={section.key}
+                      defaultValue={settings[section.key]}
+                      onChange={(val) => updateSection(section.key, val)}
+                      rows={8}
+                    />
+                  </CardBody>
+                </section>
+              </Card>
+            );
+          })}
 
-      <style jsx>{`
-        .how-to-play-tab { animation: fadeIn 0.4s ease; }
-        .settings-section {
-          background: var(--glass-bg);
-          border-radius: 16px;
-          border: 1px solid var(--glass-border);
-        }
-        .section-header {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          margin-bottom: 1.2rem;
-        }
-        .icon-badge {
-          background: var(--primary-transparent);
-          color: var(--primary);
-          padding: 0.6rem;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .section-title { margin: 0; color: var(--foreground); font-weight: 700; }
-        .section-desc { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
-        .editor-wrapper { margin-top: 1rem; }
-        .action-btn-save {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          padding: 1rem 2rem;
-          background: var(--primary);
-          color: white;
-          border: none;
-          border-radius: 12px;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          box-shadow: 0 10px 25px var(--btn-shadow);
-        }
-        .action-btn-save:hover { filter: brightness(1.1); transform: translateY(-4px); }
-        .action-btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+          {/* Barre d'enregistrement collée en bas de l'écran (au-dessus de la barre du bas sur téléphone) */}
+          <div className="sticky bottom-[calc(var(--app-bottom-nav-space,0px)+0.75rem)] z-10 flex justify-end">
+            <Button type="button" variant="primary" size="tap" className="w-full shadow-bb lg:w-auto" disabled={isPending} onClick={handleSave}>
+              <Save size={18} aria-hidden="true" />
+              {isPending ? "Enregistrement…" : "Enregistrer le guide"}
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

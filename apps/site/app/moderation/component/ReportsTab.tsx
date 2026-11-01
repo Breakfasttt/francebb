@@ -1,25 +1,23 @@
-/**
- * Onglet de gestion des signalements.
- * Permet de visualiser les signalements groupés par cible et de les marquer comme traités.
- */
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { getPendingReportsByType, resolveReportsAction } from "../actions";
-import { 
-  Loader2, MessageSquare, AlertTriangle, Users, BookOpen, Trophy, 
-  ExternalLink, Check, ShieldAlert, ChevronDown, ChevronUp, Clock, 
-  Hash, ChevronLeft, ChevronRight 
-} from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+/**
+ * Onglet d'une liste de signalements de la modération (refonte, carte 099) : messages, sujets, coachs, articles ou
+ * ligues signalés. Les signalements sont regroupés par contenu visé (une fiche par contenu, avec le nombre de
+ * signalements). « Détails » montre chaque signalement l'un après l'autre (auteur, date, raison, précision) ;
+ * « Marquer comme traité » ferme tous les signalements du contenu, avec un commentaire facultatif écrit au journal.
+ * Les actions `getPendingReportsByType` et `resolveReportsAction` sont inchangées.
+ */
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import Link from "next/link";
-import { toast } from "@bbfrance/ui";
-import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import Pagination from "@/common/components/Pagination/Pagination";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
+import {
+  AlertTriangle, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, ExternalLink, Hash,
+  MessageSquare, ShieldAlert, Trophy, Users,
+} from "lucide-react";
+import { Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import { getPendingReportsByType, resolveReportsAction } from "../actions";
 
 interface ReportsTabProps {
   type: "POST" | "TOPIC" | "USER" | "ARTICLE" | "LIGUE" | "MESSAGE";
@@ -27,24 +25,29 @@ interface ReportsTabProps {
   onActionSuccess?: () => void;
 }
 
+const PAGE_SIZE = 10;
+
+const ICONS = {
+  POST: MessageSquare,
+  TOPIC: AlertTriangle,
+  USER: Users,
+  ARTICLE: BookOpen,
+  LIGUE: Trophy,
+  MESSAGE: MessageSquare,
+} as const;
+
 export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- groupes renvoyés par getPendingReportsByType
   const [reportGroups, setReportGroups] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeDetailIndex, setActiveDetailIndex] = useState(0);
   const [reportComment, setReportComment] = useState("");
-  const [isPending, startTransition] = useTransition();
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-
-  // État pour ConfirmModal
-  const [confirmState, setConfirmState] = useState<{
-    isOpen: boolean;
-    targetId: string;
-  }>({
-    isOpen: false,
-    targetId: "",
-  });
+  const [resolving, setResolving] = useState(false);
+  // Contenu dont on confirme le traitement (fenêtre de confirmation ouverte)
+  const [confirmTargetId, setConfirmTargetId] = useState<string | null>(null);
 
   const fetchReports = async () => {
     setLoading(true);
@@ -55,14 +58,11 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
   };
 
   useEffect(() => {
-    setPage(1); // Reset page on type change
-  }, [type]);
-
-  useEffect(() => {
     fetchReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé à chaque changement de type ou de page
   }, [type, page]);
 
-  // Reset active detail index when expanding or closing
+  // Le détail repart du premier signalement à chaque ouverture
   const toggleExpand = (id: string) => {
     if (expandedId === id) {
       setExpandedId(null);
@@ -72,22 +72,22 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     }
   };
 
-  const handleActionClick = (targetId: string) => {
-    setReportComment(""); // Reset comment
-    setConfirmState({ isOpen: true, targetId });
+  const openConfirm = (targetId: string) => {
+    setReportComment("");
+    setConfirmTargetId(targetId);
   };
 
   const onConfirmAction = async () => {
-    const { targetId } = confirmState;
-    
-    // On utilise RESOLVE par défaut pour l'action "Traité"
-    // On passe le commentaire optionnel
-    const res = await resolveReportsAction(targetId, type, "RESOLVE", reportComment);
+    if (!confirmTargetId) return;
+    setResolving(true);
+    // « Traité » ferme les signalements du contenu (RESOLVE), avec le commentaire facultatif
+    const res = await resolveReportsAction(confirmTargetId, type, "RESOLVE", reportComment);
+    setResolving(false);
     if (res.success) {
       toast.success("Signalement marqué comme traité");
       fetchReports();
       onActionSuccess?.();
-      setConfirmState(prev => ({ ...prev, isOpen: false }));
+      setConfirmTargetId(null);
       setReportComment("");
     } else {
       toast.error("Erreur serveur");
@@ -100,523 +100,170 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
       case "USER": return `/spy/${targetId}`;
       case "ARTICLE": return `/articles/${targetId}`;
       case "LIGUE": return `/ligue/${targetId}`;
-      case "POST": return null; 
       default: return null;
     }
   };
 
-  const getIcon = () => {
-    switch (type) {
-      case "POST": return <MessageSquare size={20} color="var(--accent)" />;
-      case "TOPIC": return <AlertTriangle size={20} color="var(--danger)" />;
-      case "USER": return <Users size={20} color="var(--primary)" />;
-      case "ARTICLE": return <BookOpen size={20} color="var(--success)" />;
-      case "LIGUE": return <Trophy size={20} color="var(--accent)" />;
-      default: return <AlertTriangle size={20} />;
-    }
-  };
-
-  if (loading && page === 1) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-        <Loader2 className="animate-spin" size={32} color="var(--primary)" />
-      </div>
-    );
-  }
+  const Icon = ICONS[type];
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className="reports-tab">
-      <div className="tab-header" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
-        {getIcon()}
-        <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{title}</h3>
-        <span className="action-badge info" style={{ marginLeft: 'auto' }}>{total} En attente</span>
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <Icon size={20} className="text-bb-text-muted" aria-hidden="true" />
+        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">{title}</h2>
+        <Badge variant="neutral">{total} en attente</Badge>
       </div>
 
-      {reportGroups.length === 0 ? (
-        <PremiumCard>
-          <p style={{ textAlign: 'center', padding: '2rem', opacity: 0.6 }}>Aucun signalement en attente pour cette catégorie.</p>
-        </PremiumCard>
+      {loading && reportGroups.length === 0 ? (
+        <div className="flex flex-col gap-3">
+          {[0, 1].map((i) => <Skeleton key={i} className="h-32 w-full" />)}
+        </div>
+      ) : reportGroups.length === 0 ? (
+        <Card>
+          <EmptyState icon={<ShieldAlert size={32} />} title="Aucun signalement en attente pour cette catégorie." />
+        </Card>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {reportGroups.map((group) => (
-            <PremiumCard key={group.targetId} className="report-card-premium">
-              <div className="report-main-content">
-                <div className="report-info-section">
-                  <div className="target-badge">
-                    <Hash size={12} />
-                    <span>ID: {group.targetId.substring(0, 8)}...</span>
-                  </div>
-                  
-                  <div className="report-reason-display">
-                    <span className="reason-label">Raison:</span>
-                    <span className="reason-text">{group.firstReason}</span>
-                  </div>
-
-                  <div className="report-meta">
-                    <span className="report-count-badge">
-                      <ShieldAlert size={14} />
-                      {group.count} Signalement{group.count > 1 ? "s" : ""}
-                    </span>
-                    <span className="report-date-meta">
-                       <Clock size={12} />
-                       {format(new Date(group.createdAt), "dd MMM HH:mm", { locale: fr })}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="report-actions-section">
-                  <div className="action-buttons-group">
-                    {getTargetUrl(group.targetId) && (
-                      <ClassicButton 
-                        href={getTargetUrl(group.targetId)!} 
-                        target="_blank" 
-                        size="sm"
-                        icon={ExternalLink}
-                        title="Voir l'élément"
-                      >
-                        Voir
-                      </ClassicButton>
-                    )}
-                    <ClassicButton 
-                      size="sm"
-                      onClick={() => toggleExpand(group.targetId)}
-                      title="Afficher les détails"
-                    >
-                      {expandedId === group.targetId ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                      Détails
-                    </ClassicButton>
-                    <AdminButton 
-                      onClick={() => handleActionClick(group.targetId)} 
-                      isLoading={isPending}
-                      size="sm"
-                      icon={Check}
-                      style={{ 
-                        background: "linear-gradient(135deg, var(--success), #059669)", 
-                        color: "white",
-                        borderColor: "transparent"
-                      }}
-                    >
-                      Traité
-                    </AdminButton>
-                  </div>
-                </div>
-              </div>
-
-              {expandedId === group.targetId && (
-                <div className="report-details-expanded">
-                  <div className="details-header">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                      <h4>Historique des signalements</h4>
-                      <span className="detail-index-badge">{activeDetailIndex + 1} / {group.reports.length}</span>
+        <div className={`flex flex-col gap-3 ${loading ? "opacity-60" : ""}`}>
+          {reportGroups.map((group) => {
+            const targetUrl = getTargetUrl(group.targetId);
+            const expanded = expandedId === group.targetId;
+            const report = expanded ? group.reports[activeDetailIndex] : null;
+            const detailsId = `report-details-${group.targetId}`;
+            return (
+              <Card key={group.targetId} className="overflow-hidden">
+                <article aria-label={`Signalement : ${group.firstReason}`}>
+                  <div className="flex flex-col gap-3 p-4">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-semibold text-bb-text-muted">Raison</span>
+                      <p className="m-0 text-base font-bold break-words text-bb-text">{group.firstReason}</p>
                     </div>
-                    <div className="header-line"></div>
-                    {group.reports.length > 1 && (
-                      <div className="detail-navigation">
-                        <button 
-                          className="nav-arrow" 
-                          onClick={() => setActiveDetailIndex(prev => Math.max(0, prev - 1))}
-                          disabled={activeDetailIndex === 0}
-                        >
-                          <ChevronLeft size={16} />
-                        </button>
-                        <button 
-                          className="nav-arrow" 
-                          onClick={() => setActiveDetailIndex(prev => Math.min(group.reports.length - 1, prev + 1))}
-                          disabled={activeDetailIndex === group.reports.length - 1}
-                        >
-                          <ChevronRight size={16} />
-                        </button>
+                    <div className="flex flex-wrap items-center gap-2 text-sm text-bb-text-muted">
+                      <Badge variant="danger">
+                        <ShieldAlert size={12} aria-hidden="true" />
+                        {group.count} signalement{group.count > 1 ? "s" : ""}
+                      </Badge>
+                      <span className="inline-flex items-center gap-1">
+                        <Clock size={14} aria-hidden="true" />
+                        {format(new Date(group.createdAt), "dd MMM HH:mm", { locale: fr })}
+                      </span>
+                      <span className="inline-flex items-center gap-1" title={group.targetId}>
+                        <Hash size={14} aria-hidden="true" />
+                        Contenu {group.targetId.substring(0, 8)}…
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {targetUrl && (
+                        <Button asChild variant="secondary" size="tap">
+                          <Link href={targetUrl} target="_blank">
+                            <ExternalLink size={16} aria-hidden="true" />
+                            Voir
+                          </Link>
+                        </Button>
+                      )}
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="tap"
+                        aria-expanded={expanded}
+                        aria-controls={detailsId}
+                        onClick={() => toggleExpand(group.targetId)}
+                      >
+                        {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
+                        Détails
+                      </Button>
+                      <Button type="button" variant="primary" size="tap" className="w-full lg:ml-auto lg:w-auto" onClick={() => openConfirm(group.targetId)}>
+                        <Check size={16} aria-hidden="true" />
+                        Marquer comme traité
+                      </Button>
+                    </div>
+                  </div>
+
+                  {report && (
+                    <div id={detailsId} className="flex flex-col gap-3 border-t border-bb-border bg-bb-surface-2 p-4">
+                      <div className="flex items-center gap-2">
+                        <h3 className="m-0 flex-1 border-0 p-0 text-sm font-bold text-bb-text normal-case not-italic">
+                          Signalement {activeDetailIndex + 1} sur {group.reports.length}
+                        </h3>
+                        {group.reports.length > 1 && (
+                          <>
+                            <Button
+                              type="button"
+                              variant="quiet"
+                              size="tap-icon"
+                              aria-label="Signalement précédent"
+                              disabled={activeDetailIndex === 0}
+                              onClick={() => setActiveDetailIndex((prev) => Math.max(0, prev - 1))}
+                            >
+                              <ChevronLeft size={18} aria-hidden="true" />
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="quiet"
+                              size="tap-icon"
+                              aria-label="Signalement suivant"
+                              disabled={activeDetailIndex === group.reports.length - 1}
+                              onClick={() => setActiveDetailIndex((prev) => Math.min(group.reports.length - 1, prev + 1))}
+                            >
+                              <ChevronRight size={18} aria-hidden="true" />
+                            </Button>
+                          </>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  
-                  <div className="detail-item animate-fade-in">
-                    {(() => {
-                      const report = group.reports[activeDetailIndex];
-                      return (
-                        <>
-                          <div className="detail-item-header">
-                            <div className="reporter-info">
-                              <div className="avatar-placeholder">
-                                {report.reporter.image ? <img src={report.reporter.image} alt="" /> : <Users size={12} />}
-                              </div>
-                              <span className="reporter-name">{report.reporter.name}</span>
-                            </div>
-                            <span className="detail-date">
-                              {format(new Date(report.createdAt), "dd/MM HH:mm", { locale: fr })}
-                            </span>
-                          </div>
-                          <div className="detail-reason">
-                            <span className="tag">Raison:</span> {report.reason}
-                          </div>
-                          {report.details && (
-                            <div className="detail-comment">
-                              <MessageSquare size={12} className="quote-icon" />
-                              <p>{report.details}</p>
-                            </div>
-                          )}
-                        </>
-                      );
-                    })()}
-                  </div>
-                </div>
-              )}
-            </PremiumCard>
-          ))}
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="flex min-w-0 items-center gap-2 font-semibold text-bb-text">
+                          <MemberAvatarImage image={report.reporter.image} className="size-7 shrink-0 rounded-full object-cover" />
+                          <span className="truncate">{report.reporter.name}</span>
+                        </span>
+                        <span className="text-sm text-bb-text-muted">{format(new Date(report.createdAt), "dd/MM HH:mm", { locale: fr })}</span>
+                      </div>
+                      <p className="m-0 text-[0.95rem] text-bb-text">
+                        <span className="font-semibold text-bb-text-muted">Raison : </span>
+                        {report.reason}
+                      </p>
+                      {report.details && (
+                        <blockquote className="m-0 rounded-bb-md border-l-[3px] border-bb-border bg-bb-surface px-3 py-2 text-[0.95rem] break-words text-bb-text italic">
+                          {report.details}
+                        </blockquote>
+                      )}
+                    </div>
+                  )}
+                </article>
+              </Card>
+            );
+          })}
         </div>
       )}
 
-      <Pagination 
-        currentPage={page}
-        totalPages={Math.ceil(total / 10)}
-        onPageChange={(p: number) => { setPage(p); window.scrollTo(0, 0); }}
-        className="moderation-pagination"
-      />
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <PageNav page={page} totalPages={totalPages} onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }} />
+        </div>
+      )}
 
-      <ConfirmModal 
-        isOpen={confirmState.isOpen}
-        onClose={() => setConfirmState(prev => ({ ...prev, isOpen: false }))}
-        onConfirm={onConfirmAction}
+      <ConfirmDialog
+        open={confirmTargetId !== null}
+        onOpenChange={(open) => { if (!open) setConfirmTargetId(null); }}
         title="Marquer comme traité"
-        message="Voulez-vous marquer tous les signalements de cet élément comme traités ? Il n'apparaîtra plus dans cette liste."
+        message="Tous les signalements de cet élément seront marqués comme traités. Il n'apparaîtra plus dans cette liste."
         confirmLabel="Confirmer"
-        isDanger={false}
+        pending={resolving}
+        onConfirm={onConfirmAction}
       >
-        <div className="report-comment-input">
-          <label htmlFor="moderation-comment">Détails de l'action (optionnel)</label>
-          <textarea 
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="moderation-comment">Détails de l&apos;action (optionnel)</Label>
+          <Textarea
             id="moderation-comment"
-            placeholder="Ex: Contenu supprimé après avertissement..."
+            placeholder="Ex. : contenu supprimé après avertissement…"
             maxLength={200}
             value={reportComment}
             onChange={(e) => setReportComment(e.target.value)}
+            className="font-bb-sans"
           />
-          <span className="char-count">{reportComment.length}/200</span>
+          <span className="self-end text-sm text-bb-text-muted">{reportComment.length}/200</span>
         </div>
-      </ConfirmModal>
-
-      <style jsx>{`
-        .report-card-premium {
-          padding: 0 !important;
-          overflow: hidden;
-          transition: transform 0.2s ease, border-color 0.2s ease;
-          border: 1px solid var(--glass-border) !important;
-        }
-
-        .report-card-premium:hover {
-          border-color: var(--primary-transparent) !important;
-        }
-
-        .report-main-content {
-          display: flex;
-          padding: 1.5rem;
-          gap: 2rem;
-          align-items: center;
-        }
-
-        .report-info-section {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-        }
-
-        .target-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          background: var(--glass-bg);
-          padding: 0.2rem 0.6rem;
-          border-radius: 6px;
-          width: fit-content;
-          border: 1px solid var(--glass-border);
-        }
-
-        .report-reason-display {
-          display: flex;
-          flex-direction: column;
-          gap: 0.2rem;
-        }
-
-        .reason-label {
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: var(--text-muted);
-          font-weight: 700;
-        }
-
-        .reason-text {
-          font-size: 1.05rem;
-          font-weight: 600;
-          color: var(--text);
-        }
-
-        .report-meta {
-          display: flex;
-          align-items: center;
-          gap: 1.2rem;
-        }
-
-        .report-count-badge {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: var(--danger);
-          background: rgba(239, 68, 68, 0.1);
-          padding: 0.3rem 0.8rem;
-          border-radius: 20px;
-        }
-
-        .report-date-meta {
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          font-size: 0.75rem;
-          color: var(--text-muted);
-        }
-
-        .report-actions-section {
-          display: flex;
-          align-items: center;
-        }
-
-        .action-buttons-group {
-          display: flex;
-          gap: 0.6rem;
-        }
-
-        .treated-btn {
-          background: linear-gradient(135deg, var(--success), #059669) !important;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-          font-weight: 700 !important;
-          min-width: 100px;
-        }
-
-        .treated-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .report-details-expanded {
-          background: rgba(0, 0, 0, 0.2);
-          border-top: 1px solid var(--glass-border);
-          padding: 1.5rem;
-        }
-
-        .details-header {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .details-header h4 {
-          margin: 0;
-          font-size: 0.9rem;
-          color: var(--primary);
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          white-space: nowrap;
-        }
-
-        .detail-index-badge {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: var(--text-muted);
-          background: var(--glass-bg);
-          padding: 0.1rem 0.5rem;
-          border-radius: 4px;
-        }
-
-        .header-line {
-          height: 1px;
-          background: var(--glass-border);
-          flex: 1;
-        }
-
-        .detail-navigation {
-          display: flex;
-          gap: 0.5rem;
-        }
-
-        .nav-arrow {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--text);
-          padding: 0.3rem;
-          border-radius: 50%;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s ease;
-        }
-
-        .nav-arrow:hover:not(:disabled) {
-          background: var(--primary-transparent);
-          border-color: var(--primary);
-          color: var(--primary);
-        }
-
-        .nav-arrow:disabled {
-          opacity: 0.3;
-          cursor: not-allowed;
-        }
-
-        .detail-item {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 12px;
-          padding: 1.2rem;
-        }
-
-        .animate-fade-in {
-          animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(5px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .report-comment-input {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          margin-top: 1rem;
-        }
-
-        .report-comment-input label {
-          font-size: 0.75rem;
-          color: var(--text-muted);
-          font-weight: 700;
-          text-transform: uppercase;
-        }
-
-        .report-comment-input textarea {
-          background: rgba(0, 0, 0, 0.3);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          padding: 0.8rem;
-          color: var(--text);
-          font-size: 0.85rem;
-          min-height: 80px;
-          resize: none;
-          outline: none;
-          transition: border-color 0.2s ease;
-        }
-
-        .report-comment-input textarea:focus {
-          border-color: var(--primary);
-        }
-
-        .char-count {
-          font-size: 0.7rem;
-          color: var(--text-muted);
-          text-align: right;
-        }
-
-        .detail-item-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0.8rem;
-        }
-
-        .reporter-info {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-        }
-
-        .avatar-placeholder {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          background: var(--primary-transparent);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-        }
-
-        .avatar-placeholder img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .reporter-name {
-          font-size: 0.85rem;
-          font-weight: 600;
-        }
-
-        .detail-date {
-          font-size: 0.75rem;
-          color: var(--text-muted);
-        }
-
-        .detail-reason {
-          font-size: 0.9rem;
-          margin-bottom: 0.8rem;
-        }
-
-        .detail-reason .tag {
-          font-weight: 700;
-          color: var(--text-muted);
-          margin-right: 0.5rem;
-        }
-
-        .detail-comment {
-          display: flex;
-          gap: 0.8rem;
-          background: rgba(255, 255, 255, 0.03);
-          padding: 1rem;
-          border-radius: 8px;
-          font-style: italic;
-          color: var(--text-secondary);
-          font-size: 0.9rem;
-          position: relative;
-        }
-
-        .quote-icon {
-          color: var(--primary);
-          opacity: 0.4;
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
-
-        .detail-comment p {
-          margin: 0;
-          line-height: 1.4;
-        }
-
-        @media (max-width: 1024px) {
-          .report-main-content {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.5rem;
-          }
-          
-          .report-actions-section {
-            width: 100%;
-          }
-          
-          .action-buttons-group {
-            width: 100%;
-            justify-content: space-between;
-          }
-          
-          .treated-btn {
-            flex: 1;
-          }
-        }
-      `}</style>
+      </ConfirmDialog>
     </div>
   );
 }

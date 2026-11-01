@@ -1,189 +1,204 @@
 "use client";
 
-// Gestion de la structure du forum : catégories, forums, sous-forums (max 2 niveaux)
-// DnD pour réordonner au sein du même niveau, boutons ←/→ pour changer de niveau
-
-import Modal from "@/common/components/Modal/Modal";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
-import { UserRole } from "@/lib/roles";
+/**
+ * Onglet « Structure du forum » de l'administration (refonte, carte 099) : catégories, forums et sous-forums (deux
+ * niveaux de sous-forums au plus, 5 sous-forums par forum).
+ * - Glisser la poignée d'une catégorie ou d'un forum change son ordre au sein du même niveau (au clavier : Espace pour
+ *   prendre, flèches pour déplacer, Espace pour poser).
+ * - Le menu « ⋯ » d'un forum l'indente (il devient sous-forum du forum au-dessus), le désindente (il remonte d'un
+ *   niveau) ou le fait passer dans la catégorie précédente ou suivante.
+ * - « Modifier » ouvre un panneau (à droite sur ordinateur, en bas sur téléphone) : nom, description, rôle minimum
+ *   d'accès, et suppression d'un élément vide. Le forum « Les tournois » ne peut être ni renommé ni supprimé.
+ * Les actions de `actionsStructure.ts` et `getAllRoles` sont inchangées ; la logique de déplacement a été recopiée
+ * telle quelle depuis l'ancienne version de l'onglet.
+ */
 import {
-  ArrowBigDown, ArrowBigUp, ChevronDown, ChevronRight, FolderGit2, GripVertical,
-  IndentDecrease, IndentIncrease, Plus, Settings2, Trophy, Trash2
+  ArrowBigDown, ArrowBigUp, ChevronDown, ChevronRight, FolderGit2, GripVertical, IndentDecrease, IndentIncrease, Lock,
+  Plus, Settings2, Trash2, Trophy,
 } from "lucide-react";
-import { useEffect, useState, useTransition } from "react";
-import { toast } from "@bbfrance/ui";
+import { useEffect, useState, useTransition, type ReactNode } from "react";
+import {
+  ActionMenu, Badge, Button, Card, CardHeader, CardTitle, ConfirmDialog, DESKTOP_QUERY, Field, Input, Select, Sheet,
+  SheetContent, Skeleton, Textarea, toast, useMediaQuery,
+} from "@bbfrance/ui";
+import { getRoleLabel } from "@/lib/roles";
 import { getAllRoles } from "../actions";
 import {
   createCategory, createForum, deleteCategory, deleteForum,
   getForumStructure, reorderCategories, reorderForums,
   updateCategory, updateForum
 } from "../actionsStructure";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
 
 import {
   closestCenter, DndContext, DragEndEvent, DragOverlay,
   DragStartEvent, KeyboardSensor, PointerSensor, useSensor, useSensors,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove, SortableContext, sortableKeyboardCoordinates,
   useSortable, verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { createPortal } from "react-dom";
 
-interface StructureTabProps {
-  currentUserRole: UserRole;
-  isSuperAdmin: boolean;
-}
+/** Nom du forum système des tournois : il ne peut être ni renommé ni supprimé. */
+const PROTECTED_FORUM_NAME = "Les tournois";
 
-// ------ Composants DND ------
-function SortableCategoryItem({ category, onEditClick, children, isMobile }: any) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: `cat-${category.id}`,
-    data: { type: 'Category', category }
-  });
-  const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
-  const [expanded, setExpanded] = useState(true);
+/** Poignée de glisser-déposer : 44 pixels, et `touch-none` pour que le doigt fasse glisser au lieu de défiler. */
+const handleClass =
+  "inline-flex size-11 shrink-0 cursor-grab touch-none items-center justify-center rounded-bb-md text-bb-text-muted hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus active:cursor-grabbing";
 
+/** Étiquette du rôle minimum d'accès : « Public », ou le libellé du rôle. */
+function AccessBadge({ allowedRoles, roleLabels }: { allowedRoles: string; roleLabels: Record<string, string> }) {
+  if (allowedRoles === "ALL") return <Badge variant="success">Public</Badge>;
   return (
-    <div ref={setNodeRef} style={style} className="category-block">
-      <div className="category-header">
-        <div {...attributes} {...listeners} className="drag-handle"><GripVertical size={20} /></div>
-        <div className="cat-title-container">
-          <h4 className="cat-title">{category.name}</h4>
-          <span className={`badge-role ${category.allowedRoles === "ALL" ? "badge-all" : "badge-restricted"}`}>
-            {category.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${category.allowedRoles}`}
-          </span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-          <button className="expand-btn" onClick={() => setExpanded(!expanded)}>
-            {expanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-            <span>Forums ({category.forums?.length || 0})</span>
-          </button>
-          <Tooltip text="Gérer la catégorie">
-            <button className="action-button secondary-btn" onClick={() => onEditClick(category, 'Category')}>
-              <Settings2 size={16} /> <span className={isMobile ? "sr-only" : ""}>Éditer</span>
-            </button>
-          </Tooltip>
-        </div>
-      </div>
-      {expanded && <div className="category-content">{children}</div>}
-    </div>
+    <Badge variant="outline" title="Rôle minimum pour y accéder">
+      <Lock size={12} aria-hidden="true" />
+      {getRoleLabel(allowedRoles, roleLabels)} et +
+    </Badge>
   );
 }
 
+// ------ Éléments déplaçables ------
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- catégorie renvoyée par getForumStructure
+function SortableCategoryItem({ category, onEditClick, roleLabels, children }: { category: any; onEditClick: (item: any, type: "Category" | "Forum") => void; roleLabels: Record<string, string>; children: ReactNode }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: `cat-${category.id}`,
+    data: { type: "Category", category }
+  });
+  const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
+  const [expanded, setExpanded] = useState(true);
+  const forumCount = category.forums?.length || 0;
+
+  return (
+    <section ref={setNodeRef} style={style} aria-label={`Catégorie ${category.name}`} className="overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface">
+      <div className="flex flex-wrap items-center gap-x-1 gap-y-1 border-b border-bb-border bg-bb-surface-2 px-1 py-1 lg:px-2">
+        <span {...attributes} {...listeners} aria-label={`Déplacer la catégorie ${category.name}`} className={handleClass}>
+          <GripVertical size={20} aria-hidden="true" />
+        </span>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 py-1">
+          <h3 className="m-0 min-w-0 border-0 p-0 text-base font-bold break-words text-bb-text normal-case not-italic">{category.name}</h3>
+          <AccessBadge allowedRoles={category.allowedRoles} roleLabels={roleLabels} />
+        </div>
+        <Button type="button" variant="quiet" size="tap" className="px-2" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
+          {expanded ? <ChevronDown size={18} aria-hidden="true" /> : <ChevronRight size={18} aria-hidden="true" />}
+          <span>Forums<span className="sr-only"> de {category.name}</span> ({forumCount})</span>
+        </Button>
+        <Button type="button" variant="quiet" size="tap" className="min-w-11 px-2" aria-label={`Modifier la catégorie ${category.name}`} onClick={() => onEditClick(category, "Category")}>
+          <Settings2 size={18} aria-hidden="true" />
+          <span className="hidden lg:inline">Modifier</span>
+        </Button>
+      </div>
+      {expanded && <div className="flex flex-col gap-2 p-2 lg:p-3">{children}</div>}
+    </section>
+  );
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any -- forum renvoyé par getForumStructure, rappels du parent */
 function SortableForumItem({
   forum, onEditClick, level, onIndent, onDedent, canIndent, canDedent,
-  onMoveUpCat, onMoveDownCat, canMoveUpCat, canMoveDownCat, children, isMobile
-}: any) {
+  onMoveUpCat, onMoveDownCat, canMoveUpCat, canMoveDownCat, roleLabels, children
+}: {
+  forum: any; onEditClick: (item: any, type: "Category" | "Forum") => void; level: number;
+  onIndent: () => void; onDedent: () => void; canIndent: boolean; canDedent: boolean;
+  onMoveUpCat?: () => void; onMoveDownCat?: () => void; canMoveUpCat?: boolean; canMoveDownCat?: boolean;
+  roleLabels: Record<string, string>; children?: ReactNode;
+}) {
+  /* eslint-enable @typescript-eslint/no-explicit-any */
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `forum-${forum.id}`,
-    data: { type: 'Forum', forum }
+    data: { type: "Forum", forum }
   });
   const style = { transform: CSS.Translate.toString(transform), transition, opacity: isDragging ? 0.4 : 1 };
   const [expanded, setExpanded] = useState(false);
-  const hasSubForums = (forum.subForums?.length || 0) > 0;
+  const subCount = forum.subForums?.length || 0;
+  const hasSubForums = subCount > 0;
 
   return (
-    <div ref={setNodeRef} style={style} className={`forum-block level-${level}`}>
-      <div className="forum-row" style={{ flexWrap: isMobile ? "wrap" : "nowrap" }}>
-        <div {...attributes} {...listeners} className="drag-handle"><GripVertical size={16} /></div>
-        <div className="forum-title-container">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`rounded-bb-md border border-bb-border bg-bb-surface ${level > 1 ? "border-l-[3px] border-l-bb-accent-text" : ""}`}
+    >
+      <div className="flex items-center gap-1 py-0.5 pr-1">
+        <span {...attributes} {...listeners} aria-label={`Déplacer le forum ${forum.name}`} className={handleClass}>
+          <GripVertical size={18} aria-hidden="true" />
+        </span>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1 py-1">
           {forum.isTournamentForum ? (
-            <Trophy size={15} color="var(--accent)" />
+            <Trophy size={16} className="shrink-0 text-bb-rank" aria-hidden="true" />
           ) : (
-            <FolderGit2 size={15} color="var(--primary)" />
+            <FolderGit2 size={16} className="shrink-0 text-bb-text-muted" aria-hidden="true" />
           )}
-          <strong>{forum.name}</strong>
-          {!isMobile && (
-            <span className={`badge-role ${forum.allowedRoles === "ALL" ? "badge-all" : "badge-restricted"}`}>
-              {forum.allowedRoles === "ALL" ? "🌐 Public" : `🔒 ${forum.allowedRoles}`}
-            </span>
-          )}
+          <strong className="min-w-0 font-semibold break-words text-bb-text">{forum.name}</strong>
+          <AccessBadge allowedRoles={forum.allowedRoles} roleLabels={roleLabels} />
         </div>
-        <div className="forum-actions" style={{ width: isMobile ? "100%" : "auto", justifyContent: isMobile ? "flex-end" : "flex-start", marginTop: isMobile ? "0.5rem" : "0" }}>
-          {/* Déplacement inter-catégorie */}
-          {canMoveUpCat && (
-            <Tooltip text="Déplacer vers la catégorie précédente" position="top">
-              <button className="level-btn" onClick={onMoveUpCat}>
-                <ArrowBigUp size={15} />
-              </button>
-            </Tooltip>
-          )}
-          {canMoveDownCat && (
-            <Tooltip text="Déplacer vers la catégorie suivante" position="top">
-              <button className="level-btn" onClick={onMoveDownCat}>
-                <ArrowBigDown size={15} />
-              </button>
-            </Tooltip>
-          )}
-
-          {/* Boutons changement de niveau */}
-          {canDedent && (
-            <Tooltip text="Remonter d'un niveau (dédenter)" position="top">
-              <button className="level-btn" onClick={onDedent}>
-                <IndentDecrease size={15} />
-              </button>
-            </Tooltip>
-          )}
-          {canIndent && (
-            <Tooltip text="Descendre d'un niveau (indenter)" position="top">
-              <button className="level-btn" onClick={onIndent}>
-                <IndentIncrease size={15} />
-              </button>
-            </Tooltip>
-          )}
-
-          <Tooltip text="Gérer le forum" position="top">
-            <button className="action-button secondary-btn icon-btn" onClick={() => onEditClick(forum, 'Forum')}>
-              <Settings2 size={14} />
-            </button>
-          </Tooltip>
-
-          {/* Bouton pour ouvrir les enfants, le plus à droite */}
-          {hasSubForums && (
-            <button className="expand-btn" onClick={() => setExpanded(!expanded)}>
-              {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-              <span>{forum.subForums.length}/5</span>
-            </button>
-          )}
-        </div>
+        {hasSubForums && (
+          <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>
+            {expanded ? <ChevronDown size={16} aria-hidden="true" /> : <ChevronRight size={16} aria-hidden="true" />}
+            <span><span className="sr-only">Sous-forums de {forum.name} : </span>{subCount}/5</span>
+          </Button>
+        )}
+        <Button type="button" variant="quiet" size="tap-icon" aria-label={`Modifier le forum ${forum.name}`} title="Modifier le forum" onClick={() => onEditClick(forum, "Forum")}>
+          <Settings2 size={18} aria-hidden="true" />
+        </Button>
+        <ActionMenu
+          label={`Actions du forum ${forum.name}`}
+          title={forum.name}
+          items={[
+            { label: "Indenter : sous-forum du forum au-dessus", icon: <IndentIncrease size={18} aria-hidden="true" />, onSelect: onIndent, hidden: !canIndent },
+            { label: "Dédenter : remonter d'un niveau", icon: <IndentDecrease size={18} aria-hidden="true" />, onSelect: onDedent, hidden: !canDedent },
+            { label: "Vers la catégorie précédente", icon: <ArrowBigUp size={18} aria-hidden="true" />, onSelect: onMoveUpCat, hidden: !canMoveUpCat },
+            { label: "Vers la catégorie suivante", icon: <ArrowBigDown size={18} aria-hidden="true" />, onSelect: onMoveDownCat, hidden: !canMoveDownCat },
+          ]}
+        />
       </div>
       {expanded && hasSubForums && (
-        <div className="sub-forums-container">{children}</div>
+        <div className="flex flex-col gap-2 border-t border-bb-border p-2 pl-3 lg:pl-6">{children}</div>
       )}
     </div>
   );
 }
 
-// ------ StructureTab ------
-export default function StructureTab({ currentUserRole, isSuperAdmin }: StructureTabProps) {
+/** Bouton d'ajout en bas d'une liste de forums ou de sous-forums. */
+function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <Button type="button" variant="quiet" size="tap" className="w-full border border-dashed border-bb-border text-[0.95rem]" onClick={onClick}>
+      <Plus size={16} aria-hidden="true" />
+      {label}
+    </Button>
+  );
+}
+
+// ------ Onglet ------
+export default function StructureTab() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- arbre renvoyé par getForumStructure
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const isMobile = useIsMobile();
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- catégorie ou forum en cours de modification
   const [editingItem, setEditingItem] = useState<any>(null);
-  const [editingType, setEditingType] = useState<'Category' | 'Forum'>('Category');
+  const [editingType, setEditingType] = useState<"Category" | "Forum">("Category");
   const [parentTargetId, setParentTargetId] = useState<string | null>(null);
 
   const [formName, setFormName] = useState("");
   const [formDesc, setFormDesc] = useState("");
   const [formAllowedRoles, setFormAllowedRoles] = useState<string>("ALL");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- gardé comme avant la refonte (un forum ne devient plus « tournoi » à la main)
   const [formIsTournament, setFormIsTournament] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- rôles renvoyés par getAllRoles
   const [availableDbRoles, setAvailableDbRoles] = useState<any[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+
+  const roleLabels = Object.fromEntries(availableDbRoles.map((r) => [r.name, r.label]));
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
-
-  useEffect(() => { loadData(); }, []);
 
   const loadData = async (silent = false) => {
     if (!silent) setIsLoading(true);
@@ -193,6 +208,16 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
     if (!silent) setIsLoading(false);
   };
 
+  // Premier chargement : l'arbre et les rôles arrivent, puis l'attente s'arrête
+  useEffect(() => {
+    Promise.all([getForumStructure(), getAllRoles()]).then(([cats, roles]) => {
+      setCategories(cats);
+      setAvailableDbRoles(roles);
+      setIsLoading(false);
+    });
+  }, []);
+
+  /* eslint-disable @typescript-eslint/no-explicit-any -- logique recopiée telle quelle de l'ancienne version (carte 099) : arbre non typé de getForumStructure */
   // --- DND : réordonnancement au sein du même niveau uniquement ---
   const handleDragStart = (event: DragStartEvent) => setActiveId(event.active.id as string);
 
@@ -226,7 +251,7 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
 
       // Même parent seulement
       if (draggedForum.categoryId !== targetForum.categoryId || draggedForum.parentForumId !== targetForum.parentForumId) {
-        toast("Utilisez les boutons ← → pour changer de niveau", { icon: "ℹ️" });
+        toast("Utilisez le menu ⋯ du forum pour changer de niveau", { icon: "ℹ️" });
         return;
       }
 
@@ -426,128 +451,91 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
     }
     return "Forum";
   };
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
+  const isProtected = editingItem?.name === PROTECTED_FORUM_NAME;
+  const panelTitle = editingItem
+    ? `Modifier : ${editingItem.name}`
+    : editingType === "Category" ? "Nouvelle catégorie" : "Nouveau forum";
 
   return (
-    <PremiumCard className="fade-in" style={{ 
-      padding: isMobile ? '1rem' : '2rem', 
-      display: 'flex', 
-      flexDirection: isMobile ? 'column' : 'row',
-      gap: '2rem', 
-      position: 'relative' 
-    }}>
+    <Card className="overflow-hidden">
+      <CardHeader className="flex-wrap">
+        <FolderGit2 size={18} className="text-bb-text-muted" aria-hidden="true" />
+        <CardTitle>Structure du forum</CardTitle>
+        <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" onClick={openCreateCategory}>
+          <Plus size={18} aria-hidden="true" />
+          Ajouter une catégorie
+        </Button>
+      </CardHeader>
 
-      <Modal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)}
-        title={`Supprimer ${editingType === 'Category' ? 'la catégorie' : 'le forum'} "${editingItem?.name}" ?`}
-        confirmText="Supprimer définitivement" onConfirm={confirmDelete} variant="danger">
-        <p style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
-          Cette action est <strong style={{ color: 'var(--danger)' }}>irréversible</strong>. L&apos;élément doit être <strong>vide</strong> pour pouvoir être supprimé.
+      <div className="flex flex-col gap-4 p-3 lg:p-4">
+        <p className="m-0 text-[0.95rem] text-bb-text-muted">
+          Faites glisser la poignée
+          <GripVertical size={14} className="mx-1 inline align-middle" aria-hidden="true" />
+          pour changer l&apos;ordre au sein d&apos;un même niveau. Le menu « ⋯ » d&apos;un forum permet de l&apos;indenter
+          (il devient sous-forum du forum au-dessus), de le désindenter ou de le changer de catégorie.
         </p>
-      </Modal>
 
-      {/* MAIN */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ 
-          display: 'flex', 
-          alignItems: isMobile ? 'flex-start' : 'center', 
-          justifyContent: 'space-between', 
-          flexDirection: isMobile ? 'column' : 'row',
-          gap: '1rem',
-          marginBottom: '2rem' 
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <FolderGit2 size={28} color="var(--primary)" />
-            <h3 style={{ margin: 0, fontSize: isMobile ? '1.2rem' : '1.4rem' }}>Structure du forum</h3>
+        {isLoading ? (
+          <div className="flex flex-col gap-3">
+            {[0, 1].map((i) => <Skeleton key={i} className="h-40 w-full" />)}
           </div>
-          <button className="action-button primary-btn" onClick={openCreateCategory} style={{ width: isMobile ? '100%' : 'auto' }}>
-            <Plus size={18} /> Ajouter une Catégorie
-          </button>
-        </div>
-
-        <div className="struct-legend">
-          <span><GripVertical size={14} /> Réordonner</span>
-          <span><IndentIncrease size={14} /> Indenter</span>
-          <span><IndentDecrease size={14} /> Dédenter</span>
-          {!isMobile && (
-            <>
-              <span><ArrowBigUp size={14} /> Catégorie Préc.</span>
-              <span><ArrowBigDown size={14} /> Catégorie Suiv.</span>
-            </>
-          )}
-        </div>
-
-        {isLoading ? <p style={{ color: 'var(--text-muted)' }}>Chargement...</p> : (
-          <DndContext sensors={sensors} collisionDetection={closestCenter}
-            onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-
-            <SortableContext items={categories.map(c => `cat-${c.id}`)} strategy={verticalListSortingStrategy}>
-              <div className="categories-list">
+        ) : (
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+            <SortableContext items={categories.map((c) => `cat-${c.id}`)} strategy={verticalListSortingStrategy}>
+              <div className="flex flex-col gap-4">
                 {categories.map((cat, ci) => (
-                  <SortableCategoryItem key={`cat-${cat.id}`} category={cat} onEditClick={openEdit} isMobile={isMobile}>
-                    <SortableContext items={(cat.forums || []).map((f: any) => `forum-${f.id}`)} strategy={verticalListSortingStrategy}>
-                      <div className="forums-list" style={{ padding: isMobile ? '0.5rem' : '1rem' }}>
-                        {(cat.forums || []).map((forum: any, fi: number) => (
-                          <SortableForumItem
-                            key={`forum-${forum.id}`} forum={forum} onEditClick={openEdit}
-                            level={1}
-                            canIndent={fi > 0} // peut indenter si il y a un forum au-dessus
-                            canDedent={false}   // forum racine ne peut pas dédenter
-                            canMoveUpCat={ci > 0}
-                            canMoveDownCat={ci < categories.length - 1}
-                            onIndent={() => handleIndent(forum, cat.id)}
-                            onDedent={() => {}}
-                            onMoveUpCat={() => handleMoveCat(forum, 'up')}
-                            onMoveDownCat={() => handleMoveCat(forum, 'down')}
-                            isMobile={isMobile}
-                          >
-                            {/* SOUS-FORUMS NIVEAU 1 */}
-                            <SortableContext items={(forum.subForums || []).map((sf: any) => `forum-${sf.id}`)} strategy={verticalListSortingStrategy}>
-                              <div className="sub-forums-list">
-                                {(forum.subForums || []).map((sf: any, sfi: number) => (
-                                  <SortableForumItem
-                                    key={`forum-${sf.id}`} forum={sf} onEditClick={openEdit}
-                                    level={2}
-                                    canIndent={sfi > 0 && (sf.subForums?.length || 0) === 0} // peut indenter si pas de sous-sous-forums + voisin au-dessus
-                                    canDedent={true}
-                                    onIndent={() => handleIndentSub(sf, forum.id)}
-                                    onDedent={() => handleDedent(sf)}
-                                    isMobile={isMobile}
-                                  >
-                                    {/* SOUS-FORUMS NIVEAU 2 (max) */}
-                                    <SortableContext items={(sf.subForums || []).map((ssf: any) => `forum-${ssf.id}`)} strategy={verticalListSortingStrategy}>
-                                      <div className="sub-forums-list">
-                                        {(sf.subForums || []).map((ssf: any) => (
-                                          <SortableForumItem
-                                            key={`forum-${ssf.id}`} forum={ssf} onEditClick={openEdit}
-                                            level={3}
-                                            canIndent={false}
-                                            canDedent={true}
-                                            onIndent={() => {}}
-                                            onDedent={() => handleDedentSub(ssf)}
-                                            isMobile={isMobile}
-                                          />
-                                        ))}
-                                        {(sf.subForums?.length || 0) < 5 && (
-                                          <button className="add-forum-btn" onClick={() => openCreateForum(sf.id)}>
-                                            <Plus size={14} /> Ajouter un sous-forum
-                                          </button>
-                                        )}
-                                      </div>
-                                    </SortableContext>
-                                  </SortableForumItem>
-                                ))}
-                                {(forum.subForums?.length || 0) < 5 && (
-                                  <button className="add-forum-btn" onClick={() => openCreateForum(forum.id)}>
-                                    <Plus size={14} /> Ajouter un sous-forum
-                                  </button>
-                                )}
-                              </div>
-                            </SortableContext>
-                          </SortableForumItem>
-                        ))}
-                        <button className="add-forum-btn" onClick={() => openCreateForum(cat.id)}>
-                          <Plus size={16} /> Ajouter un forum ici
-                        </button>
-                      </div>
+                  <SortableCategoryItem key={`cat-${cat.id}`} category={cat} onEditClick={openEdit} roleLabels={roleLabels}>
+                    <SortableContext items={(cat.forums || []).map((f: { id: string }) => `forum-${f.id}`)} strategy={verticalListSortingStrategy}>
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- forums de getForumStructure */}
+                      {(cat.forums || []).map((forum: any, fi: number) => (
+                        <SortableForumItem
+                          key={`forum-${forum.id}`} forum={forum} onEditClick={openEdit} roleLabels={roleLabels}
+                          level={1}
+                          canIndent={fi > 0} // peut indenter s'il y a un forum au-dessus
+                          canDedent={false} // un forum racine ne peut pas remonter
+                          canMoveUpCat={ci > 0}
+                          canMoveDownCat={ci < categories.length - 1}
+                          onIndent={() => handleIndent(forum, cat.id)}
+                          onDedent={() => {}}
+                          onMoveUpCat={() => handleMoveCat(forum, "up")}
+                          onMoveDownCat={() => handleMoveCat(forum, "down")}
+                        >
+                          {/* SOUS-FORUMS NIVEAU 1 */}
+                          <SortableContext items={(forum.subForums || []).map((sf: { id: string }) => `forum-${sf.id}`)} strategy={verticalListSortingStrategy}>
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- sous-forums de getForumStructure */}
+                            {(forum.subForums || []).map((sf: any, sfi: number) => (
+                              <SortableForumItem
+                                key={`forum-${sf.id}`} forum={sf} onEditClick={openEdit} roleLabels={roleLabels}
+                                level={2}
+                                canIndent={sfi > 0 && (sf.subForums?.length || 0) === 0} // voisin au-dessus et pas de sous-sous-forums
+                                canDedent={true}
+                                onIndent={() => handleIndentSub(sf, forum.id)}
+                                onDedent={() => handleDedent(sf)}
+                              >
+                                {/* SOUS-FORUMS NIVEAU 2 (le plus bas) */}
+                                <SortableContext items={(sf.subForums || []).map((ssf: { id: string }) => `forum-${ssf.id}`)} strategy={verticalListSortingStrategy}>
+                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- sous-sous-forums de getForumStructure */}
+                                  {(sf.subForums || []).map((ssf: any) => (
+                                    <SortableForumItem
+                                      key={`forum-${ssf.id}`} forum={ssf} onEditClick={openEdit} roleLabels={roleLabels}
+                                      level={3}
+                                      canIndent={false}
+                                      canDedent={true}
+                                      onIndent={() => {}}
+                                      onDedent={() => handleDedentSub(ssf)}
+                                    />
+                                  ))}
+                                  {(sf.subForums?.length || 0) < 5 && <AddButton label="Ajouter un sous-forum" onClick={() => openCreateForum(sf.id)} />}
+                                </SortableContext>
+                              </SortableForumItem>
+                            ))}
+                            {(forum.subForums?.length || 0) < 5 && <AddButton label="Ajouter un sous-forum" onClick={() => openCreateForum(forum.id)} />}
+                          </SortableContext>
+                        </SortableForumItem>
+                      ))}
+                      <AddButton label="Ajouter un forum ici" onClick={() => openCreateForum(cat.id)} />
                     </SortableContext>
                   </SortableCategoryItem>
                 ))}
@@ -557,12 +545,10 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
             {createPortal(
               <DragOverlay dropAnimation={null}>
                 {activeId && (
-                  <div className="forum-block drag-ghost" style={{ width: isMobile ? '280px' : '400px' }}>
-                    <div className="forum-row">
-                      <GripVertical size={16} style={{ color: 'var(--text-muted)' }} />
-                      <FolderGit2 size={15} color="var(--primary)" />
-                      <strong style={{ color: 'var(--foreground)', fontSize: '0.9rem' }}>{getActiveName()}</strong>
-                    </div>
+                  <div className="flex w-[min(400px,80vw)] items-center gap-2 rounded-bb-md border border-bb-accent-text bg-bb-surface px-3 py-2 font-bb-sans shadow-bb">
+                    <GripVertical size={16} className="text-bb-text-muted" aria-hidden="true" />
+                    <FolderGit2 size={16} className="text-bb-text-muted" aria-hidden="true" />
+                    <strong className="truncate text-[0.95rem] text-bb-text">{getActiveName()}</strong>
                   </div>
                 )}
               </DragOverlay>,
@@ -572,249 +558,69 @@ export default function StructureTab({ currentUserRole, isSuperAdmin }: Structur
         )}
       </div>
 
-      {/* SIDE PANEL */}
-      {isPanelOpen && (
-        <div className="side-panel fade-in" style={{ width: isMobile ? '100%' : '320px', position: isMobile ? 'relative' : 'sticky' }}>
-          <div className="panel-header">
-            <div>
-              <h4>{editingItem ? editingItem.name : `Nouveau ${editingType === 'Category' ? 'Catégorie' : 'Forum'}`}</h4>
-              <span className="panel-type-badge">{editingItem ? `Modifier ${editingType}` : `Créer ${editingType}`}</span>
+      {/* Panneau de création et de modification */}
+      <Sheet open={isPanelOpen} onOpenChange={setIsPanelOpen}>
+        <SheetContent title={panelTitle} side={isDesktop ? "right" : "bottom"}>
+          <div className="flex flex-col gap-4 pt-2 pb-2">
+            <Field
+              label={editingType === "Category" ? "Nom de la catégorie" : "Nom du forum"}
+              htmlFor="structure-name"
+              hint={isProtected ? "Ce forum est protégé et ne peut pas être renommé." : undefined}
+            >
+              <Input
+                id="structure-name"
+                value={formName}
+                onChange={(e) => setFormName(e.target.value)}
+                placeholder="Ex. : Discussions générales"
+                disabled={isPending || isProtected}
+              />
+            </Field>
+            <Field label="Description (facultative)" htmlFor="structure-description">
+              <Textarea
+                id="structure-description"
+                value={formDesc}
+                onChange={(e) => setFormDesc(e.target.value)}
+                placeholder="Une courte phrase de présentation"
+                disabled={isPending}
+                rows={3}
+                className="min-h-24 font-bb-sans"
+              />
+            </Field>
+            <Field label="Droits d'accès minimum" htmlFor="structure-access" hint="Rôle minimum pour y accéder.">
+              <Select id="structure-access" value={formAllowedRoles} onChange={(e) => setFormAllowedRoles(e.target.value)} disabled={isPending}>
+                <option value="ALL">Public (tout le monde)</option>
+                {availableDbRoles.map((r) => (<option key={r.name} value={r.name}>{r.label} et supérieurs</option>))}
+              </Select>
+            </Field>
+
+            <div className="flex flex-col gap-2 border-t border-bb-border pt-4">
+              <Button type="button" variant="primary" size="tap" className="w-full" onClick={handleSave} disabled={isPending}>
+                {isPending ? "Sauvegarde…" : "Enregistrer"}
+              </Button>
+              {editingItem && !isProtected && (
+                <Button type="button" variant="secondary" size="tap" className="w-full text-bb-danger-text" onClick={handleDeleteItem} disabled={isPending}>
+                  <Trash2 size={16} aria-hidden="true" />
+                  Supprimer (si vide)
+                </Button>
+              )}
+              {isProtected && (
+                <p className="m-0 text-center text-sm text-bb-text-muted">Ce forum système ne peut pas être supprimé.</p>
+              )}
             </div>
-            <button className="close-btn" onClick={() => setIsPanelOpen(false)}>×</button>
           </div>
+        </SheetContent>
+      </Sheet>
 
-          <div className="panel-field">
-            <label>Nom {editingType === 'Category' ? "de la Catégorie" : "du Forum"}</label>
-            <input className="default-input" value={formName} onChange={e => setFormName(e.target.value)}
-              placeholder="Ex: Discussions Générales" disabled={isPending || editingItem?.name === "Les tournois"} />
-            {editingItem?.name === "Les tournois" && <p style={{ color: 'var(--accent)', fontSize: '0.7rem', marginTop: '4px' }}>Ce forum est protégé et ne peut être renommé.</p>}
-          </div>
-
-          <div className="panel-field">
-            <label>Description (optionnelle)</label>
-            <textarea className="default-input" value={formDesc} onChange={e => setFormDesc(e.target.value)}
-              placeholder="Une courte phrase de présentation" disabled={isPending} rows={3} />
-          </div>
-
-          <div className="panel-field">
-            <label>Droits d&apos;accès minimum</label>
-            <p>Rôle minimum requis pour y accéder.</p>
-            <ClassicSelect value={formAllowedRoles} onChange={e => setFormAllowedRoles(e.target.value)} disabled={isPending}>
-              <option value="ALL">🌐 Public (ALL)</option>
-              {availableDbRoles.map(r => (<option key={r.name} value={r.name}>{r.label} et supérieurs</option>))}
-            </ClassicSelect>
-          </div>
-
-
-
-          <div className="panel-footer">
-            <button className="action-button primary-btn full-width" onClick={handleSave} disabled={isPending}>
-              {isPending ? "Sauvegarde..." : "Enregistrer"}
-            </button>
-            {editingItem && editingItem.name !== "Les tournois" && (
-              <button className="action-button danger-btn full-width" onClick={handleDeleteItem} disabled={isPending}>
-                <Trash2 size={16} /> Supprimer (si vide)
-              </button>
-            )}
-            {editingItem?.name === "Les tournois" && (
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textAlign: 'center', marginTop: '0.5rem' }}>
-                Ce forum système ne peut pas être supprimé.
-              </p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* STYLES */}
-      <style jsx global>{`
-        /* ---- Layout ---- */
-        .categories-list { display: flex; flex-direction: column; gap: 2rem; }
-        .forums-list { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; background: var(--glass-bg-accent, rgba(0,0,0,0.12)); border-radius: 0 0 16px 16px; }
-        .sub-forums-list { display: flex; flex-direction: column; gap: 0.4rem; padding-left: 0; }
-
-        /* ---- Légende ---- */
-        .struct-legend {
-          display: flex; gap: 1rem; flex-wrap: wrap;
-          margin-bottom: 1.5rem;
-          padding: 0.6rem 1rem;
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 8px;
-          font-size: 0.72rem;
-          color: var(--text-secondary);
-        }
-        .struct-legend span { display: flex; align-items: center; gap: 0.35rem; }
-
-        /* ---- Category Block ---- */
-        .category-block {
-          background: var(--card-bg);
-          backdrop-filter: blur(10px);
-          border: 1px solid var(--glass-border);
-          border-radius: 16px;
-          box-shadow: var(--glass-shadow);
-          transition: border-color 0.2s;
-          position: relative;
-          color: var(--foreground);
-        }
-        .category-block:hover { border-color: var(--primary); z-index: 5; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
-        .category-header {
-          display: flex; align-items: center; padding: 0.9rem 1.2rem;
-          background: var(--glass-bg);
-          border-bottom: 1px solid var(--glass-border);
-          gap: 0.8rem;
-          border-radius: 16px 16px 0 0;
-          flex-wrap: wrap;
-        }
-        .cat-title-container { flex: 1; display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
-        .cat-title { margin: 0; font-size: 1rem; color: var(--foreground); font-weight: 700; }
-
-        /* ---- Forum Block ---- */
-        .forum-block {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          border-radius: 10px;
-          transition: background 0.2s, border-color 0.2s;
-          position: relative;
-        }
-        .forum-block:hover { 
-          background: var(--primary-transparent); 
-          border-color: var(--primary);
-          z-index: 30;
-        }
-        .forum-block.level-2 {
-          background: var(--glass-bg);
-          border-color: var(--glass-border);
-          margin-left: 0.8rem;
-          border-left: 2px solid var(--primary);
-          border-radius: 6px;
-        }
-        .forum-block.level-3 {
-          background: var(--glass-bg);
-          border-color: var(--glass-border);
-          margin-left: 1.6rem;
-          border-left: 2px solid var(--accent);
-          border-radius: 4px;
-        }
-        .forum-block.drag-ghost {
-          box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-          border-color: var(--primary);
-          opacity: 0.95 !important;
-        }
-
-        .forum-row { display: flex; align-items: center; padding: 0.65rem 0.9rem; gap: 0.65rem; }
-        .forum-title-container { flex: 1; display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
-        .forum-title-container strong { color: var(--foreground); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .forum-actions { display: flex; align-items: center; gap: 0.4rem; flex-shrink: 0; }
-        .sub-forums-container { padding: 0.6rem 0.8rem 0.8rem; background: var(--glass-bg); }
-
-        /* ---- Boutons de niveau ---- */
-        .level-btn {
-          background: var(--glass-bg);
-          border: 1px solid var(--glass-border);
-          color: var(--text-muted);
-          cursor: pointer;
-          border-radius: 5px;
-          padding: 0.3rem 0.4rem;
-          display: flex; align-items: center;
-          transition: all 0.2s;
-          font-size: 0;
-        }
-        .level-btn:hover { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); }
-
-        /* ---- Drag Handle ---- */
-        .drag-handle {
-          cursor: grab; padding: 0.2rem;
-          color: var(--text-muted);
-          opacity: 0.5;
-          transition: all 0.2s; flex-shrink: 0;
-          display: flex; align-items: center;
-        }
-        .drag-handle:hover { color: var(--foreground); opacity: 1; }
-        .drag-handle:active { cursor: grabbing; color: var(--primary); }
-
-        /* ---- Badges ---- */
-        .badge-role { font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.3rem; }
-        .badge-all { 
-          background: var(--success-transparent, rgba(34,197,94,0.15)); 
-          color: var(--success, #4ade80); 
-          border: 1px solid var(--success, rgba(34,197,94,0.3)); 
-        }
-        .badge-restricted { 
-          background: var(--warning-transparent, rgba(245,158,11,0.12)); 
-          color: var(--warning, #fbbf24); 
-          border: 1px solid var(--warning, rgba(245,158,11,0.3)); 
-        }
-
-        /* ---- Add Buttons ---- */
-        .add-forum-btn {
-          background: var(--primary-transparent); border: 1px dashed var(--primary);
-          color: var(--primary); width: 100%; padding: 0.5rem;
-          border-radius: 8px; cursor: pointer; display: flex; align-items: center;
-          justify-content: center; gap: 0.4rem; margin-top: 0.5rem; font-size: 0.8rem;
-          transition: all 0.2s;
-          font-weight: 600;
-        }
-        .add-forum-btn:hover { background: var(--primary); border-style: solid; color: var(--header-foreground); }
-        .expand-btn {
-          background: none; border: none; color: var(--text-secondary); cursor: pointer;
-          display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem;
-          padding: 0.25rem 0.5rem; border-radius: 5px; transition: all 0.2s; white-space: nowrap;
-        }
-        .expand-btn:hover { color: var(--foreground); background: var(--primary-transparent); }
-
-        /* ---- UI Buttons ---- */
-        .action-button { display: inline-flex; align-items: center; gap: 0.4rem; justify-content: center; font-weight: 700; cursor: pointer; border-radius: 8px; border: none; transition: all 0.2s; font-size: 0.87rem; }
-        .action-button:disabled { opacity: 0.5; cursor: not-allowed; }
-        .primary-btn { padding: 0.65rem 1.2rem; background: var(--primary); color: var(--header-foreground, white); }
-        .primary-btn:hover:not(:disabled) { filter: brightness(1.15); transform: translateY(-1px); }
-        .secondary-btn { padding: 0.45rem 0.8rem; background: var(--glass-bg); color: var(--text-secondary); border: 1px solid var(--glass-border); font-weight: 600; }
-        .secondary-btn:hover:not(:disabled) { background: var(--primary-transparent); border-color: var(--primary); color: var(--primary); }
-        .danger-btn { padding: 0.65rem 1.2rem; background: var(--danger, #dc2626); color: white; }
-        .danger-btn:hover:not(:disabled) { opacity: 0.8; }
-        .icon-btn { padding: 0.3rem 0.5rem; font-size: 0.8rem; border-radius: 5px; }
-
-        /* ---- Side Panel ---- */
-        .side-panel {
-          width: 320px; flex-shrink: 0;
-          background: var(--card-bg);
-          backdrop-filter: blur(15px);
-          border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.4rem;
-          position: sticky; top: 1rem; align-self: flex-start;
-          display: flex; flex-direction: column; gap: 1.1rem;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-          color: var(--foreground);
-          box-sizing: border-box;
-        }
-        .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .panel-header h4 { margin: 0; color: var(--foreground); font-size: 1.1rem; font-weight: 800; line-height: 1.3; }
-        .panel-type-badge { font-size: 0.62rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.08em; background: var(--primary-transparent); color: var(--primary); border: 1px solid var(--primary); display: inline-block; margin-top: 4px; }
-        .close-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-muted); font-size: 1.1rem; line-height: 1; cursor: pointer; border-radius: 6px; padding: 0.25rem 0.55rem; transition: all 0.2s; flex-shrink: 0; margin-left: 0.5rem; }
-        .close-btn:hover { color: var(--foreground); background: var(--primary-transparent); }
-        .panel-field { display: flex; flex-direction: column; gap: 0.35rem; }
-        .panel-field label { color: var(--text-secondary); font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .panel-field p { margin: 0; font-size: 0.74rem; color: var(--text-muted); }
-        .default-input { background: var(--secondary-bg, rgba(0,0,0,0.05)); border: 1px solid var(--glass-border); color: var(--foreground); padding: 0.65rem 0.85rem; border-radius: 8px; width: 100%; font-family: inherit; font-size: 0.87rem; transition: all 0.2s; box-sizing: border-box; }
-        .default-input:focus { outline: none; border-color: var(--primary); background: var(--background); }
-        .full-width { width: 100%; }
-        .panel-footer { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.08); }
-
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0, 0, 0, 0);
-          white-space: nowrap;
-          border-width: 0;
-        }
-
-        @media (max-width: 1024px) {
-          .forum-block.level-2 { margin-left: 0.5rem; }
-          .forum-block.level-3 { margin-left: 1rem; }
-        }
-      `}</style>
-    </PremiumCard>
+      <ConfirmDialog
+        open={isDeleteModalOpen}
+        onOpenChange={setIsDeleteModalOpen}
+        title={`Supprimer ${editingType === "Category" ? "la catégorie" : "le forum"} « ${editingItem?.name ?? ""} » ?`}
+        message="Cette action est irréversible. L'élément doit être vide pour pouvoir être supprimé."
+        confirmLabel="Supprimer définitivement"
+        danger
+        pending={isPending}
+        onConfirm={confirmDelete}
+      />
+    </Card>
   );
 }

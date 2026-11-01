@@ -128,6 +128,16 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/banned", connected: true, as: "banni" },
   { path: "/moderation", connected: true },
   { path: "/administration", connected: true, as: "admin" },
+  // Carte 099 : les autres onglets de la modération et de l'administration, refaits avec elles
+  { path: "/moderation?tab=reports_user_banned", connected: true },
+  { path: "/moderation?tab=reports_post", connected: true },
+  { path: "/moderation?tab=resources_validation", connected: true },
+  { path: "/administration?tab=roles", connected: true, as: "admin" },
+  { path: "/administration?tab=coachs", connected: true, as: "admin" },
+  { path: "/administration?tab=structure", connected: true, as: "admin" },
+  { path: "/administration?tab=reference", connected: true, as: "admin" },
+  { path: "/administration?tab=howtoplay", connected: true, as: "admin" },
+  { path: "/administration?tab=info-mails", connected: true, as: "admin" },
 ];
 
 /**

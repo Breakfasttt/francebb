@@ -1,32 +1,31 @@
-/**
- * Onglet de modération des ressources.
- * Permet d'approuver ou rejeter les nouvelles ressources soumises par la communauté.
- */
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { getPendingResources, moderateResource } from "@/app/ressources/actions";
-import { Loader2, Check, X, Edit, ExternalLink, Layout, User, Clock } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
+/**
+ * Onglet « Ressources à valider » de la modération (refonte, carte 099) : les ressources proposées par les membres,
+ * 10 par page, avec leur image, leur description, leur auteur et leur lien. Trois actions par ressource : « Éditer »
+ * (page de modification), « Refuser » et « Approuver ». Les actions `getPendingResources` et `moderateResource`
+ * (app/ressources/actions.ts) sont inchangées.
+ */
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "@bbfrance/ui";
-import Link from "next/link";
-import Pagination from "@/common/components/Pagination/Pagination";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import AdminButton from "@/common/components/Button/AdminButton";
-import DangerButton from "@/common/components/Button/DangerButton";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { Check, Clock, Edit, ExternalLink, Layout, User, X } from "lucide-react";
+import { Badge, Button, Card, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
+import { getPendingResources, moderateResource } from "@/app/ressources/actions";
 
 interface ResourceModerationTabProps {
   onActionSuccess?: () => void;
 }
 
+const PAGE_SIZE = 10;
+
 export default function ResourceModerationTab({ onActionSuccess }: ResourceModerationTabProps) {
-  const isMobile = useIsMobile();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ressources renvoyées par getPendingResources
   const [resources, setResources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isPending, startTransition] = useTransition();
+  // Ressource en cours de traitement : ses boutons sont désactivés le temps de la réponse
+  const [busyId, setBusyId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -40,159 +39,99 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
 
   useEffect(() => {
     fetchResources();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé à chaque changement de page
   }, [page]);
 
-  const handleApprove = (id: string) => {
-    startTransition(async () => {
-      const res = await moderateResource(id, "APPROVE");
+  const handleModerate = async (id: string, action: "APPROVE" | "REJECT") => {
+    setBusyId(id);
+    try {
+      const res = await moderateResource(id, action);
       if (res.success) {
-        toast.success("Ressource approuvée");
+        toast.success(action === "APPROVE" ? "Ressource approuvée" : "Ressource rejetée");
         fetchResources();
         onActionSuccess?.();
       } else {
         toast.error(res.error || "Une erreur est survenue");
       }
-    });
+    } finally {
+      setBusyId(null);
+    }
   };
 
-  const handleReject = (id: string) => {
-    startTransition(async () => {
-      const res = await moderateResource(id, "REJECT");
-      if (res.success) {
-        toast.success("Ressource rejetée");
-        fetchResources();
-        onActionSuccess?.();
-      } else {
-        toast.error(res.error || "Une erreur est survenue");
-      }
-    });
-  };
-
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-        <Loader2 className="animate-spin" size={32} color="var(--primary)" />
-      </div>
-    );
-  }
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className="resource-moderation-tab">
-      <div className="tab-header" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
-        <Layout size={20} color="var(--primary)" />
-        <h3 style={{ margin: 0, fontSize: '1.2rem' }}>Soumissions de ressources</h3>
-        <span className="action-badge info" style={{ marginLeft: 'auto' }}>{resources.length} En attente</span>
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <Layout size={20} className="text-bb-text-muted" aria-hidden="true" />
+        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">Ressources à valider</h2>
+        <Badge variant="neutral">{total} en attente</Badge>
       </div>
 
-      {resources.length === 0 ? (
-        <PremiumCard>
-          <p style={{ textAlign: 'center', padding: '2rem', opacity: 0.6 }}>Aucune soumission en attente.</p>
-        </PremiumCard>
+      {loading && resources.length === 0 ? (
+        <div className="flex flex-col gap-3">
+          {[0, 1].map((i) => <Skeleton key={i} className="h-36 w-full" />)}
+        </div>
+      ) : resources.length === 0 ? (
+        <Card>
+          <EmptyState icon={<Layout size={32} />} title="Aucune soumission en attente." />
+        </Card>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div className={`flex flex-col gap-3 ${loading ? "opacity-60" : ""}`}>
           {resources.map((res) => (
-            <PremiumCard key={res.id} className="moderation-item-card">
-              <div style={{ display: 'flex', gap: '1.5rem', alignItems: isMobile ? 'flex-start' : 'center', flexDirection: isMobile ? 'column' : 'row' }}>
+            <Card key={res.id} className="overflow-hidden">
+              <article aria-label={res.title} className="flex flex-col gap-3 p-4 lg:flex-row lg:items-start lg:gap-4">
                 {res.imageUrl && (
-                  <div style={{ 
-                    width: isMobile ? '100%' : '80px', 
-                    maxHeight: isMobile ? '200px' : '80px',
-                    height: isMobile ? 'auto' : '80px',
-                    flexShrink: 0, 
-                    borderRadius: '8px', 
-                    overflow: 'hidden', 
-                    border: '1px solid var(--glass-border)' 
-                  }}>
-                    <img src={res.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
+                  // Image externe choisie par l'auteur de la ressource : balise <img> simple
+                  <img src={res.imageUrl} alt="" className="h-40 w-full shrink-0 rounded-bb-md border border-bb-border object-cover lg:size-20" />
                 )}
-                <div style={{ flex: 1, width: isMobile ? '100%' : 'auto' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
-                    <h4 style={{ margin: 0, fontSize: isMobile ? '1rem' : '1.1rem' }}>{res.title}</h4>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', whiteSpace: 'nowrap' }}>
-                      <Clock size={12} /> {isMobile ? "Récemment" : formatDistanceToNow(new Date(res.createdAt), { addSuffix: true, locale: fr })}
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+                    <h3 className="m-0 border-0 p-0 text-base font-bold break-words text-bb-text normal-case not-italic">{res.title}</h3>
+                    <span className="inline-flex shrink-0 items-center gap-1 text-sm text-bb-text-muted">
+                      <Clock size={14} aria-hidden="true" />
+                      {formatDistanceToNow(new Date(res.createdAt), { addSuffix: true, locale: fr })}
                     </span>
                   </div>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '0.5rem 0', opacity: 0.8 }}>{res.description}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', fontSize: '0.8rem', flexWrap: 'wrap' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', fontWeight: 600 }}>
-                      <User size={12} /> {res.author.name}
+                  {res.description && <p className="m-0 text-[0.95rem] break-words text-bb-text-muted">{res.description}</p>}
+                  <div className="flex flex-wrap items-center gap-x-4 text-sm">
+                    <span className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-bb-text lg:min-h-0">
+                      <User size={14} aria-hidden="true" />
+                      {res.author.name}
                     </span>
-                    <a href={res.link} target="_blank" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: 600 }}>
-                      <ExternalLink size={12} /> Lien externe
+                    <a href={res.link} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 min-w-0 items-center gap-1.5 font-semibold text-bb-accent-text lg:min-h-0">
+                      <ExternalLink size={14} aria-hidden="true" />
+                      Lien externe
                     </a>
                   </div>
                 </div>
-                <div style={{ 
-                  display: 'flex', 
-                  gap: '0.6rem', 
-                  width: isMobile ? '100%' : 'auto',
-                  justifyContent: isMobile ? 'space-between' : 'flex-end',
-                  marginTop: isMobile ? '0.8rem' : 0,
-                  borderTop: isMobile ? '1px solid var(--glass-border)' : 'none',
-                  paddingTop: isMobile ? '1rem' : 0
-                }}>
-                  <ClassicButton 
-                    href={`/ressources/edit/${res.id}`} 
-                    size="sm"
-                    icon={Edit}
-                    style={isMobile ? { flex: 1 } : {}}
-                  >
-                    {isMobile && "Éditer"}
-                  </ClassicButton>
-                  <AdminButton 
-                    onClick={() => handleApprove(res.id)} 
-                    isLoading={isPending}
-                    size="sm"
-                    icon={Check}
-                    style={{ 
-                      background: "#22c55e", 
-                      color: "white", 
-                      borderColor: "transparent",
-                      flex: isMobile ? 2 : 'none'
-                    }}
-                  >
-                    {isMobile ? "Approuver" : ""}
-                  </AdminButton>
-                  <DangerButton 
-                    onClick={() => handleReject(res.id)} 
-                    isLoading={isPending}
-                    size="sm"
-                    icon={X}
-                    style={isMobile ? { flex: 1 } : {}}
-                  >
-                    {isMobile && "Refuser"}
-                  </DangerButton>
+                <div className="grid grid-cols-2 gap-2 border-t border-bb-border pt-3 lg:flex lg:shrink-0 lg:border-t-0 lg:pt-0">
+                  <Button asChild variant="secondary" size="tap" className="px-2">
+                    <Link href={`/ressources/edit/${res.id}`}>
+                      <Edit size={16} aria-hidden="true" />
+                      Éditer
+                    </Link>
+                  </Button>
+                  <Button type="button" variant="secondary" size="tap" className="px-2 text-bb-danger-text" disabled={busyId === res.id} onClick={() => handleModerate(res.id, "REJECT")}>
+                    <X size={16} aria-hidden="true" />
+                    Refuser
+                  </Button>
+                  <Button type="button" variant="primary" size="tap" className="order-first col-span-2 px-2 lg:order-none" disabled={busyId === res.id} onClick={() => handleModerate(res.id, "APPROVE")}>
+                    <Check size={16} aria-hidden="true" />
+                    Approuver
+                  </Button>
                 </div>
-              </div>
-            </PremiumCard>
+              </article>
+            </Card>
           ))}
         </div>
       )}
 
-      <Pagination 
-        currentPage={page}
-        totalPages={Math.ceil(total / 10)}
-        onPageChange={(p: number) => { setPage(p); window.scrollTo(0, 0); }}
-        className="moderation-pagination"
-      />
-
-      <style jsx>{`
-        :global(.moderation-item-card) {
-          padding: 1.2rem !important;
-        }
-        .action-badge {
-          font-size: 0.7rem;
-          padding: 0.2rem 0.6rem;
-          border-radius: 4px;
-          font-weight: 700;
-          text-transform: uppercase;
-        }
-        .action-badge.info {
-          background: var(--primary-transparent);
-          color: var(--primary);
-        }
-      `}</style>
+      {totalPages > 1 && (
+        <div className="flex justify-center">
+          <PageNav page={page} totalPages={totalPages} onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }} />
+        </div>
+      )}
     </div>
   );
 }

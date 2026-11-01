@@ -332,23 +332,23 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 15. Modération `/moderation`
 
-- [ ] [modo] Onglets (`?tab=`) avec pastilles de compteur : `logs`, `users`, `reports_post`, `reports_topic`, `reports_user`, `reports_article`, `reports_ligue`, `reports_user_banned`, `resources_validation`.
-- [ ] [modo] Journal : pagination, détails, « Purger », lien vers le profil du modérateur.
-- [ ] [modo] Signalements regroupés par contenu visé : « Marquer comme traité » ou ignorer, avec un commentaire.
-- [ ] [modo] Bannis : « Débannir ».
-- [ ] [modo] Ressources : approuver ou refuser.
-- [ ] [modo] L'onglet `users` renvoie vers `/membres`.
+- [x] [modo] Onglets (`?tab=`) avec pastilles de compteur : `logs`, `users`, `reports_post`, `reports_topic`, `reports_user`, `reports_article`, `reports_ligue`, `reports_user_banned`, `resources_validation`.
+- [x] [modo] Journal : pagination, détails, « Purger », lien vers le profil du modérateur. *« Purger » : présence réservée aux administrateurs et fenêtre de confirmation vérifiées, la purge elle-même n'est pas lancée par le test.*
+- [x] [modo] Signalements regroupés par contenu visé : « Marquer comme traité » ou ignorer, avec un commentaire. *Vérifié pour « Marquer comme traité » avec commentaire. « Ignorer » n'existe que dans l'action serveur : l'écran ne l'a jamais proposé, ni avant ni après la carte 099.*
+- [x] [modo] Bannis : « Débannir ».
+- [x] [modo] Ressources : approuver ou refuser.
+- [x] [modo] L'onglet `users` renvoie vers `/membres`.
 
 ## 16. Administration `/administration`
 
-- [ ] [admin] `general` : lien d'invitation Discord.
-- [ ] [admin] `roles` : créer, supprimer et réordonner les rôles par glisser-déposer.
-- [ ] [admin] `coachs` : chercher un coach, changer son rôle.
-- [ ] [admin] `structure` : catégories, forums et sous-forums : créer, modifier, supprimer, indenter ou désindenter, rôle minimum d'accès, glisser-déposer.
-- [ ] [admin] `reference` : données de référence (clé, libellé, groupe, ordre) : créer, éditer, supprimer.
-- [ ] [admin] `howtoplay` : textes des 6 sections de `/jouer`.
-- [ ] [admin] `info-mails` : objet et message BBCode, confirmation « Oui, diffuser », écran « Diffusion terminée ».
-- [ ] [SA] `reset` : remise à zéro, protégée par la saisie de « JE COMPRENDS LES RISQUES ».
+- [x] [admin] `general` : lien d'invitation Discord.
+- [x] [admin] `roles` : créer, supprimer et réordonner les rôles par glisser-déposer. *Glisser-déposer vérifié au clavier ; au doigt, à essayer sur un vrai téléphone.*
+- [x] [admin] `coachs` : chercher un coach, changer son rôle.
+- [x] [admin] `structure` : catégories, forums et sous-forums : créer, modifier, supprimer, indenter ou désindenter, rôle minimum d'accès, glisser-déposer. *Glisser-déposer vérifié au clavier sur des forums ; « changer de catégorie » n'est pas vérifié par le test.*
+- [x] [admin] `reference` : données de référence (clé, libellé, groupe, ordre) : créer, éditer, supprimer.
+- [x] [admin] `howtoplay` : textes des 6 sections de `/jouer`.
+- [ ] [admin] `info-mails` : objet et message BBCode, confirmation « Oui, diffuser », écran « Diffusion terminée ». *Carte 099 : objet, message et fenêtre « Oui, diffuser » vérifiés ; l'envoi et l'écran « Diffusion terminée » ne le sont pas, car le test écrirait à tous les membres de la base de test. Ligne laissée non cochée.*
+- [x] [SA] `reset` : remise à zéro, protégée par la saisie de « JE COMPRENDS LES RISQUES ». *Vérifié : onglet absent pour un administrateur, bouton désactivé tant que les cases ne sont pas cochées et que la phrase n'est pas exacte. La remise à zéro n'est jamais déclenchée par le test.*
 
 ---
 
@@ -385,4 +385,4 @@ Ces bugs sont traités dans des cartes séparées, hors refonte. La refonte ne d
   - `/media` n'a aucun lien d'entrée.
 - **Mauvais écran de connexion** : `/administration`, `/moderation`, `/profile` et `/spy` renvoient vers `/api/auth/signin` au lieu de `/auth/login`.
 - **Fenêtres du navigateur** : il reste des `alert()` à la place des notifications du site.
-- **Rôle affiché en code brut** : par exemple `MODERATOR`, au lieu de son libellé. *Corrigé dans le forum (carte 108), puis dans le profil, la liste des bloqués et l'annuaire (carte 092).*
+- **Rôle affiché en code brut** : par exemple `MODERATOR`, au lieu de son libellé. *Corrigé dans le forum (carte 108), puis dans le profil, la liste des bloqués et l'annuaire (carte 092), puis dans l'administration : membres, structure du forum (carte 099).*

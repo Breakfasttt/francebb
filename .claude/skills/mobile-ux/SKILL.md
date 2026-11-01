@@ -55,7 +55,7 @@ Sur téléphone, la barre de navigation devient un bouton « hamburger » (trois
 Si une page a sa propre colonne latérale (onglets de l'administration, de la modération…) :
 - sur ordinateur, elle s'affiche normalement ;
 - sur téléphone, son contenu est déplacé dans l'emplacement libre du menu global, avec le composant `<MobilePortal target="mobile-page-sidebar-slot">` et le hook `useIsMobile`. La colonne d'origine est masquée en CSS mobile.
-- les écrans refaits (ADR 0006) mettent plutôt leurs onglets en haut de la page avec `LinkTabs` de `packages/ui`, une rangée qui défile de côté (exemple : `/profile`, carte 092).
+- les écrans refaits (ADR 0006) mettent plutôt leurs onglets en haut de la page avec `LinkTabs` de `packages/ui`, une rangée qui défile de côté (exemple : `/profile`, carte 092). Quand les onglets sont nombreux, `StaffPageLayout` (carte 099, `/moderation` et `/administration`) en fait une colonne sur ordinateur et une rangée sur téléphone, qui se place sur l'onglet ouvert.
 
 ## Filtres et longs formulaires
 

@@ -9,24 +9,26 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 ## Ce que voit le coach
 
 - Partout sur le site : un bouton « Signaler » ouvre la fenêtre `ReportModal` (« Signaler un contenu ») avec cinq raisons au choix (spam, harcèlement, contenu inapproprié, bot, autre) et un champ de précisions. Membre connecté uniquement.
-- `/moderation` : tableau de bord avec une colonne d'onglets portant le nombre de cas en attente. Onglets : « Journal d'audit », « Utilisateurs » (renvoie vers `/membres`), « Messages / Sujets / Coachs / Articles / Ligues signalés », « Coachs bannis », « Validation Ressources ». L'onglet ouvert est gardé dans l'adresse (`?tab=reports_post`).
-- Dans un onglet de signalements, les signalements sont regroupés par contenu visé (« X signalements pour cet élément ») ; le modérateur les marque « traités » ou « ignorés », avec un commentaire facultatif.
+- `/moderation` (refaite par la carte 099, ADR 0006) : des onglets portant le nombre de cas en attente (pastille). Onglets : « Journal d'audit », « Utilisateurs » (lien vers `/membres`), « Messages / Sujets / Coachs / Articles / Ligues signalés », « Coachs bannis », « Ressources à valider ». Chaque onglet est un lien : l'onglet ouvert est gardé dans l'adresse (`?tab=reports_post`), et une valeur inconnue (ou `users`) ouvre le journal.
+- Journal : 20 lignes par page (modérateur avec lien vers son profil, action, détails, élément visé avec « Voir l'élément », date) ; « Purger > 3 mois » pour les administrateurs, confirmé dans une fenêtre.
+- Dans un onglet de signalements, une fiche par contenu visé (raison, nombre de signalements, date) avec « Voir », « Détails » (chaque signalement l'un après l'autre : auteur, date, raison, précision) et « Marquer comme traité », confirmé avec un commentaire facultatif écrit au journal. L'action serveur sait aussi « ignorer » un signalement, mais l'écran n'a jamais proposé ce bouton (ni avant ni après la refonte).
+- « Ressources à valider » : une fiche par ressource avec « Éditer », « Refuser » et « Approuver ».
 - Bannir : depuis la fiche d'un coach (`/spy/[id]`, colonne de profil) ou depuis la liste `/membres`, avec une raison. Le banni est envoyé sur `/banned` et ne peut plus agir (voir `docs/features/auth/README.md`). Débannir : onglet « Coachs bannis », ou les mêmes boutons.
 - Accès : modérateur et au-dessus. La vérification de la page se fait dans le navigateur ; la vraie protection est dans chaque action serveur.
-- **Sur téléphone** (et tablette, jusqu'à 1024 pixels) : la colonne d'onglets est déplacée dans le menu latéral global (`ModerationSidebar` + `MobilePortal` + `useIsMobile`). Le journal et la liste des bannis passent d'un tableau à des cartes ; les blocs de signalement s'empilent (bloc `@media` dans `ReportsTab.tsx`) ; la validation des ressources s'empile aussi. Avant la carte 055, `page-mobile.css` masquait la colonne d'onglets dès 1024 pixels alors que le portail ne s'activait que sous 768 : entre les deux (tablettes), les onglets n'étaient visibles nulle part. Les deux basculent maintenant au même seuil (1024 pixels). La fenêtre `ReportModal` occupe `100vh` sans hauteur maximale ni défilement interne, et son bouton de fermeture n'a pas de taille minimale : sur un petit écran ou avec le clavier ouvert, le bas peut être coupé (à vérifier).
+- **Sur téléphone** (et tablette, jusqu'à 1024 pixels) : une seule colonne ; les onglets forment une rangée en haut de la page qui défile de côté et se place sur l'onglet ouvert (avant la carte 099, ils étaient rangés dans le panneau « Plus »). Sur ordinateur, ils forment une colonne à gauche. Mise en page commune avec l'administration : `StaffPageLayout`. Journal, signalements, bannis et ressources sont des listes de fiches (plus de tableau), avec des boutons de 44 pixels. Les fenêtres de confirmation (`ConfirmDialog`) montent du bas de l'écran. Une grande marge sous le contenu évite que les notifications empilées en bas de l'écran cachent les derniers boutons.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/moderation/page.tsx` | Page (composant navigateur) : contrôle `isModerator`, onglet actif, compteurs. |
-| `apps/site/app/moderation/page.css`, `page-mobile.css` | Styles (tableaux, cartes de signalement) et règles sous 1024 px. |
+| `apps/site/common/components/StaffPageLayout/StaffPageLayout.tsx` | Mise en page commune de la modération et de l'administration (titre, onglets, contenu). |
 | `apps/site/lib/moderationLog.ts` | `logModerationAction` et le type `ModerationAction` : écriture au journal, **interne au serveur** (volontairement hors d'un fichier « use server »). |
 | `apps/site/app/moderation/actions.ts` | Actions serveur : `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`.  |
-| `apps/site/app/moderation/component/` | `ModerationSidebar`, `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab`. |
+| `apps/site/app/moderation/component/` | `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab` (composants de `packages/ui` ; plus de fichier CSS depuis la carte 099). |
 | `apps/site/common/components/ReportModal/ReportModal.tsx` | Fenêtre de signalement. Utilisée par `PostMoreMenu`, `TopicTools` (forum), `ProfileSidebar`, `ReportArticleButton`, `ReportLigueButton`. |
 | `apps/site/app/membres/actions.ts` | `toggleBanUser` (seule version, utilisée par `/membres`, la fiche `/spy/[id]` et, via `unbanUserAction`, l'onglet « Coachs bannis » : contrôle de rang et entrée au journal) et `deleteUser`. |
-| `apps/site/app/ressources/actions.ts` | `getPendingResources`, `moderateResource` (onglet « Validation Ressources »). |
+| `apps/site/app/ressources/actions.ts` | `getPendingResources`, `moderateResource` (onglet « Ressources à valider »). |
 
 `logModerationAction(action, targetId, targetType, details)` est appelée par les autres fonctionnalités (forum, articles, ligues, administration) pour remplir le journal.
 
@@ -57,4 +59,4 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 - Fonctionne aussi depuis la carte 051 : purge des journaux de plus de 3 mois. Depuis la carte 060, le débannissement depuis l'onglet « Coachs bannis » respecte le rang et reste tracé au journal.
 - Manque : limite sur les signalements. Aucune carte ouverte ne la couvre. L'onglet « Coachs bannis » affiche le bouton « Débannir » même quand le rang l'interdit : le serveur refuse alors et un message l'explique.
 - Hub : le ban global propagé à toutes les applications est prévu par la carte 037.
-- Téléphone : les onglets invisibles entre 769 et 1024 px et la fenêtre de signalement sont à traiter dans l'audit mobile (carte 049).
+- Téléphone : refait par la carte 099 ; vérifié par `tests/e2e/inventaire/moderation.spec.ts` (ordinateur et téléphone) et par l'audit mobile (journal, signalements, bannis, ressources).

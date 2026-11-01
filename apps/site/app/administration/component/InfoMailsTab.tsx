@@ -1,27 +1,23 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
-import { Mail, Send, AlertTriangle, Loader2, CheckCircle2 } from "lucide-react";
-import { sendGlobalInfoMail } from "../actions";
-import { toast } from "@bbfrance/ui";
-import Modal from "@/common/components/Modal/Modal";
-import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
-
 /**
- * Onglet d'envoi de mails d'information à tous les utilisateurs.
- * Ce type de mail ignore les préférences utilisateur (newsletter, etc.)
+ * Onglet « Annonces par e-mail » de l'administration (refonte, carte 099) : envoyer une annonce à tous les coachs non
+ * bannis. Ce type d'e-mail ignore les préférences des membres (lettre d'information refusée…) : il est réservé aux
+ * informations capitales. L'envoi est confirmé dans une fenêtre (« Oui, diffuser »), puis l'écran « Diffusion
+ * terminée » donne le nombre d'e-mails partis. L'action `sendGlobalInfoMail` est inchangée.
  */
+import { useState, useTransition } from "react";
+import { AlertTriangle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
+import { Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, EmptyState, Field, Input, Label, toast } from "@bbfrance/ui";
+import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import { sendGlobalInfoMail } from "../actions";
+
 export default function InfoMailsTab() {
   const [isPending, startTransition] = useTransition();
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [result, setResult] = useState<{ success: boolean; count: number; total: number } | null>(null);
-  const isMobile = useIsMobile();
 
   const handleSend = () => {
     if (!subject || !content) {
@@ -44,127 +40,76 @@ export default function InfoMailsTab() {
         } else {
           toast.error(res.error || "Erreur lors de l'envoi.");
         }
-      } catch (e: any) {
-        toast.error(e.message || "Erreur critique.");
+      } catch (e: unknown) {
+        toast.error(e instanceof Error ? e.message : "Erreur critique.");
       }
     });
   };
 
   if (result) {
     return (
-      <PremiumCard className="admin-tab-card" style={{ textAlign: 'center', padding: isMobile ? '2rem 1rem' : '4rem 2rem' }}>
-        <CheckCircle2 size={isMobile ? 48 : 64} color="var(--success)" style={{ marginBottom: '1.5rem' }} />
-        <h2 style={{ color: 'var(--foreground)', marginBottom: '1rem', fontSize: isMobile ? '1.4rem' : '2rem' }}>Diffusion terminée !</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: isMobile ? '0.9rem' : '1.1rem', marginBottom: '2rem' }}>
-          L'email a été envoyé à <strong style={{color: 'var(--foreground)'}}>{result.count} / {result.total}</strong> utilisateurs.
-        </p>
-        <ClassicButton onClick={() => setResult(null)} fullWidth={isMobile}>Envoyer une autre annonce</ClassicButton>
-      </PremiumCard>
+      <Card>
+        <EmptyState
+          icon={<CheckCircle2 size={48} className="text-bb-success-text" />}
+          title="Diffusion terminée !"
+          action={
+            <Button type="button" variant="secondary" size="tap" onClick={() => setResult(null)}>
+              Envoyer une autre annonce
+            </Button>
+          }
+        >
+          L&apos;e-mail a été envoyé à <strong className="text-bb-text">{result.count} / {result.total}</strong> utilisateurs.
+        </EmptyState>
+      </Card>
     );
   }
 
   return (
-    <div className="info-mails-tab">
-      <PremiumCard className="admin-tab-card" style={{ padding: isMobile ? '1.2rem' : '2.5rem' }}>
-        <div className="tab-header" style={{ marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '1.2rem', flexDirection: isMobile ? 'column' : 'row', textAlign: isMobile ? 'center' : 'left' }}>
-          <div style={{ background: 'var(--accent-transparent)', color: 'var(--accent)', padding: '0.8rem', borderRadius: '12px' }}>
-            <Mail size={24} />
-          </div>
-          <div>
-            <h2 style={{ fontSize: isMobile ? '1.2rem' : '1.4rem', color: 'var(--foreground)', margin: 0 }}>Annonces Email</h2>
-            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.85rem' }}>Diffuser une information critique.</p>
-          </div>
+    <Card className="overflow-hidden">
+      <CardHeader>
+        <Mail size={18} className="text-bb-text-muted" aria-hidden="true" />
+        <CardTitle>Annonces par e-mail</CardTitle>
+      </CardHeader>
+      <CardBody className="flex flex-col gap-4">
+        <div role="note" className="flex gap-3 rounded-bb-md border border-bb-warning-text px-3 py-2.5 text-[0.95rem] text-bb-text">
+          <AlertTriangle size={20} className="mt-0.5 shrink-0 text-bb-warning-text" aria-hidden="true" />
+          <p className="m-0">
+            <strong>Attention :</strong> ces e-mails partent à tous les coachs, même à ceux qui ont refusé les lettres
+            d&apos;information. À réserver aux informations capitales.
+          </p>
         </div>
 
-        <div style={{ 
-          background: 'rgba(var(--accent-rgb, 212, 163, 115), 0.1)', 
-          border: '1px solid var(--accent)', 
-          padding: '1rem', 
-          borderRadius: '12px', 
-          marginBottom: '2.5rem',
-          display: 'flex',
-          gap: '0.8rem',
-          alignItems: 'flex-start',
-          flexDirection: isMobile ? 'column' : 'row'
-        }}>
-          <AlertTriangle size={24} color="var(--accent)" style={{ flexShrink: 0 }} />
-          <div style={{ fontSize: '0.85rem', lineHeight: '1.5', color: 'var(--foreground)' }}>
-            <strong>Attention :</strong> Ces emails ignorent les préférences. Utilisez <strong>uniquement</strong> pour des informations capitales.
-          </div>
-        </div>
+        <Field label="Objet du mail" htmlFor="info-mail-subject">
+          <Input id="info-mail-subject" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Objet de l'e-mail" />
+        </Field>
 
-        <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-          <label style={{ display: 'block', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.75rem', textTransform: 'uppercase' }}>
-            OBJET DU MAIL
-          </label>
-          <input 
-            type="text" 
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            placeholder="Objet de l'email..."
-            style={{ 
-              width: '100%', 
-              background: 'var(--glass-bg)', 
-              border: '1px solid var(--glass-border)', 
-              borderRadius: '10px', 
-              padding: '0.8rem 1rem', 
-              color: 'var(--foreground)',
-              outline: 'none',
-              fontSize: '0.95rem'
-            }}
-          />
-        </div>
-
-        <div className="form-group" style={{ marginBottom: '2rem' }}>
-          <label style={{ display: 'block', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.75rem', textTransform: 'uppercase' }}>
-            MESSAGE (HTML / BBCODE)
-          </label>
-          <BBCodeEditor 
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="info-mail-content">Message (BBCode)</Label>
+          <BBCodeEditor
             name="mail-content"
+            id="info-mail-content"
             defaultValue={content}
             onChange={(value) => setContent(value)}
             placeholder="Message..."
-            rows={isMobile ? 8 : 12}
+            rows={10}
           />
         </div>
 
-        <div style={{ display: 'flex', justifyContent: isMobile ? 'stretch' : 'flex-end' }}>
-          <CTAButton 
-            onClick={handleSend} 
-            icon={isPending ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
-            isLoading={isPending}
-            disabled={!subject || !content}
-            fullWidth={isMobile}
-          >
-            Diffuser aux coachs
-          </CTAButton>
-        </div>
-      </PremiumCard>
+        <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto lg:self-end" disabled={!subject || !content || isPending} onClick={handleSend}>
+          {isPending ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Send size={18} aria-hidden="true" />}
+          {isPending ? "Diffusion en cours…" : "Diffuser aux coachs"}
+        </Button>
+      </CardBody>
 
-      {/* Modal de Confirmation */}
-      <Modal 
-        isOpen={showConfirm} 
-        onClose={() => setShowConfirm(false)} 
+      <ConfirmDialog
+        open={showConfirm}
+        onOpenChange={setShowConfirm}
+        title="Diffuser l'annonce ?"
+        message="Tous les coachs non bannis recevront cet e-mail. L'envoi ne peut pas être annulé."
+        confirmLabel="Oui, diffuser"
+        danger
         onConfirm={confirmSend}
-        title="Diffuser ?"
-        confirmText="Oui, diffuser"
-      >
-        <div style={{ padding: '1rem 0', textAlign: 'center' }}>
-          <AlertTriangle size={48} color="var(--danger)" style={{ marginBottom: '1.5rem', display: 'inline-block' }} />
-          <h3 style={{ marginBottom: '1rem', color: 'var(--foreground)' }}>Confirmer ?</h3>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-            Tous les utilisateurs recevront ce mail.<br/>Action irréversible.
-          </p>
-        </div>
-      </Modal>
-
-      <style jsx>{`
-        .info-mails-tab { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-    </div>
+      />
+    </Card>
   );
 }

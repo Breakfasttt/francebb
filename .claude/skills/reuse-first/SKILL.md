@@ -22,7 +22,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 |---|---|
 | Bouton d'un écran refait | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
 | Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
-| Confirmer une action (à la place de `confirm()` ou de `ConfirmModal` sur un écran refait) | `ConfirmDialog` (carte 089) : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice |
+| Confirmer une action (à la place de `confirm()` ou de `ConfirmModal` sur un écran refait) | `ConfirmDialog` (carte 089) : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice ; `children` pour un champ entre la phrase et les boutons (commentaire du modérateur, carte 099) |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
 | Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent` (carte 087) ; sur téléphone, utiliser `Sheet` |
 | Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |
@@ -30,7 +30,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Avatar avec initiale | `Avatar` (les cadres de rang restent dans `UserAvatar`) |
 | Champs de formulaire | `Field`, `Label`, `Input`, `Textarea`, `Select` |
 | Interrupteur, info-bulle | `Switch`, `Tooltip` |
-| Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}`) |
+| Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}` ; `orientation="vertical"` pour une colonne d'onglets sur ordinateur, carte 099) |
 | Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092) |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
 | Éditeur de message BBCode | `BBCodeEditor` (`common/components/BBCodeEditor`) ; `screen` pour un écran de rédaction plein écran sur téléphone. Mise en page de ces écrans : `ComposeScreen` (fil d'Ariane du forum facultatif depuis la carte 094, pour le formulaire d'une ligue), `ComposeActionBar`, `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) |
@@ -66,6 +66,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
 | Smileys | `SmileyPicker`, `SmileyGrid` |
 | En-tête page / retour | `PageHeader`, `BackButton` |
+| Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`, carte 099) |
 | Vide / stat | `EmptyState`, `StatItem` |
 | Mobile | `MobilePortal`, `MobileSidebar`, `DesktopOnlyFallback`, `GlobalPortal` (filtres d'une liste sur téléphone : bouton « Filtres » et `Sheet`, voir le skill `mobile-ux`) |
 | Icônes | `lucide-react` uniquement (`Icons/` = icônes custom existantes) |

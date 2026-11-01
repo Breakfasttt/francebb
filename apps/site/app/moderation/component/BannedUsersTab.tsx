@@ -1,27 +1,27 @@
-/**
- * Onglet de gestion des utilisateurs bannis.
- * Permet de lister les bannissements actifs et de débannir des utilisateurs.
- */
 "use client";
 
+/**
+ * Onglet « Coachs bannis » de la modération (refonte, carte 099) : les membres bannis, 10 par page, avec l'auteur, le
+ * motif et la date du bannissement, et un bouton « Débannir » (confirmé dans une fenêtre). Une seule liste de fiches,
+ * sur ordinateur comme sur téléphone (avant la refonte : un tableau sur ordinateur). Les actions `getBannedUsers` et
+ * `unbanUserAction` sont inchangées ; le serveur refuse de débannir un membre de rang égal ou supérieur.
+ */
 import { useEffect, useState } from "react";
-import { getBannedUsers, unbanUserAction } from "../actions";
-import { Loader2, UserX, UserCheck, Clock, ShieldAlert } from "lucide-react";
-import PremiumCard from "@/common/components/PremiumCard/PremiumCard";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "@bbfrance/ui";
-import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import Pagination from "@/common/components/Pagination/Pagination";
-import AdminButton from "@/common/components/Button/AdminButton";
-import { useIsMobile } from "@/common/hooks/useIsMobile";
+import { Clock, ShieldAlert, UserCheck, UserX } from "lucide-react";
+import { Badge, Button, Card, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
+import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import { getBannedUsers, unbanUserAction } from "../actions";
+
+const PAGE_SIZE = 10;
 
 export default function BannedUsersTab() {
-  const isMobile = useIsMobile();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- membres renvoyés par getBannedUsers
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [unbanning, setUnbanning] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -35,19 +35,16 @@ export default function BannedUsersTab() {
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé à chaque changement de page
   }, [page]);
-
-  const handleUnbanClick = (userId: string) => {
-    setSelectedUserId(userId);
-    setIsConfirmOpen(true);
-  };
 
   const onConfirmUnban = async () => {
     if (!selectedUserId) return;
-    
+    setUnbanning(true);
     const res = await unbanUserAction(selectedUserId);
-    setIsConfirmOpen(false);
-    
+    setUnbanning(false);
+    setSelectedUserId(null);
+
     if (res.success) {
       toast.success("Utilisateur débanni");
       fetchUsers();
@@ -56,151 +53,71 @@ export default function BannedUsersTab() {
     }
   };
 
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-        <Loader2 className="animate-spin" size={32} color="var(--primary)" />
-      </div>
-    );
-  }
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <div className="banned-users-tab">
-      <div className="tab-header" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '1.5rem' }}>
-        <UserX size={20} color="var(--danger)" />
-        <h3 style={{ margin: 0, fontSize: '1.2rem' }}>Utilisateurs bannis</h3>
-        <span className="action-badge danger" style={{ marginLeft: 'auto' }}>{users.length} bannis</span>
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <UserX size={20} className="text-bb-danger-text" aria-hidden="true" />
+        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">Coachs bannis</h2>
+        {!(loading && users.length === 0) && <Badge variant="danger">{total} banni{total > 1 ? "s" : ""}</Badge>}
       </div>
 
-        {users.length === 0 ? (
-          <PremiumCard>
-            <p style={{ textAlign: 'center', padding: '2rem', opacity: 0.6 }}>Aucun utilisateur banni pour le moment.</p>
-          </PremiumCard>
-        ) : isMobile ? (
-          <div className="moderation-mobile-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {users.map((user) => (
-              <PremiumCard key={user.id} style={{ padding: '1.2rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                  <div className="report-author">
-                    {user.image ? (
-                      <img src={user.image} alt="" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
-                    ) : (
-                      <UserX size={18} />
-                    )}
-                    <span style={{ fontWeight: 600 }}>{user.name || "Inconnu"}</span>
-                  </div>
-                  <div style={{ fontSize: '0.75rem', opacity: 0.6, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                    <Clock size={12} />
-                    {user.bannedAt ? format(new Date(user.bannedAt), "dd/MM/yyyy", { locale: fr }) : "N/A"}
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                  <div style={{ fontSize: '0.85rem' }}>
-                    <span style={{ opacity: 0.6, fontWeight: 700, textTransform: 'uppercase', fontSize: '0.7rem' }}>Banni par:</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.2rem' }}>
-                      <ShieldAlert size={14} color="var(--primary)" />
-                      <span>{user.bannedBy}</span>
-                    </div>
-                  </div>
-
-                  <div style={{ fontSize: '0.85rem' }}>
-                    <span style={{ opacity: 0.6, fontWeight: 700, textTransform: 'uppercase', fontSize: '0.7rem' }}>Raison:</span>
-                    <p style={{ margin: '0.2rem 0 0 0', opacity: 0.9 }}>{user.banReason || "Non spécifiée"}</p>
-                  </div>
-
-                  <AdminButton 
-                    onClick={() => handleUnbanClick(user.id)}
-                    size="sm"
-                    icon={UserCheck}
-                    style={{ 
-                      marginTop: '0.5rem',
-                      width: '100%',
-                      background: "#22c55e", 
-                      color: "white", 
-                      borderColor: "transparent" 
-                    }}
-                  >
-                    Débannir
-                  </AdminButton>
-                </div>
-              </PremiumCard>
-            ))}
+      <Card className="overflow-hidden">
+        {loading && users.length === 0 ? (
+          <div className="flex flex-col gap-3 p-4">
+            {[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 w-full" />)}
           </div>
+        ) : users.length === 0 ? (
+          <EmptyState icon={<UserCheck size={32} />} title="Aucun utilisateur banni pour le moment." />
         ) : (
-          <PremiumCard style={{ padding: '0' }}>
-            <div style={{ overflowX: 'auto' }}>
-              <table className="moderation-table">
-                <thead>
-                  <tr>
-                    <th>Utilisateur</th>
-                    <th>Banni par</th>
-                    <th>Raison</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user.id} className="moderation-row">
-                      <td className="moderation-cell">
-                        <div className="report-author" style={{ justifyContent: 'center' }}>
-                          {user.image ? (
-                            <img src={user.image} alt="" style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                          ) : (
-                            <UserX size={14} />
-                          )}
-                          <span>{user.name || "Inconnu"}</span>
-                        </div>
-                      </td>
-                      <td className="moderation-cell">
-                        <div className="report-author" style={{ justifyContent: 'center' }}>
-                          <ShieldAlert size={14} color="var(--primary)" />
-                          <span>{user.bannedBy}</span>
-                        </div>
-                      </td>
-                      <td className="moderation-cell" style={{ maxWidth: '250px' }}>
-                        <span style={{ fontSize: '0.85rem', opacity: 0.8 }}>{user.banReason || "Non spécifiée"}</span>
-                      </td>
-                      <td className="moderation-cell">
-                        <div style={{ fontSize: '0.8rem', opacity: 0.6, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
-                          <Clock size={12} />
-                          {user.bannedAt.getTime() > 0 ? format(new Date(user.bannedAt), "dd/MM/yyyy", { locale: fr }) : "N/A"}
-                        </div>
-                      </td>
-                      <td className="moderation-cell">
-                        <AdminButton 
-                          onClick={() => handleUnbanClick(user.id)}
-                          size="sm"
-                          icon={UserCheck}
-                          style={{ background: "#22c55e", color: "white", borderColor: "transparent" }}
-                        >
-                          Débannir
-                        </AdminButton>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </PremiumCard>
+          <ul aria-label="Coachs bannis" className={`m-0 list-none p-0 ${loading ? "opacity-60" : ""}`}>
+            {users.map((user) => (
+              <li key={user.id} className="flex flex-col gap-3 border-b border-bb-border px-4 py-3 last:border-b-0 lg:flex-row lg:items-center lg:gap-4">
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="flex min-w-0 items-center gap-2 font-semibold text-bb-text">
+                      <MemberAvatarImage image={user.image} className="size-8 shrink-0 rounded-full object-cover" />
+                      <span className="truncate">{user.name || "Inconnu"}</span>
+                    </span>
+                    <span className="inline-flex shrink-0 items-center gap-1 text-sm text-bb-text-muted">
+                      <Clock size={14} aria-hidden="true" />
+                      {new Date(user.bannedAt).getTime() > 0 ? format(new Date(user.bannedAt), "dd/MM/yyyy", { locale: fr }) : "Date inconnue"}
+                    </span>
+                  </div>
+                  <p className="m-0 flex items-center gap-1.5 text-sm text-bb-text-muted">
+                    <ShieldAlert size={14} aria-hidden="true" />
+                    Banni par <span className="font-semibold text-bb-text">{user.bannedBy}</span>
+                  </p>
+                  <p className="m-0 text-[0.95rem] break-words text-bb-text">
+                    <span className="text-sm font-semibold text-bb-text-muted">Motif : </span>
+                    {user.banReason || "Non spécifié"}
+                  </p>
+                </div>
+                <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={() => setSelectedUserId(user.id)}>
+                  <UserCheck size={16} aria-hidden="true" />
+                  Débannir
+                </Button>
+              </li>
+            ))}
+          </ul>
         )}
 
-      <Pagination 
-        currentPage={page}
-        totalPages={Math.ceil(total / 10)}
-        onPageChange={(p: number) => { setPage(p); window.scrollTo(0, 0); }}
-        className="moderation-pagination"
-      />
+        {totalPages > 1 && (
+          <div className="flex justify-center border-t border-bb-border p-3">
+            <PageNav page={page} totalPages={totalPages} onPageChange={(p) => { setPage(p); window.scrollTo(0, 0); }} />
+          </div>
+        )}
+      </Card>
 
-      <ConfirmModal 
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={onConfirmUnban}
+      <ConfirmDialog
+        open={selectedUserId !== null}
+        onOpenChange={(open) => { if (!open) setSelectedUserId(null); }}
         title="Débannir l'utilisateur"
-        message="Voulez-vous vraiment débannir cet utilisateur ? Il pourra à nouveau se connecter et interagir sur la plateforme."
+        message="Voulez-vous vraiment débannir cet utilisateur ? Il pourra à nouveau se connecter et participer sur le site."
         confirmLabel="Débannir"
-        isDanger={false}
+        pending={unbanning}
+        onConfirm={onConfirmUnban}
       />
     </div>
   );
